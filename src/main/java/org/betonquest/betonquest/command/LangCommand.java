@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.command;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -9,7 +10,8 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
-import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,6 +48,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final ProfileProvider profileProvider;
 
     /**
+     * The sender for the language changed notification.
+     */
+    private final IngameNotificationSender languageChangedSender;
+
+    /**
      * Creates a new executor for the /questlang command.
      *
      * @param log             the logger that will be used for logging
@@ -59,6 +66,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
+        this.languageChangedSender = new IngameNotificationSender(log, pluginMessage, null,
+                "LanguageCommand", NotificationLevel.INFO, "language_changed");
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -72,7 +81,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (args.length == 0) {
-            sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_missing"));
+            try {
+                sender.sendMessage(pluginMessage.getMessage("language_missing").asComponent(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Failed to get language missing message: " + e.getMessage(), e);
+            }
             return true;
         }
         final Set<String> languages = pluginMessage.getLanguages();
@@ -84,7 +97,13 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
-            sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_not_exist") + finalMessage);
+            try {
+                sender.sendMessage(pluginMessage.getMessage("language_not_exist",
+                                new PluginMessage.Replacement("languages", Component.text(finalMessage)))
+                        .asComponent(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Failed to get language_not_exist: " + e.getMessage(), e);
+            }
             return true;
         }
         final String lang = args[0];
@@ -92,12 +111,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         final Journal journal = playerData.getJournal(pluginMessage);
         playerData.setLanguage(lang);
         journal.update();
-        final String message = pluginMessage.getMessage(onlineProfile, "language_changed");
-        try {
-            Notify.get(null, "language_changed,info").sendNotify(message, onlineProfile);
-        } catch (final QuestException e) {
-            log.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
-        }
+        languageChangedSender.sendNotification(onlineProfile);
         return true;
     }
 

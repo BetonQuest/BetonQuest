@@ -24,7 +24,8 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -148,6 +149,11 @@ public class Conversation implements Listener {
     private final PluginMessage pluginMessage;
 
     /**
+     * Notification sender when commands are blocked in a conversation.
+     */
+    private final IngameNotificationSender blockedSender;
+
+    /**
      * The current conversation state.
      */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
@@ -215,6 +221,7 @@ public class Conversation implements Listener {
         this.center = center;
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
+        this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "command_blocked");
 
         try {
             this.data = plugin.getFeatureAPI().getConversation(conversationID);
@@ -418,8 +425,12 @@ public class Conversation implements Listener {
             }
             //only display status messages if conversationIO allows it
             if (conv.inOut.printMessages()) {
-                conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_end",
-                        new PluginMessage.Replacement("npc", LegacyComponentSerializer.legacySection().serialize(data.getPublicData().getQuester(log, onlineProfile)))));
+                try {
+                    conv.inOut.print(LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("conversation_end",
+                            new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile))).asComponent(onlineProfile)));
+                } catch (final QuestException e) {
+                    log.warn("Conversation end Message could not be displayed: " + e.getMessage(), e);
+                }
             }
             //play conversation end sound
             Config.playSound(onlineProfile, "end");
@@ -511,12 +522,7 @@ public class Conversation implements Listener {
         final String cmdName = event.getMessage().split(" ")[0].substring(1);
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
-            final String message = pluginMessage.getMessage(onlineProfile, "command_blocked");
-            try {
-                Notify.get(getPackage(), "command_blocked,error").sendNotify(message, onlineProfile);
-            } catch (final QuestException e) {
-                log.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
-            }
+            blockedSender.sendNotification(onlineProfile);
         }
     }
 
@@ -760,8 +766,12 @@ public class Conversation implements Listener {
                     selectOption(resolvedOptions, false);
 
                     if (conv.inOut.printMessages()) {
-                        conv.inOut.print(pluginMessage.getMessage(onlineProfile, "conversation_start",
-                                new PluginMessage.Replacement("npc", LegacyComponentSerializer.legacySection().serialize(data.getPublicData().getQuester(log, onlineProfile)))));
+                        try {
+                            conv.inOut.print(LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("conversation_start",
+                                    new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile))).asComponent(onlineProfile)));
+                        } catch (final QuestException e) {
+                            log.warn(pack, "Conversation start Message could not be displayed: " + e.getMessage(), e);
+                        }
                     }
 
                     Config.playSound(onlineProfile, "start");

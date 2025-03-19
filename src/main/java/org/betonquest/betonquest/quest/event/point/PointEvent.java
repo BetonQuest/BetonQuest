@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.point;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -65,7 +66,7 @@ public class PointEvent implements PlayerEvent {
         final String category = this.category.getValue(profile);
         playerData.setPoints(category, pointType.modify(playerData.getPointsFromCategory(category).orElse(0), countDouble));
         pointSender.sendNotification(profile,
-                new PluginMessage.Replacement("amount", String.valueOf(countDouble)),
-                new PluginMessage.Replacement("category", category));
+                new PluginMessage.Replacement("amount", Component.text(countDouble)),
+                new PluginMessage.Replacement("category", Component.text(category)));
     }
 }

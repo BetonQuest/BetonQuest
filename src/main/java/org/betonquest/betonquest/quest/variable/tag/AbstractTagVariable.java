@@ -1,7 +1,11 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -58,13 +62,15 @@ public abstract class AbstractTagVariable<T> {
     /**
      * Returns the value of the variable.
      *
-     * @param tags the tags to check
+     * @param profile the profile to check
+     * @param tags    the tags to check
      * @return the value of the variable
+     * @throws QuestException if the papiMode is enabled and the message could not be resolved
      */
-    public String getValueFor(final List<String> tags) {
+    public String getValueFor(@Nullable final Profile profile, final List<String> tags) throws QuestException {
         if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
-            return papiMode ? pluginMessage.getMessage("condition_variable_met") : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_met").asComponent(profile)) : "true";
         }
-        return papiMode ? pluginMessage.getMessage("condition_variable_not_met") : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_not_met").asComponent(profile)) : "false";
     }
 }

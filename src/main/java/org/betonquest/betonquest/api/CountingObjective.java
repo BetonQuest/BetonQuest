@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -7,6 +8,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -19,10 +22,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class CountingObjective extends Objective {
     /**
-     * The message name for notification messages used by default.
+     * The message used for notifying the player.
      */
     @Nullable
-    private final String defaultNotifyMessageName;
+    private final IngameNotificationSender countSender;
 
     /**
      * The amount of units required for completion.
@@ -50,7 +53,10 @@ public abstract class CountingObjective extends Objective {
     public CountingObjective(final Instruction instruction, @Nullable final String notifyMessageName) throws QuestException {
         super(instruction);
         template = CountingData.class;
-        defaultNotifyMessageName = notifyMessageName;
+        final BetonQuest instance = BetonQuest.getInstance();
+        countSender = notifyMessageName == null ? null : new IngameNotificationSender(instance.getLoggerFactory().create(CountingObjective.class),
+                instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),
+                NotificationLevel.INFO, notifyMessageName);
     }
 
     @Override
@@ -90,34 +96,33 @@ public abstract class CountingObjective extends Objective {
 
     /**
      * Complete the objective if fulfilled or else notify the profile's player if required. It will use the
-     * {@link #defaultNotifyMessageName} if set, otherwise no notification will be sent, even if {@link #notify} is
+     * {@link #countSender} if set, otherwise no notification will be sent, even if {@link #notify} is
      * {@code true}.
      *
      * @param profile the {@link Profile} to act for
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
     protected final boolean completeIfDoneOrNotify(final Profile profile) {
-        return completeIfDoneOrNotify(profile, defaultNotifyMessageName);
+        return completeIfDoneOrNotify(profile, countSender);
     }
 
     /**
      * Complete the objective if fulfilled or else notify the profile's player if required. It will use the provided
      * notification message name. If it is {@code null}, no notification is sent, even if a
-     * {@link #defaultNotifyMessageName} was set and a notification should have been sent.
+     * {@link #countSender} was set and a notification should have been sent.
      *
-     * @param profile           the {@link Profile} to act for
-     * @param notifyMessageName message name for a notification message
+     * @param profile            the {@link Profile} to act for
+     * @param notificationSender the {@link IngameNotificationSender} to use for sending the notification
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final String notifyMessageName) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final IngameNotificationSender notificationSender) {
         final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
             completeObjective(profile);
             return true;
         }
-        if (notify && notifyMessageName != null && shouldNotify(data) && profile.getOnlineProfile().isPresent()) {
-            sendNotify(profile.getOnlineProfile().get(), notifyMessageName,
-                    new PluginMessage.Replacement("amount", String.valueOf(Math.abs(data.getAmountLeft()))));
+        if (notify && notificationSender != null && shouldNotify(data) && profile.getOnlineProfile().isPresent()) {
+            notificationSender.sendNotification(profile, new PluginMessage.Replacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
         }
         return false;
     }

@@ -175,121 +175,124 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @SuppressWarnings("PMD.NcssCount")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
-
-        if ("betonquest".equalsIgnoreCase(cmd.getName())) {
-            log.debug("Executing /betonquest command for user " + sender.getName()
-                    + " with arguments: " + Arrays.toString(args));
-            // if the command is empty, display help message
-            if (args.length == 0) {
-                displayHelp(sender, alias);
+        try {
+            if ("betonquest".equalsIgnoreCase(cmd.getName())) {
+                log.debug("Executing /betonquest command for user " + sender.getName()
+                        + " with arguments: " + Arrays.toString(args));
+                // if the command is empty, display help message
+                if (args.length == 0) {
+                    displayHelp(sender, alias);
+                    return true;
+                }
+                // if there are arguments handle them
+                // toLowerCase makes switch case-insensitive
+                switch (args[0].toLowerCase(Locale.ROOT)) {
+                    case "conditions":
+                    case "condition":
+                    case "c":
+                        handleConditions(sender, args);
+                        break;
+                    case "events":
+                    case "event":
+                    case "e":
+                        handleEvents(sender, args);
+                        break;
+                    case "items":
+                    case "item":
+                    case "i":
+                        // and items, which only use configuration files (they
+                        // should be sync)
+                        handleItems(sender, args);
+                        break;
+                    case "give":
+                    case "g":
+                        giveItem(sender, args);
+                        break;
+                    case "objectives":
+                    case "objective":
+                    case "o":
+                        handleObjectives(sender, args);
+                        break;
+                    case "globaltags":
+                    case "globaltag":
+                    case "gtag":
+                    case "gtags":
+                    case "gt":
+                        handleGlobalTags(sender, args);
+                        break;
+                    case "globalpoints":
+                    case "globalpoint":
+                    case "gpoints":
+                    case "gpoint":
+                    case "gp":
+                        handleGlobalPoints(sender, args);
+                        break;
+                    case "tags":
+                    case "tag":
+                    case "t":
+                        handleTags(sender, args);
+                        break;
+                    case "points":
+                    case "point":
+                    case "p":
+                        handlePoints(sender, args);
+                        break;
+                    case "journals":
+                    case "journal":
+                    case "j":
+                        handleJournals(sender, args);
+                        break;
+                    case "delete":
+                    case "del":
+                    case "d":
+                        handleDeleting(sender, args);
+                        break;
+                    case "rename":
+                    case "r":
+                        handleRenaming(sender, args);
+                        break;
+                    case "variable":
+                    case "var":
+                        handleVariables(sender, args);
+                        break;
+                    case "version":
+                    case "ver":
+                    case "v":
+                        displayVersionInfo(sender, alias);
+                        break;
+                    case "purge":
+                        purgePlayer(sender, args);
+                        break;
+                    case "update":
+                        instance.getUpdater().update(sender);
+                        break;
+                    case "reload":
+                        handleReload(sender);
+                        break;
+                    case "backup":
+                        // do a full plugin backup
+                        if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
+                            sendMessage(sender, "offline");
+                            break;
+                        }
+                        Utils.backup(configAccessorFactory);
+                        break;
+                    case "debug":
+                        handleDebug(sender, args);
+                        break;
+                    case "download":
+                        handleDownload(sender, args);
+                        break;
+                    default:
+                        // there was an unknown argument, so handle this
+                        sendMessage(sender, "unknown_argument");
+                        break;
+                }
+                log.debug("Command executing done");
                 return true;
             }
-            // if there are arguments handle them
-            // toLowerCase makes switch case-insensitive
-            switch (args[0].toLowerCase(Locale.ROOT)) {
-                case "conditions":
-                case "condition":
-                case "c":
-                    handleConditions(sender, args);
-                    break;
-                case "events":
-                case "event":
-                case "e":
-                    handleEvents(sender, args);
-                    break;
-                case "items":
-                case "item":
-                case "i":
-                    // and items, which only use configuration files (they
-                    // should be sync)
-                    handleItems(sender, args);
-                    break;
-                case "give":
-                case "g":
-                    giveItem(sender, args);
-                    break;
-                case "objectives":
-                case "objective":
-                case "o":
-                    handleObjectives(sender, args);
-                    break;
-                case "globaltags":
-                case "globaltag":
-                case "gtag":
-                case "gtags":
-                case "gt":
-                    handleGlobalTags(sender, args);
-                    break;
-                case "globalpoints":
-                case "globalpoint":
-                case "gpoints":
-                case "gpoint":
-                case "gp":
-                    handleGlobalPoints(sender, args);
-                    break;
-                case "tags":
-                case "tag":
-                case "t":
-                    handleTags(sender, args);
-                    break;
-                case "points":
-                case "point":
-                case "p":
-                    handlePoints(sender, args);
-                    break;
-                case "journals":
-                case "journal":
-                case "j":
-                    handleJournals(sender, args);
-                    break;
-                case "delete":
-                case "del":
-                case "d":
-                    handleDeleting(sender, args);
-                    break;
-                case "rename":
-                case "r":
-                    handleRenaming(sender, args);
-                    break;
-                case "variable":
-                case "var":
-                    handleVariables(sender, args);
-                    break;
-                case "version":
-                case "ver":
-                case "v":
-                    displayVersionInfo(sender, alias);
-                    break;
-                case "purge":
-                    purgePlayer(sender, args);
-                    break;
-                case "update":
-                    instance.getUpdater().update(sender);
-                    break;
-                case "reload":
-                    handleReload(sender);
-                    break;
-                case "backup":
-                    // do a full plugin backup
-                    if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
-                        sendMessage(sender, "offline");
-                        break;
-                    }
-                    Utils.backup(configAccessorFactory);
-                    break;
-                case "debug":
-                    handleDebug(sender, args);
-                    break;
-                case "download":
-                    handleDownload(sender, args);
-                    break;
-                default:
-                    // there was an unknown argument, so handle this
-                    sendMessage(sender, "unknown_argument");
-                    break;
-            }
-            log.debug("Command executing done");
-            return true;
+        } catch (final QuestException e) {
+            log.error("Error while executing command: " + e.getMessage(), e);
         }
         return false;
     }
@@ -417,7 +420,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 itemID = new ItemID(null, args[1]);
             } catch (final QuestException e) {
                 sendMessage(sender, "error",
-                        new PluginMessage.Replacement("error", e.getMessage()));
+                        new PluginMessage.Replacement("error", Component.text(e.getMessage())));
                 log.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
@@ -433,7 +436,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             give.execute(profileProvider.getProfile((Player) sender));
         } catch (final QuestException e) {
             sendMessage(sender, "error",
-                    new PluginMessage.Replacement("error", e.getMessage()));
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
             log.warn("Error while creating an item: " + e.getMessage(), e);
         }
     }
@@ -450,7 +453,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         playerData.purgePlayer(pluginMessage);
         // done
         sendMessage(sender, "purged",
-                new PluginMessage.Replacement("player", args[1]));
+                new PluginMessage.Replacement("player", Component.text(args[1])));
     }
 
     /**
@@ -537,7 +540,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     entryID = new JournalEntryID(null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
-                            new PluginMessage.Replacement("error", e.getMessage()));
+                            new PluginMessage.Replacement("error", Component.text(e.getMessage())));
                     log.warn("The journal entry'" + pointerName + "' does not exist!");
                     log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
                     return;
@@ -570,7 +573,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     entryID = new JournalEntryID(null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
-                            new PluginMessage.Replacement("error", e.getMessage()));
+                            new PluginMessage.Replacement("error", Component.text(e.getMessage())));
                     log.warn("The journal entry'" + pointerName + "' does not exist!");
                     log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
                     return;
@@ -792,7 +795,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // done
         sendMessage(sender, "item_created",
-                new PluginMessage.Replacement("item", args[1]));
+                new PluginMessage.Replacement("item", Component.text(args[1])));
     }
 
     /**
@@ -826,7 +829,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             eventID = new EventID(null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
-                    new PluginMessage.Replacement("error", e.getMessage()));
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
             log.warn("Could not find event: " + e.getMessage(), e);
             return;
         }
@@ -834,7 +837,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         instance.getQuestTypeAPI().event(profile, eventID);
         sendMessage(sender, "player_event",
-                new PluginMessage.Replacement("event", eventID.getInstruction().toString()));
+                new PluginMessage.Replacement("event", Component.text(eventID.getInstruction().toString())));
     }
 
     /**
@@ -872,15 +875,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             conditionID = new ConditionID(null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
-                    new PluginMessage.Replacement("error", e.getMessage()));
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
             log.warn("Could not find condition: " + e.getMessage(), e);
             return;
         }
         // display message about condition
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition",
-                new PluginMessage.Replacement("condition", (conditionID.inverted() ? "! " : "") + conditionID.getInstruction()),
-                new PluginMessage.Replacement("result", String.valueOf(instance.getQuestTypeAPI().condition(profile, conditionID))));
+                new PluginMessage.Replacement("condition", Component.text((conditionID.inverted() ? "! " : "") + conditionID.getInstruction())),
+                new PluginMessage.Replacement("result", Component.text(instance.getQuestTypeAPI().condition(profile, conditionID))));
     }
 
     /**
@@ -1074,7 +1077,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             objective = instance.getQuestTypeAPI().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
-                    new PluginMessage.Replacement("error", e.getMessage()));
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
@@ -1186,7 +1189,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     nameID = new ObjectiveID(null, name);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
-                            new PluginMessage.Replacement("error", e.getMessage()));
+                            new PluginMessage.Replacement("error", Component.text(e.getMessage())));
                     log.warn("Could not find Objective: " + e.getMessage(), e);
                     return;
                 }
@@ -1198,7 +1201,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
                     if (sourceConfigurationSection == null) {
                         sendMessage(sender, "error",
-                                new PluginMessage.Replacement("error", "There is no SourceConfigurationSection!"));
+                                new PluginMessage.Replacement("error", Component.text("There is no SourceConfigurationSection!")));
                         log.warn(nameID.getPackage(), "There is no SourceConfigurationSection!");
                         break;
                     }
@@ -1231,7 +1234,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final QuestPackage newPackage = Config.getPackages().get(rename.split("\\.")[0]);
                 if (newPackage == null) {
                     final String message = "You can't rename into non-existent package!";
-                    sendMessage(sender, "error", new PluginMessage.Replacement("error", message));
+                    sendMessage(sender, "error", new PluginMessage.Replacement("error", Component.text(message)));
                     log.error(message);
                     return;
                 }
@@ -1241,7 +1244,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     newEntryID = new JournalEntryID(null, rename);
                 } catch (final QuestException e) {
                     final String message = "You can't rename into non-existent id!";
-                    sendMessage(sender, "error", new PluginMessage.Replacement("error", message));
+                    sendMessage(sender, "error", new PluginMessage.Replacement("error", Component.text(message)));
                     log.error(message);
                     return;
                 }
@@ -1336,7 +1339,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
-                            new PluginMessage.Replacement("error", e.getMessage()));
+                            new PluginMessage.Replacement("error", Component.text(e.getMessage())));
                     log.warn(message, e);
                     log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
                     break;
@@ -1446,7 +1449,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Displays help to the user.
      */
-    private void displayHelp(final CommandSender sender, final String alias) {
+    private void displayHelp(final CommandSender sender, final String alias) throws QuestException {
         log.debug("Just displaying help");
         final Map<String, String> cmds = getCommandHelpMap(sender);
         // display them
@@ -1458,7 +1461,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + ' '
                                 + entry.getValue()
                                 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
-                                + pluginMessage.getMessage(profile, "command_" + entry.getKey()) + "\"}}]}");
+                                + pluginMessage.getMessage("command_" + entry.getKey()).asComponent(profile) + "\"}}]}");
             }
         } else {
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
@@ -1468,30 +1471,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
     }
 
-    private void displayVersionInfo(final CommandSender sender, final String commandAlias) {
+    private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
         final Updater updater = instance.getUpdater();
         final String updateCommand = "/" + commandAlias + " update";
 
+        final Profile profile = sender instanceof final Player player ? BetonQuest.getInstance().getProfileProvider().getProfile(player) : null;
+
         final String key = "command_version_context.";
-        final String versionInfo = pluginMessage.getMessage(key + "version_info");
-        final String clickToCopyAll = pluginMessage.getMessage(key + "click_to_copy_all");
-        final String clickToCopy = pluginMessage.getMessage(key + "click_to_copy");
-        final String clickToDownloadHint = pluginMessage.getMessage(key + "click_to_download_hint");
-        final String colorValue = pluginMessage.getMessage(key + "color_value");
-        final String colorKey = pluginMessage.getMessage(key + "color_key");
-        final String colorValueVersion = pluginMessage.getMessage(key + "color_value_version");
-        final String versionBetonQuest = pluginMessage.getMessage(key + "version_betonquest");
-        final String versionServer = pluginMessage.getMessage(key + "version_server");
-        final String hookedInto = pluginMessage.getMessage(key + "hooked_into");
+        final Component versionInfo = pluginMessage.getMessage(key + "version_info").asComponent(profile);
+        final Component clickToCopyAll = pluginMessage.getMessage(key + "click_to_copy_all").asComponent(profile);
+        final Component clickToCopy = pluginMessage.getMessage(key + "click_to_copy").asComponent(profile);
+        final Component clickToDownloadHint = pluginMessage.getMessage(key + "click_to_download_hint").asComponent(profile);
+        final Component colorValue = pluginMessage.getMessage(key + "color_value").asComponent(profile);
+        final Component colorKey = pluginMessage.getMessage(key + "color_key").asComponent(profile);
+        final Component colorValueVersion = pluginMessage.getMessage(key + "color_value_version").asComponent(profile);
+        final Component versionBetonQuest = pluginMessage.getMessage(key + "version_betonquest").asComponent(profile);
+        final Component versionServer = pluginMessage.getMessage(key + "version_server").asComponent(profile);
+        final Component hookedInto = pluginMessage.getMessage(key + "hooked_into").asComponent(profile);
 
         final String versionBetonQuestValue = colorValue + instance.getDescription().getVersion();
         final String versionServerValue = colorValue + Bukkit.getServer().getVersion();
 
         final TextComponent clickToDownload = updater.isUpdateAvailable()
                 ? Component.newline().append(Component.text("    "))
-                .append(Component.text(pluginMessage.getMessage(key + "click_to_download",
-                        new PluginMessage.Replacement("version", updater.getUpdateVersion()))))
-                .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
+                .append(pluginMessage.getMessage(key + "click_to_download",
+                        new PluginMessage.Replacement("version", Component.text(updater.getUpdateVersion()))).asComponent(profile))
+                .hoverEvent(clickToDownloadHint).clickEvent(ClickEvent.runCommand(updateCommand))
                 : Component.empty();
 
         final Map<String, String> hookedTree = new TreeMap<>();
@@ -1508,14 +1513,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String hooked = hookedJoiner.toString();
 
         final Component compHeader = Component.text(instance.getPluginTag() + versionInfo);
-        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest);
+        final Component compVersionBetonQuestKey = colorKey.append(versionBetonQuest);
         final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue);
-        final Component compVersionServerKey = Component.text(colorKey + versionServer);
+        final Component compVersionServerKey = colorKey.append(versionServer);
         final Component compVersionServerValue = Component.text(versionServerValue);
-        final Component compHookedKey = Component.text(colorKey + hookedInto);
+        final Component compHookedKey = colorKey.append(hookedInto);
         final Component compHookedValue = Component.text(hooked);
-        final Component compCopyAll = Component.text(clickToCopyAll)
-                .hoverEvent(Component.text(clickToCopy))
+        final Component compCopyAll = clickToCopyAll
+                .hoverEvent(clickToCopy)
                 .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
                         + versionBetonQuestValue + '\n' + versionServer + versionServerValue + '\n' + '\n'
                         + hookedInto + hooked)));
@@ -1659,11 +1664,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (final DownloadFailedException | SecurityException | FileNotFoundException e) {
                 final String message = e.getMessage();
                 sendMessageSync(sender, "download_failed",
-                        new PluginMessage.Replacement("error", message == null ? e.getClass().getSimpleName() : message));
+                        new PluginMessage.Replacement("error", Component.text(message == null ? e.getClass().getSimpleName() : message)));
                 log.debug(errSummary, e);
             } catch (final Exception e) {
                 sendMessageSync(sender, "download_failed",
-                        new PluginMessage.Replacement("error", e.getClass().getSimpleName() + ": " + e.getMessage()));
+                        new PluginMessage.Replacement("error", Component.text(e.getClass().getSimpleName() + ": " + e.getMessage())));
                 if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, instance);
                     record.setThrown(e);
@@ -1720,7 +1725,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             tmp = instance.getQuestTypeAPI().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
-                    new PluginMessage.Replacement("error", e.getMessage()));
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
@@ -1745,7 +1750,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Listing keys and values");
                 final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
                 sendMessage(sender, "player_variables",
-                        new PluginMessage.Replacement("objective", variableObjective.getLabel()));
+                        new PluginMessage.Replacement("objective", Component.text(variableObjective.getLabel())));
                 properties.entrySet().stream()
                         .filter(entry -> shouldDisplay.test(entry.getKey()))
                         .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
@@ -1761,8 +1766,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
                 variableObjective.store(profile, args[4], value);
                 sendMessage(sender, "value_set",
-                        new PluginMessage.Replacement("value", value),
-                        new PluginMessage.Replacement("key", args[4]));
+                        new PluginMessage.Replacement("value", Component.text(value)),
+                        new PluginMessage.Replacement("key", Component.text(args[4])));
             }
             case "del", "d" -> {
                 if (args.length < 5) {
@@ -1773,7 +1778,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getLabel());
                 variableObjective.store(profile, args[4], null);
                 sendMessage(sender, "key_remove",
-                        new PluginMessage.Replacement("key", args[4]));
+                        new PluginMessage.Replacement("key", Component.text(args[4])));
             }
             default -> {
                 log.debug("The argument was unknown");
@@ -1846,13 +1851,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void sendMessage(final CommandSender sender, final String messageName, final PluginMessage.Replacement... variables) {
-        if (sender instanceof final Player player) {
-            final OnlineProfile profile = profileProvider.getProfile(player);
-            final String message = pluginMessage.getMessage(profile, messageName, variables);
-            player.sendMessage(message);
-        } else {
-            final String message = pluginMessage.getMessage(messageName, variables);
-            sender.sendMessage(message);
+        final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
+        try {
+            sender.sendMessage(pluginMessage.getMessage(messageName, variables).asComponent(profile));
+        } catch (final QuestException e) {
+            log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
+            sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
         }
     }
 

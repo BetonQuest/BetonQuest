@@ -11,8 +11,9 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -49,6 +50,8 @@ public class ChestPutObjective extends Objective implements Listener {
 
     private final VariableLocation loc;
 
+    private final IngameNotificationSender occupiedSender;
+
     /**
      * Argument to manage the chest access for one or multiple players. False by default which means only one player
      * can access the chest at the same time.
@@ -57,7 +60,8 @@ public class ChestPutObjective extends Objective implements Listener {
 
     public ChestPutObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        final BetonQuestLoggerFactory loggerFactory = BetonQuest.getInstance().getLoggerFactory();
+        final BetonQuest instance = BetonQuest.getInstance();
+        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.log = loggerFactory.create(getClass());
         // extract location
         loc = instruction.get(VariableLocation::new);
@@ -69,6 +73,8 @@ public class ChestPutObjective extends Objective implements Listener {
         } else {
             chestTakeEvent = new ChestTakeEvent(loc, items);
         }
+        occupiedSender = new IngameNotificationSender(log, instance.getPluginMessage(), instruction.getPackage(),
+                instruction.getID().getFullID(), NotificationLevel.INFO, "chest_occupied");
     }
 
     /**
@@ -87,13 +93,7 @@ public class ChestPutObjective extends Objective implements Listener {
             log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
-            final String message = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "chest_occupied");
-            try {
-                Notify.get(null).sendNotify(message, onlineProfile);
-            } catch (final QuestException e) {
-                log.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
-                        + e.getMessage() + "'", e);
-            }
+            occupiedSender.sendNotification(onlineProfile);
             event.setCancelled(true);
         }
     }

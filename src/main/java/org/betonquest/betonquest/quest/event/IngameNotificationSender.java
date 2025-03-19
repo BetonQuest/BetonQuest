@@ -2,10 +2,12 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.notify.Notify;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Notification sender that sends ingame chat notifications to the player if they are online.
@@ -29,6 +31,7 @@ public class IngameNotificationSender implements NotificationSender {
     /**
      * Quest package to send the message from.
      */
+    @Nullable
     private final QuestPackage questPackage;
 
     /**
@@ -52,7 +55,10 @@ public class IngameNotificationSender implements NotificationSender {
      * @param messageName          identifier of the message to send
      * @param additionalCategories categories to send the message to
      */
-    public IngameNotificationSender(final BetonQuestLogger log, final PluginMessage pluginMessage, final QuestPackage questPackage, final String fullId, final NotificationLevel level, final String messageName, final String... additionalCategories) {
+    public IngameNotificationSender(final BetonQuestLogger log, final PluginMessage pluginMessage,
+                                    @Nullable final QuestPackage questPackage, final String fullId,
+                                    final NotificationLevel level, final String messageName,
+                                    final String... additionalCategories) {
         this.log = log;
         this.pluginMessage = pluginMessage;
         this.messageName = messageName;
@@ -67,11 +73,11 @@ public class IngameNotificationSender implements NotificationSender {
     @Override
     public void sendNotification(final Profile profile, final PluginMessage.Replacement... variables) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
-            final String message = pluginMessage.getMessage(profile, messageName, variables);
             try {
+                final Message message = pluginMessage.getMessage(messageName, variables);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
-                log.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' message in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
+                log.warn(questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }
         });
     }

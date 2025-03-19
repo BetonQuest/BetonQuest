@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.vault.event;
 
+import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -80,15 +81,15 @@ public class MoneyEvent implements PlayerEvent {
             economy.depositPlayer(player, difference);
             if (givenSender != null) {
                 givenSender.sendNotification(profile,
-                        new PluginMessage.Replacement("amount", decimalFormat.format(difference)),
-                        new PluginMessage.Replacement("currency", currencyName));
+                        new PluginMessage.Replacement("amount", Component.text(decimalFormat.format(difference))),
+                        new PluginMessage.Replacement("currency", Component.text(currencyName)));
             }
         } else if (difference < 0) {
             economy.withdrawPlayer(player, -difference);
             if (takenSender != null) {
                 takenSender.sendNotification(profile,
-                        new PluginMessage.Replacement("amount", decimalFormat.format(difference)),
-                        new PluginMessage.Replacement("currency", currencyName));
+                        new PluginMessage.Replacement("amount", Component.text(decimalFormat.format(difference))),
+                        new PluginMessage.Replacement("currency", Component.text(currencyName)));
             }
         }
     }
