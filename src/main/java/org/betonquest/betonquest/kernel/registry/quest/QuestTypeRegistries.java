@@ -25,7 +25,7 @@ public record QuestTypeRegistries(
      */
     public static QuestTypeRegistries create(final BetonQuestLoggerFactory loggerFactory) {
         return new QuestTypeRegistries(
-                new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class), loggerFactory),
+                new ConditionTypeRegistry(loggerFactory.create(ConditionTypeRegistry.class)),
                 new EventTypeRegistry(loggerFactory.create(EventTypeRegistry.class), loggerFactory),
                 new ObjectiveTypeRegistry(loggerFactory.create(ObjectiveTypeRegistry.class)),
                 new VariableTypeRegistry(loggerFactory.create(VariableTypeRegistry.class))

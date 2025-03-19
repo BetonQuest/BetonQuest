@@ -4,16 +4,17 @@ import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory to create Adapter from QuestFactories with the {@link P}s and {@link S}' they create.
+ * Factory to create Adapter from QuestFactories with the {@link P}s and {@link L}' they create.
  *
  * @param <P> player quest type
- * @param <S> playerless quest type
- * @param <W> adapter for created types
+ * @param <L> playerless quest type
+ * @param <A> adapter for created types
  */
-public abstract class QuestAdapterFactory<P, S, W> {
+public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
     /**
      * The player type factory to be adapted.
      */
@@ -24,7 +25,7 @@ public abstract class QuestAdapterFactory<P, S, W> {
      * The playerless type factory to be adapted.
      */
     @Nullable
-    private final PlayerlessQuestFactory<S> playerlessFactory;
+    private final PlayerlessQuestFactory<L> playerlessFactory;
 
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories}.
@@ -34,7 +35,7 @@ public abstract class QuestAdapterFactory<P, S, W> {
      * @throws IllegalArgumentException if no factory is given
      */
     public QuestAdapterFactory(@Nullable final PlayerQuestFactory<P> playerFactory,
-                               @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
+                               @Nullable final PlayerlessQuestFactory<L> playerlessFactory) {
         if (playerFactory == null && playerlessFactory == null) {
             throw new IllegalArgumentException("Either the player or playerless factory must be present!");
         }
@@ -49,9 +50,10 @@ public abstract class QuestAdapterFactory<P, S, W> {
      * @return created wrapped types
      * @throws QuestException if the instruction cannot be parsed
      */
-    public W parseInstruction(final Instruction instruction) throws QuestException {
+    @Override
+    public A parseInstruction(final Instruction instruction) throws QuestException {
         final P playerType = playerFactory == null ? null : playerFactory.parsePlayer(instruction.copy());
-        final S playerlessType = playerlessFactory == null ? null : playerlessFactory.parsePlayerless(instruction.copy());
+        final L playerlessType = playerlessFactory == null ? null : playerlessFactory.parsePlayerless(instruction.copy());
         return getAdapter(instruction, playerType, playerlessType);
     }
 
@@ -65,5 +67,5 @@ public abstract class QuestAdapterFactory<P, S, W> {
      * @throws QuestException           when the instruction cannot be parsed
      * @throws IllegalArgumentException if there is no type provided
      */
-    protected abstract W getAdapter(Instruction instruction, @Nullable P playerType, @Nullable S playerlessType) throws QuestException;
+    protected abstract A getAdapter(Instruction instruction, @Nullable P playerType, @Nullable L playerlessType) throws QuestException;
 }

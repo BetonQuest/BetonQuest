@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.check;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,8 +38,8 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         return new NullableConditionAdapter(new CheckCondition(parseConditions(instruction)));
     }
 
-    private List<Condition> parseConditions(final Instruction instruction) throws QuestException {
-        final List<Condition> internalConditions = new ArrayList<>();
+    private List<ConditionAdapter> parseConditions(final Instruction instruction) throws QuestException {
+        final List<ConditionAdapter> internalConditions = new ArrayList<>();
         final List<String> parts = instruction.getValueParts();
         if (parts.isEmpty()) {
             throw new QuestException("Not enough arguments");
@@ -65,12 +65,12 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
      * Constructs a condition with given instruction and returns it.
      */
     @Nullable
-    private Condition createCondition(final String instruction, final QuestPackage questPackage) throws QuestException {
+    private ConditionAdapter createCondition(final String instruction, final QuestPackage questPackage) throws QuestException {
         final String[] parts = instruction.split(" ");
         if (parts.length == 0) {
             throw new QuestException("Not enough arguments in internal condition");
         }
-        final TypeFactory<Condition> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
+        final TypeFactory<ConditionAdapter> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
         if (conditionFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new QuestException("Condition type " + parts[0] + " is not registered, check if it's"

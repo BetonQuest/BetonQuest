@@ -29,7 +29,7 @@ public class QuestAdapter<P, L> {
     protected final L playerless;
 
     /**
-     * Create a new Wrapper with instruction and at least one type.
+     * Create a new Adapter with instruction and at least one type.
      *
      * @param pack       the package where the types are from
      * @param player     the type requiring a profile for execution
