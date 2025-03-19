@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
+import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Does the logic around Conditions.
  */
-public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Condition> {
+public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
     /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
@@ -88,23 +88,19 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean check(@Nullable final Profile profile, final ConditionID conditionID) {
-        final Condition condition = values.get(conditionID);
+        final ConditionAdapter condition = values.get(conditionID);
         if (condition == null) {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
-        if (profile == null && !condition.isStatic()) {
+        if (profile == null && !condition.allowsPlayerless()) {
             log.warn(conditionID.getPackage(),
                     "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
             return false;
         }
-        if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
-            log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
-            return false;
-        }
         final boolean outcome;
         try {
-            outcome = condition.handle(profile);
+            outcome = condition.check(profile);
         } catch (final QuestException e) {
             log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;

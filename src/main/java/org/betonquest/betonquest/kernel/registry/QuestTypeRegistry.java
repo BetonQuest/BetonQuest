@@ -1,10 +1,8 @@
 package org.betonquest.betonquest.kernel.registry;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.quest.legacy.LegacyTypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,51 +10,19 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <P> the player variant of the type
  * @param <S> the playerless variant of the type
- * @param <L> the legacy structure based on the {@link org.betonquest.betonquest.instruction.Instruction Instruction}
- *            as defined in the {@link org.betonquest.betonquest.api API package}
+ * @param <A> the adapter structure to store {@link P} and {@link S} in one object
  */
-public abstract class QuestTypeRegistry<P, S, L> extends FactoryRegistry<TypeFactory<L>> {
-
-    /**
-     * Logger factory to create class specific logger for quest type factories.
-     */
-    protected final BetonQuestLoggerFactory loggerFactory;
+public abstract class QuestTypeRegistry<P, S, A> extends FactoryRegistry<TypeFactory<A>> {
 
     /**
      * Create a new type registry.
      *
-     * @param log           the logger that will be used for logging
-     * @param loggerFactory the logger factory to create a new logger for the legacy quest type factory created
-     * @param typeName      the name of the type to use in the register log message
+     * @param log      the logger that will be used for logging
+     * @param typeName the name of the type to use in the register log message
      */
-    public QuestTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final String typeName) {
+    public QuestTypeRegistry(final BetonQuestLogger log, final String typeName) {
         super(log, typeName);
-        this.loggerFactory = loggerFactory;
     }
-
-    /**
-     * Registers a type with its name and the class used to create instances of the type.
-     *
-     * @param name   the name of the type
-     * @param lClass the class object for the type
-     * @deprecated replaced by {@link #register(String, PlayerQuestFactory, PlayerlessQuestFactory)}
-     */
-    @Deprecated
-    public void register(final String name, final Class<? extends L> lClass) {
-        log.debug("Registering " + name + " [legacy]" + typeName + " type");
-        types.put(name, getFromClassLegacyTypeFactory(loggerFactory.create(lClass), lClass));
-    }
-
-    /**
-     * Create a new legacy type factory which will be used to create new instances of the {@link L}.
-     *
-     * @param log    the log to use in the factory
-     * @param lClass the class object for the type
-     * @return the legacy factory to store
-     * @deprecated the legacy system is subject to removal
-     */
-    @Deprecated
-    protected abstract LegacyTypeFactory<L> getFromClassLegacyTypeFactory(BetonQuestLogger log, Class<? extends L> lClass);
 
     /**
      * Registers a type that does not support playerless execution with its name
@@ -104,12 +70,12 @@ public abstract class QuestTypeRegistry<P, S, L> extends FactoryRegistry<TypeFac
     /**
      * Either the player factory or the playerless factory has to be present.
      *
-     * @see #getLegacyFactoryAdapter(PlayerQuestFactory, PlayerlessQuestFactory)
+     * @see #getFactoryAdapter(PlayerQuestFactory, PlayerlessQuestFactory)
      */
     private void registerInternal(final String name, @Nullable final PlayerQuestFactory<P> playerFactory,
                                   @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
         log.debug("Registering " + name + " " + typeName + " type");
-        types.put(name, getLegacyFactoryAdapter(playerFactory, playerlessFactory));
+        types.put(name, getFactoryAdapter(playerFactory, playerlessFactory));
     }
 
     /**
@@ -121,7 +87,7 @@ public abstract class QuestTypeRegistry<P, S, L> extends FactoryRegistry<TypeFac
      * @param playerlessFactory the playerless factory to create the type
      * @return the legacy factory to store
      */
-    protected abstract LegacyTypeFactory<L> getLegacyFactoryAdapter(
+    protected abstract TypeFactory<A> getFactoryAdapter(
             @Nullable PlayerQuestFactory<P> playerFactory,
             @Nullable PlayerlessQuestFactory<S> playerlessFactory);
 }
