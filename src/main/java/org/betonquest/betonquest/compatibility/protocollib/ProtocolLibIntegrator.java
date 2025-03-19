@@ -6,10 +6,12 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIO;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
+import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -39,7 +41,10 @@ public class ProtocolLibIntegrator implements Integrator {
 
         plugin.getFeatureRegistries().conversationIO().register("menu", MenuConvIO.class);
         plugin.getFeatureRegistries().interceptor().register("packet", PacketInterceptor.class);
-        plugin.getQuestRegistries().event().register("freeze", FreezeEvent.class);
+
+        final Server server = plugin.getServer();
+        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        plugin.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin.getLoggerFactory(), data));
     }
 
     @Override
