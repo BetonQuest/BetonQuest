@@ -49,6 +49,6 @@ public class ObjectivePropertyVariable implements PlayerVariable {
         if (objective.containsPlayer(profile)) {
             return objective.getProperty(propertyName, profile);
         }
-        throw new QuestException("Player doesn't have objective active: " + objectiveID);
+        return "";
     }
 }
