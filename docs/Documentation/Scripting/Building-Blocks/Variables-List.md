@@ -193,7 +193,7 @@ This variable allows you to perform a calculation based on other variables (for 
 and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the
 calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
 `[ ]` braces and also calculate absolute values with `| |`. But be careful, don't use absolute values in the command
-event as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` wont work, but
+event as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` won't work, but
 `|4*(|3-5|)|` does). Additionally, you can use the round operator `~` to round everything left of it to the number of
 decimal digits given on the right. So `4+0.35~1` will produce `4.4` and `4.2~0` will produce `4`.
 
@@ -201,6 +201,8 @@ To use variables in the calculation you have two options: First just write the v
 In cases where this doesn't work, e.g. if the variable contains mathematical operators, you can surround it with curly
 braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a `\` in your variable you need to write
 `\\`, to have a `}` inside your variable you need to write `\}`.
+
+When the calculation fails `0` will be returned and the reason logged.
 
 !!! Warning
     The modulo operator needs to be escaped with a backslash `\` to prevent it from being interpreted as a placeholder delimiter.

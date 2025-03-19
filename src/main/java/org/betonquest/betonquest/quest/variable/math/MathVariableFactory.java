@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.quest.variable.math;
 
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -26,6 +28,11 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     public static final Pattern CALC_REGEX = Pattern.compile("calc:(?<expression>.+)");
 
     /**
+     * Logger Factory to create new class specific logger.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * The variable processor to use.
      */
     private final VariableProcessor variableProcessor;
@@ -33,9 +40,11 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     /**
      * Create a new factory to create Math Variables.
      *
+     * @param loggerFactory     the logger Factory to create new class specific logger
      * @param variableProcessor the variable processor to use
      */
-    public MathVariableFactory(final VariableProcessor variableProcessor) {
+    public MathVariableFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor) {
+        this.loggerFactory = loggerFactory;
         this.variableProcessor = variableProcessor;
     }
 
@@ -57,6 +66,7 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
         }
         final String expression = expressionMatcher.group("expression");
         final Token token = new Tokenizer(variableProcessor, instruction.getPackage()).tokenize(expression);
-        return new NullableVariableAdapter(new MathVariable(token));
+        final BetonQuestLogger log = loggerFactory.create(MathVariable.class);
+        return new NullableVariableAdapter(new MathVariable(log, instruction.getPackage(), token));
     }
 }
