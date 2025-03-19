@@ -1,22 +1,29 @@
 package org.betonquest.betonquest.compatibility.protocollib.hider;
 
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
-@SuppressWarnings("PMD.CommentRequired")
-public class UpdateVisibilityNowEvent extends QuestEvent {
+/**
+ * Event to update the visibility of all Npcs to one player now.
+ */
+public class UpdateVisibilityNowEvent implements OnlineEvent {
+    /**
+     * Npc Hider to update the visibility.
+     */
+    private final NPCHider npcHider;
 
-    public UpdateVisibilityNowEvent(final Instruction instruction) throws QuestException {
-        super(instruction, true);
+    /**
+     * Create a new update visibility event.
+     *
+     * @param npcHider the hider to update the visibility
+     */
+    public UpdateVisibilityNowEvent(final NPCHider npcHider) {
+        this.npcHider = npcHider;
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestException {
-        if (NPCHider.getInstance() != null) {
-            NPCHider.getInstance().applyVisibility(profile.getOnlineProfile().get());
-        }
-        return null;
+    public void execute(final OnlineProfile profile) throws QuestException {
+        npcHider.applyVisibility(profile);
     }
 }

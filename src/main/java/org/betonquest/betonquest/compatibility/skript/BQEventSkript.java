@@ -1,31 +1,36 @@
 package org.betonquest.betonquest.compatibility.skript;
 
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires the custom event for Skript to listen to
+ * Fires the custom event for Skript to listen to.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class BQEventSkript extends QuestEvent {
+public class BQEventSkript implements Event {
 
-    private final String identifier;
+    /**
+     * Identifier for the event.
+     */
+    private final VariableString identifier;
 
-    public BQEventSkript(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        identifier = instruction.next();
+    /**
+     * Create a new Skript Event.
+     *
+     * @param identifier the identifier for the custom event
+     */
+    public BQEventSkript(final VariableString identifier) {
+        this.identifier = identifier;
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        final CustomEventForSkript event = new CustomEventForSkript(profile, identifier);
+    public void execute(final Profile profile) throws QuestException {
+        final CustomEventForSkript event = new CustomEventForSkript(profile, identifier.getValue(profile));
         Bukkit.getServer().getPluginManager().callEvent(event);
-        return null;
     }
 
     /**
@@ -33,26 +38,48 @@ public class BQEventSkript extends QuestEvent {
      */
     public static class CustomEventForSkript extends ProfileEvent {
 
-        private static final HandlerList HANDLERS = new HandlerList();
+        /**
+         * HandlerList of this event.
+         */
+        private static final HandlerList HANDLER_LIST = new HandlerList();
 
+        /**
+         * Event identifier.
+         */
         private final String identifier;
 
+        /**
+         * Create a new Custom Event.
+         *
+         * @param who        the profile for the event
+         * @param identifier the identifier for the event
+         */
         public CustomEventForSkript(final Profile who, final String identifier) {
             super(who);
             this.identifier = identifier;
         }
 
+        /**
+         * Get the HandlerList of this event.
+         *
+         * @return the HandlerList.
+         */
         public static HandlerList getHandlerList() {
-            return HANDLERS;
+            return HANDLER_LIST;
         }
 
+        /**
+         * Get the event identifier.
+         *
+         * @return the identifier
+         */
         public String getID() {
             return identifier;
         }
 
         @Override
         public HandlerList getHandlers() {
-            return HANDLERS;
+            return HANDLER_LIST;
         }
     }
 }

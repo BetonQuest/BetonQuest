@@ -4,7 +4,6 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
@@ -13,16 +12,13 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,49 +27,45 @@ import java.nio.file.Files;
 /**
  * Pastes a schematic at a given location.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class PasteSchematicEvent extends QuestEvent {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
+public class PasteSchematicEvent implements NullableEvent {
 
+    /**
+     * Root location of placement.
+     */
     private final VariableLocation loc;
 
+    /**
+     * Rotation of placement.
+     */
     private final VariableNumber rotation;
 
+    /**
+     * 'No Air' boolean for pasting.
+     */
     private final boolean noAir;
 
+    /**
+     * Schematic file.
+     */
     private final File file;
 
-    public PasteSchematicEvent(final Instruction instruction) throws QuestException {
-        super(instruction, true);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        staticness = true;
-        persistent = true;
-        loc = instruction.get(VariableLocation::new);
-        rotation = instruction.get(instruction.getOptional("rotation", "0"), VariableNumber::new);
-
-        final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-        final File folder = new File(worldEdit.getDataFolder(), "schematics");
-        if (!folder.exists() || !folder.isDirectory()) {
-            throw new QuestException("Schematic folder does not exist");
-        }
-        final String schemName = instruction.next();
-        final File schemFile = new File(folder, schemName);
-        if (schemFile.exists()) {
-            file = schemFile;
-        } else {
-            file = new File(folder, schemName + ".schematic");
-            if (!file.exists()) {
-                throw new QuestException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
-            }
-        }
-        noAir = instruction.hasArgument("noair");
+    /**
+     * Create a new paste schematic event.
+     *
+     * @param loc      the root location to place at
+     * @param rotation the rotation
+     * @param noAir    the 'no air' paste argument
+     * @param file     the schematic file
+     */
+    public PasteSchematicEvent(final VariableLocation loc, final VariableNumber rotation, final boolean noAir, final File file) {
+        this.loc = loc;
+        this.rotation = rotation;
+        this.noAir = noAir;
+        this.file = file;
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestException {
+    public void execute(@Nullable final Profile profile) throws QuestException {
         try {
             final Location location = loc.getValue(profile);
             final double rot = rotation.getValue(profile).doubleValue();
@@ -91,9 +83,8 @@ public class PasteSchematicEvent extends QuestEvent {
                 Operations.complete(operation);
             }
         } catch (final IOException | WorldEditException e) {
-            log.warn(instruction.getPackage(), "Error while pasting a schematic: " + e.getMessage(), e);
+            throw new QuestException("Error while pasting a schematic: " + e.getMessage(), e);
         }
-        return null;
     }
 
     private Clipboard getClipboard() throws IOException {
