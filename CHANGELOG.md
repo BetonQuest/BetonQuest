@@ -42,6 +42,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `quest canceler` used `loc` instead of `location` key for teleportation
 - `journal` language only changed after rejoin when changing player language
 - `journal` entry renaming or deleting via command now affects all specified pointers and not only one
+- `ride` objective did only count vehicles, not all entities
 ### Security
 
 ## [2.2.1] - 2025-01-12

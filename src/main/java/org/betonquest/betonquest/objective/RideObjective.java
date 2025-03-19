@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.jetbrains.annotations.Nullable;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Locale;
 
@@ -45,12 +45,12 @@ public class RideObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onVehicleEnter(final VehicleEnterEvent event) {
-        if (!(event.getEntered() instanceof Player)) {
+    public void onMount(final EntityMountEvent event) {
+        if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getEntered());
-        if (containsPlayer(onlineProfile) && (any || event.getVehicle().getType() == vehicle) && checkConditions(onlineProfile)) {
+        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        if (containsPlayer(onlineProfile) && (any || event.getMount().getType() == vehicle) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }
     }
