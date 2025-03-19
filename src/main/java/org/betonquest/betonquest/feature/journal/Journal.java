@@ -19,7 +19,8 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,7 +49,7 @@ public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Journal.class);
 
     private final PluginMessage pluginMessage;
 
@@ -59,6 +60,8 @@ public class Journal {
     private final List<String> texts = new ArrayList<>();
 
     private final ConfigAccessor config;
+
+    private final IngameNotificationSender inventoryFullBackpackSender;
 
     @Nullable
     private String mainPage;
@@ -76,6 +79,8 @@ public class Journal {
         this.profile = profile;
         this.pointers = list;
         this.config = config;
+        this.inventoryFullBackpackSender = new IngameNotificationSender(LOG, pluginMessage, null,
+                "Journal", NotificationLevel.INFO, "inventory_full_backpack");
     }
 
     /**
@@ -89,14 +94,21 @@ public class Journal {
         if (item == null) {
             return false;
         }
-        return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
-                && ((BookMeta) item.getItemMeta()).getTitle().equals(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title"))
-                && item.getItemMeta().hasLore()
-                && Objects.equals(item.getItemMeta().getLore(), getJournalLore(onlineProfile));
+        try {
+            return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
+                    && ((BookMeta) item.getItemMeta()).title().equals(BetonQuest.getInstance().getPluginMessage().getMessage("journal_title").asComponent(onlineProfile))
+                    && item.getItemMeta().hasLore()
+                    && Objects.equals(item.getItemMeta().getLore(), getJournalLore(onlineProfile));
+        } catch (final QuestException e) {
+            LOG.warn("Failed to check if the journal's title is correct: " + e.getMessage(), e);
+            return false;
+        }
     }
 
-    private static List<String> getJournalLore(final Profile profile) {
-        return Arrays.asList(Utils.format(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore")).split("\n"));
+    private static List<String> getJournalLore(final Profile profile) throws QuestException {
+        return Arrays.asList(Utils.format(LegacyComponentSerializer.legacySection()
+                        .serialize(BetonQuest.getInstance().getPluginMessage().getMessage("journal_lore").asComponent(profile)))
+                .split("\n"));
     }
 
     /**
@@ -195,7 +207,7 @@ public class Journal {
             final JournalEntryID entryID = pointer.pointer();
             final ParsedSectionMessage journalEntry = featureAPI.getJournalEntry(entryID);
             if (journalEntry == null) {
-                log.warn("No journal entry " + entryID + " for " + profile);
+                LOG.warn("No journal entry " + entryID + " for " + profile);
                 continue;
             }
 
@@ -203,7 +215,7 @@ public class Journal {
             try {
                 text = LegacyComponentSerializer.legacySection().serialize(journalEntry.asComponent(profile));
             } catch (final QuestException e) {
-                log.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
+                LOG.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = "error";
             }
@@ -233,7 +245,7 @@ public class Journal {
             try {
                 text = LegacyComponentSerializer.legacySection().serialize(mainPageEntry.entry().asComponent(profile));
             } catch (final QuestException e) {
-                log.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
+                LOG.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = "error";
             }
@@ -284,10 +296,16 @@ public class Journal {
      * Adds journal to player inventory.
      */
     public void addToInv() {
-        final int targetSlot = getJournalSlot();
         generateTexts();
         final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
-        final ItemStack item = getAsItem();
+        final ItemStack item;
+        try {
+            item = getAsItem();
+        } catch (final QuestException e) {
+            LOG.warn("Failed to get journal as item: " + e.getMessage(), e);
+            return;
+        }
+        final int targetSlot = getJournalSlot();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
                 inventory.addItem(item);
@@ -299,12 +317,7 @@ public class Journal {
                 }
             }
         } else {
-            final String message = pluginMessage.getMessage(profile, "inventory_full_backpack");
-            try {
-                Notify.get(null, "inventory_full_backpack,inventory_full,error").sendNotify(message, profile.getOnlineProfile().get());
-            } catch (final QuestException e) {
-                log.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
-            }
+            inventoryFullBackpackSender.sendNotification(profile);
         }
     }
 
@@ -323,12 +336,13 @@ public class Journal {
      * Generates the journal as ItemStack.
      *
      * @return the journal ItemStack
+     * @throws QuestException if the journal cannot be generated
      */
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
-    public ItemStack getAsItem() {
+    public ItemStack getAsItem() throws QuestException {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.setTitle(Utils.format(pluginMessage.getMessage(profile, "journal_title")));
+        meta.title(pluginMessage.getMessage("journal_title").asComponent(profile));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(profile));

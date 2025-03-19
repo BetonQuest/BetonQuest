@@ -40,6 +40,7 @@ import java.util.stream.Stream;
 /**
  * Loads and sends messages from the plugins messages.yml file and messages-internal.yml file.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class PluginMessage {
     /**
      * The scheme for a JAR file.
@@ -219,10 +220,12 @@ public class PluginMessage {
      * @param variables array of variables to replace
      * @return message with replaced variables in the profile's language or the default language or in english
      * @throws IllegalArgumentException if the message could not be found in the configuration
-     * @throws QuestException           if the message could not be parsed into components
      */
-    public Message getMessage(final String message, final Replacement... variables) throws QuestException {
+    public Message getMessage(final String message, final Replacement... variables) {
         final Message component = loadedMessages.get(message);
+        if (component == null) {
+            throw new IllegalArgumentException("Message not found: " + message);
+        }
         return new PluginReplacementMessage(component, variables);
     }
 
@@ -235,14 +238,29 @@ public class PluginMessage {
     public record Replacement(String variable, Component replacement) {
     }
 
+    /**
+     * Represents a message with variables to replace.
+     */
     private static class PluginReplacementMessage implements Message {
+        /**
+         * The message.
+         */
         private final Message message;
 
+        /**
+         * The variables to replace.
+         */
         private final Replacement[] variables;
 
+        /**
+         * Creates a new instance of the PluginReplacementMessage.
+         *
+         * @param message   the message
+         * @param variables the variables
+         */
         public PluginReplacementMessage(final Message message, final Replacement... variables) {
             this.message = message;
-            this.variables = variables;
+            this.variables = variables.clone();
         }
 
         @Override

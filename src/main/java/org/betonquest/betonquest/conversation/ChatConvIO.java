@@ -1,7 +1,10 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
@@ -35,6 +38,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     private final double maxNpcDistance;
 
+    private final BetonQuestLogger log;
+
     protected int optionsCount;
 
     protected Map<Integer, String> options;
@@ -50,6 +55,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(ChatConvIO.class);
         this.options = new HashMap<>();
         this.conv = conv;
         this.onlineProfile = onlineProfile;
@@ -123,7 +129,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
         if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
-            conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "pullback"));
+            try {
+                conv.sendMessage(LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage("pullback").asComponent(onlineProfile)));
+            } catch (final QuestException e) {
+                log.warn("Failed to get pullback message: " + e.getMessage(), e);
+            }
         }
     }
 

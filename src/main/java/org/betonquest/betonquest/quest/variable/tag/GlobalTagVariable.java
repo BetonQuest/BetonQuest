@@ -26,6 +26,6 @@ public class GlobalTagVariable extends AbstractTagVariable<GlobalData> implement
 
     @Override
     public String getValue() throws QuestException {
-        return getValueFor(data.getTags());
+        return getValueFor(null, data.getTags());
     }
 }

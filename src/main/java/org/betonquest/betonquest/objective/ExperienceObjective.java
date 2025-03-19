@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objective;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,6 +9,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,9 +35,18 @@ public class ExperienceObjective extends Objective implements Listener {
      */
     private final VariableNumber amount;
 
+    /**
+     * The notification to send when the player gains experience.
+     */
+    private final IngameNotificationSender levelSender;
+
     public ExperienceObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         this.amount = instruction.get(VariableNumber::new);
+        final BetonQuest instance = BetonQuest.getInstance();
+        levelSender = new IngameNotificationSender(instance.getLoggerFactory().create(ExperienceObjective.class),
+                instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),
+                NotificationLevel.INFO, "level_to_gain");
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) {
@@ -49,8 +61,7 @@ public class ExperienceObjective extends Objective implements Listener {
         } else if (this.notify && notify) {
             final int level = (int) (amount - newAmount);
             if (level % notifyInterval == 0) {
-                sendNotify(onlineProfile, "level_to_gain",
-                        new PluginMessage.Replacement("amount", String.valueOf(level)));
+                levelSender.sendNotification(onlineProfile, new PluginMessage.Replacement("amount", Component.text(level)));
             }
         }
     }
