@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.feature.Backpack.DisplayType;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,10 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class CompassCommand implements CommandExecutor {
+    /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * The {@link PluginMessage} instance.
@@ -28,10 +33,12 @@ public class CompassCommand implements CommandExecutor {
     /**
      * Creates a new executor for the /compass command.
      *
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param profileProvider the profile provider instance
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param profileProvider   the profile provider instance
      */
-    public CompassCommand(final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public CompassCommand(final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+        this.variableProcessor = variableProcessor;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
@@ -40,7 +47,7 @@ public class CompassCommand implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                new Backpack(pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
+                new Backpack(variableProcessor, pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
             }
             return true;
         }

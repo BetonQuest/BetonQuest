@@ -19,7 +19,6 @@ import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.util.Utils;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +59,7 @@ public class ConversationData {
     private final FeatureAPI featureAPI;
 
     /**
-     * Processor to create new variables.
+     * The {@link VariableProcessor} to use.
      */
     private final VariableProcessor variableProcessor;
 
@@ -271,7 +270,7 @@ public class ConversationData {
      * @throws QuestException when the conversation could not be resolved
      */
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
-        final String rawStartingOptions = GlobalVariableResolver.resolve(pack, convSection.getString("first"));
+        final String rawStartingOptions = convSection.getString("first");
         if (rawStartingOptions == null || rawStartingOptions.isEmpty()) {
             throw new QuestException("Starting options are not defined");
         }
@@ -623,7 +622,7 @@ public class ConversationData {
         }
 
         private String[] splitPlural(final ConfigurationSection conv, final String singular) {
-            return GlobalVariableResolver.resolve(pack, conv.getString(singular + "s", conv.getString(singular, ""))).split(",");
+            return conv.getString(singular + "s", conv.getString(singular, "")).split(",");
         }
 
         private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String singularPath, final IDArgument<T> argument) throws QuestException {

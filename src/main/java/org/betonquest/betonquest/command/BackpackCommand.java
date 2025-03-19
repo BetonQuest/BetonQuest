@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,11 @@ public class BackpackCommand implements CommandExecutor {
     private final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -33,12 +39,14 @@ public class BackpackCommand implements CommandExecutor {
     /**
      * Creates a new executor for the /backpack command.
      *
-     * @param log             the logger that will be used for logging
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param profileProvider the profile provider instance
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param profileProvider   the profile provider instance
      */
-    public BackpackCommand(final BetonQuestLogger log, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public BackpackCommand(final BetonQuestLogger log, final VariableProcessor variableProcessor, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
+        this.variableProcessor = variableProcessor;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
@@ -50,7 +58,7 @@ public class BackpackCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
-                new Backpack(pluginMessage, onlineProfile);
+                new Backpack(variableProcessor, pluginMessage, onlineProfile);
             }
             return true;
         }

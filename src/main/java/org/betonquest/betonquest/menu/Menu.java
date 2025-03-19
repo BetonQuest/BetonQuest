@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Class representing a menu.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.ShortClassName", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
 public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -129,6 +129,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param menuID          the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
                 final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
                 final ProfileProvider profileProvider, final MenuID menuID) throws InvalidConfigurationException {
@@ -141,15 +142,19 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.profileProvider = profileProvider;
         this.menuID = menuID;
         //load size
-        this.height = getInt("height");
+        try {
+            this.height = getNumber("height").getValue(null).intValue();
+        } catch (final QuestException e) {
+            throw new Invalid("height", e);
+        }
         if (this.height < 1 || this.height > 6) {
             throw new Invalid("height");
         }
         //load title
         try {
-            this.title = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getString("title"));
+            this.title = getString("title");
         } catch (final QuestException e) {
-            throw new InvalidConfigurationException(e.getMessage(), e);
+            throw new Invalid("title", e);
         }
         this.openConditions = getConditions("open_conditions", pack);
         this.openEvents = getEvents("open_events", pack);
@@ -160,7 +165,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
+                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind").getValue(null)));
                 } catch (final QuestException e) {
                     throw new Invalid("bind", e);
                 }
@@ -171,7 +176,12 @@ public class Menu extends SimpleYMLSection implements Listener {
             @Override
             @SuppressWarnings("PMD.ShortMethodName")
             protected MenuBoundCommand of() throws Missing, Invalid {
-                String command = getString("command").trim();
+                String command;
+                try {
+                    command = getString("command").getValue(null).trim();
+                } catch (final QuestException e) {
+                    throw new Invalid("command", e);
+                }
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
                     throw new Invalid("command");
                 }
@@ -193,7 +203,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private List<Slots> loadSlots(final BetonQuestLoggerFactory loggerFactory) throws InvalidConfigurationException {
         // load items
         final String itemsSection = "items";
@@ -216,12 +226,17 @@ public class Menu extends SimpleYMLSection implements Listener {
         for (final String key : config.getConfigurationSection(slotsSection).getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
-            for (final String item : getStrings("slots." + key)) {
-                if (itemsMap.containsKey(item)) {
-                    itemsList.add(itemsMap.get(item));
-                } else {
-                    throw new Invalid("slots." + key, "item " + item + " not found");
+            try {
+                for (final VariableString item : getStrings("slots." + key)) {
+                    final String itemString = item.getValue(null);
+                    if (itemsMap.containsKey(itemString)) {
+                        itemsList.add(itemsMap.get(itemString));
+                    } else {
+                        throw new Invalid("slots." + key, "item " + itemString + " not found");
+                    }
                 }
+            } catch (final QuestException e) {
+                throw new Invalid(slotsSection, e);
             }
             // create a new slots object and add it to list
             try {
@@ -344,7 +359,12 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the title of the menu
      */
     public String getTitle(final Profile profile) {
-        return ChatColor.translateAlternateColorCodes('&', title.getString(profile));
+        try {
+            return ChatColor.translateAlternateColorCodes('&', title.getValue(profile));
+        } catch (final QuestException e) {
+            log.warn(pack, "Could not get title for menu " + menuID + ": " + e.getMessage());
+            return "";
+        }
     }
 
     /**

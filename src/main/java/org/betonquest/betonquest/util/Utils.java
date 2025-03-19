@@ -19,6 +19,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -295,7 +296,12 @@ public final class Utils {
      * @param lineBreaks if {@code \\n} should be replaced with {@code \n}
      * @return a formatted version of the input string
      */
-    public static String format(final String string, final boolean colorCodes, final boolean lineBreaks) {
+    @Contract("null, _, _ -> null; !null, _, _ -> !null")
+    @Nullable
+    public static String format(@Nullable final String string, final boolean colorCodes, final boolean lineBreaks) {
+        if (string == null) {
+            return null;
+        }
         String input = string;
         if (colorCodes) {
             input = ChatColor.translateAlternateColorCodes('&', input);
@@ -312,7 +318,9 @@ public final class Utils {
      * @param string the input string
      * @return a formatted version of the input string
      */
-    public static String format(final String string) {
+    @Contract("null -> null; !null -> !null")
+    @Nullable
+    public static String format(@Nullable final String string) {
         return format(string, true, true);
     }
 
