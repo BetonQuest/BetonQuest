@@ -86,10 +86,6 @@ To ensure your code runs on the Bukkit main thread (e.g., when interacting with 
 with a `PrimaryServerThread<Type>` (located in the `org.betonquest.betonquest.quest.<type>` package).
 Simply provide the Type to sync and a `PrimaryServerThreadData` (in the `org.betonquest.betonquest.quest` package).
 
-### Legacy
-
-Currently, you can still register the legacy implementation (from `<QuestType>.class`).
-
 ## Registry
 
 Registering implementations is accomplished through various `Registry` objects,
