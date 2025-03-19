@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
@@ -13,9 +14,9 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.kernel.processor.adapter.EventAdapterFactory;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.profile.UUIDProfileProvider;
-import org.betonquest.betonquest.quest.legacy.QuestEventFactoryAdapter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,15 +79,15 @@ class JournalEventFactoryIntegrationTest {
         return test;
     }
 
-    private QuestEventFactoryAdapter createJournalEventFactory(final BetonQuestLogger logger) {
+    private EventAdapterFactory createJournalEventFactory(final BetonQuestLogger logger) {
         final ProfileProvider profileProvider = new UUIDProfileProvider();
         final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
-        return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
+        return new EventAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(QuestTypeAPI.class), journalEventFactory, journalEventFactory);
     }
 
     @Test
     void constructJournalUpdateEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal update");
@@ -95,7 +96,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add quest_started");
@@ -104,7 +105,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEventWithoutPageReference(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal add");
@@ -113,7 +114,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete quest_started");
@@ -122,7 +123,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEventWithoutPageReference(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal delete");
@@ -131,7 +132,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructInvalidJournalEvent(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
-        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory(logger);
+        final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, new NoID(questPackage), "journal invalid");

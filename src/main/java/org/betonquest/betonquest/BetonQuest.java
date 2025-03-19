@@ -443,7 +443,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
-        questTypeRegistries = QuestTypeRegistries.create(loggerFactory);
+        questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         featureRegistries = FeatureRegistries.create(loggerFactory);
         final String defaultParser = config.getString("messageParser", "legacyminimessage");
         messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));

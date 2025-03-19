@@ -1,0 +1,104 @@
+package org.betonquest.betonquest.kernel.processor.adapter;
+
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Wrapper for player and playerless events.
+ */
+public class EventAdapter extends QuestAdapter<Event, StaticEvent> {
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
+     * QuestTypeAPI to check conditions.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * Instruction used to create the types.
+     */
+    private final Instruction instruction;
+
+    /**
+     * Conditions that must be met to execute.
+     */
+    private final ConditionID[] conditions;
+
+    /**
+     * Create a new Wrapper for variables with instruction.
+     *
+     * @param log          the custom logger for this class
+     * @param questTypeAPI the QuestTypeAPI
+     * @param instruction  the instruction used to create the types
+     * @param player       the type requiring a profile for execution
+     * @param playerless   the type working without a profile
+     * @throws IllegalArgumentException if there is no type provided
+     * @throws QuestException           when there was an error parsing conditions
+     */
+    public EventAdapter(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Instruction instruction, @Nullable final Event player, @Nullable final StaticEvent playerless) throws QuestException {
+        super(instruction.getPackage(), player, playerless);
+        this.log = log;
+        this.questTypeAPI = questTypeAPI;
+        this.instruction = instruction;
+        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
+        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
+        final int length = tempConditions1.length + tempConditions2.length;
+        conditions = new ConditionID[length];
+        for (int i = 0; i < length; i++) {
+            final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
+            try {
+                conditions[i] = new ConditionID(instruction.getPackage(), condition);
+            } catch (final QuestException exception) {
+                throw new QuestException("Error while parsing event conditions: " + exception.getMessage(), exception);
+            }
+        }
+    }
+
+    /**
+     * Fires an event for the profile if it meets the event's conditions.
+     *
+     * @param profile the {@link Profile} to execute for
+     * @return whether the event was successfully handled or not
+     * @throws QuestException if the event could not be executed or requires a profile for execution
+     */
+    public boolean fire(@Nullable final Profile profile) throws QuestException {
+        if (player == null || profile == null) {
+            return handleNullProfile();
+        }
+        log.debug(getPackage(), "Event will be fired for "
+                + (profile.getOnlineProfile().isPresent() ? "online" : "offline") + " profile.");
+
+        if (!questTypeAPI.conditions(profile, conditions)) {
+            log.debug(getPackage(), "Event conditions were not met for " + profile);
+            return false;
+        }
+        player.execute(profile);
+        return true;
+    }
+
+    private boolean handleNullProfile() throws QuestException {
+        if (playerless == null) {
+            //throw new QuestException("Non-static event '" + instruction + "' cannot be executed without a profile reference!");
+            log.warn(getPackage(), "Cannot execute non-static event '" + instruction.getID() + "' without a player!");
+            return false;
+        }
+        log.debug(getPackage(), "Static event will be fired without a profile.");
+        if (!questTypeAPI.conditions(null, conditions)) {
+            log.debug(getPackage(), "Event conditions were not met");
+            return false;
+        }
+        playerless.execute();
+        return true;
+    }
+}

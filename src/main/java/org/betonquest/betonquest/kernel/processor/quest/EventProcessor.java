@@ -1,19 +1,19 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
+import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores Events and execute them.
  */
-public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent> {
+public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
     /**
      * Create a new Event Processor to store events and execute them.
      *
@@ -38,7 +38,7 @@ public class EventProcessor extends TypedQuestProcessor<EventID, QuestEvent> {
      * @return true if the event was run even if there was an exception during execution
      */
     public boolean execute(@Nullable final Profile profile, final EventID eventID) {
-        final QuestEvent event = values.get(eventID);
+        final EventAdapter event = values.get(eventID);
         if (event == null) {
             log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return false;
