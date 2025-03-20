@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
@@ -19,6 +20,7 @@ import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.betonquest.betonquest.util.Utils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.Map;
 /**
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
-public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
+public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
      * Creates a new simple Quest Item Factory.
@@ -78,7 +80,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
     }
 
     @Override
-    public QuestItem parseInstruction(final Instruction rawInstruction) throws QuestException {
+    public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
         final Instruction instruction = new Instruction(rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
@@ -89,7 +91,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
         } else {
             arguments = List.of();
         }
-        return parseInstruction(material, arguments);
+        return new ShallowWrapper(parseInstruction(material, arguments));
     }
 
     private void fillHandler(final List<ItemMetaHandler<?>> handlers, final List<String> arguments) throws QuestException {
@@ -135,5 +137,17 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
             return argument.substring(0, argument.indexOf(':'));
         }
         return argument;
+    }
+
+    /**
+     * A wrapper for a quest Item without variables to resolve.
+     *
+     * @param questItem the quest item to wrap.
+     */
+    private record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
+        @Override
+        public QuestItem getItem(@Nullable final Profile profile) {
+            return questItem;
+        }
     }
 }

@@ -68,7 +68,9 @@ public class CraftingObjective extends CountingObjective implements Listener {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).getItem().matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile)
+                        && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
+                        && checkConditions(onlineProfile)) {
                     getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                     completeIfDoneOrNotify(onlineProfile);
                 }
@@ -84,5 +86,23 @@ public class CraftingObjective extends CountingObjective implements Listener {
     @Override
     public void stop() {
         HandlerList.unregisterAll(this);
+    }
+
+    /**
+     * Adds the given ItemStack to the progress of this Objective.
+     *
+     * @param onlineProfile the profile to progress and resolve variables
+     * @param craftedItem   the item stack to compare with
+     * @param amount        the amount to progress
+     */
+    public void handleCustomCraft(final OnlineProfile onlineProfile, final ItemStack craftedItem, final int amount) {
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            qeHandler.handle(() -> {
+                if (item.getValue(onlineProfile).getItem(onlineProfile).matches(craftedItem)) {
+                    getCountingData(onlineProfile).progress(amount);
+                    completeIfDoneOrNotify(onlineProfile);
+                }
+            });
+        }
     }
 }
