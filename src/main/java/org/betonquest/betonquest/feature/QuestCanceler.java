@@ -240,7 +240,7 @@ public class QuestCanceler {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
-                stack = featureAPI.getItem(item).generate(1);
+                stack = featureAPI.getItem(item, profile).generate(1);
             } catch (final QuestException e) {
                 log.warn(pack, "Could not load cancel button: " + e.getMessage(), e);
             }

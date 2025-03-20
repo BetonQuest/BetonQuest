@@ -2,7 +2,9 @@ package org.betonquest.betonquest.quest.objective.crafting;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.bukkit.event.ItemStackCraftedEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
@@ -68,9 +70,29 @@ public class CraftingObjective extends CountingObjective implements Listener {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).getItem().matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile)
+                        && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
+                        && checkConditions(onlineProfile)) {
                     getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                     completeIfDoneOrNotify(onlineProfile);
+                }
+            });
+        }
+    }
+
+    /**
+     * Adds the ItemStack from custom craft sources to the progress of this Objective.
+     *
+     * @param event the custom source craft event
+     */
+    @EventHandler
+    public void handleCustomCraft(final ItemStackCraftedEvent event) {
+        final Profile profile = event.getProfile();
+        if (containsPlayer(profile) && checkConditions(profile)) {
+            qeHandler.handle(() -> {
+                if (item.getValue(profile).getItem(profile).matches(event.getStack())) {
+                    getCountingData(profile).progress(event.getAmount());
+                    completeIfDoneOrNotify(profile);
                 }
             });
         }
