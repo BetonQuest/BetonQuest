@@ -53,7 +53,9 @@ public class SmeltingObjective extends CountingObjective implements Listener {
         if (isSmeltingResultExtraction(event, inventoryType)) {
             final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).matches(event.getCurrentItem()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile)
+                        && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)
+                        && checkConditions(onlineProfile)) {
                     final int taken = calculateTakeAmount(event);
                     getCountingData(onlineProfile).progress(taken);
                     completeIfDoneOrNotify(onlineProfile);

@@ -5,13 +5,14 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 
 /**
  * Stores QuestItems and generates new.
  */
-public class ItemProcessor extends TypedQuestProcessor<ItemID, QuestItem> {
+public class ItemProcessor extends TypedQuestProcessor<ItemID, QuestItemWrapper> {
 
     /**
      * Create a new ItemProcessor to store and get {@link QuestItem}s.

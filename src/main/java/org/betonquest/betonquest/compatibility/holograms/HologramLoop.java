@@ -173,7 +173,7 @@ public abstract class HologramLoop {
             } catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 stackSize = 1;
             }
-            return new ItemLine(BetonQuest.getInstance().getFeatureAPI().getItem(itemID).generate(stackSize));
+            return new ItemLine(BetonQuest.getInstance().getFeatureAPI().getItem(itemID, null).generate(stackSize));
         } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }

@@ -72,10 +72,11 @@ public class MenuItemListener implements Listener {
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         Menu toOpen = null;
+        final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         for (final Menu menu : menuProcessor.getValues().values()) {
             try {
                 final Item boundItem = menu.getBoundItem();
-                if (boundItem != null && boundItem.matches(event.getItem())) {
+                if (boundItem != null && boundItem.matches(event.getItem(), profile)) {
                     toOpen = menu;
                     break;
                 }
@@ -87,7 +88,6 @@ public class MenuItemListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         if (!toOpen.mayOpen(profile)) {
             noPermissionSender.sendNotification(profile);
             return;

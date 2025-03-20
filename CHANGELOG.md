@@ -35,6 +35,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Menu` title allows defining different messages
 - `eval` event and condition to resolve a string and interpret it again as event/condition
 - `constants` to replace the `variables` section including new addressing of them with the new constant variable
+- `mmoitem` item type
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
@@ -75,6 +76,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - start and stop sound in the configuration for conversations were removed in favor of the notification system that now also has the two new build in categories `conversation_start` and `conversation_end`
 - `menu reload` command which did not work
 - `variables` section in favor for `constants`
+- `MMOItems` conditions, events and `mmoitemcraft` objective in favor of the built-in ones
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

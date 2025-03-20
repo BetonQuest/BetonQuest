@@ -69,7 +69,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
             return;
         }
         qeHandler.handle(() -> {
-            if (!item.getValue(onlineProfile).matches(event.getItem())) {
+            if (!item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)) {
                 return;
             }
             if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {

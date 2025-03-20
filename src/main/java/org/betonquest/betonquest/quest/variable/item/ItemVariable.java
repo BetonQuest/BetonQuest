@@ -56,13 +56,9 @@ public class ItemVariable implements NullableVariable {
         this.amount = amount;
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "NullAway"})
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        if (profile == null && (type == ItemDisplayType.AMOUNT || type == ItemDisplayType.LEFT)) {
-            throw new QuestException("ItemVariable with type " + type + " can't be used without a profile.");
-        }
-        final QuestItem questItem = this.item.getValue(profile).getItem();
+        final QuestItem questItem = this.item.getValue(profile).getItem(profile);
         return switch (type) {
             case AMOUNT -> Integer.toString(itemAmount(questItem, profile));
             case LEFT -> Integer.toString(amount - itemAmount(questItem, profile));
@@ -77,7 +73,11 @@ public class ItemVariable implements NullableVariable {
         };
     }
 
-    private int itemAmount(final QuestItem questItem, final Profile profile) {
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private int itemAmount(final QuestItem questItem, @Nullable final Profile profile) throws QuestException {
+        if (profile == null || profile.getOnlineProfile().isEmpty()) {
+            throw new QuestException("ItemVariable with type " + type + " can't be used without an online profile.");
+        }
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Player player = onlineProfile.getPlayer();
         int itemAmount = 0;

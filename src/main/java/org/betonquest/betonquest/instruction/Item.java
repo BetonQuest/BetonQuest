@@ -51,19 +51,20 @@ public class Item {
      * @return the generated bukkit item
      * @throws QuestException when the generation fails
      */
-    public ItemStack generate(final Profile profile) throws QuestException {
-        return featureAPI.getItem(itemID).generate(amount.getValue(profile).intValue(), profile);
+    public ItemStack generate(@Nullable final Profile profile) throws QuestException {
+        return getItem(profile).generate(amount.getValue(profile).intValue(), profile);
     }
 
     /**
      * Checks if the Item matches.
      *
-     * @param item the item to compare
+     * @param item    the item to compare
+     * @param profile the profile to resolve the item
      * @return true if the given item matches the quest item
      * @throws QuestException when there is no QuestItem for the ID
      */
-    public boolean matches(@Nullable final ItemStack item) throws QuestException {
-        return featureAPI.getItem(itemID).matches(item);
+    public boolean matches(@Nullable final ItemStack item, @Nullable final Profile profile) throws QuestException {
+        return getItem(profile).matches(item);
     }
 
     /**
@@ -78,11 +79,12 @@ public class Item {
     /**
      * Gets the Quest Item.
      *
+     * @param profile the profile to resolve the item
      * @return the stored quest item
      * @throws QuestException when there is no QuestItem for the ID
      */
-    public QuestItem getItem() throws QuestException {
-        return featureAPI.getItem(itemID);
+    public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
+        return featureAPI.getItem(itemID, profile);
     }
 
     /**

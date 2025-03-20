@@ -72,6 +72,6 @@ public record Equipment(@Nullable Variable<Item> helmet, @Nullable Variable<Item
 
     @Nullable
     private ItemStack generate(@Nullable final Profile profile, @Nullable final Variable<Item> item) throws QuestException {
-        return item == null ? null : item.getValue(profile).getItem().generate(1);
+        return item == null ? null : item.getValue(profile).getItem(profile).generate(1);
     }
 }

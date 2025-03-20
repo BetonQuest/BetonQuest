@@ -136,11 +136,12 @@ public final class FeatureAPI {
     /**
      * Gets a QuestItem by their id.
      *
-     * @param itemID the id
+     * @param itemID  the id
+     * @param profile the profile to resolve the item
      * @return the stored quest item
      * @throws QuestException if there exists no QuestItem with that id
      */
-    public QuestItem getItem(final ItemID itemID) throws QuestException {
-        return questRegistry.items().get(itemID);
+    public QuestItem getItem(final ItemID itemID, @Nullable final Profile profile) throws QuestException {
+        return questRegistry.items().get(itemID).getItem(profile);
     }
 }

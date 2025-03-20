@@ -2,9 +2,9 @@ package org.betonquest.betonquest.kernel.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItemSerializer;
+import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 import org.betonquest.betonquest.kernel.registry.TypeFactory;
 
@@ -15,9 +15,9 @@ import java.util.Set;
 /**
  * Registry for {@link QuestItem} types.
  */
-public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItem>> {
+public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItemWrapper>> {
     /**
-     * Identifier to get {@link NpcID}s from a specific Npc.
+     * Identifies registered serializer by string.
      */
     private final Map<String, QuestItemSerializer> serializers;
 

@@ -58,7 +58,7 @@ public class CustomDropListener implements Listener {
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');
                 try {
-                    event.getDrops().add(featureAPI.getItem(new ItemID(null, dataContainerValue.substring(0, separatorIndex)))
+                    event.getDrops().add(featureAPI.getItem(new ItemID(null, dataContainerValue.substring(0, separatorIndex)), null)
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
                 } catch (final QuestException e) {
                     log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
