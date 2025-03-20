@@ -1,11 +1,10 @@
 package org.betonquest.betonquest.api.bukkit.event.npc;
 
 import org.betonquest.betonquest.api.bukkit.event.ProfileEvent;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
@@ -20,11 +19,6 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
      * Static HandlerList to register listeners on the event.
      */
     private static final HandlerList HANDLERS = new HandlerList();
-
-    /**
-     * Player instance who interacted.
-     */
-    private final Player player;
 
     /**
      * NpcIDs the Npc match.
@@ -49,21 +43,19 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     /**
      * Create a new Npc Interact Event with a player.
      *
-     * @param profile       the profile of the player who interacted
-     * @param player        the player who interacted
+     * @param profile       the online profile of the player who interacted
      * @param npc           the interacted npc
      * @param npcIdentifier the identifier as used inside the Npc section
      * @param interaction   the type of interaction with the Npc, left or right
      * @param isAsync       if the trigger and so this is async
      * @throws IllegalArgumentException if {@code interaction == Interaction.ANY}
      */
-    public NpcInteractEvent(final Profile profile, final Player player, final Npc<?> npc, final Set<NpcID> npcIdentifier,
+    public NpcInteractEvent(final OnlineProfile profile, final Npc<?> npc, final Set<NpcID> npcIdentifier,
                             final Interaction interaction, final boolean isAsync) {
         super(profile, isAsync);
         if (interaction == Interaction.ANY) {
             throw new IllegalArgumentException("interaction cannot be 'any'");
         }
-        this.player = player;
         this.npcIdentifier = npcIdentifier;
         this.interaction = interaction;
         this.npc = npc;
@@ -81,15 +73,6 @@ public class NpcInteractEvent extends ProfileEvent implements Cancellable {
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;
-    }
-
-    /**
-     * Gets the player instance which interacted.
-     *
-     * @return the player
-     */
-    public Player getPlayer() {
-        return player;
     }
 
     /**

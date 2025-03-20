@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -24,7 +25,6 @@ import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -177,16 +177,20 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * The logic that determines if an NPC interaction starts a conversation.
      *
-     * @param clicker the player who clicked the NPC
+     * @param profile the player profile who clicked the NPC
      * @param npcIds  the ids to check for conversations
      * @param npc     the npc which was interacted with
      * @return if a conversation is started and the interact event should be cancelled
      */
-    public boolean interactLogic(final Player clicker, final Set<NpcID> npcIds, final Npc<?> npc) {
-        if (!clicker.hasPermission("betonquest.conversation")) {
+    public boolean interactLogic(final Profile profile, final Set<NpcID> npcIds, final Npc<?> npc) {
+        if (profile.getOnlineProfile().isEmpty()) {
             return false;
         }
-        final UUID playerUUID = clicker.getUniqueId();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        if (!onlineProfile.getPlayer().hasPermission("betonquest.conversation")) {
+            return false;
+        }
+        final UUID playerUUID = profile.getPlayerUUID();
 
         final Long lastClick = npcInteractionLimiter.get(playerUUID);
         final long currentClick = new Date().getTime();
@@ -195,7 +199,6 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         }
         npcInteractionLimiter.put(playerUUID, currentClick);
 
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(clicker);
         if (CombatTagger.isTagged(onlineProfile)) {
             final String message = pluginMessage.getMessage(onlineProfile, "busy");
             try {
@@ -206,11 +209,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
             return false;
         }
 
-        return startConversation(clicker, npcIds, npc, onlineProfile);
+        return startConversation(onlineProfile, npcIds, npc, onlineProfile);
     }
 
     @SuppressWarnings("NullAway")
-    private boolean startConversation(final Player clicker, final Set<NpcID> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
+    private boolean startConversation(final OnlineProfile clicker, final Set<NpcID> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
         ConversationID conversationID = null;
         NpcID selected = null;
         for (final NpcID npcID : identifier) {
@@ -222,11 +225,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         }
 
         if (conversationID == null) {
-            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + identifier
+            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + identifier
                     + "' but there is no conversation assigned to it.");
             return false;
         } else {
-            log.debug("Player '" + clicker.getName() + "' clicked Npc '" + selected.getFullID()
+            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected.getFullID()
                     + "' and started conversation '" + conversationID.getFullID() + "'.");
             new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, npc.getLocation(), npc);
             return true;
@@ -263,7 +266,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
             if (event.getInteraction() == Interaction.LEFT && !acceptNpcLeftClick) {
                 return;
             }
-            if (interactLogic(event.getPlayer(), event.getNpcIdentifier(), event.getNpc())) {
+            if (interactLogic(event.getProfile(), event.getNpcIdentifier(), event.getNpc())) {
                 event.setCancelled(true);
             }
         }
