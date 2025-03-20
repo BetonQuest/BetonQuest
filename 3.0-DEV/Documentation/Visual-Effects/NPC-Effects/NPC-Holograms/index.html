@@ -1942,6 +1942,35 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../Features/Npcs/" class="md-nav__link">
+        
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2M6 9h12v2H6m8 3H6v-2h8m4-4H6V6h12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Npcs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -1955,10 +1984,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" >
         
           
-          <label class="md-nav__link" for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1975,8 +2004,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_3_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2100,10 +2129,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5" >
         
           
-          <label class="md-nav__link" for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_3_5" id="__nav_3_3_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2120,8 +2149,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_3_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4514,10 +4543,6 @@ with custom model data instead of the BetonQuest syntax.</p>
 <p>Last checked: DecentHolograms version 2.7.9 on 2023-01-03.</p>
 </div>
 </div>
-<div class="admonition info">
-<p class="admonition-title">Required Dependency: NPC Plugin</p>
-<p>This feature can be activated by installing the <a href="https://www.spigotmc.org/resources/13811/">Citizens plugin</a>.</p>
-</div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">🔗</a></h2>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npc_holograms</span><span class="p">:</span><span class="w"> </span><span class="c1">#(7)!</span>
 <span class="w">  </span><span class="nt">myHologram</span><span class="p">:</span><span class="w"> </span><span class="c1">#(8)!</span>
@@ -4528,25 +4553,27 @@ with custom model data instead of the BetonQuest syntax.</p>
 <span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_some_quest,!finished_some_quest</span><span class="w"> </span><span class="c1">#(4)!</span>
 <span class="w">    </span><span class="nt">check_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"> </span><span class="c1">#(5)!</span>
 <span class="w">    </span><span class="nt">npcs</span><span class="p">:</span><span class="w"> </span><span class="c1">#(6)!</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mayor</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Guard</span>
 <span class="w">    </span><span class="nt">max_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"> </span><span class="c1">#(9)!</span>
 </code></pre></div>
 <ol>
 <li>The lines of the hologram.</li>
-<li>A vector that points from the NPC's location to the hologram's location. Can be used to configure an offset. Optional.</li>
-<li>If the hologram follows the NPC. Optional, defaults to <code>false</code>.</li>
+<li>A vector that points from the Npc's location to the hologram's location. Can be used to configure an offset. 
+Optional.</li>
+<li>If the hologram follows the Npc. Optional, defaults to <code>false</code>.</li>
 <li>Conditions that must be true for the hologram to display.</li>
 <li>How often the conditions are checked. Optional. </li>
-<li>A list of NPC IDs that the hologram is attached to. </li>
+<li>A list of NpcIDs that the hologram is attached to. </li>
 <li>The section that all holograms must be placed in.</li>
 <li>The identifier of the hologram. Must be unique.</li>
 <li>Maximum hologram display distance. Optional.</li>
 </ol>
 <p>All other <a href="../../Additional-Effects/Quest-Holograms/">hologram features</a> are also supported.</p>
 <p>If you have moving NPCs (walking around) then you can have the holograms follow them by setting <code>follow: true</code>,
-but this will cause a lot of updates to the holograms and may cause lag if used on a lot of NPCs.
-So only set this to true for holograms with an NPC that actually moves.</p>
+but this will cause a lot of updates to the holograms and may cause lag if used on a lot of Npcs.
+So only set this to true for holograms with a Npc that actually moves.
+Also, not every Npc supports that feature.</p>
 
 
 
