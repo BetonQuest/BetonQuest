@@ -58,7 +58,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         for (final ChatColor color : colors.npc()) {
             string.append(color);
         }
-        string.append("%npc%").append(ChatColor.RESET).append(": ");
+        string.append("%quester%").append(ChatColor.RESET).append(": ");
 
         final StringBuilder textColorBuilder = new StringBuilder();
         for (final ChatColor color : colors.text()) {
@@ -78,7 +78,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_npc_distance"));
+        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_conversation_distance"));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -170,7 +170,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        conv.sendMessage(Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor));
+        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", npcName) + npcText, npcTextColor));
     }
 
     @Override

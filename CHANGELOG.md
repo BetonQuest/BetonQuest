@@ -26,9 +26,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
 - `cancel` event now respects by default canceler conditions
 - `objectives` can now be removed from database via command even when it does not exist
+- `max_npc_distance` config into `max_conversation_distance`
+- `acceptNPCLeftClick` and `npcInteractionLimit` configs into `npcs.accept_left_click` and `npcs.interaction_limit`
+- `%quester%` variable is used instead of `%npc%` for the quester's name in conversations; `%npc` variable is used now for the new Npc system
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
+- `citizens_npcs_by_name` config option, which is now part of the id
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

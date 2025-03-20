@@ -2,14 +2,13 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +68,8 @@ public class EffectLibRunnable extends BukkitRunnable {
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final EffectManager manager, final EffectConfiguration effectConfiguration) {
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider,
+                             final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;
         this.questTypeAPI = questTypeAPI;
@@ -90,10 +91,9 @@ public class EffectLibRunnable extends BukkitRunnable {
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            if (!questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
-                continue;
+            if (questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
+                activePlayerEffects.add(onlineProfile);
             }
-            activePlayerEffects.add(onlineProfile);
         }
         return activePlayerEffects;
     }
@@ -110,16 +110,21 @@ public class EffectLibRunnable extends BukkitRunnable {
     }
 
     private void runNPCEffects(final OnlineProfile profile, final EffectConfiguration effect) {
-        for (final Integer npcId : effect.npcs()) {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+        for (final NpcID npcId : effect.npcs()) {
+            final Npc<?> npc;
+            try {
+                npc = questTypeAPI.getNpc(npcId);
+            } catch (final QuestException exception) {
+                log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
+                continue;
+            }
             final Player player = profile.getPlayer();
 
-            if (npc == null || !npc.getStoredLocation().getWorld().equals(player.getWorld())
-                    || NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(profile, npc)) {
+            if (!npc.getLocation().getWorld().equals(player.getWorld()) || questTypeAPI.getNpcHider().isHidden(npcId, profile)) {
                 continue;
             }
 
-            manager.start(effect.effectClass(), effect.settings(), new DynamicLocation(npc.getEntity()),
+            manager.start(effect.effectClass(), effect.settings(), new NpcDynamicLocation(npc),
                     new DynamicLocation(null, null), (ConfigurationSection) null, player);
         }
     }
@@ -133,6 +138,38 @@ public class EffectLibRunnable extends BukkitRunnable {
             } catch (final QuestException exception) {
                 log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }
+        }
+    }
+
+    /**
+     * A dynamic location that has a Npc instead a Bukkit Entity.
+     */
+    private static class NpcDynamicLocation extends DynamicLocation {
+        /**
+         * The Npc reference.
+         */
+        private final WeakReference<Npc<?>> npcWeakReference;
+
+        /**
+         * Create a new Dynamic Location with a Npc as "Entity".
+         *
+         * @param npc the npc to get the position
+         */
+        public NpcDynamicLocation(final Npc<?> npc) {
+            super(npc.getEyeLocation());
+            this.npcWeakReference = new WeakReference<>(npc);
+        }
+
+        @Override
+        public void update() {
+            final Npc<?> entityReference = npcWeakReference.get();
+            if (entityReference == null) {
+                return;
+            }
+
+            final Location currentLocation = entityReference.getEyeLocation();
+            setDirection(currentLocation.getDirection());
+            updateFrom(currentLocation);
         }
     }
 }

@@ -1,0 +1,302 @@
+package org.betonquest.betonquest.kernel.processor.quest;
+
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
+import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.conversation.CombatTagger;
+import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
+import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
+import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
+/**
+ * Stores Npcs and starts Npc conversations.
+ */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
+public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
+    /**
+     * The section in which the assignments from Npcs to conversations are stored.
+     */
+    private static final String NPC_SECTION = "npc_conversations";
+
+    /**
+     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
+     * Plugin to load config.
+     */
+    private final BetonQuest plugin;
+
+    /**
+     * Stores the last time the player interacted with an NPC.
+     */
+    private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+
+    /**
+     * Stores the conversations assigned to NPCs via the configuration.
+     * The key could either be a Npcs name or its ID, depending on the configuration.
+     */
+    private final Map<NpcID, ConversationID> assignedConversations = new HashMap<>();
+
+    /**
+     * Hider for Npcs.
+     */
+    private final NpcHider npcHider;
+
+    /**
+     * The minimum time between two interactions with an NPC.
+     */
+    private int interactionLimit;
+
+    /**
+     * If left click interactions should also trigger conversation starts.
+     */
+    private boolean acceptNpcLeftClick;
+
+    /**
+     * Create a new Quest Npc Processor to store them.
+     *
+     * @param log             the custom logger for this class
+     * @param npcTypes        the available npc types
+     * @param loggerFactory   the logger factory used to create logger for the started conversations
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param plugin          the plugin to load config
+     * @param profileProvider the profile provider instance
+     */
+    public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
+                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider) {
+        super(log, npcTypes, "Npcs", "npcs");
+        this.loggerFactory = loggerFactory;
+        this.pluginMessage = pluginMessage;
+        this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
+                plugin, profileProvider, Config.getPackages().values());
+    }
+
+    @Override
+    public void load(final QuestPackage pack) {
+        super.load(pack);
+        loadBindings(pack);
+    }
+
+    /**
+     * Loads the npc references to start the conversation on interaction with them.
+     *
+     * @param pack the quest package to load the references
+     */
+    private void loadBindings(final QuestPackage pack) {
+        final ConfigurationSection section = pack.getConfig().getConfigurationSection(NPC_SECTION);
+        if (section == null) {
+            return;
+        }
+        final String packName = pack.getQuestPath();
+        for (final String key : section.getKeys(false)) {
+            if (key.contains(" ")) {
+                log.warn(pack, NPC_SECTION + " name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+            } else if (!section.isString(key)) {
+                log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
+            } else {
+                try {
+                    final NpcID npcID = new NpcID(pack, key);
+                    final ConversationID conversationID = new ConversationID(pack, Objects.requireNonNull(section.getString(key)));
+                    assignedConversations.put(npcID, conversationID);
+                } catch (final QuestException exception) {
+                    log.warn(pack, "Error while loading " + NPC_SECTION + " '" + packName + "." + key + "': " + exception.getMessage(), exception);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        ((NpcTypeRegistry) types).resetIdentifier();
+        interactionLimit = plugin.getPluginConfig().getInt("npcs.interaction_limit", 500);
+        acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npcs.accept_left_click");
+        npcHider.reload(Config.getPackages().values());
+    }
+
+    @Override
+    protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+        final NpcID npcID = new NpcID(pack, identifier);
+        ((NpcTypeRegistry) types).addIdentifier(npcID);
+        return npcID;
+    }
+
+    /**
+     * Gets a Npc by its id.
+     *
+     * @param npcID the id of the Npc
+     * @return the wrapper to get the actual
+     * @throws QuestException when there is no Npc with that id
+     */
+    public Npc<?> getNpc(final NpcID npcID) throws QuestException {
+        final NpcWrapper<?> npcWrapper = values.get(npcID);
+        if (npcWrapper == null) {
+            throw new QuestException("Tried to get npc '" + npcID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
+        }
+        return npcWrapper.getNpc();
+    }
+
+    /**
+     * The logic that determines if an NPC interaction starts a conversation.
+     *
+     * @param profile the player profile who clicked the NPC
+     * @param npcIds  the ids to check for conversations
+     * @param npc     the npc which was interacted with
+     * @return if a conversation is started and the interact event should be cancelled
+     */
+    public boolean interactLogic(final Profile profile, final Set<NpcID> npcIds, final Npc<?> npc) {
+        if (profile.getOnlineProfile().isEmpty()) {
+            return false;
+        }
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+        if (!onlineProfile.getPlayer().hasPermission("betonquest.conversation")) {
+            return false;
+        }
+        final UUID playerUUID = profile.getPlayerUUID();
+
+        final Long lastClick = npcInteractionLimiter.get(playerUUID);
+        final long currentClick = new Date().getTime();
+        if (lastClick != null && lastClick + interactionLimit >= currentClick) {
+            return false;
+        }
+        npcInteractionLimiter.put(playerUUID, currentClick);
+
+        if (CombatTagger.isTagged(onlineProfile)) {
+            final String message = pluginMessage.getMessage(onlineProfile, "busy");
+            try {
+                Notify.get(null, "busy,error").sendNotify(message, onlineProfile);
+            } catch (final QuestException e) {
+                log.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
+            }
+            return false;
+        }
+
+        return startConversation(onlineProfile, npcIds, npc, onlineProfile);
+    }
+
+    @SuppressWarnings("NullAway")
+    private boolean startConversation(final OnlineProfile clicker, final Set<NpcID> identifier, final Npc<?> npc, final OnlineProfile onlineProfile) {
+        ConversationID conversationID = null;
+        NpcID selected = null;
+        for (final NpcID npcID : identifier) {
+            conversationID = assignedConversations.get(npcID);
+            if (conversationID != null) {
+                selected = npcID;
+                break;
+            }
+        }
+
+        if (conversationID == null) {
+            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + identifier
+                    + "' but there is no conversation assigned to it.");
+            return false;
+        } else {
+            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected.getFullID()
+                    + "' and started conversation '" + conversationID.getFullID() + "'.");
+            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, npc.getLocation(), npc);
+            return true;
+        }
+    }
+
+    /**
+     * Gets the NpcHider.
+     *
+     * @return the active npc hider
+     */
+    public NpcHider getNpcHider() {
+        return npcHider;
+    }
+
+    /**
+     * Listener for Conversation starting and Hiding with {@link Npc}s.
+     */
+    private class NpcListener implements Listener {
+        /**
+         * The default Constructor.
+         */
+        public NpcListener() {
+
+        }
+
+        /**
+         * Attempts to start conversations on Npc interactions.
+         *
+         * @param event the interact event
+         */
+        @EventHandler(ignoreCancelled = true)
+        public void onInteract(final NpcInteractEvent event) {
+            if (event.getInteraction() == Interaction.LEFT && !acceptNpcLeftClick) {
+                return;
+            }
+            if (interactLogic(event.getProfile(), event.getNpcIdentifier(), event.getNpc())) {
+                event.setCancelled(true);
+            }
+        }
+
+        /**
+         * Applies the visibility on Player join.
+         *
+         * @param event the event to listen
+         */
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        public void onPlayerJoin(final PlayerJoinEvent event) {
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () ->
+                    npcHider.applyVisibility(plugin.getProfileProvider().getProfile(event.getPlayer())));
+        }
+
+        /**
+         * Applies the visibility on Extern change Player join.
+         *
+         * @param event the external change event to listen
+         */
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        public void onExternalChange(final NpcVisibilityUpdateEvent event) {
+            if (event.getNpc() == null) {
+                npcHider.applyVisibility();
+                return;
+            }
+            final Set<NpcID> identifier = ((NpcTypeRegistry) types).getIdentifier(event.getNpc(), null);
+            for (final NpcID npcID : identifier) {
+                npcHider.applyVisibility(npcID);
+            }
+        }
+    }
+}

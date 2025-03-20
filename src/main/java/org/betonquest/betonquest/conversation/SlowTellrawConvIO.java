@@ -66,7 +66,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
         // NPC Text
         final String[] lines = LocalChatPaginator.wordWrap(
-                Utils.replaceReset(textFormat.replace("%npc%", npcName) + npcText, npcTextColor), 50);
+                Utils.replaceReset(textFormat.replace("%quester%", npcName) + npcText, npcTextColor), 50);
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {

@@ -45,14 +45,14 @@ conversations: #(1)!
     
 
 1. All conversation must be defined in a `conversations` section.
-2. `mayorHans` is the name of the conversation, which is used to reference the conversation, e.g. when [linking it to an NPC](#binding-conversations-to-npcs). 
+2. `mayorHans` is the name of the conversation, which is used to reference the conversation. 
 3. `Hans` is the visual name of NPC that is displayed during the conversation.
 4. `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You 
     define these options in `npc_options` branch.
 5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
     he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
     joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with `max_npc_distance` option in _config.yml_.
+    the distance at which the conversation is automatically stopped / player is teleported back with `max_conversation_distance` option in _config.yml_.
 6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
     the player if he tries to run). You can leave this option out if you don't need any final events.
 7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in _config.yml_.
@@ -79,16 +79,18 @@ understand in the future. Don't worry though, if you make some mistake in config
 
 ## Binding Conversations to NPCs
 
-Conversations can be assigned to NPCs created with Citizens. This is done in the `npcs` section:
+Conversations can be assigned to [Npcs](Npcs.md). This is done in the `npc_conversations` section:
 
 ```YAML title="Example"
-npcs:
-  0: innkeeper
-  4: mayorHans
+npc_conversations:
+  Hans: mayorHans #(1)!
 ```
 
-The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
-The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
+1. The key is the NpcID, the value a ConversationID.
+
+A Npc will only react to right clicks by default. 
+This can be changed by setting `npcs.accept_left_click` in the config.yml to `true`.
+
 You can assign the same conversation to multiple NPCs.
 It is not possible to assign multiple conversations to one npc. For this
 purpose, have a look at 
@@ -239,7 +241,7 @@ You can use variables in the conversations. They will be resolved and displayed 
 Check the [variables list](../Scripting/Building-Blocks/Variables-List.md) for more information about which variables exist.
 
 !!! note
-    If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %npc% in `message` event), the variable will be replaced with empty string ("").
+    If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %quester% in `message` event), the variable will be replaced with empty string ("").
 
 ## Translations
 

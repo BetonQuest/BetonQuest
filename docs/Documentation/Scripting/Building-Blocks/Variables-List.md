@@ -216,13 +216,30 @@ When the calculation fails `0` will be returned and the reason logged.
 %math.calc:64\%32%
 ```
 
-### NPC Name Variable
+### Npc Variable
 
-When the player is in a conversation, this variable will contain the questers name in the player's quest language.
-If the player is not in a conversation, the variable is empty.
+**static**
 
+This variable resolves information about a Npc. 
+Specifying an argument determines the return: the Npc name, or full name (with formatting).
+
+Arguments:
+* name - Return citizen name
+* full_name - Full Citizen name
+
+```YAML title="Example"
+%npc.bob.name%        # Bob
+%npc.bob.full_name%   # &eBob
 ```
-%npc%
+
+#### Npc Location Variable: `%npc.<id>.location.<mode>.<precision>%`
+
+This variable resolves to all Npc location. For details see the [location variable](#location-variable).
+
+```YAML title="Example"
+%npc.mayor.location%           # -> 325;121;814;npcWorldName;12;6
+%npc.mayor.location.xyz%       # -> 325 121 814 
+%npc.mayor.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
 ```
 
 ### Player Name Variable
@@ -235,6 +252,15 @@ The variable `%player%` is the same as `%player.name%` and will display the name
 %player.name%
 %player.display%
 %player.uuid%
+```
+
+### Quester Name (Conversation)
+
+When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
+If the player is not in a conversation, the variable is empty.
+
+```
+%quester%
 ```
 
 ### Random Number Variable

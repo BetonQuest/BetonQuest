@@ -4,20 +4,15 @@ icon: fontawesome/solid/person-through-window
 
 # NPC Hiding
 
-## Requirements
-@snippet:integrations:npcs@
-@snippet:integrations:protocollib@
-
-
 ## Usage
-Hide Citizens NPCs if specified conditions are met!
+Hide Npcs if specified conditions are met!
 You can do that by adding a `hide_npcs` section in your package. 
-It allows you to assign conditions to specific NPC IDs like so:
+It allows you to assign conditions to specific NpcIDs like so:
 
 ```YAML
 hide_npcs:
-  41: killedAlready,questStarted
-  127: '!questStarted'
+  Farmer: killedAlready,questStarted
+  Guard: '!questStarted'
 ```
 
 The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).

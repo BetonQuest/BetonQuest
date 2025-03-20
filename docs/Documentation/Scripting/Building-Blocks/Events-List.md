@@ -485,6 +485,22 @@ Note that when used in static context (by schedules) replacing player dependent 
     debug: "log level:DEBUG daily quests have been reset"
 ```
 
+## NPC Teleport: `npcteleport`
+
+**persistent**, **static**
+
+This event will teleport the Npc to the given location.
+
+| Parameter  | Syntax                                                                       | Default Value          | Explanation                                      |
+|------------|------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
+| _Npc_      | Npc                                                                          | :octicons-x-circle-16: | The ID of the Npc                                |
+| _Location_ | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the Npc will be teleported |
+| _Spawn_    | Keyword (`spawn`)                                                            | Disabled               | If the NPC should be spawned if not in the world |
+
+```YAML title="Example"
+teleportToSpawn: npcteleport mayorHans 100;200;300;world
+```
+
 ## Objective: `objective`
 
 **persistent**, **static**

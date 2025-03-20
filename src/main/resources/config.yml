@@ -15,10 +15,10 @@ update:
   automatic: true
   ingameNotification: true
 default_journal_slot: -1
-max_npc_distance: 5.3
-citizens_npcs_by_name: false
-acceptNPCLeftClick: false
-npcInteractionLimit: 500
+max_conversation_distance: 5.3
+npcs:
+  accept_left_click: false
+  interaction_limit: 500
 default_conversation_IO: menu,tellraw
 conversation_colors:
   npc: dark_red

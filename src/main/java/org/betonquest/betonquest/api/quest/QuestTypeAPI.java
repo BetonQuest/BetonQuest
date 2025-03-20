@@ -2,8 +2,11 @@ package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -132,5 +135,25 @@ public final class QuestTypeAPI {
     @Nullable
     public Objective getObjective(final ObjectiveID objectiveID) {
         return questRegistry.objectives().getObjective(objectiveID);
+    }
+
+    /**
+     * Gets a Npc by its id.
+     *
+     * @param npcID the id of the Npc
+     * @return the wrapper to get the actual
+     * @throws QuestException when there is no Npc with that id
+     */
+    public Npc<?> getNpc(final NpcID npcID) throws QuestException {
+        return questRegistry.npcs().getNpc(npcID);
+    }
+
+    /**
+     * Gets the NpcHider.
+     *
+     * @return the active npc hider
+     */
+    public NpcHider getNpcHider() {
+        return questRegistry.npcs().getNpcHider();
     }
 }

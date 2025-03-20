@@ -69,25 +69,19 @@ The `update` section controls the Auto-Updater. It has the following settings:
 BetonQuest will try to move items out of the way if the slot is occupied. If the inventory is full the journal will not
 be added. You can disable this behaviour by setting the option to `-1`. BetonQuest will then just use any free slot.
 
-### Citizens identifier
+### Npc left click
 
-`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in package.yml by their name instead of
-their id. This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same
-name by accident will trigger the same quest.
-
-### Citizens left click
-
-`acceptNPCLeftClick` activates that a conversation with an NPC can also be started by left clicking the NPC and not only
+`npcs.accept_left_click` activates that a conversation with an NPC can also be started by left clicking the NPC and not only
 by right clicking the NPC.
 
-### Citizens interact limit
+### Npc interact limit
 
-`npcInteractionLimit` prevents NPC / BetonQuest conversation click spamming. The time's unit is milliseconds. Default
+`npcs.interaction_limit` prevents NPC / BetonQuest conversation click spamming. The time's unit is milliseconds. Default
 value: `500`
 
 ### Conversation End Distance
 
-`max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using
+`max_conversation_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using
 chat-based conversation interface).
 
 ### Default Conversation Style
