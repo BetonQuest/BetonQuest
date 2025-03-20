@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -190,7 +190,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
      * @param event The event.
      */
     @EventHandler
-    public void onExternalUpdate(final NpcExternalVisibilityChangeEvent event) {
+    public void onExternalUpdate(final NpcVisibilityUpdateEvent event) {
         final Npc<?> npc = event.getNpc();
         if (npc == null) {
             npcHolograms.forEach(this::updateHologram);

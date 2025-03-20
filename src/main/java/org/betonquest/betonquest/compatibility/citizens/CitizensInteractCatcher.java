@@ -8,7 +8,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.NPCTeleportEvent;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
@@ -73,7 +73,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      */
     @EventHandler
     public void onCitizensReload(final CitizensReloadEvent event) {
-        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChangeEvent(null));
+        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(null));
     }
 
     /**
@@ -107,6 +107,6 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     }
 
     private void updateHologram(final NPC npc) {
-        Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChangeEvent(new CitizensAdapter(npc)));
+        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
     }
 }

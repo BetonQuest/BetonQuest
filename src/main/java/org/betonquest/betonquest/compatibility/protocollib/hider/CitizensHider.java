@@ -4,7 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcExternalVisibilityChangeEvent;
+import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.citizens.CitizensAdapter;
 import org.bukkit.Bukkit;
@@ -125,7 +125,7 @@ public final class CitizensHider implements Listener {
     public void onNPCSpawn(final NPCSpawnEvent event) {
         final NPC npc = event.getNPC();
         if (npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
-            Bukkit.getPluginManager().callEvent(new NpcExternalVisibilityChangeEvent(new CitizensAdapter(npc)));
+            Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
         }
     }
 }
