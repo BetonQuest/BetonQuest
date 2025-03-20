@@ -67,6 +67,11 @@ public interface Npc<T> {
     void spawn(Location location);
 
     /**
+     * Removes the Npc from the world.
+     */
+    void despawn();
+
+    /**
      * Shows the Npc to the player.
      *
      * @param onlineProfile the online profile of the player

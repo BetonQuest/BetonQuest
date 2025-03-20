@@ -79,6 +79,13 @@ public class CitizensAdapter implements Npc<NPC> {
     }
 
     @Override
+    public void despawn() {
+        if (npc.isSpawned()) {
+            npc.despawn();
+        }
+    }
+
+    @Override
     public void show(final OnlineProfile onlineProfile) {
         final CitizensHider npcHider = CitizensHider.getInstance();
         if (npcHider != null) {
