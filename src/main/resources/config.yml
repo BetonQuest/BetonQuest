@@ -15,7 +15,7 @@ update:
   automatic: true
   ingameNotification: true
 default_journal_slot: -1
-max_npc_distance: 5.3
+max_conversation_distance: 5.3
 npcs:
   accept_left_click: false
   interaction_limit: 500

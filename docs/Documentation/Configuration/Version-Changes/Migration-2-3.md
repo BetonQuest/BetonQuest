@@ -15,7 +15,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :exclamation:
 - [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :exclamation:
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
-- [3.0.0-DEV-X - Npc Rework](#300-dev-x-npc-rework) :exclamation:
+- [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :exclamation:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -104,7 +104,7 @@ so also here you need to move your custom translations.
     - `journal_main_page.*.text`
     - `menus.*.items.*.text`
 
-### 3.0.0-DEV-X - Npc Rework :exclamation:
+### 3.0.0-DEV-114 - Npc Rework :exclamation:
 
 To support more Npc plugins than just Citizens the system got a rework.
 

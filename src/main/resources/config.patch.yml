@@ -1,4 +1,16 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.3:
+  - type: REMOVE
+    key: citizens_npcs_by_name
+  - type: KEY_RENAME
+    oldKey: max_npc_distance
+    newKey: max_conversation_distance
+  - type: KEY_RENAME
+    oldKey: acceptNPCLeftClick
+    newKey: npc.accept_left_click
+  - type: KEY_RENAME
+    oldKey: npcInteractionLimit
+    newKey: npc.interaction_limit
 3.0.0.2:
   - type: VALUE_RENAME
     key: language

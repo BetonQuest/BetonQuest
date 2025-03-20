@@ -26,6 +26,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menuConfig.yml file was deleted, translations are in the lang folder and the config is part of config.yml 
 - `cancel` event now respects by default canceler conditions
 - `objectives` can now be removed from database via command even when it does not exist
+- `max_npc_distance` config into `max_conversation_distance`
 - `acceptNPCLeftClick` and `npcInteractionLimit` configs into `npcs.accept_left_click` and `npcs.interaction_limit`
 ### Deprecated
 ### Removed
