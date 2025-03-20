@@ -167,6 +167,7 @@ import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
 import org.betonquest.betonquest.quest.variable.location.LocationVariableFactory;
 import org.betonquest.betonquest.quest.variable.math.MathVariableFactory;
 import org.betonquest.betonquest.quest.variable.name.PlayerNameVariableFactory;
+import org.betonquest.betonquest.quest.variable.name.QuesterVariableFactory;
 import org.betonquest.betonquest.quest.variable.npc.NpcVariableFactory;
 import org.betonquest.betonquest.quest.variable.objective.ObjectivePropertyVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
@@ -451,6 +452,7 @@ public class CoreQuestTypes {
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
+        variables.register("quester", new QuesterVariableFactory());
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
         variables.register("tag", new TagVariableFactory(dataStorage, pluginMessage));
         variables.register("version", new VersionVariableFactory(betonQuest));

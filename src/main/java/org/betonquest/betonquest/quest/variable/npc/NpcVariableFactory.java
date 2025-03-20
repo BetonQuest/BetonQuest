@@ -11,10 +11,10 @@ import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAda
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
-import org.betonquest.betonquest.quest.variable.name.NpcNameVariable;
+import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
 
 /**
- * Factory to create {@link NpcVariable}s and {@link NpcNameVariable}s from {@link Instruction}s.
+ * Factory to create {@link NpcVariable}s and {@link QuesterVariable}s from {@link Instruction}s.
  * <p>
  * Format:
  * {@code %<variableName>.<id>.<argument>.<mode>.<precision>%}
@@ -55,12 +55,12 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
 
     private NullableVariable parseInstruction(final Instruction instruction) throws QuestException {
         if (!instruction.hasNext() || instruction.size() == 2 && "conversation".equals(instruction.getPart(1))) {
-            final NpcNameVariable npcNameVariable = new NpcNameVariable();
+            final QuesterVariable questerVariable = new QuesterVariable();
             return profile -> {
                 if (profile == null) {
                     throw new QuestException("Profile can't be null for conversation!");
                 }
-                return npcNameVariable.getValue(profile);
+                return questerVariable.getValue(profile);
             };
         }
         final NpcID npcID = instruction.getID(NpcID::new);

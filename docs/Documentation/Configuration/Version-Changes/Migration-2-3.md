@@ -113,6 +113,9 @@ Starting conversations with Npc interaction is moved inside the `npc_conversatio
 
 Also, the `teleportnpc` event got renamed to `npcteleport`.
 
+In addition, the `npc` variable to get the quester name of the current conversation got changed to `quester`.
+That change is automated.
+
 You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
 but changing the "name" makes the difference more clear.
 

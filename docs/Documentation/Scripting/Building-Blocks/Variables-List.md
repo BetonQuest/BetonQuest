@@ -218,18 +218,6 @@ When the calculation fails `0` will be returned and the reason logged.
 
 ### Npc Variable
 
-#### Conversation Name
-
-When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
-If the player is not in a conversation, the variable is empty.
-
-```
-%npc%
-%npc.conversation%
-```
-
-#### Npc Values: `%npc.<id>.<argument>%`
-
 **static**
 
 This variable resolves information about a Npc. 
@@ -264,6 +252,15 @@ The variable `%player%` is the same as `%player.name%` and will display the name
 %player.name%
 %player.display%
 %player.uuid%
+```
+
+### Quester Name (Conversation)
+
+When the player is in a conversation, this variable will contain the quester's name in the player's quest language.
+If the player is not in a conversation, the variable is empty.
+
+```
+%quester%
 ```
 
 ### Random Number Variable

@@ -15,6 +15,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Ride
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMessagesYml;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -61,6 +62,7 @@ public class Migrator {
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
         migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
         migrations.add(new LanguageRename(provider));
+        migrations.add(new NpcRename(provider));
     }
 
     /**
