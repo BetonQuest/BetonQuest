@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.condition.entity;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -45,7 +46,7 @@ public class EntityCondition implements NullableCondition {
      * The marked entity to check for.
      */
     @Nullable
-    private final VariableString marked;
+    private final VariableIdentifier marked;
 
     /**
      * Create a new entity condition.
@@ -57,7 +58,7 @@ public class EntityCondition implements NullableCondition {
      * @param marked        the marked entity to check for
      */
     public EntityCondition(final Map<EntityType, VariableNumber> entityAmounts, final VariableLocation loc,
-                           final VariableNumber range, @Nullable final VariableString name, @Nullable final VariableString marked) {
+                           final VariableNumber range, @Nullable final VariableString name, @Nullable final VariableIdentifier marked) {
         this.entityAmounts = entityAmounts;
         this.loc = loc;
         this.range = range;
