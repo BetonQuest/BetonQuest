@@ -39,7 +39,15 @@ public abstract class FromClassFactoryRegistry<T, F> extends FactoryRegistry<F> 
             return constructor.newInstance(args);
         } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                        | InvocationTargetException | SecurityException exception) {
-            throw new QuestException("Couldn't load " + typeName + " '" + constructor.getName() + "': " + exception.getMessage(), exception);
+            String message = exception.getMessage();
+            Throwable cause = exception.getCause();
+            while (cause != null && message == null) {
+                cause = cause.getCause();
+                if (cause != null) {
+                    message = cause.getMessage();
+                }
+            }
+            throw new QuestException("Couldn't load " + typeName + " '" + constructor.getName() + "': " + message, exception);
         }
     }
 
