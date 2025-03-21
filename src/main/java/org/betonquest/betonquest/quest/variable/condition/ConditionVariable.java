@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -46,10 +48,10 @@ public class ConditionVariable implements PlayerVariable {
     }
 
     @Override
-    public String getValue(final Profile profile) {
+    public String getValue(final Profile profile) throws QuestException {
         if (questTypeAPI.condition(profile, conditionId)) {
-            return papiMode ? pluginMessage.getMessage(profile, "condition_variable_met") : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_met").asComponent(profile)) : "true";
         }
-        return papiMode ? pluginMessage.getMessage(profile, "condition_variable_not_met") : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_not_met").asComponent(profile)) : "false";
     }
 }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.message;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A Message is the abstract representation of a specific text that a player can receive.
@@ -16,5 +17,5 @@ public interface Message {
      * @return the message as a component
      * @throws QuestException if an error occurs while getting the message
      */
-    Component asComponent(Profile profile) throws QuestException;
+    Component asComponent(@Nullable Profile profile) throws QuestException;
 }

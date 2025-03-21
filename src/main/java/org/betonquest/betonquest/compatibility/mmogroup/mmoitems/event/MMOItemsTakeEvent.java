@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event;
 
 import net.Indyuce.mmoitems.api.Type;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -75,8 +76,8 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();
         notificationSender.sendNotification(profile,
-                new PluginMessage.Replacement("item", itemName),
-                new PluginMessage.Replacement("amount", String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()))));
+                new PluginMessage.Replacement("item", Component.text(itemName)),
+                new PluginMessage.Replacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()))));
     }
 
     /**

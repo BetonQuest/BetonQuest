@@ -6,6 +6,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a world that can be referenced by a variable.
@@ -20,7 +21,7 @@ public class VariableWorld extends Variable<World> {
      * @param input             the string that may contain variables
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableWorld(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
+    public VariableWorld(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input) throws QuestException {
         super(variableProcessor, pack, input, VariableWorld::parse);
     }
 

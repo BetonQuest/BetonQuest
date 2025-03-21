@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -57,9 +58,10 @@ public class MMOItemsGiveEvent implements OnlineEvent {
 
         int amount = amountVar.getValue(profile).intValue();
 
+        final Component displayName = mmoItem.getItemMeta().displayName();
         notify.sendNotification(profile,
-                new PluginMessage.Replacement("item", mmoItem.getItemMeta().getDisplayName()),
-                new PluginMessage.Replacement("amount", String.valueOf(amount)));
+                new PluginMessage.Replacement("item", displayName == null ? Component.text(itemID) : displayName),
+                new PluginMessage.Replacement("amount", Component.text(amount)));
 
         final Player player = profile.getPlayer();
         while (amount > 0) {

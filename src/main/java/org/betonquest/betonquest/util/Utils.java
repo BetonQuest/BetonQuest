@@ -165,8 +165,13 @@ public final class Utils {
         if (item == null) {
             return false;
         }
-        return item.hasItemMeta() && item.getItemMeta().hasLore()
-                && item.getItemMeta().getLore().contains(BetonQuest.getInstance().getPluginMessage().getMessage("quest_item"));
+        try {
+            return item.hasItemMeta() && item.getItemMeta().hasLore()
+                    && item.getItemMeta().lore().contains(BetonQuest.getInstance().getPluginMessage().getMessage("quest_item").asComponent(null));
+        } catch (final QuestException e) {
+            LOG.warn("Failed to get quest item message: " + e.getMessage(), e);
+            return false;
+        }
     }
 
     /**

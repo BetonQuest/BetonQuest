@@ -10,7 +10,6 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -47,18 +46,6 @@ public class ParsedMessage implements Message {
         if (!messages.containsKey(Config.getLanguage())) {
             throw new QuestException("No message in default language defined.");
         }
-    }
-
-    /**
-     * Constructs a new parsed message with a single message in the default language.
-     *
-     * @param parser      the message parser to use
-     * @param message     the message to parse
-     * @param dataStorage the data storage to use for getting the player's language
-     * @throws QuestException if an error occurs while constructing the message
-     */
-    public ParsedMessage(final MessageParser parser, final VariableString message, final PlayerDataStorage dataStorage) throws QuestException {
-        this(parser, Collections.singletonMap(Config.getLanguage(), message), dataStorage);
     }
 
     @Override

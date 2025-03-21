@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -30,7 +31,7 @@ class IngameNotificationSenderTest {
     @Test
     void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
-        final PluginMessage pluginMessage = getPluginMessage(profile);
+        final PluginMessage pluginMessage = getPluginMessage();
 
         final NotificationSender sender = new IngameNotificationSender(logger, pluginMessage, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
@@ -40,7 +41,8 @@ class IngameNotificationSenderTest {
 
             assertTrue(profile.getOnlineProfile().isPresent(), "Profile should have an online profile.");
             sender.sendNotification(profile);
-            verify(notifyIO, times(1)).sendNotify("test message", profile.getOnlineProfile().get());
+            final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
+            verify(notifyIO, times(1)).sendNotify(any(Message.class), eq(onlineProfile));
         }
     }
 
@@ -48,17 +50,17 @@ class IngameNotificationSenderTest {
     @Test
     void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
-        final PluginMessage pluginMessage = getPluginMessage(profile);
+        final PluginMessage pluginMessage = getPluginMessage();
 
         final NotificationSender sender = new IngameNotificationSender(logger, pluginMessage, questPackage, "full.id", NotificationLevel.INFO, "message-name");
 
         try (MockedStatic<Notify> notify = mockStatic(Notify.class)) {
             final NotifyIO notifyIO = mock(NotifyIO.class);
             notify.when(() -> Notify.get(questPackage, "message-name,info")).thenReturn(notifyIO);
-            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(String.class), any());
+            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(Message.class), any());
 
             assertDoesNotThrow(() -> sender.sendNotification(profile), "Failing to send a notification should not throw an exception.");
-            verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to play a sound for the 'message-name' message in 'full.id'. Error was: 'Test cause.'"), any(QuestException.class));
+            verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to send the notification message 'message-name' in 'full.id'. Error was: 'Test cause.'"), any(QuestException.class));
             verifyNoMoreInteractions(logger);
         }
     }
@@ -70,9 +72,10 @@ class IngameNotificationSenderTest {
         return profile;
     }
 
-    private PluginMessage getPluginMessage(final Profile profile) {
+    private PluginMessage getPluginMessage() {
         final PluginMessage pluginMessage = mock(PluginMessage.class);
-        when(pluginMessage.getMessage(profile, "message-name")).thenReturn("test message");
+        final Message message = mock(Message.class);
+        when(pluginMessage.getMessage("message-name")).thenReturn(message);
         return pluginMessage;
     }
 }
