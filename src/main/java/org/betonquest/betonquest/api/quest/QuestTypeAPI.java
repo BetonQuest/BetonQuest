@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.kernel.processor.QuestRegistry;
+import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -19,14 +19,14 @@ public final class QuestTypeAPI {
     /**
      * Quest Registry providing processors.
      */
-    private final QuestRegistry questRegistry;
+    private final CoreQuestRegistry questRegistry;
 
     /**
      * Create a new Quest API.
      *
      * @param questRegistry the registry containing processors
      */
-    public QuestTypeAPI(final QuestRegistry questRegistry) {
+    public QuestTypeAPI(final CoreQuestRegistry questRegistry) {
         this.questRegistry = questRegistry;
     }
 

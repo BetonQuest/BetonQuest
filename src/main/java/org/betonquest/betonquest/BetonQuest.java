@@ -43,6 +43,7 @@ import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.CoreFeatureFactories;
 import org.betonquest.betonquest.item.QuestItemHandler;
+import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
@@ -459,16 +460,18 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                featureRegistries, questTypeRegistries, pluginMessage, messageParser, profileProvider);
+        final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
+        questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
 
-        questTypeAPI = new QuestTypeAPI(questRegistry);
+        questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
+                coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
+
         pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage,
                 profileProvider), this);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questTypeAPI, pluginMessage, questRegistry.variables(), globalData, playerDataStorage, profileProvider)
+                questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage, profileProvider)
                 .register(questTypeRegistries);
 
         new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
@@ -781,6 +784,6 @@ public class BetonQuest extends JavaPlugin {
      * @return the VariableProcessor to resolve variables
      */
     public VariableProcessor getVariableProcessor() {
-        return questRegistry.variables();
+        return questRegistry.core().variables();
     }
 }
