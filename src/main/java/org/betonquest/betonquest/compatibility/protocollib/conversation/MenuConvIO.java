@@ -97,8 +97,6 @@ public class MenuConvIO extends ChatConvIO {
     @Nullable
     protected BukkitRunnable displayRunnable;
 
-    protected boolean debounce;
-
     @Nullable
     protected BaseComponent[] displayOutput;
 
@@ -640,9 +638,8 @@ public class MenuConvIO extends ChatConvIO {
                     steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
                 }
 
-                if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
+                if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP)) {
                     // Player Jumped
-                    debounce = true;
                     switch (controls.get(CONTROL.JUMP)) {
                         case CANCEL:
                             if (!conv.isMovementBlock()) {
@@ -657,21 +654,18 @@ public class MenuConvIO extends ChatConvIO {
                         case MOVE:
                             break;
                     }
-                } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Backwards
                     oldSelectedOption = selectedOption;
                     selectedOption++;
-                    debounce = true;
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
-                } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Forwards
                     oldSelectedOption = selectedOption;
                     selectedOption--;
-                    debounce = true;
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
-                } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
+                } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK)) {
                     // Player Dismounted
-                    debounce = true;
                     switch (controls.get(CONTROL.SNEAK)) {
                         case CANCEL:
                             if (!conv.isMovementBlock()) {
@@ -686,8 +680,6 @@ public class MenuConvIO extends ChatConvIO {
                         case MOVE:
                             break;
                     }
-                } else if (Math.abs(steerEvent.getForward()) < 0.01) {
-                    debounce = false;
                 }
                 event.setCancelled(true);
             }
@@ -721,10 +713,6 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            if (debounce) {
-                return;
-            }
-
             final Action action = event.getAction();
             if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
                 if (controls.containsKey(CONTROL.LEFT_CLICK)) {
@@ -754,10 +742,6 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            if (debounce) {
-                return;
-            }
-
             if (controls.containsKey(CONTROL.LEFT_CLICK)) {
                 handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
@@ -784,10 +768,6 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            if (debounce) {
-                return;
-            }
-
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
                 handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
@@ -802,14 +782,12 @@ public class MenuConvIO extends ChatConvIO {
                 if (!conv.isMovementBlock()) {
                     conv.endConversation();
                 }
-                debounce = true;
             }
             case SELECT -> {
                 if (isOnCooldown()) {
                     return;
                 }
                 conv.passPlayerAnswer(selectedOption + 1);
-                debounce = true;
             }
             default -> {
             }
@@ -850,22 +828,16 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            if (debounce) {
-                return;
-            }
-
             final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
 
             if (scrollDirection == Direction.DOWN && selectedOption < options.size() - 1) {
                 oldSelectedOption = selectedOption;
                 selectedOption++;
                 updateDisplay();
-                debounce = true;
             } else if (scrollDirection == Direction.UP && selectedOption > 0) {
                 oldSelectedOption = selectedOption;
                 selectedOption--;
                 updateDisplay();
-                debounce = true;
             }
         } finally {
             lock.readLock().unlock();
