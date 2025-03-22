@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -62,9 +63,7 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(Utils.format(
                 nameString, true, false).replace('_', ' '), VariableString::new);
-        final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : instruction.get(
-                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
+        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
         final QuestItem helmet = getQuestItem(instruction, "h");
         final QuestItem chestplate = getQuestItem(instruction, "c");
         final QuestItem leggings = getQuestItem(instruction, "l");

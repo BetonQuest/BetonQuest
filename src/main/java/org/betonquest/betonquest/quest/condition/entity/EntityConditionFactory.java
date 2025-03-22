@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -56,9 +57,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(
                 Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
-        final String markedString = instruction.getOptional("marked");
-        final VariableString marked = markedString == null ? null : instruction.get(
-                Utils.addPackage(instruction.getPackage(), markedString), VariableString::new);
+        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 
