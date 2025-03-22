@@ -118,7 +118,7 @@ public class CoreFeatureFactories {
         messageParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
         final MiniMessage legacyMiniMessage = MiniMessage.builder()
                 .preProcessor(input -> {
-                    final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input));
+                    final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input.replaceAll("\\\\n", "\n")));
                     final String serialize = miniMessage.serialize(deserialize);
                     return serialize.replaceAll("\\\\<", "<");
                 })
