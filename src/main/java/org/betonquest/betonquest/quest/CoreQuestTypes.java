@@ -311,8 +311,8 @@ public class CoreQuestTypes {
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));
-        conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(questTypeAPI, data, loggerFactory));
-        conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(questTypeAPI, data));
+        conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(betonQuest.getFeatureAPI(), data, loggerFactory));
+        conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getFeatureAPI(), data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeAPI));
         conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
@@ -374,7 +374,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider));
-        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(questTypeAPI, data));
+        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureAPI(), data));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI,
                 pluginMessage));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
@@ -396,7 +396,7 @@ public class CoreQuestTypes {
         eventTypes.register("take", new TakeEventFactory(loggerFactory, pluginMessage));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data, variableProcessor));
-        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(questTypeAPI.getNpcHider(), loggerFactory, data));
+        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(betonQuest.getFeatureAPI().getNpcHider(), loggerFactory, data));
         eventTypes.register("variable", new VariableEventFactory(questTypeAPI));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
@@ -448,7 +448,7 @@ public class CoreQuestTypes {
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(loggerFactory, variableProcessor));
-        variables.registerCombined("npc", new NpcVariableFactory(questTypeAPI));
+        variables.registerCombined("npc", new NpcVariableFactory(betonQuest.getFeatureAPI()));
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());

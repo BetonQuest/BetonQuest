@@ -87,7 +87,7 @@ public record QuestRegistry(
                 plugin.getPlayerDataStorage(), otherRegistries.conversationIO(), otherRegistries.interceptor());
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables, messageParser, plugin.getPlayerDataStorage());
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, messageParser, plugin.getPlayerDataStorage());
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, questTypeRegistries.npc(), pluginMessage, plugin, profileProvider);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider);
         return new QuestRegistry(log, eventScheduling, conditions, events, objectives, variables, cancelers, compasses, conversations, journalEntries, journalMainPages, npcs);
     }
 

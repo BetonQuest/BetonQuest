@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensStopE
 import org.betonquest.betonquest.compatibility.citizens.objective.NPCKillObjective;
 import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
@@ -75,11 +76,12 @@ public class CitizensIntegrator implements Integrator {
         eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
         eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
 
-        final ConversationIORegistry conversationIOTypes = plugin.getFeatureRegistries().conversationIO();
+        final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
+        final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();
         conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
         conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
 
-        final NpcTypeRegistry npcTypes = questRegistries.npc();
+        final NpcTypeRegistry npcTypes = featureRegistries.npc();
         manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, citizensMoveController), plugin);
         npcTypes.register("citizens", new CitizensNpcFactory());
         npcTypes.registerIdentifier(new CitizensReverseIdentifier());

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.registry.feature;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
+import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 
 /**
  * Registries that are not based on the Instruction to create instances.
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
  * @param conversationIO  The Registry holding registered conversation IOs.
  * @param interceptor     The Registry holding registered Interceptors.
  * @param messageParser   The Registry holding registered Message Parsers.
+ * @param npc             The Registry holding registered npc types.
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
  */
@@ -17,6 +19,7 @@ public record FeatureRegistries(
         ConversationIORegistry conversationIO,
         InterceptorRegistry interceptor,
         MessageParserRegistry messageParser,
+        NpcTypeRegistry npc,
         NotifyIORegistry notifyIO,
         ScheduleRegistry eventScheduling
 ) {
@@ -32,6 +35,7 @@ public record FeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
                 new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class)),
+                new NpcTypeRegistry(loggerFactory.create(NpcTypeRegistry.class)),
                 new NotifyIORegistry(loggerFactory.create(NotifyIORegistry.class)),
                 new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class))
         );

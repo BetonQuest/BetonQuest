@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -19,9 +19,9 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
  */
 public class NpcRegionConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
     /**
-     * Quest Type API.
+     * Feature API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * Data used for primary server thread access.
@@ -31,11 +31,11 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     /**
      * Create a new factory for NPC Region Conditions.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param data         the data for primary server thread access
+     * @param featureAPI the Feature API
+     * @param data       the data for primary server thread access
      */
-    public NpcRegionConditionFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
-        this.questTypeAPI = questTypeAPI;
+    public NpcRegionConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+        this.featureAPI = featureAPI;
         this.data = data;
     }
 
@@ -52,6 +52,6 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableString region = instruction.get(VariableString::new);
-        return new NullableConditionAdapter(new NpcRegionCondition(questTypeAPI, npcId, region));
+        return new NullableConditionAdapter(new NpcRegionCondition(featureAPI, npcId, region));
     }
 }

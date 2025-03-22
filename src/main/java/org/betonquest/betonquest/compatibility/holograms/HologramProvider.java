@@ -153,7 +153,7 @@ public final class HologramProvider implements Integrator {
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                 this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                        plugin.getQuestTypeAPI(), plugin.getQuestRegistries().npc()), 1);
+                        plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc()), 1);
         Bukkit.getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }
 
@@ -172,7 +172,7 @@ public final class HologramProvider implements Integrator {
                 if (instance.npcHologramLoop != null) {
                     instance.npcHologramLoop.close();
                     instance.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                            plugin.getQuestTypeAPI(), plugin.getQuestRegistries().npc());
+                            plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc());
                 }
             }
         }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.id.NpcID;
@@ -16,9 +16,9 @@ import static org.betonquest.betonquest.quest.variable.npc.Argument.LOCATION;
 public class NpcVariable implements PlayerlessVariable {
 
     /**
-     * Quest Type API.
+     * Feature API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * Id of the npc.
@@ -44,16 +44,16 @@ public class NpcVariable implements PlayerlessVariable {
     /**
      * Construct a new NPCVariable that allows for resolution of information about a NPC.
      *
-     * @param questTypeAPI  the Quest Type API
+     * @param featureAPI    the Feature API
      * @param npcID         the npc id
      * @param key           the argument defining the value
      * @param formationMode the location formation mode to use for location resolution
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NpcVariable(final QuestTypeAPI questTypeAPI, final NpcID npcID, final Argument key,
+    public NpcVariable(final FeatureAPI featureAPI, final NpcID npcID, final Argument key,
                        @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
-        this.questTypeAPI = questTypeAPI;
+        this.featureAPI = featureAPI;
         this.npcID = npcID;
         this.key = key;
         this.formationMode = formationMode;
@@ -65,7 +65,7 @@ public class NpcVariable implements PlayerlessVariable {
 
     @Override
     public String getValue() throws QuestException {
-        final Npc<?> npc = questTypeAPI.getNpc(npcID);
+        final Npc<?> npc = featureAPI.getNpc(npcID);
         return key.resolve(npc, formationMode, decimalPlaces);
     }
 }
