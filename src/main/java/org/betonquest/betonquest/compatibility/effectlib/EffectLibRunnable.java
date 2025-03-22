@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -35,6 +36,11 @@ public class EffectLibRunnable extends BukkitRunnable {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The Feature API.
+     */
+    private final FeatureAPI featureAPI;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -64,15 +70,17 @@ public class EffectLibRunnable extends BukkitRunnable {
      *
      * @param log                 the logger that will be used for logging
      * @param questTypeAPI        the Quest Type API
+     * @param featureAPI          the Feature API
      * @param profileProvider     the profile provider instance
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider,
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI, final ProfileProvider profileProvider,
                              final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;
         this.questTypeAPI = questTypeAPI;
+        this.featureAPI = featureAPI;
         this.profileProvider = profileProvider;
         this.manager = manager;
         this.effectConfiguration = effectConfiguration;
@@ -113,14 +121,14 @@ public class EffectLibRunnable extends BukkitRunnable {
         for (final NpcID npcId : effect.npcs()) {
             final Npc<?> npc;
             try {
-                npc = questTypeAPI.getNpc(npcId);
+                npc = featureAPI.getNpc(npcId);
             } catch (final QuestException exception) {
                 log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
                 continue;
             }
             final Player player = profile.getPlayer();
 
-            if (!npc.getLocation().getWorld().equals(player.getWorld()) || questTypeAPI.getNpcHider().isHidden(npcId, profile)) {
+            if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureAPI.getNpcHider().isHidden(npcId, profile)) {
                 continue;
             }
 

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -15,9 +15,9 @@ import org.bukkit.entity.Player;
 public class NpcDistanceCondition implements OnlineCondition {
 
     /**
-     * Quest Type API.
+     * Feature API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * Id of the npc.
@@ -32,19 +32,19 @@ public class NpcDistanceCondition implements OnlineCondition {
     /**
      * Create a new Npc Distance Condition.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param npcID        the id of the npc
-     * @param distance     the maximal distance between player and npc
+     * @param featureAPI the Feature API
+     * @param npcID      the id of the npc
+     * @param distance   the maximal distance between player and npc
      */
-    public NpcDistanceCondition(final QuestTypeAPI questTypeAPI, final NpcID npcID, final VariableNumber distance) {
-        this.questTypeAPI = questTypeAPI;
+    public NpcDistanceCondition(final FeatureAPI featureAPI, final NpcID npcID, final VariableNumber distance) {
+        this.featureAPI = featureAPI;
         this.npcID = npcID;
         this.distance = distance;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Location npcLocation = questTypeAPI.getNpc(npcID).getLocation();
+        final Location npcLocation = featureAPI.getNpc(npcID).getLocation();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;

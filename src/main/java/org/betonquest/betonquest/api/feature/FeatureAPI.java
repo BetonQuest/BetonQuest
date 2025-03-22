@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.api.feature;
 
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
@@ -8,6 +11,7 @@ import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
@@ -110,5 +114,25 @@ public final class FeatureAPI {
      */
     public Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages() {
         return new HashMap<>(questRegistry.journalMainPages().getValues());
+    }
+
+    /**
+     * Gets a Npc by its id.
+     *
+     * @param npcID the id of the Npc
+     * @return the wrapper to get the actual
+     * @throws QuestException when there is no Npc with that id
+     */
+    public Npc<?> getNpc(final NpcID npcID) throws QuestException {
+        return questRegistry.npcs().getNpc(npcID);
+    }
+
+    /**
+     * Gets the NpcHider.
+     *
+     * @return the active npc hider
+     */
+    public NpcHider getNpcHider() {
+        return questRegistry.npcs().getNpcHider();
     }
 }

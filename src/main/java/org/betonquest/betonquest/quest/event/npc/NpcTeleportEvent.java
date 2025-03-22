@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Teleports a Npc to a given location.
  */
-public class NPCTeleportEvent implements NullableEvent {
+public class NpcTeleportEvent implements NullableEvent {
 
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * The npc id.
@@ -38,13 +38,13 @@ public class NPCTeleportEvent implements NullableEvent {
     /**
      * Create a new Npc Teleport Event.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param npcId        the npc id
-     * @param location     the location the Npc will be teleported to
-     * @param spawn        if the npc should be spawned if not in the world
+     * @param featureAPI the Feature API
+     * @param npcId      the npc id
+     * @param location   the location the Npc will be teleported to
+     * @param spawn      if the npc should be spawned if not in the world
      */
-    public NPCTeleportEvent(final QuestTypeAPI questTypeAPI, final NpcID npcId, final VariableLocation location, final boolean spawn) {
-        this.questTypeAPI = questTypeAPI;
+    public NpcTeleportEvent(final FeatureAPI featureAPI, final NpcID npcId, final VariableLocation location, final boolean spawn) {
+        this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.location = location;
         this.spawn = spawn;
@@ -53,7 +53,7 @@ public class NPCTeleportEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
-        final Npc<?> npc = questTypeAPI.getNpc(npcId);
+        final Npc<?> npc = featureAPI.getNpc(npcId);
         if (npc.isSpawned()) {
             npc.teleport(loc);
         } else if (spawn) {

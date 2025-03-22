@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -15,14 +15,14 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
 
 /**
- * Factory for {@link NPCTeleportEvent} from the {@link Instruction}.
+ * Factory for {@link NpcTeleportEvent} from the {@link Instruction}.
  */
 public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory {
 
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * Data to use for syncing to the primary server thread.
@@ -32,11 +32,11 @@ public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory
     /**
      * Create a new factory for Npc Teleport Events.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param data         the data to use for syncing to the primary server thread
+     * @param featureAPI the Feature API
+     * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcTeleportEventFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
-        this.questTypeAPI = questTypeAPI;
+    public NpcTeleportEventFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+        this.featureAPI = featureAPI;
         this.data = data;
     }
 
@@ -54,6 +54,6 @@ public class NpcTeleportEventFactory implements EventFactory, StaticEventFactory
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableLocation location = instruction.get(VariableLocation::new);
         final boolean spawn = instruction.hasArgument("spawn");
-        return new NullableEventAdapter(new NPCTeleportEvent(questTypeAPI, npcId, location, spawn));
+        return new NullableEventAdapter(new NpcTeleportEvent(featureAPI, npcId, location, spawn));
     }
 }

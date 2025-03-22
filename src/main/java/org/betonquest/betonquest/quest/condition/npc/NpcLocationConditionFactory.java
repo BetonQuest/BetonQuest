@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -23,7 +23,7 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final FeatureAPI featureAPI;
 
     /**
      * Data used for primary server thread access.
@@ -33,11 +33,11 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     /**
      * Create a new factory for NPC Location Conditions.
      *
-     * @param questTypeAPI the Quest Type API
-     * @param data         the data to use for syncing to the primary server thread
+     * @param featureAPI the Feature API
+     * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcLocationConditionFactory(final QuestTypeAPI questTypeAPI, final PrimaryServerThreadData data) {
-        this.questTypeAPI = questTypeAPI;
+    public NpcLocationConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+        this.featureAPI = featureAPI;
         this.data = data;
     }
 
@@ -55,6 +55,6 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
         final NpcID npcId = instruction.getID(NpcID::new);
         final VariableLocation location = instruction.get(VariableLocation::new);
         final VariableNumber radius = instruction.get(VariableNumber::new);
-        return new NullableConditionAdapter(new NpcLocationCondition(questTypeAPI, npcId, location, radius));
+        return new NullableConditionAdapter(new NpcLocationCondition(featureAPI, npcId, location, radius));
     }
 }
