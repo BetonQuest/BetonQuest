@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Interface for quest-variables that are checked for a profile. It represents the normal variable as described in the
- * BetonQuest user documentation. It does not represent the "static" variant though, see {@link PlayerlessVariable}.
+ * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessVariable}.
  */
 public interface PlayerVariable {
     /**

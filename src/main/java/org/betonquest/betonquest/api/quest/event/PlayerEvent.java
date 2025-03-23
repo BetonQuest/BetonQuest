@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
- * Interface for quest-events that are executed for a profile. It represents the normal event as described in the
- * BetonQuest user documentation. It does not represent the "static" variant though, see {@link PlayerlessEvent}.
+ * Interface for quest-events that are executed for a profile. It represents the player event as described in the
+ * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessEvent}.
  */
 public interface PlayerEvent {
     /**

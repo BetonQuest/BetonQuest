@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.CallPlayerlessEventAdapter;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 
 /**
@@ -41,7 +41,7 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerE
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new CallStaticEventAdapter(parsePlayerless(instruction));
+        return new CallPlayerlessEventAdapter(parsePlayerless(instruction));
     }
 
     @Override

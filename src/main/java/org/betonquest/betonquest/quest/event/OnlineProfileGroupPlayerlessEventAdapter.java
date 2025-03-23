@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.function.Supplier;
 
 /**
- * Adapt a normal event as a "static" event by applying it to a group of online {@link Player}s. The group supplying
+ * Adapt a player event as a playerless event by applying it to a group of online {@link Player}s. The group supplying
  * function will be called every time the event is executed.
  */
 public class OnlineProfileGroupPlayerlessEventAdapter implements PlayerlessEvent {
@@ -24,10 +24,10 @@ public class OnlineProfileGroupPlayerlessEventAdapter implements PlayerlessEvent
     private final PlayerEvent playerEvent;
 
     /**
-     * Create a "static" event that will execute a normal event for every player provided by the supplying function.
+     * Create a playerless event that will execute a normal event for every player provided by the supplying function.
      *
      * @param profileSupplier supplier for the player group
-     * @param playerEvent           event to execute
+     * @param playerEvent     event to execute
      */
     public OnlineProfileGroupPlayerlessEventAdapter(final Supplier<? extends Iterable<? extends OnlineProfile>> profileSupplier, final PlayerEvent playerEvent) {
         profileCollectionSupplier = profileSupplier;

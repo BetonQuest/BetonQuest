@@ -7,7 +7,7 @@ import org.betonquest.betonquest.database.Saver;
 import java.util.function.Supplier;
 
 /**
- * A "static" event that executes a database query with the {@link Saver} when executed.
+ * A playerless event that executes a database query with the {@link Saver} when executed.
  */
 public class DatabaseSaverPlayerlessEvent implements PlayerlessEvent {
 
@@ -22,7 +22,7 @@ public class DatabaseSaverPlayerlessEvent implements PlayerlessEvent {
     private final Supplier<? extends Saver.Record> recordSupplier;
 
     /**
-     * Create a "static" database saver event. The saver will be used to save the record created by the record supplier.
+     * Create a playerless database saver event. The saver will be used to save the record created by the record supplier.
      *
      * @param saver          the saver to use
      * @param recordSupplier the record supplier

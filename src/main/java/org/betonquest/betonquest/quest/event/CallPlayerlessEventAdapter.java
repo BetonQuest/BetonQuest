@@ -6,21 +6,21 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 
 /**
- * Adapter to allow executing a "static" event with the API of a normal event.
+ * Adapter to allow executing a playerless event with the API of a player event.
  */
-public class CallStaticEventAdapter implements PlayerEvent {
+public class CallPlayerlessEventAdapter implements PlayerEvent {
 
     /**
-     * The "static" event to execute.
+     * The playerless event to execute.
      */
     private final PlayerlessEvent event;
 
     /**
-     * Create a normal event that will execute the given "static" event.
+     * Create a player event that will execute the given playerless event.
      *
-     * @param event "static" event to execute
+     * @param event playerless event to execute
      */
-    public CallStaticEventAdapter(final PlayerlessEvent event) {
+    public CallPlayerlessEventAdapter(final PlayerlessEvent event) {
         this.event = event;
     }
 
