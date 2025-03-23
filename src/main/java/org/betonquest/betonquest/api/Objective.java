@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -55,8 +54,6 @@ public abstract class Objective {
 
     protected boolean persistent;
 
-    protected boolean global;
-
     protected QuestExceptionHandler qeHandler = new QuestExceptionHandler();
 
     /**
@@ -89,10 +86,6 @@ public abstract class Objective {
         final String[] tempEvents1 = instruction.getArray(instruction.getOptional("event"));
         final String[] tempEvents2 = instruction.getArray(instruction.getOptional("events"));
         persistent = instruction.hasArgument("persistent");
-        global = instruction.hasArgument("global");
-        if (global) {
-            GlobalObjectives.add((ObjectiveID) instruction.getID());
-        }
         // make them final
         int length = tempEvents1.length + tempEvents2.length;
         events = new EventID[length];
@@ -470,15 +463,6 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
         }
-    }
-
-    /**
-     * Returns whether the objective is global.
-     *
-     * @return true if the objective is global, false otherwise
-     */
-    public boolean isGlobal() {
-        return global;
     }
 
     /**

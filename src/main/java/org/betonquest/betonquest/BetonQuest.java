@@ -414,11 +414,6 @@ public class BetonQuest extends JavaPlugin {
 
         globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver);
 
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), pluginMessage);
-
-        final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage, profileProvider), this);
-
         final FileConfigAccessor cache;
         try {
             final Path cacheFile = new File(getDataFolder(), CACHE_FILE).toPath();
@@ -434,8 +429,7 @@ public class BetonQuest extends JavaPlugin {
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
-        new GlobalObjectives();
-
+        final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
 
         ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
@@ -463,11 +457,15 @@ public class BetonQuest extends JavaPlugin {
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
         questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
 
+        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), pluginMessage, coreQuestRegistry.objectives());
+
+        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage, profileProvider), this);
+
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
 
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, questTypeAPI, playerDataStorage, pluginMessage,
+        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage, pluginMessage,
                 profileProvider), this);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
@@ -631,7 +629,6 @@ public class BetonQuest extends JavaPlugin {
         // stop current global locations listener
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
-        new GlobalObjectives();
         ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.

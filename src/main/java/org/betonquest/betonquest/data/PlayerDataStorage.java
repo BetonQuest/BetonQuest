@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.data;
 
-import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,6 +33,11 @@ public class PlayerDataStorage {
     private final PluginMessage pluginMessage;
 
     /**
+     * Objective processor to start (global) objectives.
+     */
+    private final ObjectiveProcessor objectives;
+
+    /**
      * Stored player data for online players.
      */
     private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
@@ -41,13 +46,15 @@ public class PlayerDataStorage {
      * Create a new Storage for Player Data.
      *
      * @param loggerFactory the logger factory to use in Conversation Resumer
-     * @param pluginMessage the {@link PluginMessage} instance
      * @param log           the logger for debug messages
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param objectives    the objective processor to start (global) objectives
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final PluginMessage pluginMessage) {
+    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final PluginMessage pluginMessage, final ObjectiveProcessor objectives) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.pluginMessage = pluginMessage;
+        this.objectives = objectives;
     }
 
     /**
@@ -85,7 +92,7 @@ public class PlayerDataStorage {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             log.debug("Updating global objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
-            GlobalObjectives.startAll(onlineProfile, this);
+            objectives.startAll(onlineProfile, this);
             playerData.getJournal().update();
         }
     }

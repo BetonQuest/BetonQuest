@@ -154,9 +154,12 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
 
     @Override
     protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        final NpcID npcID = new NpcID(pack, identifier);
-        ((NpcTypeRegistry) types).addIdentifier(npcID);
-        return npcID;
+        return new NpcID(pack, identifier);
+    }
+
+    @Override
+    protected void postCreation(final NpcID identifier, final NpcWrapper<?> value) {
+        ((NpcTypeRegistry) types).addIdentifier(identifier);
     }
 
     /**
