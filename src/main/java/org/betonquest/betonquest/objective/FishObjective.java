@@ -6,11 +6,12 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -34,7 +35,7 @@ public class FishObjective extends CountingObjective implements Listener {
      */
     private final BetonQuestLogger log;
 
-    private final BlockSelector blockSelector;
+    private final QuestItem questItem;
 
     @Nullable
     private final VariableLocation hookTargetLocation;
@@ -45,7 +46,7 @@ public class FishObjective extends CountingObjective implements Listener {
     public FishObjective(final Instruction instruction) throws QuestException {
         super(instruction, "fish_to_catch");
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        blockSelector = new BlockSelector(instruction.next());
+        questItem = new QuestItem(instruction.getID(ItemID::new));
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
 
         final String loc = instruction.getOptional("hookLocation");
@@ -72,7 +73,7 @@ public class FishObjective extends CountingObjective implements Listener {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (blockSelector.match(item.getType()) && checkConditions(onlineProfile)) {
+        if (questItem.compare(item) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress(item.getAmount());
             completeIfDoneOrNotify(onlineProfile);
         }

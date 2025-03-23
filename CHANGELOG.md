@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `max_npc_distance` config into `max_conversation_distance`
 - `acceptNPCLeftClick` and `npcInteractionLimit` configs into `npcs.accept_left_click` and `npcs.interaction_limit`
 - `%quester%` variable is used instead of `%npc%` for the quester's name in conversations; `%npc` variable is used now for the new Npc system
+- `fish` objective use block selector instead of a QuestItem
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
