@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreClassConditionFactory;
@@ -17,52 +16,28 @@ import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Integrator for MMO CORE.
  */
 public class MMOCoreIntegrator implements Integrator {
-    /**
-     * The logger for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
-     * Util class to get and validate attributes.
-     */
-    @Nullable
-    private MMOCoreUtils mmoCoreUtils;
 
     /**
      * The default constructor.
      */
     public MMOCoreIntegrator() {
-        log = BetonQuest.getInstance().getLoggerFactory().create(MMOCoreIntegrator.class);
     }
 
     @Override
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();
-        try {
-            mmoCoreUtils = new MMOCoreUtils(plugin.getConfigAccessorFactory(), Bukkit.getPluginManager().getPlugin("MMOCore").getDataFolder());
-        } catch (FileNotFoundException | InvalidConfigurationException e) {
-            log.warn("Couldn't load the MMOCore attribute configuration file! MMOCore won't work!", e);
-            return;
-        }
-
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         final ConditionTypeRegistry conditionTypes = questRegistries.condition();
         conditionTypes.register("mmoclass", new MMOCoreClassConditionFactory(data));
-        conditionTypes.register("mmoattribute", new MMOCoreAttributeConditionFactory(data, mmoCoreUtils));
+        conditionTypes.register("mmoattribute", new MMOCoreAttributeConditionFactory(data));
         conditionTypes.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
@@ -81,13 +56,7 @@ public class MMOCoreIntegrator implements Integrator {
 
     @Override
     public void reload() {
-        if (mmoCoreUtils != null) {
-            try {
-                mmoCoreUtils.reload();
-            } catch (final IOException e) {
-                log.warn("Couldn't reload the MMOCore attribute configuration file!", e);
-            }
-        }
+        // Empty
     }
 
     @Override

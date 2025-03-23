@@ -49,6 +49,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `journal` entry renaming or deleting via command now affects all specified pointers and not only one
 - `ride` objective did only count vehicles, not all entities
 - scrolling the mouse in the menu conversation IO did not work
+- `MMOCore` attribute loading with MMOCore 1.13
 ### Security
 
 ## [2.2.1] - 2025-01-12
