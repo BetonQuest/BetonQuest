@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.quest.event.language;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create language events from {@link Instruction}s.
  */
-public class LanguageEventFactory implements EventFactory {
+public class LanguageEventFactory implements PlayerEventFactory {
 
     /**
      * Storage for player data.
@@ -26,7 +26,7 @@ public class LanguageEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String language = instruction.next();
         return new LanguageEvent(language, dataStorage);
     }

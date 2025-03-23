@@ -4,20 +4,20 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.CallStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 
 /**
  * Factory for the notify all event.
  */
-public class NotifyAllEventFactory extends NotifyEventFactory implements EventFactory, StaticEventFactory {
+public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * The profile provider instance.
      */
@@ -40,12 +40,12 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements EventFa
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
-        return new CallStaticEventAdapter(parseStaticEvent(instruction));
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+        return new CallStaticEventAdapter(parsePlayerless(instruction));
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, super.parseEvent(instruction));
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+        return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, super.parsePlayer(instruction));
     }
 }

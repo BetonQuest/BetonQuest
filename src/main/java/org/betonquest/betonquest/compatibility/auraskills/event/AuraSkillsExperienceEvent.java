@@ -6,7 +6,7 @@ import dev.aurelium.auraskills.api.skill.Skill;
 import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.util.Utils;
 /**
  * Gives experience to a player in a skill.
  */
-public class AuraSkillsExperienceEvent implements Event {
+public class AuraSkillsExperienceEvent implements PlayerEvent {
     /**
      * The {@link AuraSkillsApi}.
      */

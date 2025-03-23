@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.compass;
 
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -14,7 +14,7 @@ import org.bukkit.plugin.PluginManager;
 /**
  * The compass event factory.
  */
-public class CompassEventFactory implements EventFactory {
+public class CompassEventFactory implements PlayerEventFactory {
     /**
      * Feature API.
      */
@@ -52,7 +52,7 @@ public class CompassEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final CompassTargetAction action = instruction.getEnum(CompassTargetAction.class);
         final CompassID compassId = instruction.getID(CompassID::new);
         return new PrimaryServerThreadEvent(

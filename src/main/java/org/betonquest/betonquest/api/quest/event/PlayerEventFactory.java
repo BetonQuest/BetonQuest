@@ -5,20 +5,16 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 
 /**
- * Factory to create a specific {@link Event} from {@link Instruction}s.
+ * Factory to create a specific {@link PlayerEvent} from {@link Instruction}s.
  */
-public interface EventFactory extends PlayerQuestFactory<Event> {
+public interface PlayerEventFactory extends PlayerQuestFactory<PlayerEvent> {
     /**
-     * Parses an instruction to create a normal {@link Event}.
+     * Parses an instruction to create a {@link PlayerEvent}.
      *
      * @param instruction instruction to parse
      * @return normal event represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
-    Event parseEvent(Instruction instruction) throws QuestException;
-
     @Override
-    default Event parsePlayer(final Instruction instruction) throws QuestException {
-        return parseEvent(instruction);
-    }
+    PlayerEvent parsePlayer(Instruction instruction) throws QuestException;
 }

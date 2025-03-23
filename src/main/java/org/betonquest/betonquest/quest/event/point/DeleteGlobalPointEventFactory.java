@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 /**
  * Factory for the delete global point event.
  */
-public class DeleteGlobalPointEventFactory implements EventFactory, StaticEventFactory {
+public class DeleteGlobalPointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
     /**
      * The global data.
@@ -30,12 +30,12 @@ public class DeleteGlobalPointEventFactory implements EventFactory, StaticEventF
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createDeleteGlobalPointEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createDeleteGlobalPointEvent(instruction);
     }
 

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -16,7 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Factory to create {@link ParticleEvent}s from {@link Instruction}s.
  */
-public class ParticleEventFactory implements EventFactory {
+public class ParticleEventFactory implements PlayerEventFactory {
     /**
      * Logger Factory to create new class specific logger.
      */
@@ -46,7 +46,7 @@ public class ParticleEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.next();
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");
@@ -54,7 +54,7 @@ public class ParticleEventFactory implements EventFactory {
         final VariableLocation loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
-        final Event event = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
-        return new PrimaryServerThreadEvent(event, data);
+        final PlayerEvent playerEvent = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
+        return new PrimaryServerThreadEvent(playerEvent, data);
     }
 }

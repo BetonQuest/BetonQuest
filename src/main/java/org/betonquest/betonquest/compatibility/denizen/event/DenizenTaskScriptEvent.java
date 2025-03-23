@@ -6,13 +6,13 @@ import com.denizenscript.denizencore.scripts.ScriptRegistry;
 import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Runs specified Denizen task script.
  */
-public class DenizenTaskScriptEvent implements Event {
+public class DenizenTaskScriptEvent implements PlayerEvent {
     /**
      * The {@link VariableString} containing the name of the script to run.
      */

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.brewery.event;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory to create {@link GiveBrewEvent}s from {@link Instruction}s.
  */
-public class GiveBrewEventFactory implements EventFactory {
+public class GiveBrewEventFactory implements PlayerEventFactory {
     /**
      * The logger factory.
      */
@@ -39,7 +39,7 @@ public class GiveBrewEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final VariableNumber amountVar = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         final VariableNumber qualityVar = instruction.get(VariableNumber::new);
         final VariableString nameVar = instruction.get(VariableString::new);

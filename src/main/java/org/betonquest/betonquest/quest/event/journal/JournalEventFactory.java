@@ -3,24 +3,24 @@ package org.betonquest.betonquest.quest.event.journal;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
-import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
+import org.betonquest.betonquest.quest.event.DatabaseSaverPlayerlessEvent;
+import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
-import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
+import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
+import org.betonquest.betonquest.quest.event.SequentialPlayerlessEvent;
 
 import java.time.InstantSource;
 import java.util.Locale;
@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * Factory to create journal events from {@link Instruction}s.
  */
-public class JournalEventFactory implements EventFactory, StaticEventFactory {
+public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -78,7 +78,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
@@ -89,10 +89,10 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "update", "add" -> new DoNothingStaticEvent();
+            case "update", "add" -> new DoNothingPlayerlessEvent();
             case "delete" -> createStaticJournalDeleteEvent(instruction);
             default -> throw new QuestException("Unknown journal action: " + action);
         };
@@ -119,11 +119,11 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
-    private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
+    private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
         final JournalEntryID entryID = instruction.getID(instruction.getPart(2), JournalEntryID::new);
-        return new SequentialStaticEvent(
-                new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, journalDeleteEvent),
-                new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryID.getFullID())));
+        return new SequentialPlayerlessEvent(
+                new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, journalDeleteEvent),
+                new DatabaseSaverPlayerlessEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryID.getFullID())));
     }
 }

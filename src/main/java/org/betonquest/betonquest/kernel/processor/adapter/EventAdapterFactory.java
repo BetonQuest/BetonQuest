@@ -5,15 +5,15 @@ import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Wrapper for factories creating events.
  */
-public class EventAdapterFactory extends QuestAdapterFactory<Event, StaticEvent, EventAdapter> {
+public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, PlayerlessEvent, EventAdapter> {
 
     /**
      * Logger factory to create class specific logger for quest type factories.
@@ -36,8 +36,8 @@ public class EventAdapterFactory extends QuestAdapterFactory<Event, StaticEvent,
      * @throws IllegalArgumentException if no factory is given
      */
     public EventAdapterFactory(final BetonQuestLoggerFactory loggerFactory,
-                               final QuestTypeAPI questTypeAPI, @Nullable final PlayerQuestFactory<Event> playerFactory,
-                               @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory) {
+                               final QuestTypeAPI questTypeAPI, @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
+                               @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
         super(playerFactory, playerlessFactory);
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
@@ -45,8 +45,8 @@ public class EventAdapterFactory extends QuestAdapterFactory<Event, StaticEvent,
 
     @Override
     protected EventAdapter getAdapter(final Instruction instruction,
-                                      @Nullable final Event playerType,
-                                      @Nullable final StaticEvent playerlessType) throws QuestException {
+                                      @Nullable final PlayerEvent playerType,
+                                      @Nullable final PlayerlessEvent playerlessType) throws QuestException {
         return new EventAdapter(loggerFactory.create(EventAdapter.class), questTypeAPI, instruction, playerType, playerlessType);
     }
 }

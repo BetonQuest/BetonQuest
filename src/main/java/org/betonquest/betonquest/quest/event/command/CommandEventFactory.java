@@ -4,20 +4,20 @@ import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.command.CommandSender;
 
 /**
  * Creates a new CommandEvent from an {@link Instruction}.
  */
-public class CommandEventFactory extends BaseCommandEventFactory implements StaticEventFactory {
+public class CommandEventFactory extends BaseCommandEventFactory implements PlayerlessEventFactory {
     /**
      * Command sender to run the commands as.
      * <p>
@@ -38,13 +38,13 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Stat
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createCommandEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadStaticEvent(createCommandEvent(instruction), data);
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+        return new PrimaryServerThreadPlayerlessEvent(createCommandEvent(instruction), data);
     }
 
     private NullableEventAdapter createCommandEvent(final Instruction instruction) throws QuestException {

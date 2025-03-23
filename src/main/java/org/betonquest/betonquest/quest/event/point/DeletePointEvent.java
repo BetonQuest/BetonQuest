@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * Deletes all points of a category.
  */
-public class DeletePointEvent implements Event {
+public class DeletePointEvent implements PlayerEvent {
     /**
      * Function to get the player data for a profile.
      */

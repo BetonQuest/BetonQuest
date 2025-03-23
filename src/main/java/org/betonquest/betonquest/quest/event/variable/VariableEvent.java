@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.objective.VariableObjective;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.objective.VariableObjective;
 /**
  * Event that changes variables that is stored in variable objective.
  */
-public class VariableEvent implements Event {
+public class VariableEvent implements PlayerEvent {
 
     /**
      * Quest Type API.

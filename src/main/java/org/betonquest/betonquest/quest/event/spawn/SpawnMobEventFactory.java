@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
  */
-public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
+public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * Data used for primary server access.
      */
@@ -40,13 +40,13 @@ public class SpawnMobEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createSpawnMobEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadStaticEvent(createSpawnMobEvent(instruction), data);
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+        return new PrimaryServerThreadPlayerlessEvent(createSpawnMobEvent(instruction), data);
     }
 
     /**

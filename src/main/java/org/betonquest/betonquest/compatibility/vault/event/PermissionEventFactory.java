@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.vault.event;
 
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory to create {@link PermissionEvent}s from {@link Instruction}s.
  */
-public class PermissionEventFactory implements EventFactory {
+public class PermissionEventFactory implements PlayerEventFactory {
     /**
      * Service where the permission will be modified.
      */
@@ -34,7 +34,7 @@ public class PermissionEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final boolean add = "add".equalsIgnoreCase(instruction.next());
         final boolean perm = "perm".equalsIgnoreCase(instruction.next());
         final String permission = instruction.next();

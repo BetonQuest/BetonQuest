@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.run;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * Run given set of events for all profiles supplied by {@link #profileCollectionSupplier} that meet the
  * conditions.
  */
-public class RunForAllEvent implements StaticEvent {
+public class RunForAllEvent implements PlayerlessEvent {
 
     /**
      * The supplier for generating the profiles.

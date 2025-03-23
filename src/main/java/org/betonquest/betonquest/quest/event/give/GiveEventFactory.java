@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.give;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -19,7 +19,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory for {@link GiveEvent}.
  */
-public class GiveEventFactory implements EventFactory {
+public class GiveEventFactory implements PlayerEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -57,7 +57,7 @@ public class GiveEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(GiveEvent.class);
         final NotificationSender itemsGivenSender;
         if (instruction.hasArgument("notify")) {

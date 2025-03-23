@@ -4,8 +4,8 @@ import com.nisovin.shopkeepers.api.ShopkeepersAPI;
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Factory to create {@link OpenShopEvent}s from {@link Instruction}s.
  */
-public class OpenShopEventFactory implements EventFactory {
+public class OpenShopEventFactory implements PlayerEventFactory {
 
     /**
      * Logger Factory to create new class specific logger.
@@ -41,7 +41,7 @@ public class OpenShopEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.next();
         final Shopkeeper shopkeeper;
         try {

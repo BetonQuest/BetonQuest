@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 /**
  * Factory for {@link NotifyEvent}.
  */
-public class NotifyEventFactory implements EventFactory {
+public class NotifyEventFactory implements PlayerEventFactory {
     /**
      * A pattern for the notation of notifyIO options.
      */
@@ -73,7 +73,7 @@ public class NotifyEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 

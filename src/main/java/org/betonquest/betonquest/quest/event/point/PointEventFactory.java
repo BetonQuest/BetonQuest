@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Factory to create points events from {@link Instruction}s.
  */
-public class PointEventFactory implements EventFactory {
+public class PointEventFactory implements PlayerEventFactory {
 
     /**
      * Logger factory to create a logger for events.
@@ -59,7 +59,7 @@ public class PointEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.getOptional("action");
         Point type = Point.ADD;
         if (action != null) {

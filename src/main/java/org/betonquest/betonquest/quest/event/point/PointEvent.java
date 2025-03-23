@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 /**
  * Modifies players Points.
  */
-public class PointEvent implements Event {
+public class PointEvent implements PlayerEvent {
 
     /**
      * The notification sender to use.

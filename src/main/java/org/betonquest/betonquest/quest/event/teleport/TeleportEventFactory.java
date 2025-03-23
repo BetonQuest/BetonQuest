@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.teleport;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory to create teleport events from {@link Instruction}s.
  */
-public class TeleportEventFactory implements EventFactory {
+public class TeleportEventFactory implements PlayerEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -36,7 +36,7 @@ public class TeleportEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final VariableLocation location = instruction.get(VariableLocation::new);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new TeleportEvent(location),
