@@ -88,9 +88,21 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
         try {
             final T parsed = factory.parseInstruction(identifier.getInstruction());
             values.put(identifier, parsed);
+            postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
         } catch (final QuestException e) {
             log.warn(pack, "Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Allows for using the {@link T} after successful creation.
+     *
+     * @param identifier the id of the created {@link T}
+     * @param value      the newly created {@link T}
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void postCreation(final I identifier, final T value) {
+        // Empty
     }
 }

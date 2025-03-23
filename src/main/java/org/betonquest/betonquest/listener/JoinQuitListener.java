@@ -1,18 +1,17 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.objective.ResourcePackObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -36,7 +35,7 @@ public class JoinQuitListener implements Listener {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final ObjectiveProcessor questTypeAPI;
 
     /**
      * Holds loaded PlayerData.
@@ -62,7 +61,7 @@ public class JoinQuitListener implements Listener {
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI,
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ObjectiveProcessor questTypeAPI,
                             final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
@@ -95,7 +94,7 @@ public class JoinQuitListener implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
-        GlobalObjectives.startAll(onlineProfile, playerDataStorage);
+        questTypeAPI.startAll(onlineProfile, playerDataStorage);
         checkResourcepack(event, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
@@ -109,7 +108,7 @@ public class JoinQuitListener implements Listener {
     private void checkResourcepack(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
         if (resourcePackStatus != null) {
-            questTypeAPI.getPlayerObjectives(onlineProfile).stream()
+            questTypeAPI.getActive(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcePackObjective)
                     .map(objective -> (ResourcePackObjective) objective)
                     .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
@@ -124,7 +123,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        for (final Objective objective : questTypeAPI.getPlayerObjectives(onlineProfile)) {
+        for (final Objective objective : questTypeAPI.getActive(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
         playerDataStorage.remove(onlineProfile);

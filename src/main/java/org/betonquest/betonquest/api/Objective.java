@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,14 +13,18 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,7 +39,7 @@ import java.util.Optional;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
     protected final int notifyInterval;
 
@@ -54,8 +57,6 @@ public abstract class Objective {
     protected EventID[] events;
 
     protected boolean persistent;
-
-    protected boolean global;
 
     protected QuestExceptionHandler qeHandler = new QuestExceptionHandler();
 
@@ -81,48 +82,31 @@ public abstract class Objective {
      *                    extract all required information from it
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public Objective(final Instruction instruction) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.instruction = instruction;
-        // extract events and conditions
-        final String[] tempEvents1 = instruction.getArray(instruction.getOptional("event"));
-        final String[] tempEvents2 = instruction.getArray(instruction.getOptional("events"));
         persistent = instruction.hasArgument("persistent");
-        global = instruction.hasArgument("global");
-        if (global) {
-            GlobalObjectives.add((ObjectiveID) instruction.getID());
-        }
-        // make them final
-        int length = tempEvents1.length + tempEvents2.length;
-        events = new EventID[length];
-        for (int i = 0; i < length; i++) {
-            final String event = i >= tempEvents1.length ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
-            try {
-                events[i] = new EventID(instruction.getPackage(), event);
-            } catch (final QuestException e) {
-                if (length == 1 && "ID is null".equals(e.getMessage())) {
-                    throw new QuestException("Error while parsing objective events: No events are defined!", e);
-                }
-                throw new QuestException("Error while parsing objective events: " + e.getMessage(), e);
-            }
-        }
-        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
-        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
-        length = tempConditions1.length + tempConditions2.length;
-        conditions = new ConditionID[length];
-        for (int i = 0; i < length; i++) {
-            final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length]
-                    : tempConditions1[i];
-            try {
-                conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (final QuestException e) {
-                throw new QuestException("Error while parsing objective conditions: " + e.getMessage(), e);
-            }
-        }
+        events = parseIDs("event", EventID::new).toArray(new EventID[0]);
+        conditions = parseIDs("condition", ConditionID::new).toArray(new ConditionID[0]);
         final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
+    }
+
+    private <I extends ID> List<I> parseIDs(final String baseName, final IDArgument<I> argument) throws QuestException {
+        final String[] temp1 = instruction.getArray(instruction.getOptional(baseName));
+        final String[] temp2 = instruction.getArray(instruction.getOptional(baseName + "s"));
+        final int length = temp1.length + temp2.length;
+        final List<I> ids = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            final String raw = i >= temp1.length ? temp2[i - temp1.length] : temp1[i];
+            try {
+                ids.add(argument.convert(instruction.getPackage(), raw));
+            } catch (final QuestException e) {
+                throw new QuestException("Error while parsing objective " + baseName + "s: " + e.getMessage(), e);
+            }
+        }
+        return ids;
     }
 
     /**
@@ -470,15 +454,6 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
         }
-    }
-
-    /**
-     * Returns whether the objective is global.
-     *
-     * @return true if the objective is global, false otherwise
-     */
-    public boolean isGlobal() {
-        return global;
     }
 
     /**
