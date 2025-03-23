@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * <p>
  * Contains common methods for parsing commands from instructions and holds the server, scheduler and plugin.
  */
-public abstract class BaseCommandEventFactory implements EventFactory {
+public abstract class BaseCommandEventFactory implements PlayerEventFactory {
 
     /**
      * Regex used to detect a conditions statement at the end of the instruction.

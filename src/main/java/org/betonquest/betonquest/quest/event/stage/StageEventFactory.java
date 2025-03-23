@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.stage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -17,7 +17,7 @@ import java.util.Locale;
 /**
  * Factory to create stage events to modify a StageObjective.
  */
-public class StageEventFactory implements EventFactory {
+public class StageEventFactory implements PlayerEventFactory {
 
     /**
      * Quest Type API.
@@ -34,7 +34,7 @@ public class StageEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -45,17 +45,17 @@ public class StageEventFactory implements EventFactory {
         };
     }
 
-    private Event createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
         final VariableString variableString = instruction.get(VariableString::new);
         return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getValue(profile)));
     }
 
-    private Event createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
         final VariableNumber amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, getAmount(profile, amount)));
     }
 
-    private Event createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
         final VariableNumber amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, getAmount(profile, amount)));
     }

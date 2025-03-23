@@ -2,14 +2,14 @@ package org.betonquest.betonquest.api.quest.event.nullable;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 
 /**
- * An adapter to handle both the {@link Event} and {@link StaticEvent} with one
+ * An adapter to handle both the {@link PlayerEvent} and {@link PlayerlessEvent} with one
  * common implementation of the {@link NullableEvent}.
  */
-public final class NullableEventAdapter implements Event, StaticEvent {
+public final class NullableEventAdapter implements PlayerEvent, PlayerlessEvent {
     /**
      * Common null-safe event implementation.
      */
@@ -34,4 +34,3 @@ public final class NullableEventAdapter implements Event, StaticEvent {
         event.execute(null);
     }
 }
-

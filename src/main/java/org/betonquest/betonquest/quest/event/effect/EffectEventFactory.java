@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 /**
  * Factory to create effect events from {@link Instruction}s.
  */
-public class EffectEventFactory implements EventFactory {
+public class EffectEventFactory implements PlayerEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -37,7 +37,7 @@ public class EffectEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final PotionEffectType effect = PotionEffectType.getByName(instruction.next());
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());

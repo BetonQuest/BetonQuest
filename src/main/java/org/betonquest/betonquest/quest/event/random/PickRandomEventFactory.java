@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
-public class PickRandomEventFactory implements EventFactory, StaticEventFactory {
+public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * The percentage character.
      */
@@ -47,12 +47,12 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 

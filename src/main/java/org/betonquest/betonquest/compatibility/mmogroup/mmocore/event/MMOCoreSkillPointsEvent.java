@@ -3,13 +3,13 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Event to add skill points to a player.
  */
-public class MMOCoreSkillPointsEvent implements Event {
+public class MMOCoreSkillPointsEvent implements PlayerEvent {
 
     /**
      * Amount to grant.

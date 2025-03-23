@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link StaticTagEvent}
+ * Test {@link PlayerlessTagEvent}.
  */
 @ExtendWith(MockitoExtension.class)
 class StaticTagEventTest {
@@ -17,7 +17,7 @@ class StaticTagEventTest {
     void testStaticTagEvent(
             @Mock final TagData data,
             @Mock final TagChanger tagChanger) {
-        final StaticTagEvent staticTagEvent = new StaticTagEvent(data, tagChanger);
+        final PlayerlessTagEvent staticTagEvent = new PlayerlessTagEvent(data, tagChanger);
 
         staticTagEvent.execute();
         staticTagEvent.execute();

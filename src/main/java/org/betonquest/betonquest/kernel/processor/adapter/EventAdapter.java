@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for player and playerless events.
  */
-public class EventAdapter extends QuestAdapter<Event, StaticEvent> {
+public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -46,7 +46,7 @@ public class EventAdapter extends QuestAdapter<Event, StaticEvent> {
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public EventAdapter(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Instruction instruction, @Nullable final Event player, @Nullable final StaticEvent playerless) throws QuestException {
+    public EventAdapter(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
         this.questTypeAPI = questTypeAPI;

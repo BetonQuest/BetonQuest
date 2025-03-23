@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConversationID;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Factory for {@link ConversationEvent}.
  */
-public class ConversationEventFactory implements EventFactory {
+public class ConversationEventFactory implements PlayerEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -46,7 +46,7 @@ public class ConversationEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final ConversationID conversationID;
         try {
             conversationID = new ConversationID(instruction.getPackage(), instruction.next());

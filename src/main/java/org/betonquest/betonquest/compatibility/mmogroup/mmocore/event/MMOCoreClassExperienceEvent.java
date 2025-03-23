@@ -4,13 +4,13 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Event to add class experience to a player.
  */
-public class MMOCoreClassExperienceEvent implements Event {
+public class MMOCoreClassExperienceEvent implements PlayerEvent {
 
     /**
      * Amount to grant.

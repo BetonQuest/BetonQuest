@@ -53,7 +53,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action add could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action add could not be created");
     }
 
     @Test
@@ -62,7 +62,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action add could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action add could not be created");
     }
 
     @Test
@@ -71,7 +71,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add");
-        assertThrows(QuestException.class, () -> tagFactory.parseEvent(instruction), "globaltag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -80,7 +80,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action delete could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
@@ -89,7 +89,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action delete could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
@@ -98,7 +98,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete");
-        assertThrows(QuestException.class, () -> tagFactory.parseEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -107,7 +107,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action del could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action del could not be created");
     }
 
     @Test
@@ -116,7 +116,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseEvent(instruction), "globaltag event action del could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "globaltag event action del could not be created");
     }
 
     @Test
@@ -125,7 +125,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del");
-        assertThrows(QuestException.class, () -> tagFactory.parseEvent(instruction), "globaltag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -134,7 +134,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag invalid tag-1,tag-2");
-        assertThrows(QuestException.class, () -> tagFactory.parseEvent(instruction), "globaltag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "globaltag event action invalid should throw an exception when created");
     }
 
     @Test
@@ -143,7 +143,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action add could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action add could not be created");
     }
 
     @Test
@@ -152,7 +152,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action add could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action add could not be created");
     }
 
     @Test
@@ -161,7 +161,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag add");
-        assertThrows(QuestException.class, () -> tagFactory.parseStaticEvent(instruction), "globaltag event action add without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag event action add without tags should throw an exception when created");
     }
 
     @Test
@@ -170,7 +170,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action delete could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
@@ -179,7 +179,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action delete could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action delete could not be created");
     }
 
     @Test
@@ -188,7 +188,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag delete");
-        assertThrows(QuestException.class, () -> tagFactory.parseStaticEvent(instruction), "globaltag event action delete without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag event action delete without tags should throw an exception when created");
     }
 
     @Test
@@ -197,7 +197,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1,tag-2,tag-3");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action del could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action del could not be created");
     }
 
     @Test
@@ -206,7 +206,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del tag-1");
-        assertDoesNotThrow(() -> tagFactory.parseStaticEvent(instruction), "globaltag event action del could not be created");
+        assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "globaltag event action del could not be created");
     }
 
     @Test
@@ -215,7 +215,7 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag del");
-        assertThrows(QuestException.class, () -> tagFactory.parseStaticEvent(instruction), "globaltag event action del without tags should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag event action del without tags should throw an exception when created");
     }
 
     @Test
@@ -224,6 +224,6 @@ class TagGlobalEventFactoryIntegrationTest {
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "globaltag invalid tag-1,tag-2");
-        assertThrows(QuestException.class, () -> tagFactory.parseStaticEvent(instruction), "globaltag event action invalid should throw an exception when created");
+        assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "globaltag event action invalid should throw an exception when created");
     }
 }

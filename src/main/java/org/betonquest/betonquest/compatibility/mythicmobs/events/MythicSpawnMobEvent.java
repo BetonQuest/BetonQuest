@@ -7,8 +7,8 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * Spawns MythicMobs mobs.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class MythicSpawnMobEvent implements Event, StaticEvent {
+public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
     private final BukkitAPIHelper apiHelper;
 
     private final VariableLocation loc;

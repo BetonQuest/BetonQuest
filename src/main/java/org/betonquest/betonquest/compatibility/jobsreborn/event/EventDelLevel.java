@@ -4,14 +4,14 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Event to reduce job level.
  */
-public class EventDelLevel implements Event {
+public class EventDelLevel implements PlayerEvent {
     /**
      * Job to add experience to.
      */

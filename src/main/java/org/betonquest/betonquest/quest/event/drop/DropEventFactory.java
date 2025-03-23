@@ -4,27 +4,27 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
 /**
- * Factory to create {@link Event}s that drop items from instructions.
+ * Factory to create {@link DropEvent}s for items from {@link Instruction}s.
  */
-public class DropEventFactory implements EventFactory, StaticEventFactory {
+public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * The profile provider instance.
      */
@@ -47,19 +47,19 @@ public class DropEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createDropEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadStaticEvent(createStaticDropEvent(instruction), data);
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+        return new PrimaryServerThreadPlayerlessEvent(createStaticDropEvent(instruction), data);
     }
 
-    private StaticEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
+    private PlayerlessEvent createStaticDropEvent(final Instruction instruction) throws QuestException {
         final NullableEventAdapter dropEvent = createDropEvent(instruction);
         if (!instruction.hasArgument("location")) {
-            return new OnlineProfileGroupStaticEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
+            return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, dropEvent);
         }
         return dropEvent;
     }

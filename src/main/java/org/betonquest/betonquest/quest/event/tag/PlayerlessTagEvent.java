@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.tag;
 
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.database.TagData;
 
 /**
  * The static tag event, doing what was defined in its instruction.
  */
-public class StaticTagEvent implements StaticEvent {
+public class PlayerlessTagEvent implements PlayerlessEvent {
 
     /**
      * Static tagData that shall be tagged.
@@ -24,7 +24,7 @@ public class StaticTagEvent implements StaticEvent {
      * @param tagData    Static tagData that shall be tagged.
      * @param tagChanger changes the defined tags
      */
-    public StaticTagEvent(final TagData tagData, final TagChanger tagChanger) {
+    public PlayerlessTagEvent(final TagData tagData, final TagChanger tagChanger) {
 
         this.tagData = tagData;
         this.tagChanger = tagChanger;

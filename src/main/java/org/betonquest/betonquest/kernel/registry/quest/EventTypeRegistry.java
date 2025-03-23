@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapterFactory;
 import org.betonquest.betonquest.kernel.registry.QuestTypeRegistry;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores the event types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, EventAdapter> {
+public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, PlayerlessEvent, EventAdapter> {
 
     /**
      * Logger factory to create class specific logger for quest type factories.
@@ -43,8 +43,8 @@ public class EventTypeRegistry extends QuestTypeRegistry<Event, StaticEvent, Eve
 
     @Override
     protected TypeFactory<EventAdapter> getFactoryAdapter(
-            @Nullable final PlayerQuestFactory<Event> playerFactory,
-            @Nullable final PlayerlessQuestFactory<StaticEvent> playerlessFactory) {
+            @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
+            @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
         return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeAPI(), playerFactory, playerlessFactory);
     }
 }

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.quest.variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
- * Interface for "static" quest-variables.
- * It represents the "static" variable as described in the BetonQuest user documentation.
+ * Interface for playerless quest-variables.
+ * It represents the playerless variable as described in the BetonQuest user documentation.
  * For the normal variable variant see {@link PlayerVariable}.
  */
 public interface PlayerlessVariable {

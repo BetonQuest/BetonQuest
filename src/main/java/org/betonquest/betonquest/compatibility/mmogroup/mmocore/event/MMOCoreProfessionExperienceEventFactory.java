@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory to create {@link MMOCoreProfessionExperienceEvent}s from {@link Instruction}s.
  */
-public class MMOCoreProfessionExperienceEventFactory implements EventFactory {
+public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFactory {
 
     /**
      * Data for primary server thread access.
@@ -30,7 +30,7 @@ public class MMOCoreProfessionExperienceEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String professionName = instruction.next();
         final Profession profession;
         if (MMOCore.plugin.professionManager.has(professionName)) {

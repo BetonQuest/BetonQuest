@@ -2,13 +2,13 @@ package org.betonquest.betonquest.quest.event.language;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
  * Changes player's language.
  */
-public class LanguageEvent implements Event {
+public class LanguageEvent implements PlayerEvent {
 
     /**
      * The language to set.

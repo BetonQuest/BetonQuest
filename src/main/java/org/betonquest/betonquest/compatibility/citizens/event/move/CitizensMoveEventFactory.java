@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Factory for {@link CitizensMoveEvent} from the {@link Instruction}.
  */
-public class CitizensMoveEventFactory implements EventFactory {
+public class CitizensMoveEventFactory implements PlayerEventFactory {
     /**
      * Data to use for syncing to the primary server thread.
      */
@@ -38,7 +38,7 @@ public class CitizensMoveEventFactory implements EventFactory {
 
     @Override
     @SuppressWarnings("PMD.PrematureDeclaration")
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
         final List<VariableLocation> locations = instruction.getList(VariableLocation::new);
         if (locations.isEmpty()) {

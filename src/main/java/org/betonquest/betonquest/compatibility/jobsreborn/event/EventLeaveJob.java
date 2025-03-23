@@ -3,13 +3,13 @@ package org.betonquest.betonquest.compatibility.jobsreborn.event;
 import com.gamingmesh.jobs.Jobs;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 
 /**
  * Event to leave a job.
  */
-public class EventLeaveJob implements Event {
+public class EventLeaveJob implements PlayerEvent {
 
     /**
      * Job to join.

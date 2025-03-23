@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 /**
  * Factory to create {@link QuestsEvent}s from {@link Instruction}s.
  */
-public class QuestsEventFactory implements EventFactory {
+public class QuestsEventFactory implements PlayerEventFactory {
 
     /**
      * Used Quests instance.
@@ -36,7 +36,7 @@ public class QuestsEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final VariableString name = instruction.get(VariableString::new);
         final boolean override = instruction.hasArgument("check-requirements");
         return new PrimaryServerThreadEvent(new QuestsEvent(quests, name, override), data);

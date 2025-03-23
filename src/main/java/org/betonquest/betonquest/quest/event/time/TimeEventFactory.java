@@ -5,18 +5,18 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
+import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Factory to create time events from {@link Instruction}s.
  */
-public class TimeEventFactory implements EventFactory, StaticEventFactory {
+public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * Server to use for fetching worlds.
      */
@@ -55,16 +55,16 @@ public class TimeEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createTimeEvent(instruction), data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         if (instruction.copy().getOptional("world") == null) {
-            return new DoNothingStaticEvent();
+            return new DoNothingPlayerlessEvent();
         } else {
-            return new PrimaryServerThreadStaticEvent(createTimeEvent(instruction), data);
+            return new PrimaryServerThreadPlayerlessEvent(createTimeEvent(instruction), data);
         }
     }
 

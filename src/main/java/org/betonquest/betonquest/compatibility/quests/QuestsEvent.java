@@ -4,13 +4,13 @@ import me.pikamug.quests.Quests;
 import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Starts a quests in Quests plugin.
  */
-public class QuestsEvent implements Event {
+public class QuestsEvent implements PlayerEvent {
 
     /**
      * Quests instance.

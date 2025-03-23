@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.compatibility.citizens.event.move;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 
 /**
  * Factory for {@link CitizensStopEvent} from the {@link Instruction}.
  */
-public class CitizensStopEventFactory implements StaticEventFactory {
+public class CitizensStopEventFactory implements PlayerlessEventFactory {
     /**
      * Required data for executing on the main thread.
      */
@@ -33,8 +33,8 @@ public class CitizensStopEventFactory implements StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final int npcId = instruction.getInt();
-        return new PrimaryServerThreadStaticEvent(new CitizensStopEvent(npcId, citizensMoveController), primaryServerThreadData);
+        return new PrimaryServerThreadPlayerlessEvent(new CitizensStopEvent(npcId, citizensMoveController), primaryServerThreadData);
     }
 }

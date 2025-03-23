@@ -5,18 +5,18 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.api.quest.event.StaticEvent;
-import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
+import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.PrimaryServerThreadStaticEvent;
+import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Factory to create weather events from {@link Instruction}s.
  */
-public class WeatherEventFactory implements EventFactory, StaticEventFactory {
+public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
      * Logger factory to create a logger for events.
      */
@@ -47,27 +47,27 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
-        final Event weatherEvent = parseWeatherEvent(instruction);
-        final Event event;
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+        final PlayerEvent weatherPlayerEvent = parseWeatherEvent(instruction);
+        final PlayerEvent playerEvent;
         if (requiresPlayer(instruction)) {
-            event = new OnlineEventAdapter(
-                    weatherEvent::execute,
+            playerEvent = new OnlineEventAdapter(
+                    weatherPlayerEvent::execute,
                     loggerFactory.create(WeatherEvent.class),
                     instruction.getPackage()
             );
         } else {
-            event = weatherEvent;
+            playerEvent = weatherPlayerEvent;
         }
-        return new PrimaryServerThreadEvent(event, data);
+        return new PrimaryServerThreadEvent(playerEvent, data);
     }
 
     @Override
-    public StaticEvent parseStaticEvent(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         if (requiresPlayer(instruction)) {
-            return new DoNothingStaticEvent();
+            return new DoNothingPlayerlessEvent();
         } else {
-            return new PrimaryServerThreadStaticEvent(parseWeatherEvent(instruction), data);
+            return new PrimaryServerThreadPlayerlessEvent(parseWeatherEvent(instruction), data);
         }
     }
 

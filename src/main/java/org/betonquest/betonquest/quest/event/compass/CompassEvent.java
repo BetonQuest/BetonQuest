@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
@@ -18,7 +18,7 @@ import org.bukkit.plugin.PluginManager;
 /**
  * Event to set a compass target and manage compass points.
  */
-public class CompassEvent implements Event {
+public class CompassEvent implements PlayerEvent {
     /**
      * Feature API.
      */

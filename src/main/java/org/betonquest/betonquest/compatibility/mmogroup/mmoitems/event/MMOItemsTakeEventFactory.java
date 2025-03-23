@@ -4,7 +4,7 @@ import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -32,7 +32,7 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(MMOItemsTakeEvent.class);
         final List<CheckType> checkOrder = getCheckOrder(instruction);
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());

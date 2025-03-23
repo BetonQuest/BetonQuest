@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.variable;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.api.quest.event.Event;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 /**
  * Factory to create variable events from {@link Instruction}s.
  */
-public class VariableEventFactory implements EventFactory {
+public class VariableEventFactory implements PlayerEventFactory {
 
     /**
      * Quest Type API.
@@ -29,7 +29,7 @@ public class VariableEventFactory implements EventFactory {
     }
 
     @Override
-    public Event parseEvent(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
         final VariableString key = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
         final VariableString value = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);

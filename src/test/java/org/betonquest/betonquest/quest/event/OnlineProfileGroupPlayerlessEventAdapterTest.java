@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,21 +19,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link OnlineProfileGroupStaticEventAdapter}.
+ * Test {@link OnlineProfileGroupPlayerlessEventAdapter}.
  */
 @ExtendWith(MockitoExtension.class)
-class OnlineProfileGroupStaticEventAdapterTest {
+class OnlineProfileGroupPlayerlessEventAdapterTest {
 
     /**
      * Internal non-static event mock that is adapted to a static event by the tested class.
      */
     @Mock
-    private Event internalEvent;
+    private PlayerEvent internalPlayerEvent;
 
     /**
      * Create test class instance.
      */
-    public OnlineProfileGroupStaticEventAdapterTest() {
+    public OnlineProfileGroupPlayerlessEventAdapterTest() {
     }
 
     private static Stream<List<OnlineProfile>> playerListSource() {
@@ -52,11 +52,11 @@ class OnlineProfileGroupStaticEventAdapterTest {
     @EmptySource
     @MethodSource("playerListSource")
     void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
-        final OnlineProfileGroupStaticEventAdapter subject = new OnlineProfileGroupStaticEventAdapter(() -> onlineProfileList, internalEvent);
+        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(() -> onlineProfileList, internalPlayerEvent);
         subject.execute();
 
         verifyExecutedOnceForPlayers(onlineProfileList);
-        verifyNoMoreInteractions(internalEvent);
+        verifyNoMoreInteractions(internalPlayerEvent);
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -68,7 +68,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
                 firstExecution, secondExecution
         ).iterator();
 
-        final OnlineProfileGroupStaticEventAdapter subject = new OnlineProfileGroupStaticEventAdapter(playerListsForSupplier::next, internalEvent);
+        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(playerListsForSupplier::next, internalPlayerEvent);
         subject.execute();
         verifyExecutedOnceForPlayers(firstExecution);
         verifyNotExecutedForPlayers(secondExecution);
@@ -88,24 +88,24 @@ class OnlineProfileGroupStaticEventAdapterTest {
         final OnlineProfile failingProfile = playerList.get(1);
         final Exception eventFailureException = new QuestException("test exception");
 
-        doNothing().when(internalEvent).execute(firstProfile);
-        doThrow(eventFailureException).when(internalEvent).execute(failingProfile);
+        doNothing().when(internalPlayerEvent).execute(firstProfile);
+        doThrow(eventFailureException).when(internalPlayerEvent).execute(failingProfile);
 
-        final OnlineProfileGroupStaticEventAdapter subject = new OnlineProfileGroupStaticEventAdapter(() -> playerList, internalEvent);
+        final OnlineProfileGroupPlayerlessEventAdapter subject = new OnlineProfileGroupPlayerlessEventAdapter(() -> playerList, internalPlayerEvent);
         assertThrows(QuestException.class, subject::execute);
-        verify(internalEvent).execute(firstProfile);
-        verify(internalEvent, never()).execute(playerList.get(2));
+        verify(internalPlayerEvent).execute(firstProfile);
+        verify(internalPlayerEvent, never()).execute(playerList.get(2));
     }
 
     private void verifyExecutedOnceForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
-            verify(internalEvent).execute(onlineProfile);
+            verify(internalPlayerEvent).execute(onlineProfile);
         }
     }
 
     private void verifyNotExecutedForPlayers(final Iterable<OnlineProfile> onlineProfilesList) throws QuestException {
         for (final OnlineProfile onlineProfile : onlineProfilesList) {
-            verify(internalEvent, never()).execute(onlineProfile);
+            verify(internalPlayerEvent, never()).execute(onlineProfile);
         }
     }
 }

@@ -5,13 +5,13 @@ import net.Indyuce.mmocore.experience.EXPSource;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Event to add profession experience to a player.
  */
-public class MMOCoreProfessionExperienceEvent implements Event {
+public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
 
     /**
      * Profession to add experience to.
