@@ -247,7 +247,7 @@ Requires the player to catch something with the fishing rod. It doesn't have to 
 
 | Parameter       | Syntax                                                                 | Default Value          | Explanation                                                                                                            |
 |-----------------|------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
-| _item_          | [Block Selector](../Data-Formats.md#block-selectors)                   | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
+| _Item_          | [Quest Item](../../Features/Items.md)                                  | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
 | _amount_        | Any Number                                                             | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
 | _notifications_ | notify:number                                                          | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
 | _hookLocation_  | hookLocation:[Location](../Data-Formats.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
