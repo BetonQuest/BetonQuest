@@ -440,7 +440,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         log.debug("Purging player " + args[1]);
-        playerData.purgePlayer();
+        playerData.purgePlayer(pluginMessage);
         // done
         sendMessage(sender, "purged",
                 new PluginMessage.Replacement("player", args[1]));
@@ -485,7 +485,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return dataStorage.get(profile);
         } else {
             log.debug("Profile is offline, loading his data");
-            return new PlayerData(pluginMessage, profile);
+            return new PlayerData(profile);
         }
     }
 
@@ -497,7 +497,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (playerData == null) {
             return;
         }
-        final Journal journal = playerData.getJournal();
+        final Journal journal = playerData.getJournal(pluginMessage);
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
@@ -1033,7 +1033,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             playerData = dataStorage.get(profile);
         } else {
             log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(pluginMessage, profile);
+            playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -1257,7 +1257,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 instance.getFeatureAPI().renameJournalEntry(oldEntryID, newEntryID);
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal();
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
                     final List<Pointer> journalPointers = new ArrayList<>();
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(oldEntryID)) {
@@ -1359,7 +1359,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal();
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
                     int count = 0;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(entryID)) {

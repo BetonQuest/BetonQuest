@@ -359,7 +359,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeAPI));
         eventTypes.registerCombined("first", new FirstEventFactory(questTypeAPI));
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
-        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, data));
+        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, pluginMessage, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
@@ -375,8 +375,7 @@ public class CoreQuestTypes {
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider));
         eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureAPI(), data));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI,
-                pluginMessage));
+        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeAPI, profileProvider));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeAPI));

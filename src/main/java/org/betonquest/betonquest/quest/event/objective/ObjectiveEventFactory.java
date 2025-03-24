@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 
@@ -37,24 +36,17 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     private final QuestTypeAPI questTypeAPI;
 
     /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Creates a new factory for {@link ObjectiveEvent}s.
      *
      * @param betonQuest    the BetonQuest instance
      * @param loggerFactory the logger factory
      * @param questTypeAPI  the Quest Type API
-     * @param pluginMessage the {@link PluginMessage} instance
      */
     public ObjectiveEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                                 final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage) {
+                                 final QuestTypeAPI questTypeAPI) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
-        this.pluginMessage = pluginMessage;
     }
 
     @Override
@@ -71,6 +63,6 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
         final String action = instruction.next().toLowerCase(Locale.ROOT);
         final List<ObjectiveID> objectives = instruction.getIDList(ObjectiveID::new);
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
-                pluginMessage, questTypeAPI, instruction.getPackage(), objectives, action));
+                questTypeAPI, instruction.getPackage(), objectives, action));
     }
 }

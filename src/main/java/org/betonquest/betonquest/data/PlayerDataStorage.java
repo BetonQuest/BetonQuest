@@ -28,11 +28,6 @@ public class PlayerDataStorage {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Objective processor to start (global) objectives.
      */
     private final ObjectiveProcessor objectives;
@@ -47,13 +42,11 @@ public class PlayerDataStorage {
      *
      * @param loggerFactory the logger factory to use in Conversation Resumer
      * @param log           the logger for debug messages
-     * @param pluginMessage the {@link PluginMessage} instance
      * @param objectives    the objective processor to start (global) objectives
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final PluginMessage pluginMessage, final ObjectiveProcessor objectives) {
+    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ObjectiveProcessor objectives) {
         this.loggerFactory = loggerFactory;
         this.log = log;
-        this.pluginMessage = pluginMessage;
         this.objectives = objectives;
     }
 
@@ -61,13 +54,14 @@ public class PlayerDataStorage {
      * Creates PlayerData for the online profiles, stores them and starts their objectives.
      *
      * @param onlineProfiles the profiles to initialize
+     * @param pluginMessage  the plugin message for journals and conversations
      */
-    public void initProfiles(final Collection<OnlineProfile> onlineProfiles) {
+    public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
-            final PlayerData playerData = new PlayerData(pluginMessage, onlineProfile);
+            final PlayerData playerData = new PlayerData(onlineProfile);
             put(onlineProfile, playerData);
             playerData.startObjectives();
-            playerData.getJournal().update();
+            playerData.getJournal(pluginMessage).update();
             if (playerData.getActiveConversation() != null) {
                 new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());
             }
@@ -87,13 +81,14 @@ public class PlayerDataStorage {
      * Start global objectives and update journals.
      *
      * @param onlineProfiles the profiles to update
+     * @param pluginMessage  the plugin message to generate new journals
      */
-    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles) {
+    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             log.debug("Updating global objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
             objectives.startAll(onlineProfile, this);
-            playerData.getJournal().update();
+            playerData.getJournal(pluginMessage).update();
         }
     }
 
@@ -132,7 +127,7 @@ public class PlayerDataStorage {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null) {
             if (profile.getOnlineProfile().isPresent()) {
-                playerData = new PlayerData(pluginMessage, profile);
+                playerData = new PlayerData(profile);
                 put(profile, playerData);
             } else {
                 throw new IllegalArgumentException("The profile has no online player!");
@@ -153,7 +148,7 @@ public class PlayerDataStorage {
         if (profile.getOnlineProfile().isPresent()) {
             return get(profile);
         }
-        return new PlayerData(pluginMessage, profile);
+        return new PlayerData(profile);
     }
 
     /**

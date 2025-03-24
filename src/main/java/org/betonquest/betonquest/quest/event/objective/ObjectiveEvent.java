@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -30,11 +29,6 @@ public class ObjectiveEvent implements NullableEvent {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
 
     /**
      * The quest package.
@@ -64,19 +58,17 @@ public class ObjectiveEvent implements NullableEvent {
     /**
      * Creates a new ObjectiveEvent.
      *
-     * @param betonQuest    the BetonQuest instance
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param questTypeAPI  the class for starting objectives
-     * @param log           the logger
-     * @param questPackage  the quest package of the instruction
-     * @param objectives    the objectives to affect
-     * @param action        the action to do with the objectives
+     * @param betonQuest   the BetonQuest instance
+     * @param questTypeAPI the class for starting objectives
+     * @param log          the logger
+     * @param questPackage the quest package of the instruction
+     * @param objectives   the objectives to affect
+     * @param action       the action to do with the objectives
      * @throws QuestException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
+    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
                           final QuestPackage questPackage, final List<ObjectiveID> objectives, final String action) throws QuestException {
         this.log = log;
-        this.pluginMessage = pluginMessage;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;
         this.objectives = objectives;
@@ -124,7 +116,7 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void handleForOfflinePlayer(final Profile profile, final ObjectiveID objectiveID) {
         Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
-            final PlayerData playerData = new PlayerData(pluginMessage, profile);
+            final PlayerData playerData = new PlayerData(profile);
             switch (action.toLowerCase(Locale.ROOT)) {
                 case "start", "add" -> playerData.addNewRawObjective(objectiveID);
                 case "complete", "finish" ->

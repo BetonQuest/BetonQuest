@@ -167,7 +167,7 @@ public class QuestCanceler {
 
     private void removeEntries(final PlayerData playerData) {
         if (data.journal != null) {
-            final Journal journal = playerData.getJournal();
+            final Journal journal = playerData.getJournal(pluginMessage);
             for (final JournalEntryID entry : data.journal) {
                 log.debug(pack, "  Removing journal entry " + entry);
                 journal.removePointer(entry);
