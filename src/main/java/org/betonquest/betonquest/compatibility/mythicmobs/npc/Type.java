@@ -101,7 +101,7 @@ public enum Type {
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(mob -> mob.getType().equals(type));
             if (activeMobs.isEmpty()) {
-                throw new QuestException("Could not find MythicMob for type '" + type + "'");
+                return new WrappingMMNpcAdapter(type);
             }
             final int one = 1;
             if (activeMobs.size() != one) {
