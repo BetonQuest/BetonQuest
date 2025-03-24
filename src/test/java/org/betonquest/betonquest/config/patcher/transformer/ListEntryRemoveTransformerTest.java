@@ -19,19 +19,19 @@ class ListEntryRemoveTransformerTest extends TransformersFixture {
 
     @Test
     void flawless() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("key", "section.myList", "entry", "removedEntry"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("key", "section.myList", "entry", "removedEntry"), config);
         value.remove("removedEntry");
-        assertEquals(value, CONFIG.get("section.myList"), "The list entry was not removed.");
+        assertEquals(value, config.get("section.myList"), "The list entry was not removed.");
     }
 
     @Test
     void throws_exception_on_invalid() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid", "entry", "removedEntry"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid", "entry", "removedEntry"), config));
     }
 
     @Test
     void throws_exception_on_no_matching_entry() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.myList", "entry", "invalidEntry"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.myList", "entry", "invalidEntry"), config));
     }
 }

@@ -18,7 +18,7 @@ class SetTransformerTest extends TransformersFixture {
 
     @Test
     void flawless() throws PatchException {
-        TRANSFORMER.transform(Map.of("key", "journalLock", "value", "true"), CONFIG);
-        assertEquals("true", CONFIG.get("journalLock"), "The value was not set.");
+        TRANSFORMER.transform(Map.of("key", "journalLock", "value", "true"), config);
+        assertEquals("true", config.get("journalLock"), "The value was not set.");
     }
 }

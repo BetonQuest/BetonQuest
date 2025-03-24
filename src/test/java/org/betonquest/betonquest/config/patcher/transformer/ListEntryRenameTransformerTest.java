@@ -19,19 +19,19 @@ class ListEntryRenameTransformerTest extends TransformersFixture {
 
     @Test
     void flawless() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("key", "section.myList", "oldEntryRegex", "currentEntry", "newEntry", "newEntry"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("key", "section.myList", "oldEntryRegex", "currentEntry", "newEntry", "newEntry"), config);
         value.replaceAll(s -> s.replaceAll("currentEntry", "newEntry"));
-        assertEquals(value, CONFIG.get("section.myList"), "The list entry was not renamed.");
+        assertEquals(value, config.get("section.myList"), "The list entry was not renamed.");
     }
 
     @Test
     void throws_exception_on_invalid() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid", "oldEntryRegex", "currentEntry", "newEntry", "newEntry"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid", "oldEntryRegex", "currentEntry", "newEntry", "newEntry"), config));
     }
 
     @Test
     void throws_exception_on_no_matching_regex() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.myList", "oldEntryRegex", "invalidRegex", "newEntry", "newEntry"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.myList", "oldEntryRegex", "invalidRegex", "newEntry", "newEntry"), config));
     }
 }

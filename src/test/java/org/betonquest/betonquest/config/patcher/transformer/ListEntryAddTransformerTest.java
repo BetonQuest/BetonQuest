@@ -19,38 +19,38 @@ class ListEntryAddTransformerTest extends TransformersFixture {
 
     @Test
     void flawless_add_default() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry"), config);
         value.add("newEntry");
-        assertEquals(value, CONFIG.getStringList("section.myList"), "The list entry was not added.");
+        assertEquals(value, config.getStringList("section.myList"), "The list entry was not added.");
     }
 
     @Test
     void flawless_add_last() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "LAST"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "LAST"), config);
         value.add("newEntry");
-        assertEquals(value, CONFIG.getStringList("section.myList"), "The list entry was not added.");
+        assertEquals(value, config.getStringList("section.myList"), "The list entry was not added.");
     }
 
     @Test
     void flawless_add_first() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "FIRST"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "FIRST"), config);
         value.add(0, "newEntry");
-        assertEquals(value, CONFIG.getStringList("section.myList"), "The list entry was not added.");
+        assertEquals(value, config.getStringList("section.myList"), "The list entry was not added.");
     }
 
     @Test
     void flawless_add_invalid_position() throws PatchException {
-        final List<String> value = CONFIG.getStringList("section.myList");
-        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "rubbish"), CONFIG);
+        final List<String> value = config.getStringList("section.myList");
+        TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.myList", "entry", "newEntry", "position", "rubbish"), config);
         value.add("newEntry");
-        assertEquals(value, CONFIG.getStringList("section.myList"), "The list entry was not added.");
+        assertEquals(value, config.getStringList("section.myList"), "The list entry was not added.");
     }
 
     @Test
     void throws_exception_on_invalid() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.invalid", "entry", "newEntry"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("type", "LIST_ENTRY_ADD", "key", "section.invalid", "entry", "newEntry"), config));
     }
 }
