@@ -39,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidSynchronizedStatement",
         "PMD.CouplingBetweenObjects"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
-public class PlayerData implements TagData {
+public class PlayerData implements TagData, PointData {
     /**
      * The default language key.
      */
@@ -84,6 +84,9 @@ public class PlayerData implements TagData {
     @Nullable
     private PlayerConversationState activeConversation;
 
+    /**
+     * The language for the profile.
+     */
     private String profileLanguage = DEFAULT_LANGUAGE_KEY;
 
     /**
@@ -104,10 +107,8 @@ public class PlayerData implements TagData {
     /**
      * Loads all data for the profile and puts it in appropriate lists.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidDuplicateLiterals"})
     public final void loadAllPlayerData() {
         try {
-
             final Connector con = new Connector();
 
             try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileID);
@@ -206,32 +207,16 @@ public class PlayerData implements TagData {
         backpack.add(item);
     }
 
-    /**
-     * Returns the List of Tags for this profile.
-     *
-     * @return the List of Tags
-     */
     @Override
     public List<String> getTags() {
         return Collections.unmodifiableList(tags);
     }
 
-    /**
-     * Checks if the profile has specified tag.
-     *
-     * @param tag tag to check
-     * @return true if the player has this tag
-     */
     @Override
     public boolean hasTag(final String tag) {
         return tags.contains(tag);
     }
 
-    /**
-     * Adds the specified tag to profile's list. It won't double it, however.
-     *
-     * @param tag tag to add
-     */
     @Override
     public void addTag(final String tag) {
         synchronized (tags) {
@@ -244,12 +229,6 @@ public class PlayerData implements TagData {
         }
     }
 
-    /**
-     * Removes the specified tag from profile's list. If there is no tag, nothing
-     * happens.
-     *
-     * @param tag tag to remove
-     */
     @Override
     public void removeTag(final String tag) {
         synchronized (tags) {
@@ -262,21 +241,12 @@ public class PlayerData implements TagData {
         }
     }
 
-    /**
-     * Returns the List of Points for this profile.
-     *
-     * @return the List of Points
-     */
+    @Override
     public List<Point> getPoints() {
         return Collections.unmodifiableList(points);
     }
 
-    /**
-     * Returns the amount of point the profile has in specified category.
-     *
-     * @param category name of the category
-     * @return amount of points
-     */
+    @Override
     public Optional<Integer> getPointsFromCategory(final String category) {
         synchronized (points) {
             for (final Point p : points) {
@@ -288,13 +258,7 @@ public class PlayerData implements TagData {
         }
     }
 
-    /**
-     * Adds or subtracts points to/from specified category. If there is no such category it will
-     * be created.
-     *
-     * @param category points will be added to this category
-     * @param count    how much points will be added (or subtracted if negative)
-     */
+    @Override
     public void modifyPoints(final String category, final int count) {
         synchronized (points) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
@@ -316,13 +280,7 @@ public class PlayerData implements TagData {
         }
     }
 
-    /**
-     * Sets the amount of points in specified category. If there is no such category it will be
-     * created.
-     *
-     * @param category points will be added to this category
-     * @param count    how much points will be set
-     */
+    @Override
     public void setPoints(final String category, final int count) {
         synchronized (points) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
@@ -333,11 +291,7 @@ public class PlayerData implements TagData {
         }
     }
 
-    /**
-     * Removes the whole category of points.
-     *
-     * @param category name of a point category
-     */
+    @Override
     public void removePointsCategory(final String category) {
         synchronized (points) {
             Point pointToRemove = null;
@@ -386,8 +340,9 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * @return the map containing objective IDs and their objective data; these
-     * are not initialized yet
+     * Get the not initialized objectives.
+     *
+     * @return the map containing objective IDs and their objective data;
      */
     public Map<String, String> getRawObjectives() {
         return objectives;
@@ -477,7 +432,9 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * @return a list of the profiles journal entries
+     * Get the journal entries.
+     *
+     * @return an unmodifiable list of the profiles journal entries
      */
     public List<Pointer> getEntries() {
         return Collections.unmodifiableList(entries);
@@ -571,8 +528,9 @@ public class PlayerData implements TagData {
     }
 
     /**
-     * @return the id of a conversation if the profile has an active one or
-     * null.
+     * Get conversation id if the profile has an active one or null.
+     *
+     * @return the id of active conversation
      */
     @Nullable
     public PlayerConversationState getActiveConversation() {
