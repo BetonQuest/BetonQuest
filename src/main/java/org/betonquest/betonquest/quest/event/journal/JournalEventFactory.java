@@ -55,18 +55,19 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     private final Saver saver;
 
     /**
-     * The current active profile provider instance
+     * The current active profile provider instance.
      */
     private final ProfileProvider profileProvider;
 
     /**
      * Create the journal event factory.
      *
-     * @param loggerFactory logger factory to use
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param dataStorage   storage for used player data
-     * @param instantSource instant source to pass on
-     * @param saver         database saver to use
+     * @param loggerFactory   logger factory to use
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param dataStorage     storage for used player data
+     * @param instantSource   instant source to pass on
+     * @param saver           database saver to use
+     * @param profileProvider the profile provider
      */
     public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
@@ -102,7 +103,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final JournalEntryID entryID = instruction.getID(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
@@ -110,13 +111,13 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
-        return new JournalEvent(dataStorage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
     }
 
     private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {

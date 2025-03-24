@@ -56,11 +56,6 @@ public class PlayerData implements TagData, PointData {
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver;
 
-    /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
-
     private final Profile profile;
 
     private final String profileID;
@@ -92,13 +87,11 @@ public class PlayerData implements TagData, PointData {
     /**
      * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param profile       the profile to load the data for
+     * @param profile the profile to load the data for
      */
-    public PlayerData(final PluginMessage pluginMessage, final Profile profile) {
+    public PlayerData(final Profile profile) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.saver = BetonQuest.getInstance().getSaver();
-        this.pluginMessage = pluginMessage;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
         loadAllPlayerData();
@@ -311,9 +304,10 @@ public class PlayerData implements TagData, PointData {
     /**
      * Returns a Journal instance or creates it if it does not exist.
      *
-     * @return new Journal instance
+     * @param pluginMessage the plugin message to generate a new journal
+     * @return possible new Journal instance
      */
-    public Journal getJournal() {
+    public Journal getJournal(final PluginMessage pluginMessage) {
         if (journal == null) {
             journal = new Journal(pluginMessage, profile, entries, BetonQuest.getInstance().getPluginConfig());
         }
@@ -539,8 +533,10 @@ public class PlayerData implements TagData, PointData {
 
     /**
      * Purges all profile's data from the database and from this object.
+     *
+     * @param pluginMessage the plugin message to generate a new journal
      */
-    public void purgePlayer() {
+    public void purgePlayer(final PluginMessage pluginMessage) {
         for (final Objective obj : BetonQuest.getInstance().getQuestTypeAPI().getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
@@ -549,7 +545,9 @@ public class PlayerData implements TagData, PointData {
         tags.clear();
         points.clear();
         entries.clear();
-        getJournal().clear(); // journal can be null, so use a method to get it
+        if (journal != null) {
+            journal.clear();
+        }
         backpack.clear();
         // clear the database
         saver.add(new Record(UpdateType.DELETE_OBJECTIVES, profileID));
@@ -560,7 +558,7 @@ public class PlayerData implements TagData, PointData {
         saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         // update the journal so it's empty
         if (profile.getOnlineProfile().isPresent()) {
-            getJournal().update();
+            getJournal(pluginMessage).update();
         }
     }
 

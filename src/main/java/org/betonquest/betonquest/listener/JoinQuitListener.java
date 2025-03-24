@@ -81,7 +81,7 @@ public class JoinQuitListener implements Listener {
             return;
         }
         final Profile profile = profileProvider.getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
-        playerDataStorage.put(profile, new PlayerData(pluginMessage, profile));
+        playerDataStorage.put(profile, new PlayerData(profile));
     }
 
     /**
@@ -98,7 +98,7 @@ public class JoinQuitListener implements Listener {
         checkResourcepack(event, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
-            playerData.getJournal().update();
+            playerData.getJournal(pluginMessage).update();
         }
         if (playerData.getActiveConversation() != null) {
             new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());

@@ -248,7 +248,7 @@ public class Backpack implements Listener {
             this.showJournal = showJournalInBackpack && !Journal.hasJournal(onlineProfile);
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
-                backpackItems.add(0, playerData.getJournal().getAsItem());
+                backpackItems.add(0, playerData.getJournal(pluginMessage).getAsItem());
             }
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
             this.pageOffset = (page - 1) * SLOT_CANCEL;
@@ -314,7 +314,7 @@ public class Backpack implements Listener {
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
-                playerData.getJournal().addToInv();
+                playerData.getJournal(pluginMessage).addToInv();
                 display = new BackpackPage(page);
             } else if (slot < SLOT_CANCEL) {
                 final int slotId = pageOffset + slot;
@@ -385,7 +385,7 @@ public class Backpack implements Listener {
                     } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
                         // if it's a journal, remove it so it appears in
                         // backpack again
-                        playerData.getJournal().removeFromInv();
+                        playerData.getJournal(pluginMessage).removeFromInv();
                     }
                     display = new BackpackPage(page);
                 }

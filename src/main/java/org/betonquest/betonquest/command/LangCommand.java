@@ -89,7 +89,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String lang = args[0];
         final PlayerData playerData = dataStorage.get(onlineProfile);
-        final Journal journal = playerData.getJournal();
+        final Journal journal = playerData.getJournal(pluginMessage);
         playerData.setLanguage(lang);
         journal.update();
         final String message = pluginMessage.getMessage(onlineProfile, "language_changed");

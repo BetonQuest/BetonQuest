@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.util.Utils;
@@ -48,6 +49,11 @@ public class QuestItemHandler implements Listener {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * Plugin message instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -56,10 +62,12 @@ public class QuestItemHandler implements Listener {
      * Creates a new quest item handler listener.
      *
      * @param dataStorage     the storage providing player data
+     * @param pluginMessage   the plugin message instance
      * @param profileProvider the profile provider instance
      */
-    public QuestItemHandler(final PlayerDataStorage dataStorage, final ProfileProvider profileProvider) {
+    public QuestItemHandler(final PlayerDataStorage dataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.dataStorage = dataStorage;
+        this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
 
@@ -220,7 +228,7 @@ public class QuestItemHandler implements Listener {
             }
         }
         if (Boolean.parseBoolean(Config.getConfigString("journal.give_on_respawn"))) {
-            dataStorage.get(profileProvider.getProfile(event.getPlayer())).getJournal().addToInv();
+            dataStorage.get(profileProvider.getProfile(event.getPlayer())).getJournal(pluginMessage).addToInv();
         }
     }
 

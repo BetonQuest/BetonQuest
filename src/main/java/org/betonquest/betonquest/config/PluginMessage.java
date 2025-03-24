@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -38,9 +39,9 @@ public class PluginMessage {
     public static final String SCHEME_JAR = "jar";
 
     /**
-     * The BetonQuest instance.
+     * The {@link PlayerDataStorage} to get the language from.
      */
-    private final BetonQuest instance;
+    private final PlayerDataStorage playerDataStorage;
 
     /**
      * The messages configuration file.
@@ -56,11 +57,12 @@ public class PluginMessage {
      * Creates a new instance of the PluginMessage handler.
      *
      * @param instance              the BetonQuest instance
+     * @param playerDataStorage     the {@link PlayerDataStorage} instance
      * @param configAccessorFactory the config accessor factory
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuest instance, final ConfigAccessorFactory configAccessorFactory) throws QuestException {
-        this.instance = instance;
+    public PluginMessage(final BetonQuest instance, final PlayerDataStorage playerDataStorage, final ConfigAccessorFactory configAccessorFactory) throws QuestException {
+        this.playerDataStorage = playerDataStorage;
 
         try {
             messages = loadMessages(instance, configAccessorFactory);
@@ -141,7 +143,7 @@ public class PluginMessage {
      * @throws IllegalArgumentException if the message could not be found in the configuration
      */
     public String getMessage(final Profile profile, final String message, final Replacement... variables) {
-        final String language = instance.getPlayerDataStorage().get(profile).getLanguage();
+        final String language = playerDataStorage.get(profile).getLanguage();
         return getMessage(language, message, variables);
     }
 

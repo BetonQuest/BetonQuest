@@ -549,15 +549,15 @@ public abstract class Objective {
          * </p>
          */
         protected final void update() {
-            final Saver saver = BetonQuest.getInstance().getSaver();
+            final BetonQuest plugin = BetonQuest.getInstance();
+            final Saver saver = plugin.getSaver();
             saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
             saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
-            final Server server = BetonQuest.getInstance().getServer();
-            server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
-            // update the journal so all possible variables display correct
-            // information
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).getJournal().update();
+            final Server server = plugin.getServer();
+            server.getScheduler().runTask(plugin, () -> server.getPluginManager().callEvent(event));
+            // update the journal so all possible variables display correct information
+            plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();
         }
     }
 
