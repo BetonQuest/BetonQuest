@@ -260,87 +260,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Get the BetonQuest logger factory.
-     *
-     * @return The logger factory.
-     */
-    public BetonQuestLoggerFactory getLoggerFactory() {
-        return loggerFactory;
-    }
-
-    /**
-     * Get the ConfigAccessor factory.
-     *
-     * @return The ConfigAccessor factory.
-     */
-    public ConfigAccessorFactory getConfigAccessorFactory() {
-        return configAccessorFactory;
-    }
-
-    /**
-     * Get the adventure instance.
-     *
-     * @return The adventure instance.
-     */
-    public BukkitAudiences getAdventure() {
-        return adventure;
-    }
-
-    /**
-     * Get the RPG Menu instance.
-     *
-     * @return The RPG Menu instance.
-     */
-    public RPGMenu getRpgMenu() {
-        return rpgMenu;
-    }
-
-    /**
-     * Get the plugin configuration file.
-     *
-     * @return config file
-     */
-    public ConfigAccessor getPluginConfig() {
-        return config;
-    }
-
-    /**
-     * Get the message parser.
-     *
-     * @return message parser
-     */
-    public MessageParser getMessageParser() {
-        return messageParser;
-    }
-
-    /**
-     * Get the plugin messages provider.
-     *
-     * @return plugin messages provider
-     */
-    public PluginMessage getPluginMessage() {
-        return pluginMessage;
-    }
-
-    /**
-     * Get the plugin tag used for command feedback.
-     *
-     * @return plugin tag
-     */
-    public String getPluginTag() {
-        return pluginTag;
-    }
-
-    /**
-     * Get the profile provider.
-     *
-     * @return The profile provider.
-     */
-    public ProfileProvider getProfileProvider() {
-        return profileProvider;
-    }
-
-    /**
      * Ensures that the given event is called on the main server thread.
      *
      * @param event the event to call
@@ -429,14 +348,7 @@ public class BetonQuest extends JavaPlugin {
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
-        final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
-
         ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
-
-        pluginManager.registerEvents(new MobKillListener(), this);
-
-        pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
@@ -459,14 +371,11 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage, pluginMessage, profileProvider), this);
-
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
 
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage, pluginMessage,
-                profileProvider), this);
+        registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage, profileProvider)
@@ -535,6 +444,18 @@ public class BetonQuest extends JavaPlugin {
         }
 
         database.createTables();
+    }
+
+    private void registerListener(final CoreQuestRegistry coreQuestRegistry) {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+        List.of(
+                new CombatTagger(profileProvider, config.getInt("combat_delay")),
+                new MobKillListener(profileProvider),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this),
+                new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
+                new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage,
+                        pluginMessage, profileProvider)
+        ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
@@ -683,6 +604,87 @@ public class BetonQuest extends JavaPlugin {
         if (rpgMenu != null) {
             rpgMenu.onDisable();
         }
+    }
+
+    /**
+     * Get the BetonQuest logger factory.
+     *
+     * @return The logger factory.
+     */
+    public BetonQuestLoggerFactory getLoggerFactory() {
+        return loggerFactory;
+    }
+
+    /**
+     * Get the ConfigAccessor factory.
+     *
+     * @return The ConfigAccessor factory.
+     */
+    public ConfigAccessorFactory getConfigAccessorFactory() {
+        return configAccessorFactory;
+    }
+
+    /**
+     * Get the adventure instance.
+     *
+     * @return The adventure instance.
+     */
+    public BukkitAudiences getAdventure() {
+        return adventure;
+    }
+
+    /**
+     * Get the RPG Menu instance.
+     *
+     * @return The RPG Menu instance.
+     */
+    public RPGMenu getRpgMenu() {
+        return rpgMenu;
+    }
+
+    /**
+     * Get the plugin configuration file.
+     *
+     * @return config file
+     */
+    public ConfigAccessor getPluginConfig() {
+        return config;
+    }
+
+    /**
+     * Get the message parser.
+     *
+     * @return message parser
+     */
+    public MessageParser getMessageParser() {
+        return messageParser;
+    }
+
+    /**
+     * Get the plugin messages provider.
+     *
+     * @return plugin messages provider
+     */
+    public PluginMessage getPluginMessage() {
+        return pluginMessage;
+    }
+
+    /**
+     * Get the plugin tag used for command feedback.
+     *
+     * @return plugin tag
+     */
+    public String getPluginTag() {
+        return pluginTag;
+    }
+
+    /**
+     * Get the profile provider.
+     *
+     * @return The profile provider.
+     */
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
     }
 
     /**
