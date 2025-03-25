@@ -349,8 +349,11 @@ public class PlayerData implements TagData, PointData {
      * @param objectiveID ID of the objective
      */
     public void addNewRawObjective(final ObjectiveID objectiveID) {
-        final Objective obj = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
-        if (obj == null) {
+        final Objective obj;
+        try {
+            obj = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
+        } catch (final QuestException e) {
+            log.warn(objectiveID.getPackage(), "Cannot add objective to player data: " + e.getMessage(), e);
             return;
         }
         final String data = obj.getDefaultDataInstruction(profile);

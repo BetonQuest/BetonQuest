@@ -83,9 +83,6 @@ public class ObjectiveEvent implements NullableEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final ObjectiveID objectiveID : objectives) {
             final Objective objective = questTypeAPI.getObjective(objectiveID);
-            if (objective == null) {
-                throw new QuestException("Objective '" + objectiveID + "' is not defined, cannot run objective event");
-            }
             if (profile == null) {
                 handleStatic(objectiveID, objective);
             } else if (profile.getOnlineProfile().isEmpty()) {

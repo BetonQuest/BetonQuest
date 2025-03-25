@@ -43,9 +43,6 @@ public class ObjectivePropertyVariable implements PlayerVariable {
     @Override
     public String getValue(final Profile profile) throws QuestException {
         final Objective objective = questTypeAPI.getObjective(objectiveID);
-        if (objective == null) {
-            throw new QuestException("Objective not found: " + objectiveID);
-        }
         if (objective.containsPlayer(profile)) {
             return objective.getProperty(propertyName, profile);
         }

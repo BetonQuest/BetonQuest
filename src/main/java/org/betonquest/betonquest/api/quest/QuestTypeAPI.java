@@ -122,15 +122,13 @@ public final class QuestTypeAPI {
     }
 
     /**
-     * Gets stored Objective.
-     * <p>
-     * The objective can be null if there was an error loading it.
+     * Gets a stored Objective.
      *
-     * @param objectiveID package name, dot and ID of the objective
-     * @return Objective object or null if it does not exist
+     * @param objectiveID the id of the objective
+     * @return the loaded Objective
+     * @throws QuestException if no Objective is loaded for the ID
      */
-    @Nullable
-    public Objective getObjective(final ObjectiveID objectiveID) {
-        return questRegistry.objectives().getObjective(objectiveID);
+    public Objective getObjective(final ObjectiveID objectiveID) throws QuestException {
+        return questRegistry.objectives().get(objectiveID);
     }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
@@ -35,10 +34,6 @@ public class ObjectiveCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        final Objective objective = questTypeAPI.getObjective(objectiveId);
-        if (objective == null) {
-            throw new QuestException("Objective " + objectiveId + " not found. Check for errors on /bq reload!");
-        }
-        return objective.containsPlayer(profile);
+        return questTypeAPI.getObjective(objectiveId).containsPlayer(profile);
     }
 }

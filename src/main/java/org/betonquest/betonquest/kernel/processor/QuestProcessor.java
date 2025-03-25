@@ -66,6 +66,21 @@ public abstract class QuestProcessor<I extends ID, T> {
     }
 
     /**
+     * Gets a stored {@link T}.
+     *
+     * @param identifier the id
+     * @return the loaded {@link T}
+     * @throws QuestException if nothing is stored for the ID
+     */
+    public T get(final I identifier) throws QuestException {
+        final T object = values.get(identifier);
+        if (object == null) {
+            throw new QuestException("No " + readable + " loaded for ID '" + identifier + "'! Check for errors on /bq reload!");
+        }
+        return object;
+    }
+
+    /**
      * Load all {@link T} from the QuestPackage.
      * <p>
      * Any errors will be logged.
