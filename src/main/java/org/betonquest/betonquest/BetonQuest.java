@@ -348,14 +348,7 @@ public class BetonQuest extends JavaPlugin {
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
-        final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new CombatTagger(profileProvider, config.getInt("combat_delay")), this);
-
         ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
-
-        pluginManager.registerEvents(new MobKillListener(), this);
-
-        pluginManager.registerEvents(new CustomDropListener(loggerFactory.create(CustomDropListener.class)), this);
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
@@ -378,14 +371,11 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
 
-        pluginManager.registerEvents(new QuestItemHandler(playerDataStorage, pluginMessage, profileProvider), this);
-
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
 
-        pluginManager.registerEvents(new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage, pluginMessage,
-                profileProvider), this);
+        registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage, profileProvider)
@@ -454,6 +444,18 @@ public class BetonQuest extends JavaPlugin {
         }
 
         database.createTables();
+    }
+
+    private void registerListener(final CoreQuestRegistry coreQuestRegistry) {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+        List.of(
+                new CombatTagger(profileProvider, config.getInt("combat_delay")),
+                new MobKillListener(),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class)),
+                new QuestItemHandler(playerDataStorage, pluginMessage, profileProvider),
+                new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage,
+                        pluginMessage, profileProvider)
+        ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
