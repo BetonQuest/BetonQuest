@@ -100,7 +100,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
                         final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider) {
-        super(log, npcTypes, "Npcs", "npcs");
+        super(log, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
@@ -160,21 +160,6 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     @Override
     protected void postCreation(final NpcID identifier, final NpcWrapper<?> value) {
         ((NpcTypeRegistry) types).addIdentifier(identifier);
-    }
-
-    /**
-     * Gets a Npc by its id.
-     *
-     * @param npcID the id of the Npc
-     * @return the wrapper to get the actual
-     * @throws QuestException when there is no Npc with that id
-     */
-    public Npc<?> getNpc(final NpcID npcID) throws QuestException {
-        final NpcWrapper<?> npcWrapper = values.get(npcID);
-        if (npcWrapper == null) {
-            throw new QuestException("Tried to get npc '" + npcID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
-        }
-        return npcWrapper.getNpc();
     }
 
     /**

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.id.QuestCancelerID;
 
 /**
@@ -42,11 +41,6 @@ public class CancelEvent implements OnlineEvent {
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        final QuestCanceler canceler = featureAPI.getCanceler(cancelerID);
-        if (canceler == null) {
-            throw new QuestException("Quest canceler '" + cancelerID.getFullID() + "' does not exist."
-                    + " Ensure it was loaded without errors.");
-        }
-        canceler.cancel(profile, bypass);
+        featureAPI.getCanceler(cancelerID).cancel(profile, bypass);
     }
 }

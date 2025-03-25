@@ -94,10 +94,6 @@ public class ConversationOptionResolver {
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = featureAPI.getConversation(conversationWithNextOption);
-        if (newData == null) {
-            throw new QuestException("Tried to load conversation '" + conversationWithNextOption.getFullID()
-                    + "' but it is not loaded! Ensure it was loaded without errors.");
-        }
         return new ResolvedOption(newData, optionType, optionName);
     }
 }
