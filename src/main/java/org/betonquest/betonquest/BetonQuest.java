@@ -260,87 +260,6 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Get the BetonQuest logger factory.
-     *
-     * @return The logger factory.
-     */
-    public BetonQuestLoggerFactory getLoggerFactory() {
-        return loggerFactory;
-    }
-
-    /**
-     * Get the ConfigAccessor factory.
-     *
-     * @return The ConfigAccessor factory.
-     */
-    public ConfigAccessorFactory getConfigAccessorFactory() {
-        return configAccessorFactory;
-    }
-
-    /**
-     * Get the adventure instance.
-     *
-     * @return The adventure instance.
-     */
-    public BukkitAudiences getAdventure() {
-        return adventure;
-    }
-
-    /**
-     * Get the RPG Menu instance.
-     *
-     * @return The RPG Menu instance.
-     */
-    public RPGMenu getRpgMenu() {
-        return rpgMenu;
-    }
-
-    /**
-     * Get the plugin configuration file.
-     *
-     * @return config file
-     */
-    public ConfigAccessor getPluginConfig() {
-        return config;
-    }
-
-    /**
-     * Get the message parser.
-     *
-     * @return message parser
-     */
-    public MessageParser getMessageParser() {
-        return messageParser;
-    }
-
-    /**
-     * Get the plugin messages provider.
-     *
-     * @return plugin messages provider
-     */
-    public PluginMessage getPluginMessage() {
-        return pluginMessage;
-    }
-
-    /**
-     * Get the plugin tag used for command feedback.
-     *
-     * @return plugin tag
-     */
-    public String getPluginTag() {
-        return pluginTag;
-    }
-
-    /**
-     * Get the profile provider.
-     *
-     * @return The profile provider.
-     */
-    public ProfileProvider getProfileProvider() {
-        return profileProvider;
-    }
-
-    /**
      * Ensures that the given event is called on the main server thread.
      *
      * @param event the event to call
@@ -683,6 +602,87 @@ public class BetonQuest extends JavaPlugin {
         if (rpgMenu != null) {
             rpgMenu.onDisable();
         }
+    }
+
+    /**
+     * Get the BetonQuest logger factory.
+     *
+     * @return The logger factory.
+     */
+    public BetonQuestLoggerFactory getLoggerFactory() {
+        return loggerFactory;
+    }
+
+    /**
+     * Get the ConfigAccessor factory.
+     *
+     * @return The ConfigAccessor factory.
+     */
+    public ConfigAccessorFactory getConfigAccessorFactory() {
+        return configAccessorFactory;
+    }
+
+    /**
+     * Get the adventure instance.
+     *
+     * @return The adventure instance.
+     */
+    public BukkitAudiences getAdventure() {
+        return adventure;
+    }
+
+    /**
+     * Get the RPG Menu instance.
+     *
+     * @return The RPG Menu instance.
+     */
+    public RPGMenu getRpgMenu() {
+        return rpgMenu;
+    }
+
+    /**
+     * Get the plugin configuration file.
+     *
+     * @return config file
+     */
+    public ConfigAccessor getPluginConfig() {
+        return config;
+    }
+
+    /**
+     * Get the message parser.
+     *
+     * @return message parser
+     */
+    public MessageParser getMessageParser() {
+        return messageParser;
+    }
+
+    /**
+     * Get the plugin messages provider.
+     *
+     * @return plugin messages provider
+     */
+    public PluginMessage getPluginMessage() {
+        return pluginMessage;
+    }
+
+    /**
+     * Get the plugin tag used for command feedback.
+     *
+     * @return plugin tag
+     */
+    public String getPluginTag() {
+        return pluginTag;
+    }
+
+    /**
+     * Get the profile provider.
+     *
+     * @return The profile provider.
+     */
+    public ProfileProvider getProfileProvider() {
+        return profileProvider;
     }
 
     /**
