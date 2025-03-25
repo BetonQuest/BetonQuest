@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -10,24 +9,44 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Add QuestItem Drops if the entity is marked.
+ */
 public class CustomDropListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
-    public CustomDropListener(final BetonQuestLogger log) {
+    /**
+     * Plugin used as namespace.
+     */
+    private final Plugin plugin;
+
+    /**
+     * Create a new custom drop Listener.
+     *
+     * @param log    the custom logger for exceptions
+     * @param plugin the plugin used as namespace
+     */
+    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin) {
         this.log = log;
+        this.plugin = plugin;
     }
 
+    /**
+     * Add QuestItem Drops if the entity is marked.
+     *
+     * @param event the entity death event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(final EntityDeathEvent event) {
         int dropIndex = 0;
         String dataContainerValue;
         do {
-            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
+            final NamespacedKey key = new NamespacedKey(plugin, "betonquest-drops-" + dropIndex);
             dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');

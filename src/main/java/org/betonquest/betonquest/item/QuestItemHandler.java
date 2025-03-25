@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -41,8 +41,13 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestItemHandler implements Listener {
+    /**
+     * The config provider.
+     */
+    private final FileConfigAccessor config;
+
     /**
      * Storage for player data.
      */
@@ -61,11 +66,14 @@ public class QuestItemHandler implements Listener {
     /**
      * Creates a new quest item handler listener.
      *
+     * @param config          the config provider
      * @param dataStorage     the storage providing player data
      * @param pluginMessage   the plugin message instance
      * @param profileProvider the profile provider instance
      */
-    public QuestItemHandler(final PlayerDataStorage dataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public QuestItemHandler(final FileConfigAccessor config, final PlayerDataStorage dataStorage,
+                            final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+        this.config = config;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
@@ -93,13 +101,10 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         ItemStack item = null;
         switch (event.getAction()) {
             case PICKUP_ALL:
@@ -159,13 +164,10 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrag(final InventoryDragEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (Journal.isJournal(onlineProfile, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
             event.setCancelled(true);
         }
@@ -212,7 +214,7 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (Boolean.parseBoolean(Config.getConfigString("remove_items_after_respawn"))) {
+        if (config.getBoolean("remove_items_after_respawn")) {
             // some plugins block item dropping after death and add those
             // items after respawning, so the player doesn't loose his
             // inventory after death; this aims to force removing quest
@@ -227,7 +229,7 @@ public class QuestItemHandler implements Listener {
                 }
             }
         }
-        if (Boolean.parseBoolean(Config.getConfigString("journal.give_on_respawn"))) {
+        if (config.getBoolean("journal.give_on_respawn")) {
             dataStorage.get(profileProvider.getProfile(event.getPlayer())).getJournal(pluginMessage).addToInv();
         }
     }
@@ -263,7 +265,7 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
-        if (!Boolean.parseBoolean(Config.getConfigString("quest_items_unbreakable"))) {
+        if (!config.getBoolean("quest_items_unbreakable")) {
             return;
         }
         // prevent quest items from breaking
@@ -336,6 +338,6 @@ public class QuestItemHandler implements Listener {
     }
 
     private boolean isJournalSlotLocked() {
-        return Boolean.parseBoolean(Config.getConfigString("journal.lock_default_journal_slot"));
+        return config.getBoolean("journal.lock_default_journal_slot");
     }
 }

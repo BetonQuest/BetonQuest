@@ -450,9 +450,9 @@ public class BetonQuest extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         List.of(
                 new CombatTagger(profileProvider, config.getInt("combat_delay")),
-                new MobKillListener(),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class)),
-                new QuestItemHandler(playerDataStorage, pluginMessage, profileProvider),
+                new MobKillListener(profileProvider),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this),
+                new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
