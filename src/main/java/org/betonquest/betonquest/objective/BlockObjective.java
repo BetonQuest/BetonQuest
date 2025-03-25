@@ -80,7 +80,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         if (event.isCancelled() && !ignorecancel) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
             if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
                 return;
@@ -97,7 +97,7 @@ public class BlockObjective extends CountingObjective implements Listener {
         if (event.isCancelled() && !ignorecancel) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
             if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
                 return;

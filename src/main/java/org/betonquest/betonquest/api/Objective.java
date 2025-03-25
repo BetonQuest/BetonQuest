@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -39,10 +40,22 @@ import java.util.Optional;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
+
+    /**
+     * Profile provider to get profiles from players.
+     */
+    protected final ProfileProvider profileProvider;
+
+    /**
+     * Interval in which progress should be notified.
+     */
     protected final int notifyInterval;
 
+    /**
+     * If progress should be displayed.
+     */
     protected final boolean notify;
 
     /**
@@ -50,14 +63,29 @@ public abstract class Objective {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Instruction of this.
+     */
     protected Instruction instruction;
 
+    /**
+     * Conditions to count progress.
+     */
     protected ConditionID[] conditions;
 
+    /**
+     * Events to fire on completion.
+     */
     protected EventID[] events;
 
+    /**
+     * If the objective should start again on completion.
+     */
     protected boolean persistent;
 
+    /**
+     * Exception Handler to not spam the log.
+     */
     protected QuestExceptionHandler qeHandler = new QuestExceptionHandler();
 
     /**
@@ -84,6 +112,7 @@ public abstract class Objective {
      */
     public Objective(final Instruction instruction) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
         persistent = instruction.hasArgument("persistent");
         events = parseIDs("event", EventID::new).toArray(new EventID[0]);
@@ -492,6 +521,11 @@ public abstract class Objective {
      */
     protected interface QuestExceptionThrowing {
 
+        /**
+         * Executes the iteration.
+         *
+         * @throws QuestException when an error occurs
+         */
         void run() throws QuestException;
     }
 
@@ -499,10 +533,19 @@ public abstract class Objective {
      * Stores the profile's data for the objective.
      */
     protected static class ObjectiveData {
+        /**
+         * Instruction containing all required information.
+         */
         protected String instruction;
 
+        /**
+         * Profile the data is for.
+         */
         protected Profile profile;
 
+        /**
+         * Full path of the ObjectiveID.
+         */
         protected String objID;
 
         /**
@@ -572,8 +615,14 @@ public abstract class Objective {
          */
         public static final int ERROR_RATE_LIMIT_MILLIS = 5000;
 
+        /**
+         * The last time when an error message was logged, in milliseconds.
+         */
         public long last;
 
+        /**
+         * Empty default Constructor.
+         */
         public QuestExceptionHandler() {
         }
 

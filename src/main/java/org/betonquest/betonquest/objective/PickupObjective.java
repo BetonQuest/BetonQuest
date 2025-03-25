@@ -29,8 +29,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
         if (isValidItem(event.getItem().getItemStack()) && event.getEntity() instanceof Player) {
-            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getEntity());
-
+            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getEntity());
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 final ItemStack pickupItem = event.getItem().getItemStack();
                 getCountingData(onlineProfile).progress(pickupItem.getAmount());

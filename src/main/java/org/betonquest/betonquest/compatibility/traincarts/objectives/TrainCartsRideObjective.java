@@ -80,7 +80,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
@@ -100,8 +100,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
-        stopCount(onlineProfile);
+        stopCount(profileProvider.getProfile(player));
     }
 
     /**
@@ -111,8 +110,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
-        stopCount(onlineProfile);
+        stopCount(profileProvider.getProfile(event.getPlayer()));
     }
 
     @Override
@@ -126,8 +124,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         while (!startTimes.isEmpty()) {
             final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
             if (player != null) {
-                final OnlineProfile profile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
-                stopCount(profile);
+                stopCount(profileProvider.getProfile(player));
             }
         }
     }

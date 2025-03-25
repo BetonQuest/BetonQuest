@@ -540,7 +540,7 @@ public class BetonQuest extends JavaPlugin {
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, pluginMessage);
+                this, playerDataStorage, profileProvider, pluginMessage);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));

@@ -31,7 +31,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final CustomBlockMineEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
             if (desiredBlockId.equals(blockId)) {

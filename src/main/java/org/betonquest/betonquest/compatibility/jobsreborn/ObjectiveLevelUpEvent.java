@@ -26,7 +26,7 @@ public class ObjectiveLevelUpEvent extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onJobsLevelUpEvent(final JobsLevelUpEvent event) throws QuestException {
-        final OnlineProfile profile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer().getPlayer());
+        final OnlineProfile profile = profileProvider.getProfile(event.getPlayer().getPlayer());
         if (event.getJob().isSame(this.job.getValue(profile)) && containsPlayer(profile) && checkConditions(profile)) {
             completeObjective(profile);
         }

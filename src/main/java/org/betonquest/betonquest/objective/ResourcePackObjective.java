@@ -53,8 +53,7 @@ public class ResourcePackObjective extends Objective implements Listener {
      */
     @EventHandler
     public void onResourcePackReceived(final PlayerResourcePackStatusEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
-        processObjective(onlineProfile, event.getStatus());
+        processObjective(profileProvider.getProfile(event.getPlayer()), event.getStatus());
     }
 
     /**

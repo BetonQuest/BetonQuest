@@ -78,7 +78,7 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     @EventHandler
     public void onChestOpen(final InventoryOpenEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getPlayer());
         try {
             if (!checkIsInventory(loc.getValue(onlineProfile))) {
                 return;
@@ -114,7 +114,7 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getPlayer());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

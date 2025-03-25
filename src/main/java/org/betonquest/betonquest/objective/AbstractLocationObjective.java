@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objective;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -87,7 +86,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        playersInsideRegion.remove(BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer()).getProfileUUID());
+        playersInsideRegion.remove(profileProvider.getProfile(event.getPlayer()).getProfileUUID());
     }
 
     /**
@@ -146,7 +145,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
     }
 
     private void checkLocation(final Player player, final Location location) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile)) {
             return;
         }

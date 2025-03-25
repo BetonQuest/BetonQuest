@@ -34,8 +34,8 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() != null) {
-            final OnlineProfile victim = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEntity());
-            final OnlineProfile killer = BetonQuest.getInstance().getProfileProvider().getProfile(event.getEntity().getKiller());
+            final OnlineProfile victim = profileProvider.getProfile(event.getEntity());
+            final OnlineProfile killer = profileProvider.getProfile(event.getEntity().getKiller());
 
             if (containsPlayer(killer)
                     && (name == null || event.getEntity().getName().equalsIgnoreCase(name))

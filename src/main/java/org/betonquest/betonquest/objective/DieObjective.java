@@ -53,7 +53,7 @@ public class DieObjective extends Objective implements Listener {
             return;
         }
         if (event.getEntity() instanceof final Player player) {
-            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
@@ -65,7 +65,7 @@ public class DieObjective extends Objective implements Listener {
         if (cancel || location == null) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
             completeObjective(onlineProfile);
@@ -77,7 +77,7 @@ public class DieObjective extends Objective implements Listener {
         if (!cancel || !(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
                 && checkConditions(onlineProfile)) {
             event.setCancelled(true);

@@ -26,7 +26,7 @@ public class ObjectiveLeaveJob extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onJobsLeaveEvent(final JobsLeaveEvent event) throws QuestException {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer().getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
         if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

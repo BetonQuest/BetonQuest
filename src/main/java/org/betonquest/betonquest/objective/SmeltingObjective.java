@@ -36,7 +36,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public void onSmelting(final InventoryClickEvent event) {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
-            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
+            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
             if (containsPlayer(onlineProfile) && item.compare(event.getCurrentItem()) && checkConditions(onlineProfile)) {
                 final int taken = calculateTakeAmount(event);
                 getCountingData(onlineProfile).progress(taken);

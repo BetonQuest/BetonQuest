@@ -81,7 +81,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
             return;
         }
 
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

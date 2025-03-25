@@ -112,6 +112,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * Provider for Player Profiles.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -140,19 +145,21 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Registers a new executor and a new tab completer of the /betonquest command.
      *
      * @param loggerFactory         logger factory to use
+     * @param log                   the logger that will be used for logging
      * @param configAccessorFactory the config accessor factory to use
      * @param bukkitAudiences       the bukkit audiences to use
      * @param logWatcher            the player log watcher to use
      * @param debuggingController   the log publishing controller to use
-     * @param log                   the logger that will be used for logging
      * @param plugin                the BetonQuest plugin instance
      * @param dataStorage           the storage providing player data
+     * @param profileProvider       the profile provider
      * @param pluginMessage         the {@link PluginMessage} instance
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences,
                         final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController,
-                        final BetonQuest plugin, final PlayerDataStorage dataStorage, final PluginMessage pluginMessage) {
+                        final BetonQuest plugin, final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
+                        final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
@@ -161,6 +168,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.debuggingController = debuggingController;
         this.instance = plugin;
         this.dataStorage = dataStorage;
+        this.profileProvider = profileProvider;
         this.pluginMessage = pluginMessage;
     }
 
@@ -422,7 +430,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
                     false, dataStorage);
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
             give.execute(profileProvider.getProfile((Player) sender));
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -472,7 +479,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_player");
             return null;
         }
-        return BetonQuest.getInstance().getProfileProvider().getProfile(Bukkit.getOfflinePlayer(args[1]));
+        return profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
     }
 
     @Nullable
@@ -824,7 +831,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         instance.getQuestTypeAPI().event(profile, eventID);
         sendMessage(sender, "player_event",
@@ -871,7 +877,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition",
                 new PluginMessage.Replacement("condition", (conditionID.inverted() ? "! " : "") + conditionID.getInstruction()),
@@ -1139,7 +1144,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String name = args[2];
         final String rename = args[3];
         final UpdateType updateType;
-        final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
+        final List<OnlineProfile> onlineProfiles = profileProvider.getOnlineProfiles();
         switch (type) {
             case "tags", "tag", "t" -> {
                 updateType = UpdateType.RENAME_ALL_TAGS;
@@ -1308,7 +1313,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String type = args[1].toLowerCase(Locale.ROOT);
         final String name = args[2];
         final UpdateType updateType;
-        final List<OnlineProfile> onlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
+        final List<OnlineProfile> onlineProfiles = profileProvider.getOnlineProfiles();
         switch (type) {
             case "tags", "tag", "t" -> {
                 updateType = UpdateType.REMOVE_ALL_TAGS;
@@ -1452,7 +1457,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // display them
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof final Player player) {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
             final OnlineProfile profile = profileProvider.getProfile(player);
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
@@ -1851,7 +1855,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void sendMessage(final CommandSender sender, final String messageName, final PluginMessage.Replacement... variables) {
         if (sender instanceof final Player player) {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
             final OnlineProfile profile = profileProvider.getProfile(player);
             final String message = pluginMessage.getMessage(profile, messageName, variables);
             player.sendMessage(message);

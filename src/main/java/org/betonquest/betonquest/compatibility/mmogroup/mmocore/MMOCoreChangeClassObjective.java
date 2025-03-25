@@ -44,7 +44,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onClassChange(final PlayerChangeClassEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

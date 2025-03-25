@@ -49,7 +49,7 @@ public class RideObjective extends Objective implements Listener {
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (containsPlayer(onlineProfile) && (any || event.getMount().getType() == vehicle) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }
