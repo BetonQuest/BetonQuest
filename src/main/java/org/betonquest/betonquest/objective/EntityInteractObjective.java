@@ -144,10 +144,11 @@ public class EntityInteractObjective extends CountingObjective {
         if (realName != null && !realName.equals(entity.getName())) {
             return false;
         }
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         // check if the entity is correctly marked
         if (marked != null) {
             try {
-                final String value = marked.getValue(BetonQuest.getInstance().getProfileProvider().getProfile(player));
+                final String value = marked.getValue(onlineProfile);
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                 final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 if (dataContainerValue == null || !dataContainerValue.equals(value)) {
@@ -158,7 +159,6 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
         // check if the profile has this objective
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return false;
         }

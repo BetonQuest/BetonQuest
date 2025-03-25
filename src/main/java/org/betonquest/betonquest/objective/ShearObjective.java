@@ -46,7 +46,7 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && (name == null || name.equals(event.getEntity().getCustomName()))
                 && (color == null || color.equals(((Sheep) event.getEntity()).getColor()))

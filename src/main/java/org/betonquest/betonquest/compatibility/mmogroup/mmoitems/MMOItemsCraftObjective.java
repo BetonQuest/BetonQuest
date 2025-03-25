@@ -48,7 +48,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
         final ItemStack craftedItem = event.getRecipe().getResult();
         if (event.getSlotType() == InventoryType.SlotType.RESULT
                 && containsPlayer(onlineProfile)
@@ -67,7 +67,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
     public void onRecipeUse(final MythicCraftItemEvent event) {
         final HumanEntity humanEntity = event.getTrigger().getWhoClicked();
         final Player crafter = (Player) humanEntity;
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(crafter);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(crafter);
         final ItemStack craftedItem = event.getCache().getResultOfOperation().getResultInventory().getFirst();
 
         if (containsPlayer(onlineProfile)
@@ -84,7 +84,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         final StationAction action = event.getInteraction();
         final Recipe usedRecipe = event.getRecipe();
 

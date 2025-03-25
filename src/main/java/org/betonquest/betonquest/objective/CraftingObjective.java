@@ -51,7 +51,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof final Player player) {
-            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             if (containsPlayer(onlineProfile) && item.compare(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                 completeIfDoneOrNotify(onlineProfile);

@@ -69,7 +69,7 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final Block block = loc.getValue(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;

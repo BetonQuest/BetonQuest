@@ -107,7 +107,7 @@ public class ExperienceObjective extends Objective implements Listener {
     public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        onExperienceChange(BetonQuest.getInstance().getProfileProvider().getProfile(player), newAmount, true);
+        onExperienceChange(profileProvider.getProfile(player), newAmount, true);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -115,14 +115,14 @@ public class ExperienceObjective extends Objective implements Listener {
         final Player player = event.getPlayer();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final double newAmount = player.getLevel() + player.getExp();
-            onExperienceChange(BetonQuest.getInstance().getProfileProvider().getProfile(player), newAmount, false);
+            onExperienceChange(profileProvider.getProfile(player), newAmount, false);
         });
     }
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final double newAmount = player.getLevel() + player.getExp();
         onExperienceChange(onlineProfile, newAmount, false);
     }

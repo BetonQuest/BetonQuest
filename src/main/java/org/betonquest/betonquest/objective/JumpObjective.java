@@ -22,7 +22,7 @@ public class JumpObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJump(final PlayerJumpEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);

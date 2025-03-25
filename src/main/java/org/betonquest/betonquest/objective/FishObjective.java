@@ -65,7 +65,7 @@ public class FishObjective extends CountingObjective implements Listener {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }

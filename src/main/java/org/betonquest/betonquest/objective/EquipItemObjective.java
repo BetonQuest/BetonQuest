@@ -41,7 +41,7 @@ public class EquipItemObjective extends Objective implements Listener {
 
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && event.getSlotType() == slotType
                 && questItems.compare(event.getNewItem())

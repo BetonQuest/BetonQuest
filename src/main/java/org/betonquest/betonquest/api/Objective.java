@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -41,6 +42,12 @@ import java.util.Optional;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
 public abstract class Objective {
+
+    /**
+     * Profile provider to get profiles from players.
+     */
+    protected final ProfileProvider profileProvider;
+
     protected final int notifyInterval;
 
     protected final boolean notify;
@@ -84,6 +91,7 @@ public abstract class Objective {
      */
     public Objective(final Instruction instruction) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
         persistent = instruction.hasArgument("persistent");
         events = parseIDs("event", EventID::new).toArray(new EventID[0]);

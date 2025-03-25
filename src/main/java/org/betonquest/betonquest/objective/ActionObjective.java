@@ -91,7 +91,7 @@ public class ActionObjective extends Objective implements Listener {
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !action.match(event.getAction()) || slot != null && slot != event.getHand()) {
             return;
         }

@@ -46,7 +46,7 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
         if (!containsPlayer(onlineProfile)) {
             return;
         }

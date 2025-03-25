@@ -26,7 +26,7 @@ public class ObjectiveJoinJob extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onJobsJoinEvent(final JobsJoinEvent event) throws QuestException {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer().getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
         if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

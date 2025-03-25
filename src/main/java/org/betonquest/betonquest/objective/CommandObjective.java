@@ -46,7 +46,7 @@ public class CommandObjective extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String replaceCommand = command.getString(onlineProfile);
             if (foundMatch(event.getMessage(), replaceCommand)) {

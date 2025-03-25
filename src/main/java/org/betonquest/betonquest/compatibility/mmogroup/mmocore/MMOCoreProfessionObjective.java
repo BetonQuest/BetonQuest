@@ -31,7 +31,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }

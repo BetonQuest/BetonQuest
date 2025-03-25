@@ -106,7 +106,7 @@ public class NpcRangeObjective extends Objective {
 
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
-        final List<OnlineProfile> allOnlineProfiles = BetonQuest.getInstance().getProfileProvider().getOnlineProfiles();
+        final List<OnlineProfile> allOnlineProfiles = profileProvider.getOnlineProfiles();
         for (final NpcID npcId : npcIds) {
             final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
             for (final OnlineProfile onlineProfile : allOnlineProfiles) {

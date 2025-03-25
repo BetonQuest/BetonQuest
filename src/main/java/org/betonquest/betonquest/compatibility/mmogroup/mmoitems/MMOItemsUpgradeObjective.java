@@ -32,7 +32,7 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
         if (!upgradedItem.getId().equals(itemID) || !upgradedItem.getType().getId().equals(itemType)) {
             return;
         }
-        final OnlineProfile onlineProfile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
