@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.objective;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -25,8 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Player has to wait specified amount of time. He may logout, the objective
@@ -113,46 +114,53 @@ public class DelayObjective extends Objective {
     @Override
     public String getProperty(final String name, final Profile profile) {
         return switch (name.toLowerCase(Locale.ROOT)) {
-            case "left" -> parseVariableLeft(profile);
+            case "left" -> {
+                try {
+                    yield LegacyComponentSerializer.legacySection().serialize(parseVariableLeft(profile));
+                } catch (final QuestException e) {
+                    log.warn("Could not parse left variable: " + e.getMessage(), e);
+                    yield "";
+                }
+            }
             case "date" -> parseVariableDate(profile);
             case "rawseconds" -> parseVariableRawSeconds(profile);
             default -> "";
         };
     }
 
-    private String parseVariableLeft(final Profile profile) {
+    private Component parseVariableLeft(final Profile profile) throws QuestException {
         final PluginMessage pluginMessage = BetonQuest.getInstance().getPluginMessage();
-        final String daysWord = pluginMessage.getMessage(profile, "days");
-        final String daysWordSingular = pluginMessage.getMessage(profile, "days_singular");
-        final String hoursWord = pluginMessage.getMessage(profile, "hours");
-        final String hoursWordSingular = pluginMessage.getMessage(profile, "hours_singular");
-        final String minutesWord = pluginMessage.getMessage(profile, "minutes");
-        final String minutesWordSingular = pluginMessage.getMessage(profile, "minutes_singular");
-        final String secondsWord = pluginMessage.getMessage(profile, "seconds");
-        final String secondsWordSingular = pluginMessage.getMessage(profile, "seconds_singular");
+        final Component daysWord = pluginMessage.getMessage("days").asComponent(profile);
+        final Component daysWordSingular = pluginMessage.getMessage("days_singular").asComponent(profile);
+        final Component hoursWord = pluginMessage.getMessage("hours").asComponent(profile);
+        final Component hoursWordSingular = pluginMessage.getMessage("hours_singular").asComponent(profile);
+        final Component minutesWord = pluginMessage.getMessage("minutes").asComponent(profile);
+        final Component minutesWordSingular = pluginMessage.getMessage("minutes_singular").asComponent(profile);
+        final Component secondsWord = pluginMessage.getMessage("seconds").asComponent(profile);
+        final Component secondsWordSingular = pluginMessage.getMessage("seconds_singular").asComponent(profile);
 
         final long endTimestamp = (long) getDelayData(profile).getTime();
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
 
-        final String days = buildTimeDescription(daysWord, daysWordSingular, duration.toDaysPart());
-        final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart());
-        final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart());
-        final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
+        final TextComponent.Builder builder = Component.text();
+        buildTimeDescription(builder, daysWord, daysWordSingular, duration.toDaysPart());
+        buildTimeDescription(builder, hoursWord, hoursWordSingular, duration.toHoursPart());
+        buildTimeDescription(builder, minutesWord, minutesWordSingular, duration.toMinutesPart());
+        buildTimeDescription(builder, secondsWord, secondsWordSingular, duration.toSecondsPart());
 
-        return Stream.of(days, hours, minutes, seconds)
-                .filter(word -> !word.isEmpty())
-                .collect(Collectors.joining(" "));
+        return builder.build();
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
+    private void buildTimeDescription(final TextComponent.Builder builder, final Component timeUnitWord, final Component timeUnitSingularWord, final long timeAmount) {
+        if (!builder.children().isEmpty()) {
+            builder.append(Component.space());
+        }
         if (timeAmount > 1) {
-            return timeAmount + " " + timeUnitWord;
+            builder.append(Component.text(timeAmount)).append(Component.space()).append(timeUnitWord);
         } else if (timeAmount == 1) {
-            return timeAmount + " " + timeUnitSingularWord;
-        } else {
-            return "";
+            builder.append(Component.text(timeAmount)).append(Component.space()).append(timeUnitSingularWord);
         }
     }
 

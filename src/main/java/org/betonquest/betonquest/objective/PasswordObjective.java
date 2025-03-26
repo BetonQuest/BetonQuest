@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.objective;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -34,8 +36,11 @@ public class PasswordObjective extends Objective implements Listener {
 
     private final List<EventID> failEvents;
 
+    private final BetonQuestLogger log;
+
     public PasswordObjective(final Instruction instruction) throws QuestException {
         super(instruction);
+        this.log = BetonQuest.getInstance().getLoggerFactory().create(PasswordObjective.class);
         final String pattern = instruction.next().replace('_', ' ');
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         regex = Pattern.compile(pattern, regexFlags);
@@ -64,8 +69,15 @@ public class PasswordObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return false;
         }
-        final String prefix = passwordPrefix == null
-                ? BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "password") : passwordPrefix;
+        final String prefix;
+        try {
+            prefix = passwordPrefix == null
+                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage("password").asComponent(onlineProfile))
+                    : passwordPrefix;
+        } catch (final QuestException e) {
+            log.warn("Failed to get password prefix: " + e.getMessage(), e);
+            return false;
+        }
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }

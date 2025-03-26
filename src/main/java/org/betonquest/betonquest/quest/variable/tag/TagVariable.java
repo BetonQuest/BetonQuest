@@ -28,6 +28,6 @@ public class TagVariable extends AbstractTagVariable<PlayerDataStorage> implemen
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        return getValueFor(data.get(profile).getTags());
+        return getValueFor(profile, data.get(profile).getTags());
     }
 }

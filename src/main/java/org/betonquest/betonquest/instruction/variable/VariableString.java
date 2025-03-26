@@ -19,7 +19,7 @@ public class VariableString extends Variable<String> {
      * @param input             the string that may contain variables
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input) throws QuestException {
+    public VariableString(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input) throws QuestException {
         this(variableProcessor, pack, input, false);
     }
 
@@ -32,7 +32,7 @@ public class VariableString extends Variable<String> {
      * @param replaceUnderscores whether underscores should be replaced
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableString(final VariableProcessor variableProcessor, final QuestPackage pack, final String input,
+    public VariableString(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
                           final boolean replaceUnderscores) throws QuestException {
         super(variableProcessor, pack, replaceUnderscores(input, replaceUnderscores), (value) -> value);
     }

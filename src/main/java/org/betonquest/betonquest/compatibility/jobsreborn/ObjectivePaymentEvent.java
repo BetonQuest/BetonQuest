@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -10,6 +11,8 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -22,10 +25,16 @@ import java.util.Objects;
 public class ObjectivePaymentEvent extends Objective implements Listener {
     private final VariableNumber targetAmount;
 
+    private final IngameNotificationSender paymentSender;
+
     public ObjectivePaymentEvent(final Instruction instructions) throws QuestException {
         super(instructions);
         template = PaymentData.class;
         targetAmount = instructions.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        final BetonQuest instance = BetonQuest.getInstance();
+        paymentSender = new IngameNotificationSender(instance.getLoggerFactory().create(ObjectivePaymentEvent.class),
+                instance.getPluginMessage(), instructions.getPackage(), instructions.getID().getFullID(),
+                NotificationLevel.INFO, "payment_to_receive");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -39,8 +48,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
             if (playerData.isCompleted()) {
                 completeObjective(profile);
             } else if (notify && ((int) playerData.amount) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
-                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive",
-                        new PluginMessage.Replacement("amount", String.valueOf(playerData.targetAmount - playerData.amount)));
+                paymentSender.sendNotification(profile,
+                        new PluginMessage.Replacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
             }
         }
     }

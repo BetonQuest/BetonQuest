@@ -21,8 +21,9 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
-import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -79,6 +80,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     private final NpcHider npcHider;
 
     /**
+     * The sender for busy notifications.
+     */
+    private final IngameNotificationSender busySender;
+
+    /**
      * The minimum time between two interactions with an NPC.
      */
     private int interactionLimit;
@@ -107,6 +113,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
         this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
                 plugin, profileProvider, Config.getPackages().values());
+        this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
     @Override
@@ -188,12 +195,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         npcInteractionLimiter.put(playerUUID, currentClick);
 
         if (CombatTagger.isTagged(onlineProfile)) {
-            final String message = pluginMessage.getMessage(onlineProfile, "busy");
-            try {
-                Notify.get(null, "busy,error").sendNotify(message, onlineProfile);
-            } catch (final QuestException e) {
-                log.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
-            }
+            busySender.sendNotification(onlineProfile);
             return false;
         }
 

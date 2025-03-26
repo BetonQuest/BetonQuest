@@ -18,6 +18,8 @@ import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -117,6 +119,11 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final RPGMenu rpgMenu;
 
     /**
+     * The sender for no permission notifications.
+     */
+    private final IngameNotificationSender noPermissionSender;
+
+    /**
      * Creates a new Menu.
      *
      * @param log             the custom logger for this class
@@ -191,6 +198,8 @@ public class Menu extends SimpleYMLSection implements Listener {
         if (this.boundItem != null) {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
+
+        noPermissionSender = new IngameNotificationSender(log, pluginMessage, pack, menuID.getFullID(), NotificationLevel.ERROR, "no_permission");
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -283,7 +292,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         event.setCancelled(true);
         final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());
         if (!mayOpen(onlineprofile)) {
-            event.getPlayer().sendMessage(pluginMessage.getMessage(onlineprofile, "menu.no_permission"));
+            noPermissionSender.sendNotification(onlineprofile);
             return;
         }
         //open the menu

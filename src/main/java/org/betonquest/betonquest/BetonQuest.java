@@ -357,11 +357,11 @@ public class BetonQuest extends JavaPlugin {
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), coreQuestRegistry.objectives());
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
+
         final String defaultParser = config.getString("messageParser", "legacyminimessage");
         messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
-
         try {
-            pluginMessage = new PluginMessage(this, playerDataStorage, configAccessorFactory);
+            pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage, messageParser, configAccessorFactory);
             for (final String language : pluginMessage.getLanguages()) {
                 log.debug("Loaded " + language + " language");
             }
@@ -539,7 +539,7 @@ public class BetonQuest extends JavaPlugin {
         Config.setup(this, config);
         try {
             pluginMessage.reload();
-        } catch (final IOException e) {
+        } catch (final IOException | QuestException e) {
             log.error("Could not reload the plugin messages!", e);
         }
         Notify.load(config);

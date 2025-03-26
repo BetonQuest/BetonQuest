@@ -29,6 +29,6 @@ public class LegacyParser implements MessageParser {
 
     @Override
     public Component parse(final String message) {
-        return serializer.deserialize(ChatColor.translateAlternateColorCodes('&', message.replaceAll("\\\\n", "\n")));
+        return serializer.deserialize(ChatColor.translateAlternateColorCodes('&', message.replaceAll("(?<!\\\\)\\\\n", "\n")));
     }
 }

@@ -238,19 +238,36 @@ notifications:
   new_journal_entry:  # The info categories settings are overridden for the new_journal_entry notification
     io: subtitle
 ```
+<div class="grid" markdown>
+
+| Notifications           | Categories                                       | 
+|-------------------------|--------------------------------------------------| 
+| Command Blocked         | command_blocked, *error*                         | 
+| No Permission           | no_permission, *error*                           | 
+| Inventory Full Backpack | inventory_full_backpack, inventory_full, *error* | 
+| Inventory Full Drop     | inventory_full_drop, inventory_full, *error*     | 
+| Language Changed        | language_changed, *info*                         | 
+| Money Given             | money_given, *info*                              | 
+| Money Taken             | money_taken, *info*                              | 
+| Quest Cancelled         | quest_cancelled, *info*                          | 
+| Items Given             | items_given, *info*                              | 
+| New Journal Entry       | new_journal_entry, *info*                        | 
+| Conversation blocked    | busy, *error*                                    | 
 
 
-| Notifications           | Categories                                       |  | Notifications     | Categories               |
-|-------------------------|--------------------------------------------------|  |-------------------|--------------------------|
-| Command Blocked         | command_blocked, *error*                         |  | Animals to Breed  | animals_to_breed, *info* |
-| No Permission           | no_permission, *error*                           |  | Blocks to Break   | blocks_to_break, *info*  |
-| New Changelog           | changelog, *info*                                |  | Blocks to Place   | blocks_to_place, *info*  |
-| Inventory Full Backpack | inventory_full_backpack, inventory_full, *error* |  | Mobs to click     | mobs_to_click, *info*    |
-| Inventory Full Drop     | inventory_full_drop, inventory_full, *error*     |  | Mobs to Kill      | mobs_to_kill, *info*     |
-| Language Changed        | language_changed, *info*                         |  | Fish to catch     | fish_to_catch, *info*    |
-| Money Given             | money_given, *info*                              |  | Players to kill   | players_to_kill, *info*  |
-| Money Taken             | money_taken, *info*                              |  | Potions to brew   | potions_to_brew, *info*  |
-| Quest Cancelled         | quest_cancelled, *info*                          |  | Points given      | point_given, *info*      |
-| Items Given             | items_given, *info*                              |  | Points taken      | point_taken, *info*      |
-| New Journal Entry       | new_journal_entry, *info*                        |  | Points multiplied | point_multiplied, *info* |
-| Conversation blocked    | busy, *error*                                    |  | Sheep to shear    | sheep_to_shear, *info*   |
+| Notifications     | Categories               |
+|-------------------|--------------------------|
+| Animals to Breed  | animals_to_breed, *info* |
+| Blocks to Break   | blocks_to_break, *info*  |
+| Blocks to Place   | blocks_to_place, *info*  |
+| Mobs to click     | mobs_to_click, *info*    |
+| Mobs to Kill      | mobs_to_kill, *info*     |
+| Fish to catch     | fish_to_catch, *info*    |
+| Players to kill   | players_to_kill, *info*  |
+| Potions to brew   | potions_to_brew, *info*  |
+| Points given      | point_given, *info*      |
+| Points taken      | point_taken, *info*      |
+| Points multiplied | point_multiplied, *info* |
+| Sheep to shear    | sheep_to_shear, *info*   |
+
+</div>

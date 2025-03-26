@@ -26,7 +26,7 @@ public class MineDownMessageParser implements MessageParser {
 
     @Override
     public Component parse(final String message) {
-        final MineDown mineDown = new MineDown(message.replaceAll("\\\\n", "\n"));
+        final MineDown mineDown = new MineDown(message.replaceAll("(?<!\\\\)\\\\n", "\n"));
         for (final Consumer<MineDown> consumer : mineDownOptions) {
             consumer.accept(mineDown);
         }

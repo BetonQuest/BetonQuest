@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.take;
 
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -55,8 +56,8 @@ public class TakeEvent extends AbstractTakeEvent {
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
             notificationSender.sendNotification(profile,
-                    new PluginMessage.Replacement("item", itemName),
-                    new PluginMessage.Replacement("amount", String.valueOf(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
+                    new PluginMessage.Replacement("item", Component.text(itemName)),
+                    new PluginMessage.Replacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
         }
     }
 

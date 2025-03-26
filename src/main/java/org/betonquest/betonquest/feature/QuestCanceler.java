@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.feature;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -20,7 +19,8 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.betonquest.betonquest.notify.Notify;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -69,6 +69,11 @@ public class QuestCanceler {
     private final ItemID item;
 
     /**
+     * The notification for canceling the quest.
+     */
+    private final IngameNotificationSender notificationSender;
+
+    /**
      * Creates a new canceler.
      *
      * @param log           the custom logger for this class
@@ -84,11 +89,12 @@ public class QuestCanceler {
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.cancelerID = cancelerID;
+        this.pluginMessage = pluginMessage;
         this.names = names;
         this.item = item;
         this.data = cancelData;
         this.pack = pack;
-        this.pluginMessage = pluginMessage;
+        this.notificationSender = new IngameNotificationSender(log, pluginMessage, pack, cancelerID, NotificationLevel.INFO, "quest_canceled");
     }
 
     /**
@@ -140,14 +146,7 @@ public class QuestCanceler {
         // done
         log.debug("Quest removed!");
         final Component questName = getName(onlineProfile);
-        final String message = pluginMessage.getMessage(onlineProfile, "quest_canceled",
-                new PluginMessage.Replacement("name", LegacyComponentSerializer.legacySection().serialize(questName)));
-        try {
-            Notify.get(pack, "quest_cancelled,quest_canceled,info").sendNotify(message, onlineProfile);
-        } catch (final QuestException exception) {
-            log.warn(pack, "The notify system was unable to play a sound for the 'quest_canceled' category in quest '"
-                    + cancelerID + "'. Error was: '" + exception.getMessage() + "'");
-        }
+        notificationSender.sendNotification(onlineProfile, new PluginMessage.Replacement("name", questName));
     }
 
     private void cancelObjectives(final OnlineProfile onlineProfile, final PlayerData playerData) {

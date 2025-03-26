@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -63,9 +65,19 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     private final BetonQuestLogger logger;
 
+    /**
+     * Notification sender for block break.
+     */
+    private final IngameNotificationSender blockBreakSender;
+
+    /**
+     * Notification sender for block place.
+     */
+    private final IngameNotificationSender blockPlaceSender;
+
     public BlockObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        logger = BetonQuest.getInstance().getLoggerFactory().create(BetonQuest.getInstance());
+        logger = BetonQuest.getInstance().getLoggerFactory().create(BlockObjective.class);
         selector = instruction.get(BlockSelector::new);
         exactMatch = instruction.hasArgument("exactMatch");
         targetAmount = instruction.get(VariableNumber::new);
@@ -73,6 +85,11 @@ public class BlockObjective extends CountingObjective implements Listener {
         location = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
         region = instruction.get(instruction.getOptional("region"), VariableLocation::new);
         ignorecancel = instruction.hasArgument("ignorecancel");
+        final BetonQuest instance = BetonQuest.getInstance();
+        blockBreakSender = new IngameNotificationSender(logger, instance.getPluginMessage(), instruction.getPackage(),
+                instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_break");
+        blockPlaceSender = new IngameNotificationSender(logger, instance.getPluginMessage(), instruction.getPackage(),
+                instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_place");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -110,7 +127,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     }
 
     private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
-        final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
+        final IngameNotificationSender message = data.getDirectionFactor() > 0 ? blockPlaceSender : blockBreakSender;
         completeIfDoneOrNotify(onlineProfile, message);
     }
 

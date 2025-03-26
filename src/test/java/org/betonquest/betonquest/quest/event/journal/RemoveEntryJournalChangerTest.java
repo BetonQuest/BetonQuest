@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -12,7 +13,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test {@link RemoveEntryJournalChanger}.
  */
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class RemoveEntryJournalChangerTest {
     @Test
     void testChangeJournalRemovesPointer(@Mock final Journal journal) {

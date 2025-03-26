@@ -64,11 +64,6 @@ public class Backpack implements Listener {
     private final PlayerData playerData;
 
     /**
-     * Language of the player.
-     */
-    private final String lang;
-
-    /**
      * Currently displayed page.
      */
     private Display display;
@@ -86,7 +81,6 @@ public class Backpack implements Listener {
         this.log = instance.getLoggerFactory().create(getClass());
         this.onlineProfile = onlineProfile;
         this.playerData = instance.getPlayerDataStorage().get(onlineProfile);
-        this.lang = playerData.getLanguage();
         this.display = switch (type) {
             case DEFAULT -> new BackpackPage(1);
             case CANCEL -> new Cancelers();
@@ -173,7 +167,7 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
     private class BackpackPage extends Display {
         /**
          * Backpack size.
@@ -240,7 +234,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 1
          */
-        @SuppressWarnings("PMD.NPathComplexity")
+        @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public BackpackPage(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
@@ -248,13 +242,15 @@ public class Backpack implements Listener {
             this.showJournal = showJournalInBackpack && !Journal.hasJournal(onlineProfile);
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
-                backpackItems.add(0, playerData.getJournal(pluginMessage).getAsItem());
+                try {
+                    backpackItems.add(0, playerData.getJournal(pluginMessage).getAsItem());
+                } catch (final QuestException e) {
+                    log.warn("Could not add journal to backpack: " + e.getMessage(), e);
+                }
             }
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
             this.pageOffset = (page - 1) * SLOT_CANCEL;
 
-            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, pluginMessage.getMessage(onlineProfile, "backpack_title")
-                    + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[INVENTORY_SIZE];
 
             for (int index = 0; index < SLOT_CANCEL && pageOffset + index < backpackItems.size(); index++) {
@@ -282,6 +278,18 @@ public class Backpack implements Listener {
             } else {
                 showCompass = false;
             }
+
+            final Inventory inv;
+            try {
+                Component backpackTitle = pluginMessage.getMessage("backpack_title").asComponent(onlineProfile);
+                backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
+                inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
+            } catch (final QuestException e) {
+                log.warn("Could not create backpack inventory: " + e.getMessage(), e);
+                onlineProfile.getPlayer().closeInventory();
+                return;
+            }
+
             inv.setContents(content);
             onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
@@ -304,9 +312,12 @@ public class Backpack implements Listener {
             if (stack == null) {
                 stack = new ItemStack(fallback);
             }
-            final ItemMeta meta = stack.getItemMeta();
-            meta.setDisplayName(pluginMessage.getMessage(onlineProfile, button).replaceAll("&", "§"));
-            stack.setItemMeta(meta);
+            try {
+                final Component name = pluginMessage.getMessage(button).asComponent(onlineProfile);
+                stack.editMeta(meta -> meta.displayName(name));
+            } catch (final QuestException e) {
+                log.warn("Could not set display name for " + button + " button: " + e.getMessage(), e);
+            }
             return Pair.of(stack, present);
         }
 
@@ -434,7 +445,14 @@ public class Backpack implements Listener {
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "cancel_page"));
+            final Inventory inv;
+            try {
+                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage("cancel_page").asComponent(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Could not create cancel inventory: " + e.getMessage(), e);
+                onlineProfile.getPlayer().closeInventory();
+                return;
+            }
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
@@ -490,7 +508,14 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "compass_page"));
+            final Inventory inv;
+            try {
+                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage("compass_page").asComponent(onlineProfile));
+            } catch (final QuestException e) {
+                log.warn("Could not create compass inventory: " + e.getMessage(), e);
+                onlineProfile.getPlayer().closeInventory();
+                return;
+            }
             final ItemStack[] content;
             try {
                 content = getContent(numberOfRows);

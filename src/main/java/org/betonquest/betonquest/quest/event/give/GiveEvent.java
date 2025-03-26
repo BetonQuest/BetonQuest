@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.give;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -82,8 +83,8 @@ public class GiveEvent implements OnlineEvent {
                     ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ")
                     : questItem.getName();
             itemsGivenSender.sendNotification(profile,
-                    new PluginMessage.Replacement("item", questItemName),
-                    new PluginMessage.Replacement("amount", String.valueOf(amount)));
+                    new PluginMessage.Replacement("item", Component.text(questItemName)),
+                    new PluginMessage.Replacement("amount", Component.text(amount)));
         }
     }
 

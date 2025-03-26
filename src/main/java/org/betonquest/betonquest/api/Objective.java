@@ -4,11 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -18,7 +16,6 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
-import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
@@ -244,28 +241,6 @@ public abstract class Objective {
         log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for " + profile);
         return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions);
-    }
-
-    /**
-     * Send notification for progress with the objective.
-     *
-     * @param messageName   message name to use in messages.yml
-     * @param onlineProfile the {@link OnlineProfile} for which the notification is to be sent
-     * @param variables     variables for putting into the message
-     */
-    protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final PluginMessage.Replacement... variables) {
-        final String message = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, messageName, variables);
-        try {
-            Notify.get(instruction.getPackage(), messageName + ",info").sendNotify(message, onlineProfile);
-        } catch (final QuestException exception) {
-            try {
-                log.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '"
-                        + messageName + "' category in '" + instruction.getID(ObjectiveID::new)
-                        + "'. Error was: '" + exception.getMessage() + "'");
-            } catch (final QuestException e) {
-                log.reportException(instruction.getPackage(), e);
-            }
-        }
     }
 
     /**

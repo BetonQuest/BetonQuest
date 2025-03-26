@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.LocalChatPaginator;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
@@ -146,7 +147,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final Interceptor interceptor = conv.getInterceptor();
             if (interceptor != null) {
                 final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(profileProvider.getProfile(player), "conversation_spectator"));
+                try {
+                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage("conversation_spectator").asComponent(profileProvider.getProfile(player)));
+                } catch (final QuestException e) {
+                    log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
+                }
             }
             return;
         }
