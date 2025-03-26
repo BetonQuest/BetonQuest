@@ -193,9 +193,11 @@ public class Journal {
         for (final Pointer pointer : pointers) {
             final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
             final JournalEntryID entryID = pointer.pointer();
-            final ParsedSectionMessage journalEntry = featureAPI.getJournalEntry(entryID);
-            if (journalEntry == null) {
-                log.warn("No journal entry " + entryID + " for " + profile);
+            final ParsedSectionMessage journalEntry;
+            try {
+                journalEntry = featureAPI.getJournalEntry(entryID);
+            } catch (final QuestException e) {
+                log.warn(entryID.getPackage(), "Cannot add journal entry to " + profile + ": " + e.getMessage(), e);
                 continue;
             }
 

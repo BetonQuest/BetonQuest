@@ -216,12 +216,12 @@ public class Conversation implements Listener {
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
-        final ConversationData tmpData = plugin.getFeatureAPI().getConversation(conversationID);
-        if (tmpData == null) {
-            log.error(pack, "Tried to start conversation '" + conversationID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
+        try {
+            this.data = plugin.getFeatureAPI().getConversation(conversationID);
+        } catch (final QuestException e) {
+            log.error(pack, "Cannot start conversation '" + conversationID.getFullID() + "': " + e.getMessage(), e);
             return;
         }
-        this.data = tmpData;
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;

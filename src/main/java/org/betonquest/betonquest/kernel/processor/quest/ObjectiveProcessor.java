@@ -10,7 +10,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -125,17 +124,6 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     }
 
     /**
-     * Gets an objective by its ID.
-     *
-     * @param objectiveID package name, dot and ID of the objective
-     * @return Objective object or null if it does not exist
-     */
-    @Nullable
-    public Objective getObjective(final ObjectiveID objectiveID) {
-        return values.get(objectiveID);
-    }
-
-    /**
      * Renames the objective instance.
      *
      * @param name   the current name
@@ -173,7 +161,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      *
      * @return a new list of all loaded global objectives
      */
-    public List<ObjectiveID> list() {
+    public List<ObjectiveID> getGlobalObjectives() {
         return new ArrayList<>(globalObjectiveIds);
     }
 }

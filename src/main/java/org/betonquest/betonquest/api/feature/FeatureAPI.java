@@ -15,7 +15,6 @@ import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,16 +40,13 @@ public final class FeatureAPI {
 
     /**
      * Gets stored Conversation Data.
-     * <p>
-     * The conversation data can be null if there was an error loading it.
      *
-     * @param conversationID package name, dot and name of the conversation
-     * @return ConversationData object for this conversation or null if it does
-     * not exist
+     * @param conversationID the id of the conversation
+     * @return the loaded ConversationData
+     * @throws QuestException if no ConversationData is loaded for the ID
      */
-    @Nullable
-    public ConversationData getConversation(final ConversationID conversationID) {
-        return questRegistry.conversations().getValues().get(conversationID);
+    public ConversationData getConversation(final ConversationID conversationID) throws QuestException {
+        return questRegistry.conversations().get(conversationID);
     }
 
     /**
@@ -64,15 +60,13 @@ public final class FeatureAPI {
 
     /**
      * Gets stored Quest Canceler.
-     * <p>
-     * The canceler data can be null if there was an error loading it.
      *
-     * @param cancelerID package name, dot and name of the conversation
-     * @return QuestCanceler or null if it does not exist
+     * @param cancelerID the compass id
+     * @return the loaded QuestCanceler
+     * @throws QuestException if no QuestCanceler is loaded for the ID
      */
-    @Nullable
-    public QuestCanceler getCanceler(final QuestCancelerID cancelerID) {
-        return questRegistry.cancelers().getValues().get(cancelerID);
+    public QuestCanceler getCanceler(final QuestCancelerID cancelerID) throws QuestException {
+        return questRegistry.cancelers().get(cancelerID);
     }
 
     /**
@@ -86,15 +80,13 @@ public final class FeatureAPI {
 
     /**
      * Gets stored Journal Entry.
-     * <p>
-     * The journal entry can be null if there was an error loading it.
      *
-     * @param journalEntryID package name, dot and name of the journal entry
-     * @return JournalEntry or null if it does not exist
+     * @param journalEntryID the journal entry id
+     * @return the loaded Message
+     * @throws QuestException if no Message is loaded for the ID
      */
-    @Nullable
-    public ParsedSectionMessage getJournalEntry(final JournalEntryID journalEntryID) {
-        return questRegistry.journalEntries().getValues().get(journalEntryID);
+    public ParsedSectionMessage getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
+        return questRegistry.journalEntries().get(journalEntryID);
     }
 
     /**
@@ -120,11 +112,11 @@ public final class FeatureAPI {
      * Gets a Npc by its id.
      *
      * @param npcID the id of the Npc
-     * @return the wrapper to get the actual
+     * @return the betonquest Npc
      * @throws QuestException when there is no Npc with that id
      */
     public Npc<?> getNpc(final NpcID npcID) throws QuestException {
-        return questRegistry.npcs().getNpc(npcID);
+        return questRegistry.npcs().get(npcID).getNpc();
     }
 
     /**

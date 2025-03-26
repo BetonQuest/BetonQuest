@@ -177,11 +177,7 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                final ConversationID targetConv = new ConversationID(targetPack, targetConvName);
-                conv = featureAPI.getConversation(targetConv);
-                if (conv == null) {
-                    throw new QuestException("No Conversation for conversationID '" + targetConv.getFullID() + "'! Check for errors on /bq reload!");
-                }
+                conv = featureAPI.getConversation(new ConversationID(targetPack, targetConvName));
             } catch (final QuestException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName

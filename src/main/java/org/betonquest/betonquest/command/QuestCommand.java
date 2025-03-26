@@ -1068,17 +1068,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // get the objective
         final ObjectiveID objectiveID;
+        final Objective objective;
         try {
             objectiveID = new ObjectiveID(null, args[3]);
+            objective = instance.getQuestTypeAPI().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new PluginMessage.Replacement("error", e.getMessage()));
             log.warn("Could not find objective: " + e.getMessage(), e);
-            return;
-        }
-        final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
-        if (objective == null) {
-            sendMessage(sender, "specify_objective");
             return;
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
@@ -1332,18 +1329,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "objectives", "objective", "o" -> {
                 updateType = UpdateType.REMOVE_ALL_OBJECTIVES;
                 final ObjectiveID objectiveID;
+                final Objective objective;
                 try {
                     objectiveID = new ObjectiveID(null, name);
+                    objective = instance.getQuestTypeAPI().getObjective(objectiveID);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
                             new PluginMessage.Replacement("error", e.getMessage()));
                     log.warn(message, e);
                     log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
-                    break;
-                }
-                final Objective objective = instance.getQuestTypeAPI().getObjective(objectiveID);
-                if (objective == null) {
                     break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
@@ -1719,21 +1714,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
         // get the objective
         final ObjectiveID objectiveID;
+        final Objective tmp;
         try {
             objectiveID = new ObjectiveID(null, args[2]);
+            tmp = instance.getQuestTypeAPI().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new PluginMessage.Replacement("error", e.getMessage()));
             log.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
-        final Objective tmp = instance.getQuestTypeAPI().getObjective(objectiveID);
         if (!(tmp instanceof final VariableObjective variableObjective)) {
-            if (tmp == null) {
-                log.debug("Missing objective instruction string");
-            } else {
-                log.debug(tmp.getLabel() + " is not a variable objective");
-            }
+            log.debug(tmp.getLabel() + " is not a variable objective");
             sendMessage(sender, "specify_objective");
             return;
         }
