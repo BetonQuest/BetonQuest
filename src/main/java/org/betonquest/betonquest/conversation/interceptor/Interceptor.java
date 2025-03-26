@@ -1,11 +1,11 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 /**
  * The interceptor is used to intercept chat messages that are sent to the player.
- * This is useful to provide a distraction free conversation experience.
+ * This is useful to provide a distraction-free conversation experience.
  */
 public interface Interceptor {
 

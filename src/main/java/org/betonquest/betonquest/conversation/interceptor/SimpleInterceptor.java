@@ -1,11 +1,10 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,14 +18,11 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class SimpleInterceptor implements Interceptor, Listener {
-    protected final Conversation conv;
-
     protected final Player player;
 
     private final List<String> messages = new ArrayList<>();
 
-    public SimpleInterceptor(final Conversation conv, final OnlineProfile onlineProfile) throws QuestException {
-        this.conv = conv;
+    public SimpleInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -47,7 +43,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
     }
 
     /**
-     * This method prevents concurrent list modification
+     * This method prevents concurrent list modification.
      */
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     private void addMessage(final String message) {

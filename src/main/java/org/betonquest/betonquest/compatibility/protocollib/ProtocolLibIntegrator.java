@@ -5,7 +5,7 @@ import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIO;
-import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
+import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptorFactory;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -40,7 +40,7 @@ public class ProtocolLibIntegrator implements Integrator {
         }
 
         plugin.getFeatureRegistries().conversationIO().register("menu", MenuConvIO.class);
-        plugin.getFeatureRegistries().interceptor().register("packet", PacketInterceptor.class);
+        plugin.getFeatureRegistries().interceptor().register("packet", new PacketInterceptorFactory());
 
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);

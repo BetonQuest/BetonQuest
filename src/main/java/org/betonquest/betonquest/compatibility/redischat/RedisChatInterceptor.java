@@ -5,21 +5,13 @@ import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.Interceptor;
+import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 /**
  * Chat Interceptor that works with RedisChat.
  */
 public class RedisChatInterceptor implements Interceptor {
-
-    /**
-     * The conversation this interceptor acts for.
-     */
-    protected final Conversation conv;
 
     /**
      * The player whose chat is being intercepted.
@@ -36,13 +28,12 @@ public class RedisChatInterceptor implements Interceptor {
      * Stops the chat on conversation start and resumes it on conversation end,
      * sending all the missed messages to the player.
      *
-     * @param conv          Conversation to intercept
      * @param onlineProfile OnlineProfile of the player
+     * @param api           RedisChat API
      */
-    public RedisChatInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
-        this.conv = conv;
+    public RedisChatInterceptor(final OnlineProfile onlineProfile, final RedisChatAPI api) {
         this.player = onlineProfile.getPlayer();
-        this.api = Objects.requireNonNull(RedisChatAPI.getAPI());
+        this.api = api;
         api.pauseChat(player);
     }
 
