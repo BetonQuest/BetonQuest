@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 /**
  * Requires the player to consume an item (eat food or drink a potion).
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ConsumeObjective extends CountingObjective implements Listener {
 
     /**
@@ -27,7 +26,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     /**
      * The item to consume.
      */
-    private final QuestItem item;
+    private final Item item;
 
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
@@ -37,7 +36,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      */
     public ConsumeObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        item = instruction.getQuestItem();
+        item = instruction.getItem();
         targetAmount = instruction.get(instruction.getOptional(AMOUNT_ARGUMENT, "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
@@ -49,7 +48,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onConsume(final PlayerItemConsumeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile) && item.compare(event.getItem()) && checkConditions(onlineProfile)) {
+        if (containsPlayer(onlineProfile) && item.matches(event.getItem()) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }

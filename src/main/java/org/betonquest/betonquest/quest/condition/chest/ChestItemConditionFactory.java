@@ -44,7 +44,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
         final VariableLocation loc = instruction.get(VariableLocation::new);
-        final Item[] questItems = instruction.getItemList();
-        return new ChestItemCondition(loc, questItems);
+        final Item[] items = instruction.getItemList();
+        return new ChestItemCondition(loc, items);
     }
 }

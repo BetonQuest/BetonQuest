@@ -69,7 +69,7 @@ public class TakeEvent extends AbstractTakeEvent {
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
-            if (item != null && questItem.compare(item)) {
+            if (item != null && questItem.matches(item)) {
                 if (item.getAmount() <= desiredDeletions) {
                     items[i] = null;
                     desiredDeletions = desiredDeletions - item.getAmount();

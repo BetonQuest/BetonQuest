@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.item.QuestItem;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,31 +54,5 @@ public interface ItemParser extends IDParser {
             items[i] = getItem(array[i]);
         }
         return items;
-    }
-
-    /**
-     * Parses {@link #getQuestItem(String)} with {@link #next()}.
-     *
-     * @return the parsed QuestItem
-     * @throws QuestException when there is no part left or no such quest item
-     */
-    default QuestItem getQuestItem() throws QuestException {
-        return getQuestItem(next());
-    }
-
-    /**
-     * Parses the string as QuestItem.
-     *
-     * @param string the string to parse as QuestItem
-     * @return the parsed quest item or null if no string was provided
-     * @throws QuestException when there is no such quest item
-     */
-    @Contract("null -> null; !null -> !null")
-    @Nullable
-    default QuestItem getQuestItem(@Nullable final String string) throws QuestException {
-        if (string == null) {
-            return null;
-        }
-        return new QuestItem(getID(string, ItemID::new));
     }
 }

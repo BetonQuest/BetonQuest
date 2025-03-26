@@ -4,10 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
  * @param offHand    the off-hand item to equip the mob with
  * @param drops      the items to drop when the mob dies
  */
-public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestplate,
-                        @Nullable QuestItem leggings, @Nullable QuestItem boots, @Nullable QuestItem mainHand,
-                        @Nullable QuestItem offHand, Item[] drops) {
+public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
+                        @Nullable Item leggings, @Nullable Item boots, @Nullable Item mainHand,
+                        @Nullable Item offHand, Item[] drops) {
 
     /**
      * Adds the drops to the mob.
@@ -50,17 +50,22 @@ public record Equipment(@Nullable QuestItem helmet, @Nullable QuestItem chestpla
      */
     public void addEquipment(final Mob mob) {
         final EntityEquipment equipment = mob.getEquipment();
-        equipment.setHelmet(helmet == null ? null : helmet.generate(1));
-        equipment.setChestplate(chestplate == null ? null : chestplate.generate(1));
-        equipment.setLeggings(leggings == null ? null : leggings.generate(1));
-        equipment.setBoots(boots == null ? null : boots.generate(1));
-        equipment.setItemInMainHand(mainHand == null ? null : mainHand.generate(1));
-        equipment.setItemInOffHand(offHand == null ? null : offHand.generate(1));
+        equipment.setHelmet(generate(helmet));
+        equipment.setChestplate(generate(chestplate));
+        equipment.setLeggings(generate(leggings));
+        equipment.setBoots(generate(boots));
+        equipment.setItemInMainHand(generate(mainHand));
+        equipment.setItemInOffHand(generate(offHand));
         equipment.setHelmetDropChance(0);
         equipment.setChestplateDropChance(0);
         equipment.setLeggingsDropChance(0);
         equipment.setBootsDropChance(0);
         equipment.setItemInMainHandDropChance(0);
         equipment.setItemInOffHandDropChance(0);
+    }
+
+    @Nullable
+    private ItemStack generate(@Nullable final Item item) {
+        return item == null ? null : item.getItem().generate(1);
     }
 }

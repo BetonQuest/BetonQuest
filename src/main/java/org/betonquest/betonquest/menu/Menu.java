@@ -14,8 +14,10 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -52,11 +54,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final ConfigAccessor pluginConfig;
 
     /**
-     * The plugin message instance.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Quest Type API.
      */
     private final QuestTypeAPI questTypeAPI;
@@ -87,10 +84,10 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final List<Slots> slots;
 
     /**
-     * Optional which contains the item this menu is bound to or is empty if none is bound.
+     * Item this menu is bound to or is empty if none is bound.
      */
     @Nullable
-    private final QuestItem boundItem;
+    private final Item boundItem;
 
     /**
      * Conditions which have to be matched to open the menu.
@@ -143,7 +140,6 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.rpgMenu = rpgMenu;
         this.log = log;
         pluginConfig = config;
-        this.pluginMessage = pluginMessage;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.menuID = menuID;
@@ -153,8 +149,9 @@ public class Menu extends SimpleYMLSection implements Listener {
             throw new Invalid("height");
         }
         //load title
+        final VariableProcessor variableProcessor = BetonQuest.getInstance().getVariableProcessor();
         try {
-            this.title = new VariableString(BetonQuest.getInstance().getVariableProcessor(), pack, getString("title"));
+            this.title = new VariableString(variableProcessor, pack, getString("title"));
         } catch (final QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
@@ -162,12 +159,12 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.openEvents = getEvents("open_events", pack);
         this.closeEvents = getEvents("close_events", pack);
         //load bound item
-        this.boundItem = new OptionalSetting<QuestItem>() {
+        this.boundItem = new OptionalSetting<Item>() {
             @Override
             @SuppressWarnings("PMD.ShortMethodName")
-            protected QuestItem of() throws Missing, Invalid {
+            protected Item of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
+                    return new Item(new ItemID(Menu.this.pack, getString("bind")), new VariableNumber(variableProcessor, null, "1"));
                 } catch (final QuestException e) {
                     throw new Invalid("bind", e);
                 }
@@ -286,7 +283,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         //check if item is bound item
-        if (boundItem == null || !boundItem.compare(event.getItem())) {
+        if (boundItem == null || !boundItem.matches(event.getItem())) {
             return;
         }
         event.setCancelled(true);

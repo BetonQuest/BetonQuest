@@ -73,7 +73,7 @@ public class FishObjective extends CountingObjective implements Listener {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (questItem.compare(item) && checkConditions(onlineProfile)) {
+        if (questItem.matches(item) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress(item.getAmount());
             completeIfDoneOrNotify(onlineProfile);
         }

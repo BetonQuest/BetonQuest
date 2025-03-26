@@ -6,14 +6,12 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
@@ -64,12 +62,12 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final VariableString name = nameString == null ? null : instruction.get(Utils.format(
                 nameString, true, false).replace('_', ' '), VariableString::new);
         final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
-        final QuestItem helmet = getQuestItem(instruction, "h");
-        final QuestItem chestplate = getQuestItem(instruction, "c");
-        final QuestItem leggings = getQuestItem(instruction, "l");
-        final QuestItem boots = getQuestItem(instruction, "b");
-        final QuestItem mainHand = getQuestItem(instruction, "m");
-        final QuestItem offHand = getQuestItem(instruction, "o");
+        final Item helmet = getItem(instruction, "h");
+        final Item chestplate = getItem(instruction, "c");
+        final Item leggings = getItem(instruction, "l");
+        final Item boots = getItem(instruction, "b");
+        final Item mainHand = getItem(instruction, "m");
+        final Item offHand = getItem(instruction, "o");
         final Item[] drops = instruction.getItemList(instruction.getOptional("drops"));
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
@@ -77,8 +75,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     }
 
     @Nullable
-    private QuestItem getQuestItem(final Instruction instruction, final String key) throws QuestException {
-        final ItemID item = instruction.getID(instruction.getOptional(key), ItemID::new);
-        return item == null ? null : new QuestItem(item);
+    private Item getItem(final Instruction instruction, final String key) throws QuestException {
+        return instruction.getItem(instruction.getOptional(key));
     }
 }

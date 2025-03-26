@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,9 +21,9 @@ import java.util.List;
 public class ItemVariable implements NullableVariable {
 
     /**
-     * The QuestItem.
+     * The Item.
      */
-    private final QuestItem questItem;
+    private final Item item;
 
     /**
      * The type how the item should be displayed.
@@ -42,13 +43,13 @@ public class ItemVariable implements NullableVariable {
     /**
      * Creates a new ItemVariable.
      *
-     * @param questItem the QuestItem
-     * @param type      the type how the item should be displayed
-     * @param raw       if the output should be raw
-     * @param amount    the amount of the item
+     * @param item   the QuestItem
+     * @param type   the type how the item should be displayed
+     * @param raw    if the output should be raw
+     * @param amount the amount of the item
      */
-    public ItemVariable(final QuestItem questItem, final ItemDisplayType type, final boolean raw, final int amount) {
-        this.questItem = questItem;
+    public ItemVariable(final Item item, final ItemDisplayType type, final boolean raw, final int amount) {
+        this.item = item;
         this.type = type;
         this.raw = raw;
         this.amount = amount;
@@ -60,9 +61,10 @@ public class ItemVariable implements NullableVariable {
         if (profile == null && (type == ItemDisplayType.AMOUNT || type == ItemDisplayType.LEFT)) {
             throw new QuestException("ItemVariable with type " + type + " can't be used without a profile.");
         }
+        final QuestItem questItem = this.item.getItem();
         return switch (type) {
-            case AMOUNT -> Integer.toString(itemAmount(profile));
-            case LEFT -> Integer.toString(amount - itemAmount(profile));
+            case AMOUNT -> Integer.toString(itemAmount(questItem, profile));
+            case LEFT -> Integer.toString(amount - itemAmount(questItem, profile));
             case NAME -> conditionalRaw(questItem.getName());
             case LORE -> {
                 try {
@@ -74,12 +76,12 @@ public class ItemVariable implements NullableVariable {
         };
     }
 
-    private int itemAmount(final Profile profile) {
+    private int itemAmount(final QuestItem questItem, final Profile profile) {
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Player player = onlineProfile.getPlayer();
         int itemAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (item == null || !questItem.compare(item)) {
+            if (item == null || !questItem.matches(item)) {
                 continue;
             }
             itemAmount += item.getAmount();
@@ -87,7 +89,7 @@ public class ItemVariable implements NullableVariable {
         final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerDataStorage()
                 .get(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
-            if (item == null || !questItem.compare(item)) {
+            if (item == null || !questItem.matches(item)) {
                 continue;
             }
             itemAmount += item.getAmount();
