@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Factory for {@link ConfigAccessor} instances.
@@ -76,28 +75,20 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
 
     @Override
     public FileConfigAccessor createPatching(final File configurationFile, final Plugin plugin, final String resourceFile, @Nullable final PatchTransformerRegistry patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
-        final FileConfigAccessor accessor = create(configurationFile, plugin, resourceFile);
         final ConfigAccessor resourceAccessor = create(plugin, resourceFile);
-        accessor.getConfig().setDefaults(resourceAccessor.getConfig());
-        accessor.getConfig().options().copyDefaults(true);
-        try {
-            accessor.save();
-        } catch (final IOException e) {
-            throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
-        }
-        final Patcher patcher = createPatcher(patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile));
-        return new StandardPatchingConfigAccessor(configurationFile, plugin, resourceFile, patcher, plugin.getDataFolder().getParentFile().toURI());
+        final Patcher patcher = createPatcher(resourceAccessor, patchTransformerRegisterer, createPatchAccessor(plugin, resourceFile));
+        return new StandardPatchingConfigAccessor(configurationFile, plugin, resourceFile, patcher);
     }
 
     @Nullable
-    private Patcher createPatcher(@Nullable final PatchTransformerRegistry patchTransformerRegistry,
+    private Patcher createPatcher(final ConfigAccessor resourceAccessor, @Nullable final PatchTransformerRegistry patchTransformerRegistry,
                                   @Nullable final ConfigAccessor patchAccessor) {
         if (patchAccessor == null) {
             return null;
         }
         final BetonQuestLogger patcherLogger = loggerFactory.create(Patcher.class, "Config Patcher");
         try {
-            return new Patcher(patcherLogger,
+            return new Patcher(patcherLogger, resourceAccessor,
                     patchTransformerRegistry == null ? defaultPatchTransformerRegistry : patchTransformerRegistry,
                     patchAccessor.getConfig());
         } catch (final InvalidConfigurationException e) {

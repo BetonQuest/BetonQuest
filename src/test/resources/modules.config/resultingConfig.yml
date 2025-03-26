@@ -1,0 +1,17 @@
+copied: resource
+configVersion: 3.4.5-CONFIG-6 # Don't change this! The plugin's automatic config updater handles it.
+section:
+  myList:
+    - someEntry
+    - newEntry
+    - newEntry
+  default_conversation_IO: menu
+  testKey: newTest
+  booleanString: 'true'
+  boolean: true
+  int: '2'
+  float: '2.5'
+  double: '2.1234567891234567'
+journalLock: megaTrue
+testNew: someValue
+additionalVal: '42'

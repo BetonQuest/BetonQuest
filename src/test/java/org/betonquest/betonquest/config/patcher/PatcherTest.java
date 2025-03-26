@@ -1,16 +1,24 @@
 package org.betonquest.betonquest.config.patcher;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.StandardConfigAccessor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
-import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,30 +27,92 @@ import static org.mockito.Mockito.*;
  * A test for the {@link Patcher}.
  */
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class PatcherTest {
-    /**
-     * The patch file for this test.
-     */
-    private final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
+    private static DefaultPatchTransformerRegistry registry;
+
+    private FileConfigAccessor config;
+
+    private ConfigAccessor resource;
+
+    private ConfigAccessor patch;
+
+    private ConfigAccessor result;
 
     @Mock
     private BetonQuestLogger logger;
 
-    /**
-     * The config that will be patched.
-     */
-    private YamlConfiguration config;
+    @BeforeAll
+    static void setUp() throws FileNotFoundException, InvalidConfigurationException {
+        registry = new DefaultPatchTransformerRegistry();
+    }
 
     @BeforeEach
-    void cleanConfig() {
-        this.config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
+    void setupConfig(@TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
+        config = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/modules.config/config.yml");
+        resource = createConfigAccessorFromResources(tempDir, "resource.yml", "src/test/resources/modules.config/resource.yml");
+        patch = createConfigAccessorFromResources(tempDir, "config.patch.yml", "src/test/resources/modules.config/config.patch.yml");
+        result = createConfigAccessorFromResources(tempDir, "resultingConfig.yml", "src/test/resources/modules.config/resultingConfig.yml");
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
-        final YamlConfiguration configFromTheFuture = new YamlConfiguration();
-        configFromTheFuture.loadFromString("""
+    void applies_updates() throws InvalidConfigurationException, IOException {
+        resource.set("copied", "resource");
+        new Patcher(logger, resource, registry, patch).patch(config);
+
+        verify(logger, times(1)).info("The config file 'config.yml' gets updated from version '1.12.1-CONFIG-1'...");
+        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
+        verify(logger, times(1)).info("Applying patches to update to '3.4.5-CONFIG-6'...");
+        verify(logger, times(1)).info("Patching complete!");
+        verifyNoMoreInteractions(logger);
+        assertEquals(getStringFromConfigAccessor(result), getStringFromConfigAccessor(config),
+                "Config does not match the expected result.");
+    }
+
+    @Test
+    void no_set_config_version(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor config = createConfigAccessorFromString(tempDir, "config.yml", "");
+        final ConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
+                "2.0.0.1":
+                  - type: SET
+                    key: journalLock
+                    value: true
+                """);
+        new Patcher(logger, resource, registry, patch).patch(config);
+
+        verify(logger, times(1)).info("The config file 'config.yml' gets updated from 'legacy' version...");
+        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
+        verify(logger, times(1)).info("Patching complete!");
+        verifyNoMoreInteractions(logger);
+        assertEquals("""
+                configVersion: 2.0.0-CONFIG-1 # Don't change this! The plugin's automatic config updater handles it.
+                journalLock: 'true'
+                """, getStringFromConfigAccessor(config), "Config does not match the expected result.");
+    }
+
+    @Test
+    void empty_config_version(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor config = createConfigAccessorFromString(tempDir, "config.yml", """
+                configVersion: ""
+                """);
+        final ConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
+                "2.0.0.1":
+                  - type: SET
+                    key: journalLock
+                    value: true
+                """);
+        new Patcher(logger, resource, registry, patch).patch(config);
+
+        verify(logger, times(1)).debug("The config file 'config.yml' gets the latest version '2.0.0-CONFIG-1' set.");
+        verifyNoMoreInteractions(logger);
+        assertEquals("""
+                configVersion: 2.0.0-CONFIG-1 # Don't change this! The plugin's automatic config updater handles it.
+                """, getStringFromConfigAccessor(config), "Config does not match the expected result.");
+    }
+
+    @Test
+    void has_no_update_for_newer_configs(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor config = createConfigAccessorFromString(tempDir, "config.yml", """
                 configVersion: 6.2.3-CONFIG-12
                 journalLock: false
                 """);
@@ -54,176 +124,115 @@ class PatcherTest {
                     key: journalLock
                     value: true
                 """);
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), patch);
-        assertFalse(patcher.patch("config.yml", configFromTheFuture), "The Patcher should not patch a config that is already up to date.");
+        new Patcher(logger, resource, registry, patch).patch(config);
 
-        assertEquals(configFromTheFuture.saveToString(), """
-                configVersion: 6.2.3-CONFIG-12
-                journalLock: false
-                """, "The patcher must not change the config if it is already up to date.");
         verify(logger, times(1)).debug("The config file 'config.yml' is already up to date.");
         verifyNoMoreInteractions(logger);
+        assertEquals("""
+                configVersion: 6.2.3-CONFIG-12
+                journalLock: false
+                """, getStringFromConfigAccessor(config), "Config does not match the expected result.");
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testAppliesUpdates() throws InvalidConfigurationException {
-        final YamlConfiguration expectedConfig = new YamlConfiguration();
-        expectedConfig.loadFromString(config.saveToString());
-
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), patch);
-        assertTrue(patcher.patch("config.yml", config), "The Patcher should patch the config.");
-
-        expectedConfig.set("configVersion", "3.4.5-CONFIG-6");
-        expectedConfig.set("journalLock", "megaTrue");
-        final List<String> list = expectedConfig.getStringList("section.myList");
-        list.set(1, "newEntry");
-        list.add("newEntry");
-        list.remove("removedEntry");
-        expectedConfig.set("section.myList", list);
-        expectedConfig.set("section.test", null);
-        expectedConfig.set("testNew", "someValue");
-        expectedConfig.set("section.testKey", "newTest");
-        expectedConfig.set("additionalVal", "42");
-
-        assertEquals(expectedConfig.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
-        verify(logger, times(1)).info("Updating config file 'config.yml' from version '1.12.1-CONFIG-1'...");
-        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
-        verify(logger, times(1)).info("Applying patches to update to '3.4.5-CONFIG-6'...");
-        verify(logger, times(1)).info("Patching complete!");
-        verifyNoMoreInteractions(logger);
-    }
-
-    @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void testPatchVersionNumberTooShort() throws InvalidConfigurationException {
-        final YamlConfiguration invalidConfig = createConfigFromString("""
+    void patch_version_number_too_short(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
                 "1.0":
                   - type: SET
                     key: journalLock
                     value: true
                 """);
 
-        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, new DefaultPatchTransformerRegistry(), invalidConfig), "The patch file at '1.0' is too long or too short.");
+        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, resource, registry, patch),
+                "The patch file at '1.0' is too long or too short.");
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void testPatchMalformed() throws InvalidConfigurationException {
-        final YamlConfiguration invalidConfig = createConfigFromString("""
+    void patch_malformed(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
                 "1.0": Nonsense
                 """);
 
-        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, new DefaultPatchTransformerRegistry(), invalidConfig), "The patch file at '1.0' is too long or too short.");
+        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, resource, registry, patch),
+                "The patch file at '1.0' is too long or too short.");
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void testPatchIsNonsense() throws InvalidConfigurationException {
-        final String patch = """
+    void patch_is_nonsense(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
                 1:
                   - Nonsense
-                """;
-        final YamlConfiguration invalidConfig = new YamlConfiguration();
-        invalidConfig.loadFromString(patch);
+                """);
 
-        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, new DefaultPatchTransformerRegistry(), invalidConfig), "The patch file at '1' is too long or too short.");
+        assertThrows(InvalidConfigurationException.class, () -> new Patcher(logger, resource, registry, patch),
+                "The patch file at '1' is too long or too short.");
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUnknownTransformerType() throws InvalidConfigurationException {
-        final String patch = """
+    void unknown_transformer_type(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
                 3.4.5.6:
                   - type: INVALID
                     key: journalLock
                     value: megaTrue
-                """;
-        final YamlConfiguration invalidConfig = new YamlConfiguration();
-        invalidConfig.loadFromString(patch);
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), invalidConfig);
-        assertTrue(patcher.patch("config.yml", config), "The Patcher should patch the config.");
-        verify(logger, times(1)).info("Updating config file 'config.yml' from version '1.12.1-CONFIG-1'...");
+                """);
+        new Patcher(logger, resource, registry, patch).patch(config);
+        verify(logger, times(1)).info("The config file 'config.yml' gets updated from version '1.12.1-CONFIG-1'...");
         verify(logger, times(1)).info("Applying patches to update to '3.4.5-CONFIG-6'...");
         verify(logger, times(1)).warn("There has been an issue while applying the patches: Unknown transformation type 'INVALID' used!");
         verify(logger, times(1)).warn("The patching progress did not go flawlessly. However, this does not mean your configs are now corrupted. Please check the errors above to see what the patcher did. You might want to adjust your config manually depending on that information.");
         verifyNoMoreInteractions(logger);
     }
 
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testEmptyPatchFile() throws InvalidConfigurationException {
-        final String patch = "";
-        final YamlConfiguration patchConfig = new YamlConfiguration();
-        patchConfig.loadFromString(patch);
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), patchConfig);
-        assertTrue(patcher.patch("config.yml", config), "The Patcher should patch the config.");
-        verify(logger, times(1)).info("Updating config file 'config.yml' from version '1.12.1-CONFIG-1'...");
-        verify(logger, times(1)).info("Patching complete!");
-        verifyNoMoreInteractions(logger);
-    }
-
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    @Test
-    void testLegacyConfig() throws InvalidConfigurationException {
-        final YamlConfiguration emptyConfig = createConfigFromString("");
-
-        final YamlConfiguration patchConfig = createConfigFromString("""
-                2.0.0.1:
-                - type: SET
-                  key: newKey
-                  value: newValue
-                """);
-
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), patchConfig);
-        assertTrue(patcher.patch("config.yml", emptyConfig), "The Patcher should patch the config.");
-        final YamlConfiguration desiredResult = createConfigFromString("""
-                configVersion: 2.0.0-CONFIG-1 #Don't change this! The plugin's automatic config updater handles it.
-                newKey: newValue
-                """);
-
-        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString(), "The Patcher did not set the configVersion variable on a legacy config.");
-        verify(logger, times(1)).info("Updating config file 'config.yml' from version '0.0.0-CONFIG-0'...");
-        verify(logger, times(1)).info("Applying patches to update to '2.0.0-CONFIG-1'...");
-        verify(logger, times(1)).info("Patching complete!");
+    void empty_patch_file(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", "");
+        new Patcher(logger, resource, registry, patch).patch(config);
+        verify(logger, times(1)).debug("The config file 'config.yml' has no patches to apply.");
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testConfigFromResourceUpdate() throws InvalidConfigurationException {
-        final YamlConfiguration emptyConfig = createConfigFromString("""
+    void from_resource_update(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
+        resource.set("copied", "resource");
+        final FileConfigAccessor config = createConfigAccessorFromString(tempDir, "config.yml", """
                         configVersion: ""
                         someKey: someValue
                 """);
 
-        final YamlConfiguration patchConfig = createConfigFromString("""
+        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
                 100.200.300.400:
                 - type: SET
                   key: newKey
                   value: newValue
                 """);
 
-        final Patcher patcher = new Patcher(logger, new DefaultPatchTransformerRegistry(), patchConfig);
-        assertTrue(patcher.patch("config.yml", emptyConfig), "The Patcher should patch the config.");
+        new Patcher(logger, resource, registry, patch).patch(config);
 
-        final YamlConfiguration desiredResult = createConfigFromString("""
-                configVersion: 100.200.300-CONFIG-400 #Don't change this! The plugin's automatic config updater handles it.
-                someKey: someValue
-                """);
-
-        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString(), "The Patcher did not set the configVersion variable on a legacy config.");
-        verify(logger, times(1)).info("Updating config file 'config.yml' from version '100.200.300-CONFIG-400'...");
-        verify(logger, times(1)).info("Patching complete!");
+        verify(logger, times(1)).debug("The config file 'config.yml' gets the latest version '100.200.300-CONFIG-400' set.");
         verifyNoMoreInteractions(logger);
+        assertEquals("""
+                copied: resource
+                configVersion: 100.200.300-CONFIG-400 # Don't change this! The plugin's automatic config updater handles it.
+                someKey: someValue
+                """, getStringFromConfigAccessor(config), "Config does not match the expected result.");
     }
 
-    private YamlConfiguration createConfigFromString(final String content) throws InvalidConfigurationException {
-        final YamlConfiguration config = new YamlConfiguration();
-        config.loadFromString(content);
-        return config;
+    private String getStringFromConfigAccessor(final ConfigAccessor accessor) {
+        return ((YamlConfiguration) accessor.getConfig()).saveToString();
+    }
+
+    private FileConfigAccessor createConfigAccessorFromResources(final Path tempDir, final String fileName, final String configPath) throws IOException, InvalidConfigurationException {
+        final Path path = new File(configPath).toPath();
+        return createConfigAccessorFromString(tempDir, fileName, Files.readString(path));
+    }
+
+    private FileConfigAccessor createConfigAccessorFromString(final Path tempDir, final String fileName, final String configString) throws IOException, InvalidConfigurationException {
+        final Path configFile = tempDir.resolve(fileName);
+        Files.write(configFile, configString.getBytes());
+        return new StandardConfigAccessor(configFile.toFile(), null, null);
     }
 }

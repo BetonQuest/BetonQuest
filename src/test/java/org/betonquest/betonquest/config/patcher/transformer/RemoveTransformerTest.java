@@ -18,12 +18,12 @@ class RemoveTransformerTest extends TransformersFixture {
 
     @Test
     void flawless() throws PatchException {
-        TRANSFORMER.transform(Map.of("key", "section.myList"), CONFIG);
-        assertNull(CONFIG.get("section.myList"), "The list was not removed.");
+        TRANSFORMER.transform(Map.of("key", "section.myList"), config);
+        assertNull(config.get("section.myList"), "The list was not removed.");
     }
 
     @Test
     void throws_exception_on_invalid() {
-        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid"), CONFIG));
+        assertThrows(PatchException.class, () -> TRANSFORMER.transform(Map.of("key", "section.invalid"), config));
     }
 }

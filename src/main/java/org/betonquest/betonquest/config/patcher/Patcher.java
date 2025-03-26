@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.config.patcher;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
@@ -7,11 +9,13 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +30,11 @@ import java.util.stream.Collectors;
  */
 public class Patcher {
     /**
+     * Comparator for {@link Version} with the qualifier CONFIG.
+     */
+    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+
+    /**
      * The comment at the version entry in the config.
      */
     private static final String VERSION_CONFIG_COMMENT = "Don't change this! The plugin's automatic config updater handles it.";
@@ -36,24 +45,19 @@ public class Patcher {
     private static final String CONFIG_VERSION_PATH = "configVersion";
 
     /**
-     * Default version that is used when no configVersion is set.
-     */
-    private static final Version TECHNICAL_DEFAULT_VERSION = new Version("0.0.0-CONFIG-0");
-
-    /**
      * Regex pattern of the internal config version schema.
      */
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
 
     /**
-     * Comparator for {@link Version} with the qualifier CONFIG.
-     */
-    private static final VersionComparator VERSION_COMPARATOR = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
-
-    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The accessor for the resource file to copy default values from.
+     */
+    private final ConfigAccessor resourceAccessor;
 
     /**
      * Registry for all {@link PatchTransformer}s.
@@ -68,15 +72,17 @@ public class Patcher {
     /**
      * Creates a new Patcher.
      * <br>
-     * Updates can be applied using {@link Patcher#patch(String, ConfigurationSection)}.
+     * Updates can be applied using {@link Patcher#patch(FileConfigAccessor)}.
      *
      * @param log                 the logger that will be used for logging
+     * @param resourceAccessor    the accessor for the resource file to copy default values from
      * @param transformerRegistry the registry for all {@link PatchTransformer}s
      * @param patchConfig         the patchConfig that contains patches
      * @throws InvalidConfigurationException if the patchConfig is malformed
      */
-    public Patcher(final BetonQuestLogger log, final PatchTransformerRegistry transformerRegistry, final ConfigurationSection patchConfig) throws InvalidConfigurationException {
+    public Patcher(final BetonQuestLogger log, final ConfigAccessor resourceAccessor, final PatchTransformerRegistry transformerRegistry, final ConfigurationSection patchConfig) throws InvalidConfigurationException {
         this.log = log;
+        this.resourceAccessor = resourceAccessor;
         this.transformerRegistry = transformerRegistry;
         this.patches = new TreeMap<>(VERSION_COMPARATOR);
         buildVersionIndex(patchConfig, "");
@@ -113,21 +119,42 @@ public class Patcher {
     /**
      * Patches the given config with the given patch file.
      *
-     * @param configPath the path to the config file
-     * @param config     the config to patch
-     * @return whether changes were applied
+     * @param accessor the config to patch
+     * @throws InvalidConfigurationException if the config could not be saved
      */
-    public boolean patch(final String configPath, final ConfigurationSection config) {
-        final Version version = getConfigVersion(config);
-        if (!patches.isEmpty() && !VERSION_COMPARATOR.isOtherNewerOrEqualThanCurrent(version, patches.lastEntry().getKey())) {
-            log.debug("The config file '" + configPath + "' is already up to date.");
-            return false;
+    public void patch(final FileConfigAccessor accessor) throws InvalidConfigurationException {
+        final Configuration config = accessor.getConfig();
+        final String configVersionString = config.getString(CONFIG_VERSION_PATH);
+        config.setDefaults(resourceAccessor.getConfig());
+        config.options().copyDefaults(true);
+
+        final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
+        if (patches.isEmpty()) {
+            log.debug(logPrefix + "has no patches to apply.");
+        } else if (configVersionString != null && configVersionString.isEmpty()) {
+            log.debug(logPrefix + "gets the latest version '" + patches.lastKey().getVersion() + "' set.");
+            setConfigVersion(config, patches.lastKey());
+        } else {
+            final Version version = getConfigVersion(configVersionString);
+            if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patches.lastEntry().getKey())) {
+                log.debug(logPrefix + "is already up to date.");
+            } else {
+                final String displayVersion = version == null ? "'legacy' version" : "version '" + version.getVersion() + "'";
+                log.info(logPrefix + "gets updated from " + displayVersion + "...");
+                patch(version, config);
+            }
         }
-        log.info("Updating config file '" + configPath + "' from version '" + version.getVersion() + "'...");
+        try {
+            accessor.save();
+        } catch (final IOException e) {
+            throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
+        }
+    }
+
+    private void patch(@Nullable final Version version, final Configuration config) {
         boolean noErrors = true;
-        boolean patched = false;
         for (final Map.Entry<Version, List<Map<?, ?>>> patch : patches.entrySet()) {
-            if (!VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patch.getKey())) {
+            if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patch.getKey())) {
                 continue;
             }
             log.info("Applying patches to update to '" + patch.getKey().getVersion() + "'...");
@@ -135,7 +162,6 @@ public class Patcher {
             if (!applyPatch(config, patch.getValue())) {
                 noErrors = false;
             }
-            patched = true;
         }
         if (noErrors) {
             log.info("Patching complete!");
@@ -144,21 +170,14 @@ public class Patcher {
                     + "are now corrupted. Please check the errors above to see what the patcher did. "
                     + "You might want to adjust your config manually depending on that information.");
         }
-        if (!patched) {
-            setConfigVersion(config, patches.isEmpty() ? TECHNICAL_DEFAULT_VERSION : patches.lastEntry().getKey());
-        }
-        return true;
     }
 
-    private Version getConfigVersion(final ConfigurationSection config) {
-        final String configVersion = config.getString(CONFIG_VERSION_PATH);
-        if (configVersion == null) {
-            return TECHNICAL_DEFAULT_VERSION;
-        } else if (configVersion.isEmpty()) {
-            return patches.lastEntry().getKey();
-        } else {
-            return new Version(configVersion);
+    @Nullable
+    private Version getConfigVersion(@Nullable final String configVersion) {
+        if (configVersion == null || configVersion.isEmpty()) {
+            return null;
         }
+        return new Version(configVersion);
     }
 
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
