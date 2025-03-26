@@ -14,8 +14,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.Interceptor;
+import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -35,8 +34,6 @@ public class PacketInterceptor implements Interceptor, Listener {
      */
     private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
 
-    protected final Conversation conv;
-
     protected final Player player;
 
     private final List<PacketContainer> messages;
@@ -46,8 +43,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     private int baseComponentIndex = -1;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public PacketInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
-        this.conv = conv;
+    public PacketInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
         this.messages = new ArrayList<>();
 

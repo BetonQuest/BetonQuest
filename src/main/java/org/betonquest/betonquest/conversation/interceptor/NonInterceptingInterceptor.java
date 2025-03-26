@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -9,12 +9,9 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("PMD.CommentRequired")
 public class NonInterceptingInterceptor implements Interceptor {
 
-    protected final Conversation conv;
-
     protected final Player player;
 
-    public NonInterceptingInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
-        this.conv = conv;
+    public NonInterceptingInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
     }
 

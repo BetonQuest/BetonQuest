@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.util.LocalChatPaginator;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;

@@ -17,13 +17,14 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
+import org.betonquest.betonquest.conversation.interceptor.Interceptor;
+import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
-import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.Utils;
@@ -748,10 +749,10 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         final String name = data.getPublicData().interceptor();
-                        final InterceptorRegistry.InterceptorFactory factory = Utils.getNN(
+                        final InterceptorFactory factory = Utils.getNN(
                                 plugin.getFeatureRegistries().interceptor().getFactory(name),
                                 "No '" + name + "' registered!");
-                        conv.interceptor = factory.parse(conv, onlineProfile);
+                        conv.interceptor = factory.create(onlineProfile);
                     } catch (final QuestException e) {
                         log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;

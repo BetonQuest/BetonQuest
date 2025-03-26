@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.conversation.NonInterceptingInterceptor;
 import org.betonquest.betonquest.conversation.SimpleConvIO;
-import org.betonquest.betonquest.conversation.SimpleInterceptor;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
+import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
+import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
@@ -83,8 +83,8 @@ public class CoreFeatureFactories {
         conversationIOTypes.register("slowtellraw", SlowTellrawConvIO.class);
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
-        interceptorTypes.register("simple", SimpleInterceptor.class);
-        interceptorTypes.register("none", NonInterceptingInterceptor.class);
+        interceptorTypes.register("simple", new SimpleInterceptorFactory());
+        interceptorTypes.register("none", new NonInterceptingInterceptorFactory());
 
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", SuppressNotifyIO.class);
