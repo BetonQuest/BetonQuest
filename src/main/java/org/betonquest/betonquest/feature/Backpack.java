@@ -114,13 +114,10 @@ public class Backpack implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) {
         if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
-            // if the player clicked, then cancel this event
             event.setCancelled(true);
-            // if the click was outside the inventory, do nothing
             if (event.getRawSlot() < 0) {
                 return;
             }
-            // pass the click to the Display
             display.click(event.getRawSlot(), event.getSlot(), event.getClick());
         }
     }
@@ -267,19 +264,19 @@ public class Backpack implements Listener {
 
             final int pageOne = 1;
             if (page > pageOne) {
-                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
+                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false, config).getLeft();
             }
             if (page < pages) {
-                content[SLOT_NEXT] = button("next", Material.REDSTONE, false).getLeft();
+                content[SLOT_NEXT] = button("next", Material.REDSTONE, false, config).getLeft();
             }
-            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
+            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true, config);
             if (cancel.getRight()) {
                 showCancel = true;
                 content[SLOT_CANCEL] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
-            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
+            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true, config);
             if (compass.getRight()) {
                 showCompass = true;
                 content[SLOT_COMPASS] = compass.getLeft();
@@ -339,10 +336,8 @@ public class Backpack implements Listener {
                 final int slotId = pageOffset + slot;
                 if (backpackItems.size() > slotId) {
                     final ItemStack item = backpackItems.get(slotId);
-                    // if the item exists, put it in player's inventory
                     final int backpackAmount = item.getAmount();
                     int getAmount = 0;
-                    // left click is one item, right is the whole stack
                     switch (click) {
                         case LEFT:
                             getAmount = 1;
@@ -354,12 +349,9 @@ public class Backpack implements Listener {
                             break;
                     }
                     if (getAmount != 0) {
-                        // add desired amount of items to player's inventory
                         final ItemStack newItem = item.clone();
                         newItem.setAmount(getAmount);
                         final ItemStack leftItems = onlineProfile.getPlayer().getInventory().addItem(newItem).get(0);
-                        // remove from backpack only those items that were
-                        // actually added to player's inventory
                         int leftAmount = 0;
                         if (leftItems != null) {
                             leftAmount = leftItems.getAmount();
@@ -373,15 +365,12 @@ public class Backpack implements Listener {
                     display = new BackpackPage(page);
                 }
             } else if (slot >= INVENTORY_SIZE) {
-                // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
                     final boolean lockJournalSlot = config.getBoolean("journal.lock_default_journal_slot");
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
-                        // if it is a quest item, add it to the backpack
                         int amount = 0;
-                        // left click is one item, right is all items
                         switch (click) {
                             case LEFT:
                                 amount = 1;
@@ -392,8 +381,6 @@ public class Backpack implements Listener {
                             default:
                                 break;
                         }
-                        // add item to backpack and remove it from player's
-                        // inventory
                         playerData.addItem(item.clone(), amount);
                         if (item.getAmount() - amount == 0) {
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, null);
@@ -402,22 +389,17 @@ public class Backpack implements Listener {
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
                     } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
-                        // if it's a journal, remove it so it appears in
-                        // backpack again
                         playerData.getJournal(pluginMessage).removeFromInv();
                     }
                     display = new BackpackPage(page);
                 }
             } else if (slot == SLOT_PREVIOUS && page > 1) {
-                // if it was a previous/next button turn the pages
                 display = new BackpackPage(page - 1);
             } else if (slot == SLOT_NEXT && page < pages) {
                 display = new BackpackPage(page + 1);
             } else if (slot == SLOT_CANCEL && showCancel) {
-                // slot 45 is a slot with quest cancelers
                 display = new Cancelers();
             } else if (slot == SLOT_COMPASS && showCompass) {
-                // slot 46 is a slot with compass pointers
                 display = new Compass();
             }
         }
@@ -439,13 +421,11 @@ public class Backpack implements Listener {
         public Cancelers() {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
-            // get all quest cancelers that can be shown to the player
             for (final QuestCanceler canceler : BetonQuest.getInstance().getFeatureAPI().getCancelers().values()) {
                 if (canceler.show(onlineProfile)) {
                     cancelers.add(canceler);
                 }
             }
-            // generate the inventory view
             final int size = cancelers.size();
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > MAXIMUM_ROWS) {
@@ -507,7 +487,6 @@ public class Backpack implements Listener {
                 }
             }
 
-            // solve number of needed rows
             final int size = compasses.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > MAXIMUM_ROWS) {
@@ -583,7 +562,7 @@ public class Backpack implements Listener {
                 log.warn("Could not resolve compass location for '" + compass + "': " + e.getMessage(), e);
                 return;
             }
-            // set the location of the compass
+
             final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, loc);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
