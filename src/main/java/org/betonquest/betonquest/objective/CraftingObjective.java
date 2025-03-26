@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,11 +24,11 @@ import org.bukkit.inventory.PlayerInventory;
 @SuppressWarnings("PMD.CommentRequired")
 public class CraftingObjective extends CountingObjective implements Listener {
 
-    private final QuestItem item;
+    private final Item item;
 
     public CraftingObjective(final Instruction instruction) throws QuestException {
         super(instruction, "items_to_craft");
-        item = instruction.getQuestItem();
+        item = instruction.getItem();
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 

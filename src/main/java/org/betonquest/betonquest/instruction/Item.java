@@ -6,6 +6,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Wrapper for {@link QuestItem} to also store target stack amount.
@@ -57,7 +58,7 @@ public class Item {
      * @param item the item to compare
      * @return true if the quest item is equal to the given item
      */
-    public boolean isItemEqual(final ItemStack item) {
+    public boolean compare(@Nullable final ItemStack item) {
         return questItem.compare(item);
     }
 

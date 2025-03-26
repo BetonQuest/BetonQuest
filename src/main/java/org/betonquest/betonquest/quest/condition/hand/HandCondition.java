@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.hand;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.instruction.Item;
 import org.bukkit.inventory.PlayerInventory;
 
 /**
@@ -14,7 +14,7 @@ public class HandCondition implements OnlineCondition {
     /**
      * The item to check for.
      */
-    private final QuestItem questItem;
+    private final Item item;
 
     /**
      * Whether the item is in the offhand.
@@ -24,17 +24,17 @@ public class HandCondition implements OnlineCondition {
     /**
      * Creates a new hand condition.
      *
-     * @param questItem the item to check for
-     * @param offhand   whether the item is in the offhand
+     * @param item    the item to check for
+     * @param offhand whether the item is in the offhand
      */
-    public HandCondition(final QuestItem questItem, final boolean offhand) {
-        this.questItem = questItem;
+    public HandCondition(final Item item, final boolean offhand) {
+        this.item = item;
         this.offhand = offhand;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final PlayerInventory inv = profile.getPlayer().getInventory();
-        return questItem.compare(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand());
+        return item.compare(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand());
     }
 }

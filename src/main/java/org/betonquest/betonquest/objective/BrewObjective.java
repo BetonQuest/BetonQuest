@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
@@ -22,7 +23,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,13 +34,13 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class BrewObjective extends CountingObjective implements Listener {
-    private final QuestItem potion;
+    private final Item potion;
 
     private final Map<Location, Profile> locations = new HashMap<>();
 
     public BrewObjective(final Instruction instruction) throws QuestException {
         super(instruction, "potions_to_brew");
-        potion = instruction.getQuestItem();
+        potion = instruction.getItem();
         targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
     }
 
@@ -87,10 +87,11 @@ public class BrewObjective extends CountingObjective implements Listener {
         if (profile == null) {
             return;
         }
-        final boolean[] alreadyDone = getMatchingPotions(event.getContents());
+        final QuestItem potion = this.potion.getItem();
+        final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
 
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            final boolean[] newlyDone = getMatchingPotions(event.getContents(), alreadyDone);
+            final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
 
             int progress = 0;
             for (final boolean brewed : newlyDone) {
@@ -121,21 +122,14 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @param exclusions the excluded indices
      * @return array mapping slot index to potion match
      */
-    private boolean[] getMatchingPotions(final BrewerInventory inventory, final boolean... exclusions) {
+    private boolean[] getMatchingPotions(final QuestItem potion, final BrewerInventory inventory, final boolean... exclusions) {
         final boolean[] resultPotions = new boolean[3];
         final ItemStack[] storageContents = inventory.getStorageContents();
         for (int index = 0; index < 3; index++) {
             resultPotions[index] = (exclusions.length <= index || !exclusions[index])
-                    && checkPotion(storageContents[index]);
+                    && potion.compare(storageContents[index]);
         }
         return resultPotions;
-    }
-
-    /**
-     * Check if the {@link ItemStack} matches the potion defined in the objective.
-     */
-    private boolean checkPotion(@Nullable final ItemStack item) {
-        return item != null && potion.compare(item);
     }
 
     @Override

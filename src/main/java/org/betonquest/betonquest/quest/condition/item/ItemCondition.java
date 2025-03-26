@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -24,16 +25,16 @@ public class ItemCondition implements OnlineCondition {
     /**
      * The items to check for.
      */
-    private final Item[] questItems;
+    private final Item[] items;
 
     /**
      * Create a new item condition.
      *
-     * @param questItems  the items to check for
+     * @param items       the items to check for
      * @param dataStorage the storage providing player data
      */
-    public ItemCondition(final Item[] questItems, final PlayerDataStorage dataStorage) {
-        this.questItems = Arrays.copyOf(questItems, questItems.length);
+    public ItemCondition(final Item[] items, final PlayerDataStorage dataStorage) {
+        this.items = Arrays.copyOf(items, items.length);
         this.dataStorage = dataStorage;
     }
 
@@ -41,15 +42,17 @@ public class ItemCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
         final List<ItemStack> backpackItems = dataStorage.get(profile).getBackpack();
-        for (final Item questItem : questItems) {
+
+        for (final Item item : items) {
+            final QuestItem questItem = item.getItem();
             final long totalAmount = Stream.concat(
                             Stream.of(inventoryItems),
                             backpackItems.stream()
                     )
-                    .filter(itemStack -> itemStack != null && questItem.isItemEqual(itemStack))
+                    .filter(itemStack -> itemStack != null && questItem.compare(itemStack))
                     .mapToInt(ItemStack::getAmount)
                     .sum();
-            if (totalAmount < questItem.getAmount().getValue(profile).intValue()) {
+            if (totalAmount < item.getAmount().getValue(profile).intValue()) {
                 return false;
             }
         }

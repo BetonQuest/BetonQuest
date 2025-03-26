@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class EnchantObjective extends CountingObjective implements Listener {
     private static final String JUST_ONE_ENCHANT = "one";
 
-    private final QuestItem item;
+    private final Item item;
 
     private final List<EnchantmentData> desiredEnchantments;
 
@@ -34,7 +35,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
     public EnchantObjective(final Instruction instruction) throws QuestException {
         super(instruction, "items_to_enchant");
         targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        item = instruction.getQuestItem();
+        item = instruction.getItem();
         desiredEnchantments = instruction.getList(EnchantmentData::convert);
         if (desiredEnchantments.isEmpty()) {
             throw new QuestException("No enchantments were given! You must specify at least one enchantment.");

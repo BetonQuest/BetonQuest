@@ -20,7 +20,7 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Items that should be in the chest.
      */
-    private final Item[] questItems;
+    private final Item[] items;
 
     /**
      * Location of the chest.
@@ -30,11 +30,11 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Constructor of the ChestItemCondition.
      *
-     * @param questItems items that should be in the chest
-     * @param loc        location of the chest
+     * @param items items that should be in the chest
+     * @param loc   location of the chest
      */
-    public ChestItemCondition(final VariableLocation loc, final Item... questItems) {
-        this.questItems = Arrays.copyOf(questItems, questItems.length);
+    public ChestItemCondition(final VariableLocation loc, final Item... items) {
+        this.items = Arrays.copyOf(items, items.length);
         this.loc = loc;
     }
 
@@ -49,23 +49,23 @@ public class ChestItemCondition implements NullableCondition {
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
-        for (final Item questItem : questItems) {
-            int amount = questItem.getAmount().getValue(profile).intValue();
+        for (final Item item : items) {
+            int amount = item.getAmount().getValue(profile).intValue();
             final ItemStack[] inventoryItems = chest.getInventory().getContents();
-            for (final ItemStack item : inventoryItems) {
-                if (item == null) {
+            for (final ItemStack stack : inventoryItems) {
+                if (stack == null) {
                     continue;
                 }
-                if (!questItem.isItemEqual(item)) {
+                if (!item.compare(stack)) {
                     continue;
                 }
-                amount -= item.getAmount();
+                amount -= stack.getAmount();
                 if (amount <= 0) {
                     counter++;
                     break;
                 }
             }
         }
-        return counter == questItems.length;
+        return counter == items.length;
     }
 }

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.instruction.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -18,14 +18,14 @@ import java.util.Locale;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class EquipItemObjective extends Objective implements Listener {
-    private final QuestItem questItems;
+    private final Item item;
 
     private final PlayerArmorChangeEvent.SlotType slotType;
 
     public EquipItemObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         final String slot = instruction.next();
-        questItems = instruction.getQuestItem();
+        item = instruction.getItem();
 
         if (!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)) {
             throw new QuestException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
@@ -44,7 +44,7 @@ public class EquipItemObjective extends Objective implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && event.getSlotType() == slotType
-                && questItems.compare(event.getNewItem())
+                && item.compare(event.getNewItem())
                 && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }
