@@ -81,7 +81,7 @@ public class Journal {
         this.pointers = list;
         this.config = config;
         this.inventoryFullBackpackSender = new IngameNotificationSender(LOG, pluginMessage, null,
-                "Journal", NotificationLevel.INFO, "inventory_full_backpack");
+                "Journal", NotificationLevel.ERROR, "inventory_full_backpack");
     }
 
     /**
