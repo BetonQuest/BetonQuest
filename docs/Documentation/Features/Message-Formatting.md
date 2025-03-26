@@ -13,6 +13,7 @@ icon: material/message-cog
     - Journal (limited)
     - Quest Cancler (limited)
     - Conversation (limited)
+    - Plugin Messages / Translations (limited)
 
 Every string in BetonQuest can be formatted with a formatter.
 A formatter is a way to format a string with colors, styles, and more, while each formatter has its own syntax.

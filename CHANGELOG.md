@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - Journal
   - Quest Cancler
   - Conversation
+  - Plugin Messages / Translations
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 ### Changed
