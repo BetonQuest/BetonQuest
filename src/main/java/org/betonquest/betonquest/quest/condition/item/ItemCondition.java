@@ -49,7 +49,7 @@ public class ItemCondition implements OnlineCondition {
                             Stream.of(inventoryItems),
                             backpackItems.stream()
                     )
-                    .filter(itemStack -> itemStack != null && questItem.compare(itemStack))
+                    .filter(itemStack -> itemStack != null && questItem.matches(itemStack))
                     .mapToInt(ItemStack::getAmount)
                     .sum();
             if (totalAmount < item.getAmount().getValue(profile).intValue()) {

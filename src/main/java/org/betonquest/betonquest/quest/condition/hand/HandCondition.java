@@ -35,6 +35,6 @@ public class HandCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final PlayerInventory inv = profile.getPlayer().getInventory();
-        return item.compare(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand());
+        return item.matches(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand());
     }
 }

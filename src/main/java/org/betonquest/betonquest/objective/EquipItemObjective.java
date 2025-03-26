@@ -44,7 +44,7 @@ public class EquipItemObjective extends Objective implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && event.getSlotType() == slotType
-                && item.compare(event.getNewItem())
+                && item.matches(event.getNewItem())
                 && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }

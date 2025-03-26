@@ -283,7 +283,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
         //check if item is bound item
-        if (boundItem == null || !boundItem.compare(event.getItem())) {
+        if (boundItem == null || !boundItem.matches(event.getItem())) {
             return;
         }
         event.setCancelled(true);

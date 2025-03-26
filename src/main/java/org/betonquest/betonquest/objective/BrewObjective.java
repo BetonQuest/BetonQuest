@@ -127,7 +127,7 @@ public class BrewObjective extends CountingObjective implements Listener {
         final ItemStack[] storageContents = inventory.getStorageContents();
         for (int index = 0; index < 3; index++) {
             resultPotions[index] = (exclusions.length <= index || !exclusions[index])
-                    && potion.compare(storageContents[index]);
+                    && potion.matches(storageContents[index]);
         }
         return resultPotions;
     }

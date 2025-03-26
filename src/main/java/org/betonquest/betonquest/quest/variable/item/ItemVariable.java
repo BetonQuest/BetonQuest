@@ -81,7 +81,7 @@ public class ItemVariable implements NullableVariable {
         final Player player = onlineProfile.getPlayer();
         int itemAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (item == null || !questItem.compare(item)) {
+            if (item == null || !questItem.matches(item)) {
                 continue;
             }
             itemAmount += item.getAmount();
@@ -89,7 +89,7 @@ public class ItemVariable implements NullableVariable {
         final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerDataStorage()
                 .get(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
-            if (item == null || !questItem.compare(item)) {
+            if (item == null || !questItem.matches(item)) {
                 continue;
             }
             itemAmount += item.getAmount();

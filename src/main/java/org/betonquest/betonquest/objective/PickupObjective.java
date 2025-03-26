@@ -40,7 +40,7 @@ public class PickupObjective extends CountingObjective implements Listener {
 
     private boolean isValidItem(final ItemStack itemStack) {
         for (final Item item : pickupItems) {
-            if (item.compare(itemStack)) {
+            if (item.matches(itemStack)) {
                 return true;
             }
         }

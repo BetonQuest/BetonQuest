@@ -50,7 +50,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        if (!item.compare(event.getItem())) {
+        if (!item.matches(event.getItem())) {
             return;
         }
 

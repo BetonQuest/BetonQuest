@@ -49,7 +49,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
         int inputAmount = amount;
         for (int i = 0; i < items.length; i++) {
             final ItemStack item = items[i];
-            if (questItem.compare(item)) {
+            if (questItem.matches(item)) {
                 if (item.getAmount() - inputAmount <= 0) {
                     inputAmount = inputAmount - item.getAmount();
                     items[i] = null;

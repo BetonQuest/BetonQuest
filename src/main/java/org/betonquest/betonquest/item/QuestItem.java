@@ -194,7 +194,7 @@ public class QuestItem {
      * @param item ItemStack to compare
      * @return true if the item matches
      */
-    public boolean compare(@Nullable final ItemStack item) {
+    public boolean matches(@Nullable final ItemStack item) {
         // basic item checks
         if (item == null) {
             return false;
