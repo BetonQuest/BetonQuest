@@ -41,11 +41,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * Loads compatibility with other plugins.
@@ -73,7 +73,7 @@ public class Compatibility implements Listener {
      * The key is the name of the plugin, the value a pair of the integrator class and an instance of it.
      * The instance must only exist if the plugin was hooked.
      */
-    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new HashMap<>();
+    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new TreeMap<>();
 
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
@@ -111,6 +111,8 @@ public class Compatibility implements Listener {
     }
 
     /**
+     * Gets the list of hooked plugins in Alphabetical order.
+     *
      * @return the list of hooked plugins
      */
     public static List<String> getHooked() {

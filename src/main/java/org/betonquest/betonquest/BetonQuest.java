@@ -81,7 +81,6 @@ import org.betonquest.betonquest.web.updater.source.implementations.GitHubReleas
 import org.betonquest.betonquest.web.updater.source.implementations.NexusReleaseAndDevelopmentSource;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
@@ -161,11 +160,6 @@ public class BetonQuest extends JavaPlugin {
      * The custom logger for the plugin.
      */
     private BetonQuestLogger log;
-
-    /**
-     * The plugin tag used for command feedback.
-     */
-    private String pluginTag;
 
     /**
      * The plugin configuration file.
@@ -293,8 +287,6 @@ public class BetonQuest extends JavaPlugin {
 
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
         this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
-
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
         final String jreInfo = jreVersionPrinter.getMessage();
@@ -667,15 +659,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public PluginMessage getPluginMessage() {
         return pluginMessage;
-    }
-
-    /**
-     * Get the plugin tag used for command feedback.
-     *
-     * @return plugin tag
-     */
-    public String getPluginTag() {
-        return pluginTag;
     }
 
     /**

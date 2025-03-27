@@ -59,18 +59,18 @@ command_rename: '@[legacy]renames all specified objects entries in the database'
 command_delete: '@[legacy]deletes all specified objects from the database'
 command_config: '@[legacy]reads, sets or appends strings to config files'
 command_version: '@[legacy]displays version information'
-command_version_context:
-  version_info: '@[legacy]&eVersion Information'
-  click_to_download: '@[legacy]&a (Version ''&2{version}&a'' is available. Click to download!)'
-  click_to_copy_all: '@[legacy]&eClick to copy everything to clipboard!'
-  click_to_copy: '@[legacy]Click to copy!'
-  click_to_download_hint: '@[legacy]Click to download!'
-  color_value: '@[legacy]&7'
-  color_key: '@[legacy]&6'
-  color_value_version: '@[legacy]&f'
-  version_betonquest: '@[legacy]BetonQuest version: '
-  version_server: '@[legacy]Server version: '
-  hooked_into: '@[legacy]Hooked into: '
+command_version_output:
+  info: >-
+    @[minimessage]<gray>[<dark_gray>BetonQuest</dark_gray>]</gray>
+    <yellow>Version Information</yellow>
+    <newline><gold>BetonQuest version: </gold><gray>{version}</gray>
+    {update}
+    <newline><gold>Server version: </gold><gray>{server}</gray>
+    <newline><gold>Hooked into: </gold><gray>{hooked}</gray>
+    {copy}
+  hook: '@[minimessage]{plugin} <gray>({version})</gray>'
+  update: '@[minimessage]<newline><green>    <hover:show_text:''Click to download!''>(Version ''<dark_green>{version}</dark_green>'' is available. Click to download!)</hover></green>'
+  copy: '@[minimessage]<newline><yellow><hover:show_text:''Click to copy!''>Click to copy everything to clipboard!</hover></yellow>'
 command_vector: '@[legacy]calculates a vector from first variable and saves it to the second'
 command_purge: '@[legacy]deletes all data about the player'
 command_backup: '@[legacy]creates configuration and database backup. Use only from console on empty server!'
