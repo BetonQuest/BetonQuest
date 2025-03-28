@@ -82,7 +82,6 @@ class UpdaterTest {
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(plugin.getPluginTag()).thenReturn("");
         final Version newVersion = new Version("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(newVersion, null));
@@ -107,8 +106,8 @@ class UpdaterTest {
             assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
 
             final InOrder inOrder = inOrder(player);
-            inOrder.verify(player, times(1)).sendMessage("§2Started update to version '2.0.0-DEV-5'...");
-            inOrder.verify(player, times(1)).sendMessage("§2...download finished. Restart the server to update the plugin.");
+            inOrder.verify(player, times(1)).sendMessage("§7[§8BetonQuest§7]§r §2Started update to version '2.0.0-DEV-5'...");
+            inOrder.verify(player, times(1)).sendMessage("§7[§8BetonQuest§7]§r §2...download finished. Restart the server to update the plugin.");
         }
 
         verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
@@ -126,7 +125,6 @@ class UpdaterTest {
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        when(plugin.getPluginTag()).thenReturn("");
         final Version newVersion = new Version("2.0.0-DEV-5");
         when(handler.searchUpdate(any(), eq(version), any())).thenReturn(Pair.of(newVersion, "https://betonquest.org"));
         when(handler.searchUpdate(any(), eq(newVersion), any())).thenReturn(Pair.of(newVersion, null));
@@ -147,7 +145,7 @@ class UpdaterTest {
 
             final InOrder inOrder = inOrder(player);
             inOrder.verify(player, times(2)).getUniqueId();
-            inOrder.verify(player, times(1)).sendMessage("§2Update was downloaded! Restart the server to update the plugin.");
+            inOrder.verify(player, times(1)).sendMessage("§7[§8BetonQuest§7]§r §2Update was downloaded! Restart the server to update the plugin.");
             inOrder.verify(player, times(2)).getUniqueId();
         }
 

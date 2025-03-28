@@ -4,6 +4,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.Objective;
@@ -13,6 +14,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -50,7 +52,6 @@ import org.betonquest.betonquest.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.web.downloader.Downloader;
 import org.betonquest.betonquest.web.updater.Updater;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -76,8 +77,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.StringJoiner;
-import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -1472,71 +1471,63 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
-        final Updater updater = instance.getUpdater();
         final String updateCommand = "/" + commandAlias + " update";
 
-        final Profile profile = sender instanceof final Player player ? BetonQuest.getInstance().getProfileProvider().getProfile(player) : null;
+        final Component hooked = displayVersionInfoHooked();
+        final Component update = displayVersionInfoUpdate(instance.getUpdater());
+        final Component copy = displayVersionInfoCopy(sender);
 
-        final String key = "command_version_context.";
-        final Component versionInfo = pluginMessage.getMessage(key + "version_info").asComponent(profile);
-        final Component clickToCopyAll = pluginMessage.getMessage(key + "click_to_copy_all").asComponent(profile);
-        final Component clickToCopy = pluginMessage.getMessage(key + "click_to_copy").asComponent(profile);
-        final Component clickToDownloadHint = pluginMessage.getMessage(key + "click_to_download_hint").asComponent(profile);
-        final Component colorValue = pluginMessage.getMessage(key + "color_value").asComponent(profile);
-        final Component colorKey = pluginMessage.getMessage(key + "color_key").asComponent(profile);
-        final Component colorValueVersion = pluginMessage.getMessage(key + "color_value_version").asComponent(profile);
-        final Component versionBetonQuest = pluginMessage.getMessage(key + "version_betonquest").asComponent(profile);
-        final Component versionServer = pluginMessage.getMessage(key + "version_server").asComponent(profile);
-        final Component hookedInto = pluginMessage.getMessage(key + "hooked_into").asComponent(profile);
+        final Component copyContent = pluginMessage.getMessage("command_version_output.info",
+                        new PluginMessage.Replacement("version", Component.text(instance.getDescription().getVersion())),
+                        new PluginMessage.Replacement("server", Component.text(Bukkit.getServer().getVersion())),
+                        new PluginMessage.Replacement("update", Component.empty()),
+                        new PluginMessage.Replacement("hooked", hooked),
+                        new PluginMessage.Replacement("copy", Component.empty()))
+                .asComponent(null);
 
-        final String versionBetonQuestValue = colorValue + instance.getDescription().getVersion();
-        final String versionServerValue = colorValue + Bukkit.getServer().getVersion();
+        final Component info = pluginMessage.getMessage("command_version_output.info",
+                        new PluginMessage.Replacement("version", Component.text(instance.getDescription().getVersion())),
+                        new PluginMessage.Replacement("server", Component.text(Bukkit.getServer().getVersion())),
+                        new PluginMessage.Replacement("update", update.clickEvent(ClickEvent.suggestCommand(updateCommand))),
+                        new PluginMessage.Replacement("hooked", hooked),
+                        new PluginMessage.Replacement("copy", copy.clickEvent(ClickEvent.copyToClipboard(PlainTextComponentSerializer.plainText().serialize(copyContent)))))
+                .asComponent(null);
 
-        final TextComponent clickToDownload = updater.isUpdateAvailable()
-                ? Component.newline().append(Component.text("    "))
-                .append(pluginMessage.getMessage(key + "click_to_download",
-                        new PluginMessage.Replacement("version", Component.text(updater.getUpdateVersion()))).asComponent(profile))
-                .hoverEvent(clickToDownloadHint).clickEvent(ClickEvent.runCommand(updateCommand))
-                : Component.empty();
+        sender.sendMessage(info);
+    }
 
-        final Map<String, String> hookedTree = new TreeMap<>();
+    private Component displayVersionInfoHooked() throws QuestException {
+        final TextComponent.Builder hookedBuilder = Component.text();
         for (final String plugin : Compatibility.getHooked()) {
             final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
-            if (plug != null) {
-                hookedTree.put(plugin, plug.getDescription().getVersion());
+            if (plug == null) {
+                continue;
             }
+            if (!hookedBuilder.children().isEmpty()) {
+                hookedBuilder.append(Component.text(", "));
+            }
+            final Message message = pluginMessage.getMessage("command_version_output.hook",
+                    new PluginMessage.Replacement("plugin", Component.text(plugin)),
+                    new PluginMessage.Replacement("version", Component.text(plug.getDescription().getVersion())));
+            hookedBuilder.append(message.asComponent(null));
         }
-        final StringJoiner hookedJoiner = new StringJoiner(", ");
-        for (final Map.Entry<String, String> entry : hookedTree.entrySet()) {
-            hookedJoiner.add(colorValue + entry.getKey() + colorValueVersion + " (" + entry.getValue() + ')');
+        return hookedBuilder.build();
+    }
+
+    private Component displayVersionInfoUpdate(final Updater updater) throws QuestException {
+        if (!updater.isUpdateAvailable()) {
+            return Component.empty();
         }
-        final String hooked = hookedJoiner.toString();
+        final Message message = pluginMessage.getMessage("command_version_output.update",
+                new PluginMessage.Replacement("version", Component.text(updater.getUpdateVersion())));
+        return message.asComponent(null);
+    }
 
-        final Component compHeader = Component.text(instance.getPluginTag() + versionInfo);
-        final Component compVersionBetonQuestKey = colorKey.append(versionBetonQuest);
-        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue);
-        final Component compVersionServerKey = colorKey.append(versionServer);
-        final Component compVersionServerValue = Component.text(versionServerValue);
-        final Component compHookedKey = colorKey.append(hookedInto);
-        final Component compHookedValue = Component.text(hooked);
-        final Component compCopyAll = clickToCopyAll
-                .hoverEvent(clickToCopy)
-                .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
-                        + versionBetonQuestValue + '\n' + versionServer + versionServerValue + '\n' + '\n'
-                        + hookedInto + hooked)));
-
-        final TextComponent version = Component.empty().append(compHeader)
-                .append(Component.newline()).append(compVersionBetonQuestKey).append(compVersionBetonQuestValue)
-                .append(clickToDownload.clickEvent(ClickEvent.runCommand(updateCommand)))
-                .append(Component.newline()).append(compVersionServerKey).append(compVersionServerValue)
-                .append(Component.newline())
-                .append(Component.newline()).append(compHookedKey).append(compHookedValue);
+    private Component displayVersionInfoCopy(final CommandSender sender) throws QuestException {
         if (sender instanceof ConsoleCommandSender) {
-            instance.getAdventure().sender(sender).sendMessage(version);
-        } else {
-            instance.getAdventure().sender(sender)
-                    .sendMessage(version.append(Component.newline()).append(compCopyAll));
+            return Component.empty();
         }
+        return pluginMessage.getMessage("command_version_output.copy").asComponent(null);
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {

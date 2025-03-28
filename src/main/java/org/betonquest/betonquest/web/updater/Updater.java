@@ -37,12 +37,17 @@ public class Updater {
     private static final TemporalAmount NOTIFICATION_DELAY = Duration.ofHours(20);
 
     /**
+     * The Tag of the plugin when update notifications are sent.
+     */
+    private static final String PLUGIN_TAG = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + "BetonQuest" + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     /**
-     * The plugins {@link ConfigurationFile} for the debugging settings.
+     * The plugins {@link UpdaterConfig} for the debugging settings.
      */
     private final UpdaterConfig config;
 
@@ -206,7 +211,7 @@ public class Updater {
             }
             lastNotification.put(player.getUniqueId(), currentTime);
 
-            player.sendMessage(plugin.getPluginTag() + ChatColor.DARK_GREEN + updateNotification);
+            player.sendMessage(PLUGIN_TAG + ChatColor.DARK_GREEN + updateNotification);
         }
     }
 
@@ -262,7 +267,7 @@ public class Updater {
     private void sendMessage(@Nullable final CommandSender sender, final String message) {
         log.info(ChatColor.stripColor(message));
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
-            sender.sendMessage(plugin.getPluginTag() + message);
+            sender.sendMessage(PLUGIN_TAG + message);
         }
     }
 }
