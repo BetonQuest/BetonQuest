@@ -109,7 +109,13 @@ If you have this plugin you can use it's NPCs. I highly recommend you installing
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
 in addition to the normal Npc functionality.
 
-### Npcs section: `npcs`
+### Npc Integration
+
+Citizens supports all [BetonQuest Npc](../../Features/Npcs.md) Features.
+
+Also, the below listed Citizens specific additions are also used with the NpcId from the `npcs` section.
+
+#### Npcs section: `npcs`
 
 You simply use the Citizens NPC id as argument.
 To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
@@ -138,48 +144,63 @@ npcs:
 
 ### Events
 
-#### Move NPC: `movenpc`
+#### Move Npc: `movenpc`
 
 This event will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with _/npc path_ command - it will then return to that point every time.
-If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens
-configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in `teleport` event).
-You can also specify multiple locations separated by colons to let the npc follow a path of locations.
-You can also specify additional arguments: `block` will block the NPC so you won't be able to start a conversation with him while he is moving,
-`wait:` is a number of tick the NPC will wait at its destination before firing events,
-`done:` is a list of events fired after reaching the destination, `fail:` is a list of events fired if this event fails.
+If you make it move too far away, it will teleport or break, so beware.
+You can change maximum pathfinding range in Citizens configuration files.
+
 Move event can fail if the NPC is already moving for another player.
 
-!!! example
-    ```YAML
-    movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
-    ```
+| Parameter   | Syntax                                                     | Default Value          | Explanation                                                                  |
+|-------------|------------------------------------------------------------|------------------------|------------------------------------------------------------------------------|
+| _NpcID_     | npcId                                                      | :octicons-x-circle-16: | The NpcId.                                                                   |
+| _Locations_ | [Locations](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The locations where the Npc will move to.                                    |
+| _block_     | Keyword (`block`)                                          | Disabled               | Blocks the Npc so interaction won't start a conversation while it is moving. |
+| _wait_      | wait:number                                                | 0                      | Number of ticks the Npc will wait at its destination before firing events.   |
+| _done_      | done:events                                                | Disabled               | List of events fired after reaching the destination.                         |
+| _fail_      | fail:events                                                | Disabled               | List of events fired if this event fails.                                    |
 
-#### Stop moving NPC: `stopnpc`
+```YAML title="Example"
+movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
+```
 
-This will stop all current move tasks for the npc with the given ID.
+#### Stop moving Npc: `stopnpc`
 
-!!! example
-    ```YAML
-    stopnpc 16
-    ```
+This will stop all current move tasks for the Npc.
+
+| Parameter | Syntax | Default Value          | Explanation |
+|-----------|--------|------------------------|-------------|
+| _NpcID_   | npcId  | :octicons-x-circle-16: | The NpcId.  |
+
+```YAML title="Example"
+stopnpc guard
+```
 
 ### Objectives
 
-#### NPC Kill: `npckill`
+#### Npc Kill: `npckill`
 
-The NPC kill objective requires the player to kill a NPC with the given ID. You can also define how many times the NPC
-has to be killed. Right after the objective's name there must be the ID of the NPC. You can also add an amount with the
-`amount` keyword. You can use the `notify` keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.
+The Npc Kill objective requires the player to kill a Npc. 
 
-This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of NPCs already killed,
-`left` is the amount of NPCs still needed to kill and `total` is the amount of NPCs initially required.
+| Parameter | Syntax        | Default Value          | Explanation                                                                                                       |
+|-----------|---------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
+| _NpcID_   | npcId         | :octicons-x-circle-16: | The NpcId.                                                                                                        |
+| _amount_  | amount:number | 1                      | The time the Npc needs to be killed.                                                                              |
+| _notify_  | notify        | Disabled               | Display a message to the player each time they kill a npc. Optionally with the notification interval after colon. |
 
-!!! example
-    ```YAML
-    npckill 16 amount:3 events:reward notify
-    ```
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                                                               |
+|----------|----------------|-------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of times already killed the npc.                                         |
+| _left_   | 4              | Shows the amount of times still needed to kill the Npc for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of times that the Npc needed to be killed.                       |
+
+```YAML title="Example"
+npckill thief amount:3 events:reward notify
+```
 
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 

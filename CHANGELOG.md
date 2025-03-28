@@ -16,7 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `npc` Variable
   - Compass Names
   - Journal
-  - Quest Cancler
+  - Quest Canceler
   - Conversation
   - Plugin Messages / Translations
 - `region` and `wand` conditions now supports variables
@@ -31,6 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `acceptNPCLeftClick` and `npcInteractionLimit` configs into `npcs.accept_left_click` and `npcs.interaction_limit`
 - `%quester%` variable is used instead of `%npc%` for the quester's name in conversations; `%npc` variable is used now for the new Npc system
 - `fish` objective use block selector instead of a QuestItem
+- everything that used `Citizens` NPC ids now uses the BQ NpcIDs
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

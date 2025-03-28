@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -73,8 +74,9 @@ public class CitizensIntegrator implements Integrator {
         manager.registerEvents(citizensMoveController, plugin);
 
         final EventTypeRegistry eventTypes = questRegistries.event();
-        eventTypes.register("movenpc", new CitizensMoveEventFactory(data, citizensMoveController));
-        eventTypes.register("stopnpc", new CitizensStopEventFactory(data, citizensMoveController));
+        final FeatureAPI featureAPI = plugin.getFeatureAPI();
+        eventTypes.register("movenpc", new CitizensMoveEventFactory(featureAPI, data, citizensMoveController));
+        eventTypes.register("stopnpc", new CitizensStopEventFactory(featureAPI, data, citizensMoveController));
 
         final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
         final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();
