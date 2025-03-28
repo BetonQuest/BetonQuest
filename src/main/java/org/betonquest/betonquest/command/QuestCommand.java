@@ -4,6 +4,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
@@ -1449,25 +1451,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Displays help to the user.
      */
     private void displayHelp(final CommandSender sender, final String alias) throws QuestException {
-        log.debug("Just displaying help");
         final Map<String, String> cmds = getCommandHelpMap(sender);
-        // display them
-        sender.sendMessage("§e----- §aBetonQuest §e-----");
-        if (sender instanceof final Player player) {
-            final OnlineProfile profile = profileProvider.getProfile(player);
-            for (final Map.Entry<String, String> entry : cmds.entrySet()) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                        "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + ' '
-                                + entry.getValue()
-                                + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
-                                + pluginMessage.getMessage("command_" + entry.getKey()).asComponent(profile) + "\"}}]}");
-            }
-        } else {
-            for (final Map.Entry<String, String> entry : cmds.entrySet()) {
-                sender.sendMessage("§c/" + alias + ' ' + entry.getValue());
-                sender.sendMessage("§b- " + pluginMessage.getMessage("command_" + entry.getKey()));
+        final TextComponent.Builder builder = Component.text();
+        builder.append(Component.text("----- ").color(NamedTextColor.YELLOW))
+                .append(Component.text("BetonQuest").color(NamedTextColor.GREEN))
+                .append(Component.text(" -----").color(NamedTextColor.YELLOW));
+        final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
+
+        for (final Map.Entry<String, String> entry : cmds.entrySet()) {
+            final Component command = Component.text("/" + alias + " " + entry.getValue()).color(NamedTextColor.RED);
+            final Component hint = pluginMessage.getMessage("command_" + entry.getKey()).asComponent(profile).color(NamedTextColor.AQUA);
+
+            builder.append(Component.newline());
+            if (profile == null) {
+                builder.append(command.append(Component.text(" - ").color(NamedTextColor.RED)).append(hint));
+            } else {
+                builder.append(command.hoverEvent(HoverEvent.showText(hint)));
             }
         }
+        sender.sendMessage(builder.build());
     }
 
     private void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
