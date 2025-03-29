@@ -182,24 +182,33 @@ Citizens integration.
 To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
 Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`.
 
-As in the migration above stated you can either use a descriptive name as the id or use the number of id the Citizens Npc.
+As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.
+
+<div class="grid" markdown>
 
 ```YAML title="Old Syntax"
 events:
-  move: movenpc 0 100;200;300;world
+  move: movenpc 0 100;200;300;world #(1)!
   stop: stopnpc 0
 objectives:
   kill: npckill 1 amount:5 events:reward
 ```
 
+1. The `0` is here the citizens npc id.
+
 ```YAML title="New Syntax"
 npcs:
   0: "citizens 0" #(1)!
-  thief: "citizens thief byName" #(2)!
+  thief: "citizens thief byName"
 
 events:
   move: npcmove 0 100;200;300;world
-  stop: npcstop 0
+  stop: npcstop 0 #(2)!
 objectives:
   kill: npckill thief amount:5 events:reward
 ```
+
+1. The `0` before the ':' is now the BetonQuest ID, where the `citizens 0` defines the Npc with id "0" from the 
+Citizens integration. 
+2. The `0` is here the BetonQuest NpcID but stays the same.
+</div>

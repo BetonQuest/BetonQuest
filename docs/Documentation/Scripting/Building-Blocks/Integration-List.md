@@ -121,13 +121,12 @@ You simply use the Citizens NPC id as argument.
 To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
 
 You can also get a NPC by its name with the `byName` argument.
-That is useful when you have many NPCs which should all start the same conversation.
+That is useful when you have many NPCs with the same name which should all start the same conversation
+or count together in the `npcinteract` and `npckill` objectives.
 
 !!! warning
     When more than one npc with that name exists, it will give an exception when used in like `npcteleport` events
-    or `npcrange` objective.  
-    Having multiple Npcs with the name can be used when identifying a concrete Npc, like when starting a conversation
-    (with the `npc_conversations` section) or in the `npcinteract` and `npckill` objectives.
+    or `npcrange` objective.
 
 ```YAML title="Example"
 npcs:
