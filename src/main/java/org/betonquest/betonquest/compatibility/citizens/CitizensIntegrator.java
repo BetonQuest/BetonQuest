@@ -75,8 +75,8 @@ public class CitizensIntegrator implements Integrator {
 
         final EventTypeRegistry eventTypes = questRegistries.event();
         final FeatureAPI featureAPI = plugin.getFeatureAPI();
-        eventTypes.register("movenpc", new CitizensMoveEventFactory(featureAPI, data, citizensMoveController));
-        eventTypes.register("stopnpc", new CitizensStopEventFactory(featureAPI, data, citizensMoveController));
+        eventTypes.register("npcmove", new CitizensMoveEventFactory(featureAPI, data, citizensMoveController));
+        eventTypes.register("npcstop", new CitizensStopEventFactory(featureAPI, data, citizensMoveController));
 
         final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
         final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();

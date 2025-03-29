@@ -16,6 +16,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :exclamation:
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
 - [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :exclamation:
+- [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -175,3 +176,30 @@ Citizens integration.
 4. An example of a "renamed" reference.
 5. The Npcs that start this conversation.
 </div>
+
+### 3.0.0-DEV-135 - Citizens Adaption to NpcID :exclamation:
+
+To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
+Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`.
+
+As in the migration above stated you can either use a descriptive name as the id or use the number of id the Citizens Npc.
+
+```YAML title="Old Syntax"
+events:
+  move: movenpc 0 100;200;300;world
+  stop: stopnpc 0
+objectives:
+  kill: npckill 1 amount:5 events:reward
+```
+
+```YAML title="New Syntax"
+npcs:
+  0: "citizens 0" #(1)!
+  thief: "citizens thief byName" #(2)!
+
+events:
+  move: npcmove 0 100;200;300;world
+  stop: npcstop 0
+objectives:
+  kill: npckill thief amount:5 events:reward
+```

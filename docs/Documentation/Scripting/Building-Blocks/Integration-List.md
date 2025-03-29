@@ -126,7 +126,8 @@ That is useful when you have many NPCs which should all start the same conversat
 !!! warning
     When more than one npc with that name exists, it will give an exception when used in like `npcteleport` events
     or `npcrange` objective.  
-    This is still useful when you have 5 Npcs with the same name bound to a conversation.
+    Having multiple Npcs with the name can be used when identifying a concrete Npc, like when starting a conversation
+    (with the `npc_conversations` section) or in the `npcinteract` and `npckill` objectives.
 
 ```YAML title="Example"
 npcs:
@@ -135,16 +136,12 @@ npcs:
   guard: citizens Guard byName
 ```
 
-!!! warning
-    When using the `byName` argument and use it in for example in the `npcteleport` event the first NPC with that name
-    will be teleported!
-
 ### Npc Hiding: `hide_npcs`
 @snippet:integrations:protocollib@
 
 ### Events
 
-#### Move Npc: `movenpc`
+#### Move Npc: `npcmove`
 
 This event will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with _/npc path_ command - it will then return to that point every time.
@@ -166,7 +163,7 @@ Move event can fail if the NPC is already moving for another player.
 movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
 ```
 
-#### Stop moving Npc: `stopnpc`
+#### Stop moving Npc: `npcstop`
 
 This will stop all current move tasks for the Npc.
 
