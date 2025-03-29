@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.notify;
+package org.betonquest.betonquest.notify.io;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -8,7 +8,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +37,9 @@ public class BossBarNotifyIO extends NotifyIO {
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public BossBarNotifyIO(final BetonQuestLogger log, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.log = log;
 
         flags = new ArrayList<>();
         if (data.containsKey("barflags")) {

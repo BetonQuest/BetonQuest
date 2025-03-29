@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -117,9 +116,9 @@ public final class Notify {
 
     private static NotifyIO getNotifyIO(@Nullable final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
         for (final String name : ios) {
-            final NotifyIORegistry.NotifyIOFactory factory = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
+            final NotifyIOFactory factory = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
             if (factory != null) {
-                return factory.parse(pack, categoryData);
+                return factory.create(pack, categoryData);
             }
         }
         throw new QuestException("No Notify IO could be found, searched for '" + ios + "'!");
