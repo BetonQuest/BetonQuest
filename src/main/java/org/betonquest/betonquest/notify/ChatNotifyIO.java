@@ -16,16 +16,6 @@ public class ChatNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        final Conversation conversation = Conversation.getConversation(onlineProfile);
-        if (conversation == null || conversation.getInterceptor() == null) {
-            onlineProfile.getPlayer().sendMessage(message);
-        } else {
-            conversation.getInterceptor().sendMessage(message);
-        }
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         final Conversation conversation = Conversation.getConversation(onlineProfile);
         if (conversation == null || conversation.getInterceptor() == null) {

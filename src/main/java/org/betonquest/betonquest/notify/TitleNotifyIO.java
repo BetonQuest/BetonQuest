@@ -35,14 +35,6 @@ public class TitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        final String[] messageParts = message.split("\n");
-        final String title = messageParts[0].isEmpty() ? " " : messageParts[0];
-        final String subtitle = messageParts.length > 1 ? messageParts[1] : "";
-        onlineProfile.getPlayer().sendTitle(title, subtitle, (int) (fadeIn.toMillis() / 50), (int) (stay.toMillis() / 50), (int) (fadeOut.toMillis() / 50));
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         final List<Component> messageComponents = splitComponent(message);
         final int size = messageComponents.size();

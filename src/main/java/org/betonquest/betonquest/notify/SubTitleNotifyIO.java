@@ -26,11 +26,6 @@ public class SubTitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        onlineProfile.getPlayer().sendTitle(" ", message, (int) (fadeIn.toMillis() / 50), (int) (stay.toMillis() / 50), (int) (fadeOut.toMillis() / 50));
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         final Title title = Title.title(Component.empty(), message, Title.Times.times(fadeIn, stay, fadeOut));
         onlineProfile.getPlayer().showTitle(title);

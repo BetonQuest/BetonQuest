@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -7,11 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -26,17 +22,11 @@ public class BossBarNotifyIO extends NotifyIO {
      */
     private final BetonQuestLogger log;
 
-    private final List<BarFlag> barFlags;
+    private final List<BossBar.Flag> flags;
 
-    private final List<net.kyori.adventure.bossbar.BossBar.Flag> adventureBarFlags;
+    private final BossBar.Color color;
 
-    private final BarColor barColor;
-
-    private final net.kyori.adventure.bossbar.BossBar.Color adventureBarColor;
-
-    private final BarStyle style;
-
-    private final net.kyori.adventure.bossbar.BossBar.Overlay adventureBarStyle;
+    private final BossBar.Overlay style;
 
     private final float progress;
 
@@ -44,19 +34,17 @@ public class BossBarNotifyIO extends NotifyIO {
 
     private final int countdown;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
-        barFlags = new ArrayList<>();
-        adventureBarFlags = new ArrayList<>();
+        flags = new ArrayList<>();
         if (data.containsKey("barflags")) {
             for (final String flag : data.get("barflags").split(",")) {
                 final String upperCaseFlag = flag.toUpperCase(Locale.ROOT);
                 try {
-                    barFlags.add(BarFlag.valueOf(upperCaseFlag));
-                    adventureBarFlags.add(net.kyori.adventure.bossbar.BossBar.Flag.valueOf(upperCaseFlag));
+                    flags.add(BossBar.Flag.valueOf(upperCaseFlag));
                 } catch (final IllegalArgumentException exception) {
                     throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarFlag", upperCaseFlag), exception);
                 }
@@ -66,8 +54,7 @@ public class BossBarNotifyIO extends NotifyIO {
         final String barColorString = data.get("barcolor");
         final String upperCaseBarColour = barColorString == null ? null : barColorString.toUpperCase(Locale.ROOT);
         try {
-            barColor = upperCaseBarColour == null ? BarColor.BLUE : BarColor.valueOf(upperCaseBarColour);
-            adventureBarColor = upperCaseBarColour == null ? net.kyori.adventure.bossbar.BossBar.Color.BLUE : net.kyori.adventure.bossbar.BossBar.Color.valueOf(upperCaseBarColour);
+            color = upperCaseBarColour == null ? BossBar.Color.BLUE : BossBar.Color.valueOf(upperCaseBarColour);
         } catch (final IllegalArgumentException exception) {
             throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarColor", upperCaseBarColour), exception);
         }
@@ -75,8 +62,7 @@ public class BossBarNotifyIO extends NotifyIO {
         final String styleString = data.get("style");
         final String upperCaseBarStyle = styleString == null ? null : styleString.toUpperCase(Locale.ROOT);
         try {
-            style = styleString == null ? BarStyle.SOLID : BarStyle.valueOf(upperCaseBarStyle);
-            adventureBarStyle = styleString == null ? net.kyori.adventure.bossbar.BossBar.Overlay.PROGRESS : net.kyori.adventure.bossbar.BossBar.Overlay.valueOf(upperCaseBarStyle);
+            style = styleString == null ? BossBar.Overlay.PROGRESS : BossBar.Overlay.valueOf(upperCaseBarStyle);
         } catch (final IllegalArgumentException exception) {
             throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", upperCaseBarStyle), exception);
         }
@@ -88,28 +74,9 @@ public class BossBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        final BossBar bossBar = Bukkit.createBossBar(message, barColor, style);
-        bossBar.setProgress(getResolvedProgress(onlineProfile));
-        for (final BarFlag flag : barFlags) {
-            bossBar.addFlag(flag);
-        }
-        bossBar.addPlayer(onlineProfile.getPlayer());
-        bossBar.setVisible(true);
-
-        final int stay = Math.max(0, stayVariable.getInt(onlineProfile));
-        scheduleRemoval(bossBar, stay);
-        if (countdown > 0) {
-            final int interval = stay / countdown;
-            final double amount = progress / countdown;
-            scheduleAnimation(bossBar, interval, amount);
-        }
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
-        final net.kyori.adventure.bossbar.BossBar bossBar = net.kyori.adventure.bossbar.BossBar.bossBar(message, getResolvedProgress(onlineProfile), adventureBarColor, adventureBarStyle);
-        for (final net.kyori.adventure.bossbar.BossBar.Flag flag : adventureBarFlags) {
+        final BossBar bossBar = BossBar.bossBar(message, getResolvedProgress(onlineProfile), color, style);
+        for (final BossBar.Flag flag : flags) {
             bossBar.addFlag(flag);
         }
         onlineProfile.getPlayer().showBossBar(bossBar);
@@ -136,16 +103,7 @@ public class BossBarNotifyIO extends NotifyIO {
         return Math.max(0.0F, Math.min(1.0F, value));
     }
 
-    private void scheduleRemoval(final BossBar bar, final Integer stay) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                bar.removeAll();
-            }
-        }.runTaskLater(BetonQuest.getInstance(), stay);
-    }
-
-    private void scheduleRemoval(final net.kyori.adventure.bossbar.BossBar bossBar, final OnlineProfile onlineProfile, final int stay) {
+    private void scheduleRemoval(final BossBar bossBar, final OnlineProfile onlineProfile, final int stay) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -154,27 +112,7 @@ public class BossBarNotifyIO extends NotifyIO {
         }.runTaskLater(BetonQuest.getInstance(), stay);
     }
 
-    private void scheduleAnimation(final BossBar bar, final int interval, final double amount) {
-
-        new BukkitRunnable() {
-            private int currentCountdown = countdown;
-
-            private double currentProgress = progress;
-
-            @Override
-            public void run() {
-                if (currentCountdown == 0) {
-                    cancel();
-                    return;
-                }
-                currentCountdown -= 1;
-                currentProgress -= amount;
-                bar.setProgress(Math.max(0.0, currentProgress));
-            }
-        }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
-    }
-
-    private void scheduleAnimation(final net.kyori.adventure.bossbar.BossBar bossBar, final int interval, final float amount) {
+    private void scheduleAnimation(final BossBar bossBar, final int interval, final float amount) {
 
         new BukkitRunnable() {
             private int currentCountdown = countdown;

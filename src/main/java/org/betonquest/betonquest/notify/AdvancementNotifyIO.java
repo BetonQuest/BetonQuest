@@ -34,11 +34,6 @@ public class AdvancementNotifyIO extends NotifyIO {
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
-    @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        notifyPlayerObject(message, onlineProfile);
-    }
-
     private void notifyPlayerObject(final Object message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");

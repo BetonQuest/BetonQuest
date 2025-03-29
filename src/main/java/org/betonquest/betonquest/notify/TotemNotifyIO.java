@@ -40,13 +40,6 @@ public class TotemNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem());
-        playSilentTotemEffect(onlineProfile.getPlayer());
-        sendOffhandPacket(onlineProfile.getPlayer(), onlineProfile.getPlayer().getInventory().getItemInOffHand());
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem());
         playSilentTotemEffect(onlineProfile.getPlayer());
