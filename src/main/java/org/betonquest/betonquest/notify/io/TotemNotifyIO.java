@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.notify;
+package org.betonquest.betonquest.notify.io;
 
 import com.comphenix.packetwrapper.WrapperPlayServerEntityStatus;
 import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
@@ -7,12 +7,14 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class TotemNotifyIO extends NotifyIO {
      * @param data map with user instructions.
      * @throws QuestException if the user's input couldn't be parsed.
      */
-    public TotemNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public TotemNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         customModelData = getIntegerData("custommodeldata", 2);
     }

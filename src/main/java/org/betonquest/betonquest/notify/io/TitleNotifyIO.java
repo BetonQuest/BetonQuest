@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.notify;
+package org.betonquest.betonquest.notify.io;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -6,6 +6,8 @@ import net.kyori.adventure.title.Title;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.notify.NotifyIO;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class TitleNotifyIO extends NotifyIO {
 
     private final Duration fadeOut;
 
-    public TitleNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public TitleNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
 
         fadeIn = Duration.ofMillis(getIntegerData("fadein", 10) * 50L);

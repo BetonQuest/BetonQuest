@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.notify;
+package org.betonquest.betonquest.notify.io;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -9,6 +9,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -28,7 +29,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private final String icon;
 
-    public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public AdvancementNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);

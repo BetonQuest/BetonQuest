@@ -1,19 +1,13 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.registry.FromClassFactoryRegistry;
-import org.betonquest.betonquest.notify.NotifyIO;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Constructor;
-import java.util.Map;
+import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
+import org.betonquest.betonquest.notify.NotifyIOFactory;
 
 /**
  * Stores the Notify IOs that can be used in BetonQuest.
  */
-public class NotifyIORegistry extends FromClassFactoryRegistry<NotifyIO, NotifyIORegistry.NotifyIOFactory> {
+public class NotifyIORegistry extends FactoryRegistry<NotifyIOFactory> {
 
     /**
      * Create a new NotifyIO registry.
@@ -22,38 +16,5 @@ public class NotifyIORegistry extends FromClassFactoryRegistry<NotifyIO, NotifyI
      */
     public NotifyIORegistry(final BetonQuestLogger log) {
         super(log, "Notify IO");
-    }
-
-    @Override
-    protected NotifyIOFactory createFactory(final Class<? extends NotifyIO> clazz) throws NoSuchMethodException {
-        return new FactoryImpl(clazz.getConstructor(QuestPackage.class, Map.class));
-    }
-
-    /**
-     * Creates Notify IOs from QuestPackage and configuration data.
-     */
-    public interface NotifyIOFactory {
-        /**
-         * Create the Notify IO.
-         *
-         * @param pack         the source pack
-         * @param categoryData the configuration data
-         * @return the created notify io
-         * @throws QuestException when the creation fails
-         */
-        NotifyIO parse(@Nullable QuestPackage pack, Map<String, String> categoryData) throws QuestException;
-    }
-
-    /**
-     * Class Constructor based implementation.
-     *
-     * @param constructor the used constructor
-     */
-    private record FactoryImpl(Constructor<? extends NotifyIO> constructor) implements NotifyIOFactory {
-
-        @Override
-        public NotifyIO parse(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-            return catchConstructionException(constructor, pack, categoryData);
-        }
     }
 }
