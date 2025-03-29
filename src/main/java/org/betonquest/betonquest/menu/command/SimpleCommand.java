@@ -6,33 +6,24 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.menu.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Abstract class to simplify creation of commands and implementation of tab complete.
  */
-@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures",
-        "PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
-    private static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
 
     public final int minimalArgs;
 
@@ -61,10 +52,6 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         this.log = log;
         this.minimalArgs = minimalArgs;
         this.permission = reqPermission;
-    }
-
-    private static String cbClass(final String className) {
-        return CRAFTBUKKIT_PACKAGE + "." + className;
     }
 
     /**
@@ -110,7 +97,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     @Override
-    public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
+    public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) {
         final List<String> completions = this.simpleTabComplete(sender, alias, args);
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
@@ -122,32 +109,20 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         return out;
     }
 
-    @Override
-    public List<String> tabComplete(final CommandSender sender,
-                                    final String alias,
-                                    final String[] args,
-                                    @Nullable final Location location) throws IllegalArgumentException {
-        return this.tabComplete(sender, alias, args);
-    }
-
     /**
      * Method to register the command.
      *
      * @return Whether the command was successfully registered
      */
     public final boolean register() {
-        try {
-            final PluginManager manager = Bukkit.getPluginManager();
-            final Class<? extends PluginManager> managerClass = manager.getClass();
-            this.commandMap = (CommandMap) Utils.getField(managerClass, "commandMap").get(manager);
-            this.commandMap.register("betonquest", this);
-            syncCraftBukkitCommands();
-            log.debug("Registered command " + getName() + "!");
-            return true;
-        } catch (final Exception e) {
-            log.error("Could not register command " + getName() + ":", e);
+        this.commandMap = Bukkit.getCommandMap();
+        if (!this.commandMap.register("betonquest", this)) {
+            log.error("Could not register command " + getName() + " in command map!");
             return false;
         }
+        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+        log.debug("Registered command " + getName() + "!");
+        return true;
     }
 
     /**
@@ -155,42 +130,18 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      *
      * @return Whether the command was successfully unregistered
      */
-    @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidAccessibilityAlteration"})
     public boolean unregister() {
         if (this.commandMap == null) {
             return false;
         }
-        try {
-            this.unregister(commandMap);
-            final Collection<Command> commands = (Collection<Command>) Utils
-                    .getMethod(commandMap.getClass(), "getCommands", 0)
-                    .invoke(commandMap);
-            if ("UnmodifiableCollection".equals(commands.getClass().getSimpleName())) {
-                final Field originalField = commands.getClass().getDeclaredField("c");
-                originalField.setAccessible(true);
-                final Collection<Command> original = (Collection<Command>) originalField.get(commands);
-                original.remove(this);
-            } else {
-                commands.remove(this);
-            }
-            syncCraftBukkitCommands();
-            log.debug("Unregistered command " + getName() + "!");
-            return true;
-        } catch (final RuntimeException e) {
-            if (!"java.lang.reflect.InaccessibleObjectException".equals(e.getClass().getName())) {
-                throw e;
-            }
-            return false;
-        } catch (final Exception e) {
-            log.error("Could not unregister command '" + getName() + "':", e);
+        this.unregister(commandMap);
+        if (!commandMap.getKnownCommands().values().remove(this)) {
+            log.error("Could not unregister command '" + getName() + "' from command map");
             return false;
         }
-    }
-
-    private void syncCraftBukkitCommands() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Class<?> craftServer = Class.forName(cbClass("CraftServer"));
-        final Method method = craftServer.getDeclaredMethod("syncCommands");
-        method.invoke(Bukkit.getServer());
+        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+        log.debug("Unregistered command " + getName() + "!");
+        return true;
     }
 
     @Override
