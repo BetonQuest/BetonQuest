@@ -18,11 +18,6 @@ public class SuppressNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        // Empty
-    }
-
-    @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         // Empty
     }

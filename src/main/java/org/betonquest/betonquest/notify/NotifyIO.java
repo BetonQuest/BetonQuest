@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,27 +39,10 @@ public abstract class NotifyIO {
         sound = new NotifySound(this);
     }
 
-    @Deprecated
-    public void sendNotify(final String message) throws QuestException {
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            sendNotify(message, onlineProfile);
-        }
-    }
-
-    @Deprecated
-    public void sendNotify(final String message, final OnlineProfile onlineProfile) throws QuestException {
-        notifyPlayer(Utils.format(message), onlineProfile);
-        sound.sendSound(onlineProfile);
-    }
-
     public void sendNotify(final Message message, final OnlineProfile onlineProfile) throws QuestException {
         notifyPlayer(message.asComponent(onlineProfile), onlineProfile);
         sound.sendSound(onlineProfile);
     }
-
-    @Deprecated
-    protected abstract void notifyPlayer(String message, OnlineProfile onlineProfile);
 
     protected abstract void notifyPlayer(Component message, OnlineProfile onlineProfile);
 
