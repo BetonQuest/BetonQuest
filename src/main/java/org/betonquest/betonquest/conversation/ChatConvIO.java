@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.conversation;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -130,7 +129,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         event.getPlayer().teleport(newLocation);
         if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
             try {
-                conv.sendMessage(LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage("pullback").asComponent(onlineProfile)));
+                conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage("pullback").asComponent(onlineProfile));
             } catch (final QuestException e) {
                 log.warn("Failed to get pullback message: " + e.getMessage(), e);
             }
