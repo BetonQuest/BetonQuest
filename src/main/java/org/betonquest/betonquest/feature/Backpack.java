@@ -264,19 +264,19 @@ public class Backpack implements Listener {
 
             final int pageOne = 1;
             if (page > pageOne) {
-                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false, config).getLeft();
+                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
             }
             if (page < pages) {
-                content[SLOT_NEXT] = button("next", Material.REDSTONE, false, config).getLeft();
+                content[SLOT_NEXT] = button("next", Material.REDSTONE, false).getLeft();
             }
-            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true, config);
+            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
             if (cancel.getRight()) {
                 showCancel = true;
                 content[SLOT_CANCEL] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
-            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true, config);
+            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
             if (compass.getRight()) {
                 showCompass = true;
                 content[SLOT_COMPASS] = compass.getLeft();

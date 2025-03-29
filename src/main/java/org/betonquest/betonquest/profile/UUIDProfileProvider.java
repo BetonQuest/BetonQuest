@@ -57,7 +57,7 @@ public class UUIDProfileProvider implements ProfileProvider {
 
             @Override
             public boolean equals(final Object obj) {
-                return obj instanceof Profile profile && getProfileUUID().equals(profile.getProfileUUID());
+                return obj instanceof final Profile profile && getProfileUUID().equals(profile.getProfileUUID());
             }
 
             @Override
@@ -100,7 +100,7 @@ public class UUIDProfileProvider implements ProfileProvider {
 
             @Override
             public boolean equals(final Object obj) {
-                return obj instanceof Profile profile && getProfileUUID().equals(profile.getProfileUUID());
+                return obj instanceof final Profile profile && getProfileUUID().equals(profile.getProfileUUID());
             }
 
             @Override
