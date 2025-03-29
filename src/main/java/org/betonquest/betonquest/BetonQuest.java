@@ -308,7 +308,7 @@ public class BetonQuest extends JavaPlugin {
         log.debug(jreInfo);
 
         Config.setup(this, config);
-        Notify.load(config);
+        Notify.load(config, Config.getPackages().values());
 
         setupDatabase();
 
@@ -527,7 +527,7 @@ public class BetonQuest extends JavaPlugin {
         } catch (final IOException | QuestException e) {
             log.error("Could not reload the plugin messages!", e);
         }
-        Notify.load(config);
+        Notify.load(config, Config.getPackages().values());
         lastExecutionCache.reload();
 
         // reload updater settings

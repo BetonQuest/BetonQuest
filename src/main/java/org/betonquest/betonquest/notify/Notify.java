@@ -5,12 +5,12 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,23 +36,16 @@ public final class Notify {
     /**
      * Loads the notification settings.
      *
-     * @param config the {@link ConfigAccessor} to load from
+     * @param config   the {@link ConfigAccessor} to load from
+     * @param packages the quest packages to load from
      */
-    public static void load(final ConfigAccessor config) {
-        loadCategorySettings();
+    public static void load(final ConfigAccessor config, final Collection<QuestPackage> packages) {
+        loadCategorySettings(packages);
         defaultNotifyIO = config.getString("default_notify_IO");
-    }
-
-    public static NotifyIO get(@Nullable final QuestPackage pack) {
-        return get(pack, null, null);
     }
 
     public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category) {
         return get(pack, category, null);
-    }
-
-    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final Map<String, String> data) {
-        return get(pack, null, data);
     }
 
     public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
@@ -127,25 +120,23 @@ public final class Notify {
     /**
      * The Notifications should be in a separate configuration in the main folder.
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    private static void loadCategorySettings() {
-        final Map<String, Map<String, String>> settings = new HashMap<>();
-        for (final QuestPackage pack : Config.getPackages().values()) {
+    private static void loadCategorySettings(final Collection<QuestPackage> packages) {
+        CATEGORY_SETTINGS.clear();
+        for (final QuestPackage pack : packages) {
             final ConfigurationSection notifySection = pack.getConfig().getConfigurationSection("notifications");
-            if (notifySection != null) {
-                for (final String notifyName : notifySection.getKeys(false)) {
-                    final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);
-                    if (notify != null && !settings.containsKey(notifyName)) {
-                        final Map<String, String> data = new HashMap<>();
-                        for (final String key : notify.getKeys(false)) {
-                            data.put(key.toLowerCase(Locale.ROOT), notify.getString(key));
-                        }
-                        settings.put(notifyName, data);
+            if (notifySection == null) {
+                continue;
+            }
+            for (final String notifyName : notifySection.getKeys(false)) {
+                final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);
+                if (notify != null && !CATEGORY_SETTINGS.containsKey(notifyName)) {
+                    final Map<String, String> data = new HashMap<>();
+                    for (final String key : notify.getKeys(false)) {
+                        data.put(key.toLowerCase(Locale.ROOT), notify.getString(key));
                     }
+                    CATEGORY_SETTINGS.put(notifyName, data);
                 }
             }
         }
-        CATEGORY_SETTINGS.clear();
-        CATEGORY_SETTINGS.putAll(settings);
     }
 }
