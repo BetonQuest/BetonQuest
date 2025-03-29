@@ -52,7 +52,7 @@ public class ConversationIORegistry extends FromClassFactoryRegistry<Conversatio
 
         @Override
         public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-            return catchConstructionException("Conversation IO", constructor, conversation, onlineProfile);
+            return catchConstructionException(constructor, conversation, onlineProfile);
         }
     }
 }

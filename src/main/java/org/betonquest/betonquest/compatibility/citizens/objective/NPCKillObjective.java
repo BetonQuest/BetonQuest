@@ -5,8 +5,9 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.bukkit.Bukkit;
@@ -14,14 +15,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import java.util.function.Predicate;
+
 /**
  * Player has to kill an NPC.
  */
 public class NPCKillObjective extends CountingObjective implements Listener {
     /**
-     * The NPC id.
+     * Tests if the id matches the NPC.
      */
-    private final int npcId;
+    private final Predicate<NPC> predicate;
 
     /**
      * Create a new Citizens NPC kill objective.
@@ -31,9 +34,16 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      */
     public NPCKillObjective(final Instruction instruction) throws QuestException {
         super(instruction, "mobs_to_kill");
-        npcId = instruction.getInt();
-        if (npcId < 0) {
-            throw new QuestException("NPC ID cannot be less than 0");
+        final Instruction npcInstruction = instruction.getID(NpcID::new).getInstruction();
+        if (!"citizens".equals(npcInstruction.getPart(0))) {
+            throw new QuestException("Cannot use non-Citizens NPC ID!");
+        }
+        final String argument = npcInstruction.getPart(1);
+        if (npcInstruction.hasArgument("byName")) {
+            predicate = npc -> argument.equals(npc.getName());
+        } else {
+            final int npcId = npcInstruction.getInt(argument, -1);
+            predicate = npc -> npcId == npc.getId();
         }
         targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
@@ -46,13 +56,13 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNpcKill(final MobKilledEvent event) {
         final NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
-        if (npc == null || npc.getId() != npcId) {
+        if (npc == null || !predicate.test(npc)) {
             return;
         }
-        final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
-        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
+        final Profile profile = event.getProfile();
+        if (containsPlayer(profile) && checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
         }
     }
 

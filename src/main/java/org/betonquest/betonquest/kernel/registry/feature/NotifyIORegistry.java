@@ -53,7 +53,7 @@ public class NotifyIORegistry extends FromClassFactoryRegistry<NotifyIO, NotifyI
 
         @Override
         public NotifyIO parse(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-            return catchConstructionException("Notify IO", constructor, pack, categoryData);
+            return catchConstructionException(constructor, pack, categoryData);
         }
     }
 }

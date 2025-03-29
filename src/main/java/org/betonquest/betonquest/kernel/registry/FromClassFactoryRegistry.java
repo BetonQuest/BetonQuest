@@ -27,14 +27,13 @@ public abstract class FromClassFactoryRegistry<T, F> extends FactoryRegistry<F> 
     /**
      * Catches exceptions that can occur while creating new instances and wrap them into QuestExceptions.
      *
-     * @param typeName    the type name used in the exception message
      * @param constructor the used constructor
      * @param args        the constructor arguments
      * @param <T>         the class to construct
      * @return the newly created object
      * @throws QuestException when the construction fails
      */
-    protected static <T> T catchConstructionException(final String typeName, final Constructor<T> constructor, @Nullable final Object... args) throws QuestException {
+    protected static <T> T catchConstructionException(final Constructor<T> constructor, @Nullable final Object... args) throws QuestException {
         try {
             return constructor.newInstance(args);
         } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -42,12 +41,10 @@ public abstract class FromClassFactoryRegistry<T, F> extends FactoryRegistry<F> 
             String message = exception.getMessage();
             Throwable cause = exception.getCause();
             while (cause != null && message == null) {
+                message = cause.getMessage();
                 cause = cause.getCause();
-                if (cause != null) {
-                    message = cause.getMessage();
-                }
             }
-            throw new QuestException("Couldn't load " + typeName + " '" + constructor.getName() + "': " + message, exception);
+            throw new QuestException(message == null ? "Unknown" : message, exception);
         }
     }
 

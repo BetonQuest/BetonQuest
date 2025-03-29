@@ -37,7 +37,7 @@ public class ObjectiveTypeRegistry extends FromClassFactoryRegistry<Objective, T
 
         @Override
         public Objective parseInstruction(final Instruction instruction) throws QuestException {
-            return catchConstructionException("objective", constructor, instruction);
+            return catchConstructionException(constructor, instruction);
         }
     }
 }
