@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.logger.handler.chat;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.logger.format.ChatFormatter;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -26,20 +27,20 @@ class ChatHandlerTest {
     @Test
     void testLoggingToPlayersChat(
             @Mock final RecordReceiverSelector selector,
-            @Mock final BukkitAudiences audiences,
-            @Mock final Audience audience) {
+            @Mock final Server server,
+            @Mock final Player player) {
         final UUID uuid = UUID.randomUUID();
         when(selector.findReceivers(any())).thenReturn(Set.of(uuid));
-        when(audiences.player(uuid)).thenReturn(audience);
+        when(server.getPlayer(uuid)).thenReturn(player);
         final String message = "test message";
         final LogRecord record = new LogRecord(Level.INFO, message);
 
-        final ChatHandler handler = new ChatHandler(selector, audiences);
+        final ChatHandler handler = new ChatHandler(server, selector);
         handler.setFormatter(new ChatFormatter());
 
         handler.publish(record);
 
-        verify(audience).sendMessage(any());
+        verify(player).sendMessage(any(Component.class));
         handler.flush();
         handler.close();
     }
@@ -48,7 +49,7 @@ class ChatHandlerTest {
     void testFormatException() {
         final RecordReceiverSelector recordReceiverSelector = mock(RecordReceiverSelector.class);
         when(recordReceiverSelector.findReceivers(any())).thenReturn(Set.of(UUID.randomUUID()));
-        final ChatHandler handler = new ChatHandler(recordReceiverSelector, mock(BukkitAudiences.class));
+        final ChatHandler handler = new ChatHandler(mock(Server.class), recordReceiverSelector);
         final Formatter formatter = mock(Formatter.class);
         when(formatter.format(any())).thenThrow(new RuntimeException());
         handler.setFormatter(formatter);
