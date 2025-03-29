@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.command;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -128,11 +127,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final ConfigAccessorFactory configAccessorFactory;
 
     /**
-     * Audiences to send downloader ingame logging.
-     */
-    private final BukkitAudiences bukkitAudiences;
-
-    /**
      * The PlayerLogWatcher that controls which players receive which log messages.
      */
     private final PlayerLogWatcher logWatcher;
@@ -148,7 +142,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param loggerFactory         logger factory to use
      * @param log                   the logger that will be used for logging
      * @param configAccessorFactory the config accessor factory to use
-     * @param bukkitAudiences       the bukkit audiences to use
      * @param logWatcher            the player log watcher to use
      * @param debuggingController   the log publishing controller to use
      * @param plugin                the BetonQuest plugin instance
@@ -157,14 +150,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param pluginMessage         the {@link PluginMessage} instance
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final ConfigAccessorFactory configAccessorFactory, final BukkitAudiences bukkitAudiences,
-                        final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController,
-                        final BetonQuest plugin, final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
+                        final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
+                        final LogPublishingController debuggingController, final BetonQuest plugin,
+                        final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
                         final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
-        this.bukkitAudiences = bukkitAudiences;
         this.logWatcher = logWatcher;
         this.debuggingController = debuggingController;
         this.instance = plugin;
@@ -1665,7 +1657,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, instance);
                     record.setThrown(e);
-                    bukkitAudiences.player(player).sendMessage(new ChatFormatter().formatTextComponent(record));
+                    player.sendMessage(new ChatFormatter().formatTextComponent(record));
                     log.debug(errSummary, e);
                 } else {
                     log.error(errSummary, e);

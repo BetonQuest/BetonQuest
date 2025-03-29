@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.logger.handler.chat;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -16,25 +16,25 @@ import java.util.logging.LogRecord;
 public class ChatHandler extends Handler {
 
     /**
+     * The server instance to get {@link org.bukkit.entity.Player}s from.
+     */
+    private final Server server;
+
+    /**
      * Selector to decide the players that should receive a given {@link LogRecord}.
      */
     private final RecordReceiverSelector receiverSelector;
 
     /**
-     * The {@link BukkitAudiences} instance responsible for sending messages.
-     */
-    private final BukkitAudiences bukkitAudiences;
-
-    /**
      * Creates a new {@link ChatHandler}.
      *
+     * @param server           the server instance to get {@link org.bukkit.entity.Player}s from
      * @param receiverSelector a selector to decide the receiving players
-     * @param bukkitAudiences  The {@link BukkitAudiences} instance for sending messages.
      */
-    public ChatHandler(final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
+    public ChatHandler(final Server server, final RecordReceiverSelector receiverSelector) {
         super();
+        this.server = server;
         this.receiverSelector = receiverSelector;
-        this.bukkitAudiences = bukkitAudiences;
     }
 
     /**
@@ -76,7 +76,7 @@ public class ChatHandler extends Handler {
 
     private void sendMessageToPlayers(final Set<UUID> receivers, final String msg) {
         for (final UUID uuid : receivers) {
-            bukkitAudiences.player(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+            server.getPlayer(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
         }
     }
 

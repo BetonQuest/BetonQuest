@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.logger;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -16,6 +15,7 @@ import org.betonquest.betonquest.logger.handler.history.BukkitSchedulerCleaningL
 import org.betonquest.betonquest.logger.handler.history.DiscardingLogQueue;
 import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.logger.handler.history.LogRecordQueue;
+import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -46,12 +46,12 @@ public final class HandlerFactory {
      * Create a {@link ChatHandler}.
      *
      * @param plugin           the main plugin
+     * @param server           the server instance
      * @param receiverSelector the receiver selector
-     * @param bukkitAudiences  the audience provider
      * @return a new {@link ChatHandler}
      */
-    public static ChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
-        final ChatHandler handler = new ChatHandler(receiverSelector, bukkitAudiences);
+    public static ChatHandler createChatHandler(final Plugin plugin, final Server server, final RecordReceiverSelector receiverSelector) {
+        final ChatHandler handler = new ChatHandler(server, receiverSelector);
         handler.setFilter(new LogRecordTypeFilter(BetonQuestLogRecord.class));
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
         return handler;

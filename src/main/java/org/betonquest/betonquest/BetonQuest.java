@@ -1,7 +1,6 @@
 package org.betonquest.betonquest;
 
 import io.papermc.lib.PaperLib;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
@@ -177,11 +176,6 @@ public class BetonQuest extends JavaPlugin {
     private PluginMessage pluginMessage;
 
     /**
-     * The adventure instance.
-     */
-    private BukkitAudiences adventure;
-
-    /**
      * The used Database.
      */
     private Database database;
@@ -305,9 +299,8 @@ public class BetonQuest extends JavaPlugin {
         final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this,
                 this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
         registerLogHandler(getServer(), debugHistoryHandler);
-        adventure = BukkitAudiences.create(this);
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
-        final ChatHandler chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
+        final ChatHandler chatHandler = HandlerFactory.createChatHandler(this, getServer(), receiverSelector);
         registerLogHandler(getServer(), chatHandler);
 
         final String version = getDescription().getVersion();
@@ -452,7 +445,7 @@ public class BetonQuest extends JavaPlugin {
 
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
-                configAccessorFactory, adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
+                configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
                 this, playerDataStorage, profileProvider, pluginMessage);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
@@ -589,10 +582,6 @@ public class BetonQuest extends JavaPlugin {
         // done
         log.info("BetonQuest successfully disabled!");
 
-        if (this.adventure != null) {
-            this.adventure.close();
-        }
-
         if (rpgMenu != null) {
             rpgMenu.onDisable();
         }
@@ -614,15 +603,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public ConfigAccessorFactory getConfigAccessorFactory() {
         return configAccessorFactory;
-    }
-
-    /**
-     * Get the adventure instance.
-     *
-     * @return The adventure instance.
-     */
-    public BukkitAudiences getAdventure() {
-        return adventure;
     }
 
     /**
