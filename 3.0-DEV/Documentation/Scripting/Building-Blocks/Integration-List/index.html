@@ -6509,68 +6509,172 @@ The <code>level</code> argument is optional and would convert the amount to leve
 <p>If you have this plugin you can use it's NPCs. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
 in addition to the normal Npc functionality.</p>
-<h3 id="npcs-section-npcs">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs" title="Permanent link">🔗</a></h3>
+<h3 id="npc-integration">Npc Integration<a class="headerlink" href="#npc-integration" title="Permanent link">🔗</a></h3>
+<p>Citizens supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
+<p>Also, the below listed Citizens specific additions are also used with the NpcId from the <code>npcs</code> section.</p>
+<h4 id="npcs-section-npcs">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs" title="Permanent link">🔗</a></h4>
 <p>You simply use the Citizens NPC id as argument.
 To acquire the NPCs ID select the NPC using <code>/npc select</code>, then run <code>/npc id</code>.</p>
 <p>You can also get a NPC by its name with the <code>byName</code> argument.
-That is useful when you have many NPCs which should all start the same conversation.</p>
+That is useful when you have many NPCs with the same name which should all start the same conversation
+or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>When more than one npc with that name exists, it will give an exception when used in like <code>npcteleport</code> events
-or <code>npcrange</code> objective.<br />
-This is still useful when you have 5 Npcs with the same name bound to a conversation.</p>
+or <code>npcrange</code> objective.</p>
 </div>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 0</span>
 <span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 4</span>
 <span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens Guard byName</span>
 </code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>When using the <code>byName</code> argument and use it in for example in the <code>npcteleport</code> event the first NPC with that name
-will be teleported!</p>
-</div>
 <h3 id="npc-hiding-hide_npcs">Npc Hiding: <code>hide_npcs</code><a class="headerlink" href="#npc-hiding-hide_npcs" title="Permanent link">🔗</a></h3>
 <div class="admonition info">
 <p class="admonition-title">Required Dependency: ProtocolLib</p>
 <p>This feature can be activated by installing the <a href="https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar">ProtocolLib plugin</a>.</p>
 </div>
 <h3 id="events_2">Events<a class="headerlink" href="#events_2" title="Permanent link">🔗</a></h3>
-<h4 id="move-npc-movenpc">Move NPC: <code>movenpc</code><a class="headerlink" href="#move-npc-movenpc" title="Permanent link">🔗</a></h4>
+<h4 id="move-npc-npcmove">Move Npc: <code>npcmove</code><a class="headerlink" href="#move-npc-npcmove" title="Permanent link">🔗</a></h4>
 <p>This event will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with <em>/npc path</em> command - it will then return to that point every time.
-If you make it move too far away, it will teleport or break, so beware. You can change maximum pathfinding range in Citizens
-configuration files. The first argument in this event is ID of the NPC to move. Second one is a location in a standard format (like in <code>teleport</code> event).
-You can also specify multiple locations separated by colons to let the npc follow a path of locations.
-You can also specify additional arguments: <code>block</code> will block the NPC so you won't be able to start a conversation with him while he is moving,
-<code>wait:</code> is a number of tick the NPC will wait at its destination before firing events,
-<code>done:</code> is a list of events fired after reaching the destination, <code>fail:</code> is a list of events fired if this event fails.
-Move event can fail if the NPC is already moving for another player.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">movenpc 121 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward</span>
+If you make it move too far away, it will teleport or break, so beware.
+You can change maximum pathfinding range in Citizens configuration files.</p>
+<p>Move event can fail if the NPC is already moving for another player.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>NpcID</em></td>
+<td>npcId</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The NpcId.</td>
+</tr>
+<tr>
+<td><em>Locations</em></td>
+<td><a href="../../Data-Formats/#unified-location-formating">Locations</a></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The locations where the Npc will move to.</td>
+</tr>
+<tr>
+<td><em>block</em></td>
+<td>Keyword (<code>block</code>)</td>
+<td>Disabled</td>
+<td>Blocks the Npc so interaction won't start a conversation while it is moving.</td>
+</tr>
+<tr>
+<td><em>wait</em></td>
+<td>wait:number</td>
+<td>0</td>
+<td>Number of ticks the Npc will wait at its destination before firing events.</td>
+</tr>
+<tr>
+<td><em>done</em></td>
+<td>done:events</td>
+<td>Disabled</td>
+<td>List of events fired after reaching the destination.</td>
+</tr>
+<tr>
+<td><em>fail</em></td>
+<td>fail:events</td>
+<td>Disabled</td>
+<td>List of events fired if this event fails.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward</span>
 </code></pre></div>
-</div>
-<h4 id="stop-moving-npc-stopnpc">Stop moving NPC: <code>stopnpc</code><a class="headerlink" href="#stop-moving-npc-stopnpc" title="Permanent link">🔗</a></h4>
-<p>This will stop all current move tasks for the npc with the given ID.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">stopnpc 16</span>
+<h4 id="stop-moving-npc-npcstop">Stop moving Npc: <code>npcstop</code><a class="headerlink" href="#stop-moving-npc-npcstop" title="Permanent link">🔗</a></h4>
+<p>This will stop all current move tasks for the Npc.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>NpcID</em></td>
+<td>npcId</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The NpcId.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">stopnpc guard</span>
 </code></pre></div>
-</div>
 <h3 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h3>
-<h4 id="npc-kill-npckill">NPC Kill: <code>npckill</code><a class="headerlink" href="#npc-kill-npckill" title="Permanent link">🔗</a></h4>
-<p>The NPC kill objective requires the player to kill a NPC with the given ID. You can also define how many times the NPC
-has to be killed. Right after the objective's name there must be the ID of the NPC. You can also add an amount with the
-<code>amount</code> keyword. You can use the <code>notify</code> keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.</p>
-<p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of NPCs already killed,
-<code>left</code> is the amount of NPCs still needed to kill and <code>total</code> is the amount of NPCs initially required.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">npckill 16 amount:3 events:reward notify</span>
+<h4 id="npc-kill-npckill">Npc Kill: <code>npckill</code><a class="headerlink" href="#npc-kill-npckill" title="Permanent link">🔗</a></h4>
+<p>The Npc Kill objective requires the player to kill a Npc. </p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>NpcID</em></td>
+<td>npcId</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The NpcId.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:number</td>
+<td>1</td>
+<td>The time the Npc needs to be killed.</td>
+</tr>
+<tr>
+<td><em>notify</em></td>
+<td>notify</td>
+<td>Disabled</td>
+<td>Display a message to the player each time they kill a npc. Optionally with the notification interval after colon.</td>
+</tr>
+</tbody>
+</table>
+<h5> Variable Properties </h5>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Example Output</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>amount</em></td>
+<td>6</td>
+<td>Shows the amount of times already killed the npc.</td>
+</tr>
+<tr>
+<td><em>left</em></td>
+<td>4</td>
+<td>Shows the amount of times still needed to kill the Npc for the objective to be completed.</td>
+</tr>
+<tr>
+<td><em>total</em></td>
+<td>10</td>
+<td>Shows the initial amount of times that the Npc needed to be killed.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">npckill thief amount:3 events:reward notify</span>
 </code></pre></div>
-</div>
 <h2 id="denizen">Denizen<a href="http://dev.bukkit.org/bukkit-plugins/denizen/"></a><a class="headerlink" href="#denizen" title="Permanent link">🔗</a></h2>
 <p>Depenizen is also integrated with BetonQuest! Discover available features on the <a href="https://meta.denizenscript.com/Docs/Search/BetonQuest">meta documentation</a>.</p>
 <h3 id="events_3">Events<a class="headerlink" href="#events_3" title="Permanent link">🔗</a></h3>

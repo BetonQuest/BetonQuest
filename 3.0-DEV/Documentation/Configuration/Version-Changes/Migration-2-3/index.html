@@ -3080,6 +3080,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-135-citizens-adaption-to-npcid">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-135 - Citizens Adaption to NpcID <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4537,6 +4560,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-135-citizens-adaption-to-npcid">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-135 - Citizens Adaption to NpcID <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4663,6 +4709,7 @@
 <li><a href="#300-dev-65-delete-menuconfigyml">3.0.0-DEV-65 - Delete menuConfig.yml</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 <li><a href="#300-dev-71-renamed-translation-keys">3.0.0-DEV-71 - Renamed Translation Keys</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#300-dev-114-npc-rework">3.0.0-DEV-114 - Npc Rework</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
+<li><a href="#300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -4838,6 +4885,36 @@ Citizens integration. </li>
 <li>The <code>0</code> is here the BetonQuest NpcID but stays the same.</li>
 <li>An example of a "renamed" reference.</li>
 <li>The Npcs that start this conversation.</li>
+</ol>
+</div>
+<h3 id="300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-135-citizens-adaption-to-npcid" title="Permanent link">🔗</a></h3>
+<p>To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
+Also, the <code>movenpc</code> and <code>stopnpc</code> events are renamed into <code>npcmove</code> and <code>npcstop</code>.</p>
+<p>As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">movenpc 0 100;200;300;world</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stopnpc 0</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kill</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npckill 1 amount:5 events:reward</span>
+</code></pre></div>
+<ol>
+<li>The <code>0</code> is here the citizens npc id.</li>
+</ol>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">0</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">0&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">thief</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">thief</span><span class="nv"> </span><span class="s">byName&quot;</span>
+
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcmove 0 100;200;300;world</span>
+<span class="w">  </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npcstop 0</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kill</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npckill thief amount:5 events:reward</span>
+</code></pre></div>
+<ol>
+<li>The <code>0</code> before the ':' is now the BetonQuest ID, where the <code>citizens 0</code> defines the Npc with id "0" from the 
+Citizens integration. </li>
+<li>The <code>0</code> is here the BetonQuest NpcID but stays the same.</li>
 </ol>
 </div>
 
