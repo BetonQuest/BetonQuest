@@ -44,9 +44,10 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * The listener that handles a consumed item.
      *
      * @param event the Bukkit event for consuming an item
+     * @throws QuestException when the QuestItem does not exist
      */
     @EventHandler(ignoreCancelled = true)
-    public void onConsume(final PlayerItemConsumeEvent event) {
+    public void onConsume(final PlayerItemConsumeEvent event) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && item.matches(event.getItem()) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();

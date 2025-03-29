@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.instruction;
 
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -13,15 +14,16 @@ import org.jetbrains.annotations.Nullable;
  */
 @SuppressWarnings("PMD.ShortClassName")
 public class Item {
+
+    /**
+     * Feature API.
+     */
+    private final FeatureAPI featureAPI;
+
     /**
      * Item id to generate the QuestItem with.
      */
     private final ItemID itemID;
-
-    /**
-     * Cached QuestItem.
-     */
-    private final QuestItem questItem;
 
     /**
      * Size of the stack to create.
@@ -31,13 +33,14 @@ public class Item {
     /**
      * Create a wrapper for Quest Item and target stack size.
      *
-     * @param itemID the QuestItemID to create
-     * @param amount the size to set the created ItemStack to
+     * @param featureAPI the feature api creating new items
+     * @param itemID     the QuestItemID to create
+     * @param amount     the size to set the created ItemStack to
      * @throws QuestException when the QuestItem could not be created
      */
-    public Item(final ItemID itemID, final VariableNumber amount) throws QuestException {
+    public Item(final FeatureAPI featureAPI, final ItemID itemID, final VariableNumber amount) throws QuestException {
         this.itemID = itemID;
-        this.questItem = new QuestItem(itemID);
+        this.featureAPI = featureAPI;
         this.amount = amount;
     }
 
@@ -49,7 +52,7 @@ public class Item {
      * @throws QuestException when the generation fails
      */
     public ItemStack generate(final Profile profile) throws QuestException {
-        return questItem.generate(amount.getValue(profile).intValue(), profile);
+        return featureAPI.getItem(itemID).generate(amount.getValue(profile).intValue(), profile);
     }
 
     /**
@@ -57,9 +60,10 @@ public class Item {
      *
      * @param item the item to compare
      * @return true if the given item matches the quest item
+     * @throws QuestException when there is no QuestItem for the ID
      */
-    public boolean matches(@Nullable final ItemStack item) {
-        return questItem.matches(item);
+    public boolean matches(@Nullable final ItemStack item) throws QuestException {
+        return featureAPI.getItem(itemID).matches(item);
     }
 
     /**
@@ -74,10 +78,11 @@ public class Item {
     /**
      * Gets the Quest Item.
      *
-     * @return quest item
+     * @return the stored quest item
+     * @throws QuestException when there is no QuestItem for the ID
      */
-    public QuestItem getItem() {
-        return questItem;
+    public QuestItem getItem() throws QuestException {
+        return featureAPI.getItem(itemID);
     }
 
     /**

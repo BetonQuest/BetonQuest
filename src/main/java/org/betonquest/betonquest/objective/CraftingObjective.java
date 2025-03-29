@@ -49,7 +49,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCrafting(final CraftItemEvent event) {
+    public void onCrafting(final CraftItemEvent event) throws QuestException {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             if (containsPlayer(onlineProfile) && item.matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
