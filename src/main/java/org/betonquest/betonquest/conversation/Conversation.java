@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -496,6 +497,19 @@ public class Conversation implements Listener {
     public void sendMessage(final BaseComponent... message) {
         if (interceptor == null) {
             player.spigot().sendMessage(message);
+        } else {
+            interceptor.sendMessage(message);
+        }
+    }
+
+    /**
+     * Send message to player, bypassing any message delaying if needed.
+     *
+     * @param message The message to send
+     */
+    public void sendMessage(final Component message) {
+        if (interceptor == null) {
+            player.sendMessage(message);
         } else {
             interceptor.sendMessage(message);
         }

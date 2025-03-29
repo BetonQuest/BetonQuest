@@ -58,16 +58,11 @@ public class PacketInterceptor implements Interceptor, Listener {
                 final PacketType packetType = packet.getType();
                 if (PaperLib.isVersion(19, 0)) {
                     if (packetType.equals(PacketType.Play.Server.SYSTEM_CHAT)) {
-                        if (PaperLib.isVersion(20, 4)) {
-                            final String message = packet.getChatComponents().read(0).getJson();
-                            if (message != null && message.contains("{\"text\":\"\",\"extra\":[\"" + MESSAGE_PASSTHROUGH_TAG + "\"")) {
-                                return;
-                            }
-                        } else {
-                            final String message = packet.getStrings().read(0);
-                            if (message != null && message.contains("{\"extra\":[{\"text\":\"" + MESSAGE_PASSTHROUGH_TAG + "\"}")) {
-                                return;
-                            }
+                        final String message = PaperLib.isVersion(20, 4)
+                                ? packet.getChatComponents().read(0).getJson()
+                                : packet.getStrings().read(0);
+                        if (message != null && message.contains("\"" + MESSAGE_PASSTHROUGH_TAG + "\"")) {
+                            return;
                         }
                     }
                 } else {
