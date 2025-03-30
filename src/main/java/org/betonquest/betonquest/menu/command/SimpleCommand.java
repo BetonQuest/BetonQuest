@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -117,10 +118,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     public final boolean register() {
         this.commandMap = Bukkit.getCommandMap();
         if (!this.commandMap.register("betonquest", this)) {
-            log.error("Could not register command " + getName() + " in command map!");
+            log.info("Command " + getName() + " is already in command map, using fallback!");
+        }
+        if (syncCraftBukkitCommands()) {
             return false;
         }
-        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
         log.debug("Registered command " + getName() + "!");
         return true;
     }
@@ -134,14 +136,32 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         if (this.commandMap == null) {
             return false;
         }
-        this.unregister(commandMap);
-        if (!commandMap.getKnownCommands().values().remove(this)) {
+        int count = 0;
+        while (commandMap.getKnownCommands().values().remove(this)) {
+            count++;
+        }
+        if (count == 0) {
             log.error("Could not unregister command '" + getName() + "' from command map");
             return false;
         }
-        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-        log.debug("Unregistered command " + getName() + "!");
+        if (syncCraftBukkitCommands()) {
+            return false;
+        }
+        log.debug("Unregistered command " + getName() + " " + count + " times!");
         return true;
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private boolean syncCraftBukkitCommands() {
+        try {
+            final Class<?> craftServer = Bukkit.getServer().getClass();
+            final Method method = craftServer.getDeclaredMethod("syncCommands");
+            method.invoke(Bukkit.getServer());
+            return false;
+        } catch (final Exception e) {
+            log.error("Could not sync commands: " + e.getMessage(), e);
+            return true;
+        }
     }
 
     @Override

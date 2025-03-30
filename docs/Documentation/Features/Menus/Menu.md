@@ -28,10 +28,10 @@ These are general settings for customizing a menu.
 
 #### Required Settings
 
-| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                                     |
-|:------------:|:---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                              |
+|:------------:|:---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Variables are supported. |
-|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                              |
+|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                       |
 
 #### Optional Settings
 
@@ -41,7 +41,7 @@ These are general settings for customizing a menu.
 |                `open_events`                | `open_events: "menuOpenSound"`              | One or multiple events (separated by a `,`) which will be fired when the menu is opened.                                                              |
 |               `close_events`                | `close_events: "menuCloseSound"`            | One or multiple events (separated by a `,`) which will be fired when the menu is closed.                                                              |  
 |                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../../Features/Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
-|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu. **The server must be restarted to unregister command tab completions.**                                |
+|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu.                                                                                                        |
 
 ## The `items` section
 The items section contains all items which should be displayed in the menu, defined as individual sections of the config.
