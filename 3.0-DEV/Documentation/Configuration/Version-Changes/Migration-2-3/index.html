@@ -3103,6 +3103,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-142-conversation-sounds">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-142 - Conversation Sounds <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4583,6 +4606,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-142-conversation-sounds">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-142 - Conversation Sounds <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4710,6 +4756,7 @@
 <li><a href="#300-dev-71-renamed-translation-keys">3.0.0-DEV-71 - Renamed Translation Keys</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#300-dev-114-npc-rework">3.0.0-DEV-114 - Npc Rework</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 <li><a href="#300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
+<li><a href="#300-dev-142-conversation-sounds">3.0.0-DEV-142 - Conversation Sounds</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -4916,6 +4963,22 @@ Also, the <code>movenpc</code> and <code>stopnpc</code> events are renamed into 
 Citizens integration. </li>
 <li>The <code>0</code> is here the BetonQuest NpcID but stays the same.</li>
 </ol>
+</div>
+<h3 id="300-dev-142-conversation-sounds">3.0.0-DEV-142 - Conversation Sounds <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-142-conversation-sounds" title="Permanent link">🔗</a></h3>
+<p>The start and stop sound in the configuration for conversations were removed in favor of the notification system,
+that now also has the two new build in categories <code>conversation_start</code> and <code>conversation_end</code>.</p>
+<p>To get the previous sounds back, you need to configure it now like the following in any quest package:</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old Syntax (config.yml)</span><pre><span></span><code><span class="nt">sounds</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENTITY_VILLAGER_AMBIENT</span>
+<span class="w">  </span><span class="nt">end</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENTITY_VILLAGER_YES</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">conversation_start</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">sound</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENTITY_VILLAGER_AMBIENT</span>
+<span class="w">  </span><span class="nt">conversation_end</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">sound</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENTITY_VILLAGER_YES</span>
+</code></pre></div>
 </div>
 
 
