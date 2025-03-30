@@ -436,10 +436,7 @@ public class Conversation implements Listener {
             for (final EventID event : data.getPublicData().finalEvents()) {
                 BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
             }
-            //only display status messages if conversationIO allows it
-            if (conv.inOut.printMessages()) {
-                endSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
-            }
+            endSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
             // End interceptor after a second
             if (interceptor != null) {
@@ -783,10 +780,7 @@ public class Conversation implements Listener {
                     // first select the option before sending message, so it
                     // knows which is used
                     selectOption(resolvedOptions, false);
-
-                    if (conv.inOut.printMessages()) {
-                        startSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
-                    }
+                    startSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                 } else {
                     final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
                     selectOption(resolvedOptions, true);

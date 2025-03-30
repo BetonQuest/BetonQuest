@@ -33,6 +33,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `%quester%` variable is used instead of `%npc%` for the quester's name in conversations; `%npc` variable is used now for the new Npc system
 - `fish` objective use block selector instead of a QuestItem
 - everything that used `Citizens` NPC ids now uses the BQ NpcIDs
+- conversations now always print their start and stop conversation message
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
