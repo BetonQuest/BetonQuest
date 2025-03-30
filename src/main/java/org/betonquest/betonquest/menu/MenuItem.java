@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -44,6 +44,11 @@ public class MenuItem extends SimpleYMLSection {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The language provider instance.
+     */
+    private final LanguageProvider languageProvider;
 
     /**
      * The betonquest quest item this item is based on.
@@ -93,19 +98,21 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Creates a new Menu Item.
      *
-     * @param log          the custom logger for this class
-     * @param pack         the quest package the item is in
-     * @param menuID       the menu the item is in
-     * @param name         the name of the item
-     * @param section      the configuration representing the item
-     * @param defaultClose if the item click closes as default
+     * @param log              the custom logger for this class
+     * @param pack             the quest package the item is in
+     * @param languageProvider the language provider instance
+     * @param menuID           the menu the item is in
+     * @param name             the name of the item
+     * @param section          the configuration representing the item
+     * @param defaultClose     if the item click closes as default
      * @throws InvalidConfigurationException if there are missing or invalid entries
      */
-    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final MenuID menuID, final String name,
-                    final ConfigurationSection section, final boolean defaultClose)
+    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final LanguageProvider languageProvider,
+                    final MenuID menuID, final String name, final ConfigurationSection section, final boolean defaultClose)
             throws InvalidConfigurationException {
         super(pack, name, section);
         this.log = log;
+        this.languageProvider = languageProvider;
         try {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
@@ -209,17 +216,17 @@ public class MenuItem extends SimpleYMLSection {
      */
     public ItemStack generateItem(final Profile profile) {
         try {
-            final String lang = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage();
+            final String lang = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
             final ItemStack item = this.item.generate(profile);
             final ItemMeta meta = item.getItemMeta();
             if (!descriptions.isEmpty()) {
                 ItemDescription description = this.descriptions.get(lang);
                 if (description == null) {
-                    description = this.descriptions.get(Config.getLanguage());
+                    description = this.descriptions.get(languageProvider.getDefaultLanguage());
                 }
                 if (description == null) {
                     log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
-                            + Config.getLanguage() + "' " + "specified");
+                            + languageProvider.getDefaultLanguage() + "' " + "specified");
                 } else {
                     meta.setDisplayName(description.getDisplayName(profile));
                     meta.setLore(description.getLore(profile));
@@ -250,9 +257,9 @@ public class MenuItem extends SimpleYMLSection {
             if (section.isConfigurationSection(CONFIG_TEXT)) {
                 descriptions.putAll(generateLanguageDescriptions(menuID, section));
             } else if (section.isString(CONFIG_TEXT)) {
-                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getString(CONFIG_TEXT).lines().toList()));
+                descriptions.put(languageProvider.getDefaultLanguage(), new ItemDescription(this.pack, getString(CONFIG_TEXT).lines().toList()));
             } else if (section.isList(CONFIG_TEXT)) {
-                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
+                descriptions.put(languageProvider.getDefaultLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
             } else {
                 throw new QuestException("Unrecognized item '" + name + "' text configuration in menu '"
                         + menuID + "'");
@@ -278,8 +285,8 @@ public class MenuItem extends SimpleYMLSection {
                             + "' configuration in menu '" + menuID + "'");
                 }
             }
-            if (!descriptions.containsKey(Config.getLanguage())) {
-                throw new Missing(CONFIG_TEXT_PATH + Config.getLanguage());
+            if (!descriptions.containsKey(languageProvider.getDefaultLanguage())) {
+                throw new Missing(CONFIG_TEXT_PATH + languageProvider.getDefaultLanguage());
             }
         }
 

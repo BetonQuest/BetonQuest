@@ -3,6 +3,7 @@ package org.betonquest.betonquest;
 import io.papermc.lib.PaperLib;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -104,7 +105,7 @@ import java.util.logging.Level;
  * Represents BetonQuest plugin.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
-public class BetonQuest extends JavaPlugin {
+public class BetonQuest extends JavaPlugin implements LanguageProvider {
     /**
      * BStats Plugin id.
      */
@@ -164,6 +165,11 @@ public class BetonQuest extends JavaPlugin {
      * The plugin configuration file.
      */
     private FileConfigAccessor config;
+
+    /**
+     * The default language from the config.
+     */
+    private String defaultLanguage;
 
     /**
      * The message parser.
@@ -295,6 +301,7 @@ public class BetonQuest extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        defaultLanguage = config.getString("language", "en-US");
 
         final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(loggerFactory, this,
                 this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
@@ -307,7 +314,7 @@ public class BetonQuest extends JavaPlugin {
         log.debug("BetonQuest " + version + " is starting...");
         log.debug(jreInfo);
 
-        Config.setup(this, config);
+        Config.setup(this);
         Notify.load(config, Config.getPackages().values());
 
         setupDatabase();
@@ -346,7 +353,8 @@ public class BetonQuest extends JavaPlugin {
         final String defaultParser = config.getString("messageParser", "legacyminimessage");
         messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
         try {
-            pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage, messageParser, configAccessorFactory);
+            pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage,
+                    messageParser, configAccessorFactory, this);
             for (final String language : pluginMessage.getLanguages()) {
                 log.debug("Loaded " + language + " language");
             }
@@ -357,13 +365,14 @@ public class BetonQuest extends JavaPlugin {
         }
 
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider);
+                coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider, this);
         featureAPI = new FeatureAPI(questRegistry);
 
         registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage, profileProvider)
+                questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
+                profileProvider, this)
                 .register(questTypeRegistries);
 
         new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
@@ -399,7 +408,7 @@ public class BetonQuest extends JavaPlugin {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider, this);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -453,7 +462,7 @@ public class BetonQuest extends JavaPlugin {
         getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, profileProvider));
         getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, profileProvider));
         getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, profileProvider));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider);
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, this);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
     }
@@ -521,7 +530,8 @@ public class BetonQuest extends JavaPlugin {
         } catch (final IOException e) {
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
-        Config.setup(this, config);
+        defaultLanguage = config.getString("language", "en-US");
+        Config.setup(this);
         try {
             pluginMessage.reload();
         } catch (final IOException | QuestException e) {
@@ -621,6 +631,11 @@ public class BetonQuest extends JavaPlugin {
      */
     public ConfigAccessor getPluginConfig() {
         return config;
+    }
+
+    @Override
+    public String getDefaultLanguage() {
+        return defaultLanguage;
     }
 
     /**

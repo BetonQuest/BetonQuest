@@ -51,7 +51,8 @@ public class PlayerDataStorage {
      * @param config        the plugin configuration file
      * @param objectives    the objective processor to start (global) objectives
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessor config, final ObjectiveProcessor objectives) {
+    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                             final ConfigAccessor config, final ObjectiveProcessor objectives) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;

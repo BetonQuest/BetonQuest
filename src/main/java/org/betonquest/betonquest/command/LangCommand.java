@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.command;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -48,6 +48,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final ProfileProvider profileProvider;
 
     /**
+     * The language provider instance.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * The sender for the language changed notification.
      */
     private final IngameNotificationSender languageChangedSender;
@@ -55,17 +60,20 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Creates a new executor for the /questlang command.
      *
-     * @param log             the logger that will be used for logging
-     * @param dataStorage     the storage providing player data
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param profileProvider the profile provider instance
+     * @param log              the logger that will be used for logging
+     * @param dataStorage      the storage providing player data
+     * @param pluginMessage    the {@link PluginMessage} instance
+     * @param profileProvider  the profile provider instance
+     * @param languageProvider the language provider instance
      */
     public LangCommand(final BetonQuestLogger log, final PlayerDataStorage dataStorage,
-                       final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+                       final PluginMessage pluginMessage, final ProfileProvider profileProvider,
+                       final LanguageProvider languageProvider) {
         this.log = log;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
+        this.languageProvider = languageProvider;
         this.languageChangedSender = new IngameNotificationSender(log, pluginMessage, null,
                 "LanguageCommand", NotificationLevel.INFO, "language_changed");
     }
@@ -91,7 +99,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         final Set<String> languages = pluginMessage.getLanguages();
         if (!languages.contains(args[0]) && !"default".equalsIgnoreCase(args[0])) {
             final StringBuilder builder = new StringBuilder();
-            builder.append("default (").append(Config.getLanguage()).append("), ").append(String.join(", ", languages));
+            builder.append("default (").append(languageProvider.getDefaultLanguage()).append("), ").append(String.join(", ", languages));
             if (builder.length() < 3) {
                 log.warn("No translations loaded, somethings wrong!");
                 return false;
@@ -109,7 +117,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         final String lang = args[0];
         final PlayerData playerData = dataStorage.get(onlineProfile);
         final Journal journal = playerData.getJournal(pluginMessage);
-        playerData.setLanguage(lang);
+        playerData.setLanguage("default".equalsIgnoreCase(lang) ? null : lang);
         journal.update();
         languageChangedSender.sendNotification(onlineProfile);
         return true;

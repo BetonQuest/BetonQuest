@@ -3,6 +3,7 @@ package org.betonquest.betonquest.config;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
@@ -63,6 +64,11 @@ public class PluginMessage {
     private final PlayerDataStorage playerDataStorage;
 
     /**
+     * The language provider instance.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * The messages configuration file.
      */
     private final Map<String, FileConfigAccessor> messages;
@@ -85,15 +91,17 @@ public class PluginMessage {
      * @param playerDataStorage     the {@link PlayerDataStorage} instance
      * @param messageParser         the {@link MessageParser} instance
      * @param configAccessorFactory the config accessor factory
+     * @param languageProvider      the {@link LanguageProvider} instance
      * @throws QuestException if the messages could not be loaded
      */
     public PluginMessage(final BetonQuest instance, final VariableProcessor variableProcessor,
                          final PlayerDataStorage playerDataStorage, final MessageParser messageParser,
-                         final ConfigAccessorFactory configAccessorFactory)
+                         final ConfigAccessorFactory configAccessorFactory, final LanguageProvider languageProvider)
             throws QuestException {
         this.variableProcessor = variableProcessor;
         this.messageParser = messageParser;
         this.playerDataStorage = playerDataStorage;
+        this.languageProvider = languageProvider;
 
         try {
             messages = loadMessageFiles(instance, configAccessorFactory);
@@ -175,7 +183,7 @@ public class PluginMessage {
                 .forEach(key -> {
                     final String message = internal.getString(key);
                     if (message != null) {
-                        languageMessages.computeIfAbsent(key, k -> new HashMap<>()).putIfAbsent(Config.getLanguage(), message);
+                        languageMessages.computeIfAbsent(key, k -> new HashMap<>()).putIfAbsent(languageProvider.getDefaultLanguage(), message);
                     }
                 });
 
@@ -186,7 +194,7 @@ public class PluginMessage {
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
                 values.put(value.getKey(), new VariableString(variableProcessor, null, value.getValue()));
             }
-            loadedMessages.put(key, new ParsedMessage(messageParser, values, playerDataStorage));
+            loadedMessages.put(key, new ParsedMessage(messageParser, values, playerDataStorage, languageProvider));
         }
         return loadedMessages;
     }

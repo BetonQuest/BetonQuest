@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.MessageParser;
@@ -38,19 +39,27 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     private final PlayerDataStorage playerDataStorage;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Create a new QuestProcessor to store and execute type logic.
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the variable processor to create new variables
      * @param messageParser     the message parser to parse messages
      * @param playerDataStorage the player data storage to get the player language
+     * @param languageProvider  the language provider to get the default language
      */
     public JournalMainPageProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                                    final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
+                                    final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
+                                    final LanguageProvider languageProvider) {
         super(log, "Journal Main Page", "journal_main_page");
         this.variableProcessor = variableProcessor;
         this.messageParser = messageParser;
         this.playerDataStorage = playerDataStorage;
+        this.languageProvider = languageProvider;
     }
 
     @Override
@@ -72,7 +81,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
                 }
             }
         }
-        final ParsedSectionMessage text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "text");
+        final ParsedSectionMessage text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "text", languageProvider);
         return new JournalMainPageEntry(priority, List.copyOf(conditions), text);
     }
 

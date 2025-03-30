@@ -88,8 +88,8 @@ import java.util.stream.Stream;
  * Main admin command for quest editing.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
-        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
-        "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
+        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity",
+        "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.

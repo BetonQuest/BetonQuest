@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.message;
 
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -28,16 +28,19 @@ public class ParsedSectionMessage extends ParsedMessage {
      * @param pack              the pack to resolve variables
      * @param section           the section to load from
      * @param path              where the value(s) are stored in the section
+     * @param languageProvider  the language provider to get the default language
      * @throws QuestException if there is no value, the default language is missing or the section format is invalid
      */
     public ParsedSectionMessage(final VariableProcessor variableProcessor, final MessageParser messageParser,
                                 final PlayerDataStorage playerDataStorage, final QuestPackage pack,
-                                final ConfigurationSection section, final String path) throws QuestException {
-        super(messageParser, parse(variableProcessor, pack, section, path), playerDataStorage);
+                                final ConfigurationSection section, final String path,
+                                final LanguageProvider languageProvider) throws QuestException {
+        super(messageParser, parse(variableProcessor, pack, section, path, languageProvider), playerDataStorage, languageProvider);
     }
 
     private static Map<String, VariableString> parse(final VariableProcessor variableProcessor, final QuestPackage pack,
-                                                     final ConfigurationSection section, final String path) throws QuestException {
+                                                     final ConfigurationSection section, final String path,
+                                                     final LanguageProvider languageProvider) throws QuestException {
         if (section.isConfigurationSection(path)) {
             return parseSection(variableProcessor, pack, section, path);
         } else if (section.isString(path)) {
@@ -45,7 +48,7 @@ public class ParsedSectionMessage extends ParsedMessage {
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(Config.getLanguage(), new VariableString(variableProcessor, pack, raw));
+            return Map.of(languageProvider.getDefaultLanguage(), new VariableString(variableProcessor, pack, raw));
         } else {
             throw new QuestException("The '" + path + "' is missing!");
         }
