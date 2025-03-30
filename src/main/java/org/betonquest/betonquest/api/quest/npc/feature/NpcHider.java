@@ -13,6 +13,7 @@ import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public class NpcHider {
     /**
      * The task refreshing npc visibility.
      */
+    @Nullable
     private BukkitTask task;
 
     /**
@@ -61,16 +63,14 @@ public class NpcHider {
      * @param npcProcessor    the processor to get nps
      * @param plugin          the plugin to get config and start the task
      * @param profileProvider the profile provider instance
-     * @param packages        the quest packages to load
      */
     public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final BetonQuest plugin, final ProfileProvider profileProvider, final Collection<QuestPackage> packages) {
+                    final BetonQuest plugin, final ProfileProvider profileProvider) {
         this.log = log;
         this.npcProcessor = npcProcessor;
         this.plugin = plugin;
         this.profileProvider = profileProvider;
         this.npcs = new HashMap<>();
-        load(packages);
     }
 
     private void load(final Collection<QuestPackage> packages) {
@@ -130,7 +130,9 @@ public class NpcHider {
      * @param packages the quest packages to load
      */
     public void reload(final Collection<QuestPackage> packages) {
-        task.cancel();
+        if (task != null) {
+            task.cancel();
+        }
         npcs.clear();
         load(packages);
     }

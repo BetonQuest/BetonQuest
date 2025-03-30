@@ -111,8 +111,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this,
-                plugin, profileProvider, Config.getPackages().values());
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this, plugin, profileProvider);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 

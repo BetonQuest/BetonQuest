@@ -195,7 +195,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @Override
     public void print(@Nullable final String message) {
-        if (message != null && message.length() > 0) {
+        if (message != null && !message.isEmpty()) {
             conv.sendMessage(message);
         }
     }

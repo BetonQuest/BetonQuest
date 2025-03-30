@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.objective;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -66,7 +69,7 @@ public class VariableObjective extends Objective implements Listener {
             final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
             final String value = chatVariableMatcher.group("value");
             getVariableData(onlineProfile).add(key, value);
-            event.getPlayer().sendMessage("§2§l\u2713"); // send checkmark
+            event.getPlayer().sendMessage(Component.text("✓", NamedTextColor.DARK_GREEN, TextDecoration.BOLD));
         }
     }
 
