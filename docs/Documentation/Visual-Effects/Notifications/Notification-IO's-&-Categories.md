@@ -247,16 +247,21 @@ notifications:
 | Inventory Full Backpack | inventory_full_backpack, inventory_full, *error* | 
 | Inventory Full Drop     | inventory_full_drop, inventory_full, *error*     | 
 | Language Changed        | language_changed, *info*                         | 
+| Quest Cancelled         | quest_cancelled, *info*                          | 
+| New Journal Entry       | new_journal_entry, *info*                        | 
+| Conversation start      | conversation_start, *info*                       |
+| Conversation end        | conversation_end, *info*                         |
+| Conversation blocked    | busy, *error*                                    | 
 | Money Given             | money_given, *info*                              | 
 | Money Taken             | money_taken, *info*                              | 
-| Quest Cancelled         | quest_cancelled, *info*                          | 
-| Items Given             | items_given, *info*                              | 
-| New Journal Entry       | new_journal_entry, *info*                        | 
-| Conversation blocked    | busy, *error*                                    | 
 
 
 | Notifications     | Categories               |
 |-------------------|--------------------------|
+| Items Given       | items_given, *info*      | 
+| Points given      | point_given, *info*      |
+| Points taken      | point_taken, *info*      |
+| Points multiplied | point_multiplied, *info* |
 | Animals to Breed  | animals_to_breed, *info* |
 | Blocks to Break   | blocks_to_break, *info*  |
 | Blocks to Place   | blocks_to_place, *info*  |
@@ -265,9 +270,6 @@ notifications:
 | Fish to catch     | fish_to_catch, *info*    |
 | Players to kill   | players_to_kill, *info*  |
 | Potions to brew   | potions_to_brew, *info*  |
-| Points given      | point_given, *info*      |
-| Points taken      | point_taken, *info*      |
-| Points multiplied | point_multiplied, *info* |
 | Sheep to shear    | sheep_to_shear, *info*   |
 
 </div>

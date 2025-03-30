@@ -5,11 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -65,23 +61,5 @@ public final class Config {
      */
     public static String getLanguage() {
         return lang;
-    }
-
-    /**
-     * Plays a sound specified in the plugin's config to the player.
-     *
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param soundName     the name of the sound to play to the player
-     */
-    public static void playSound(final OnlineProfile onlineProfile, final String soundName) {
-        final Player player = onlineProfile.getPlayer();
-        final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
-        if (!"false".equalsIgnoreCase(rawSound)) {
-            try {
-                player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
-            } catch (final IllegalArgumentException e) {
-                player.playSound(player.getLocation(), rawSound.toLowerCase(Locale.ROOT), 1F, 1F);
-            }
-        }
     }
 }

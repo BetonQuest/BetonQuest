@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
@@ -156,6 +155,16 @@ public class Conversation implements Listener {
     private final IngameNotificationSender blockedSender;
 
     /**
+     * Notification sender when conversation starts.
+     */
+    private final IngameNotificationSender startSender;
+
+    /**
+     * Notification sender when conversation ends.
+     */
+    private final IngameNotificationSender endSender;
+
+    /**
      * The current conversation state.
      */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
@@ -224,6 +233,8 @@ public class Conversation implements Listener {
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
         this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.ERROR, "command_blocked");
+        this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_start");
+        this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_end");
 
         try {
             this.data = plugin.getFeatureAPI().getConversation(conversationID);
@@ -425,17 +436,7 @@ public class Conversation implements Listener {
             for (final EventID event : data.getPublicData().finalEvents()) {
                 BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
             }
-            //only display status messages if conversationIO allows it
-            if (conv.inOut.printMessages()) {
-                try {
-                    conv.inOut.print(LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("conversation_end",
-                            new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile))).asComponent(onlineProfile)));
-                } catch (final QuestException e) {
-                    log.warn("Conversation end Message could not be displayed: " + e.getMessage(), e);
-                }
-            }
-            //play conversation end sound
-            Config.playSound(onlineProfile, "end");
+            endSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
             // End interceptor after a second
             if (interceptor != null) {
@@ -779,17 +780,7 @@ public class Conversation implements Listener {
                     // first select the option before sending message, so it
                     // knows which is used
                     selectOption(resolvedOptions, false);
-
-                    if (conv.inOut.printMessages()) {
-                        try {
-                            conv.inOut.print(LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("conversation_start",
-                                    new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile))).asComponent(onlineProfile)));
-                        } catch (final QuestException e) {
-                            log.warn(pack, "Conversation start Message could not be displayed: " + e.getMessage(), e);
-                        }
-                    }
-
-                    Config.playSound(onlineProfile, "start");
+                    startSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                 } else {
                     final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
                     selectOption(resolvedOptions, true);

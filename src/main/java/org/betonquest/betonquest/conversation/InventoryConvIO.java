@@ -403,11 +403,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return inv != null && conv.nextNPCOption == null;
     }
 
-    @Override
-    public boolean printMessages() {
-        return printMessages;
-    }
-
     /**
      * Inventory GUI that also outputs the conversation to chat.
      */

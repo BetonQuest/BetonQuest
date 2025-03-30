@@ -43,13 +43,6 @@ public interface ConversationIO {
     void end();
 
     /**
-     * @return if this conversationIO should send messages to the player when the conversation starts and ends
-     */
-    default boolean printMessages() {
-        return true;
-    }
-
-    /**
      * Send message through ConversationIO
      *
      * @param message The message to send

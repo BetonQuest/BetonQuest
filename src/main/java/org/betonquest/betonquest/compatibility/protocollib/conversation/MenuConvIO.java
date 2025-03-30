@@ -686,14 +686,6 @@ public class MenuConvIO extends ChatConvIO {
         };
     }
 
-    /**
-     * @return if this conversationIO should send messages to the player when the conversation starts and ends
-     */
-    @Override
-    public boolean printMessages() {
-        return false;
-    }
-
     @SuppressWarnings("PMD.CollapsibleIfStatements")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
