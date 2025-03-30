@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -83,7 +82,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = Double.parseDouble(Config.getConfigString("max_conversation_distance"));
+        maxNpcDistance = BetonQuest.getInstance().getPluginConfig().getDouble("max_conversation_distance");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -127,7 +126,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (Boolean.parseBoolean(Config.getConfigString("notify_pullback"))) {
+        if (BetonQuest.getInstance().getPluginConfig().getBoolean("notify_pullback")) {
             try {
                 conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage("pullback").asComponent(onlineProfile));
             } catch (final QuestException e) {

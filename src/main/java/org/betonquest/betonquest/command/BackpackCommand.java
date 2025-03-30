@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.command;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -21,6 +22,11 @@ public class BackpackCommand implements CommandExecutor {
     private final BetonQuestLogger log;
 
     /**
+     * The plugin configuration file.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -34,11 +40,13 @@ public class BackpackCommand implements CommandExecutor {
      * Creates a new executor for the /backpack command.
      *
      * @param log             the logger that will be used for logging
+     * @param config          the plugin configuration file
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param profileProvider the profile provider instance
      */
-    public BackpackCommand(final BetonQuestLogger log, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public BackpackCommand(final BetonQuestLogger log, final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
+        this.config = config;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
@@ -50,7 +58,7 @@ public class BackpackCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
                 log.debug("Executing /backpack command for " + onlineProfile);
-                new Backpack(pluginMessage, onlineProfile);
+                new Backpack(config, pluginMessage, onlineProfile);
             }
             return true;
         }

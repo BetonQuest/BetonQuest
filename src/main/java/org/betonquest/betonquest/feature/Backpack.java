@@ -4,10 +4,10 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -64,6 +64,11 @@ public class Backpack implements Listener {
     private final PlayerData playerData;
 
     /**
+     * The plugin configuration file.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Currently displayed page.
      */
     private Display display;
@@ -71,11 +76,13 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
+     * @param config        the plugin configuration file
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+        this.config = config;
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
@@ -91,11 +98,12 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI.
      *
+     * @param config        the plugin configuration file
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
-        this(pluginMessage, onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
+        this(config, pluginMessage, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
@@ -237,7 +245,7 @@ public class Backpack implements Listener {
         @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         public BackpackPage(final int page) {
             super();
-            final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getConfigString("journal.show_in_backpack"));
+            final boolean showJournalInBackpack = config.getBoolean("journal.show_in_backpack");
             this.page = page;
             this.showJournal = showJournalInBackpack && !Journal.hasJournal(onlineProfile);
             this.backpackItems = playerData.getBackpack();
@@ -298,7 +306,7 @@ public class Backpack implements Listener {
         private Pair<ItemStack, Boolean> button(final String button, final Material fallback, final boolean checkDefault) {
             ItemStack stack = null;
             boolean present = false;
-            final String buttonString = Config.getConfigString("items.backpack." + button + "_button");
+            final String buttonString = config.getString("items.backpack." + button + "_button");
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
@@ -368,7 +376,7 @@ public class Backpack implements Listener {
                 // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
-                    final boolean lockJournalSlot = Boolean.parseBoolean(Config.getConfigString("journal.lock_default_journal_slot"));
+                    final boolean lockJournalSlot = config.getBoolean("journal.lock_default_journal_slot");
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
                         // if it is a quest item, add it to the backpack

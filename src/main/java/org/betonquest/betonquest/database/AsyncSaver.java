@@ -2,8 +2,8 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -45,15 +45,16 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     /**
      * Creates new database saver thread.
      *
-     * @param log the logger that will be used for logging
+     * @param log    the logger that will be used for logging
+     * @param config the plugin configuration file
      */
-    public AsyncSaver(final BetonQuestLogger log) {
+    public AsyncSaver(final BetonQuestLogger log, final ConfigAccessor config) {
         super();
         this.log = log;
         this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
-        this.reconnectInterval = Long.parseLong(Config.getConfigString("mysql.reconnect_interval"));
+        this.reconnectInterval = config.getLong("mysql.reconnect_interval");
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.command;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
@@ -16,6 +17,11 @@ import org.bukkit.entity.Player;
 public class CompassCommand implements CommandExecutor {
 
     /**
+     * The plugin configuration file.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -28,10 +34,12 @@ public class CompassCommand implements CommandExecutor {
     /**
      * Creates a new executor for the /compass command.
      *
+     * @param config          the plugin configuration file
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param profileProvider the profile provider instance
      */
-    public CompassCommand(final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public CompassCommand(final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+        this.config = config;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
     }
@@ -40,7 +48,7 @@ public class CompassCommand implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                new Backpack(pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
+                new Backpack(config, pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
             }
             return true;
         }

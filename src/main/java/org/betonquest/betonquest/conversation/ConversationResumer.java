@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -54,17 +54,18 @@ public class ConversationResumer implements Listener {
      * Creates a new ConversationResumer for a profile and a conversation state.
      *
      * @param loggerFactory the logger factory to use for creating loggers
+     * @param config        the plugin configuration file
      * @param pluginMessage the {@link PluginMessage} instance
      * @param onlineProfile the profile to resume the conversation for
      * @param state         the state of a suspended conversation
      */
-    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final PlayerConversationState state) {
+    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final PlayerConversationState state) {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
         this.state = state;
-        this.distance = Double.parseDouble(Config.getConfigString("max_conversation_distance"));
+        this.distance = config.getDouble("max_conversation_distance");
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 

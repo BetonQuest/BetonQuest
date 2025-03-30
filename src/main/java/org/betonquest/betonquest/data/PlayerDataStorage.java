@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.data;
 
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -28,6 +29,11 @@ public class PlayerDataStorage {
     private final BetonQuestLogger log;
 
     /**
+     * The plugin configuration file.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Objective processor to start (global) objectives.
      */
     private final ObjectiveProcessor objectives;
@@ -42,11 +48,13 @@ public class PlayerDataStorage {
      *
      * @param loggerFactory the logger factory to use in Conversation Resumer
      * @param log           the logger for debug messages
+     * @param config        the plugin configuration file
      * @param objectives    the objective processor to start (global) objectives
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ObjectiveProcessor objectives) {
+    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessor config, final ObjectiveProcessor objectives) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.config = config;
         this.objectives = objectives;
     }
 
@@ -63,7 +71,7 @@ public class PlayerDataStorage {
             playerData.startObjectives();
             playerData.getJournal(pluginMessage).update();
             if (playerData.getActiveConversation() != null) {
-                new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());
+                new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
             }
         }
     }
