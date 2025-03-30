@@ -312,7 +312,7 @@ public class BetonQuest extends JavaPlugin {
 
         setupDatabase();
 
-        saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"));
+        saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"), config);
         saver.start();
         Backup.loadDatabaseFromBackup(configAccessorFactory);
 
@@ -339,7 +339,7 @@ public class BetonQuest extends JavaPlugin {
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
         questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
 
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), coreQuestRegistry.objectives());
+        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives());
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
@@ -438,7 +438,7 @@ public class BetonQuest extends JavaPlugin {
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), this),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
-                new JoinQuitListener(loggerFactory, coreQuestRegistry.objectives(), playerDataStorage,
+                new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
@@ -446,13 +446,13 @@ public class BetonQuest extends JavaPlugin {
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, profileProvider, pluginMessage);
+                this, playerDataStorage, profileProvider, pluginMessage, config);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), pluginMessage, profileProvider));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(pluginMessage, profileProvider));
-        getCommand("compass").setExecutor(new CompassCommand(pluginMessage, profileProvider));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, profileProvider));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, profileProvider));
+        getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, profileProvider));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);

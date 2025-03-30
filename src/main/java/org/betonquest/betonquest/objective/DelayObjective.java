@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
@@ -165,7 +164,7 @@ public class DelayObjective extends Objective {
     }
 
     private String parseVariableDate(final Profile profile) {
-        return new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
+        return new SimpleDateFormat(BetonQuest.getInstance().getPluginConfig().getString("date_format", ""), Locale.ROOT)
                 .format(new Date((long) getDelayData(profile).getTime()));
     }
 

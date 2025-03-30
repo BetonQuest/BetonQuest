@@ -59,16 +59,6 @@ public final class Config {
     }
 
     /**
-     * Retrieves the string from the configuration.
-     *
-     * @param address address of the string without leading {@code config.}
-     * @return the requested string
-     */
-    public static String getConfigString(final String address) {
-        return plugin.getPluginConfig().getString(address);
-    }
-
-    /**
      * Get the default language.
      *
      * @return the default language

@@ -122,6 +122,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PluginMessage pluginMessage;
 
     /**
+     * The plugin configuration accessor.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Accessor to create config to back up.
      */
     private final ConfigAccessorFactory configAccessorFactory;
@@ -148,12 +153,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param dataStorage           the storage providing player data
      * @param profileProvider       the profile provider
      * @param pluginMessage         the {@link PluginMessage} instance
+     * @param config
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
                         final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                        final PluginMessage pluginMessage) {
+                        final PluginMessage pluginMessage, final ConfigAccessor config) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
@@ -163,6 +169,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
         this.pluginMessage = pluginMessage;
+        this.config = config;
     }
 
     @SuppressWarnings("PMD.NcssCount")
@@ -509,7 +516,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
-                        final String date = new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
+                        final String date = new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
                                 .format(new Date(pointer.timestamp()));
                         sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
                     });
@@ -547,7 +554,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
                     try {
                         pointer = new Pointer(entryID,
-                                new SimpleDateFormat(Config.getConfigString("date_format"), Locale.ROOT)
+                                new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
                                         .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
                         sendMessage(sender, "specify_date");

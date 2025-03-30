@@ -7,13 +7,13 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.Zipper;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.id.ConditionID;
@@ -128,9 +128,12 @@ public final class Utils {
     public static List<String> pagesFromString(final String string) {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
+        final ConfigAccessor config = BetonQuest.getInstance().getPluginConfig();
+        final int linesPerPage = config.getInt("journal.lines_per_page");
+        final int charsPerPage = config.getInt("journal.chars_per_page");
+        final int charsPerLine = config.getInt("journal.chars_per_line");
         for (final String bigPage : bigPages) {
-            if (Config.getConfigString("journal.lines_per_page") == null) {
-                final int charsPerPage = Integer.parseInt(Config.getConfigString("journal.chars_per_page"));
+            if (linesPerPage <= 0) {
                 StringBuilder page = new StringBuilder();
                 for (final String word : bigPage.split(" ")) {
                     if (getStringLength(page.toString()) + getStringLength(word) + 1 > charsPerPage) {
@@ -141,8 +144,6 @@ public final class Utils {
                 }
                 pages.add(page.toString().stripTrailing().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {
-                final int charsPerLine = Integer.parseInt(Config.getConfigString("journal.chars_per_line"));
-                final int linesPerPage = Integer.parseInt(Config.getConfigString("journal.lines_per_page"));
                 StringBuilder page = new StringBuilder();
                 int lines = 0;
                 for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {

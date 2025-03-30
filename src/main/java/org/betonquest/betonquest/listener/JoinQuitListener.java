@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.listener;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -33,6 +34,11 @@ public class JoinQuitListener implements Listener {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The plugin configuration file.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Quest Type API.
      */
     private final ObjectiveProcessor questTypeAPI;
@@ -56,14 +62,17 @@ public class JoinQuitListener implements Listener {
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
+     * @param config            the plugin configuration file
      * @param questTypeAPI      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ObjectiveProcessor questTypeAPI,
-                            final PlayerDataStorage playerDataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
+                            final ObjectiveProcessor questTypeAPI, final PlayerDataStorage playerDataStorage,
+                            final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
+        this.config = config;
         this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
@@ -101,7 +110,7 @@ public class JoinQuitListener implements Listener {
             playerData.getJournal(pluginMessage).update();
         }
         if (playerData.getActiveConversation() != null) {
-            new ConversationResumer(loggerFactory, pluginMessage, onlineProfile, playerData.getActiveConversation());
+            new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
         }
     }
 
