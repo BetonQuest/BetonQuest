@@ -17,6 +17,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
 - [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :exclamation:
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
+- [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -211,4 +212,29 @@ objectives:
 1. The `0` before the ':' is now the BetonQuest ID, where the `citizens 0` defines the Npc with id "0" from the 
 Citizens integration. 
 2. The `0` is here the BetonQuest NpcID but stays the same.
+</div>
+
+### 3.0.0-DEV-142 - Conversation Sounds :exclamation:
+
+The start and stop sound in the configuration for conversations were removed in favor of the notification system,
+that now also has the two new build in categories `conversation_start` and `conversation_end`.
+
+To get the previous sounds back, you need to configure it now like the following in any quest package:
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax (config.yml)"
+sounds:
+  start: ENTITY_VILLAGER_AMBIENT
+  end: ENTITY_VILLAGER_YES
+```
+
+```YAML title="New Syntax"
+notifications:
+  conversation_start:
+    sound: ENTITY_VILLAGER_AMBIENT
+  conversation_end:
+    sound: ENTITY_VILLAGER_YES
+```
+
 </div>
