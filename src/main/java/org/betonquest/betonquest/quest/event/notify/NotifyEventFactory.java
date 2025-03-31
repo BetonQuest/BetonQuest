@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.notify;
 
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.message.MessageParser;
@@ -7,7 +8,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableString;
@@ -57,19 +57,27 @@ public class NotifyEventFactory implements PlayerEventFactory {
     private final PlayerDataStorage playerDataStorage;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Creates a new factory for {@link NotifyEvent}.
      *
      * @param loggerFactory     the logger factory to use for creating the event logger
      * @param data              the data for primary server thread access
      * @param messageParser     the message parser to use for parsing messages
      * @param playerDataStorage the storage providing player data
+     * @param languageProvider  the language provider to get the default language
      */
     public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                              final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
+                              final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
+                              final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
         this.data = data;
         this.messageParser = messageParser;
         this.playerDataStorage = playerDataStorage;
+        this.languageProvider = languageProvider;
     }
 
     @Override
@@ -112,7 +120,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             translations.put(lang, instruction.get(message, VariableString::new));
         }
 
-        final String defaultLanguageKey = Config.getLanguage();
+        final String defaultLanguageKey = languageProvider.getDefaultLanguage();
         if (translations.isEmpty()) {
             final String message = messages
                     .replace("\\{", "{")
@@ -122,7 +130,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");
         }
-        return new ParsedMessage(messageParser, translations, playerDataStorage);
+        return new ParsedMessage(messageParser, translations, playerDataStorage, languageProvider);
     }
 
     private Map<String, String> getData(final Matcher keyValueMatcher) {

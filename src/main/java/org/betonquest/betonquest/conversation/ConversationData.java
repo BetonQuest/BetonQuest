@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -107,6 +108,11 @@ public class ConversationData {
     private final Map<String, ConversationOption> playerOptions;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Loads conversation from package.
      *
      * @param log               the custom logger for this class
@@ -118,13 +124,15 @@ public class ConversationData {
      * @param pack              the package of the conversation this data represents
      * @param convSection       the configuration section of the conversation
      * @param publicData        the external used data
+     * @param languageProvider  the language provider to get the default language
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     public ConversationData(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
                             final VariableProcessor variableProcessor, final MessageParser messageParser,
                             final PlayerDataStorage playerDataStorage, final QuestPackage pack,
-                            final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
+                            final ConfigurationSection convSection, final PublicData publicData,
+                            final LanguageProvider languageProvider) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.featureAPI = featureAPI;
@@ -134,6 +142,7 @@ public class ConversationData {
         this.pack = pack;
         this.convName = publicData.convName();
         this.publicData = publicData;
+        this.languageProvider = languageProvider;
 
         this.npcOptions = loadNpcOptions(convSection);
         this.startingOptions = loadStartingOptions(convSection);
@@ -645,7 +654,7 @@ public class ConversationData {
             }
             final ParsedSectionMessage text;
             try {
-                text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, conv, "text");
+                text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, conv, "text", languageProvider);
             } catch (final QuestException e) {
                 throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
             }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.MessageParser;
@@ -34,19 +35,27 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Parsed
     private final PlayerDataStorage playerDataStorage;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the processor to create new variables
      * @param messageParser     the message parser to parse messages
      * @param playerDataStorage the player data storage to get the player language
+     * @param languageProvider  the language provider to get the default language
      */
     public JournalEntryProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                                 final MessageParser messageParser, final PlayerDataStorage playerDataStorage) {
+                                 final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
+                                 final LanguageProvider languageProvider) {
         super(log, "Journal Entry", "journal");
         this.variableProcessor = variableProcessor;
         this.messageParser = messageParser;
         this.playerDataStorage = playerDataStorage;
+        this.languageProvider = languageProvider;
     }
 
     @Override
@@ -57,7 +66,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Parsed
         }
         for (final String key : section.getKeys(false)) {
             try {
-                values.put(getIdentifier(pack, key), new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, key));
+                values.put(getIdentifier(pack, key), new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, key, languageProvider));
             } catch (final QuestException e) {
                 log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }

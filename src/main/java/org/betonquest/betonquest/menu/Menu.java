@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -69,6 +70,11 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final MenuID menuID;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * The height of the menu in slots.
      */
     private final int height;
@@ -123,19 +129,21 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Creates a new Menu.
      *
-     * @param log             the custom logger for this class
-     * @param loggerFactory   the logger factory for new class specific custom logger
-     * @param rpgMenu         the rpg menu instance to open menus
-     * @param config          the configuration file of the plugin
-     * @param pluginMessage   the plugin message instance
-     * @param questTypeAPI    the Quest Type API
-     * @param profileProvider the profile provider instance
-     * @param menuID          the id of the menu
+     * @param log              the custom logger for this class
+     * @param loggerFactory    the logger factory for new class specific custom logger
+     * @param rpgMenu          the rpg menu instance to open menus
+     * @param config           the configuration file of the plugin
+     * @param pluginMessage    the plugin message instance
+     * @param questTypeAPI     the Quest Type API
+     * @param profileProvider  the profile provider instance
+     * @param menuID           the id of the menu
+     * @param languageProvider the language provider to get the default language
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
                 final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
-                final ProfileProvider profileProvider, final MenuID menuID) throws InvalidConfigurationException {
+                final ProfileProvider profileProvider, final MenuID menuID, final LanguageProvider languageProvider)
+            throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.rpgMenu = rpgMenu;
         this.log = log;
@@ -143,6 +151,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.menuID = menuID;
+        this.languageProvider = languageProvider;
         //load size
         this.height = getInt("height");
         if (this.height < 1 || this.height > 6) {
@@ -209,7 +218,7 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         final Map<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection(itemsSection).getKeys(false)) {
-            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, menuID, key,
+            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, languageProvider, menuID, key,
                     config.getConfigurationSection("items." + key), pluginConfig.getBoolean("default_close")));
         }
 

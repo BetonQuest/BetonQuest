@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -63,17 +64,25 @@ public class RPGMenu {
      */
     private final ProfileProvider profileProvider;
 
+    /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
     private final Map<MenuID, Menu> menus;
 
     private final RPGMenuCommand pluginCommand;
 
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
+                   final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
+                   final ProfileProvider profileProvider, final LanguageProvider languageProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
         this.config = config;
         this.pluginMessage = pluginMessage;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
+        this.languageProvider = languageProvider;
         this.menus = new HashMap<>();
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final String menu = "menu";
@@ -174,7 +183,7 @@ public class RPGMenu {
                 try {
                     final MenuID menuID = new MenuID(pack, name);
                     this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                            pluginMessage, questTypeAPI, profileProvider, menuID));
+                            pluginMessage, questTypeAPI, profileProvider, menuID, languageProvider));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     log.warn(pack, e.getMessage());
@@ -207,7 +216,7 @@ public class RPGMenu {
         final ReloadInformation info = new ReloadInformation();
         try {
             this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                    pluginMessage, questTypeAPI, profileProvider, menuID));
+                    pluginMessage, questTypeAPI, profileProvider, menuID, languageProvider));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
             log.info(menuID.getPackage(), "Reloaded menu " + menuID);

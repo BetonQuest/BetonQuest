@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition.language;
 
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -22,6 +23,11 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -29,11 +35,14 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
     /**
      * Create a language condition factory.
      *
-     * @param dataStorage   the storage for used player data
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param dataStorage      the storage for used player data
+     * @param languageProvider the language provider to get the default language
+     * @param pluginMessage    the {@link PluginMessage} instance
      */
-    public LanguageConditionFactory(final PlayerDataStorage dataStorage, final PluginMessage pluginMessage) {
+    public LanguageConditionFactory(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
+                                    final PluginMessage pluginMessage) {
         this.dataStorage = dataStorage;
+        this.languageProvider = languageProvider;
         this.pluginMessage = pluginMessage;
     }
 
@@ -46,6 +55,6 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
             }
         }
         final Set<String> expectedLanguages = new HashSet<>(Arrays.asList(languages));
-        return new LanguageCondition(dataStorage, expectedLanguages);
+        return new LanguageCondition(dataStorage, languageProvider, expectedLanguages);
     }
 }

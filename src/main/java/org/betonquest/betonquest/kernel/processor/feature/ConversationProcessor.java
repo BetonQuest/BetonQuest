@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -63,6 +64,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final InterceptorRegistry interceptorRegistry;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Create a new Conversation Data Processor to load and process conversation data.
      *
      * @param log                 the custom logger for this class
@@ -77,7 +83,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final VariableProcessor variableProcessor,
                                  final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
-                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
+                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
+                                 final LanguageProvider languageProvider) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
@@ -86,6 +93,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         this.playerDataStorage = playerDataStorage;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
+        this.languageProvider = languageProvider;
     }
 
     @Override
@@ -93,7 +101,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final String convName = section.getName();
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
-        final ParsedSectionMessage quester = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "quester");
+        final ParsedSectionMessage quester = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "quester", languageProvider);
         final CreationHelper helper = new CreationHelper(pack, section);
         final boolean blockMovement = Boolean.parseBoolean(helper.opt("stop"));
         final String convIO = helper.parseConvIO();
@@ -102,7 +110,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestTypeAPI(), plugin.getFeatureAPI(),
-                variableProcessor, messageParser, playerDataStorage, pack, section, publicData);
+                variableProcessor, messageParser, playerDataStorage, pack, section, publicData, languageProvider);
     }
 
     @Override

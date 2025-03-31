@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
@@ -237,6 +238,11 @@ public class CoreQuestTypes {
     private final ProfileProvider profileProvider;
 
     /**
+     * The language provider to get the default language.
+     */
+    private final LanguageProvider languageProvider;
+
+    /**
      * Create a new Core Quest Types class for registering.
      *
      * @param loggerFactory     used in event factories
@@ -250,11 +256,13 @@ public class CoreQuestTypes {
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
                           final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage,
                           final VariableProcessor variableProcessor, final GlobalData globalData,
-                          final PlayerDataStorage dataStorage, final ProfileProvider profileProvider) {
+                          final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
+                          final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
@@ -264,6 +272,7 @@ public class CoreQuestTypes {
         this.globalData = globalData;
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
+        this.languageProvider = languageProvider;
         this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
 
@@ -307,7 +316,7 @@ public class CoreQuestTypes {
         conditionTypes.register("item", new ItemConditionFactory(loggerFactory, data, dataStorage));
         conditionTypes.register("itemdurability", new ItemDurabilityConditionFactory(loggerFactory, data));
         conditionTypes.register("journal", new JournalConditionFactory(dataStorage, loggerFactory));
-        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, pluginMessage));
+        conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, pluginMessage));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));
@@ -372,8 +381,8 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, languageProvider));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider, languageProvider));
         eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureAPI(), data));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));

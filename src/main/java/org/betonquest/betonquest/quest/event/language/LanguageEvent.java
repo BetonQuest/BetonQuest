@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Changes player's language.
@@ -13,7 +14,7 @@ public class LanguageEvent implements PlayerEvent {
     /**
      * The language to set.
      */
-    private final String language;
+    private final VariableString language;
 
     /**
      * Storage for player data.
@@ -26,13 +27,14 @@ public class LanguageEvent implements PlayerEvent {
      * @param language    the language to set
      * @param dataStorage the storage providing player data
      */
-    public LanguageEvent(final String language, final PlayerDataStorage dataStorage) {
+    public LanguageEvent(final VariableString language, final PlayerDataStorage dataStorage) {
         this.language = language;
         this.dataStorage = dataStorage;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        dataStorage.getOffline(profile).setLanguage(language);
+        final String lang = language.getValue(profile);
+        dataStorage.getOffline(profile).setLanguage("default".equalsIgnoreCase(lang) ? null : lang);
     }
 }
