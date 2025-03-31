@@ -1,8 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
 3.0.0.4:
-  - type: DELETE
+  - type: REMOVE
     key: sounds.start
-  - type: DELETE
+  - type: REMOVE
     key: sounds.end
 3.0.0.3:
   - type: REMOVE
