@@ -40,7 +40,7 @@ public class EquipItemObjective extends Objective implements Listener {
     }
 
     @EventHandler
-    public void onEquipmentChange(final PlayerArmorChangeEvent event) {
+    public void onEquipmentChange(final PlayerArmorChangeEvent event) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile)
                 && event.getSlotType() == slotType

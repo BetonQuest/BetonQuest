@@ -45,7 +45,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onEnchant(final EnchantItemEvent event) {
+    public void onEnchant(final EnchantItemEvent event) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getEnchanter());
         if (!containsPlayer(onlineProfile)) {
             return;

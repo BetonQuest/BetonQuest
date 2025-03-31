@@ -9,6 +9,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
  * Registries that are not based on the Instruction to create instances.
  *
  * @param conversationIO  The Registry holding registered conversation IOs.
+ * @param item            The Registry holding registered item types.
  * @param interceptor     The Registry holding registered Interceptors.
  * @param messageParser   The Registry holding registered Message Parsers.
  * @param npc             The Registry holding registered npc types.
@@ -17,6 +18,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
  */
 public record FeatureRegistries(
         ConversationIORegistry conversationIO,
+        ItemTypeRegistry item,
         InterceptorRegistry interceptor,
         MessageParserRegistry messageParser,
         NpcTypeRegistry npc,
@@ -33,6 +35,7 @@ public record FeatureRegistries(
     public static FeatureRegistries create(final BetonQuestLoggerFactory loggerFactory) {
         return new FeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
+                new ItemTypeRegistry(loggerFactory.create(ItemTypeRegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
                 new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class)),
                 new NpcTypeRegistry(loggerFactory.create(NpcTypeRegistry.class)),
