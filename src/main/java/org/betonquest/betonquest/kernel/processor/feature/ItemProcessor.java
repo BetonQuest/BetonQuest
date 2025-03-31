@@ -33,7 +33,8 @@ public class ItemProcessor extends TypedQuestProcessor<ItemID, QuestItem> {
      */
     public ItemProcessor(final BetonQuestLogger log, final ItemTypeRegistry types) {
         super(log, types, "Quest Item", "items");
-        types.setDefaultItemFactory(new QuestItemFactory());
+        types.setDefaultItemFactory(new QuestItemFactory(true));
+        types.register("simple", new QuestItemFactory());
     }
 
     @Override

@@ -40,9 +40,24 @@ public class QuestItemFactory implements TypeFactory<QuestItem> {
     );
 
     /**
+     * If the 0 index should be used as first argument instead the normal first instruction argument.
+     */
+    private final boolean useFirst;
+
+    /**
      * Creates a new standard Quest Item Factory.
      */
     public QuestItemFactory() {
+        this(false);
+    }
+
+    /**
+     * Creates a new standard Quest Item Factory.
+     *
+     * @param useFirst whether the index 0 should be used as Material
+     */
+    public QuestItemFactory(final boolean useFirst) {
+        this.useFirst = useFirst;
     }
 
     /**
@@ -70,7 +85,7 @@ public class QuestItemFactory implements TypeFactory<QuestItem> {
 
     @Override
     public QuestItem parseInstruction(final Instruction instruction) throws QuestException {
-        final BlockSelector selector = new BlockSelector(instruction.getPart(0));
+        final BlockSelector selector = new BlockSelector(instruction.getPart(useFirst ? 0 : 1));
 
         final NameHandler name = new NameHandler();
         final LoreHandler lore = new LoreHandler();
@@ -90,7 +105,10 @@ public class QuestItemFactory implements TypeFactory<QuestItem> {
                 new FireworkHandler()
         );
 
-        fillHandler(handlers, instruction.getValueParts());
+        final List<String> valueParts = instruction.getValueParts();
+        if (!valueParts.isEmpty()) {
+            fillHandler(handlers, valueParts.subList(useFirst ? 0 : 1, valueParts.size()));
+        }
         return new BetonQuestItem(selector, handlers, name, lore);
     }
 
