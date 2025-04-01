@@ -8,6 +8,7 @@ import java.net.URL;
  * This is an interface that provides basic methods to read information from a given {@link URL}
  * and saves it to a given {@link File}.
  */
+@FunctionalInterface
 public interface DownloadSource {
 
     /**

@@ -121,6 +121,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     /**
      * A functional interface to consume a version and a downloadUrl.
      */
+    @FunctionalInterface
     private interface VersionConsumer {
         /**
          * Consumes the given version and downloadUrl.

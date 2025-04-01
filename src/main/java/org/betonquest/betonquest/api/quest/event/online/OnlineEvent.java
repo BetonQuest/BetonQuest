@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 /**
  * Quest event that needs an online profile to function correctly.
  */
+@FunctionalInterface
 public interface OnlineEvent {
     /**
      * Execute the event with an online profile.

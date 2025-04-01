@@ -7,6 +7,7 @@ import org.betonquest.betonquest.instruction.Instruction;
  *
  * @param <T> quest type requiring a player for execution
  */
+@FunctionalInterface
 public interface PlayerQuestFactory<T> {
     /**
      * Parses an instruction to create a {@link T}.

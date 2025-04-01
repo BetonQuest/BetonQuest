@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> the type of the id
  */
+@FunctionalInterface
 public interface IDArgument<T extends ID> {
     /**
      * Creates a new ID.

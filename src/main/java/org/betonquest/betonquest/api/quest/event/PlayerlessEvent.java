@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * They may act on all players, only online player or even no player at all; this is an implementation detail.
  * For the normal event variant see {@link PlayerEvent}.
  */
+@FunctionalInterface
 public interface PlayerlessEvent {
     /**
      * Executes the playerless event.

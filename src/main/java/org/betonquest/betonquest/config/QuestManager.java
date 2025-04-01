@@ -177,6 +177,7 @@ public class QuestManager {
     /**
      * Simple interface to create and register a {@link Quest}.
      */
+    @FunctionalInterface
     private interface QuestCreator {
         /**
          * Creates and registers a {@link Quest}.

@@ -60,6 +60,7 @@ public enum Point {
     /**
      * The calculator interface.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculates the new value.

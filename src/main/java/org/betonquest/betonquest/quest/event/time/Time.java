@@ -43,6 +43,7 @@ public enum Time {
     /**
      * Functional interface to calculate the time.
      */
+    @FunctionalInterface
     private interface TimeCalculator {
         /**
          * Calculates the time to apply to the world.

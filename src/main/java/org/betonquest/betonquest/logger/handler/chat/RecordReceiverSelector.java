@@ -7,6 +7,7 @@ import java.util.logging.LogRecord;
 /**
  * A selector that selects players (by UUID) who should receive a specific {@link LogRecord}.
  */
+@FunctionalInterface
 public interface RecordReceiverSelector {
 
     /**

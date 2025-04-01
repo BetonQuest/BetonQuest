@@ -7,6 +7,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 /**
  * Factory to create a specific {@link PlayerEvent} from {@link Instruction}s.
  */
+@FunctionalInterface
 public interface PlayerEventFactory extends PlayerQuestFactory<PlayerEvent> {
     /**
      * Parses an instruction to create a {@link PlayerEvent}.

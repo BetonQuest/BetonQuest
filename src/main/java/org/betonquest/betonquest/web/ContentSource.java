@@ -7,6 +7,7 @@ import java.net.URL;
  * This is an interface that provides basic methods to read information from a given {@link URL}
  * and return it as a {@link String}.
  */
+@FunctionalInterface
 public interface ContentSource {
 
     /**

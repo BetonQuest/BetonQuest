@@ -7,6 +7,7 @@ import org.betonquest.betonquest.kernel.registry.TypeFactory;
 /**
  * Factory to create specific {@link Npc}s from {@link Instruction}s.
  */
+@FunctionalInterface
 public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
     /**
      * Parses an instruction to create a {@link NpcWrapper} which resolves into a {@link Npc}.

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * A Message is the abstract representation of a specific text that a player can receive.
  * The actual content can depend on the player.
  */
+@FunctionalInterface
 public interface Message {
     /**
      * Returns the message as a component for the given profile.

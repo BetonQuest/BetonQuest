@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * Interface for quest-events that are executed for a profile. It represents the player event as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessEvent}.
  */
+@FunctionalInterface
 public interface PlayerEvent {
     /**
      * Executes the event.

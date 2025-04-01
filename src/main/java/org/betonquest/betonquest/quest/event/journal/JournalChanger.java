@@ -5,6 +5,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 /**
  * Defines changes to be done to a journal.
  */
+@FunctionalInterface
 public interface JournalChanger {
     /**
      * Apply the change to a journal.

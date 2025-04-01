@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * Registry for patch transformers.
  */
+@FunctionalInterface
 public interface PatchTransformerRegistry {
 
     /**

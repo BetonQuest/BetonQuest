@@ -44,6 +44,7 @@ public enum ScoreModification {
     /**
      * The calculator interface.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculates the new value.

@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * A Source to download development builds from.
  */
+@FunctionalInterface
 public interface DevelopmentUpdateSource {
 
     /**

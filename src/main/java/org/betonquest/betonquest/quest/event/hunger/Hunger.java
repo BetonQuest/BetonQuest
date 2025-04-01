@@ -42,6 +42,7 @@ public enum Hunger {
     /**
      * Functional interface to calculate the hunger.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculates the amount to apply to the player.

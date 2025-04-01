@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.util;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unimi.dsi.fastutil.Pair;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -88,7 +87,6 @@ public final class Utils {
      * @param configAccessorFactory the factory that will be used to create
      *                              {@link org.betonquest.betonquest.api.config.ConfigAccessor}s
      */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void backup(final ConfigAccessorFactory configAccessorFactory) {
         LOG.info("Backing up!");
         final long time = new Date().getTime();

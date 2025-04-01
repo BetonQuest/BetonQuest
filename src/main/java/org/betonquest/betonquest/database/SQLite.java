@@ -43,7 +43,6 @@ public class SQLite extends Database {
     }
 
     @Override
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public Connection openConnection() {
         if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdirs()) {
             log.error("Unable to create plugin data folder!");

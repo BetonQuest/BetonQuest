@@ -14,6 +14,7 @@ import java.util.Optional;
  * Interface which handles tab complete for commands.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@FunctionalInterface
 public interface SimpleTabCompleter extends TabCompleter {
 
     @Override

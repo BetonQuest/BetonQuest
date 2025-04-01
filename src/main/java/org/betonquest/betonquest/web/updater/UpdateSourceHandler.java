@@ -103,6 +103,7 @@ public class UpdateSourceHandler {
      *
      * @param <T> The type of the update source.
      */
+    @FunctionalInterface
     private interface UpdateSourceConsumer<T> {
 
         /**

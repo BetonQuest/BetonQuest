@@ -625,6 +625,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      *
      * @param <T> The type to return from the {@link ConfigurationSection}
      */
+    @FunctionalInterface
     private interface ConfigurationConsumer<T> {
 
         /**

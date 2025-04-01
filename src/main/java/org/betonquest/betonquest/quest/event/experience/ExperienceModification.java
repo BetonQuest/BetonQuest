@@ -78,6 +78,7 @@ public enum ExperienceModification {
     /**
      * Functional interface to calculate the experience.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculates the amount to apply to the player.

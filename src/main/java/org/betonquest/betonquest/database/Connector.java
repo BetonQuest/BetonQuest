@@ -91,7 +91,6 @@ public class Connector {
      * @return ResultSet with the requested data
      */
     @SuppressWarnings("PMD.CloseResource")
-    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public ResultSet querySQL(final QueryType type, final VariableResolver variableResolver) {
         final String sql = type.createSql(prefix);
         try {

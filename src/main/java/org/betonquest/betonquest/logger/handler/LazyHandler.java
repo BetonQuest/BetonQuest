@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
@@ -38,7 +39,7 @@ public class LazyHandler extends Handler {
      * Marker that the internal {@link Handler} is closed for the case
      * that it wasn't initialized.
      */
-    private boolean closed;
+    private final AtomicBoolean closed;
 
     /**
      * Marker that the internal {@link Handler} initialization failed.
@@ -63,6 +64,7 @@ public class LazyHandler extends Handler {
         this.log = log;
         this.lock = new ReentrantLock();
         this.handlerFactory = handlerFactory;
+        this.closed = new AtomicBoolean(false);
     }
 
     @Override
@@ -96,7 +98,7 @@ public class LazyHandler extends Handler {
     }
 
     private void requireNotClosed() {
-        if (closed) {
+        if (closed.get()) {
             throw new IllegalStateException(
                     "Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
             );
@@ -112,10 +114,9 @@ public class LazyHandler extends Handler {
 
     @Override
     public void close() {
-        if (closed) {
+        if (closed.getAndSet(true)) {
             return;
         }
-        closed = true;
         lock.lock();
         try {
             if (internalHandler != null) {

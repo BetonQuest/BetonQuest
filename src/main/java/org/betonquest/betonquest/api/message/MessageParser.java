@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 /**
  * A parser can convert a plain string into formatted components.
  */
+@FunctionalInterface
 public interface MessageParser {
     /**
      * Parse a message into a component.

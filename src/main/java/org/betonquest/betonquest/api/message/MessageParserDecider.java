@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 /**
  * A decider for choosing a parser for a message.
  */
+@FunctionalInterface
 public interface MessageParserDecider {
     /**
      * Chooses a parser for a message.

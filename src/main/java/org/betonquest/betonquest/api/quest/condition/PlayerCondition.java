@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * Interface for quest-conditions that are checked for a profile. It represents the normal condition as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessCondition}.
  */
+@FunctionalInterface
 public interface PlayerCondition {
     /**
      * Checks the condition.
