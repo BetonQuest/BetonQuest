@@ -57,6 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Stream;
@@ -85,9 +86,9 @@ public class MenuConvIO extends ChatConvIO {
 
     protected String configControlCancel = "sneak";
 
-    protected int oldSelectedOption;
+    protected AtomicInteger oldSelectedOption;
 
-    protected int selectedOption;
+    protected AtomicInteger selectedOption;
 
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
@@ -424,8 +425,8 @@ public class MenuConvIO extends ChatConvIO {
         // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less
         // pace for all options due to npc text
         final List<String> optionsSelected = new ArrayList<>();
-        int currentOption = selectedOption;
-        int currentDirection = selectedOption == oldSelectedOption ? 1 : selectedOption - oldSelectedOption;
+        int currentOption = selectedOption.get();
+        int currentDirection = selectedOption.get() == oldSelectedOption.get() ? 1 : selectedOption.get() - oldSelectedOption.get();
         int topOption = options.size();
         for (int i = 0; i < options.size() && linesAvailable > (i < 2 ? 0 : 1); i++) {
             int optionIndex = currentOption + (i * currentDirection);
@@ -557,8 +558,8 @@ public class MenuConvIO extends ChatConvIO {
             displayRunnable = null;
         }
 
-        selectedOption = 0;
-        oldSelectedOption = 0;
+        selectedOption = new AtomicInteger(0);
+        oldSelectedOption = new AtomicInteger(0);
 
         super.clear();
     }
@@ -648,21 +649,21 @@ public class MenuConvIO extends ChatConvIO {
                             break;
                         case SELECT:
                             if (!isOnCooldown()) {
-                                conv.passPlayerAnswer(selectedOption + 1);
+                                conv.passPlayerAnswer(selectedOption.get() + 1);
                             }
                             break;
                         case MOVE:
                             break;
                     }
-                } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE)) {
+                } else if (steerEvent.getForward() < 0 && selectedOption.get() < options.size() - 1 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Backwards
                     oldSelectedOption = selectedOption;
-                    selectedOption++;
+                    selectedOption.incrementAndGet();
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
-                } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE)) {
+                } else if (steerEvent.getForward() > 0 && selectedOption.get() > 0 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Forwards
                     oldSelectedOption = selectedOption;
-                    selectedOption--;
+                    selectedOption.decrementAndGet();
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK)) {
                     // Player Dismounted
@@ -674,7 +675,7 @@ public class MenuConvIO extends ChatConvIO {
                             break;
                         case SELECT:
                             if (!isOnCooldown()) {
-                                conv.passPlayerAnswer(selectedOption + 1);
+                                conv.passPlayerAnswer(selectedOption.get() + 1);
                             }
                             break;
                         case MOVE:
@@ -779,7 +780,7 @@ public class MenuConvIO extends ChatConvIO {
                 if (isOnCooldown()) {
                     return;
                 }
-                conv.passPlayerAnswer(selectedOption + 1);
+                conv.passPlayerAnswer(selectedOption.get() + 1);
             }
             default -> {
             }
@@ -822,13 +823,13 @@ public class MenuConvIO extends ChatConvIO {
 
             final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
 
-            if (scrollDirection == Direction.DOWN && selectedOption < options.size() - 1) {
+            if (scrollDirection == Direction.DOWN && selectedOption.get() < options.size() - 1) {
                 oldSelectedOption = selectedOption;
-                selectedOption++;
+                selectedOption.incrementAndGet();
                 updateDisplay();
-            } else if (scrollDirection == Direction.UP && selectedOption > 0) {
+            } else if (scrollDirection == Direction.UP && selectedOption.get() > 0) {
                 oldSelectedOption = selectedOption;
-                selectedOption--;
+                selectedOption.decrementAndGet();
                 updateDisplay();
             }
         } finally {

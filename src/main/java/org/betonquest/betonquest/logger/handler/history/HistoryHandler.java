@@ -4,6 +4,7 @@ import org.betonquest.betonquest.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.util.WriteOperation;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Handler;
@@ -52,20 +53,20 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * Whether debugging is enabled.
      */
-    private boolean logging;
+    private final AtomicBoolean logging;
 
     /**
      * Creates a new {@link HistoryHandler}.
      *
-     * @param logging the initial logging state
+     * @param logging             the initial logging state
      * @param loggingStateUpdater the config for the settings
-     * @param recordQueue the queue for storing records while not logging
-     * @param target the Handler to log the history to
+     * @param recordQueue         the queue for storing records while not logging
+     * @param target              the Handler to log the history to
      */
     public HistoryHandler(final boolean logging, final WriteOperation<Boolean> loggingStateUpdater,
                           final LogRecordQueue recordQueue, final ResettableHandler target) {
         super();
-        this.logging = logging;
+        this.logging = new AtomicBoolean(logging);
         this.loggingStateUpdater = loggingStateUpdater;
         this.recordQueue = recordQueue;
         this.target = target;
@@ -111,12 +112,12 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      */
     @Override
     public boolean isLogging() {
-        return logging;
+        return logging.get();
     }
 
     private void setLogging(final boolean logging) throws IOException {
         loggingStateUpdater.write(logging);
-        this.logging = logging;
+        this.logging.set(logging);
     }
 
     @Override

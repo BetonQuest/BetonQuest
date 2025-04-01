@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
@@ -157,12 +158,12 @@ public abstract class CountingObjective extends Objective {
         /**
          * The amount of units left for completion.
          */
-        private int amountLeft;
+        private final AtomicInteger amountLeft;
 
         /**
          * The last applied to the change of the units left for completion.
          */
-        private int lastChange;
+        private final AtomicInteger lastChange;
 
         /**
          * Create a counting objective.
@@ -181,18 +182,18 @@ public abstract class CountingObjective extends Objective {
                 case 1:
                     final AtomicBoolean dirty = new AtomicBoolean(false);
                     targetAmount = getTargetAmount(countingInstruction, dirty);
-                    amountLeft = targetAmount;
-                    directionFactor = amountLeft < 0 ? -1 : 1;
-                    lastChange = 0;
+                    amountLeft = new AtomicInteger(targetAmount);
+                    directionFactor = targetAmount < 0 ? -1 : 1;
+                    lastChange = new AtomicInteger();
                     if (dirty.get()) {
                         update();
                     }
                     break;
                 case 4:
                     targetAmount = Integer.parseInt(instructionParts[0]);
-                    amountLeft = Integer.parseInt(instructionParts[1]);
+                    amountLeft = new AtomicInteger(Integer.parseInt(instructionParts[1]));
                     directionFactor = Integer.parseInt(instructionParts[2]);
-                    lastChange = Integer.parseInt(instructionParts[3]);
+                    lastChange = new AtomicInteger(Integer.parseInt(instructionParts[3]));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid instruction string: " + instruction);
@@ -229,7 +230,7 @@ public abstract class CountingObjective extends Objective {
          * @return the amount left
          */
         public int getAmountLeft() {
-            return amountLeft;
+            return amountLeft.get();
         }
 
         /**
@@ -238,7 +239,7 @@ public abstract class CountingObjective extends Objective {
          * @return the completed amount
          */
         public int getCompletedAmount() {
-            return targetAmount - amountLeft;
+            return targetAmount - amountLeft.get();
         }
 
         /**
@@ -259,7 +260,7 @@ public abstract class CountingObjective extends Objective {
          * @return the last change of the amount
          */
         public int getLastChange() {
-            return lastChange;
+            return lastChange.get();
         }
 
         /**
@@ -268,7 +269,7 @@ public abstract class CountingObjective extends Objective {
          * @return the amount left
          */
         public int getPreviousAmountLeft() {
-            return amountLeft - lastChange;
+            return amountLeft.get() - lastChange.get();
         }
 
         /**
@@ -277,7 +278,7 @@ public abstract class CountingObjective extends Objective {
          * @return true if the objective is completed; false otherwise
          */
         public boolean isComplete() {
-            return amountLeft * directionFactor <= 0;
+            return amountLeft.get() * directionFactor <= 0;
         }
 
         /**
@@ -361,8 +362,8 @@ public abstract class CountingObjective extends Objective {
         }
 
         private CountingData change(final int amount) {
-            amountLeft += amount;
-            lastChange = amount;
+            amountLeft.accumulateAndGet(amount, Integer::sum);
+            lastChange.set(amount);
             update();
             return this;
         }
@@ -371,9 +372,9 @@ public abstract class CountingObjective extends Objective {
         public String toString() {
             return String.join("/",
                     Integer.toString(targetAmount),
-                    Integer.toString(amountLeft),
+                    Integer.toString(amountLeft.get()),
                     Integer.toString(directionFactor),
-                    Integer.toString(lastChange));
+                    Integer.toString(lastChange.get()));
         }
     }
 }

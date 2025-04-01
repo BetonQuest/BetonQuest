@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -43,7 +42,6 @@ public final class Backup {
      * @param databaseBackupFile    non-existent file where the database should be dumped
      * @return true if the backup was successful, false if there was an error
      */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     public static boolean backupDatabase(final ConfigAccessorFactory configAccessorFactory, final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
@@ -121,7 +119,6 @@ public final class Backup {
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void loadDatabaseFromBackup(final ConfigAccessorFactory configAccessorFactory) {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");
