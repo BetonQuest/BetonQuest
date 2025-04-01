@@ -18,7 +18,6 @@ import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.util.Utils;
 
 /**
  * Factory to create {@link MMOItemsGiveEvent}s from {@link Instruction}s.
@@ -83,8 +82,7 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
             }
         }
 
-        Utils.getNN(MMO_PLUGIN.getItem(itemType, itemID),
-                "Item with type '" + itemType + "' and ID '" + itemID + "' does not exist.");
+        MMOItemsUtils.getMMOItemStack(itemType, itemID);
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new MMOItemsGiveEvent(MMO_PLUGIN, itemType, itemID, scale, notificationSender, singleStack, amount),

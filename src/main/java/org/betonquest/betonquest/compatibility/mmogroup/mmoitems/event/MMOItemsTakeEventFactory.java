@@ -37,6 +37,7 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
         final List<CheckType> checkOrder = getCheckOrder(instruction);
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
+        MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final VariableNumber deleteAmountVar = instruction.get(instruction.getOptional("amount", "1"), VariableNumber::new);
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
         return new OnlineEventAdapter(new MMOItemsTakeEvent(itemType, itemID, deleteAmountVar, checkOrder, notificationSender), log, instruction.getPackage());

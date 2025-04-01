@@ -4,13 +4,10 @@ import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
-import net.Indyuce.mmoitems.manager.ItemManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Locale;
 
 /**
  * A utility class for working with MMOItems.
@@ -43,17 +40,23 @@ public final class MMOItemsUtils {
     }
 
     /**
-     * Get's an ItemStack from an MMOItems item type and MMOItems item ID.
+     * Gets an ItemStack from an MMOItems item type and MMOItems item ID.
      *
      * @param type      the MMOItems item type
      * @param mmoItemId the MMOItems item ID
      * @return ItemStack constructed by MMOItems
+     * @throws QuestException when there is no such MMOItem
      */
-    @SuppressWarnings("deprecation")
-    public static ItemStack getMMOItemStack(final Type type, final String mmoItemId) {
-        final ItemManager itemManager = MMOItems.plugin.getItems();
-        final MMOItem mmoitem = itemManager.getMMOItem(type, mmoItemId.toUpperCase(Locale.ROOT));
-        return mmoitem.newBuilder().build();
+    public static ItemStack getMMOItemStack(final Type type, final String mmoItemId) throws QuestException {
+        final MMOItem mmoitem = MMOItems.plugin.getMMOItem(type, mmoItemId);
+        if (mmoitem == null) {
+            throw new QuestException("Item with type '" + type + "' and ID '" + mmoItemId + "' does not exist.");
+        }
+        final ItemStack built = mmoitem.newBuilder().build();
+        if (built == null) {
+            throw new QuestException("can't build item type '" + type + "' and ID '" + mmoItemId + "'.");
+        }
+        return built;
     }
 
     /**
