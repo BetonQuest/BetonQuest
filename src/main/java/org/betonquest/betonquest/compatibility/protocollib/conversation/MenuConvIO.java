@@ -70,6 +70,10 @@ public class MenuConvIO extends ChatConvIO {
      */
     private static final String NPC_NAME_TYPE_CHAT = "chat";
 
+    protected final AtomicInteger oldSelectedOption;
+
+    protected final AtomicInteger selectedOption;
+
     /**
      * Thread safety
      */
@@ -85,10 +89,6 @@ public class MenuConvIO extends ChatConvIO {
     protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
 
     protected String configControlCancel = "sneak";
-
-    protected AtomicInteger oldSelectedOption;
-
-    protected AtomicInteger selectedOption;
 
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
@@ -154,6 +154,8 @@ public class MenuConvIO extends ChatConvIO {
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.oldSelectedOption = new AtomicInteger();
+        this.selectedOption = new AtomicInteger();
 
         for (final QuestPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> !p.equals(conv.getPackage())),
@@ -558,8 +560,8 @@ public class MenuConvIO extends ChatConvIO {
             displayRunnable = null;
         }
 
-        selectedOption = new AtomicInteger(0);
-        oldSelectedOption = new AtomicInteger(0);
+        selectedOption.set(0);
+        oldSelectedOption.set(0);
 
         super.clear();
     }
@@ -657,12 +659,12 @@ public class MenuConvIO extends ChatConvIO {
                     }
                 } else if (steerEvent.getForward() < 0 && selectedOption.get() < options.size() - 1 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Backwards
-                    oldSelectedOption = selectedOption;
+                    oldSelectedOption.set(selectedOption.get());
                     selectedOption.incrementAndGet();
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.getForward() > 0 && selectedOption.get() > 0 && controls.containsKey(CONTROL.MOVE)) {
                     // Player moved Forwards
-                    oldSelectedOption = selectedOption;
+                    oldSelectedOption.set(selectedOption.get());
                     selectedOption.decrementAndGet();
                     Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
                 } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK)) {
@@ -824,11 +826,11 @@ public class MenuConvIO extends ChatConvIO {
             final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
 
             if (scrollDirection == Direction.DOWN && selectedOption.get() < options.size() - 1) {
-                oldSelectedOption = selectedOption;
+                oldSelectedOption.set(selectedOption.get());
                 selectedOption.incrementAndGet();
                 updateDisplay();
             } else if (scrollDirection == Direction.UP && selectedOption.get() > 0) {
-                oldSelectedOption = selectedOption;
+                oldSelectedOption.set(selectedOption.get());
                 selectedOption.decrementAndGet();
                 updateDisplay();
             }
