@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 /**
  * Quest condition that needs an online profile to function correctly.
  */
+@FunctionalInterface
 public interface OnlineCondition {
     /**
      * Checks the condition with an online profile.

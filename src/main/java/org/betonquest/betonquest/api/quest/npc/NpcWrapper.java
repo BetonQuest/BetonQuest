@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  *
  * @param <T> the original npc type
  */
+@FunctionalInterface
 public interface NpcWrapper<T> {
     /**
      * Gets the Npc represented by this Wrapper.

@@ -7,6 +7,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the value
  */
+@FunctionalInterface
 public interface WriteOperation<T> {
 
     /**

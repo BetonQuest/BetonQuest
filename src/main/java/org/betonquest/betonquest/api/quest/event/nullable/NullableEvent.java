@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Quest event that can work both with and without a profile.
  */
+@FunctionalInterface
 public interface NullableEvent {
     /**
      * Execute the event with a nullable profile.

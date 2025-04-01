@@ -6,6 +6,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 /**
  * Allows sending notifications to a player.
  */
+@FunctionalInterface
 public interface NotificationSender {
 
     /**

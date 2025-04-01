@@ -10,6 +10,7 @@ import org.betonquest.betonquest.instruction.Instruction;
  *
  * @param <T> quest type executed without a player
  */
+@FunctionalInterface
 public interface PlayerlessQuestFactory<T> {
     /**
      * Parses an instruction to create a {@link T}.

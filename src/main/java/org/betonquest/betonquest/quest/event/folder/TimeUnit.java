@@ -39,6 +39,7 @@ public enum TimeUnit {
     /**
      * Functional interface to calculate the time in ticks.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Applies a modification to the given time.

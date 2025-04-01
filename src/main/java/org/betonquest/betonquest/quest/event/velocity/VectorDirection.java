@@ -54,6 +54,7 @@ public enum VectorDirection {
     /**
      * Functional interface to calculate the vector.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculate the rotation of the vector. Eventual depends on the players view

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 /**
  * Player Variable that needs an online profile to function correctly.
  */
+@FunctionalInterface
 public interface OnlineVariable {
     /**
      * Gets the resolved value for given profile.

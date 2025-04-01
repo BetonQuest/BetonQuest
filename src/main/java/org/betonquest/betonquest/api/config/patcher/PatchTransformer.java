@@ -7,6 +7,7 @@ import java.util.Map;
 /**
  * Interface for transformers that transform a configuration.
  */
+@FunctionalInterface
 public interface PatchTransformer {
 
     /**

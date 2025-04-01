@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * It represents the playerless condition as described in the BetonQuest user documentation.
  * For the player condition variant see {@link PlayerCondition}.
  */
+@FunctionalInterface
 public interface PlayerlessCondition {
     /**
      * Checks the condition.

@@ -31,6 +31,7 @@ public class ConversationIORegistry extends FromClassFactoryRegistry<Conversatio
     /**
      * Factory to create Conversation IO for a conversation and online profile.
      */
+    @FunctionalInterface
     public interface ConversationIOFactory {
         /**
          * Create the Conversation IO.

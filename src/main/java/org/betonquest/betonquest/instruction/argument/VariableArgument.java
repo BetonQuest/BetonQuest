@@ -12,6 +12,7 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
  *
  * @param <T> what the argument returns
  */
+@FunctionalInterface
 public interface VariableArgument<T> {
 
     /**

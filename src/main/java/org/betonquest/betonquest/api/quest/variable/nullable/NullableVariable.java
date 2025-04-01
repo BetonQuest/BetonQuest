@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Quest variable that can work both with and without a profile.
  */
+@FunctionalInterface
 public interface NullableVariable {
     /**
      * Resolve the variable with a nullable profile.

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  *
  * @param <T> what the argument returns
  */
+@FunctionalInterface
 public interface Argument<T> extends QuestFunction<String, T> {
     /**
      * Gets a {@link T} from string.

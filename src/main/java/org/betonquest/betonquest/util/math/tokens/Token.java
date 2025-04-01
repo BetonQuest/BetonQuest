@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
  */
 @Deprecated
+@FunctionalInterface
 public interface Token {
 
     /**

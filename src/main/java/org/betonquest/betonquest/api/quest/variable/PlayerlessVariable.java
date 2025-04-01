@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * It represents the playerless variable as described in the BetonQuest user documentation.
  * For the normal variable variant see {@link PlayerVariable}.
  */
+@FunctionalInterface
 public interface PlayerlessVariable {
     /**
      * Gets the resolved value.

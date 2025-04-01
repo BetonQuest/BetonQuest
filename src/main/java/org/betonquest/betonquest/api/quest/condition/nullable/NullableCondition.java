@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Quest condition that can work both with and without a profile.
  */
+@FunctionalInterface
 public interface NullableCondition {
     /**
      * Check the condition with a nullable profile.

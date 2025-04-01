@@ -8,6 +8,7 @@ import org.betonquest.betonquest.instruction.Instruction;
  *
  * @param <T> the type to create
  */
+@FunctionalInterface
 public interface TypeFactory<T> {
     /**
      * Create a new {@link T} from an {@link Instruction}.

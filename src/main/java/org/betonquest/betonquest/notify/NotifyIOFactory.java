@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * Factory to create {@link NotifyIO}s.
  */
+@FunctionalInterface
 public interface NotifyIOFactory {
     /**
      * Create the Notify IO.

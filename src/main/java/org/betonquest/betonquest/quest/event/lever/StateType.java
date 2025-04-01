@@ -40,6 +40,7 @@ public enum StateType {
     /**
      * Functional interface to calculate the new power state of the lever.
      */
+    @FunctionalInterface
     private interface Calculator {
         /**
          * Calculates the new power state of the lever.

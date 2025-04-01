@@ -7,6 +7,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 /**
  * Factory to create a specific {@link PlayerlessVariable} from {@link Instruction}s.
  */
+@FunctionalInterface
 public interface PlayerlessVariableFactory extends PlayerlessQuestFactory<PlayerlessVariable> {
     /**
      * Parses an instruction to create a {@link PlayerlessVariable}.

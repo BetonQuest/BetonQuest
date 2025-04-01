@@ -494,6 +494,7 @@ public abstract class Objective {
     /**
      * A task that may throw a {@link QuestException}.
      */
+    @FunctionalInterface
     protected interface QuestExceptionThrowing {
 
         /**

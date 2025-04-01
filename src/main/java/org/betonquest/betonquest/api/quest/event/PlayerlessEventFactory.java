@@ -7,6 +7,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 /**
  * Factory to create a specific {@link PlayerlessEvent} from {@link Instruction}s.
  */
+@FunctionalInterface
 public interface PlayerlessEventFactory extends PlayerlessQuestFactory<PlayerlessEvent> {
     /**
      * Parses an instruction to create a {@link PlayerlessEvent}.

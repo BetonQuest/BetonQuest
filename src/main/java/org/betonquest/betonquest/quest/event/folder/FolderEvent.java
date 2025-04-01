@@ -238,6 +238,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Interface to check if an execution of a folder event is cancelled.
      */
+    @FunctionalInterface
     private interface FolderEventCanceler {
         /**
          * Whether the execution of the folder event should be cancelled.
