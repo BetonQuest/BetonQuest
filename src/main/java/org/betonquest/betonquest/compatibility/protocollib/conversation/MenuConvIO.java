@@ -18,7 +18,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicleUpdated;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationState;
@@ -158,7 +157,7 @@ public class MenuConvIO extends ChatConvIO {
         this.selectedOption = new AtomicInteger();
 
         for (final QuestPackage pack : Stream.concat(
-                Config.getPackages().values().stream().filter(p -> !p.equals(conv.getPackage())),
+                BetonQuest.getInstance().getPackages().values().stream().filter(p -> !p.equals(conv.getPackage())),
                 Stream.of(conv.getPackage())).toList()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("menu_conv_io");
             if (section == null) {

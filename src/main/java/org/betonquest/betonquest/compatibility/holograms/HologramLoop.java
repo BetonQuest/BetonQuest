@@ -10,7 +10,6 @@ import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
@@ -80,7 +79,7 @@ public abstract class HologramLoop {
         final List<HologramWrapper> holograms = new ArrayList<>();
         final int defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
 
-        for (final QuestPackage pack : Config.getPackages().values()) {
+        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection(name);
             if (section == null) {
                 continue;

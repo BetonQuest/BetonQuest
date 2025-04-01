@@ -14,7 +14,6 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.id.ConversationID;
@@ -155,7 +154,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         ((NpcTypeRegistry) types).resetIdentifier();
         interactionLimit = plugin.getPluginConfig().getInt("npcs.interaction_limit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npcs.accept_left_click");
-        npcHider.reload(Config.getPackages().values());
+        npcHider.reload(plugin.getPackages().values());
     }
 
     @Override
@@ -267,7 +266,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
          */
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () ->
+            Bukkit.getScheduler().runTask(plugin, () ->
                     npcHider.applyVisibility(plugin.getProfileProvider().getProfile(event.getPlayer())));
         }
 
