@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,7 +57,7 @@ public class PlayerHider {
         hiders = new HashMap<>();
         this.questTypeAPI = questTypeAPI;
 
-        for (final QuestPackage pack : Config.getPackages().values()) {
+        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
             if (hiderSection == null) {
                 continue;

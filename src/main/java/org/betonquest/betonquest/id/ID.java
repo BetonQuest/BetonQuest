@@ -3,7 +3,6 @@ package org.betonquest.betonquest.id;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.jetbrains.annotations.Nullable;
@@ -109,7 +108,7 @@ public abstract class ID {
 
     @Nullable
     private QuestPackage packFromName(final String packName) throws QuestException {
-        final QuestPackage potentialPack = Config.getPackages().get(packName);
+        final QuestPackage potentialPack = BetonQuest.getInstance().getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
@@ -140,7 +139,7 @@ public abstract class ID {
         }
         try {
             final String absolute = builder.substring(0, builder.length() - 1);
-            final QuestPackage resolved = Config.getPackages().get(absolute);
+            final QuestPackage resolved = BetonQuest.getInstance().getPackages().get(absolute);
             if (resolved == null) {
                 throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                         + absolute + "', but this package does not exist!");
@@ -155,7 +154,7 @@ public abstract class ID {
         final String currentPath = pack.getQuestPath();
         final String fullPath = currentPath + packName;
 
-        final QuestPackage resolved = Config.getPackages().get(fullPath);
+        final QuestPackage resolved = BetonQuest.getInstance().getPackages().get(fullPath);
         if (resolved == null) {
             throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                     + fullPath + "', but this package does not exist!");

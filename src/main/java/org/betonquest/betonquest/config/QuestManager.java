@@ -103,6 +103,8 @@ public class QuestManager {
     }
 
     /**
+     * Get all Packages that are loaded.
+     *
      * @return a map of packages and their names
      */
     public Map<String, QuestPackage> getPackages() {

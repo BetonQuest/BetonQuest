@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
@@ -105,7 +105,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throw new QuestException("Variable without explicit package '" + variable + "'! Expected format '<package>:<variable>'");
         }
         final String packString = variable.substring(0, index);
-        final QuestPackage pack = Config.getPackages().get(packString);
+        final QuestPackage pack = BetonQuest.getInstance().getPackages().get(packString);
         if (pack == null) {
             throw new QuestException("The variable '" + variable + "' reference the non-existent package '" + packString + "' !");
         }

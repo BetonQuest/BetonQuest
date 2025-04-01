@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -93,7 +92,7 @@ public class EffectLibParticleManager {
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CognitiveComplexity"})
     private void loadParticleConfiguration() {
-        for (final QuestPackage pack : Config.getPackages().values()) {
+        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection(EFFECTLIB_CONFIG_SECTION);
             if (section == null) {
                 continue;

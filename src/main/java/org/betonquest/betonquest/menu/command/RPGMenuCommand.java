@@ -9,7 +9,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -63,10 +62,10 @@ public class RPGMenuCommand extends SimpleCommand {
             case "o":
             case "reload":
                 if (!args[1].contains(".")) {
-                    return new ArrayList<>(Config.getPackages().keySet());
+                    return new ArrayList<>(BetonQuest.getInstance().getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf('.'));
-                final QuestPackage configPack = Config.getPackages().get(pack);
+                final QuestPackage configPack = BetonQuest.getInstance().getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
                 }

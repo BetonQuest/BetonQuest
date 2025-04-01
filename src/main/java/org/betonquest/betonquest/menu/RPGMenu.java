@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.menu.betonquest.MenuConditionFactory;
@@ -174,7 +173,7 @@ public class RPGMenu {
         }
         final ReloadInformation info = new ReloadInformation();
         //load files for all packages
-        for (final QuestPackage pack : Config.getPackages().values()) {
+        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
             final ConfigurationSection menus = pack.getConfig().getConfigurationSection("menus");
             if (menus == null) {
                 continue;

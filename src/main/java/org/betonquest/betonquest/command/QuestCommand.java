@@ -22,7 +22,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -153,7 +152,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param dataStorage           the storage providing player data
      * @param profileProvider       the profile provider
      * @param pluginMessage         the {@link PluginMessage} instance
-     * @param config
+     * @param config                the plugin configuration accessor
      */
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
@@ -364,7 +363,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Returns a list of all packages for the tab completer.
      */
     private Optional<List<String>> completePackage() {
-        return Optional.of(new ArrayList<>(Config.getPackages().keySet()));
+        return Optional.of(new ArrayList<>(instance.getPackages().keySet()));
     }
 
     /**
@@ -378,7 +377,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return completePackage();
         } else {
             final String pack = last.substring(0, last.indexOf('.'));
-            final QuestPackage configPack = Config.getPackages().get(pack);
+            final QuestPackage configPack = instance.getPackages().get(pack);
             if (configPack == null) {
                 return Optional.of(new ArrayList<>());
             }
@@ -770,7 +769,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             name = itemID;
         }
         // define parts of the final string
-        final QuestPackage configPack = Config.getPackages().get(pack);
+        final QuestPackage configPack = instance.getPackages().get(pack);
         if (configPack == null) {
             log.debug("Cannot continue, package does not exist");
             sendMessage(sender, "specify_package");
@@ -1231,7 +1230,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                final QuestPackage newPackage = Config.getPackages().get(rename.split("\\.")[0]);
+                final QuestPackage newPackage = instance.getPackages().get(rename.split("\\.")[0]);
                 if (newPackage == null) {
                     final String message = "You can't rename into non-existent package!";
                     sendMessage(sender, "error", new PluginMessage.Replacement("error", Component.text(message)));
@@ -1792,7 +1791,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return completePackage();
             } else {
                 final String pack = last.substring(0, last.indexOf('.'));
-                final QuestPackage configPack = Config.getPackages().get(pack);
+                final QuestPackage configPack = instance.getPackages().get(pack);
                 if (configPack == null) {
                     return Optional.of(Collections.emptyList());
                 }

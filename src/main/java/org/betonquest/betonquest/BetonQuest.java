@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -25,9 +26,9 @@ import org.betonquest.betonquest.command.JournalCommand;
 import org.betonquest.betonquest.command.LangCommand;
 import org.betonquest.betonquest.command.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.config.QuestManager;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -97,6 +98,7 @@ import java.nio.file.Path;
 import java.time.InstantSource;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -238,6 +240,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private ProfileProvider profileProvider;
 
     /**
+     * The quest manager instance.
+     */
+    private QuestManager questManager;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -314,8 +321,8 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         log.debug("BetonQuest " + version + " is starting...");
         log.debug(jreInfo);
 
-        Config.setup(this);
-        Notify.load(config, Config.getPackages().values());
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, getDataFolder());
+        Notify.load(config, getPackages().values());
 
         setupDatabase();
 
@@ -513,7 +520,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @see QuestRegistry#loadData(Collection)
      */
     public void loadData() {
-        questRegistry.loadData(Config.getPackages().values());
+        questRegistry.loadData(getPackages().values());
         playerDataStorage.startObjectives();
         rpgMenu.reloadData();
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
@@ -531,13 +538,13 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
         defaultLanguage = config.getString("language", "en-US");
-        Config.setup(this);
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, getDataFolder());
         try {
             pluginMessage.reload();
         } catch (final IOException | QuestException e) {
             log.error("Could not reload the plugin messages!", e);
         }
-        Notify.load(config, Config.getPackages().values());
+        Notify.load(config, getPackages().values());
         lastExecutionCache.reload();
 
         // reload updater settings
@@ -762,5 +769,14 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      */
     public VariableProcessor getVariableProcessor() {
         return questRegistry.core().variables();
+    }
+
+    /**
+     * Get all Packages that are loaded.
+     *
+     * @return a map of packages and their names
+     */
+    public Map<String, QuestPackage> getPackages() {
+        return questManager.getPackages();
     }
 }

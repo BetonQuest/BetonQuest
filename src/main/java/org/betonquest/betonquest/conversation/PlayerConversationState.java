@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConversationID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -48,7 +48,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String fullID = mainParts[0];
         final String[] splitID = fullID.split("\\.");
         final String packName = splitID[0];
-        final QuestPackage questPackage = Config.getPackages().get(packName);
+        final QuestPackage questPackage = BetonQuest.getInstance().getPackages().get(packName);
         if (questPackage == null) {
             throw new QuestException("The package " + packName + " does not exist!");
         }
