@@ -1,19 +1,17 @@
 package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
-import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
-import org.betonquest.betonquest.config.patcher.migration.Migration;
+import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Handles the NpcHolograms migration.
  */
-public class NpcHolograms implements Migration {
+public class NpcHolograms implements QuestMigration {
 
     /**
      * The npc_holograms string.
@@ -31,25 +29,14 @@ public class NpcHolograms implements Migration {
     public static final int DEFAULT_CHECK_INTERVAL = 200;
 
     /**
-     * The config producer.
-     */
-    private final FileConfigurationProvider producer;
-
-    /**
      * Creates a new npc_holograms migrator.
-     *
-     * @param provider The config provider
      */
-    public NpcHolograms(final FileConfigurationProvider provider) {
-        this.producer = provider;
+    public NpcHolograms() {
     }
 
     @Override
-    public void migrate() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
-        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
-            final File file = entry.getKey();
-            final YamlConfiguration config = entry.getValue();
+    public void migrate(final Quest quest) throws IOException {
+        for (final FileConfigAccessor config : quest.getConfigAccessors()) {
             if (config.contains(NPC_HOLOGRAMS + ".follow", false)
                     || config.contains(NPC_HOLOGRAMS + ".check_interval", false)
                     || config.contains("holograms.check_interval", false)) {
@@ -57,7 +44,7 @@ public class NpcHolograms implements Migration {
                 migrateCheckInterval(config.getConfigurationSection(NPC_HOLOGRAMS));
                 migrateCheckInterval(config.getConfigurationSection("holograms"));
                 migrateVector(config.getConfigurationSection(NPC_HOLOGRAMS));
-                config.save(file);
+                config.save();
             }
         }
     }
