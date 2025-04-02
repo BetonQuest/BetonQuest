@@ -26,6 +26,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `FancyNpcs`
   - `ZNPCsPlus`
 - `tag` and `globaltag` events and conditions now support variables
+- `package.version` for QuestPackages and -Templates
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

@@ -8,6 +8,14 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 !!! warning 
     Before you start migrating, you should **back up your server**!
 
+!!! info
+    You need to set a version in your `package.yml` (for both QuestPackages and -Templates)
+    to automatically migrate from 2.2.1 to 3.0.
+    ```yaml title="Required version"
+    package:
+      version: 2.2.1-QUEST-0
+    ```
+
 ## Changes
 
 Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.

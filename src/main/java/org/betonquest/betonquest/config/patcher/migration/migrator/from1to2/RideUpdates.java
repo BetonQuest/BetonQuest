@@ -1,43 +1,24 @@
 package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
-import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
-import org.betonquest.betonquest.config.patcher.migration.Migration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.config.quest.Quest;
 
 /**
  * Handles the Ride migration.
  */
-public class RideUpdates implements Migration {
-
-    /**
-     * The configs to migrate.
-     */
-    private final FileConfigurationProvider producer;
+public class RideUpdates implements QuestMigration {
 
     /**
      * Creates a new ride migrator.
-     *
-     * @param provider The config provider
      */
-    public RideUpdates(final FileConfigurationProvider provider) {
-        this.producer = provider;
+    public RideUpdates() {
     }
 
     @Override
-    public void migrate() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
-        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
-            final File file = entry.getKey();
-            final YamlConfiguration config = entry.getValue();
-            final boolean objReplaced = replaceStartValueInSection(config, "objectives", "vehicle", "ride");
-            final boolean condReplaced = replaceStartValueInSection(config, "conditions", "riding", "ride");
-            if (objReplaced || condReplaced) {
-                config.save(file);
-            }
-        }
+    public void migrate(final Quest quest) {
+        final MultiConfiguration config = quest.getQuestConfig();
+        replaceStartValueInSection(config, "objectives", "vehicle", "ride");
+        replaceStartValueInSection(config, "conditions", "riding", "ride");
     }
 }
