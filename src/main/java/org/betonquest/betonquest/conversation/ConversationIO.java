@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,7 +15,7 @@ public interface ConversationIO {
      * @param npcName  the name of the NPC
      * @param response the text the NPC chose
      */
-    void setNpcResponse(String npcName, String response);
+    void setNpcResponse(Component npcName, String response);
 
     /**
      * Adds the text of the player option. Should be called for each option in a

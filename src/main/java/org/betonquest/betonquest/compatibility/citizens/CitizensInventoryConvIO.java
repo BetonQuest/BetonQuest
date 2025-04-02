@@ -50,7 +50,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     }
 
     @Override
-    protected SkullMeta updateSkullMeta(final SkullMeta meta) {
+    protected SkullMeta updateSkullMeta(final SkullMeta meta, final String plainTextNpcName) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof final NpcConversation<?> npcConv && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
             if (Bukkit.isPrimaryThread()) {
@@ -75,7 +75,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 log.reportException(conv.getPackage(), new IllegalStateException("Could not parse the skin metadata provided by the NPC plugin. The format may have changed."));
             }
         }
-        return super.updateSkullMeta(meta);
+        return super.updateSkullMeta(meta, plainTextNpcName);
     }
 
     /**

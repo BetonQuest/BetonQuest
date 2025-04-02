@@ -9,6 +9,8 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import io.papermc.lib.PaperLib;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -382,10 +384,10 @@ public class MenuConvIO extends ChatConvIO {
      * @param response the text the NPC chose
      */
     @Override
-    public void setNpcResponse(final String npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final String response) {
         super.setNpcResponse(npcName, response);
         formattedNpcName = configNpcNameFormat
-                .replace("{npc_name}", npcName);
+                .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
     }
 
     protected void showDisplay() {
@@ -404,7 +406,7 @@ public class MenuConvIO extends ChatConvIO {
         // NPC Text
         final String msgNpcText = configNpcText
                 .replace("{npc_text}", npcText)
-                .replace("{npc_name}", npcName);
+                .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
         final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
@@ -454,7 +456,7 @@ public class MenuConvIO extends ChatConvIO {
             if (i == 0) {
                 final String optionText = configOptionSelected
                         .replace("{option_text}", options.get(optionIndex + 1))
-                        .replace("{npc_name}", npcName);
+                        .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionSelectedReset),
@@ -462,7 +464,7 @@ public class MenuConvIO extends ChatConvIO {
             } else {
                 final String optionText = configOptionText
                         .replace("{option_text}", options.get(optionIndex + 1))
-                        .replace("{npc_name}", npcName);
+                        .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionTextReset),
@@ -493,11 +495,11 @@ public class MenuConvIO extends ChatConvIO {
         if (NPC_NAME_TYPE_CHAT.equals(configNpcNameType)) {
             switch (configNpcNameAlign) {
                 case "right":
-                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength - npcName.length())));
+                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength - LegacyComponentSerializer.legacySection().serialize(npcName).length())));
                     break;
                 case "center":
                 case "middle":
-                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength / 2 - npcName.length() / 2)));
+                    displayBuilder.append(" ".repeat(Math.max(0, configLineLength / 2 - LegacyComponentSerializer.legacySection().serialize(npcName).length() / 2)));
                     break;
                 default:
                     break;

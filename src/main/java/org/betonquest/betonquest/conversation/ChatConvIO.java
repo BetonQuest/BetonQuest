@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -45,7 +47,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     @Nullable
     protected String npcText;
 
-    protected String npcName;
+    protected Component npcName;
 
     protected String answerFormat;
 
@@ -161,7 +163,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void setNpcResponse(final String npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final String response) {
         this.npcName = npcName;
         this.npcText = response;
     }
@@ -178,7 +180,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", npcName) + npcText, npcTextColor));
+        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName)) + npcText, npcTextColor));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.util.LocalChatPaginator;
@@ -66,7 +67,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
         // NPC Text
         final String[] lines = LocalChatPaginator.wordWrap(
-                Utils.replaceReset(textFormat.replace("%quester%", npcName) + npcText, npcTextColor), 50);
+                Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName)) + npcText, npcTextColor), 50);
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {
