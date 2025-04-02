@@ -15,6 +15,8 @@ import org.betonquest.betonquest.quest.event.tag.TagEvent;
 import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.List;
+
 /**
  * Event to set a compass target and manage compass points.
  */
@@ -65,8 +67,8 @@ public class CompassEvent implements PlayerEvent {
     @Override
     public void execute(final Profile profile) throws QuestException {
         switch (action) {
-            case ADD -> changeTag(new AddTagChanger(compassId.getCompassTag()), profile);
-            case DEL -> changeTag(new DeleteTagChanger(compassId.getCompassTag()), profile);
+            case ADD -> changeTag(new AddTagChanger(List.of(featureAPI.getCompassTag(compassId))), profile);
+            case DEL -> changeTag(new DeleteTagChanger(List.of(featureAPI.getCompassTag(compassId))), profile);
             case SET -> {
                 final QuestCompass compass = featureAPI.getCompasses().get(compassId);
                 if (compass == null) {
@@ -84,7 +86,7 @@ public class CompassEvent implements PlayerEvent {
         }
     }
 
-    private void changeTag(final TagChanger tagChanger, final Profile profile) {
+    private void changeTag(final TagChanger tagChanger, final Profile profile) throws QuestException {
         new TagEvent(dataStorage::getOffline, tagChanger).execute(profile);
     }
 }
