@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -60,7 +63,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected int playerOptionsCount;
 
-    protected String npcName;
+    protected Component npcName;
 
     protected String npcNameColor;
 
@@ -124,7 +127,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void setNpcResponse(final String npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final String response) {
         this.npcName = npcName;
         this.response = Utils.replaceReset(response, npcTextColor);
     }
@@ -168,7 +171,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         generateRows(rows, buttons);
 
         if (printMessages) {
-            conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
+            conv.sendMessage(npcNameColor + LegacyComponentSerializer.legacySection().serialize(npcName)
+                    + ChatColor.RESET + ": " + npcTextColor + response);
         }
 
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
@@ -245,7 +249,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
             if (showNPCText) {
                 // NPC Text
                 lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(npcNameColor + npcName + ChatColor.RESET + ": " + response, npcTextColor),
+                        Utils.replaceReset(npcNameColor + LegacyComponentSerializer.legacySection().serialize(npcName)
+                                + ChatColor.RESET + ": " + response, npcTextColor),
                         45)));
             }
 
@@ -261,22 +266,23 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     private ItemStack createNpcHead() {
+        final String plainTextNpcName = PlainTextComponentSerializer.plainText().serialize(npcName);
         final ItemStack npcHead;
-        if (SKULL_CACHE.containsKey(npcName)) {
+        if (SKULL_CACHE.containsKey(plainTextNpcName)) {
             log.debug(conv.getPackage(), "skull cache hit");
-            npcHead = SKULL_CACHE.get(npcName);
+            npcHead = SKULL_CACHE.get(plainTextNpcName);
         } else {
             log.debug(conv.getPackage(), "skull cache miss");
             npcHead = new ItemStack(Material.PLAYER_HEAD);
             npcHead.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
-            npcMeta.setDisplayName(npcNameColor + npcName);
+            npcMeta.setDisplayName(npcNameColor + LegacyComponentSerializer.legacySection().serialize(npcName));
             npcHead.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
                 try {
-                    npcHead.setItemMeta(updateSkullMeta((SkullMeta) npcHead.getItemMeta()));
+                    npcHead.setItemMeta(updateSkullMeta((SkullMeta) npcHead.getItemMeta(), plainTextNpcName));
                     Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                        SKULL_CACHE.put(npcName, npcHead);
+                        SKULL_CACHE.put(plainTextNpcName, npcHead);
                         inv.setItem(0, npcHead);
                     });
                 } catch (final IllegalArgumentException e) {
@@ -294,14 +300,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings("deprecation")
-    protected SkullMeta updateSkullMeta(final SkullMeta meta) {
+    protected SkullMeta updateSkullMeta(final SkullMeta meta, final String plainTextNpcName) {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Must be called async!");
         }
-        if (!Bukkit.createProfile(npcName).complete()) {
+        if (!Bukkit.createProfile(plainTextNpcName).complete()) {
             return meta;
         }
-        meta.setOwner(npcName);
+        meta.setOwner(plainTextNpcName);
         return meta;
     }
 
