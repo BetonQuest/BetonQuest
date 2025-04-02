@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 /**
  * A condition that checks if a player has a certain tag.
@@ -13,7 +14,7 @@ public class TagCondition implements PlayerCondition {
     /**
      * The tag to check for.
      */
-    private final String tag;
+    private final VariableIdentifier tag;
 
     /**
      * Storage for player data.
@@ -26,13 +27,13 @@ public class TagCondition implements PlayerCondition {
      * @param tag         the tag to check for
      * @param dataStorage the storage providing player data
      */
-    public TagCondition(final String tag, final PlayerDataStorage dataStorage) {
+    public TagCondition(final VariableIdentifier tag, final PlayerDataStorage dataStorage) {
         this.tag = tag;
         this.dataStorage = dataStorage;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return dataStorage.get(profile).hasTag(tag);
+        return dataStorage.get(profile).hasTag(tag.getValue(profile));
     }
 }

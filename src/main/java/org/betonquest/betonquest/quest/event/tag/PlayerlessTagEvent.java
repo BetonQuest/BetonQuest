@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.tag;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.database.TagData;
 
@@ -31,7 +32,7 @@ public class PlayerlessTagEvent implements PlayerlessEvent {
     }
 
     @Override
-    public void execute() {
-        tagChanger.changeTags(tagData);
+    public void execute() throws QuestException {
+        tagChanger.changeTags(tagData, null);
     }
 }

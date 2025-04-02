@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -479,11 +480,18 @@ public class Backpack implements Listener {
         public Compass() {
             super();
             int counter = 0;
-            for (final Map.Entry<CompassID, QuestCompass> entry : BetonQuest.getInstance().getFeatureAPI().getCompasses().entrySet()) {
+            final FeatureAPI featureAPI = BetonQuest.getInstance().getFeatureAPI();
+            for (final Map.Entry<CompassID, QuestCompass> entry : featureAPI.getCompasses().entrySet()) {
                 final CompassID compassId = entry.getKey();
-                if (playerData.hasTag(compassId.getCompassTag())) {
-                    compasses.put(counter, entry.getValue());
-                    counter++;
+                try {
+                    if (playerData.hasTag(featureAPI.getCompassTag(compassId).getValue(onlineProfile))) {
+                        compasses.put(counter, entry.getValue());
+                        counter++;
+                    }
+                } catch (final QuestException e) {
+                    log.warn("Could not get compass tag for '" + compassId + "': " + e.getMessage(), e);
+                    onlineProfile.getPlayer().closeInventory();
+                    return;
                 }
             }
 
