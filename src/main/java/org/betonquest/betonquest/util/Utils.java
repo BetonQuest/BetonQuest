@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 /**
  * Various utilities.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.CouplingBetweenObjects"})
 public final class Utils {
 
     /**
@@ -198,13 +198,16 @@ public final class Utils {
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
     public static boolean isQuestItem(@Nullable final ItemStack item) {
-        if (item == null) {
+        if (item == null || item.getType().isAir()) {
+            return false;
+        }
+        final List<Component> lore = item.getItemMeta().lore();
+        if (lore == null) {
             return false;
         }
         try {
             final Component questItemLore = BetonQuest.getInstance().getPluginMessage().getMessage("quest_item").asComponent(null);
-            final List<Component> lore = item.getItemMeta().lore();
-            return lore != null && lore.stream().anyMatch(line -> line.contains(questItemLore, COMPONENT_BI_PREDICATE));
+            return lore.stream().anyMatch(line -> line.contains(questItemLore, COMPONENT_BI_PREDICATE));
         } catch (final QuestException e) {
             LOG.warn("Failed to get quest item message: " + e.getMessage(), e);
             return false;
