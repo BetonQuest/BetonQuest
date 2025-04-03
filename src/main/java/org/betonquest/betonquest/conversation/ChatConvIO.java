@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Base of all chat conversation outputs.
@@ -45,7 +46,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected Map<Integer, String> options;
 
     @Nullable
-    protected String npcText;
+    protected Component npcText;
 
     protected Component npcName;
 
@@ -163,7 +164,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void setNpcResponse(final Component npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final Component response) {
         this.npcName = npcName;
         this.npcText = response;
     }
@@ -180,7 +181,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             end();
             return;
         }
-        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName)) + npcText, npcTextColor));
+        Objects.requireNonNull(npcText);
+        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName))
+                + LegacyComponentSerializer.legacySection().serialize(npcText), npcTextColor));
     }
 
     @Override

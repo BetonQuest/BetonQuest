@@ -15,7 +15,7 @@ public interface ConversationIO {
      * @param npcName  the name of the NPC
      * @param response the text the NPC chose
      */
-    void setNpcResponse(Component npcName, String response);
+    void setNpcResponse(Component npcName, Component response);
 
     /**
      * Adds the text of the player option. Should be called for each option in a
