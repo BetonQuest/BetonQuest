@@ -223,18 +223,19 @@ When the calculation fails `0` will be returned and the reason logged.
 This variable resolves information about a Npc. 
 Specifying an argument determines the return: the Npc name, or full name (with formatting).
 
-Arguments:
-* name - Return citizen name
-* full_name - Full Citizen name
+Arguments:  
+* name - Return Npc name  
+* full_name - Return Npc name with formatting  
 
 ```YAML title="Example"
 %npc.bob.name%        # Bob
 %npc.bob.full_name%   # &eBob
 ```
 
-#### Npc Location Variable: `%npc.<id>.location.<mode>.<precision>%`
+#### Npc Location Variable
 
 This variable resolves to all Npc location. For details see the [location variable](#location-variable).
+The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
 ```YAML title="Example"
 %npc.mayor.location%           # -> 325;121;814;npcWorldName;12;6

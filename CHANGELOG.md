@@ -22,6 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`
+- `FancyNpcs` support for Npcs
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

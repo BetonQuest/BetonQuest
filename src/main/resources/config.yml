@@ -77,6 +77,7 @@ hook:
   fake-block: true
   redischat: true
   train_carts: true
+  fancynpcs: true
 journal:
   chars_per_line: 19
   lines_per_page: 13

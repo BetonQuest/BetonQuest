@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
+import org.betonquest.betonquest.compatibility.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
@@ -260,6 +261,7 @@ public class Compatibility implements Listener {
         register("fake-block", FakeBlockIntegrator.class);
         register("RedisChat", RedisChatIntegrator.class);
         register("Train_Carts", TrainCartsIntegrator.class);
+        register(FancyNpcsIntegrator.PREFIX, FancyNpcsIntegrator.class);
     }
 
     private void register(final String name, final Class<? extends Integrator> integrator) {

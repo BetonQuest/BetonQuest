@@ -34,7 +34,7 @@ public interface Npc<T> {
     /**
      * Gets the position of the NPC.
      *
-     * @return the location the NPC is at
+     * @return the location the NPC is at, copy
      */
     Location getLocation();
 

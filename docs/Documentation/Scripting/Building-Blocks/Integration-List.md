@@ -10,7 +10,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
-_AuraSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
+_AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
@@ -270,22 +270,49 @@ followed by a location written like `100;200;300;world;180;-90` to put
 it on that location. If you add `private` argument the effect will only
 be displayed to the player for which you ran the event.
 
-!!! example
-    ```YAML
-    effects:
-      beton:
-        class: HelixEffect
-        iterations: 100
-        particle: smoke
-        helixes: 5
-        circles: 20
-        grow: 3
-        radius: 30
-    ```
-    ```YAML
-    events:
-      playEffect: particle beton loc:100;200;300;world;180;-90 private
-    ```
+```YAML title="Example"
+effects:
+  beton:
+    class: HelixEffect
+    iterations: 100
+    particle: smoke
+    helixes: 5
+    circles: 20
+    grow: 3
+    radius: 30
+
+events:
+  playEffect: particle beton loc:100;200;300;world;180;-90 private
+```
+
+## FancyNpcs[](https://modrinth.com/plugin/fancynpcs)
+
+If you have this plugin you can use its Npcs.
+It is more lightweight than [Citizens](#citizens) but lack some of its features.
+
+### Npc Integration
+
+FancyNpcs supports all [BetonQuest Npc](../../Features/Npcs.md) Features.
+
+#### Npcs section: `npcs`
+
+You simply use the FancyNpcs Npc id as argument.
+To acquire the Npcs ID use the `/npc nearby` command and copy the `UUID` from the Npc info.
+
+You can also get a Npc by its name with the `byName` argument.
+That is useful when you have many Npcs with the same name which should all start the same conversation
+or count together in the `npcinteract` and `npckill` objectives.
+
+!!! warning
+    When more than one Npc with that name exists, it will give an exception when used in like `npcteleport` events
+    or `npcrange` objective.
+
+```YAML title="Example"
+npcs:
+  innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
+  mayorHans: FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0
+  guard: FancyNpcs Guard byName
+```
 
 ## FakeBlock[](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
 
