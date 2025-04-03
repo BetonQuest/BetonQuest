@@ -384,7 +384,7 @@ public class MenuConvIO extends ChatConvIO {
      * @param response the text the NPC chose
      */
     @Override
-    public void setNpcResponse(final Component npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final Component response) {
         super.setNpcResponse(npcName, response);
         formattedNpcName = configNpcNameFormat
                 .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
@@ -405,7 +405,7 @@ public class MenuConvIO extends ChatConvIO {
 
         // NPC Text
         final String msgNpcText = configNpcText
-                .replace("{npc_text}", npcText)
+                .replace("{npc_text}", LegacyComponentSerializer.legacySection().serialize(npcText))
                 .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
         final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(

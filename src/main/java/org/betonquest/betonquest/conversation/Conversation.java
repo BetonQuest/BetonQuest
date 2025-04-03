@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -333,7 +334,7 @@ public class Conversation implements Listener {
         text = ChatColor.translateAlternateColorCodes('&', text);
 
         // print option to the player
-        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), text);
+        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), LegacyComponentSerializer.legacySection().deserialize(text));
 
         new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
     }

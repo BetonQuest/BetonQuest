@@ -57,7 +57,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private final BetonQuestLogger log;
 
     @Nullable
-    protected String response;
+    protected Component response;
 
     protected Map<Integer, String> options = new HashMap<>();
 
@@ -127,9 +127,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void setNpcResponse(final Component npcName, final String response) {
+    public void setNpcResponse(final Component npcName, final Component response) {
         this.npcName = npcName;
-        this.response = Utils.replaceReset(response, npcTextColor);
+        this.response = LegacyComponentSerializer.legacySection().deserialize(
+                Utils.replaceReset(LegacyComponentSerializer.legacySection().serialize(response), npcTextColor));
     }
 
     @Override
@@ -171,8 +172,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         generateRows(rows, buttons);
 
         if (printMessages) {
+            Objects.requireNonNull(response);
             conv.sendMessage(npcNameColor + LegacyComponentSerializer.legacySection().serialize(npcName)
-                    + ChatColor.RESET + ": " + npcTextColor + response);
+                    + ChatColor.RESET + ": " + npcTextColor + LegacyComponentSerializer.legacySection().serialize(response));
         }
 
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
@@ -248,9 +250,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
             if (showNPCText) {
                 // NPC Text
+                Objects.requireNonNull(response);
                 lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(npcNameColor + LegacyComponentSerializer.legacySection().serialize(npcName)
-                                + ChatColor.RESET + ": " + response, npcTextColor),
+                                + ChatColor.RESET + ": " + LegacyComponentSerializer.legacySection().serialize(response), npcTextColor),
                         45)));
             }
 
@@ -294,7 +297,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
         Objects.requireNonNull(response);
         npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                Utils.replaceReset(response, npcTextColor), 45)));
+                Utils.replaceReset(LegacyComponentSerializer.legacySection().serialize(response), npcTextColor), 45)));
         npcHead.setItemMeta(npcMeta);
         return npcHead;
     }

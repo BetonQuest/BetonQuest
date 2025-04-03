@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class SlowTellrawConvIO extends TellrawConvIO {
@@ -66,8 +67,10 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         canReply = false;
 
         // NPC Text
+        Objects.requireNonNull(npcText);
         final String[] lines = LocalChatPaginator.wordWrap(
-                Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName)) + npcText, npcTextColor), 50);
+                Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName))
+                        + LegacyComponentSerializer.legacySection().serialize(npcText), npcTextColor), 50);
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {
