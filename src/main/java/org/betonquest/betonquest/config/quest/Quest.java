@@ -170,6 +170,15 @@ public abstract class Quest {
         return newAccessor;
     }
 
+    /**
+     * The {@link MultiConfiguration} that represents this {@link Quest}.
+     *
+     * @return this actual config defining this
+     */
+    public MultiConfiguration getQuestConfig() {
+        return config;
+    }
+
     @Override
     public String toString() {
         return getQuestPath();
