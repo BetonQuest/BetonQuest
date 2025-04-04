@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.database.TagData;
 
@@ -32,8 +33,8 @@ public class TagEvent implements PlayerEvent {
     }
 
     @Override
-    public void execute(final Profile profile) {
+    public void execute(final Profile profile) throws QuestException {
         final TagData tagData = getTagData.apply(profile);
-        tagChanger.changeTags(tagData);
+        tagChanger.changeTags(tagData, profile);
     }
 }

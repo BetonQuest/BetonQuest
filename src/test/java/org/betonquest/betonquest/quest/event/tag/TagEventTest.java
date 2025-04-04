@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.TagData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,14 +25,14 @@ class TagEventTest {
             @Mock final TagChanger tagChanger,
             @Mock final Profile profile1,
             @Mock final Profile profile2
-            ) {
+    ) throws QuestException {
         final Iterator<TagData> data = List.of(firstData, secondData).iterator();
         final TagEvent tagEvent = new TagEvent(player -> data.next(), tagChanger);
 
         tagEvent.execute(profile1);
         tagEvent.execute(profile2);
 
-        verify(tagChanger).changeTags(firstData);
-        verify(tagChanger).changeTags(secondData);
+        verify(tagChanger).changeTags(firstData, profile1);
+        verify(tagChanger).changeTags(secondData, profile2);
     }
 }

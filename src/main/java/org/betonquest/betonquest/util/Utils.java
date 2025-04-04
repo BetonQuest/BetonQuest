@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -244,22 +243,6 @@ public final class Utils {
             return profile.getPlayer().getLocation().distanceSquared(loc);
         } catch (final IllegalArgumentException e) {
             return Double.MAX_VALUE;
-        }
-    }
-
-    /**
-     * Inserts a package before this string if there is no package, or does
-     * nothing if the package is already there.
-     *
-     * @param pack   the package
-     * @param string ID of event/condition/objective/item etc.
-     * @return full ID with package prefix
-     */
-    public static String addPackage(final QuestPackage pack, final String string) {
-        if (string.contains(".")) {
-            return string;
-        } else {
-            return pack.getQuestPath() + "." + string;
         }
     }
 
