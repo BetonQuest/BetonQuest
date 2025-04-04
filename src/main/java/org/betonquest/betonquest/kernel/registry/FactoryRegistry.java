@@ -3,9 +3,9 @@ package org.betonquest.betonquest.kernel.registry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Stores the factories to create Objects that can be used in BetonQuest.
@@ -26,7 +26,7 @@ public class FactoryRegistry<F> {
     /**
      * Map of registered factories.
      */
-    protected final Map<String, F> types = new HashMap<>();
+    protected final Map<String, F> types = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     /**
      * Create a new type registry.
