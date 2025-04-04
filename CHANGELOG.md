@@ -34,6 +34,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `fish` objective use block selector instead of a QuestItem
 - everything that used `Citizens` NPC ids now uses the BQ NpcIDs
 - conversations now always print their start and stop conversation message
+- `events`, `objectives`, `conditions`, `variables` and co. are now case insensitive
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
