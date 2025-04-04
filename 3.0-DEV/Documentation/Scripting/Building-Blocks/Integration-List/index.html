@@ -1919,6 +1919,42 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#fancynpcs">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          FancyNpcs<a href="https://modrinth.com/plugin/fancynpcs"></a>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="FancyNpcs" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#fakeblock">
     <span class="md-ellipsis">
 
@@ -5584,6 +5620,42 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#fancynpcs">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          FancyNpcs<a href="https://modrinth.com/plugin/fancynpcs"></a>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="FancyNpcs" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#fakeblock">
     <span class="md-ellipsis">
 
@@ -6438,10 +6510,10 @@
 <h1 id="integration-list">Integration List<a class="headerlink" href="#integration-list" title="Permanent link">🔗</a></h1>
 <p>This page contains documentation for known integrations that exist for third party plugins.
 Some integrations also have dedicated pages in the documentation.
-In total 38 plugins have dedicated support for BetonQuest.</p>
+In total 40 plugins have dedicated support for BetonQuest.</p>
 <h2 id="provided-by-betonquest">Provided by BetonQuest<a class="headerlink" href="#provided-by-betonquest" title="Permanent link">🔗</a></h2>
 <p>BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.<br />
-<em>AuraSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
+<em>AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard.</em></p>
 <h2 id="provided-by-other-plugins">Provided by other plugins<a class="headerlink" href="#provided-by-other-plugins" title="Permanent link">🔗</a></h2>
@@ -6734,9 +6806,7 @@ is the name of the effect. You can optionally add <code>loc:</code> argument
 followed by a location written like <code>100;200;300;world;180;-90</code> to put
 it on that location. If you add <code>private</code> argument the effect will only
 be displayed to the player for which you ran the event.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<p><div class="highlight"><pre><span></span><code><span class="nt">effects</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">effects</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelixEffect</span>
 <span class="w">    </span><span class="nt">iterations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
@@ -6745,11 +6815,31 @@ be displayed to the player for which you ran the event.</p>
 <span class="w">    </span><span class="nt">circles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="w">    </span><span class="nt">grow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 <span class="w">    </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+
+<span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">playEffect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">particle beton loc:100;200;300;world;180;-90 private</span>
-</code></pre></div></p>
+</code></pre></div>
+<h2 id="fancynpcs">FancyNpcs<a href="https://modrinth.com/plugin/fancynpcs"></a><a class="headerlink" href="#fancynpcs" title="Permanent link">🔗</a></h2>
+<p>If you have this plugin you can use its Npcs.
+It is more lightweight than <a href="#citizens">Citizens</a> but lack some of its features.</p>
+<h3 id="npc-integration_1">Npc Integration<a class="headerlink" href="#npc-integration_1" title="Permanent link">🔗</a></h3>
+<p>FancyNpcs supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
+<h4 id="npcs-section-npcs_1">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs_1" title="Permanent link">🔗</a></h4>
+<p>You simply use the FancyNpcs Npc id as argument.
+To acquire the Npcs ID use the <code>/npc nearby</code> command and copy the <code>UUID</code> from the Npc info.</p>
+<p>You can also get a Npc by its name with the <code>byName</code> argument.
+That is useful when you have many Npcs with the same name which should all start the same conversation
+or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When more than one Npc with that name exists, it will give an exception when used in like <code>npcteleport</code> events
+or <code>npcrange</code> objective.</p>
 </div>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs dc8f2889-ed79-455e-944b-115dae978737</span>
+<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs Guard byName</span>
+</code></pre></div>
 <h2 id="fakeblock">FakeBlock<a href="https://github.com/toddharrison/BriarCode/tree/main/fake-block"></a><a class="headerlink" href="#fakeblock" title="Permanent link">🔗</a></h2>
 <p>If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
 created in FakeBlock on a player-specific basis.</p>
