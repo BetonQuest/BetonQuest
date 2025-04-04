@@ -1,0 +1,61 @@
+package org.betonquest.betonquest.compatibility.fancynpcs;
+
+import de.oliver.fancynpcs.api.Npc;
+import de.oliver.fancynpcs.api.NpcManager;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+
+/**
+ * FancyNpcs wrapper to get a Npc.
+ */
+public class FancyWrapper implements NpcWrapper<Npc> {
+
+    /**
+     * FancyNpcs Npc Manager.
+     */
+    private final NpcManager npcManager;
+
+    /**
+     * Npc identifier.
+     */
+    private final String npcId;
+
+    /**
+     * If the identifier should be interpreted as name.
+     */
+    private final boolean byName;
+
+    /**
+     * Create a new FancyNpcs Npc Wrapper.
+     *
+     * @param npcManager the Npc Manager to get Npcs from
+     * @param npcId      the npc identifier
+     * @param byName     whether to use the identifier as name or id
+     */
+    public FancyWrapper(final NpcManager npcManager, final String npcId, final boolean byName) {
+        this.npcManager = npcManager;
+        this.npcId = npcId;
+        this.byName = byName;
+    }
+
+    @Override
+    public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc() throws QuestException {
+        Npc npc = null;
+        if (byName) {
+            for (final Npc aNpc : npcManager.getAllNpcs()) {
+                if (npcId.equals(aNpc.getData().getName())) {
+                    if (npc != null) {
+                        throw new QuestException("Multiple Npcs with the same name: " + npcId);
+                    }
+                    npc = aNpc;
+                }
+            }
+        } else {
+            npc = npcManager.getNpcById(npcId);
+        }
+        if (npc == null) {
+            throw new QuestException("Fancy Npc with " + (byName ? "name" : "id") + " " + npcId + " not found");
+        }
+        return new FancyAdapter(npc);
+    }
+}

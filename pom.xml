@@ -241,6 +241,22 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- from minebench repository -->
+    <dependency>
+      <groupId>de.themoep</groupId>
+      <artifactId>minedown-adventure</artifactId>
+      <version>1.7.3-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- from fancyplugins repository -->
+    <dependency>
+      <groupId>de.oliver</groupId>
+      <artifactId>FancyNpcs</artifactId>
+      <version>2.4.2</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- from jitpack repository -->
     <dependency>
       <groupId>com.github.toddharrison.BriarCode</groupId>
@@ -310,14 +326,6 @@
       <artifactId>authlib</artifactId>
       <version>5.0.47</version>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- from minebench repository -->
-    <dependency>
-      <groupId>de.themoep</groupId>
-      <artifactId>minedown-adventure</artifactId>
-      <version>1.7.3-SNAPSHOT</version>
-      <scope>compile</scope>
     </dependency>
 
     <!-- only dependencies from maven central that are MC Plugins -->
@@ -462,6 +470,10 @@
     <repository>
       <id>betonquest-minebench-repo</id>
       <url>https://repo.minebench.de/</url>
+    </repository>
+    <repository>
+      <id>betonquest-fancyplugins-repo</id>
+      <url>https://repo.fancyplugins.de/releases</url>
     </repository>
     <repository>
       <id>betonquest-minecraft-repo</id>

@@ -38,6 +38,7 @@ softdepend:
   - fake-block
   - RedisChat
   - Train_Carts
+  - FancyNpcs
 commands:
   betonquest:
     description: General quest command
