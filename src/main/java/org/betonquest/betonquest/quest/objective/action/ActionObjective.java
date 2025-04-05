@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -19,7 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
@@ -28,67 +27,87 @@ import org.jetbrains.annotations.Nullable;
  * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
     /**
      * The key for the location property.
      */
-    private static final String LOCATION_PROPERTY = "location";
-
-    /**
-     * The key for any action.
-     */
-    private static final String ANY = "any";
+    public static final String PROPERTY_LOCATION = "location";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The action to check for.
+     */
     private final Click action;
 
+    /**
+     * The selector to check for the block.
+     */
     @Nullable
     private final BlockSelector selector;
 
+    /**
+     * If the block should be checked for exact match.
+     */
     private final boolean exactMatch;
 
+    /**
+     * The location where the player has to click.
+     */
     @Nullable
     private final VariableLocation loc;
 
+    /**
+     * The range of the location.
+     */
     private final VariableNumber range;
 
+    /**
+     * If the event should be cancelled.
+     */
     private final boolean cancel;
 
+    /**
+     * The equipment slot to check for the action.
+     */
     @Nullable
     private final EquipmentSlot slot;
 
-    public ActionObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Creates a new instance of the ActionObjective.
+     *
+     * @param instruction the instruction
+     * @param log         the logger
+     * @param action      the action to check for
+     * @param selector    the selector to check for the block
+     * @param exactMatch  if the block should be checked for exact match
+     * @param loc         the location where the player has to click
+     * @param range       the range of the location
+     * @param cancel      if the event should be canceled
+     * @param slot        the equipment slot to check for the action
+     * @throws QuestException if an error occurs while creating the objective
+     */
+    public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action, @Nullable final BlockSelector selector, final boolean exactMatch, @Nullable final VariableLocation loc, final VariableNumber range, final boolean cancel, @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
-        action = instruction.getEnum(Click.class);
-        if (ANY.equalsIgnoreCase(instruction.next())) {
-            selector = null;
-        } else {
-            selector = instruction.get(instruction.current(), BlockSelector::new);
-        }
-        exactMatch = instruction.hasArgument("exactMatch");
-        loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
-        range = instruction.get(instruction.getOptional("range", "0"), VariableNumber::new);
-        cancel = instruction.hasArgument("cancel");
-        final String handString = instruction.getOptional("hand");
-        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
-            slot = EquipmentSlot.HAND;
-        } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
-            slot = EquipmentSlot.OFF_HAND;
-        } else if (ANY.equalsIgnoreCase(handString)) {
-            slot = null;
-        } else {
-            throw new QuestException("Invalid hand value: " + handString);
-        }
+        this.log = log;
+        this.action = action;
+        this.selector = selector;
+        this.exactMatch = exactMatch;
+        this.loc = loc;
+        this.range = range;
+        this.cancel = cancel;
+        this.slot = slot;
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    /**
+     * Checks if the player clicked on the block.
+     *
+     * @param event the event
+     */
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -147,7 +166,7 @@ public class ActionObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
+        if (PROPERTY_LOCATION.equalsIgnoreCase(name)) {
             if (loc == null) {
                 return "";
             }
@@ -162,16 +181,5 @@ public class ActionObjective extends Objective implements Listener {
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
         }
         return "";
-    }
-
-    public enum Click {
-        RIGHT, LEFT, ANY;
-
-        public boolean match(final Action action) {
-            if (action == Action.PHYSICAL) {
-                return false;
-            }
-            return this == ANY || this == RIGHT && action.isRightClick() || this == LEFT && action.isLeftClick();
-        }
     }
 }
