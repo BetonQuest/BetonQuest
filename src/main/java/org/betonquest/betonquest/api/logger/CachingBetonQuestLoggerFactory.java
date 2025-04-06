@@ -18,25 +18,26 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
     /**
      * The decorated factory.
      */
-    private final BetonQuestLoggerFactory factory;
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Creates a new instance of a caching logger factory.
+     * <p>
      *
-     * @param factory The factory to decorate.
+     * @param loggerFactory The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
-    public CachingBetonQuestLoggerFactory(final BetonQuestLoggerFactory factory) {
-        this.factory = factory;
+    public CachingBetonQuestLoggerFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
         this.loggers = new HashMap<>();
     }
 
     @Override
     public BetonQuestLogger create(final Class<?> clazz, @Nullable final String topic) {
-        return loggers.computeIfAbsent(clazz, k -> new HashMap<>()).computeIfAbsent(topic, t -> factory.create(clazz, t));
+        return loggers.computeIfAbsent(clazz, k -> new HashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(clazz, t));
     }
 
     @Override
     public BetonQuestLogger create(final Plugin plugin, @Nullable final String topic) {
-        return loggers.computeIfAbsent(plugin.getClass(), k -> new HashMap<>()).computeIfAbsent(topic, t -> factory.create(plugin, t));
+        return loggers.computeIfAbsent(plugin.getClass(), k -> new HashMap<>()).computeIfAbsent(topic, t -> loggerFactory.create(plugin, t));
     }
 }
