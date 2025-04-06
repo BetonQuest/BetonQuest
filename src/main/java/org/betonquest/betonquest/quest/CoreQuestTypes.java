@@ -14,7 +14,6 @@ import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.VariableTypeRegistry;
-import org.betonquest.betonquest.objective.ActionObjective;
 import org.betonquest.betonquest.objective.ArrowShootObjective;
 import org.betonquest.betonquest.objective.BlockObjective;
 import org.betonquest.betonquest.objective.BreedObjective;
@@ -161,6 +160,7 @@ import org.betonquest.betonquest.quest.event.time.TimeEventFactory;
 import org.betonquest.betonquest.quest.event.variable.VariableEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
+import org.betonquest.betonquest.quest.objective.action.ActionObjectiveFactory;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
@@ -412,7 +412,7 @@ public class CoreQuestTypes {
     }
 
     private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
-        objectiveTypes.register("action", ActionObjective.class);
+        objectiveTypes.register("action", new ActionObjectiveFactory(loggerFactory));
         objectiveTypes.register("arrow", ArrowShootObjective.class);
         objectiveTypes.register("block", BlockObjective.class);
         objectiveTypes.register("breed", BreedObjective.class);
