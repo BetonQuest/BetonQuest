@@ -293,7 +293,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
 
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
-        this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider());
+        this.profileProvider = registerAndGetService(ProfileProvider.class, new UUIDProfileProvider(getServer()));
 
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
         final String jreInfo = jreVersionPrinter.getMessage();
@@ -353,7 +353,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
         questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
 
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives());
+        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives(), profileProvider);
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
 

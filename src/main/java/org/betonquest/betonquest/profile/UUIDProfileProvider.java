@@ -3,8 +3,8 @@ package org.betonquest.betonquest.profile;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -17,9 +17,17 @@ import java.util.UUID;
  */
 public class UUIDProfileProvider implements ProfileProvider {
     /**
-     * Default profile provider constructor.
+     * The server instance used to get player from UUID.
      */
-    public UUIDProfileProvider() {
+    private final Server server;
+
+    /**
+     * Default profile provider constructor.
+     *
+     * @param server the server instance used to get player from UUID
+     */
+    public UUIDProfileProvider(final Server server) {
+        this.server = server;
     }
 
     @Override
@@ -112,6 +120,12 @@ public class UUIDProfileProvider implements ProfileProvider {
 
     @Override
     public List<OnlineProfile> getOnlineProfiles() {
-        return Bukkit.getOnlinePlayers().stream().map(this::getProfile).toList();
+        return server.getOnlinePlayers().stream().map(this::getProfile).toList();
+    }
+
+    @Override
+    public Profile getProfile(final UUID uuid) {
+        final OfflinePlayer player = server.getOfflinePlayer(uuid);
+        return getProfile(player);
     }
 }

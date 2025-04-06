@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.PlayerData;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -88,7 +88,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the profiles with this objective active.
      */
-    protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
+    protected Map<Profile, ObjectiveData> dataMap = new ProfileKeyMap<>(BetonQuest.getInstance().getProfileProvider());
 
     /**
      * Should be set to the data class used to hold the objective specific information.
