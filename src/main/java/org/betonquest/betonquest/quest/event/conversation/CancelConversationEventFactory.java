@@ -12,14 +12,14 @@ import org.betonquest.betonquest.instruction.Instruction;
  */
 public class CancelConversationEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Create the conversation cancel event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      */
     public CancelConversationEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;

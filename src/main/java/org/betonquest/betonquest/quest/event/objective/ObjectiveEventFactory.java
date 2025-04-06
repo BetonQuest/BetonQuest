@@ -26,7 +26,7 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     private final BetonQuest betonQuest;
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -39,7 +39,7 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
      * Creates a new factory for {@link ObjectiveEvent}s.
      *
      * @param betonQuest    the BetonQuest instance
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param questTypeAPI  the Quest Type API
      */
     public ObjectiveEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,

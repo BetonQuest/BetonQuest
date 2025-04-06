@@ -23,7 +23,7 @@ public class LocationConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -31,7 +31,7 @@ public class LocationConditionFactory implements PlayerConditionFactory {
      * Create the test for location condition factory.
      *
      * @param data          the data used for checking the condition on the main thread
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      */
     public LocationConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         this.data = data;

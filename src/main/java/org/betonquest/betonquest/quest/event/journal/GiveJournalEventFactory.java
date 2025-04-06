@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
  */
 public class GiveJournalEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -38,7 +38,7 @@ public class GiveJournalEventFactory implements PlayerEventFactory {
     /**
      * Create the give journal event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginMessage the plugin message to create the journal
      * @param dataStorage   the storage providing player data
      * @param data          the data for primary server thread access

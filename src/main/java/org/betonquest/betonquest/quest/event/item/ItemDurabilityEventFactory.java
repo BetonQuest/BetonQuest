@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class ItemDurabilityEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -31,7 +31,7 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
     /**
      * Create the item durability event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public ItemDurabilityEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

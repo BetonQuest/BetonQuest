@@ -17,7 +17,7 @@ import org.bukkit.block.Biome;
 public class BiomeConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -29,7 +29,7 @@ public class BiomeConditionFactory implements PlayerConditionFactory {
     /**
      * Create the biome factory.
      *
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      * @param data          the data used for checking the condition on the main thread
      */
     public BiomeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

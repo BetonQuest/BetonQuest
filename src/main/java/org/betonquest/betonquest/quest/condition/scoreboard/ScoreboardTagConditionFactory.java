@@ -21,7 +21,7 @@ public class ScoreboardTagConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -29,7 +29,7 @@ public class ScoreboardTagConditionFactory implements PlayerConditionFactory {
      * Create the scoreboard tag condition factory.
      *
      * @param data          the data used for checking the condition on the main thread
-     * @param loggerFactory the logger factory to create a logger for the condition
+     * @param loggerFactory the logger factory to create a logger for the conditions
      */
     public ScoreboardTagConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         this.data = data;

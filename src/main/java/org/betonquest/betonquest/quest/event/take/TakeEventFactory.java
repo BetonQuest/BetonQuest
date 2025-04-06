@@ -20,7 +20,7 @@ public class TakeEventFactory extends AbstractTakeEventFactory {
     /**
      * Create the take event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginMessage the {@link PluginMessage} instance
      */
     public TakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {

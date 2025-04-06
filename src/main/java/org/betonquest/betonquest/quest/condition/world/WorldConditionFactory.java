@@ -18,7 +18,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondit
 public class WorldConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -35,7 +35,7 @@ public class WorldConditionFactory implements PlayerConditionFactory {
     /**
      * Create the test for block condition factory.
      *
-     * @param loggerFactory     the logger factory to create a logger for the condition
+     * @param loggerFactory     the logger factory to create a logger for the conditions
      * @param data              the data used for checking the condition on the main thread
      * @param variableProcessor the processor to create new variables
      */

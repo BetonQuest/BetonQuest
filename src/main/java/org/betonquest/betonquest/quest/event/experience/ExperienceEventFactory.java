@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 public class ExperienceEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -30,7 +30,7 @@ public class ExperienceEventFactory implements PlayerEventFactory {
     /**
      * Create the experience event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public ExperienceEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

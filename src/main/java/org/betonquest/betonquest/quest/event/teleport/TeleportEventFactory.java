@@ -15,7 +15,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
  */
 public class TeleportEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -27,7 +27,7 @@ public class TeleportEventFactory implements PlayerEventFactory {
     /**
      * Create the teleport event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public TeleportEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

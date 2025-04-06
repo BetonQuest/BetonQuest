@@ -28,7 +28,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -36,7 +36,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
      * Create the Advancement Condition Factory.
      *
      * @param data          the data used for checking the condition on the main thread
-     * @param loggerFactory the logger factory to create class specific logger
+     * @param loggerFactory the logger factory to create a logger for the conditions
      */
     public AdvancementConditionFactory(final PrimaryServerThreadData data, final BetonQuestLoggerFactory loggerFactory) {
         this.data = data;

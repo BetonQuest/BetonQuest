@@ -21,7 +21,7 @@ public class JournalConditionFactory implements PlayerConditionFactory {
     private final PlayerDataStorage dataStorage;
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -29,7 +29,7 @@ public class JournalConditionFactory implements PlayerConditionFactory {
      * Create the journal condition factory.
      *
      * @param dataStorage   the storage providing player data
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      */
     public JournalConditionFactory(final PlayerDataStorage dataStorage, final BetonQuestLoggerFactory loggerFactory) {
         this.dataStorage = dataStorage;

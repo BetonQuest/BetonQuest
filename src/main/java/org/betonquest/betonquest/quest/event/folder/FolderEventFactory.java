@@ -29,7 +29,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     private final BetonQuest betonQuest;
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 

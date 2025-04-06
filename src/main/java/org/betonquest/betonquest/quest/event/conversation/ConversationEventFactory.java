@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConversationEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -34,7 +34,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
     /**
      * Create the conversation event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      * @param pluginMessage the {@link PluginMessage} instance
      */

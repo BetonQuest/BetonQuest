@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondit
 public class BurningConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -28,7 +28,7 @@ public class BurningConditionFactory implements PlayerConditionFactory {
     /**
      * Create the burning factory.
      *
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      * @param data          the data used for checking the condition on the main thread
      */
     public BurningConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

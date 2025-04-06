@@ -37,7 +37,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<message>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -64,7 +64,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     /**
      * Creates a new factory for {@link NotifyEvent}.
      *
-     * @param loggerFactory     the logger factory to use for creating the event logger
+     * @param loggerFactory     the logger factory to create a logger for the events
      * @param data              the data for primary server thread access
      * @param messageParser     the message parser to use for parsing messages
      * @param playerDataStorage the storage providing player data

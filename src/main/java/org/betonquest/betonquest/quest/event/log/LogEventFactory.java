@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.log;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -30,14 +29,14 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
     private static final Pattern LEVEL_REGEX = Pattern.compile("^\\s*level:\\S*\\s");
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Create a new log event factory.
      *
-     * @param loggerFactory BetonQuest logger factory used to retrieve the {@link BetonQuestLogger} for new events.
+     * @param loggerFactory the logger factory to create a logger for the events
      */
     public LogEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
