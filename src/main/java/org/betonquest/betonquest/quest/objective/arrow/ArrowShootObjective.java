@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.arrow;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -21,26 +21,45 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * Requires the player to shoot a target with a bow
+ * Requires the player to shoot a target with a bow.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ArrowShootObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
-    private final VariableLocation loc;
+    /**
+     * Location where the arrow should hit.
+     */
+    private final VariableLocation location;
 
+    /**
+     * Range around the location where the arrow should hit.
+     */
     private final VariableNumber range;
 
-    public ArrowShootObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the ArrowShootObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param log         the logger for this objective
+     * @param location    the location where the arrow should hit
+     * @param range       the range around the location where the arrow should hit
+     * @throws QuestException if there is an error in the instruction
+     */
+    public ArrowShootObjective(final Instruction instruction, final BetonQuestLogger log, final VariableLocation location, final VariableNumber range) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        loc = instruction.get(VariableLocation::new);
-        range = instruction.get(VariableNumber::new);
+        this.log = log;
+        this.location = location;
+        this.range = range;
     }
 
+    /**
+     * Check if the arrow hit the right location.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(ignoreCancelled = true)
     public void onArrowHit(final ProjectileHitEvent event) {
         // check if it's the arrow shot by the player with active objectve
@@ -56,7 +75,7 @@ public class ArrowShootObjective extends Objective implements Listener {
             return;
         }
         try {
-            final Location location = loc.getValue(onlineProfile);
+            final Location location = this.location.getValue(onlineProfile);
             // check if the arrow is in the right place in the next tick
             // wait one tick, let the arrow land completely
             new BukkitRunnable() {
