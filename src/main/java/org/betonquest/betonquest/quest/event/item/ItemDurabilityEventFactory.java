@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.item;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -20,7 +19,7 @@ import java.util.Random;
  */
 public class ItemDurabilityEventFactory implements PlayerEventFactory {
     /**
-     * Factory to create custom {@link BetonQuestLogger} instance for the event.
+     * Logger factory to create a logger for events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 

@@ -20,7 +20,7 @@ public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
     private final NpcHider npcHider;
 
     /**
-     * Logger factory to create a new custom logger.
+     * Logger factory to create a logger for events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
