@@ -245,7 +245,7 @@ public class CoreQuestTypes {
     /**
      * Create a new Core Quest Types class for registering.
      *
-     * @param loggerFactory     used in event factories
+     * @param loggerFactory     used in factories
      * @param server            the server used for primary server thread access.
      * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
@@ -255,6 +255,7 @@ public class CoreQuestTypes {
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
+     * @param languageProvider  the language provider to get the default language
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,

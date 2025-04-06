@@ -28,7 +28,7 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     public static final Pattern CALC_REGEX = Pattern.compile("calc:(?<expression>.+)");
 
     /**
-     * Logger factory to create a logger for variables.
+     * Logger factory to create a logger for the variables.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -40,7 +40,7 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     /**
      * Create a new factory to create Math Variables.
      *
-     * @param loggerFactory     the logger Factory to create new class specific logger
+     * @param loggerFactory     the logger factory to create a logger for the variables
      * @param variableProcessor the variable processor to use
      */
     public MathVariableFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor) {

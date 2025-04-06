@@ -27,7 +27,7 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerE
     /**
      * Creates the notify all event factory.
      *
-     * @param loggerFactory    the logger factory to use for creating the event logger
+     * @param loggerFactory    the logger factory to create a logger for the events
      * @param data             the data for primary server thread access
      * @param messageParser    the message parser to use for parsing messages
      * @param dataStorage      the storage providing player data

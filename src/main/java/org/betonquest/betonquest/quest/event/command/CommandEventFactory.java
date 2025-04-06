@@ -28,7 +28,7 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Play
     /**
      * Create the command event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public CommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

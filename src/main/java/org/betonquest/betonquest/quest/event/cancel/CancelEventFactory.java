@@ -14,7 +14,7 @@ import org.betonquest.betonquest.instruction.Instruction;
  */
 public class CancelEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -26,7 +26,7 @@ public class CancelEventFactory implements PlayerEventFactory {
     /**
      * Creates a new cancel event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param featureAPI    the feature API
      */
     public CancelEventFactory(final BetonQuestLoggerFactory loggerFactory, final FeatureAPI featureAPI) {

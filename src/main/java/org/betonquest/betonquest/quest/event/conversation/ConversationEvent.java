@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConversationEvent implements OnlineEvent {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -37,7 +37,7 @@ public class ConversationEvent implements OnlineEvent {
     /**
      * Creates a new ConversationEvent.
      *
-     * @param loggerFactory loggerFactory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginMessage the {@link PluginMessage} instance
      * @param conversation  the conversation to start
      * @param startOption   name of the option which the conversation should start at

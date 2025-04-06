@@ -20,7 +20,7 @@ public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
     private final NpcHider npcHider;
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -33,7 +33,7 @@ public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
      * Create the Npc visibility update event factory.
      *
      * @param npcHider      the hider where to update the visibility
-     * @param loggerFactory the logger factory to create new custom logger
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public UpdateVisibilityNowEventFactory(final NpcHider npcHider, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

@@ -23,7 +23,7 @@ import java.util.Locale;
 public class PointEventFactory implements PlayerEventFactory {
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -45,7 +45,7 @@ public class PointEventFactory implements PlayerEventFactory {
     /**
      * Create the points event factory.
      *
-     * @param loggerFactory     logger factory to use
+     * @param loggerFactory     the logger factory to create a logger for the events
      * @param variableProcessor variable processor to use
      * @param dataStorage       the storage providing player data
      * @param pluginMessage     the {@link PluginMessage} instance

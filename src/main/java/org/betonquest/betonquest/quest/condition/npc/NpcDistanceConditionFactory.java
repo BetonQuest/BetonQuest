@@ -28,7 +28,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -37,7 +37,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
      *
      * @param featureAPI    the Feature API
      * @param data          the data used for checking the condition on the main thread
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the conditions
      */
     public NpcDistanceConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data,
                                        final BetonQuestLoggerFactory loggerFactory) {

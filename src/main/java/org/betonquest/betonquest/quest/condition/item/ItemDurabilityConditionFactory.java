@@ -18,7 +18,7 @@ import org.bukkit.inventory.EquipmentSlot;
 public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -30,7 +30,7 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
     /**
      * Create the item durability factory.
      *
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      * @param data          the data used for checking the condition on the main thread
      */
     public ItemDurabilityConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

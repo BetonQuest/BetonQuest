@@ -22,7 +22,7 @@ import java.util.Locale;
 public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     protected final BetonQuestLoggerFactory loggerFactory;
 
@@ -34,7 +34,7 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
     /**
      * Create the abstract take event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginMessage the {@link PluginMessage} instance
      */
     public AbstractTakeEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage) {

@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -62,7 +62,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     /**
      * Create the journal event factory.
      *
-     * @param loggerFactory   logger factory to use
+     * @param loggerFactory   the logger factory to create a logger for the events
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param dataStorage     storage for used player data
      * @param instantSource   instant source to pass on

@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class EffectEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -28,7 +28,7 @@ public class EffectEventFactory implements PlayerEventFactory {
     /**
      * Create the effect event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public EffectEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

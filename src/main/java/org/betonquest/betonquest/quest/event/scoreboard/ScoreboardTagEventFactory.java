@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 public class ScoreboardTagEventFactory implements PlayerEventFactory {
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -28,7 +28,7 @@ public class ScoreboardTagEventFactory implements PlayerEventFactory {
     /**
      * Create the scoreboard tag event factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the condition
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data used for checking the condition on the main thread
      */
     public ScoreboardTagEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

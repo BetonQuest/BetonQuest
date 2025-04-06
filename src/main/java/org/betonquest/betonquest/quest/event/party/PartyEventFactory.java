@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PartyEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -36,7 +36,7 @@ public class PartyEventFactory implements PlayerEventFactory {
     /**
      * Creates a PartyEventFactory instance.
      *
-     * @param loggerFactory   logger factory to use
+     * @param loggerFactory   the logger factory to create a logger for the events
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */

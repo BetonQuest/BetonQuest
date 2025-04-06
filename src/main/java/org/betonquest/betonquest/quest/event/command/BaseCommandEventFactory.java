@@ -31,14 +31,14 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
     protected final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Create the sudo event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public BaseCommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

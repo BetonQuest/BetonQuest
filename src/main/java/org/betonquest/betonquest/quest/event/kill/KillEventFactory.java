@@ -14,7 +14,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
  */
 public class KillEventFactory implements PlayerEventFactory {
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for the events.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -26,7 +26,7 @@ public class KillEventFactory implements PlayerEventFactory {
     /**
      * Creates the kill event factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public KillEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

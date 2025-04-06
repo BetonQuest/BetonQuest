@@ -21,7 +21,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCo
 public class VariableConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Logger factory to create a logger for conditions.
+     * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
@@ -33,7 +33,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     /**
      * Creates a new factory for {@link VariableCondition}s.
      *
-     * @param loggerFactory the logger factory
+     * @param loggerFactory the logger factory to create a logger for the conditions
      * @param data          the data used for primary server access
      */
     public VariableConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {

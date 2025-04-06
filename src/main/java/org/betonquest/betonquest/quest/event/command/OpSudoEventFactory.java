@@ -17,7 +17,7 @@ public class OpSudoEventFactory extends BaseCommandEventFactory {
     /**
      * Create the OpSudoEvent factory.
      *
-     * @param loggerFactory logger factory to use
+     * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
      */
     public OpSudoEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
