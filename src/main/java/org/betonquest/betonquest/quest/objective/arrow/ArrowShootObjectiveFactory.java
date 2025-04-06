@@ -20,7 +20,7 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Custom {@link BetonQuestLoggerFactory} instance for this class.
+     * Creates a new instance of the ArrowShootObjectiveFactory.
      *
      * @param loggerFactory the logger factory to create a logger for the objectives
      */
