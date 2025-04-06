@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.crafting;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,15 +21,24 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Player has to craft specified amount of items.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CraftingObjective extends CountingObjective implements Listener {
-
+    /**
+     * The item to be crafted.
+     */
     private final Item item;
 
-    public CraftingObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the CraftingObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param item         the item to be crafted
+     * @param targetAmount the target amount of items to be crafted
+     * @throws QuestException if there is an error in the instruction
+     */
+    public CraftingObjective(final Instruction instruction, final Item item, final VariableNumber targetAmount) throws QuestException {
         super(instruction, "items_to_craft");
-        item = instruction.getItem();
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.item = item;
+        this.targetAmount = targetAmount;
     }
 
     private static int calculateCraftAmount(final CraftItemEvent event) {
@@ -48,6 +57,11 @@ public class CraftingObjective extends CountingObjective implements Listener {
         };
     }
 
+    /**
+     * Checks if the player has crafted the item.
+     *
+     * @param event the CraftItemEvent
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof final Player player) {
