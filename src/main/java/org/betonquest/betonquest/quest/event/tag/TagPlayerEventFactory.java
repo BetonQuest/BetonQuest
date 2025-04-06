@@ -8,15 +8,10 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.quest.event.DatabaseSaverPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
-import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
-import org.betonquest.betonquest.quest.event.SequentialPlayerlessEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,7 +65,7 @@ public class TagPlayerEventFactory implements PlayerEventFactory, PlayerlessEven
         final List<VariableIdentifier> tags = instruction.getList(VariableIdentifier::new);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> new DoNothingPlayerlessEvent();
-            case "delete", "del" -> createStaticDeleteTagEvent(tags);
+            case "delete", "del" -> new DeleteTagPlayerlessEvent(dataStorage, saver, profileProvider, tags);
             default -> throw new QuestException("Unknown tag action: " + action);
         };
     }
@@ -83,15 +78,5 @@ public class TagPlayerEventFactory implements PlayerEventFactory, PlayerlessEven
     private TagEvent createDeleteTagEvent(final List<VariableIdentifier> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(dataStorage::getOffline, tagChanger);
-    }
-
-    private PlayerlessEvent createStaticDeleteTagEvent(final List<VariableIdentifier> tags) {
-        final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
-        final List<PlayerlessEvent> playerlessEvents = new ArrayList<>(tags.size() + 1);
-        playerlessEvents.add(new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, deleteTagEvent));
-        for (final VariableIdentifier tag : tags) {
-            playerlessEvents.add(new DatabaseSaverPlayerlessEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag.getValue(null))));
-        }
-        return new SequentialPlayerlessEvent(playerlessEvents.toArray(new PlayerlessEvent[0]));
     }
 }
