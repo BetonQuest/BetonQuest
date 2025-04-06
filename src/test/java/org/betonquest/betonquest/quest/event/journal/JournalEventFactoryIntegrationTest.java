@@ -17,6 +17,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapterFactory;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.profile.UUIDProfileProvider;
+import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,7 +81,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private EventAdapterFactory createJournalEventFactory(final BetonQuestLogger logger) {
-        final ProfileProvider profileProvider = new UUIDProfileProvider();
+        final ProfileProvider profileProvider = new UUIDProfileProvider(mock(Server.class));
         final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
         return new EventAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(QuestTypeAPI.class), journalEventFactory, journalEventFactory);
     }

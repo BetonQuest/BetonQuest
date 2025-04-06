@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileValueMap;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
@@ -24,7 +25,6 @@ import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class BrewObjective extends CountingObjective implements Listener {
     private final Item potion;
 
-    private final Map<Location, Profile> locations = new HashMap<>();
+    private final Map<Location, Profile> locations = new ProfileValueMap<>(BetonQuest.getInstance().getProfileProvider());
 
     public BrewObjective(final Instruction instruction) throws QuestException {
         super(instruction, "potions_to_brew");

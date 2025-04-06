@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileKeyMap;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
@@ -41,22 +43,25 @@ public class PlayerDataStorage {
     /**
      * Stored player data for online players.
      */
-    private final Map<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final Map<Profile, PlayerData> playerDataMap;
 
     /**
      * Create a new Storage for Player Data.
      *
-     * @param loggerFactory the logger factory to use in Conversation Resumer
-     * @param log           the logger for debug messages
-     * @param config        the plugin configuration file
-     * @param objectives    the objective processor to start (global) objectives
+     * @param loggerFactory   the logger factory to use in Conversation Resumer
+     * @param log             the logger for debug messages
+     * @param config          the plugin configuration file
+     * @param objectives      the objective processor to start (global) objectives
+     * @param profileProvider the profile provider to use
      */
     public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                             final ConfigAccessor config, final ObjectiveProcessor objectives) {
+                             final ConfigAccessor config, final ObjectiveProcessor objectives,
+                             final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;
         this.objectives = objectives;
+        this.playerDataMap = new ProfileKeyMap<>(profileProvider, new ConcurrentHashMap<>());
     }
 
     /**

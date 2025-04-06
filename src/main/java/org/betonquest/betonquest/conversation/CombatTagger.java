@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class CombatTagger implements Listener {
      * <p>
      * The Runnable removes the entry from the same map after the delay.
      */
-    private static final Map<Profile, BukkitRunnable> TAGGERS = new HashMap<>();
+    private static final Map<Profile, BukkitRunnable> TAGGERS = new ProfileKeyMap<>(BetonQuest.getInstance().getProfileProvider());
 
     /**
      * The profile provider instance.
