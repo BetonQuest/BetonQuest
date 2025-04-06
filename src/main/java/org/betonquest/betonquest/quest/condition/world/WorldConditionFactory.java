@@ -18,7 +18,7 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondit
 public class WorldConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Logger factory to create a logger for events.
+     * Logger factory to create a logger for conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 

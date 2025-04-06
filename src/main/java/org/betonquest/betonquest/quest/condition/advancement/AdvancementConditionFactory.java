@@ -28,7 +28,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger Factory to create new class specific logger.
+     * Logger factory to create a logger for conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 

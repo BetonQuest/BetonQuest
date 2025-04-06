@@ -22,7 +22,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
     private static final String ANY_ENTITY = "any";
 
     /**
-     * Logger factory to create a logger for condition.
+     * Logger factory to create a logger for conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 

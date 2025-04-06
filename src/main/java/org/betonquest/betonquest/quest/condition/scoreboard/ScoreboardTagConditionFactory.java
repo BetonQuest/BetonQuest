@@ -21,7 +21,7 @@ public class ScoreboardTagConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Logger factory to create a logger for condition.
+     * Logger factory to create a logger for conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
