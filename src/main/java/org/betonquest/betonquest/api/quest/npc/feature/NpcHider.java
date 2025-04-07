@@ -10,7 +10,9 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
+import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +48,11 @@ public class NpcHider {
     private final ProfileProvider profileProvider;
 
     /**
+     * Npc types to get NpcIds from a Npc.
+     */
+    private final NpcTypeRegistry npcTypes;
+
+    /**
      * Npc ids mapped to their hide conditions.
      */
     private final Map<NpcID, Set<ConditionID>> npcs;
@@ -63,13 +70,15 @@ public class NpcHider {
      * @param npcProcessor    the processor to get nps
      * @param plugin          the plugin to get config and start the task
      * @param profileProvider the profile provider instance
+     * @param npcTypes        the Npc types to get NpcIds
      */
     public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final BetonQuest plugin, final ProfileProvider profileProvider) {
+                    final BetonQuest plugin, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
         this.log = log;
         this.npcProcessor = npcProcessor;
         this.plugin = plugin;
         this.profileProvider = profileProvider;
+        this.npcTypes = npcTypes;
         this.npcs = new HashMap<>();
     }
 
@@ -152,6 +161,27 @@ public class NpcHider {
             return false;
         }
         return plugin.getQuestTypeAPI().conditions(profile, conditions);
+    }
+
+    /**
+     * Allows to check if a Npc should be hidden.
+     *
+     * @param npc    the Npc to check
+     * @param player the player to check conditions with
+     * @return if the Npc is hidden with a Npc Hider
+     */
+    public boolean isHidden(final Npc<?> npc, final Player player) {
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+        final Set<NpcID> identifier = npcTypes.getIdentifier(npc, onlineProfile);
+        if (identifier.isEmpty()) {
+            return false;
+        }
+        for (final NpcID npcID : identifier) {
+            if (isHidden(npcID, onlineProfile)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

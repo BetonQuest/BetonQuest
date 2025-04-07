@@ -6,12 +6,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
-import org.betonquest.betonquest.compatibility.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
@@ -24,6 +22,9 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrato
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegrator;
+import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
+import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
@@ -262,6 +263,7 @@ public class Compatibility implements Listener {
         register("RedisChat", RedisChatIntegrator.class);
         register("Train_Carts", TrainCartsIntegrator.class);
         register(FancyNpcsIntegrator.PREFIX, FancyNpcsIntegrator.class);
+        register(ZNPCsPlusIntegrator.PREFIX, ZNPCsPlusIntegrator.class);
     }
 
     private void register(final String name, final Class<? extends Integrator> integrator) {

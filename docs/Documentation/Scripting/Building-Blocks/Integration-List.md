@@ -12,7 +12,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
+Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
 
 ## Provided by other plugins
 Some plugins also hook into BetonQuest and provide support by themselves:  
@@ -1230,4 +1230,24 @@ To complete this objective you need to be in a WorldGuard region with specified 
 
 ```YAML title="Example"
 deathZone: "region deathZone entry events:kill"
+```
+
+## ZNPCsPlus[](https://www.spigotmc.org/resources/109380/)
+
+If you have this plugin you can use its Npcs.
+It is a lightweight packet based plugin.
+
+### Npc Integration
+
+ZNPCsPlus supports all [BetonQuest Npc](../../Features/Npcs.md) Features.
+
+#### Npcs section: `npcs`
+
+You simply use the FancyNpcs Npc id as argument.
+To acquire the Npcs ID use the `/npc near 5` command and copy the `ID` from the Npc info.
+
+```YAML title="Example"
+npcs:
+  bernhard: ZNPCsPlus bernhard
+  guard: ZNPCsPlus Guard10
 ```

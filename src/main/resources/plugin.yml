@@ -39,6 +39,7 @@ softdepend:
   - RedisChat
   - Train_Carts
   - FancyNpcs
+  - ZNPCsPlus
 commands:
   betonquest:
     description: General quest command
