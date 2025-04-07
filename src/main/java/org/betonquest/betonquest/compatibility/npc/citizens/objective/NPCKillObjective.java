@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.objective;
+package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;

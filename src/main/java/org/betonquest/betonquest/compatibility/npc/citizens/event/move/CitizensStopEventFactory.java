@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.event.move;
+package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;

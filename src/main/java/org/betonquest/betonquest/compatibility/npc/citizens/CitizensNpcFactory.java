@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.quest.QuestException;

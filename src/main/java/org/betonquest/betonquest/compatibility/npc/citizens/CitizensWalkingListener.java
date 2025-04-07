@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.event.SpawnReason;

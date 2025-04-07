@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.fancynpcs;
+package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;

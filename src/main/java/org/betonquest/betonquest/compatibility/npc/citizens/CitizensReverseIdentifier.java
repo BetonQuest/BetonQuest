@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.compatibility.fancynpcs;
+package org.betonquest.betonquest.compatibility.npc.citizens;
 
+import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcReverseIdentifier;
@@ -12,51 +13,47 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Allows to get NpcIds for a FancyNpcs Npc.
+ * Allows to get NpcIds for a Citizens NPC.
  */
-public class FancyIdentifier implements NpcReverseIdentifier {
-
+public class CitizensReverseIdentifier implements NpcReverseIdentifier {
     /**
-     * The {@link NpcID} prefix.
+     * The Citizens {@link NpcID} prefix.
      */
-    protected final String prefix;
+    private static final String PREFIX = "citizens ";
 
     /**
      * Maps the contents of ids to the ids having that content.
      */
-    protected final Map<String, Set<NpcID>> idsByInstruction;
+    private final Map<String, Set<NpcID>> idsByInstruction;
 
     /**
-     * Create a new Fancy Identifier.
-     *
-     * @param prefix the prefix of relevant Ids
+     * The default constructor.
      */
-    public FancyIdentifier(final String prefix) {
-        this.prefix = prefix + " ";
-        this.idsByInstruction = new HashMap<>();
+    public CitizensReverseIdentifier() {
+        idsByInstruction = new HashMap<>();
     }
 
     @Override
     public Set<NpcID> getIdsFromNpc(final Npc<?> npc, @Nullable final OnlineProfile profile) {
-        if (!(npc.getOriginal() instanceof final de.oliver.fancynpcs.api.Npc original)) {
+        if (!(npc.getOriginal() instanceof final NPC original)) {
             return Set.of();
         }
-        final Set<NpcID> ids = new HashSet<>();
-        final Set<NpcID> byID = idsByInstruction.get(prefix + original.getData().getId());
+        final Set<NpcID> valid = new HashSet<>();
+        final Set<NpcID> byID = idsByInstruction.get(PREFIX + original.getId());
         if (byID != null) {
-            ids.addAll(byID);
+            valid.addAll(byID);
         }
-        final Set<NpcID> byName = idsByInstruction.get(prefix + npc.getName() + " byName");
+        final Set<NpcID> byName = idsByInstruction.get(PREFIX + original.getName() + " byName");
         if (byName != null) {
-            ids.addAll(byName);
+            valid.addAll(byName);
         }
-        return ids;
+        return valid;
     }
 
     @Override
     public void addID(final NpcID npcId) {
         final String instruction = npcId.getInstruction().toString();
-        if (instruction.startsWith(prefix)) {
+        if (instruction.startsWith(PREFIX)) {
             idsByInstruction.computeIfAbsent(instruction, string -> new HashSet<>()).add(npcId);
         }
     }

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.fancynpcs;
+package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.ProfileProvider;

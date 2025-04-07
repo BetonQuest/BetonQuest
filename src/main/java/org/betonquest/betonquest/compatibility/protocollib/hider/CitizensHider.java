@@ -6,7 +6,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.compatibility.citizens.CitizensAdapter;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;

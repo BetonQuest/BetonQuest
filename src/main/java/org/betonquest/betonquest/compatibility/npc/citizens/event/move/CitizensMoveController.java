@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens.event.move;
+package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import net.citizensnpcs.api.ai.event.CancelReason;
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.compatibility.citizens.CitizensWalkingListener;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;

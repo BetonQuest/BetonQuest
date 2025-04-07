@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import java.io.Serial;
 
@@ -37,5 +37,4 @@ public class SkinFormatParseException extends Exception {
     public SkinFormatParseException(final Throwable cause) {
         super(cause);
     }
-
 }

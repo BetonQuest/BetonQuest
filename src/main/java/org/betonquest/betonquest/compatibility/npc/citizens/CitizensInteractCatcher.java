@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCClickEvent;
@@ -11,7 +11,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.compatibility.citizens.event.move.CitizensMoveController;
+import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.objective.EntityInteractObjective;
 import org.bukkit.Bukkit;
