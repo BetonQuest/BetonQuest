@@ -2718,6 +2718,42 @@
     
     
     
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#znpcsplus">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          ZNPCsPlus<a href="https://www.spigotmc.org/resources/109380/"></a>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="ZNPCsPlus" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
   </ul>
   
 </nav>
@@ -6419,6 +6455,42 @@
     
     
     
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#znpcsplus">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          ZNPCsPlus<a href="https://www.spigotmc.org/resources/109380/"></a>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="ZNPCsPlus" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+    
+    
+    
   </ul>
   
 </nav>
@@ -6510,12 +6582,12 @@
 <h1 id="integration-list">Integration List<a class="headerlink" href="#integration-list" title="Permanent link">🔗</a></h1>
 <p>This page contains documentation for known integrations that exist for third party plugins.
 Some integrations also have dedicated pages in the documentation.
-In total 40 plugins have dedicated support for BetonQuest.</p>
+In total 41 plugins have dedicated support for BetonQuest.</p>
 <h2 id="provided-by-betonquest">Provided by BetonQuest<a class="headerlink" href="#provided-by-betonquest" title="Permanent link">🔗</a></h2>
 <p>BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.<br />
 <em>AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
-Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard.</em></p>
+Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus.</em></p>
 <h2 id="provided-by-other-plugins">Provided by other plugins<a class="headerlink" href="#provided-by-other-plugins" title="Permanent link">🔗</a></h2>
 <p>Some plugins also hook into BetonQuest and provide support by themselves:<br />
 <a href="https://www.spigotmc.org/resources/13863/">nuNPCDestinations</a>,
@@ -7761,6 +7833,18 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 </tbody>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">deathZone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;region</span><span class="nv"> </span><span class="s">deathZone</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">events:kill&quot;</span>
+</code></pre></div>
+<h2 id="znpcsplus">ZNPCsPlus<a href="https://www.spigotmc.org/resources/109380/"></a><a class="headerlink" href="#znpcsplus" title="Permanent link">🔗</a></h2>
+<p>If you have this plugin you can use its Npcs.
+It is a lightweight packet based plugin.</p>
+<h3 id="npc-integration_2">Npc Integration<a class="headerlink" href="#npc-integration_2" title="Permanent link">🔗</a></h3>
+<p>ZNPCsPlus supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
+<h4 id="npcs-section-npcs_2">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs_2" title="Permanent link">🔗</a></h4>
+<p>You simply use the FancyNpcs Npc id as argument.
+To acquire the Npcs ID use the <code>/npc near 5</code> command and copy the <code>ID</code> from the Npc info.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">bernhard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus bernhard</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus Guard10</span>
 </code></pre></div>
 
 
