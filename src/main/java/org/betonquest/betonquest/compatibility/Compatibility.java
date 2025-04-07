@@ -24,6 +24,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrat
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
+import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
@@ -262,6 +263,7 @@ public class Compatibility implements Listener {
         register("RedisChat", RedisChatIntegrator.class);
         register("Train_Carts", TrainCartsIntegrator.class);
         register(FancyNpcsIntegrator.PREFIX, FancyNpcsIntegrator.class);
+        register(ZNPCsPlusIntegrator.PREFIX, ZNPCsPlusIntegrator.class);
     }
 
     private void register(final String name, final Class<? extends Integrator> integrator) {

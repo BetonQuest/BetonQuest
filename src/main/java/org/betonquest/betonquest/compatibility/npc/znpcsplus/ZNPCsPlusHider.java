@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.compatibility.npc.fancynpcs;
+package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
-import de.oliver.fancynpcs.api.events.NpcSpawnEvent;
+import lol.pyr.znpcsplus.api.event.NpcSpawnEvent;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 /**
  * Prevents respawning of hidden Npcs.
  */
-public class FancyHider implements Listener {
+public class ZNPCsPlusHider implements Listener {
 
     /**
      * Hider to check current visibility.
@@ -17,11 +17,11 @@ public class FancyHider implements Listener {
     private final NpcHider npcHider;
 
     /**
-     * Create a new Fancy Hider to force Npc hiding.
+     * Create a new ZNPCsPlus Hider to force Npc hiding.
      *
      * @param npcHider the npc hider to check if Npc is hidden
      */
-    public FancyHider(final NpcHider npcHider) {
+    public ZNPCsPlusHider(final NpcHider npcHider) {
         this.npcHider = npcHider;
     }
 
@@ -32,7 +32,7 @@ public class FancyHider implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSpawn(final NpcSpawnEvent event) {
-        if (npcHider.isHidden(new FancyAdapter(event.getNpc()), event.getPlayer())) {
+        if (npcHider.isHidden(new ZNPCsPlusAdapter(event.getEntry()), event.getPlayer())) {
             event.setCancelled(true);
         }
     }

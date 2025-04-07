@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.compatibility.npc.fancynpcs;
+package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
+import lol.pyr.znpcsplus.api.NpcApiProvider;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.compatibility.HookException;
@@ -8,18 +9,19 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.Bukkit;
 
 /**
- * Integrator implementation for the FancyNpcs plugin.
+ * Integrator implementation for the
+ * <a href="https://www.spigotmc.org/resources/znpcsplus.109380/">ZNPCsPlus plugin</a>.
  */
-public class FancyNpcsIntegrator implements Integrator {
+public class ZNPCsPlusIntegrator implements Integrator {
     /**
      * The prefix used before any registered name for distinguishing.
      */
-    public static final String PREFIX = "FancyNpcs";
+    public static final String PREFIX = "ZNPCsPlus";
 
     /**
-     * The empty default Constructor.
+     * The default Constructor.
      */
-    public FancyNpcsIntegrator() {
+    public ZNPCsPlusIntegrator() {
     }
 
     @Override
@@ -27,11 +29,11 @@ public class FancyNpcsIntegrator implements Integrator {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final NpcTypeRegistry npcTypes = betonQuest.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();
-        Bukkit.getPluginManager().registerEvents(new FancyCatcher(profileProvider, npcTypes), betonQuest);
-        final FancyHider hider = new FancyHider(betonQuest.getFeatureAPI().getNpcHider());
+        Bukkit.getPluginManager().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcTypes), betonQuest);
+        final ZNPCsPlusHider hider = new ZNPCsPlusHider(betonQuest.getFeatureAPI().getNpcHider());
         Bukkit.getPluginManager().registerEvents(hider, betonQuest);
-        npcTypes.register(PREFIX, new FancyFactory());
-        npcTypes.registerIdentifier(new FancyIdentifier(PREFIX));
+        npcTypes.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
+        npcTypes.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));
     }
 
     @Override
