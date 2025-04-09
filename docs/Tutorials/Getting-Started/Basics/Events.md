@@ -65,7 +65,9 @@ We will create the item section in the "_package.yml_" file.
 
 ``` YAML title="package.yml" hl_lines="4-5" linenums="1"
 npcs:
-  '1': "Jack"
+  JackNpc: "citizens 1"
+npc_conversations:
+  JackNpc: "Jack"
 
 items:
   steak: "COOKED_BEEF" # (1)!

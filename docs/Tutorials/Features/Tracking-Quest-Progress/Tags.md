@@ -107,12 +107,16 @@ to them after you have introduced yourself to the first NPC.
 
     ``` yaml linenums="1"
     npcs:
-      '1': "Joe"
-      '2': "Bonny"
-      '3': "Fren"
+      JoeNpc: "citizens 1"
+      BonnyNpc: "citizens 2"
+      FrenNpc: "citizens 3"
+    npc_conversations:
+      JoeNpc: "Joe"
+      BonnyNpc: "Bonny"
+      FrenNpc: "Fren"
     ```
     
-Now that we have our basic conversations we need to add tags to it otherwise you could talk to any NPC at any time
+Now that we have our basic conversations we need to add tags to it otherwise you could talk to any NPC at any time,
 and we want to prevent that to get a nice feeling conversation with these NPCs.
 
 ## 2. Adding conditions to the conversations
@@ -121,7 +125,7 @@ We are now adding conditions to the conversations to prevent the player having t
 again and to make sure that you can only talk to the Fren and Joe *after* you get the task to meet those.
 
 First we add events to the correct part of the conversation where the tag should be added and in order to that we 
-will add this events with the corresponding conditions to our events/conditions sections.
+will add these events with the corresponding conditions to our events/conditions sections.
 
 @snippet:tutorials:new-line-highlighting@
 
