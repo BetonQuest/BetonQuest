@@ -1243,7 +1243,7 @@ ZNPCsPlus supports all [BetonQuest Npc](../../Features/Npcs.md) Features.
 
 #### Npcs section: `npcs`
 
-You simply use the FancyNpcs Npc id as argument.
+You simply use the ZNPCsPlus Npc id as argument.
 To acquire the Npcs ID use the `/npc near 5` command and copy the `ID` from the Npc info.
 
 ```YAML title="Example"

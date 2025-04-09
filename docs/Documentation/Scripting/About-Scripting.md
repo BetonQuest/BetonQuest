@@ -74,7 +74,7 @@ The BetonQuest scripting language is based on a few basic building blocks which 
 They can be freely combined to create any quest you want.
 All of these are defined using an _instruction text_.
 
-```YAML title="Intstruction Text Example"
+```YAML title="Instruction Text Example"
 conditions: #(1)!
   myCondition: "health 10" #(2)!
 events:
@@ -167,7 +167,7 @@ Conditions allow you to control what options are available to players in convers
 will be completed. They check if a given in-game state is present and return `true` or `false` as a result.
 
 You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of its name. 
-This only works in the place where conditions are used, i.e. in conversations, not in the _conditions_ section).
+This only works in the place where conditions are used (i.e. in conversations, not in the _conditions_ section).
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
 ```YAML title="Example"
 conditions:

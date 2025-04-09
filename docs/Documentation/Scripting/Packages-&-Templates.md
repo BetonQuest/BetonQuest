@@ -208,5 +208,3 @@ will be used.
 
 You can also use templates in templates. Also in this case, the events, objectives, conditions, etc. that are defined
 in the current template will be used instead of the ones from the template that is being used as a base.
-
-

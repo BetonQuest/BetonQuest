@@ -11,7 +11,7 @@ format. It will then place them inside the newly introduced QuestPackages folder
 QuestPackages folder to the new 2.0 syntax. This way the migration works for both 1.12 and 2.0.0-DEV packages.
 
 !!! warning 
-    Before you start migrating, you should **backup your server**!
+    Before you start migrating, you should **back up your server**!
 
 ## Changes
 
