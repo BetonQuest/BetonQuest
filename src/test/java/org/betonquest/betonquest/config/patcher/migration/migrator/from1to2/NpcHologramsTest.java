@@ -45,6 +45,8 @@ class NpcHologramsTest extends QuestFixture {
                       - 22
                     follow: true
                 """);
+        assertEquals(quest.getQuestConfig().getKeys(true), expected.getKeys(true),
+                "Expected \n" + expected.getKeys(true) + " but found \n" + quest.getQuestConfig().getKeys(true));
         assertEquals(expected.saveToString(), loadFile("holograms.yml").saveToString(),
                 "The hologram does not match the expected format");
     }

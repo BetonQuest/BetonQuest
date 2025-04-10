@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +22,8 @@ class PackageSectionTest extends QuestFixture {
         original.set("enabled", true);
         final Quest quest = setupQuest(original);
         new PackageSection().migrate(quest);
+        assertEquals(quest.getQuestConfig().getKeys(true), Set.of("package", "package.enabled"),
+                "Expected \n[package, package.enabled] but found \n" + quest.getQuestConfig().getKeys(true));
         assertEquals("""
                         package:
                           enabled: true

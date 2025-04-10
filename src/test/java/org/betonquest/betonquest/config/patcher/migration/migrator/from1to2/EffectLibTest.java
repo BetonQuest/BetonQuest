@@ -61,6 +61,8 @@ class EffectLibTest extends QuestFixture {
                          - '!con_tag_finished'
                       checkinterval: 50
                 """);
+        assertEquals(quest.getQuestConfig().getKeys(true), expected.getKeys(true),
+                "Expected \n" + expected.getKeys(true) + " but found \n" + quest.getQuestConfig().getKeys(true));
         assertEquals(expected.saveToString(), loadFile("effects.yml").saveToString(),
                 "Migration result is not correct");
     }

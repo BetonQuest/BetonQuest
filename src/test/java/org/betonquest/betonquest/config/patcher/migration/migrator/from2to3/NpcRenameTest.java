@@ -39,6 +39,8 @@ class NpcRenameTest extends QuestFixture {
                     - One
                     - Two
                 """);
+        assertEquals(quest.getQuestConfig().getKeys(true), expected.getKeys(true),
+                "Expected \n" + expected.getKeys(true) + " but found \n" + quest.getQuestConfig().getKeys(true));
         assertEquals(expected.saveToString(), loadFile("conv.yml").saveToString(),
                 "The change should be saved");
     }

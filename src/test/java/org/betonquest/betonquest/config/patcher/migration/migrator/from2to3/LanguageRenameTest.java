@@ -18,45 +18,57 @@ class LanguageRenameTest extends QuestFixture {
     @Test
     void test_notify_no_language() throws IOException, InvalidConfigurationException {
         final YamlConfiguration originalConfig = new YamlConfiguration();
-        originalConfig.set("events.notifyEvent", "notify Here is no langauge to change");
+        final String path = "events.notifyEvent";
+        final String notifyMessage = "notify Here is no language to change";
+        originalConfig.set(path, notifyMessage);
         final Quest quest = setupQuest(originalConfig);
         new LanguageRename().migrate(quest);
-        assertEquals("notify Here is no langauge to change",
-                loadPackageFile().getString("events.notifyEvent"),
-                "Message without language should not be changed");
+        assertEquals(notifyMessage, quest.getQuestConfig().getString(path),
+                "Message without language should not be changed in quest");
+        assertEquals(notifyMessage, loadPackageFile().getString(path),
+                "Message without language should not be changed in file");
     }
 
     @Test
     void test_notify_change_language() throws IOException, InvalidConfigurationException {
         final YamlConfiguration originalConfig = new YamlConfiguration();
-        originalConfig.set("events.notifyEvent", "notify {en} This is english {de} Und das deutsch!");
+        final String path = "events.notifyEvent";
+        originalConfig.set(path, "notify {en} This is english {de} Und das deutsch!");
         final Quest quest = setupQuest(originalConfig);
         new LanguageRename().migrate(quest);
-        assertEquals("notify {en-US} This is english {de-DE} Und das deutsch!",
-                loadPackageFile().getString("events.notifyEvent"),
-                "Message with language keys should update keys");
+        final String expected = "notify {en-US} This is english {de-DE} Und das deutsch!";
+        assertEquals(expected, quest.getQuestConfig().getString(path),
+                "Message with language keys should update keys in quest");
+        assertEquals(expected, loadPackageFile().getString(path),
+                "Message with language keys should update keys in file");
     }
 
     @Test
     void test_conversations_change_language() throws IOException, InvalidConfigurationException {
         final YamlConfiguration originalConfig = new YamlConfiguration();
+        final String path = "conversations.mayor.player_options.second.text.";
         final String option = "english player option";
-        originalConfig.set("conversations.mayor.player_options.second.text.en", option);
+        originalConfig.set(path + "en", option);
         final String conversationsPath = "conversations.yml";
         final Quest quest = setupQuest(conversationsPath, originalConfig);
         new LanguageRename().migrate(quest);
-        assertEquals(option, loadFile(conversationsPath).getString("conversations.mayor.player_options.second.text.en-US"),
-                "The language key should be changed");
+        assertEquals(option, quest.getQuestConfig().getString(path + "en-US"),
+                "The language key should be changed in quest");
+        assertEquals(option, loadFile(conversationsPath).getString(path + "en-US"),
+                "The language key should be changed in file");
     }
 
     @Test
     void test_compass_change_language() throws IOException, InvalidConfigurationException {
         final YamlConfiguration originalConfig = new YamlConfiguration();
+        final String path = "compass.eins.name.";
         final String name = "Compass Name";
-        originalConfig.set("compass.eins.name.de", name);
+        originalConfig.set(path + "de", name);
         final Quest quest = setupQuest(originalConfig);
         new LanguageRename().migrate(quest);
-        assertEquals(name, loadPackageFile().getString("compass.eins.name.de-DE"),
-                "The language key should be changed");
+        assertEquals(name, quest.getQuestConfig().getString(path + "de-DE"),
+                "The language key should be changed in quest");
+        assertEquals(name, loadPackageFile().getString(path + "de-DE"),
+                "The language key should be changed in file");
     }
 }
