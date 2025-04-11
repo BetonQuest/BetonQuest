@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.consume;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -19,11 +19,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 public class ConsumeObjective extends CountingObjective implements Listener {
 
     /**
-     * The name of the argument that determines the amount of items to consume.
-     */
-    public static final String AMOUNT_ARGUMENT = "amount";
-
-    /**
      * The item to consume.
      */
     private final Item item;
@@ -31,13 +26,15 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
      *
-     * @param instruction the instruction out of a quest package
+     * @param instruction  the instruction out of a quest package
+     * @param item         the item to consume
+     * @param targetAmount the amount of items to consume
      * @throws QuestException if the instruction is invalid
      */
-    public ConsumeObjective(final Instruction instruction) throws QuestException {
+    public ConsumeObjective(final Instruction instruction, final Item item, final VariableNumber targetAmount) throws QuestException {
         super(instruction);
-        item = instruction.getItem();
-        targetAmount = instruction.get(instruction.getOptional(AMOUNT_ARGUMENT, "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.item = item;
+        this.targetAmount = targetAmount;
     }
 
     /**
