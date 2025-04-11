@@ -4747,7 +4747,7 @@ In this tutorial, we will give the player items and teleport them to different l
 <p class="admonition-title">Download Tutorial Setup</p>
 <p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> <strong>Don't do this if you already have the configs of the previous tutorial step.</strong> <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /></p>
 <p>Enter this command in the chat to download the pre-made setup for this tutorial:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 79b984742ae10cbf7ea0006fbbd77486868fc6ed QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 74f0c9ac2766a7fb1fc933829feeaa9d37c1e481 QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest</em>"</p>
@@ -4796,12 +4796,16 @@ We will create the item section in the "<em>package.yml</em>" file. </p>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
-<span class="w">  </span><span class="s">&#39;1&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span>
-
-<span class="hll"><span class="nt">items</span><span class="p">:</span>
-</span><span class="hll"><span class="w">  </span><span class="nt">steak</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COOKED_BEEF&quot;</span><span class="w"> </span><span class="c1"># (1)!</span>
-</span></code></pre></div></td></tr></table></div>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">JackNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">1&quot;</span>
+<span class="nt">npc_conversations</span><span class="p">:</span>
+<span class="hll"><span class="w">  </span><span class="nt">JackNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span>
+</span><span class="hll">
+</span><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">steak</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;COOKED_BEEF&quot;</span><span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div></td></tr></table></div>
 <ol>
 <li>Links the <code>steak</code> item name from your BetonQuest configs to the ingame <code>minecraft:COOKED_BEEF</code> item.</li>
 </ol>
@@ -4886,7 +4890,7 @@ This command will give you the specified amount of steak if you've done everythi
 <p>Get the correct configs by running the following command.<br>
 <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em>
 Linking NPCs to conversations is explained in the <a href="../Conversations/#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 79b984742ae10cbf7ea0006fbbd77486868fc6ed QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 74f0c9ac2766a7fb1fc933829feeaa9d37c1e481 QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
 <h2 id="6-creating-folder-events">6. Creating folder events<a class="headerlink" href="#6-creating-folder-events" title="Permanent link">🔗</a></h2>
@@ -4994,7 +4998,7 @@ Running <code>/gamemode creative</code> will change your game mode to creative.<
 <p>Get the correct configs by running the following command.<br>
 <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em>
 Linking NPCs to conversations is explained in the <a href="../Conversations/#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 79b984742ae10cbf7ea0006fbbd77486868fc6ed QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 74f0c9ac2766a7fb1fc933829feeaa9d37c1e481 QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
 </code></pre></div></p>
 </details>
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">🔗</a></h2>

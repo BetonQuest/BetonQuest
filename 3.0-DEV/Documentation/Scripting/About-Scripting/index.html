@@ -4859,7 +4859,7 @@ that feels alive and reacts to a player's actions.</p>
 <p>The BetonQuest scripting language is based on a few basic building blocks which are outlined in the following sections.
 They can be freely combined to create any quest you want.
 All of these are defined using an <em>instruction text</em>.</p>
-<div class="highlight"><span class="filename">Intstruction Text Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
+<div class="highlight"><span class="filename">Instruction Text Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">myCondition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;health</span><span class="nv"> </span><span class="s">10&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20&quot;</span>
@@ -4929,7 +4929,7 @@ Also, when the variable contains an invalid value for the given objective (e.g. 
 <p>Conditions allow you to control what options are available to players in conversations, how the NPC responds or if the objective
 will be completed. They check if a given in-game state is present and return <code>true</code> or <code>false</code> as a result.</p>
 <p>You can negate the condition (revert its output) by adding an exclamation mark (<code>!</code>) at the beginning of its name. 
-This only works in the place where conditions are used, i.e. in conversations, not in the <em>conditions</em> section).
+This only works in the place where conditions are used (i.e. in conversations, not in the <em>conditions</em> section).
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasFullHealth</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;health</span><span class="nv"> </span><span class="s">20&quot;</span>

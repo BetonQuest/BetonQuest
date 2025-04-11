@@ -4698,18 +4698,22 @@ and a NPC. Therefore, these are the basic tool for story telling.</p>
 <div class="admonition info">
 <p class="admonition-title">Download Tutorial Setup</p>
 <p>Enter this command in the chat to download the pre-made setup for this tutorial:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 79b984742ae10cbf7ea0006fbbd77486868fc6ed QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 74f0c9ac2766a7fb1fc933829feeaa9d37c1e481 QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest</em>"</p>
 </div>
 <h2 id="1-linking-a-conversation-to-a-npc">1. Linking a conversation to a NPC<a class="headerlink" href="#1-linking-a-conversation-to-a-npc" title="Permanent link">🔗</a></h2>
 <p>Usually, conversations happen between a NPC and the player. 
-Therefore, we need to create the <code>npcs</code> section in the <em>package.yml</em> so that the plugin knows which Citizens NPC
-uses which conversation. This is how it works:</p>
+Therefore, we need to create the <code>npcs</code> and <code>npc_conversations</code> sections in the <em>package.yml</em> so that the plugin knows
+which NPC uses which conversation. In this tutorial we will use Citizens. This is how it works:</p>
 <p><div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">package.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
-<span class="w">  </span><span class="s">&#39;1&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">JackNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;citizens</span><span class="nv"> </span><span class="s">1&quot;</span>
+<span class="nt">npc_conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">JackNpc</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span>
 </code></pre></div></td></tr></table></div>
 This links the NPC with the given Citizens ID (<code>1</code>) to the conversation with the given identifier (<code>Jack</code>).
 Save the file after editing.</p>
