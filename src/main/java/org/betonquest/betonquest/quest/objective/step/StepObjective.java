@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.step;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -17,49 +17,57 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * The player must step on the pressure plate
+ * The player must step on the pressure plate.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class StepObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(StepObjective.class);
-
     /**
      * The key for the location property.
      */
     private static final String LOCATION_KEY = "location";
 
-    @Nullable
-    private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
+    /**
+     * The location of the pressure plate.
+     */
     private final VariableLocation loc;
 
-    public StepObjective(final Instruction instruction) throws QuestException {
+    /**
+     * The selector for the pressure plate block.
+     */
+    private final BlockSelector pressurePlateSelector;
+
+    /**
+     * Constructor for the StepObjective.
+     *
+     * @param instruction           the instruction that created this objective
+     * @param log                   the logger for this objective
+     * @param loc                   the location of the pressure plate
+     * @param pressurePlateSelector the selector for the pressure plate block
+     * @throws QuestException if there is an error in the instruction
+     */
+    public StepObjective(final Instruction instruction, final BetonQuestLogger log, final VariableLocation loc, final BlockSelector pressurePlateSelector) throws QuestException {
         super(instruction);
-        loc = instruction.get(VariableLocation::new);
+        this.log = log;
+        this.loc = loc;
+        this.pressurePlateSelector = pressurePlateSelector;
     }
 
-    @Nullable
-    private static BlockSelector getPressurePlateSelector() {
-        try {
-            return new BlockSelector(".*_PRESSURE_PLATE");
-        } catch (final QuestException e) {
-            LOG.reportException(e);
-        }
-        return null;
-    }
-
+    /**
+     * Check if the player stepped on the pressure plate.
+     *
+     * @param event the PlayerInteractEvent
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onStep(final PlayerInteractEvent event) {
-        // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
-            return; // off hand packet, ignore.
+            return;
         }
         if (event.getAction() != Action.PHYSICAL) {
             return;
@@ -75,18 +83,17 @@ public class StepObjective extends Objective implements Listener {
                 return;
             }
 
-            if (PRESSURE_PLATE_SELECTOR == null || !PRESSURE_PLATE_SELECTOR.match(block.getBlockData().getMaterial())) {
+            if (!pressurePlateSelector.match(block.getBlockData().getMaterial())) {
                 return;
             }
             if (!containsPlayer(onlineProfile)) {
                 return;
             }
-            // player stepped on the pressure plate
             if (checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
         } catch (final QuestException e) {
-            LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 
@@ -112,7 +119,7 @@ public class StepObjective extends Objective implements Listener {
             try {
                 block = loc.getValue(profile).getBlock();
             } catch (final QuestException e) {
-                LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
             }
