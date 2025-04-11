@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.variable;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.junit.jupiter.api.extension.ExtendWith;

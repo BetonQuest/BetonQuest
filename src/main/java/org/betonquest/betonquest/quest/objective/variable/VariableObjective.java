@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.variable;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,17 +30,28 @@ import java.util.regex.Pattern;
  * Will not run any events, will not check any conditions.
  * The only way to remove it is using "objective cancel" event.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class VariableObjective extends Objective implements Listener {
-
+    /**
+     * Pattern to match the chat variable format.
+     */
     public static final Pattern CHAT_VARIABLE_PATTERN = Pattern.compile("^(?<key>[a-zA-Z]+): (?<value>.+)$");
 
+    /**
+     * Deactivates the chat input for this objective.
+     */
     private final boolean noChat;
 
-    public VariableObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Creates a new VariableObjective instance.
+     *
+     * @param instruction the instruction that created this objective
+     * @param noChat      whether to disable chat input for this objective
+     * @throws QuestException if there is an error in the instruction
+     */
+    public VariableObjective(final Instruction instruction, final boolean noChat) throws QuestException {
         super(instruction);
         template = VariableData.class;
-        noChat = instruction.hasArgument("no-chat");
+        this.noChat = noChat;
     }
 
     @Override
@@ -57,6 +68,11 @@ public class VariableObjective extends Objective implements Listener {
         }
     }
 
+    /**
+     * Handles chat input.
+     *
+     * @param event the AsyncPlayerChatEvent
+     */
     @EventHandler(ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -117,28 +133,52 @@ public class VariableObjective extends Objective implements Listener {
         return null;
     }
 
-    /**
-     * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
-     */
     private VariableData getVariableData(final Profile profile) {
         return Objects.requireNonNull((VariableData) dataMap.get(profile));
     }
 
+    /**
+     * The data class for the {@link VariableObjective}.
+     */
     public static class VariableData extends ObjectiveData {
-
+        /**
+         * Pattern to split the serialized data into key-value pairs.
+         */
         private static final Pattern VARIABLE_SPLIT_PATTERN = Pattern.compile("(\n)(?=(?:(?:[^\n]*?[^\\\\\n])?(?:\\\\\\\\)+?|[^\n]*?[^\\\\\n]):)");
 
+        /**
+         * Pattern to match the key-value pair in the serialized data.
+         */
         private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^(?<key>(?:[^\n]*?[^\\\\\n])?(?:\\\\\\\\)+?|[^\n]*?[^\\\\\n]):(?<value>.*)$", Pattern.DOTALL);
 
+        /**
+         * Pattern to match escaped characters in the serialized data.
+         */
         private static final Pattern DESERIALIZE_PATTERN = Pattern.compile("\\\\(?<escaped>.)");
 
+        /**
+         * The map containing the variables.
+         */
         private final Map<String, String> variables;
 
+        /**
+         * Constructs a mew {@link org.betonquest.betonquest.api.Objective.ObjectiveData} for this objective.
+         *
+         * @param instruction the data of the objective
+         * @param profile     the profile of the player
+         * @param objID       the ID of the objective
+         */
         public VariableData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
             variables = deserializeData(instruction);
         }
 
+        /**
+         * The static serialize method for the data.
+         *
+         * @param values the map of variables to serialize
+         * @return the serialized string
+         */
         public static String serializeData(final Map<String, String> values) {
             final StringBuilder builder = new StringBuilder();
             for (final Entry<String, String> entry : values.entrySet()) {
@@ -161,6 +201,12 @@ public class VariableObjective extends Objective implements Listener {
                     .replace("\n", "\\n");
         }
 
+        /**
+         * The static deserialize method for the data.
+         *
+         * @param data the data to deserialize
+         * @return the deserialized map of variables
+         */
         public static Map<String, String> deserializeData(final String data) {
             final Map<String, String> variables = new LinkedHashMap<>();
             final String[] rawVariables = VARIABLE_SPLIT_PATTERN.split(data);
@@ -188,11 +234,23 @@ public class VariableObjective extends Objective implements Listener {
             return matcher.appendTail(deserialized).toString();
         }
 
+        /**
+         * Returns the value of the variable with the specified key.
+         *
+         * @param key key of the variable
+         * @return value of the variable or null if it doesn't exist
+         */
         @Nullable
         public String get(final String key) {
             return variables.get(key);
         }
 
+        /**
+         * Adds a new variable to the map.
+         *
+         * @param key   key of the variable
+         * @param value value of the variable
+         */
         public void add(final String key, @Nullable final String value) {
             if (value == null || value.isEmpty()) {
                 variables.remove(key);

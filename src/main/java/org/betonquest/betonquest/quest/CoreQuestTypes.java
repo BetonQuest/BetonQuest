@@ -42,7 +42,6 @@ import org.betonquest.betonquest.objective.ShearObjective;
 import org.betonquest.betonquest.objective.SmeltingObjective;
 import org.betonquest.betonquest.objective.StageObjective;
 import org.betonquest.betonquest.objective.StepObjective;
-import org.betonquest.betonquest.objective.VariableObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -161,6 +160,7 @@ import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactor
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
@@ -442,7 +442,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("stage", StageObjective.class);
         objectiveTypes.register("step", StepObjective.class);
         objectiveTypes.register("tame", new TameObjectiveFactory());
-        objectiveTypes.register("variable", VariableObjective.class);
+        objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", EquipItemObjective.class);
         objectiveTypes.register("jump", JumpObjective.class);
         objectiveTypes.register("resourcepack", ResourcePackObjective.class);
