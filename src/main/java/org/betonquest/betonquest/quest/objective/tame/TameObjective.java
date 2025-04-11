@@ -1,15 +1,14 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.tame;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -18,22 +17,31 @@ import org.bukkit.event.entity.EntityTameEvent;
 /**
  * The player must tame specified amount of specified mobs.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class TameObjective extends CountingObjective implements Listener {
-
+    /**
+     * The entity type to be tamed.
+     */
     private final EntityType type;
 
-    public TameObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the TameObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param type        the entity type to be tamed
+     * @param amount      the target amount of entities to be tamed
+     * @throws QuestException if there is an error in the instruction
+     */
+    public TameObjective(final Instruction instruction, final EntityType type, final VariableNumber amount) throws QuestException {
         super(instruction, "animals_to_tame");
-
-        type = instruction.getEnum(EntityType.class);
-        if (type.getEntityClass() == null || !Tameable.class.isAssignableFrom(type.getEntityClass())) {
-            throw new QuestException("Entity cannot be tamed: " + type);
-        }
-
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.type = type;
+        this.targetAmount = amount;
     }
 
+    /**
+     * Handles the taming event.
+     *
+     * @param event the taming event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onTaming(final EntityTameEvent event) {
         if (event.getOwner() instanceof Player) {
