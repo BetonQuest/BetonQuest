@@ -180,6 +180,17 @@ package:
   enabled: false
 ```
 
+### Package Version
+
+Each package has a `version` inside the `package` section that is used by the automatic migrator.
+When no version is set the newest version will be set on loading and legacy migrations (before BQ 3.0) will be applied.
+Any new `package` section will be added at the end of the file, so you probably want to move that to the file's top.
+
+```YAML
+package:
+  version: 3.0.0-QUEST-1 # Don't change this! The plugin's automatic quest updater handles it.
+```
+
 ## Templates
 
 You should have experience creating and using [packages](#packages) before you start using templates.
