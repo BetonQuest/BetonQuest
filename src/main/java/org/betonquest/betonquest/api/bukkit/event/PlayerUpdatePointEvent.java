@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fired when a player's points are updated.
+ * Fired when a profile's points are updated.
  */
 public class PlayerUpdatePointEvent extends ProfileEvent {
     /**

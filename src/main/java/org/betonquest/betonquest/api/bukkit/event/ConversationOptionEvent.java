@@ -6,7 +6,7 @@ import org.betonquest.betonquest.conversation.ResolvedOption;
 import org.bukkit.event.HandlerList;
 
 /**
- * Signals that a player has selected an option in a conversation.
+ * Signals that a profile has selected an option in a conversation.
  */
 @SuppressWarnings("PMD.DataClass")
 public class ConversationOptionEvent extends ProfileEvent {

@@ -118,6 +118,7 @@ nav:
           - 'Configuration Files': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
           - 'Schedules': API/Schedules.md
+          - 'Events': API/Events.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Donate Money': Participate/Donating-Money.md
