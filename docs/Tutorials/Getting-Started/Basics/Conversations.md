@@ -24,12 +24,14 @@ and a NPC. Therefore, these are the basic tool for story telling.
 ## 1. Linking a conversation to a NPC
 
 Usually, conversations happen between a NPC and the player. 
-Therefore, we need to create the `npcs` section in the _package.yml_ so that the plugin knows which Citizens NPC
-uses which conversation. This is how it works:
+Therefore, we need to create the `npcs` and `npc_conversations` sections in the _package.yml_ so that the plugin knows
+which NPC uses which conversation. In this tutorial we will use Citizens. This is how it works:
 
 ``` YAML title="package.yml" linenums="1"
 npcs:
-  '1': "Jack"
+  JackNpc: "citizens 1"
+npc_conversations:
+  JackNpc: "Jack"
 ```
 This links the NPC with the given Citizens ID (`1`) to the conversation with the given identifier (`Jack`).
 Save the file after editing.

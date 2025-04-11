@@ -103,7 +103,10 @@ Then play around with this system to get a feel for it.
     === "package.yml"
         ```YAML
         {==npcs==}:
-          '0': "Jones"
+          JonesNpc: "citizens 0"
+          
+        {==npc_conversations==}:
+          JonesNpc: "Jones"
           
         {==items==}:
           oakLog: "minecraft:oak_log"
@@ -200,7 +203,10 @@ It's the exact same quest but in just one file:
 !!! Example
      ```YAML title="package.yml"
      {==npcs==}:
-       '0': "Jones"
+       JonesNpc: "citizens 0"
+       
+     {==npc_conversations==}:
+       JonesNpc: "Jones"
        
      {==items==}:
        oakLog: "minecraft:oak_log"

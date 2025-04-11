@@ -87,7 +87,9 @@ To add the item to the list, let's reopen the "_package.yml_" file.
 
 ``` YAML title="package.yml" hl_lines="6" linenums="1"
 npcs:
-  '1': "Jack"
+  JackNpc: "citizens 1"
+npc_conversations:
+  JackNpc: "Jack"
 
 items:
   steak: "COOKED_BEEF"
