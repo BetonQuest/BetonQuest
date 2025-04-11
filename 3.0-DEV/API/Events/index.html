@@ -10,13 +10,13 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/BukkitConfigurations/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/API/Events/">
       
       
-        <link rel="prev" href="../Configuration-Files/">
+        <link rel="prev" href="../Schedules/">
       
       
-        <link rel="next" href="../Schedules/">
+        <link rel="next" href="../../Participate/Overview/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Bukkit Configurations - BetonQuest</title>
+        <title>Events - BetonQuest</title>
       
     
     
@@ -98,7 +98,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#decorator" class="md-skip">
+        <a href="#listening-to-betonquest-bukkit-events" class="md-skip">
           Skip to content
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bukkit Configurations
+              Events
             
           </span>
         </div>
@@ -3359,36 +3359,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 12.13c-.14 0-.28.06-.39.17l-1 1 2.05 2.05 1-1c.22-.21.22-.56 0-.77l-1.28-1.28a.53.53 0 0 0-.38-.17m-1.97 1.75L13 19.94V22h2.06l6.06-6.07zM19 11.12l-7.09 7.08c-.41-.25-.91-.4-1.41-.4-1.5 0-2.7 1.2-2.7 2.7V22H4a2 2 0 0 1-2-2v-3.8h1.5c1.5 0 2.7-1.2 2.7-2.7S5 10.8 3.5 10.8H2V7c0-1.1.9-2 2-2h4V3.5a2.5 2.5 0 0 1 5 0V5h4a2 2 0 0 1 2 2z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    Bukkit Configurations
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../BukkitConfigurations/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.04 12.13c-.14 0-.28.06-.39.17l-1 1 2.05 2.05 1-1c.22-.21.22-.56 0-.77l-1.28-1.28a.53.53 0 0 0-.38-.17m-1.97 1.75L13 19.94V22h2.06l6.06-6.07zM19 11.12l-7.09 7.08c-.41-.25-.91-.4-1.41-.4-1.5 0-2.7 1.2-2.7 2.7V22H4a2 2 0 0 1-2-2v-3.8h1.5c1.5 0 2.7-1.2 2.7-2.7S5 10.8 3.5 10.8H2V7c0-1.1.9-2 2-2h4V3.5a2.5 2.5 0 0 1 5 0V5h4a2 2 0 0 1 2 2z"/></svg>
@@ -3405,190 +3379,6 @@
   
 
       </a>
-      
-        
-
-
-
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-  
-
-  
-  
-
-  
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Table of contents
-  </label>
-  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#decorator">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Decorator
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#handle">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Handle
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#unmodifiable">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Unmodifiable
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#lazy">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Lazy
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Fallback
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi-fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi Fallback
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-  </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -3627,10 +3417,36 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Events/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 12h9.8l-2.5-2.5 1.4-1.4 4.9 4.9-4.9 4.9-1.4-1.4 2.5-2.5H9zm12 5.4V20H3V6h18v2.6l2 2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-4.6z"/></svg>
@@ -3647,6 +3463,75 @@
   
 
       </a>
+      
+        
+
+
+
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+  
+
+  
+  
+
+  
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Table of contents
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#listening-to-betonquest-bukkit-events">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Listening to BetonQuest (Bukkit) events
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#event-list">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Event List
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+  </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -4479,13 +4364,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#decorator">
+  <a class="md-nav__link" href="#listening-to-betonquest-bukkit-events">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Decorator
+          Listening to BetonQuest (Bukkit) events
         </span>
 
       
@@ -4502,128 +4387,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#handle">
+  <a class="md-nav__link" href="#event-list">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Handle
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#unmodifiable">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Unmodifiable
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#lazy">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Lazy
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Fallback
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#multi-fallback">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Multi Fallback
+          Event List
         </span>
 
       
@@ -4716,7 +4486,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/BukkitConfigurations.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/API/Events.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -4724,7 +4494,7 @@
   
 
 
-  <h1>Bukkit Configurations</h1>
+  <h1>Events</h1>
 
 <details class="warning">
 <summary>API State: <code>Stable</code></summary>
@@ -4743,66 +4513,83 @@ Both our own and third party testing showed that this part of the API is complet
 Only bugs and major conceptual problems would lead to more changes.</p>
 <p><strong>This part of the API should be safe to use. We try to keep it compatible with previous versions if changes are needed.</strong></p>
 </details>
-<p>We implemented multiple different <code>org.bukkit.configuration.ConfigurationSection</code>'s and <code>Configuration</code>'s to make it 
-easier to work with configurations and to implement some new features.</p>
-<p>We have the following implementations:</p>
-<h2 id="decorator">Decorator<a class="headerlink" href="#decorator" title="Permanent link">🔗</a></h2>
-<p>Basically a wrapper for a <code>ConfigurationSection</code> simply delegating all calls to the wrapped section.
-In that way, you can override specific methods without having to override all methods for custom implementations.
-Mainly used for internal purposes, but can be used to create even more custom implementations.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator</code></li>
-</ul>
-<h2 id="handle">Handle<a class="headerlink" href="#handle" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Decorator</code>. Handles any modifications to the configuration and wraps all values that are an instance
-of <code>ConfigurationSection</code> with the same implementation. This should prevent any modifications to the configuration
-that are not done through the handler. This is the implementation actually used to create more custom implementations.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection</code></li>
-</ul>
-<h2 id="unmodifiable">Unmodifiable<a class="headerlink" href="#unmodifiable" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Handle</code>. Makes the configuration unmodifiable. This means no values can be added, removed or modified.
-Also, no new Sections can be created. All modifications throw a <code>UnsupportedOperationException</code>.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection</code></li>
-</ul>
-<h2 id="lazy">Lazy<a class="headerlink" href="#lazy" title="Permanent link">🔗</a></h2>
-<p>Based on <code>Handle</code>.
-This configuration does only create a MemorySection that is not registered to the parent, until a value is set.
-This means it can be read without creating a new section in the parent configuration.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.lazy.LazyConfigurationSection</code></li>
-</ul>
-<h2 id="fallback">Fallback<a class="headerlink" href="#fallback" title="Permanent link">🔗</a></h2>
-<p>This is a configuration buildup from two <code>ConfigurationSection</code>'s.
-One is the original where all modifications are done, and the other one is the fallback configuration.
-The fallback configuration is used to look up values that are not contained in the original configuration.
-This is useful for default values or global configurations.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection</code></li>
-</ul>
-<h2 id="multi">Multi<a class="headerlink" href="#multi" title="Permanent link">🔗</a></h2>
-<p>This is not a ConfigurationSection of bukkit, it is an additional interface.
-This interface adds methods to manage configs that are build from <strong>multiple</strong> <code>ConfigurationSection</code>'s.
-The MultiSectionConfiguration is an implementation of this interface that implements a merging method that does not
-allow any conflicting values resulting in a <code>KeyConflictException</code>.
-If mismatching states or settings are found in one <code>ConfigurationSection</code> a <code>InvalidSubConfigurationException</code> is thrown.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException</code></li>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException</code></li>
-</ul>
-<h2 id="multi-fallback">Multi Fallback<a class="headerlink" href="#multi-fallback" title="Permanent link">🔗</a></h2>
-<p>This is a Fallback configuration that also implements the MultiConfiguration interface.
-In this way, a multi configuration can have the advantage of a fallback configuration to look up values that are not
-contained in the original configuration.</p>
-<ul>
-<li><code>org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration</code></li>
-</ul>
+<h2 id="listening-to-betonquest-bukkit-events">Listening to BetonQuest (Bukkit) events<a class="headerlink" href="#listening-to-betonquest-bukkit-events" title="Permanent link">🔗</a></h2>
+<p>BetonQuest exposes some of its actions as Bukkit events.<br />
+You can find these events in <code>org.betonquest.betonquest.api.bukkit.event</code> package.
+<a href="https://bukkit.fandom.com/wiki/Event_API_Reference#The_Basics">Use them as you would use any other Bukkit event</a>.</p>
+<p>The event API itself is stable as the API state tells, but some events will change from time to time or get renamed/replaced.
+If you need any additional events, create a discussion or pull request on GitHub.</p>
+<h2 id="event-list">Event List<a class="headerlink" href="#event-list" title="Permanent link">🔗</a></h2>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConversationOptionEvent</td>
+<td>Signals that a profile has selected an option in a conversation.</td>
+</tr>
+<tr>
+<td>LoadDataEvent</td>
+<td>Fires after BetonQuest finished loading or reloading all events, conditions, objectives, conversations etc.</td>
+</tr>
+<tr>
+<td>PlayerConversationEndEvent</td>
+<td>Fires when a profile ends a conversation.</td>
+</tr>
+<tr>
+<td>PlayerConversationStartEvent</td>
+<td>Fires when profile starts a conversation.</td>
+</tr>
+<tr>
+<td>PlayerJournalAddEvent</td>
+<td>Fires when new content is added to a profile's journal.</td>
+</tr>
+<tr>
+<td>PlayerJournalDeleteEvent</td>
+<td>Fires when content is removed from a profile's journal.</td>
+</tr>
+<tr>
+<td>PlayerObjectiveChangeEvent</td>
+<td>Fires when a profile's objectives change.</td>
+</tr>
+<tr>
+<td>PlayerTagAddEvent</td>
+<td>Fired when a tag is added to a profile.</td>
+</tr>
+<tr>
+<td>PlayerTagRemoveEvent</td>
+<td>Fired when a tag is removed from a profile.</td>
+</tr>
+<tr>
+<td>PlayerUpdatePointEvent</td>
+<td>Fired when a profile's points are updated.</td>
+</tr>
+<tr>
+<td>ProfileEvent (abstract)</td>
+<td>Represents a profile related event.</td>
+</tr>
+<tr>
+<td>QuestCompassTargetChangeEvent</td>
+<td>Fired when the compass calls the setCompassTarget method.</td>
+</tr>
+<tr>
+<td>QuestDataUpdateEvent</td>
+<td>Fired when the quest data updates.</td>
+</tr>
+<tr>
+<td>Npc/NpcInteractEvent</td>
+<td>Event for interaction with BetonQuest Npcs.</td>
+</tr>
+<tr>
+<td>Npc/NpcVisibilityUpdateEvent</td>
+<td>Event to call if a Npc is externally modified and its BetonQuest features needs recalibration.</td>
+</tr>
+</tbody>
+</table>
 
 
 
