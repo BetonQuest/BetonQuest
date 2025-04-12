@@ -13,7 +13,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
-import org.betonquest.betonquest.objective.ResourcePackObjective;
+import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -118,8 +118,8 @@ public class JoinQuitListener implements Listener {
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
         if (resourcePackStatus != null) {
             questTypeAPI.getActive(onlineProfile).stream()
-                    .filter(objective -> objective instanceof ResourcePackObjective)
-                    .map(objective -> (ResourcePackObjective) objective)
+                    .filter(objective -> objective instanceof ResourcepackObjective)
+                    .map(objective -> (ResourcepackObjective) objective)
                     .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
         }
     }

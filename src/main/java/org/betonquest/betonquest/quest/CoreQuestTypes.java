@@ -36,7 +36,6 @@ import org.betonquest.betonquest.objective.NpcInteractObjective;
 import org.betonquest.betonquest.objective.NpcRangeObjective;
 import org.betonquest.betonquest.objective.PasswordObjective;
 import org.betonquest.betonquest.objective.PickupObjective;
-import org.betonquest.betonquest.objective.ResourcePackObjective;
 import org.betonquest.betonquest.objective.RideObjective;
 import org.betonquest.betonquest.objective.ShearObjective;
 import org.betonquest.betonquest.objective.SmeltingObjective;
@@ -158,6 +157,7 @@ import org.betonquest.betonquest.quest.objective.action.ActionObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
 import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
@@ -445,7 +445,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", EquipItemObjective.class);
         objectiveTypes.register("jump", JumpObjective.class);
-        objectiveTypes.register("resourcepack", ResourcePackObjective.class);
+        objectiveTypes.register("resourcepack", ResourcepackObjective.class);
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
