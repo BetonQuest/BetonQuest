@@ -1,7 +1,6 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.equip;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import org.apache.commons.lang3.EnumUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -14,24 +13,32 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import java.util.Locale;
-
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
+/**
+ * Requires the player to equip a specific item in a specific slot.
+ */
 public class EquipItemObjective extends Objective implements Listener {
+    /**
+     * The item that needs to be equipped.
+     */
     private final Item item;
 
+    /**
+     * The slot type where the item needs to be equipped.
+     */
     private final PlayerArmorChangeEvent.SlotType slotType;
 
-    public EquipItemObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the EquipItemObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param item        the item that needs to be equipped
+     * @param slotType    the slot type where the item needs to be equipped
+     * @throws QuestException if there is an error in the instruction
+     */
+    public EquipItemObjective(final Instruction instruction, final Item item, final PlayerArmorChangeEvent.SlotType slotType) throws QuestException {
         super(instruction);
-        final String slot = instruction.next();
-        item = instruction.getItem();
-
-        if (!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)) {
-            throw new QuestException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
-        }
-
-        slotType = PlayerArmorChangeEvent.SlotType.valueOf(slot.toUpperCase(Locale.ROOT));
+        this.item = item;
+        this.slotType = slotType;
     }
 
     @Override
@@ -39,6 +46,11 @@ public class EquipItemObjective extends Objective implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    /**
+     * Check if the player has equipped the right item in the right slot.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
