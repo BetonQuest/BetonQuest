@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.resourcepack;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -18,7 +18,7 @@ import java.util.Locale;
 /**
  * Represents an objective that is completed when the status of the received resource pack matches the target status.
  */
-public class ResourcePackObjective extends Objective implements Listener {
+public class ResourcepackObjective extends Objective implements Listener {
 
     /**
      * The target status for the received resource pack.
@@ -26,14 +26,15 @@ public class ResourcePackObjective extends Objective implements Listener {
     private final VariableString targetStatus;
 
     /**
-     * Constructs a new ResourcePackObjective instance.
+     * Constructs a new ResourcepackObjective instance.
      *
-     * @param instruction The instruction object.
+     * @param instruction  The instruction object.
+     * @param targetStatus The target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcePackObjective(final Instruction instruction) throws QuestException {
+    public ResourcepackObjective(final Instruction instruction, final VariableString targetStatus) throws QuestException {
         super(instruction);
-        targetStatus = instruction.get(VariableString::new);
+        this.targetStatus = targetStatus;
     }
 
     @Override
