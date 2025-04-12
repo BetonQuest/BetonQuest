@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.login;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -16,14 +16,23 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * Requires the player to join the server.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class LoginObjective extends Objective implements Listener {
-
+    /**
+     * Constructor for the LoginObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @throws QuestException if there is an error in the instruction
+     */
     public LoginObjective(final Instruction instruction) throws QuestException {
         super(instruction);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    /**
+     * Check if the player has joined the server.
+     *
+     * @param event the event that triggers when the player joins
+     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onJoin(final PlayerJoinEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());

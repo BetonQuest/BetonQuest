@@ -28,7 +28,6 @@ import org.betonquest.betonquest.objective.FishObjective;
 import org.betonquest.betonquest.objective.JumpObjective;
 import org.betonquest.betonquest.objective.KillPlayerObjective;
 import org.betonquest.betonquest.objective.LocationObjective;
-import org.betonquest.betonquest.objective.LoginObjective;
 import org.betonquest.betonquest.objective.LogoutObjective;
 import org.betonquest.betonquest.objective.NpcInteractObjective;
 import org.betonquest.betonquest.objective.PasswordObjective;
@@ -154,6 +153,7 @@ import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.login.LoginObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.npc.NpcRangeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
 import org.betonquest.betonquest.quest.objective.shear.ShearObjectiveFactory;
@@ -429,7 +429,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("interact", EntityInteractObjective.class);
         objectiveTypes.register("kill", KillPlayerObjective.class);
         objectiveTypes.register("location", LocationObjective.class);
-        objectiveTypes.register("login", LoginObjective.class);
+        objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", LogoutObjective.class);
         objectiveTypes.register("mobkill", new MobKillObjectiveFactory());
         objectiveTypes.register("npcinteract", NpcInteractObjective.class);
