@@ -30,7 +30,6 @@ import org.betonquest.betonquest.objective.KillPlayerObjective;
 import org.betonquest.betonquest.objective.LocationObjective;
 import org.betonquest.betonquest.objective.LoginObjective;
 import org.betonquest.betonquest.objective.LogoutObjective;
-import org.betonquest.betonquest.objective.MobKillObjective;
 import org.betonquest.betonquest.objective.NpcInteractObjective;
 import org.betonquest.betonquest.objective.PasswordObjective;
 import org.betonquest.betonquest.objective.PickupObjective;
@@ -154,6 +153,7 @@ import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactor
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.npc.NpcRangeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
 import org.betonquest.betonquest.quest.objective.shear.ShearObjectiveFactory;
@@ -431,7 +431,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("location", LocationObjective.class);
         objectiveTypes.register("login", LoginObjective.class);
         objectiveTypes.register("logout", LogoutObjective.class);
-        objectiveTypes.register("mobkill", MobKillObjective.class);
+        objectiveTypes.register("mobkill", new MobKillObjectiveFactory());
         objectiveTypes.register("npcinteract", NpcInteractObjective.class);
         objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
         objectiveTypes.register("password", PasswordObjective.class);

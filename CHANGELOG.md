@@ -41,6 +41,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `events`, `objectives`, `conditions`, `variables` and co. are now case insensitive
 - underscores aren't replaced anymore, instead quoting needs to be used now
   - `shear` objective - name 
+  - `mobkill` objective - name
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
