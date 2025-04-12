@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.enchant;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
@@ -22,28 +22,46 @@ import java.util.Map;
 /**
  * An objective that requires the player to enchant a {@link QuestItem}.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class EnchantObjective extends CountingObjective implements Listener {
-    private static final String JUST_ONE_ENCHANT = "one";
-
+    /**
+     * The item to enchant.
+     */
     private final Item item;
 
+    /**
+     * The desired enchantments.
+     */
     private final List<EnchantmentData> desiredEnchantments;
 
-    private boolean requireOne;
+    /**
+     * True if at least one enchantment is required, false if all enchantments are required.
+     */
+    private final boolean requireOne;
 
-    public EnchantObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the EnchantObjective.
+     *
+     * @param instruction         the instruction that created this objective
+     * @param targetAmount        the target amount of items to enchant
+     * @param item                the item to enchant
+     * @param desiredEnchantments the desired enchantments
+     * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
+     * @throws QuestException if there is an error in the instruction
+     */
+    public EnchantObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item,
+                            final List<EnchantmentData> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, "items_to_enchant");
-        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        item = instruction.getItem();
-        desiredEnchantments = instruction.getList(EnchantmentData::convert);
-        if (desiredEnchantments.isEmpty()) {
-            throw new QuestException("No enchantments were given! You must specify at least one enchantment.");
-        }
-
-        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = JUST_ONE_ENCHANT.equalsIgnoreCase(mode));
+        this.targetAmount = targetAmount;
+        this.item = item;
+        this.desiredEnchantments = desiredEnchantments;
+        this.requireOne = requireOne;
     }
 
+    /**
+     * Checks if the item is enchanted with the desired enchantments.
+     *
+     * @param event the enchantment event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getEnchanter());
