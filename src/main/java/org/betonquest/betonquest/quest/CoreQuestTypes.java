@@ -39,7 +39,6 @@ import org.betonquest.betonquest.objective.PickupObjective;
 import org.betonquest.betonquest.objective.RideObjective;
 import org.betonquest.betonquest.objective.ShearObjective;
 import org.betonquest.betonquest.objective.SmeltingObjective;
-import org.betonquest.betonquest.objective.StageObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -158,6 +157,7 @@ import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactor
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
+import org.betonquest.betonquest.quest.objective.stage.StageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
@@ -439,7 +439,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("ride", RideObjective.class);
         objectiveTypes.register("shear", ShearObjective.class);
         objectiveTypes.register("smelt", SmeltingObjective.class);
-        objectiveTypes.register("stage", StageObjective.class);
+        objectiveTypes.register("stage", new StageObjectiveFactory(loggerFactory));
         objectiveTypes.register("step", new StepObjectiveFactory(loggerFactory));
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("variable", new VariableObjectiveFactory());
