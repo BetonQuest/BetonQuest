@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.pickup;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,17 +15,36 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-@SuppressWarnings("PMD.CommentRequired")
+import java.util.List;
+
+/**
+ * Represents an objective that is completed when a player picks up a specific item.
+ */
 public class PickupObjective extends CountingObjective implements Listener {
+    /**
+     * The target amount of items to be picked up.
+     */
+    private final List<Item> pickupItems;
 
-    private final Item[] pickupItems;
-
-    public PickupObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the PickupObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param pickupItems  the items to be picked up
+     * @param targetAmount the target amount of items to be picked up
+     * @throws QuestException if there is an error in the instruction
+     */
+    public PickupObjective(final Instruction instruction, final List<Item> pickupItems, final VariableNumber targetAmount) throws QuestException {
         super(instruction, "items_to_pickup");
-        pickupItems = instruction.getItemList();
-        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.pickupItems = pickupItems;
+        this.targetAmount = targetAmount;
     }
 
+    /**
+     * Handles when the player picks up an item.
+     *
+     * @param event The event object.
+     */
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
         if (isValidItem(event.getItem().getItemStack()) && event.getEntity() instanceof Player) {
