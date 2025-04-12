@@ -1,11 +1,11 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.shear;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
@@ -16,31 +16,45 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.regex.Pattern;
-
 /**
  * Requires the player to shear a sheep.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ShearObjective extends CountingObjective implements Listener {
-    private static final Pattern UNDERSCORE = Pattern.compile("(?<!\\\\)_");
 
-    private static final Pattern ESCAPED_UNDERSCORE = Pattern.compile("(\\\\)_");
-
+    /**
+     * The color of the sheep to shear.
+     */
     @Nullable
     private final DyeColor color;
 
+    /**
+     * The name of the sheep to shear.
+     */
     @Nullable
     private final String name;
 
-    public ShearObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the ShearObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param targetAmount the target amount of sheep to shear
+     * @param name         the name of the sheep to shear
+     * @param color        the color of the sheep to shear
+     * @throws QuestException if there is an error in the instruction
+     */
+    public ShearObjective(final Instruction instruction, final VariableNumber targetAmount, @Nullable final String name,
+                          @Nullable final DyeColor color) throws QuestException {
         super(instruction, "sheep_to_shear");
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        final String rawName = instruction.getOptional("name");
-        name = rawName != null ? ESCAPED_UNDERSCORE.matcher(UNDERSCORE.matcher(rawName).replaceAll(" ")).replaceAll("_") : null;
-        color = instruction.getEnum(instruction.getOptional("color"), DyeColor.class, null);
+        this.targetAmount = targetAmount;
+        this.name = name;
+        this.color = color;
     }
 
+    /**
+     * Check if the player sheared the right sheep.
+     *
+     * @param event the event that triggered when the player sheared the sheep
+     */
     @EventHandler(ignoreCancelled = true)
     public void onShear(final PlayerShearEntityEvent event) {
         if (event.getEntity().getType() != EntityType.SHEEP) {
