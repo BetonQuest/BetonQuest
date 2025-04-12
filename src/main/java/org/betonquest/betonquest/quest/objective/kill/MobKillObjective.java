@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.kill;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,9 +6,8 @@ import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -25,27 +24,49 @@ import java.util.List;
  * the player to kill specifically named mobs and notify them about the required
  * amount.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MobKillObjective extends CountingObjective implements Listener {
+    /**
+     * The entity types that should be killed.
+     */
     private final List<EntityType> entities;
 
+    /**
+     * The optional name of the mob.
+     */
     @Nullable
     protected String name;
 
+    /**
+     * The optional marker for the mobs to identify them.
+     */
     @Nullable
     protected VariableIdentifier marked;
 
-    public MobKillObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the MobKillObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param entities     the entity types that should be killed
+     * @param targetAmount the amount of mobs to kill
+     * @param name         the optional name of the mob
+     * @param marked       the optional marker for the mobs to identify them
+     * @throws QuestException if there is an error in the instruction
+     */
+    public MobKillObjective(final Instruction instruction, final List<EntityType> entities,
+                            final VariableNumber targetAmount, @Nullable final String name,
+                            @Nullable final VariableIdentifier marked) throws QuestException {
         super(instruction, "mobs_to_kill");
-        entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        name = instruction.getOptional("name");
-        if (name != null) {
-            name = Utils.format(name, true, false).replace('_', ' ');
-        }
-        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        this.entities = entities;
+        this.targetAmount = targetAmount;
+        this.name = name;
+        this.marked = marked;
     }
 
+    /**
+     * Check if the player has killed the specified mob.
+     *
+     * @param event the event containing the mob kill information
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
