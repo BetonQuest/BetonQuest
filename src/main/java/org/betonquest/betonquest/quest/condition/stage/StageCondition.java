@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.objective.StageObjective;
 import org.betonquest.betonquest.quest.condition.number.Operation;
+import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 
 /**
  * The stage condition class to compare the players stage with a given stage.

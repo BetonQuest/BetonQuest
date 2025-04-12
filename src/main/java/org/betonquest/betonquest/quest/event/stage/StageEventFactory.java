@@ -9,7 +9,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.objective.StageObjective;
+import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;

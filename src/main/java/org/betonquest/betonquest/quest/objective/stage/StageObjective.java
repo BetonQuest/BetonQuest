@@ -1,12 +1,12 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.stage;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;
@@ -35,16 +35,18 @@ public class StageObjective extends Objective {
     /**
      * Creates a new stage objective.
      *
-     * @param instruction the instruction
+     * @param instruction       the instruction
+     * @param log               the logger for this objective
+     * @param stageMap          the mapping of stages to indices
+     * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final Instruction instruction) throws QuestException {
+    public StageObjective(final Instruction instruction, final BetonQuestLogger log, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
         super(instruction);
-        log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
         template = StageData.class;
-
-        this.stageMap = new StageMap(instruction.getList(entry -> entry));
-        this.preventCompletion = instruction.hasArgument("preventCompletion");
+        this.log = log;
+        this.stageMap = stageMap;
+        this.preventCompletion = preventCompletion;
     }
 
     @Override
@@ -214,20 +216,27 @@ public class StageObjective extends Objective {
     /**
      * A mapping of stages to indices in a bidirectional map.
      */
-    public class StageMap {
+    public static class StageMap {
         /**
          * The mapping of stages to indices.
          */
         private final BiMap<String, Integer> stages;
 
         /**
+         * The objective ID linked to this stage map.
+         */
+        private final ObjectiveID objectiveID;
+
+        /**
          * Creates a new mapping of stages to indices.
          *
-         * @param stages the stages
+         * @param stages      the stages
+         * @param objectiveID the objective ID
          * @throws QuestException if there are duplicate stages or no stages
          */
-        public StageMap(final List<String> stages) throws QuestException {
+        public StageMap(final List<String> stages, final ObjectiveID objectiveID) throws QuestException {
             this.stages = HashBiMap.create(stages.size());
+            this.objectiveID = objectiveID;
             for (int i = 0; i < stages.size(); i++) {
                 final String key = stages.get(i);
                 if (this.stages.containsKey(key)) {
@@ -250,7 +259,7 @@ public class StageObjective extends Objective {
         public String getStage(final int index) throws QuestException {
             final String stage = stages.inverse().get(index);
             if (stage == null) {
-                throw new QuestException("Index '" + index + "' is not a valid index for objective '" + instruction.getID() + "'.");
+                throw new QuestException("Index '" + index + "' is not a valid index for objective '" + objectiveID + "'.");
             }
             return stage;
         }
@@ -265,7 +274,7 @@ public class StageObjective extends Objective {
         public int getIndex(final String stage) throws QuestException {
             final Integer index = stages.get(stage);
             if (index == null) {
-                throw new QuestException("Stage '" + stage + "' is not a valid stage for objective '" + instruction.getID() + "'.");
+                throw new QuestException("Stage '" + stage + "' is not a valid stage for objective '" + objectiveID + "'.");
             }
             return index;
         }
