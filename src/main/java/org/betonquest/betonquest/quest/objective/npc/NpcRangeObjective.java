@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.npc;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -34,14 +34,14 @@ public class NpcRangeObjective extends Objective {
     private final VariableNumber radius;
 
     /**
-     * Stores the state of player to ensure correct completion based on the {@link Trigger}.
-     */
-    private final Map<UUID, Boolean> playersInRange;
-
-    /**
      * Checks if the condition based on the {@link Trigger} is not met.
      */
     private final BiPredicate<UUID, Boolean> checkStuff;
+
+    /**
+     * Stores the state of player to ensure correct completion based on the {@link Trigger}.
+     */
+    private final Map<UUID, Boolean> playersInRange;
 
     /**
      * BukkitTask ID to stop range check loop.
@@ -52,14 +52,18 @@ public class NpcRangeObjective extends Objective {
      * Creates a new NPCRangeObjective from the given instruction.
      *
      * @param instruction the user-provided instruction
+     * @param npcIds      the list of Npc IDs to check
+     * @param radius      the radius around the Npc
+     * @param trigger     the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction) throws QuestException {
+    public NpcRangeObjective(final Instruction instruction, final List<NpcID> npcIds, final VariableNumber radius,
+                             final Trigger trigger) throws QuestException {
         super(instruction);
-        this.npcIds = instruction.getIDList(NpcID::new);
+        this.npcIds = npcIds;
+        this.radius = radius;
+        this.checkStuff = getStuff(trigger);
         this.playersInRange = new HashMap<>();
-        this.checkStuff = getStuff(instruction.getEnum(Trigger.class));
-        this.radius = instruction.get(VariableNumber::new);
     }
 
     private BiPredicate<UUID, Boolean> getStuff(final Trigger trigger) {
@@ -150,31 +154,5 @@ public class NpcRangeObjective extends Objective {
     @Override
     public String getProperty(final String name, final Profile profile) {
         return "";
-    }
-
-    /**
-     * The action that completes the objective.
-     */
-    private enum Trigger {
-        /**
-         * The player has to enter the range.
-         * <p>
-         * When the player is already inside the range he has to leave first.
-         */
-        ENTER,
-        /**
-         * The player has to leave the range.
-         * <p>
-         * If the player is already outside the range he has to enter first.
-         */
-        LEAVE,
-        /**
-         * The player has to be inside the range.
-         */
-        INSIDE,
-        /**
-         * The player has to be outside the range.
-         */
-        OUTSIDE
     }
 }
