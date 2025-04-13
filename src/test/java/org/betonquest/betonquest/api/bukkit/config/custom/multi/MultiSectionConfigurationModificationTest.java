@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -142,7 +143,7 @@ public class MultiSectionConfigurationModificationTest {
         assertConfigurationEquals(configAll, config);
     }
 
-    private void assertConfigurationEquals(final ConfigurationSection expected, final ConfigurationSection actual) {
+    private void assertConfigurationEquals(@Nullable final ConfigurationSection expected, @Nullable final ConfigurationSection actual) {
         if (expected == null) {
             assertNull(actual);
             return;
@@ -262,5 +263,62 @@ public class MultiSectionConfigurationModificationTest {
                     assertEquals(config1, config);
                 },
                 "Not all entries are from the same source config");
+    }
+
+    @Test
+    void testMoveChildSection() {
+        final ConfigurationSection section = config.getConfigurationSection("events.custom.path.take");
+        assertNotNull(section);
+        config.set("events.custom.path.take_more", section);
+        config.set("events.custom.path.take", null);
+        final Set<String> expected = Set.of("conditions",
+                "conditions.items",
+                "conditions.items.stone",
+                "conditions.items.stone.item",
+                "conditions.items.stone.amount",
+                "conditions.items.stone.type",
+                "conditions.items.emerald",
+                "conditions.items.emerald.amount",
+                "conditions.items.emerald.item",
+                "conditions.items.emerald.type",
+                "conditions.item_iron",
+                "conditions.item_iron.amount",
+                "conditions.item_iron.type",
+                "conditions.item_iron.item",
+                "events",
+                "events.custom",
+                "events.custom.finished",
+                "events.custom.finished.message",
+                "events.custom.finished.type",
+                "events.custom.finished.io",
+                "events.custom.path",
+                "events.custom.path.give",
+                "events.custom.path.give.amount",
+                "events.custom.path.give.type",
+                "events.custom.path.give.item",
+                "events.custom.path.cancel",
+                "events.custom.path.cancel.target",
+                "events.custom.path.cancel.type",
+                "events.custom.path.notify",
+                "events.custom.path.notify.io",
+                "events.custom.path.notify.type",
+                "events.custom.path.notify.message",
+                "events.custom.path.take_more",
+                "events.custom.path.take_more.item",
+                "events.custom.path.take_more.amount",
+                "events.custom.path.take_more.type",
+                "events.custom.journal",
+                "events.custom.journal.action",
+                "events.custom.journal.target",
+                "events.custom.journal.type",
+                "events.start",
+                "events.start.type",
+                "events.start.io",
+                "events.start.message");
+        final Set<String> actual = config.getKeys(true);
+        assertTrue(expected.containsAll(actual), "expected does not contain all actual keys.");
+        assertTrue(actual.containsAll(expected), "actual does not contain all expected keys.");
+        assertTrue(actual.contains("events.custom.path.take_more"), "actual does not contains event take_more.");
+        assertFalse(actual.contains("events.custom.path.take"), "actual contain event take.");
     }
 }

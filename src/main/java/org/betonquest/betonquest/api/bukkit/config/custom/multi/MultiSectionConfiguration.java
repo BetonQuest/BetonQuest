@@ -98,6 +98,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
+                    original.setComments(path, comments);
                 }
             }
 
@@ -109,6 +110,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setInlineComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
+                    original.setInlineComments(path, comments);
                 }
             }
         };
@@ -122,7 +124,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     private void buildKeyIndex(final List<? extends ConfigurationSection> sourceConfigs) {
         sourceConfigs.forEach(sourceConfig -> sourceConfig.getKeys(true).stream()
                 .filter(sectionKey -> !sourceConfig.isConfigurationSection(sectionKey))
-                .forEach(sectionKey -> addToList(keyIndex, sectionKey, sourceConfig)));
+                .forEach(sectionKey -> addToList(sectionKey, sourceConfig)));
     }
 
     /**
@@ -188,8 +190,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         });
     }
 
-    private void addToList(final Map<String, List<ConfigurationSection>> keyList, final String sectionKey, final ConfigurationSection sourceConfig) {
-        keyList.computeIfAbsent(sectionKey, key -> new CopyOnWriteArrayList<>()).add(sourceConfig);
+    private void addToList(final String sectionKey, final ConfigurationSection sourceConfig) {
+        keyIndex.computeIfAbsent(sectionKey, key -> new CopyOnWriteArrayList<>()).add(sourceConfig);
     }
 
     @Override
@@ -278,7 +280,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             }
             keyIndex.get(path).set(0, targetConfig);
         } else {
-            addToList(keyIndex, path, targetConfig);
+            addToList(path, targetConfig);
         }
         targetConfig.set(getReplacedPath(path, targetConfig), original.get(path));
         unsavedConfigs.add(targetConfig);
@@ -291,8 +293,9 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                 return;
             }
             final ConfigurationSection config = (ConfigurationSection) value;
+            final ConfigurationSection targetSection = createSection(path);
             for (final String key : config.getKeys(false)) {
-                checkConflictAndSet(getAbsolutePath(config, key), config.get(key));
+                checkConflictAndSet(getAbsolutePath(targetSection, key), config.get(key));
             }
             return;
         }
@@ -304,6 +307,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                 unsavedConfigs.add(config);
             }
         }
+        original.set(path, value);
     }
 
     private void deletePath(final String path) {
@@ -366,7 +370,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      */
     private static class MultiConfigurationHandler implements ConfigurationModificationHandler {
         /**
-         * The consumer to call if the set method was called
+         * The consumer to call if the set method was called.
          */
         @Nullable
         private SetConsumer consumer;
@@ -386,7 +390,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             if (consumer != null) {
                 consumer.set(getAbsolutePath(section, path), value);
             }
-            section.set(path, value);
         }
 
         @Override
@@ -404,7 +407,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             if (consumer != null) {
                 consumer.setComment(getAbsolutePath(section, path), comments);
             }
-            section.setComments(path, comments);
         }
 
         @Override
@@ -412,7 +414,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             if (consumer != null) {
                 consumer.setInlineComment(getAbsolutePath(section, path), comments);
             }
-            section.setInlineComments(path, comments);
         }
 
         @Override
@@ -438,7 +439,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
 
     /**
      * {@link ConfigurationOptions} for a {@link MultiSectionConfiguration},
-     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}
+     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}.
      */
     private class MultiConfigurationOptions extends HandleConfigurationOptions {
 
