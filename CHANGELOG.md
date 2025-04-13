@@ -42,6 +42,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - underscores aren't replaced anymore, instead quoting needs to be used now
   - `shear` objective - name 
   - `mobkill` objective - name
+  - `password` objective - password
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.password;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
@@ -26,29 +26,51 @@ import java.util.regex.Pattern;
 /**
  * Requires the player to type a password in chat.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PasswordObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
+    /**
+     * Regex pattern to match the password.
+     */
     private final Pattern regex;
 
+    /**
+     * Prefix to be shown to the player before the password.
+     */
     @Nullable
     private final String passwordPrefix;
 
+    /**
+     * Events to be triggered on failure.
+     */
     private final List<EventID> failEvents;
 
-    private final BetonQuestLogger log;
-
-    public PasswordObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the PasswordObjective.
+     *
+     * @param instruction    the instruction that created this objective
+     * @param log            the logger for this objective
+     * @param regex          the regex pattern to match the password
+     * @param passwordPrefix the prefix to be shown to the player
+     * @param failEvents     the events to be triggered on failure
+     * @throws QuestException if there is an error in the instruction
+     */
+    public PasswordObjective(final Instruction instruction, final BetonQuestLogger log, final Pattern regex, @Nullable final String passwordPrefix, final List<EventID> failEvents) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(PasswordObjective.class);
-        final String pattern = instruction.next().replace('_', ' ');
-        final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
-        regex = Pattern.compile(pattern, regexFlags);
-        final String prefix = instruction.getOptional("prefix");
-        passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
-        failEvents = instruction.getIDList(instruction.getOptional("fail"), EventID::new);
+        this.log = log;
+        this.regex = regex;
+        this.passwordPrefix = passwordPrefix;
+        this.failEvents = failEvents;
     }
 
+    /**
+     * Check if the password is correct.
+     *
+     * @param event the chat event to check
+     */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         if (chatInput(false, event.getPlayer(), event.getMessage())) {
@@ -56,6 +78,11 @@ public class PasswordObjective extends Objective implements Listener {
         }
     }
 
+    /**
+     * Capture the command input from the player amd cancel it if the password is correct.
+     *
+     * @param event the command event to check
+     */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         if (chatInput(true, event.getPlayer(), event.getMessage())) {
