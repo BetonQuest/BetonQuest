@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.npc;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -15,7 +15,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.ANY;
-import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.RIGHT;
 
 /**
  * An objective that requires the player to interact with a specific NPC.
@@ -39,14 +38,17 @@ public class NpcInteractObjective extends Objective implements Listener {
     /**
      * Creates a new NPCInteractObjective from the given instruction.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction     the user-provided instruction
+     * @param npcId           the ID of the NPC to interact with
+     * @param cancel          whether to cancel the interaction with the NPC
+     * @param interactionType the type of interaction with the NPC
      * @throws QuestException if the instruction is invalid
      */
-    public NpcInteractObjective(final Instruction instruction) throws QuestException {
+    public NpcInteractObjective(final Instruction instruction, final NpcID npcId, final boolean cancel, final Interaction interactionType) throws QuestException {
         super(instruction);
-        this.npcId = instruction.getID(NpcID::new);
-        cancel = instruction.hasArgument("cancel");
-        interactionType = instruction.getEnum(instruction.getOptional("interaction"), Interaction.class, RIGHT);
+        this.npcId = npcId;
+        this.cancel = cancel;
+        this.interactionType = interactionType;
     }
 
     /**
