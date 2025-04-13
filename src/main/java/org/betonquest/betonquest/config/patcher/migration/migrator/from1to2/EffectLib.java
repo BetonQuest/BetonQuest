@@ -26,8 +26,8 @@ public class EffectLib implements QuestMigration {
         if (npcEffects == null || source == null) {
             return;
         }
-        config.set("effectlib", npcEffects);
         migrateSection(npcEffects);
+        config.set("effectlib", npcEffects);
         config.set(oldPath, null);
         config.associateWith(source);
     }
