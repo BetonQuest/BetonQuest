@@ -23,7 +23,6 @@ import org.betonquest.betonquest.objective.DelayObjective;
 import org.betonquest.betonquest.objective.DieObjective;
 import org.betonquest.betonquest.objective.EntityInteractObjective;
 import org.betonquest.betonquest.objective.ExperienceObjective;
-import org.betonquest.betonquest.objective.KillPlayerObjective;
 import org.betonquest.betonquest.objective.LocationObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
@@ -146,6 +145,7 @@ import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory
 import org.betonquest.betonquest.quest.objective.equip.EquipItemObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.fish.FishObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.jump.JumpObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.kill.KillPlayerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.login.LoginObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.logout.LogoutObjectiveFactory;
@@ -427,7 +427,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("experience", ExperienceObjective.class);
         objectiveTypes.register("fish", new FishObjectiveFactory(loggerFactory));
         objectiveTypes.register("interact", EntityInteractObjective.class);
-        objectiveTypes.register("kill", KillPlayerObjective.class);
+        objectiveTypes.register("kill", new KillPlayerObjectiveFactory());
         objectiveTypes.register("location", LocationObjective.class);
         objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", new LogoutObjectiveFactory());
