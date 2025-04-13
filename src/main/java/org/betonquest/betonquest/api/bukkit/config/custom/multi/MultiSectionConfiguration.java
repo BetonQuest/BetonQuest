@@ -98,6 +98,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
+                    original.setComments(path, comments);
                 }
             }
 
@@ -109,6 +110,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setInlineComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
+                    original.setInlineComments(path, comments);
                 }
             }
         };
@@ -368,7 +370,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      */
     private static class MultiConfigurationHandler implements ConfigurationModificationHandler {
         /**
-         * The consumer to call if the set method was called
+         * The consumer to call if the set method was called.
          */
         @Nullable
         private SetConsumer consumer;
@@ -405,7 +407,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             if (consumer != null) {
                 consumer.setComment(getAbsolutePath(section, path), comments);
             }
-            section.setComments(path, comments);
         }
 
         @Override
@@ -413,7 +414,6 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
             if (consumer != null) {
                 consumer.setInlineComment(getAbsolutePath(section, path), comments);
             }
-            section.setInlineComments(path, comments);
         }
 
         @Override
@@ -439,7 +439,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
 
     /**
      * {@link ConfigurationOptions} for a {@link MultiSectionConfiguration},
-     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}
+     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}.
      */
     private class MultiConfigurationOptions extends HandleConfigurationOptions {
 
