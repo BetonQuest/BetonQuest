@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.logout;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -16,13 +16,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Requires the player to leave the server.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class LogoutObjective extends Objective implements Listener {
 
+    /**
+     * Constructor for the LogoutObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @throws QuestException if there is an error in the instruction
+     */
     public LogoutObjective(final Instruction instruction) throws QuestException {
         super(instruction);
     }
 
+    /**
+     * Check if the player has left the server.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
