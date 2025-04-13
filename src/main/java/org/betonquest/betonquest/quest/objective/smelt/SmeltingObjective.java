@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.smelt;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,17 +21,31 @@ import org.bukkit.inventory.PlayerInventory;
 /**
  * Requires the player to smelt some amount of items.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class SmeltingObjective extends CountingObjective implements Listener {
-
+    /**
+     * The item to be smelted.
+     */
     private final Item item;
 
-    public SmeltingObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the SmeltingObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param item         the item to be smelted
+     * @param targetAmount the target amount of items to be smelted
+     * @throws QuestException if there is an error in the instruction
+     */
+    public SmeltingObjective(final Instruction instruction, final Item item, final VariableNumber targetAmount) throws QuestException {
         super(instruction, "items_to_smelt");
-        item = instruction.getItem();
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.item = item;
+        this.targetAmount = targetAmount;
     }
 
+    /**
+     * Check if the item matches the one in the furnace.
+     *
+     * @param event the event to check
+     */
     @EventHandler(ignoreCancelled = true)
     public void onSmelting(final InventoryClickEvent event) {
         final InventoryType inventoryType = event.getInventory().getType();
