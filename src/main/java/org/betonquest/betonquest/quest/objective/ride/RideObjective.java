@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.ride;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -15,42 +15,40 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import java.util.Locale;
-
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Requires the player to ride a vehicle.
+ */
 public class RideObjective extends Objective implements Listener {
     /**
-     * Any property for the entity type.
+     * The type of vehicle that is required, or null if any vehicle is allowed.
      */
-    private static final String ANY_PROPERTY = "any";
-
-    private final boolean any;
-
     @Nullable
-    private EntityType vehicle;
+    private final EntityType vehicle;
 
-    public RideObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the RideObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param vehicle     the type of vehicle that is required, or null if any vehicle is allowed
+     * @throws QuestException if there is an error in the instruction
+     */
+    public RideObjective(final Instruction instruction, @Nullable final EntityType vehicle) throws QuestException {
         super(instruction);
-        final String name = instruction.next();
-        if (ANY_PROPERTY.equalsIgnoreCase(name)) {
-            any = true;
-        } else {
-            any = false;
-            try {
-                vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
-            } catch (final IllegalArgumentException e) {
-                throw new QuestException("Entity type " + name + " does not exist.", e);
-            }
-        }
+        this.vehicle = vehicle;
     }
 
+    /**
+     * Check if the player is riding the right vehicle.
+     *
+     * @param event the event to check
+     */
     @EventHandler(ignoreCancelled = true)
     public void onMount(final EntityMountEvent event) {
         if (!(event.getEntity() instanceof final Player player)) {
             return;
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-        if (containsPlayer(onlineProfile) && (any || event.getMount().getType() == vehicle) && checkConditions(onlineProfile)) {
+        if (containsPlayer(onlineProfile) && (vehicle == null || event.getMount().getType() == vehicle) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }
     }
