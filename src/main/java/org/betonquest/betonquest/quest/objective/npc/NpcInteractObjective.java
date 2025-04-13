@@ -7,14 +7,14 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.ANY;
+import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY;
 
 /**
  * An objective that requires the player to interact with a specific NPC.

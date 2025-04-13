@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -7,12 +7,10 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -41,79 +39,110 @@ import java.util.stream.Collectors;
  * rightclick or damage the entity. Each entity can only be interacted once.
  * The interaction can optionally be canceled by adding the argument cancel.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class EntityInteractObjective extends CountingObjective {
-    /**
-     * The key for any hand.
-     */
-    private static final String ANY = "any";
-
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The target location of the entity to interact with.
+     */
     @Nullable
     private final VariableLocation loc;
 
+    /**
+     * The range around the target location to look for the entity.
+     */
     private final VariableNumber range;
 
+    /**
+     * The custom name of the entity to interact with.
+     */
     @Nullable
     private final String customName;
 
+    /**
+     * The real name of the entity to interact with.
+     */
     @Nullable
     private final String realName;
 
+    /**
+     * The equipment slot to interact with.
+     */
     @Nullable
     private final EquipmentSlot slot;
 
+    /**
+     * The mob type to interact with.
+     */
     protected EntityType mobType;
 
+    /**
+     * The variable identifier for the marked entities.
+     */
     @Nullable
     protected VariableIdentifier marked;
 
+    /**
+     * The interaction type (right, left, any).
+     */
     protected Interaction interaction;
 
+    /**
+     * Whether to cancel the interaction.
+     */
     protected boolean cancel;
 
+    /**
+     * The listener for right-click events.
+     */
     @Nullable
     private RightClickListener rightClickListener;
 
+    /**
+     * The listener for left-click events.
+     */
     @Nullable
     private LeftClickListener leftClickListener;
 
-    public EntityInteractObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Creates a new instance of the EntityInteractObjective.
+     *
+     * @param instruction  the instruction that created this objective
+     * @param log          the logger for this objective
+     * @param targetAmount the target amount of entities to interact with
+     * @param loc          the location of the entities
+     * @param range        the range of the entities
+     * @param customName   the custom name of the entities
+     * @param realName     the real name of the entities
+     * @param slot         the equipment slot to interact with
+     * @param mobType      the type of the entities
+     * @param marked       the variable identifier for marked entities
+     * @param interaction  the interaction type (right, left, any)
+     * @param cancel       whether to cancel the interaction
+     * @throws QuestException if there is an error in the instruction
+     */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public EntityInteractObjective(final Instruction instruction, final BetonQuestLogger log,
+                                   final VariableNumber targetAmount, @Nullable final VariableLocation loc, final VariableNumber range,
+                                   @Nullable final String customName, @Nullable final String realName,
+                                   @Nullable final EquipmentSlot slot, final EntityType mobType,
+                                   @Nullable final VariableIdentifier marked, final Interaction interaction, final boolean cancel) throws QuestException {
         super(instruction, "mobs_to_click");
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         template = EntityInteractData.class;
-        interaction = instruction.getEnum(Interaction.class);
-        mobType = instruction.getEnum(EntityType.class);
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        customName = parseName(instruction.getOptional("name"));
-        realName = parseName(instruction.getOptional("realname"));
-        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
-        cancel = instruction.hasArgument("cancel");
-        loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
-        final String stringRange = instruction.getOptional("range");
-        range = instruction.get(stringRange == null ? "1" : stringRange, VariableNumber::new);
-        final String handString = instruction.getOptional("hand");
-        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
-            slot = EquipmentSlot.HAND;
-        } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
-            slot = EquipmentSlot.OFF_HAND;
-        } else if (ANY.equalsIgnoreCase(handString)) {
-            slot = null;
-        } else {
-            throw new QuestException("Invalid hand value: " + handString);
-        }
-    }
-
-    @Nullable
-    private String parseName(@Nullable final String rawName) {
-        if (rawName != null) {
-            return ChatColor.translateAlternateColorCodes('&', rawName.replace('_', ' '));
-        }
-        return null;
+        this.targetAmount = targetAmount;
+        this.log = log;
+        this.loc = loc;
+        this.range = range;
+        this.customName = customName;
+        this.realName = realName;
+        this.slot = slot;
+        this.mobType = mobType;
+        this.marked = marked;
+        this.interaction = interaction;
+        this.cancel = cancel;
     }
 
     @Override
@@ -193,15 +222,22 @@ public class EntityInteractObjective extends CountingObjective {
         }
     }
 
-    public enum Interaction {
-        RIGHT, LEFT, ANY
-    }
-
+    /**
+     * The entity counting data for the objective.
+     */
     public static class EntityInteractData extends CountingData {
-
+        /**
+         * The set of entities that have been interacted with.
+         */
         private final Set<UUID> entities;
 
-        @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+        /**
+         * Creates a new instance of the EntityInteractData.
+         *
+         * @param instruction the instruction that created this objective
+         * @param profile     the profile of the player
+         * @param objID       the ID of the objective
+         */
         public EntityInteractData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
             entities = new HashSet<>();
@@ -213,6 +249,12 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
+        /**
+         * Checks if the interaction with a given entity progresses the objective.
+         *
+         * @param entity the entity to try to progress with
+         * @return true if the entity was added to the set, false otherwise
+         */
         public boolean tryProgressWithEntity(final Entity entity) {
             final boolean success = entities.add(entity.getUniqueId());
             if (success) {
@@ -227,11 +269,22 @@ public class EntityInteractObjective extends CountingObjective {
         }
     }
 
+    /**
+     * Listener for left-click events on entities.
+     */
     private class LeftClickListener implements Listener {
+        /**
+         * Creates a new instance of the LeftClickListener.
+         */
         public LeftClickListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
+        /**
+         * The left click event handler.
+         *
+         * @param event the event that triggered this method
+         */
         @EventHandler(ignoreCancelled = true)
         public void onDamage(final EntityDamageByEntityEvent event) {
             final Player player;
@@ -251,11 +304,22 @@ public class EntityInteractObjective extends CountingObjective {
         }
     }
 
+    /**
+     * Listener for right-click events on entities.
+     */
     private class RightClickListener implements Listener {
+        /**
+         * Creates a new instance of the RightClickListener.
+         */
         public RightClickListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
+        /**
+         * The right click event handler.
+         *
+         * @param event the event that triggered this method
+         */
         @EventHandler(ignoreCancelled = true)
         public void onRightClick(final PlayerInteractAtEntityEvent event) {
             if (slot != null && slot != event.getHand()) {

@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
-import org.betonquest.betonquest.objective.EntityInteractObjective;
+import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 
@@ -38,7 +38,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
         this.citizensMoveController = citizensMoveController;
     }
 
-    private void interactLogic(final NPCClickEvent event, final EntityInteractObjective.Interaction interaction) {
+    private void interactLogic(final NPCClickEvent event, final Interaction interaction) {
         final NPC npc = event.getNPC();
         if (super.interactLogic(event.getClicker(), new CitizensAdapter(npc), interaction,
                 citizensMoveController.blocksTalking(npc), event.isAsynchronous())) {
@@ -53,7 +53,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      */
     @EventHandler(ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
-        interactLogic(event, EntityInteractObjective.Interaction.RIGHT);
+        interactLogic(event, Interaction.RIGHT);
     }
 
     /**
@@ -63,7 +63,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      */
     @EventHandler(ignoreCancelled = true)
     public void onNPCClick(final NPCLeftClickEvent event) {
-        interactLogic(event, EntityInteractObjective.Interaction.LEFT);
+        interactLogic(event, Interaction.LEFT);
     }
 
     /**

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
-import org.betonquest.betonquest.objective.EntityInteractObjective.Interaction;
+import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
