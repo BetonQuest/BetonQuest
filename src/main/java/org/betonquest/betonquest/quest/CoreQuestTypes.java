@@ -21,7 +21,6 @@ import org.betonquest.betonquest.objective.ChestPutObjective;
 import org.betonquest.betonquest.objective.CommandObjective;
 import org.betonquest.betonquest.objective.DelayObjective;
 import org.betonquest.betonquest.objective.DieObjective;
-import org.betonquest.betonquest.objective.EntityInteractObjective;
 import org.betonquest.betonquest.objective.ExperienceObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
@@ -143,6 +142,7 @@ import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFacto
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.equip.EquipItemObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.fish.FishObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.interact.EntityInteractObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.jump.JumpObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.KillPlayerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
@@ -426,7 +426,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
         objectiveTypes.register("experience", ExperienceObjective.class);
         objectiveTypes.register("fish", new FishObjectiveFactory(loggerFactory));
-        objectiveTypes.register("interact", EntityInteractObjective.class);
+        objectiveTypes.register("interact", new EntityInteractObjectiveFactory(loggerFactory));
         objectiveTypes.register("kill", new KillPlayerObjectiveFactory());
         objectiveTypes.register("location", new LocationObjectiveFactory());
         objectiveTypes.register("login", new LoginObjectiveFactory());

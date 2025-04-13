@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.objective.EntityInteractObjective;
+import org.betonquest.betonquest.quest.objective.interact.Interaction;
 
-import static org.betonquest.betonquest.objective.EntityInteractObjective.Interaction.RIGHT;
+import static org.betonquest.betonquest.quest.objective.interact.Interaction.RIGHT;
 
 /**
  * Factory for creating {@link NpcInteractObjective} instances from {@link Instruction}s.
@@ -23,7 +23,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
         final boolean cancel = instruction.hasArgument("cancel");
-        final EntityInteractObjective.Interaction interactionType = instruction.getEnum(instruction.getOptional("interaction"), EntityInteractObjective.Interaction.class, RIGHT);
+        final Interaction interactionType = instruction.getEnum(instruction.getOptional("interaction"), Interaction.class, RIGHT);
         return new NpcInteractObjective(instruction, npcId, cancel, interactionType);
     }
 }

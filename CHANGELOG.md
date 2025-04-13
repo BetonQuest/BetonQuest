@@ -43,6 +43,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `shear` objective - name 
   - `mobkill` objective - name
   - `password` objective - password
+  - `interact` objective - custom name and real name
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
