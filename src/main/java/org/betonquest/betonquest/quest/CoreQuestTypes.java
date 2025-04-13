@@ -23,7 +23,6 @@ import org.betonquest.betonquest.objective.DelayObjective;
 import org.betonquest.betonquest.objective.DieObjective;
 import org.betonquest.betonquest.objective.EntityInteractObjective;
 import org.betonquest.betonquest.objective.ExperienceObjective;
-import org.betonquest.betonquest.objective.JumpObjective;
 import org.betonquest.betonquest.objective.KillPlayerObjective;
 import org.betonquest.betonquest.objective.LocationObjective;
 import org.betonquest.betonquest.objective.LogoutObjective;
@@ -151,6 +150,7 @@ import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFacto
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.equip.EquipItemObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.fish.FishObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.jump.JumpObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.login.LoginObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.npc.NpcRangeObjectiveFactory;
@@ -444,7 +444,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", new EquipItemObjectiveFactory());
-        objectiveTypes.register("jump", JumpObjective.class);
+        objectiveTypes.register("jump", new JumpObjectiveFactory());
         objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
     }
 
