@@ -155,7 +155,7 @@ import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.login.LoginObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.npc.NpcRangeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.pickup.PickupObjectiveFactory;
-import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
+import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.shear.ShearObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.stage.StageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
@@ -445,7 +445,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", new EquipItemObjectiveFactory());
         objectiveTypes.register("jump", JumpObjective.class);
-        objectiveTypes.register("resourcepack", ResourcepackObjective.class);
+        objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
