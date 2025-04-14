@@ -323,7 +323,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         log.debug(jreInfo);
 
         questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
-                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class)));
+                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), version));
         Notify.load(config, getPackages().values());
 
         setupDatabase();
@@ -541,7 +541,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
         defaultLanguage = config.getString("language", "en-US");
         questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
-                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class)));
+                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), getDescription().getVersion()));
         try {
             pluginMessage.reload();
         } catch (final IOException | QuestException e) {
