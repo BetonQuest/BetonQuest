@@ -22,8 +22,7 @@ import java.util.Map;
 /**
  * This is a basic implementation for managing a quest's files.
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class Quest {
+public class Quest {
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */
@@ -69,7 +68,7 @@ public abstract class Quest {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public Quest(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+    protected Quest(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
         this.questPath = questPath;
@@ -168,6 +167,15 @@ public abstract class Quest {
         final FileConfigAccessor newAccessor = configAccessorFactory.create(newConfig);
         configs.add(newAccessor);
         return newAccessor;
+    }
+
+    /**
+     * The {@link MultiConfiguration} that represents this {@link Quest}.
+     *
+     * @return this actual config defining this
+     */
+    public MultiConfiguration getQuestConfig() {
+        return config;
     }
 
     @Override

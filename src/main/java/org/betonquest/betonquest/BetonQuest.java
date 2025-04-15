@@ -30,6 +30,7 @@ import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.QuestManager;
 import org.betonquest.betonquest.config.patcher.migration.Migrator;
+import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
 import org.betonquest.betonquest.conversation.AnswerFilter;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -299,7 +300,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         final String jreInfo = jreVersionPrinter.getMessage();
         log.info(jreInfo);
 
-        migratePackages();
+        migrate();
 
         try {
             config = configAccessorFactory.createPatching(new File(getDataFolder(), "config.yml"), this, "config.yml");
@@ -321,7 +322,8 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         log.debug("BetonQuest " + version + " is starting...");
         log.debug(jreInfo);
 
-        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, getDataFolder());
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
+                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), getDescription()));
         Notify.load(config, getPackages().values());
 
         setupDatabase();
@@ -474,7 +476,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         getCommand("questlang").setTabCompleter(langCommand);
     }
 
-    private void migratePackages() {
+    private void migrate() {
         try {
             new Migrator(loggerFactory).migrate();
         } catch (final IOException e) {
@@ -538,7 +540,8 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
         defaultLanguage = config.getString("language", "en-US");
-        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory, getDataFolder());
+        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
+                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), getDescription()));
         try {
             pluginMessage.reload();
         } catch (final IOException | QuestException e) {

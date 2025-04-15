@@ -132,14 +132,14 @@ public class Patcher {
         if (patches.isEmpty()) {
             log.debug(logPrefix + "has no patches to apply.");
         } else if (configVersionString != null && configVersionString.isEmpty()) {
-            log.debug(logPrefix + "gets the latest version '" + patches.lastKey().getVersion() + "' set.");
+            log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
             setConfigVersion(config, patches.lastKey());
         } else {
             final Version version = getConfigVersion(configVersionString);
             if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patches.lastEntry().getKey())) {
                 log.debug(logPrefix + "is already up to date.");
             } else {
-                final String displayVersion = version == null ? "'legacy' version" : "version '" + version.getVersion() + "'";
+                final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";
                 log.info(logPrefix + "gets updated from " + displayVersion + "...");
                 patch(version, config);
             }
@@ -153,11 +153,9 @@ public class Patcher {
 
     private void patch(@Nullable final Version version, final Configuration config) {
         boolean noErrors = true;
-        for (final Map.Entry<Version, List<Map<?, ?>>> patch : patches.entrySet()) {
-            if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patch.getKey())) {
-                continue;
-            }
-            log.info("Applying patches to update to '" + patch.getKey().getVersion() + "'...");
+        final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
+        for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
+            log.info("Applying patches to update to '" + patch.getKey() + "'...");
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
                 noErrors = false;

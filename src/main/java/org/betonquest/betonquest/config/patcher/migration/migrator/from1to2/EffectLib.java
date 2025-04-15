@@ -1,47 +1,35 @@
 package org.betonquest.betonquest.config.patcher.migration.migrator.from1to2;
 
-import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
-import org.betonquest.betonquest.config.patcher.migration.Migration;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
+import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
  * Handles the EffectLib migration.
  */
-public class EffectLib implements Migration {
-
-    /**
-     * The config producer.
-     */
-    private final FileConfigurationProvider producer;
+public class EffectLib implements QuestMigration {
 
     /**
      * Creates a new effect_lib migrator.
-     *
-     * @param provider The config provider
      */
-    public EffectLib(final FileConfigurationProvider provider) {
-        this.producer = provider;
+    public EffectLib() {
     }
 
     @Override
-    public void migrate() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
-        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
-            final File file = entry.getKey();
-            final YamlConfiguration config = entry.getValue();
-            final ConfigurationSection npcEffects = config.getConfigurationSection("npc_effects");
-            if (npcEffects != null) {
-                config.set("effectlib", npcEffects);
-                migrateSection(npcEffects);
-                config.set("npc_effects", null);
-                config.save(file);
-            }
+    public void migrate(final Quest quest) throws InvalidConfigurationException {
+        final MultiConfiguration config = quest.getQuestConfig();
+        final String oldPath = "npc_effects";
+        final ConfigurationSection npcEffects = config.getConfigurationSection(oldPath);
+        final ConfigurationSection source = config.getSourceConfigurationSection(oldPath);
+        if (npcEffects == null || source == null) {
+            return;
         }
+        migrateSection(npcEffects);
+        config.set("effectlib", npcEffects);
+        config.set(oldPath, null);
+        config.associateWith(source);
     }
 
     private void migrateSection(final ConfigurationSection npcEffects) {

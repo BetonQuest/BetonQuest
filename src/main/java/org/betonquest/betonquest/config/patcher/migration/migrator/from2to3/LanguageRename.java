@@ -1,77 +1,63 @@
 package org.betonquest.betonquest.config.patcher.migration.migrator.from2to3;
 
-import org.betonquest.betonquest.config.patcher.migration.FileConfigurationProvider;
-import org.betonquest.betonquest.config.patcher.migration.Migration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
+import org.betonquest.betonquest.config.quest.Quest;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Handles the migration of language keys.
  */
-public class LanguageRename implements Migration {
+public class LanguageRename implements QuestMigration {
     /**
-     * The config producer.
+     * Language keys to rename.
      */
-    private final FileConfigurationProvider producer;
+    private final Map<String, String> languages;
 
     /**
      * Creates a new language rename migration.
-     *
-     * @param provider The config provider
      */
-    public LanguageRename(final FileConfigurationProvider provider) {
-        this.producer = provider;
+    public LanguageRename() {
+        languages = new HashMap<>();
+        languages.put("en", "en-US");
+        languages.put("de", "de-DE");
+        languages.put("es", "es-ES");
+        languages.put("fr", "fr-FR");
+        languages.put("hu", "hu-HU");
+        languages.put("it", "it-IT");
+        languages.put("nl", "nl-NL");
+        languages.put("pl", "pl-PL");
+        languages.put("pt-br", "pt-BR");
+        languages.put("pt-pt", "pt-PT");
+        languages.put("ru", "ru-RU");
+        languages.put("vi", "vi-VN");
+        languages.put("cn", "zh-CN");
     }
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     @Override
-    public void migrate() throws IOException {
-        final Map<File, YamlConfiguration> configs = producer.getAllConfigs();
-        for (final Map.Entry<File, YamlConfiguration> entry : configs.entrySet()) {
-            final File file = entry.getKey();
-            final YamlConfiguration config = entry.getValue();
-            final Map<String, String> languages = new HashMap<>();
-            languages.put("en", "en-US");
-            languages.put("de", "de-DE");
-            languages.put("es", "es-ES");
-            languages.put("fr", "fr-FR");
-            languages.put("hu", "hu-HU");
-            languages.put("it", "it-IT");
-            languages.put("nl", "nl-NL");
-            languages.put("pl", "pl-PL");
-            languages.put("pt-br", "pt-BR");
-            languages.put("pt-pt", "pt-PT");
-            languages.put("ru", "ru-RU");
-            languages.put("vi", "vi-VN");
-            languages.put("cn", "zh-CN");
-
-            boolean replaced = false;
-            for (final Map.Entry<String, String> language : languages.entrySet()) {
-                replaced |= replaceValueInSection(config, "events", "notify", "{" + language.getKey() + "}", "{" + language.getValue() + "}");
-                replaced |= replaceValueInSection(config, "events", "notifyAll", "{" + language.getKey() + "}", "{" + language.getValue() + "}");
-            }
-
-            replaced |= renameLanguageKeys(config, languages, "conversations", "*", "quester");
-            replaced |= renameLanguageKeys(config, languages, "conversations", "*", "NPC_options", "*", "text");
-            replaced |= renameLanguageKeys(config, languages, "conversations", "*", "player_options", "*", "text");
-            replaced |= renameLanguageKeys(config, languages, "compass", "*", "name");
-            replaced |= renameLanguageKeys(config, languages, "cancel", "*", "name");
-            replaced |= renameLanguageKeys(config, languages, "journal", "*");
-            replaced |= renameLanguageKeys(config, languages, "journal_main_page", "*", "text");
-            replaced |= renameLanguageKeys(config, languages, "menus", "*", "items", "*", "text");
-
-            if (replaced) {
-                config.save(file);
-            }
+    public void migrate(final Quest quest) throws InvalidConfigurationException {
+        final MultiConfiguration config = quest.getQuestConfig();
+        for (final Map.Entry<String, String> language : languages.entrySet()) {
+            replaceValueInSection(config, "events", "notify", "{" + language.getKey() + "}", "{" + language.getValue() + "}");
+            replaceValueInSection(config, "events", "notifyAll", "{" + language.getKey() + "}", "{" + language.getValue() + "}");
         }
+
+        renameLanguageKeys(config, "conversations", "*", "quester");
+        renameLanguageKeys(config, "conversations", "*", "NPC_options", "*", "text");
+        renameLanguageKeys(config, "conversations", "*", "player_options", "*", "text");
+        renameLanguageKeys(config, "compass", "*", "name");
+        renameLanguageKeys(config, "cancel", "*", "name");
+        renameLanguageKeys(config, "journal", "*");
+        renameLanguageKeys(config, "journal_main_page", "*", "text");
+        renameLanguageKeys(config, "menus", "*", "items", "*", "text");
     }
 
-    private boolean renameLanguageKeys(final YamlConfiguration config, final Map<String, String> languages, final String... selection) {
-        boolean replaced = false;
+    private void renameLanguageKeys(final MultiConfiguration config, final String... selection) throws InvalidConfigurationException {
         for (final String key : config.getKeys(true)) {
             final String[] split = key.split("\\.");
             if (split.length - 1 != selection.length || !keyMatchesSelection(split, selection)) {
@@ -81,17 +67,22 @@ public class LanguageRename implements Migration {
             if (value == null) {
                 continue;
             }
-            final String newLanguage = languages.get(split[split.length - 1]);
+            final String oldLanguage = split[split.length - 1];
+            final String newLanguage = languages.get(oldLanguage);
             if (newLanguage == null) {
                 continue;
             }
             split[split.length - 1] = newLanguage;
+            final String path = key.substring(0, key.lastIndexOf('.'));
             final String newKey = String.join(".", split);
+            final ConfigurationSection source = config.getSourceConfigurationSection(path);
+            if (source == null) {
+                throw new InvalidConfigurationException(path + " is not a valid source");
+            }
             config.set(newKey, value);
             config.set(key, null);
-            replaced = true;
+            config.associateWith(source);
         }
-        return replaced;
     }
 
     @SuppressWarnings("PMD.UseVarargs")
