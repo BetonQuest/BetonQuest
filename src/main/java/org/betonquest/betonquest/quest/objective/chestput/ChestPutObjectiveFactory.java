@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.chestput;
+package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
