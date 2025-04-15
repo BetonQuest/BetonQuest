@@ -145,8 +145,11 @@ public class QuestMigrator {
             actualMigrations = migrations;
         } else {
             final SettableVersion otherVersion = questVersion(versionString);
-            if (VERSION_COMPARATOR.isOtherNewerOrEqualThanCurrent(lastVersionToSet, otherVersion)) {
+            if (VERSION_COMPARATOR.compare(lastVersionToSet, otherVersion) == 0) {
                 log.debug("  Version '" + otherVersion + "' is up to date");
+                return;
+            } else if (VERSION_COMPARATOR.isOtherNewerThanCurrent(lastVersionToSet, otherVersion)) {
+                log.warn("  Version '" + otherVersion + "' in '" + quest.getQuestPath() + "'is newer than current version!");
                 return;
             }
             log.debug("  Migrating from version '" + otherVersion.getVersion() + "' to '" + lastVersionToSet.getVersion() + "'");
@@ -154,6 +157,7 @@ public class QuestMigrator {
         }
 
         if (actualMigrations.isEmpty()) {
+            log.debug("  No newer migrations found, just setting version to '" + lastVersionToSet.getVersion() + "'");
             lastVersionToSet.setVersion(quest);
             quest.saveAll();
             return;
