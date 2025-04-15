@@ -128,7 +128,7 @@ public class Updater {
     }
 
     private String getUpdateNotification(final boolean automaticDownload) {
-        final String version = "Found newer version '" + latest.getKey().getVersion() + "', ";
+        final String version = "Found newer version '" + latest.getKey() + "', ";
         final String automatic = " automatically installed on the next restart!";
         final String automaticProgress = "it will be downloaded and" + automatic;
         final String automaticDone = "it was downloaded and will be " + automatic;
@@ -225,7 +225,7 @@ public class Updater {
             try {
                 checkUpdateRequirements();
 
-                sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
+                sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey() + "'...");
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
                 updateNotification = "Update was downloaded! Restart the server to update the plugin.";

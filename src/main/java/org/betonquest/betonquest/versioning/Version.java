@@ -156,4 +156,9 @@ public class Version {
     public int hashCode() {
         return Objects.hash(artifactVersion, qualifier, buildNumber);
     }
+
+    @Override
+    public String toString() {
+        return getVersion();
+    }
 }
