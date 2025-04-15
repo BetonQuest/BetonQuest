@@ -22,8 +22,8 @@ class SettableVersionTest extends QuestFixture {
     @Test
     void test_no_version_present() throws IOException, InvalidConfigurationException {
         final Quest quest = setupQuest();
-        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4", PACKAGE_VERSION);
-        version.setVersion(quest);
+        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4");
+        version.setVersion(quest, PACKAGE_VERSION);
         quest.saveAll();
         expected.set(PACKAGE_VERSION, version.getVersion());
         checkAssertion(quest, "package.yml");
@@ -34,8 +34,8 @@ class SettableVersionTest extends QuestFixture {
         final Version presentVersion = new Version("2.3.4-QUEST-5");
         original.set(PACKAGE_VERSION, presentVersion.getVersion());
         final Quest quest = setupQuest();
-        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4", PACKAGE_VERSION);
-        version.setVersion(quest);
+        final SettableVersion version = new SettableVersion("1.2.3-QUEST-4");
+        version.setVersion(quest, PACKAGE_VERSION);
         quest.saveAll();
         expected.set(PACKAGE_VERSION, version.getVersion());
         expected.setInlineComments(PACKAGE_VERSION,

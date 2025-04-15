@@ -17,6 +17,7 @@ import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
@@ -79,28 +80,29 @@ public class QuestMigrator {
         this.legacyMigrations = legacyMigrations;
         this.migrations = new TreeMap<>(VERSION_COMPARATOR);
         for (final Map.Entry<Version, QuestMigration> entry : migrations.entrySet()) {
-            this.migrations.put(questVersion(entry.getKey().getVersion()), entry.getValue());
+            this.migrations.put(new SettableVersion(entry.getKey().getVersion()), entry.getValue());
         }
-        this.fallbackVersion = questVersion(fallbackVersion.getVersion());
+        this.fallbackVersion = new SettableVersion(fallbackVersion.getVersion());
     }
 
     /**
      * Create a new Quest Migrator with BQ Migrations.
      *
-     * @param log     the custom logger for the class
-     * @param version the plugin version, used as fallback when no migrator is applied
+     * @param log               the custom logger for the class
+     * @param pluginDescription the PluginDescriptionFile containing a semantic version,
+     *                          used as fallback when no migrator is applied
      */
-    public QuestMigrator(final BetonQuestLogger log, final String version) {
+    public QuestMigrator(final BetonQuestLogger log, final PluginDescriptionFile pluginDescription) {
         this.log = log;
         this.legacyMigrations = getLegacy();
         this.migrations = new TreeMap<>(VERSION_COMPARATOR);
-        migrations.put(questVersion("3.0.0-QUEST-1"), new LanguageRename());
-        migrations.put(questVersion("3.0.0-QUEST-2"), new NpcRename());
-        this.fallbackVersion = questVersion(version + "QUEST-0");
+        migrations.put(questVersion("3.0.0", 1), new LanguageRename());
+        migrations.put(questVersion("3.0.0", 2), new NpcRename());
+        this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 
-    private SettableVersion questVersion(final String version) {
-        return new SettableVersion(version, QUEST_VERSION_PATH);
+    private SettableVersion questVersion(final String semanticVersion, final int number) {
+        return new SettableVersion(semanticVersion + "-QUEST-" + number);
     }
 
     private List<QuestMigration> getLegacy() {
@@ -130,7 +132,7 @@ public class QuestMigrator {
         final SettableVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
         if (versionString == null) {
             log.debug("  No version present, just setting to '" + lastVersionToSet.getVersion() + "'");
-            lastVersionToSet.setVersion(quest);
+            lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;
         }
@@ -144,7 +146,7 @@ public class QuestMigrator {
             }
             actualMigrations = migrations;
         } else {
-            final SettableVersion otherVersion = questVersion(versionString);
+            final SettableVersion otherVersion = new SettableVersion(versionString);
             if (VERSION_COMPARATOR.compare(lastVersionToSet, otherVersion) == 0) {
                 log.debug("  Version '" + otherVersion + "' is up to date");
                 return;
@@ -158,14 +160,14 @@ public class QuestMigrator {
 
         if (actualMigrations.isEmpty()) {
             log.debug("  No newer migrations found, just setting version to '" + lastVersionToSet.getVersion() + "'");
-            lastVersionToSet.setVersion(quest);
+            lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;
         }
 
         for (final Map.Entry<SettableVersion, QuestMigration> entry : actualMigrations.entrySet()) {
             entry.getValue().migrate(quest);
-            entry.getKey().setVersion(quest);
+            entry.getKey().setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
         }
     }

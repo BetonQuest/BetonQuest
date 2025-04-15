@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.config.patcher.migration;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.quest.Quest;
@@ -13,31 +12,24 @@ import java.util.List;
 /**
  * A version which can also place it inside a Quest.
  */
-@SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 public class SettableVersion extends Version {
-    /**
-     * Path to set version.
-     */
-    private final String path;
-
     /**
      * Creates a new Version.
      *
      * @param versionString The raw version string
-     * @param path          the path to set the version at
      */
-    public SettableVersion(final String versionString, final String path) {
+    public SettableVersion(final String versionString) {
         super(versionString);
-        this.path = path;
     }
 
     /**
      * Sets this version.
      *
      * @param quest the quest to put the version in
+     * @param path  the path to set the version at
      * @throws IOException when the version cannot be set
      */
-    public void setVersion(final Quest quest) throws IOException {
+    public void setVersion(final Quest quest, final String path) throws IOException {
         final MultiConfiguration config = quest.getQuestConfig();
         final boolean isSet = config.isSet(path);
         config.set(path, getVersion());
