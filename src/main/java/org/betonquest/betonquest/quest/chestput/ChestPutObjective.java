@@ -1,19 +1,15 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.chestput;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,20 +32,31 @@ import java.util.List;
  * Requires the player to put items in the chest. Items can optionally NOT
  * disappear once the chest is closed.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ChestPutObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Condition to check if the items are in the chest.
+     */
     private final NullableCondition chestItemCondition;
 
+    /**
+     * Event to execute when the items are put in the chest to take them out.
+     */
     @Nullable
     private final ChestTakeEvent chestTakeEvent;
 
+    /**
+     * Location of the chest.
+     */
     private final VariableLocation loc;
 
+    /**
+     * Sender to notify the player if the chest is occupied.
+     */
     private final IngameNotificationSender occupiedSender;
 
     /**
@@ -58,23 +65,29 @@ public class ChestPutObjective extends Objective implements Listener {
      */
     private final boolean multipleAccess;
 
-    public ChestPutObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the ChestPutObjective.
+     *
+     * @param instruction        the instruction that created this objective
+     * @param log                the logger for this objective
+     * @param chestItemCondition the condition to check if the items are in the chest
+     * @param chestTakeEvent     the event to execute when the items are put in the chest to take them out
+     * @param loc                the location of the chest
+     * @param occupiedSender     the sender to notify the player if the chest is occupied
+     * @param multipleAccess     argument to manage the chest access for one or multiple players
+     * @throws QuestException if there is an error in the instruction
+     */
+    public ChestPutObjective(final Instruction instruction, final BetonQuestLogger log,
+                             final NullableCondition chestItemCondition, @Nullable final ChestTakeEvent chestTakeEvent,
+                             final VariableLocation loc, final IngameNotificationSender occupiedSender,
+                             final boolean multipleAccess) throws QuestException {
         super(instruction);
-        final BetonQuest instance = BetonQuest.getInstance();
-        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
-        this.log = loggerFactory.create(getClass());
-        // extract location
-        loc = instruction.get(VariableLocation::new);
-        final Item[] items = instruction.getItemList();
-        multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
-        chestItemCondition = new ChestItemCondition(loc, items);
-        if (instruction.hasArgument("items-stay")) {
-            chestTakeEvent = null;
-        } else {
-            chestTakeEvent = new ChestTakeEvent(loc, items);
-        }
-        occupiedSender = new IngameNotificationSender(log, instance.getPluginMessage(), instruction.getPackage(),
-                instruction.getID().getFullID(), NotificationLevel.INFO, "chest_occupied");
+        this.log = log;
+        this.chestItemCondition = chestItemCondition;
+        this.chestTakeEvent = chestTakeEvent;
+        this.loc = loc;
+        this.occupiedSender = occupiedSender;
+        this.multipleAccess = multipleAccess;
     }
 
     /**
@@ -108,7 +121,12 @@ public class ChestPutObjective extends Objective implements Listener {
         return event.getInventory().getViewers().equals(List.of(event.getPlayer()));
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    /**
+     * Tracks when a chest is closed and checks if the items are in the chest.
+     *
+     * @param event the event that triggered this method
+     */
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onChestClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
