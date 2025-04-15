@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.delay;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,30 +31,43 @@ import java.util.Objects;
  * Player has to wait specified amount of time. He may logout, the objective
  * will be completed as soon as the time is up and he logs in again.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class DelayObjective extends Objective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The interval in ticks at which the objective checks if the time is up.
+     */
     private final int interval;
 
+    /**
+     * The delay time in seconds, minutes, or ticks.
+     */
     private final VariableNumber delay;
 
+    /**
+     * The runnable task that checks the delay.
+     */
     @Nullable
     private BukkitTask runnable;
 
-    public DelayObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the DelayObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param log         the logger for this objective
+     * @param interval    the interval in ticks at which the objective checks if the time is up
+     * @param delay       the delay time in seconds, minutes, or ticks
+     * @throws QuestException if there is an error in the instruction
+     */
+    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final int interval, final VariableNumber delay) throws QuestException {
         super(instruction);
-        log = BetonQuest.getInstance().getLoggerFactory().create(this.getClass());
-        template = DelayData.class;
-
-        delay = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
-        interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
-        if (interval <= 0) {
-            throw new QuestException("Interval cannot be less than 1 tick");
-        }
+        template = DelayObjective.DelayData.class;
+        this.interval = interval;
+        this.delay = delay;
+        this.log = log;
     }
 
     private double timeToMilliSeconds(final double time) {
@@ -180,10 +192,22 @@ public class DelayObjective extends Objective {
         return Objects.requireNonNull((DelayData) dataMap.get(profile));
     }
 
+    /**
+     * Data class for the DelayObjective.
+     */
     public static class DelayData extends ObjectiveData {
-
+        /**
+         * The timestamp when the delay is over.
+         */
         private final double timestamp;
 
+        /**
+         * Constructor for the DelayData.
+         *
+         * @param instruction the data of the objective
+         * @param profile     the profile associated with this objective
+         * @param objID       the ID of the objective
+         */
         public DelayData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
             timestamp = Double.parseDouble(instruction);
