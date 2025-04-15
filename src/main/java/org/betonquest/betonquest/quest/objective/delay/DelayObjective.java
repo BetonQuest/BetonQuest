@@ -64,7 +64,7 @@ public class DelayObjective extends Objective {
      */
     public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final int interval, final VariableNumber delay) throws QuestException {
         super(instruction);
-        template = DelayObjective.DelayData.class;
+        template = DelayData.class;
         this.interval = interval;
         this.delay = delay;
         this.log = log;
