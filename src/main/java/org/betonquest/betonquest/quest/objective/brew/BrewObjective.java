@@ -1,14 +1,15 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.brew;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.profile.ProfileValueMap;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,18 +33,39 @@ import java.util.stream.Collectors;
 /**
  * Requires the player to manually brew a potion.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class BrewObjective extends CountingObjective implements Listener {
+    /**
+     * The potion item to brew.
+     */
     private final Item potion;
 
-    private final Map<Location, Profile> locations = new ProfileValueMap<>(BetonQuest.getInstance().getProfileProvider());
+    /**
+     * A cache of brewing stands and their owners.
+     */
+    private final Map<Location, Profile> locations;
 
-    public BrewObjective(final Instruction instruction) throws QuestException {
+    /**
+     * The target amount of potions to brew.
+     *
+     * @param instruction     the instruction that created this objective
+     * @param profileProvider the profile provider to get the profile of the player
+     * @param potion          the potion item to brew
+     * @param targetAmount    the target amount of potions to brew
+     * @throws QuestException if there is an error in the instruction
+     */
+    public BrewObjective(final Instruction instruction, final ProfileProvider profileProvider, final Item potion,
+                         final VariableNumber targetAmount) throws QuestException {
         super(instruction, "potions_to_brew");
-        potion = instruction.getItem();
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
+        this.targetAmount = targetAmount;
+        this.potion = potion;
+        this.locations = new ProfileValueMap<>(profileProvider);
     }
 
+    /**
+     * Checks if the player put an ingredient into the brewing stand.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
@@ -81,6 +103,11 @@ public class BrewObjective extends CountingObjective implements Listener {
         return false;
     }
 
+    /**
+     * Checks who put the ingredient into the brewing stand and if it was a valid.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final Profile profile = locations.remove(event.getBlock().getLocation());
