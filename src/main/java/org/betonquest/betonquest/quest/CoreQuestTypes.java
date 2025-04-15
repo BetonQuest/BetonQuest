@@ -14,7 +14,6 @@ import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.VariableTypeRegistry;
-import org.betonquest.betonquest.objective.BlockObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -130,6 +129,7 @@ import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.quest.objective.action.ActionObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.arrow.ArrowShootObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.block.BlockObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.breed.BreedObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.brew.BrewObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.chestput.ChestPutObjectiveFactory;
@@ -414,7 +414,7 @@ public class CoreQuestTypes {
     private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
         objectiveTypes.register("action", new ActionObjectiveFactory(loggerFactory));
         objectiveTypes.register("arrow", new ArrowShootObjectiveFactory(loggerFactory));
-        objectiveTypes.register("block", BlockObjective.class);
+        objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("breed", new BreedObjectiveFactory());
         objectiveTypes.register("brew", new BrewObjectiveFactory(profileProvider));
         objectiveTypes.register("chestput", new ChestPutObjectiveFactory(loggerFactory, pluginMessage));

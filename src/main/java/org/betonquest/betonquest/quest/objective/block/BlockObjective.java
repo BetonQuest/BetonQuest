@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.block;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,8 +25,12 @@ import org.jetbrains.annotations.Nullable;
  * Player has to break/place specified amount of blocks. Doing opposite thing
  * (breaking when should be placing) will reverse the progress.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class BlockObjective extends CountingObjective implements Listener {
+    /**
+     * Logger for exception handling.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Blockselector parameter.
      */
@@ -58,12 +61,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Optional ignorecancel parameter.
      */
-    private final boolean ignorecancel;
-
-    /**
-     * Logger for exception handling.
-     */
-    private final BetonQuestLogger logger;
+    private final boolean ignoreCancel;
 
     /**
      * Notification sender for block break.
@@ -75,26 +73,50 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     private final IngameNotificationSender blockPlaceSender;
 
-    public BlockObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the BlockObjective.
+     *
+     * @param instruction      the instruction that created this objective
+     * @param log              the logger for this objective
+     * @param selector         the block selector to match blocks
+     * @param exactMatch       the exact match flag
+     * @param noSafety         the no safety flag
+     * @param location         the location of the block
+     * @param region           the second location defining a region
+     * @param ignoreCancel     the ignore cancel flag
+     * @param blockBreakSender the notification sender for block break
+     * @param blockPlaceSender the notification sender for block place
+     * @param targetAmount     the target amount of blocks to break/place
+     * @throws QuestException if there is an error in the instruction
+     */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public BlockObjective(final Instruction instruction, final BetonQuestLogger log, final BlockSelector selector,
+                          final boolean exactMatch, final boolean noSafety, @Nullable final VariableLocation location,
+                          @Nullable final VariableLocation region, final boolean ignoreCancel,
+                          final IngameNotificationSender blockBreakSender,
+                          final IngameNotificationSender blockPlaceSender, final VariableNumber targetAmount)
+            throws QuestException {
         super(instruction);
-        logger = BetonQuest.getInstance().getLoggerFactory().create(BlockObjective.class);
-        selector = instruction.get(BlockSelector::new);
-        exactMatch = instruction.hasArgument("exactMatch");
-        targetAmount = instruction.get(VariableNumber::new);
-        noSafety = instruction.hasArgument("noSafety");
-        location = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
-        region = instruction.get(instruction.getOptional("region"), VariableLocation::new);
-        ignorecancel = instruction.hasArgument("ignorecancel");
-        final BetonQuest instance = BetonQuest.getInstance();
-        blockBreakSender = new IngameNotificationSender(logger, instance.getPluginMessage(), instruction.getPackage(),
-                instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_break");
-        blockPlaceSender = new IngameNotificationSender(logger, instance.getPluginMessage(), instruction.getPackage(),
-                instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_place");
+        this.targetAmount = targetAmount;
+        this.log = log;
+        this.selector = selector;
+        this.exactMatch = exactMatch;
+        this.noSafety = noSafety;
+        this.location = location;
+        this.region = region;
+        this.ignoreCancel = ignoreCancel;
+        this.blockBreakSender = blockBreakSender;
+        this.blockPlaceSender = blockPlaceSender;
     }
 
+    /**
+     * Check if the placed block is the right one.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
-        if (event.isCancelled() && !ignorecancel) {
+        if (event.isCancelled() && !ignoreCancel) {
             return;
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -109,9 +131,14 @@ public class BlockObjective extends CountingObjective implements Listener {
         }
     }
 
+    /**
+     * Check if the broken block is the right one.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
-        if (event.isCancelled() && !ignorecancel) {
+        if (event.isCancelled() && !ignoreCancel) {
             return;
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -150,7 +177,7 @@ public class BlockObjective extends CountingObjective implements Listener {
                 return loc.getBlock().getLocation().equals(location.getValue(profile));
             }
         } catch (final QuestException e) {
-            logger.error(instruction.getPackage(), e.getMessage());
+            log.error(instruction.getPackage(), e.getMessage());
             return false;
         }
         return true;
