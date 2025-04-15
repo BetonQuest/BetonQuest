@@ -20,7 +20,6 @@ import org.betonquest.betonquest.objective.BrewObjective;
 import org.betonquest.betonquest.objective.ChestPutObjective;
 import org.betonquest.betonquest.objective.CommandObjective;
 import org.betonquest.betonquest.objective.DelayObjective;
-import org.betonquest.betonquest.objective.ExperienceObjective;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorRatingConditionFactory;
@@ -141,6 +140,7 @@ import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFacto
 import org.betonquest.betonquest.quest.objective.die.DieObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.equip.EquipItemObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.experience.ExperienceObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.fish.FishObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.interact.EntityInteractObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.jump.JumpObjectiveFactory;
@@ -424,7 +424,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("delay", DelayObjective.class);
         objectiveTypes.register("die", new DieObjectiveFactory(loggerFactory));
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
-        objectiveTypes.register("experience", ExperienceObjective.class);
+        objectiveTypes.register("experience", new ExperienceObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("fish", new FishObjectiveFactory(loggerFactory));
         objectiveTypes.register("interact", new EntityInteractObjectiveFactory(loggerFactory));
         objectiveTypes.register("kill", new KillPlayerObjectiveFactory());
