@@ -23,11 +23,10 @@ class QuestMigratorTest extends QuestFixture {
     private static final String VERSION_PATH = "package.version";
 
     @Test
-    void version_no_set() throws IOException, InvalidConfigurationException {
+    void version_no_set() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         final Quest quest = setupQuest();
         final Version currentVersion = new Version("3.2.1-QUEST-5");
-        final QuestMigrator migrator = new QuestMigrator(logger, Collections.emptyList(), Collections.emptyMap(), currentVersion);
-        migrator.migrate(quest);
+        new QuestMigrator(logger, Collections.emptyList(), Collections.emptyMap(), currentVersion).migrate(quest);
         assertEquals(currentVersion.getVersion(), quest.getQuestConfig().getString(VERSION_PATH),
                 "The version should be set in the quest if none is present.");
         assertEquals(currentVersion.getVersion(), loadPackageFile().getString(VERSION_PATH),
@@ -35,13 +34,11 @@ class QuestMigratorTest extends QuestFixture {
     }
 
     @Test
-    void version_older_set() throws IOException, InvalidConfigurationException {
+    void version_older_set() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         original.set(VERSION_PATH, "2.2.1-QUEST-0");
         final Quest quest = setupQuest();
         final Version fallback = new Version("3.0.0-QUEST-0");
-        final QuestMigrator migrator = new QuestMigrator(logger, Collections.emptyList(), Collections.emptyMap(), fallback);
-        migrator.migrate(quest);
-        quest.saveAll();
+        new QuestMigrator(logger, Collections.emptyList(), Collections.emptyMap(), fallback).migrate(quest);
         assertEquals(fallback.getVersion(), quest.getQuestConfig().getString(VERSION_PATH),
                 "Older versions should be updated in the quest.");
         assertEquals(fallback.getVersion(), loadPackageFile().getString(VERSION_PATH),
@@ -55,40 +52,35 @@ class QuestMigratorTest extends QuestFixture {
         final Quest quest = setupQuest();
         final Version fallback = new Version("3.0.0-QUEST-0");
         final QuestMigrator migrator = new QuestMigrator(logger, Collections.emptyList(), Collections.emptyMap(), fallback);
-        migrator.migrate(quest);
-        assertEquals(qustVersion.getVersion(), quest.getQuestConfig().getString(VERSION_PATH),
-                "Newer versions should not be changed in the quest.");
-        assertEquals(qustVersion.getVersion(), loadPackageFile().getString(VERSION_PATH),
-                "Newer versions should not be changed in the file.");
+        assertThrows(VersionMissmatchException.class, () -> migrator.migrate(quest),
+                "Newer versions in quest than migrator should throw");
     }
 
     @Test
-    void no_legacy_migration() throws IOException, InvalidConfigurationException {
+    void no_legacy_migration() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         original.set(VERSION_PATH, "3.0.0-QUEST-0");
         final Quest quest = setupQuest();
         final Version fallback = new Version("3.0.0-QUEST-1");
         final QuestMigration mock = mock(QuestMigration.class);
-        final QuestMigrator migrator = new QuestMigrator(logger, Collections.singletonList(mock), Collections.emptyMap(), fallback);
-        migrator.migrate(quest);
+        new QuestMigrator(logger, Collections.singletonList(mock), Collections.emptyMap(), fallback).migrate(quest);
         verifyNoInteractions(mock);
     }
 
     @Test
-    void legacy_migration() throws IOException, InvalidConfigurationException {
+    void legacy_migration() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         original.set(VERSION_PATH, "legacy");
         final Quest quest = setupQuest();
         final Version fallback = new Version("3.0.0-QUEST-1");
         final QuestMigration legacy = mock(QuestMigration.class);
         final QuestMigration versioned = mock(QuestMigration.class);
         final Map<Version, QuestMigration> migrationMap = Map.of(new Version("2.3.4-QUEST-7"), versioned);
-        final QuestMigrator migrator = new QuestMigrator(logger, Collections.singletonList(legacy), migrationMap, fallback);
-        migrator.migrate(quest);
+        new QuestMigrator(logger, Collections.singletonList(legacy), migrationMap, fallback).migrate(quest);
         verify(legacy, times(1)).migrate(any());
         verify(versioned, times(1)).migrate(any());
     }
 
     @Test
-    void select_migration() throws IOException, InvalidConfigurationException {
+    void select_migration() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         original.set(VERSION_PATH, "3.0.0-QUEST-0");
         final Quest quest = setupQuest();
         final QuestMigration older = mock(QuestMigration.class);
@@ -99,14 +91,13 @@ class QuestMigratorTest extends QuestFixture {
                 newestMigrationVersion, newer
         );
         final Version fallback = new Version("3.2.0-QUEST-1");
-        final QuestMigrator migrator = new QuestMigrator(logger, Collections.emptyList(), migrationMap, fallback);
-        migrator.migrate(quest);
+        new QuestMigrator(logger, Collections.emptyList(), migrationMap, fallback).migrate(quest);
         verifyNoInteractions(older);
         verify(newer, times(1)).migrate(any());
     }
 
     @Test
-    void set_migration_version() throws IOException, InvalidConfigurationException {
+    void set_migration_version() throws IOException, InvalidConfigurationException, VersionMissmatchException {
         original.set(VERSION_PATH, "3.0.0-QUEST-0");
         final Version migrationVersion = new Version("3.0.1-QUEST-2");
         final Map<Version, QuestMigration> migrationMap = Map.of(migrationVersion, mock(QuestMigration.class));

@@ -125,8 +125,10 @@ public class QuestMigrator {
      * @param quest the Quest to update
      * @throws InvalidConfigurationException when an error occurs
      * @throws IOException                   when an error occurs
+     * @throws VersionMissmatchException     when the Quest version is newer than the max settable version
      */
-    public void migrate(final Quest quest) throws IOException, InvalidConfigurationException {
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    public void migrate(final Quest quest) throws IOException, InvalidConfigurationException, VersionMissmatchException {
         log.debug("Attempting to migrate package '" + quest.getQuestPath() + "'");
         final String versionString = quest.getQuestConfig().getString(QUEST_VERSION_PATH);
         final SettableVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
@@ -147,12 +149,15 @@ public class QuestMigrator {
             actualMigrations = migrations;
         } else {
             final SettableVersion otherVersion = new SettableVersion(versionString);
-            if (VERSION_COMPARATOR.compare(lastVersionToSet, otherVersion) == 0) {
+            if (lastVersionToSet.equals(otherVersion)) {
                 log.debug("  Version '" + otherVersion + "' is up to date");
                 return;
-            } else if (VERSION_COMPARATOR.isOtherNewerThanCurrent(lastVersionToSet, otherVersion)) {
-                log.warn("  Version '" + otherVersion + "' in '" + quest.getQuestPath() + "'is newer than current version!");
-                return;
+            }
+            if (VERSION_COMPARATOR.isOtherNewerThanCurrent(lastVersionToSet, otherVersion)) {
+                throw new VersionMissmatchException("The version '" + otherVersion
+                        + "' is newer than the latest known version '" + lastVersionToSet + "'!\n"
+                        + "Quests with newer versions will probably cause issues. If you know that won't be the case"
+                        + " you can change the quest version to the latest known.");
             }
             log.debug("  Migrating from version '" + otherVersion + "' to '" + lastVersionToSet + "'");
             actualMigrations = migrations.tailMap(otherVersion, false);

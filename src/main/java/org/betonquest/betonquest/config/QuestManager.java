@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
+import org.betonquest.betonquest.config.patcher.migration.VersionMissmatchException;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.config.quest.QuestTemplate;
@@ -14,7 +15,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,8 +88,8 @@ public class QuestManager {
                 final QuestTemplate quest = new QuestTemplate(loggerFactory.create(QuestTemplate.class), configAccessorFactory, questPath, questFile, files);
                 try {
                     questMigrator.migrate(quest);
-                } catch (final IOException e) {
-                    throw new InvalidConfigurationException(e.getMessage(), e);
+                } catch (final VersionMissmatchException e) {
+                    log.warn("QuestTemplate '" + quest.getQuestPath() + "': " + e.getMessage(), e);
                 }
                 templates.put(quest.getQuestPath(), quest);
             });
@@ -97,8 +97,8 @@ public class QuestManager {
                 final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files);
                 try {
                     questMigrator.migrate(quest);
-                } catch (final IOException e) {
-                    throw new InvalidConfigurationException(e.getMessage(), e);
+                } catch (final VersionMissmatchException e) {
+                    log.warn("QuestPackage '" + quest.getQuestPath() + "': " + e.getMessage(), e);
                 }
                 try {
                     quest.applyQuestTemplates(templates);
@@ -184,7 +184,7 @@ public class QuestManager {
                 .toString().replace('/', ' ').trim().replaceAll(" ", PACKAGE_SEPARATOR);
         try {
             creator.create(questPath, relativeRoot, files);
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
+        } catch (final InvalidConfigurationException | IOException e) {
             log.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
         }
     }
@@ -202,9 +202,9 @@ public class QuestManager {
          * @param files        All files of this {@link Quest}
          * @throws InvalidConfigurationException thrown if a {@link Quest} could not be created
          *                                       or an exception occurred while creating the {@link MultiConfiguration}
-         * @throws FileNotFoundException         thrown if a file could not be found during the creation
-         *                                       of a {@link ConfigAccessor}
+         * @throws IOException                   thrown if a file could not be found during the creation
+         *                                       of a {@link ConfigAccessor} or could not be saved while migrating
          */
-        void create(String questPath, File relativeRoot, List<File> files) throws InvalidConfigurationException, FileNotFoundException;
+        void create(String questPath, File relativeRoot, List<File> files) throws InvalidConfigurationException, IOException;
     }
 }
