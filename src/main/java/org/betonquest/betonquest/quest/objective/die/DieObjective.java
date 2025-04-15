@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.die;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
@@ -28,25 +28,44 @@ import java.util.Optional;
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class DieObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Whether the death should be canceled.
+     */
     private final boolean cancel;
 
+    /**
+     * Location where the player should respawn.
+     */
     @Nullable
     private final VariableLocation location;
 
-    public DieObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the DieObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param log         the logger for this objective
+     * @param cancel      whether the death should be canceled
+     * @param location    the location where the player should respawn
+     * @throws QuestException if there is an error in the instruction
+     */
+    public DieObjective(final Instruction instruction, final BetonQuestLogger log, final boolean cancel, @Nullable final VariableLocation location) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        cancel = instruction.hasArgument("cancel");
-        location = instruction.get(instruction.getOptional("respawn"), VariableLocation::new);
+        this.log = log;
+        this.cancel = cancel;
+        this.location = location;
     }
 
+    /**
+     * Check if the player died.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final EntityDeathEvent event) {
         if (cancel || location != null) {
@@ -60,6 +79,11 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
+    /**
+     * Check if the player respawned.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
         if (cancel || location == null) {
@@ -72,6 +96,11 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
+    /**
+     * Check if the player died by damage.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onLastDamage(final EntityDamageEvent event) {
         if (!cancel || !(event.getEntity() instanceof final Player player)) {
