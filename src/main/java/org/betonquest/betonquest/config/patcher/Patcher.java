@@ -153,10 +153,8 @@ public class Patcher {
 
     private void patch(@Nullable final Version version, final Configuration config) {
         boolean noErrors = true;
-        for (final Map.Entry<Version, List<Map<?, ?>>> patch : patches.entrySet()) {
-            if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patch.getKey())) {
-                continue;
-            }
+        final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
+        for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
             log.info("Applying patches to update to '" + patch.getKey() + "'...");
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
