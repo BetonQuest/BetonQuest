@@ -1732,6 +1732,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#package-version">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Package Version
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4769,6 +4792,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#package-version">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Package Version
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5084,6 +5130,17 @@ downwards". <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdec
 <div class="highlight"><pre><span></span><code><span class="nt">package</span><span class="p">:</span>
 <span class="w">  </span><span class="c1">## Optionally add this to the package.yml</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<h3 id="package-version">Package Version<a class="headerlink" href="#package-version" title="Permanent link">🔗</a></h3>
+<p>Each package has a <code>version</code> inside the <code>package</code> section that is used by the automatic migrator.
+When no version is set the newest version will be set on loading.
+Any new <code>package</code> section will be added at the end of the file, so you probably want to move that to the file's top.</p>
+<div class="admonition info legacy migrations">
+<p class="admonition-title">Info</p>
+<p>When updating from a version before versioning see <a href="../../Configuration/Version-Changes/Migration-2-3/">Migration to BQ 3.0</a>.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="nt">package</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0.0-QUEST-1</span><span class="w"> </span><span class="c1"># Don&#39;t change this! The plugin&#39;s automatic quest updater handles it.</span>
 </code></pre></div>
 <h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">🔗</a></h2>
 <p>You should have experience creating and using <a href="#packages">packages</a> before you start using templates.

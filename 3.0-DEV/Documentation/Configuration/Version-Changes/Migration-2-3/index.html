@@ -4777,6 +4777,14 @@
 <p class="admonition-title">Warning</p>
 <p>Before you start migrating, you should <strong>back up your server</strong>!</p>
 </div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You need to set <code>legacy</code> as version in your <code>package.yml</code> (for both QuestPackages and -Templates)
+to automatically migrate from "not versioned".
+<div class="highlight"><span class="filename">Required version</span><pre><span></span><code><span class="nt">package</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">legacy</span>
+</code></pre></div></p>
+</div>
 <h2 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">🔗</a></h2>
 <p>Steps marked with <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /> are migrated automatically. Steps marked with <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /> must be done manually.</p>
 <ul>
