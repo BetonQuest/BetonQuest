@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.objective;
+package org.betonquest.betonquest.quest.objective.experience;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
@@ -10,7 +10,6 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,6 @@ import java.util.Locale;
 /**
  * Player needs to get specified experience level or more.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ExperienceObjective extends Objective implements Listener {
 
     /**
@@ -40,13 +38,18 @@ public class ExperienceObjective extends Objective implements Listener {
      */
     private final IngameNotificationSender levelSender;
 
-    public ExperienceObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the ExperienceObjective.
+     *
+     * @param instruction the instruction that created this objective
+     * @param amount      the experience level the player needs to get
+     * @param levelSender the notification to send when the player gains experience
+     * @throws QuestException if there is an error in the instruction
+     */
+    public ExperienceObjective(final Instruction instruction, final VariableNumber amount, final IngameNotificationSender levelSender) throws QuestException {
         super(instruction);
-        this.amount = instruction.get(VariableNumber::new);
-        final BetonQuest instance = BetonQuest.getInstance();
-        levelSender = new IngameNotificationSender(instance.getLoggerFactory().create(ExperienceObjective.class),
-                instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),
-                NotificationLevel.INFO, "level_to_gain");
+        this.amount = amount;
+        this.levelSender = levelSender;
     }
 
     private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) {
@@ -114,6 +117,11 @@ public class ExperienceObjective extends Objective implements Listener {
         };
     }
 
+    /**
+     * Checks the players experience when they level up.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
         final Player player = event.getPlayer();
@@ -121,6 +129,11 @@ public class ExperienceObjective extends Objective implements Listener {
         onExperienceChange(profileProvider.getProfile(player), newAmount, true);
     }
 
+    /**
+     * Checks the players experience when they gain experience.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onExpChangeEvent(final PlayerExpChangeEvent event) {
         final Player player = event.getPlayer();
@@ -130,6 +143,11 @@ public class ExperienceObjective extends Objective implements Listener {
         });
     }
 
+    /**
+     * Checks the players experience when they join the server.
+     *
+     * @param event the event that triggered this method
+     */
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
