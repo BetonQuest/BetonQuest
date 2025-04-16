@@ -103,7 +103,19 @@ Now select `Maven`, set a `Name` like `BetonQuest Resolve Dependencies` and writ
 into the field `Command line`. Then confirm with `Ok` twice.
 Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should run automatically.
 
+### Build with Maven Daemon
+You can also speed up the build process in general by using Maven Daemon. Maven Daemon is a long-running process that
+can be reused for multiple builds. This can significantly reduce the startup time of Maven builds.
+As we use the maven wrapper, we already simply swapped the used maven version with the Daemon version.
+This means if you run the build from the command line (`./mvnw`), it will use the Daemon version.
+IntelliJ does support Maven Wrapper, but it does not support the Maven Daemon distribution directly; this will hopefully
+change in the future. For now, you can use the Maven Daemon distribution with IntelliJ by following these steps:
 
+1. Visit https://github.com/apache/maven-mvnd and install Maven Daemon on your system.
+2. Go to `File/Settings/Build, Execution, Deployment/Build Tools/Maven` and set the `Maven home path` to the
+   location of the Maven Daemon distribution. For example `C:\maven\maven-mvnd-1.0.2-windows-amd64\mvn`.
+
+After this setup all the UI actions in IntelliJ will use the Maven Daemon distribution.
 
 ## Building the Documentation
 Make sure [Python3](https://www.python.org/downloads/) is installed on your local system
