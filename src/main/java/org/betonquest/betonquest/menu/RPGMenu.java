@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -18,23 +17,20 @@ import org.betonquest.betonquest.menu.betonquest.MenuObjectiveFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuVariableFactory;
 import org.betonquest.betonquest.menu.command.RPGMenuCommand;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
+import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
+import org.betonquest.betonquest.menu.kernel.MenuProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * The RPGMenu instance.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class RPGMenu {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -46,40 +42,37 @@ public class RPGMenu {
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
-    private final ConfigAccessor config;
-
-    private final PluginMessage pluginMessage;
-
     /**
-     * Quest Type API.
+     * Menu command.
      */
-    private final QuestTypeAPI questTypeAPI;
-
-    /**
-     * Feature API.
-     */
-    private final FeatureAPI featureAPI;
-
-    /**
-     * The profile provider instance.
-     */
-    private final ProfileProvider profileProvider;
-
-    private final Map<MenuID, Menu> menus;
-
     private final RPGMenuCommand pluginCommand;
 
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
+    /**
+     * Stores and loads MenuItems.
+     */
+    private final MenuItemProcessor menuItemProcessor;
+
+    /**
+     * Stores and loads Menus.
+     */
+    private final MenuProcessor menuProcessor;
+
+    /**
+     * Create a new RPG menu instance.
+     *
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the factory to crete new custom logger instances
+     * @param menuItemProcessor the processor to create and store Menu Items
+     * @param pluginMessage     the plugin message instance
+     * @param questTypeAPI      the Quest Type API
+     * @param featureAPI        the Feature API
+     * @param profileProvider   the profile provider instance
+     */
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final MenuItemProcessor menuItemProcessor,
                    final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
                    final FeatureAPI featureAPI, final ProfileProvider profileProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
-        this.config = config;
-        this.pluginMessage = pluginMessage;
-        this.questTypeAPI = questTypeAPI;
-        this.featureAPI = featureAPI;
-        this.profileProvider = profileProvider;
-        this.menus = new HashMap<>();
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final String menu = "menu";
         final QuestTypeRegistries questRegistries = betonQuest.getQuestRegistries();
@@ -90,6 +83,9 @@ public class RPGMenu {
         questRegistries.event().register(menu, new MenuEventFactory(loggerFactory, data, this));
         questRegistries.variable().register(menu, new MenuVariableFactory());
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
+        this.menuItemProcessor = menuItemProcessor;
+        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, questTypeAPI,
+                betonQuest.getVariableProcessor(), featureAPI, this, pluginMessage, profileProvider);
     }
 
     /**
@@ -131,24 +127,26 @@ public class RPGMenu {
      * @param menuID        id of the menu
      */
     public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
-        final Menu menu = menus.get(menuID);
-        if (menu == null) {
-            log.error(menuID.getPackage(), "Could not open menu '" + menuID + "': Unknown menu");
+        final Menu menu;
+        try {
+            menu = menuProcessor.get(menuID);
+        } catch (final QuestException e) {
+            log.error(menuID.getPackage(), "Could not open menu: " + e.getMessage(), e);
             return;
         }
         final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            log.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
+            log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
             return;
         }
         try {
             new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
         } catch (final QuestException e) {
-            log.error(menu.getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+            log.error(menu.getMenuID().getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
             return;
         }
-        log.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
+        log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 
     /**
@@ -163,35 +161,18 @@ public class RPGMenu {
     }
 
     /**
-     * Reload all plugin data.
+     * Reload all Menus and Menu Items.
      *
      * @param packs the Quest Packages to load
      */
     public void reloadData(final Collection<QuestPackage> packs) {
-        final Iterator<Menu> iterator = this.menus.values().iterator();
-        while (iterator.hasNext()) {
-            iterator.next().unregister();
-            iterator.remove();
-        }
+        menuProcessor.clear();
+        menuItemProcessor.clear();
         for (final QuestPackage pack : packs) {
-            final ConfigurationSection menus = pack.getConfig().getConfigurationSection("menus");
-            if (menus == null) {
-                continue;
-            }
-            for (final String name : menus.getKeys(false)) {
-                try {
-                    final MenuID menuID = new MenuID(pack, name);
-                    this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                            pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID));
-                } catch (final InvalidConfigurationException e) {
-                    log.warn(pack, e.getMessage());
-                } catch (final QuestException e) {
-                    log.error(pack, "Strange unhandled exception during loading: " + e);
-                    return;
-                }
-            }
+            menuItemProcessor.load(pack);
+            menuProcessor.load(pack);
         }
-        log.info("Reloaded " + menus.size() + " menus");
+        log.info("Reloaded " + menuProcessor.readableSize() + " and " + menuItemProcessor.readableSize());
     }
 
     /**
@@ -200,7 +181,7 @@ public class RPGMenu {
      * @return a collection containing all loaded menus
      */
     public Collection<MenuID> getMenus() {
-        return menus.keySet();
+        return menuProcessor.getValues().keySet();
     }
 
     /**
@@ -211,6 +192,17 @@ public class RPGMenu {
      */
     @Nullable
     public Menu getMenu(final MenuID menuID) {
-        return menus.get(menuID);
+        return menuProcessor.getValues().get(menuID);
+    }
+
+    /**
+     * Gets a loaded menu item bei their id.
+     *
+     * @param menuItemID the id to get the menu item for
+     * @return the menu item
+     * @throws QuestException when there is no such object
+     */
+    public MenuItem getMenuItem(final MenuItemID menuItemID) throws QuestException {
+        return menuItemProcessor.get(menuItemID);
     }
 }

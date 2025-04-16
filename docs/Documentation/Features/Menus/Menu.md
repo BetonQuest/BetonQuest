@@ -20,7 +20,8 @@ menus:
   myMenuName:
     title: "My Menu Title"
     slots: #...
-    items: #...
+menu_items: #...
+items: #...
 ```
 
 ## General Menu Settings 
@@ -43,7 +44,7 @@ These are general settings for customizing a menu.
 |                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../../Features/Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
 |                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu.                                                                                                        |
 
-## The `items` section
+## The `menu_items` section
 The items section contains all items which should be displayed in the menu, defined as individual sections of the config.
 
 A basic item section looks like this:
@@ -52,14 +53,14 @@ menus:
   myMenuName:
     title: "My Menu Title"
     slots: #...
-    items: #(1)!
-      skeletonQuestDone: #(2)!
-        item: "questDoneItem" #(3)!
-      goldQuestDone: #(4)!
-        item: "questDone"
+menu_items: #(1)!
+  skeletonQuestDone: #(2)!
+    item: "questDoneItem" #(3)!
+  goldQuestDone: #(4)!
+    item: "questDone"
 ```    
 
-1. The `items` section with all items that are displayed in the menu.
+1. The `menu_items` section with all items that are displayed in a menu.
 2. The name of the item. Used to reference the item in the `slots` section.
 3. The name of any [quest item](../../Features/Items.md). This **cannot** be a vanilla item, it must be a quest item.
 4. Another item just like the previous one.
@@ -76,7 +77,7 @@ The three basic optional settings.
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting. If you only define one line, only the name will be overwritten.
-Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.
+Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overriden.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
 ``` YAML title="List Example"
@@ -103,8 +104,8 @@ skeletonQuestDone:
 
 Just like the text in conversations you can provide [translations](../../Features/Conversations.md#translations) for all languages:
 ``` YAML title="Translation Example"
-items: 
-  skeletonQuestDone: 
+menu_items:
+  skeletonQuestDone:
     item: "questDoneItem"
     text:
        en: #(1)!
@@ -136,7 +137,7 @@ Different types of clicks can be distinguished:
 
 ``` YAML title="Click Types Example"
 items:
-  skeletonQuestDone: 
+  skeletonQuestDone:
     item: "questDoneItem"
     click:
       left: "give_xp,msg_give_xp" #(1)!

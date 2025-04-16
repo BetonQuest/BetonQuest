@@ -13,6 +13,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Ride
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddSimpleTypeToQuestItem;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.ListNamesRenameToPlural;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MoveMenuItems;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.PickRandomPercentage;
 import org.betonquest.betonquest.config.quest.Quest;
@@ -105,6 +106,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 3), new AddSimpleTypeToQuestItem());
         migrations.put(questVersion("3.0.0", 4), new ListNamesRenameToPlural());
         migrations.put(questVersion("3.0.0", 5), new PickRandomPercentage());
+        migrations.put(questVersion("3.0.0", 6), new MoveMenuItems());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

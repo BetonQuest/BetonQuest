@@ -264,6 +264,6 @@ public class OpenedMenu implements Listener {
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());
         closed = true;
         //run close events
-        this.data.runCloseEvents(player);
+        this.data.runCloseEvents(onlineProfile);
     }
 }
