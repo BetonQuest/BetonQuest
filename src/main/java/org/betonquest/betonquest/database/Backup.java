@@ -241,7 +241,7 @@ public final class Backup {
                 con.updateSQL(UpdateType.INSERT_BACKPACK,
                         backpack.getString(key + ".id"),
                         backpack.getString(key + ".profileID"),
-                        backpack.getString(key + ".instruction"),
+                        backpack.getString(key + ".serialized"),
                         backpack.getString(key + ".amount"));
             }
         }
