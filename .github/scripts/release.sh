@@ -135,7 +135,7 @@ version() {
 }
 
 versionCurrent() {
-  CURRENT_VERSION="$(./mvnw help:evaluate -Dexpression=revision -q -DforceStdout)"
+  CURRENT_VERSION="$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout)"
   echo "    Current: $CURRENT_VERSION"
 }
 
