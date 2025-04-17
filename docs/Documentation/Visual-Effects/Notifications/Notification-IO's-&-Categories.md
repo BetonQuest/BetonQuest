@@ -254,22 +254,32 @@ notifications:
 | Conversation blocked    | busy, *error*                                    | 
 | Money Given             | money_given, *info*                              | 
 | Money Taken             | money_taken, *info*                              | 
+| Items given             | items_given, *info*                              | 
+| Items taken             | items_taken, *info*                              |
+| Points given            | point_given, *info*                              |
+| Points taken            | point_taken, *info*                              |
+| Points set              | point_set, *info*                                |
 
 
-| Notifications     | Categories               |
-|-------------------|--------------------------|
-| Items Given       | items_given, *info*      | 
-| Points given      | point_given, *info*      |
-| Points taken      | point_taken, *info*      |
-| Points multiplied | point_multiplied, *info* |
-| Animals to Breed  | animals_to_breed, *info* |
-| Blocks to Break   | blocks_to_break, *info*  |
-| Blocks to Place   | blocks_to_place, *info*  |
-| Mobs to click     | mobs_to_click, *info*    |
-| Mobs to Kill      | mobs_to_kill, *info*     |
-| Fish to catch     | fish_to_catch, *info*    |
-| Players to kill   | players_to_kill, *info*  |
-| Potions to brew   | potions_to_brew, *info*  |
-| Sheep to shear    | sheep_to_shear, *info*   |
+| Notifications      | Categories                 |
+|--------------------|----------------------------|
+| Points multiplied  | point_multiplied, *info*   |
+| Animals to Breed   | animals_to_breed, *info*   |
+| Blocks to Break    | blocks_to_break, *info*    |
+| Blocks to Place    | blocks_to_place, *info*    |
+| Mobs to click      | mobs_to_click, *info*      |
+| Mobs to Kill       | mobs_to_kill, *info*       |
+| Fish to catch      | fish_to_catch, *info*      |
+| Players to kill    | players_to_kill, *info*    |
+| Potions to brew    | potions_to_brew, *info*    |
+| Sheep to shear     | sheep_to_shear, *info*     |
+| Times to jump      | times_to_jump, *info*      |
+| Animals to bread   | animals_to_tame, *info*    |
+| Payment to receive | payment_to_receive, *info* |
+| Levels to gain     | level_to_gain, *info*      |
+| Items to enchant   | items_to_enchant, *info*   |
+| Items to craft     | items_to_craft, *info*     |
+| Items to smelt     | items_to_smelt, *info*     |
+| Items to pickup    | items_to_pickup, *info*    |
 
 </div>

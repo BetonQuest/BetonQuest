@@ -35,6 +35,8 @@ items_to_craft: '@[legacy]&2Осталось скрафтить {amount} пре�
 items_to_enchant: '@[legacy]&2Осталось зачаровать {amount} предметов'
 level_to_gain: '@[legacy]&2Осталось получить {amount} уровней'
 payment_to_receive: '@[legacy]&2{amount} money left to receive'
+animals_to_tame: '@[legacy]&2{amount} animals left to tame'
+times_to_jump: '@[legacy]&2{amount} jumps left'
 busy: '@[legacy]&cВы не можете разговаривать во время боя!'
 quest_canceled: '@[legacy]&2Квест {name}&2 отменён!'
 cancel: '@[legacy]&cОтменить квест'
