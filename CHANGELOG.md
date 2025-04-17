@@ -66,6 +66,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `ride` objective did only count vehicles, not all entities
 - scrolling the mouse in the menu conversation IO did not work
 - `MMOCore` attribute loading with MMOCore 1.13
+- missing messages `animals_to_tame` and `times_to_jump` in language files by adding them
 ### Security
 
 ## [2.2.1] - 2025-01-12
