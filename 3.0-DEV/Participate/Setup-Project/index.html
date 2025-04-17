@@ -3798,6 +3798,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#build-with-maven-daemon">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Build with Maven Daemon
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4735,6 +4758,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#build-with-maven-daemon">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Build with Maven Daemon
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5002,6 +5048,19 @@ In IntelliJ navigate to <code>File/Settings/Tools/Startup Tasks</code> click on 
 Now select <code>Maven</code>, set a <code>Name</code> like <code>BetonQuest Resolve Dependencies</code> and write <code>dependency:resolve</code>
 into the field <code>Command line</code>. Then confirm with <code>Ok</code> twice.
 Now after starting IntelliJ the <code>BetonQuest Resolve Dependencies</code> task should run automatically.</p>
+<h3 id="build-with-maven-daemon">Build with Maven Daemon<a class="headerlink" href="#build-with-maven-daemon" title="Permanent link">🔗</a></h3>
+<p>You can also speed up the build process in general by using Maven Daemon. Maven Daemon is a long-running process that
+can be reused for multiple builds. This can significantly reduce the startup time of Maven builds.
+As we use the maven wrapper, we already simply swapped the used maven version with the Daemon version.
+This means if you run the build from the command line (<code>./mvnw</code>), it will use the Daemon version.
+IntelliJ does support Maven Wrapper, but it does not support the Maven Daemon distribution directly; this will hopefully
+change in the future. For now, you can use the Maven Daemon distribution with IntelliJ by following these steps:</p>
+<ol>
+<li>Visit <a href="https://github.com/apache/maven-mvnd">https://github.com/apache/maven-mvnd</a> and install Maven Daemon on your system.</li>
+<li>Go to <code>File/Settings/Build, Execution, Deployment/Build Tools/Maven</code> and set the <code>Maven home path</code> to the
+   location of the Maven Daemon distribution. For example <code>C:\maven\maven-mvnd-1.0.2-windows-amd64\mvn</code>.</li>
+</ol>
+<p>After this setup all the UI actions in IntelliJ will use the Maven Daemon distribution.</p>
 <h2 id="building-the-documentation">Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Permanent link">🔗</a></h2>
 <p>Make sure <a href="https://www.python.org/downloads/">Python3</a> is installed on your local system
 and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
