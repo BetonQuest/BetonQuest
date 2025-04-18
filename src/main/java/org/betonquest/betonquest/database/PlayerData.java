@@ -17,13 +17,13 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -175,16 +175,10 @@ public class PlayerData implements TagData, PointData {
     }
 
     private void addItemToBackpack(final ResultSet backpackResults) throws SQLException {
-        final String instruction = backpackResults.getString("instruction");
+        final String serialized = backpackResults.getString("serialized");
         final int amount = backpackResults.getInt("amount");
-        final ItemStack item;
-        try {
-            item = new QuestItem(instruction).generate(amount);
-        } catch (final QuestException e) {
-            log.warn("Could not load backpack item for " + profile
-                    + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
-            return;
-        }
+        final byte[] bytes = Base64.getDecoder().decode(serialized);
+        final ItemStack item = ItemStack.deserializeBytes(bytes).asQuantity(amount);
         backpack.add(item);
     }
 
@@ -477,9 +471,10 @@ public class PlayerData implements TagData, PointData {
         // quite expensive, should be changed
         saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         for (final ItemStack itemStack : backpack) {
-            final String instruction = QuestItem.itemToString(itemStack);
+            final byte[] bytes = itemStack.asOne().serializeAsBytes();
+            final String serialized = Base64.getEncoder().encodeToString(bytes);
             final String newAmount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, profileID, instruction, newAmount));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, profileID, serialized, newAmount));
         }
     }
 

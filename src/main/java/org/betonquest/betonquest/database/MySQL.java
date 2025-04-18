@@ -3,6 +3,8 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.item.QuestItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -83,6 +86,7 @@ public class MySQL extends Database {
         migrations.put(new MigrationKey("betonquest", 1), this::migration1);
         migrations.put(new MigrationKey("betonquest", 2), this::migration2);
         migrations.put(new MigrationKey("betonquest", 3), this::migration3);
+        migrations.put(new MigrationKey("betonquest", 4), this::migration4);
         return migrations;
     }
 
@@ -265,6 +269,44 @@ public class MySQL extends Database {
                     + "SET name = '" + profileInitialName + "' WHERE name IS NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "player_profile "
                     + "MODIFY COLUMN name VARCHAR(63) NOT NULL");
+        }
+    }
+
+    @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
+    private void migration4(final Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("CREATE TABLE " + prefix + "backpack_tmp ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "profileID CHAR(36) NOT NULL, "
+                    + "serialized TEXT NOT NULL, "
+                    + "amount INT NOT NULL, "
+                    + "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE)");
+            try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + prefix + "backpack");
+                 PreparedStatement preparedStatement = connection.prepareStatement(
+                         "INSERT INTO " + prefix + "backpack_tmp (id, profileID, serialized, amount) VALUES (?, ?, ?, ?)")) {
+                while (resultSet.next()) {
+                    final int rowId = resultSet.getInt("id");
+                    final String profileId = resultSet.getString("profileID");
+                    final String instruction = resultSet.getString("instruction");
+                    final int amount = resultSet.getInt("amount");
+                    final byte[] bytes;
+                    try {
+                        bytes = new QuestItem(instruction).generate(1).serializeAsBytes();
+                    } catch (final QuestException e) {
+                        log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
+                        continue;
+                    }
+                    final String serialized = Base64.getEncoder().encodeToString(bytes);
+                    preparedStatement.setInt(1, rowId);
+                    preparedStatement.setString(2, profileId);
+                    preparedStatement.setString(3, serialized);
+                    preparedStatement.setInt(4, amount);
+                    preparedStatement.addBatch();
+                }
+                preparedStatement.executeBatch();
+            }
+            statement.executeUpdate("DROP TABLE " + prefix + "backpack");
+            statement.executeUpdate("ALTER TABLE " + prefix + "backpack_tmp RENAME TO " + prefix + "backpack");
         }
     }
 }

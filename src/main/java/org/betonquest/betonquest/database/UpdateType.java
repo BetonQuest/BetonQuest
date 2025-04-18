@@ -35,9 +35,9 @@ public enum UpdateType {
      */
     ADD_JOURNAL(prefix -> "INSERT INTO " + prefix + "journal (profileID, pointer, date) VALUES (?, ?, ?);"),
     /**
-     * Add single itemstack to the database. ProfileID, instruction, amount.
+     * Add single itemstack to the database. ProfileID, serialized item, amount.
      */
-    ADD_BACKPACK(prefix -> "INSERT INTO " + prefix + "backpack (profileID, instruction, amount) VALUES (?, ?, ?);"),
+    ADD_BACKPACK(prefix -> "INSERT INTO " + prefix + "backpack (profileID, serialized, amount) VALUES (?, ?, ?);"),
     /**
      * Add single player to the database. PlayerID, active_profile, language.
      */
@@ -120,7 +120,7 @@ public enum UpdateType {
     INSERT_TAG(prefix -> "INSERT INTO " + prefix + "tags (profileID, tag) VALUES (?,?)"),
     INSERT_POINT(prefix -> "INSERT INTO " + prefix + "points (profileID, category, count) VALUES (?,?,?)"),
     INSERT_JOURNAL(prefix -> "INSERT INTO " + prefix + "journal (id, profileID, pointer, date) VALUES (?,?,?,?)"),
-    INSERT_BACKPACK(prefix -> "INSERT INTO " + prefix + "backpack (id, profileID, instruction, amount) VALUES (?,?,?,?)"),
+    INSERT_BACKPACK(prefix -> "INSERT INTO " + prefix + "backpack (id, profileID, serialized, amount) VALUES (?,?,?,?)"),
     INSERT_PLAYER(prefix -> "INSERT INTO " + prefix + "player (playerID, active_profile, language, conversation) VALUES (?,?,?,?);"),
     INSERT_PROFILE(prefix -> "INSERT INTO " + prefix + "profile (profileID) VALUES (?);"),
     INSERT_PLAYER_PROFILE(prefix -> "INSERT INTO " + prefix + "player_profile (playerID, profileID, name) VALUES (?,?,?);"),
