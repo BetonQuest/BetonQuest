@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mythicmobs.events;
+package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mythicmobs.conditions;
+package org.betonquest.betonquest.compatibility.mythicmobs.condition;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.quest.QuestException;
