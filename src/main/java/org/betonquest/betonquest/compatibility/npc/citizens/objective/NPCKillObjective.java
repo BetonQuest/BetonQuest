@@ -7,9 +7,8 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -29,23 +28,15 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     /**
      * Create a new Citizens NPC kill objective.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction  the user-provided instruction
+     * @param targetAmount the amount of NPCs to kill
+     * @param predicate    the predicate to test if the NPC is the right one
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final Instruction instruction) throws QuestException {
+    public NPCKillObjective(final Instruction instruction, final VariableNumber targetAmount, final Predicate<NPC> predicate) throws QuestException {
         super(instruction, "mobs_to_kill");
-        final Instruction npcInstruction = instruction.getID(NpcID::new).getInstruction();
-        if (!"citizens".equals(npcInstruction.getPart(0))) {
-            throw new QuestException("Cannot use non-Citizens NPC ID!");
-        }
-        final String argument = npcInstruction.getPart(1);
-        if (npcInstruction.hasArgument("byName")) {
-            predicate = npc -> argument.equals(npc.getName());
-        } else {
-            final int npcId = npcInstruction.getInt(argument, -1);
-            predicate = npc -> npcId == npc.getId();
-        }
-        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.targetAmount = targetAmount;
+        this.predicate = predicate;
     }
 
     /**

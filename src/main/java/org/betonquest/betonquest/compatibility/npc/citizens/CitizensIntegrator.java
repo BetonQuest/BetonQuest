@@ -9,7 +9,7 @@ import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensM
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensStopEventFactory;
-import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjective;
+import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
@@ -65,7 +65,7 @@ public class CitizensIntegrator implements Integrator {
                 plugin.getQuestTypeAPI(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.objective().register("npckill", NPCKillObjective.class);
+        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory());
 
         final BukkitScheduler scheduler = server.getScheduler();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);
