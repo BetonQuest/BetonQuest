@@ -4,9 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsRideConditionFactory;
-import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjective;
-import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjective;
-import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjective;
+import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjectiveFactory;
+import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsLocationObjectiveFactory;
+import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsRideObjectiveFactory;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 
@@ -29,9 +29,9 @@ public class TrainCartsIntegrator implements Integrator {
     @Override
     public void hook() throws HookException {
         final ObjectiveTypeRegistry objectiveTypes = plugin.getQuestRegistries().objective();
-        objectiveTypes.register("traincartslocation", TrainCartsLocationObjective.class);
-        objectiveTypes.register("traincartsride", TrainCartsRideObjective.class);
-        objectiveTypes.register("traincartsexit", TrainCartsExitObjective.class);
+        objectiveTypes.register("traincartslocation", new TrainCartsLocationObjectiveFactory());
+        objectiveTypes.register("traincartsride", new TrainCartsRideObjectiveFactory(plugin.getLoggerFactory()));
+        objectiveTypes.register("traincartsexit", new TrainCartsExitObjectiveFactory(plugin.getLoggerFactory()));
 
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
         plugin.getQuestRegistries().condition().register("traincartsride",

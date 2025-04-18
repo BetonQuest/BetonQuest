@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
@@ -33,12 +32,14 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      * Creates a new {@link TrainCartsLocationObjective}.
      *
      * @param instruction the Instruction object to be used in the constructor
+     * @param loc         the location the player has to be inside
+     * @param range       the range around the location
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsLocationObjective(final Instruction instruction) throws QuestException {
+    public TrainCartsLocationObjective(final Instruction instruction, final VariableLocation loc, final VariableNumber range) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
-        this.loc = instruction.get(VariableLocation::new);
-        this.range = instruction.get(instruction.getOptional("range", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.loc = loc;
+        this.range = range;
     }
 
     @Override

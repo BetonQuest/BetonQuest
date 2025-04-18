@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -48,23 +48,25 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     private final Map<UUID, Pair<Long, BukkitTask>> startTimes;
 
     /**
-     * The {@link VariableString} that stores the optional name of the train.
+     * The {@link VariableString} that stores the name of the train, maybe empty.
      */
     private final VariableString name;
 
     /**
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction  the user-provided instruction
+     * @param log          the logger for this objective
+     * @param name         the name of the train, maybe empty
+     * @param targetAmount the target amount of time in seconds
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction) throws QuestException {
+    public TrainCartsRideObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString name, final VariableNumber targetAmount) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.targetAmount = targetAmount;
+        this.log = log;
+        this.name = name;
         this.startTimes = new HashMap<>();
-
-        this.name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
-        targetAmount = instruction.get(instruction.getOptional("amount", "0"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
     }
 
     /**

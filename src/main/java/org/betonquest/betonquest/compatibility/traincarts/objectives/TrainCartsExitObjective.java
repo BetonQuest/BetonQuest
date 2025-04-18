@@ -26,7 +26,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The optional {@link VariableString} that stores the name of the train.
+     * The {@link VariableString} that stores the name of the train, maybe empty.
      */
     private final VariableString name;
 
@@ -34,12 +34,14 @@ public class TrainCartsExitObjective extends Objective implements Listener {
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
+     * @param log         the logger for this objective
+     * @param name        the name of the train, maybe empty
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final Instruction instruction) throws QuestException {
+    public TrainCartsExitObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString name) throws QuestException {
         super(instruction);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
+        this.log = log;
+        this.name = name;
     }
 
     /**
