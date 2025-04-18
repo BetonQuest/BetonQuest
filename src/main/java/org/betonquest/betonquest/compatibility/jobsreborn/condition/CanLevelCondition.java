@@ -10,7 +10,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 /**
  * Condition to check if the player can level up the profession.
  */
-public class ConditionCanLevel implements PlayerCondition {
+public class CanLevelCondition implements PlayerCondition {
 
     /**
      * Job to check.
@@ -22,7 +22,7 @@ public class ConditionCanLevel implements PlayerCondition {
      *
      * @param job the job to check
      */
-    public ConditionCanLevel(final VariableJob job) {
+    public CanLevelCondition(final VariableJob job) {
         this.job = job;
     }
 

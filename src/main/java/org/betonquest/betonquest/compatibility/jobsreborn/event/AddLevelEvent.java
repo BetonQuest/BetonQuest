@@ -9,36 +9,36 @@ import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
- * Event to set a job level.
+ * Event to add job level.
  */
-public class EventSetLevel implements PlayerEvent {
+public class AddLevelEvent implements PlayerEvent {
+
     /**
      * Job to add experience to.
      */
     private final VariableJob job;
 
     /**
-     * Amount to remove.
+     * Amount to add.
      */
-    private final VariableNumber nLevel;
+    private final VariableNumber nAddLevel;
 
     /**
-     * Create a new level delete event.
-     * The set level has a minimum of 1.
+     * Create a new level add event.
      *
-     * @param job    the job to remove level from
+     * @param job    the job to add level to
      * @param amount the level amount
      */
-    public EventSetLevel(final VariableJob job, final VariableNumber amount) {
+    public AddLevelEvent(final VariableJob job, final VariableNumber amount) {
         this.job = job;
-        this.nLevel = amount;
+        this.nAddLevel = amount;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
         final JobProgression progression = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job.getValue(profile));
         if (progression != null) {
-            progression.setLevel(Math.min(progression.getJob().getMaxLevel(), nLevel.getValue(profile).intValue()));
+            progression.setLevel(progression.getLevel() + nAddLevel.getValue(profile).intValue());
         }
     }
 }

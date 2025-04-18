@@ -9,9 +9,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create {@link ConditionJobFull}s from {@link Instruction}s.
+ * Factory to create {@link JobFullCondition}s from {@link Instruction}s.
  */
-public class FactoryConditionJobFull implements PlayerConditionFactory {
+public class JobFullConditionFactory implements PlayerConditionFactory {
     /**
      * The data for the primary server thread.
      */
@@ -22,13 +22,13 @@ public class FactoryConditionJobFull implements PlayerConditionFactory {
      *
      * @param data the data for the primary server thread.
      */
-    public FactoryConditionJobFull(final PrimaryServerThreadData data) {
+    public JobFullConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableJob job = instruction.get(VariableJob::new);
-        return new PrimaryServerThreadPlayerCondition(new ConditionJobFull(job), data);
+        return new PrimaryServerThreadPlayerCondition(new JobFullCondition(job), data);
     }
 }

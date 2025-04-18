@@ -10,7 +10,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 /**
  * Condition to check if a player has the max slots in a job reached.
  */
-public class ConditionJobFull implements PlayerCondition {
+public class JobFullCondition implements PlayerCondition {
 
     /**
      * Job to check.
@@ -22,7 +22,7 @@ public class ConditionJobFull implements PlayerCondition {
      *
      * @param job the job to check
      */
-    public ConditionJobFull(final VariableJob job) {
+    public JobFullCondition(final VariableJob job) {
         this.job = job;
     }
 

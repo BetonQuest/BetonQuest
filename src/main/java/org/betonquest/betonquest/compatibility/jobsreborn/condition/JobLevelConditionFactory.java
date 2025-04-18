@@ -5,13 +5,14 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create {@link ConditionCanLevel}s from {@link Instruction}s.
+ * Factory to create {@link JobLevelCondition}s from {@link Instruction}s.
  */
-public class FactoryConditionCanLevel implements PlayerConditionFactory {
+public class JobLevelConditionFactory implements PlayerConditionFactory {
     /**
      * The data for the primary server thread.
      */
@@ -22,13 +23,15 @@ public class FactoryConditionCanLevel implements PlayerConditionFactory {
      *
      * @param data the data for the primary server thread.
      */
-    public FactoryConditionCanLevel(final PrimaryServerThreadData data) {
+    public JobLevelConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableJob job = instruction.get(VariableJob::new);
-        return new PrimaryServerThreadPlayerCondition(new ConditionCanLevel(job), data);
+        final VariableNumber minimum = instruction.get(VariableNumber::new);
+        final VariableNumber maximum = instruction.get(VariableNumber::new);
+        return new PrimaryServerThreadPlayerCondition(new JobLevelCondition(job, minimum, maximum), data);
     }
 }

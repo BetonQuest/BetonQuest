@@ -11,7 +11,7 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 /**
  * Condition to check if the current player level in a job is in an interval.
  */
-public class ConditionJobLevel implements PlayerCondition {
+public class JobLevelCondition implements PlayerCondition {
 
     /**
      * Job to check.
@@ -35,7 +35,7 @@ public class ConditionJobLevel implements PlayerCondition {
      * @param nMinLevel the minimum required level in the job
      * @param nMaxLevel the maximum required level in the job
      */
-    public ConditionJobLevel(final VariableJob job, final VariableNumber nMinLevel, final VariableNumber nMaxLevel) {
+    public JobLevelCondition(final VariableJob job, final VariableNumber nMinLevel, final VariableNumber nMaxLevel) {
         this.job = job;
         this.nMinLevel = nMinLevel;
         this.nMaxLevel = nMaxLevel;

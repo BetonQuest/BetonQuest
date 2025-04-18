@@ -11,7 +11,7 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 /**
  * Event to reduce job level.
  */
-public class EventDelLevel implements PlayerEvent {
+public class DelLevelEvent implements PlayerEvent {
     /**
      * Job to add experience to.
      */
@@ -29,7 +29,7 @@ public class EventDelLevel implements PlayerEvent {
      * @param job    the job to remove level from
      * @param amount the level amount
      */
-    public EventDelLevel(final VariableJob job, final VariableNumber amount) {
+    public DelLevelEvent(final VariableJob job, final VariableNumber amount) {
         this.job = job;
         this.nAddLevel = amount;
     }
