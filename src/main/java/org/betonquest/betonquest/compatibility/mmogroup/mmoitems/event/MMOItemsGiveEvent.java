@@ -15,25 +15,56 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An event that gives an MMOItems item to a player.
+ */
 public class MMOItemsGiveEvent implements OnlineEvent {
     /**
      * {@link MMOItems} plugin instance.
      */
     private final MMOItems mmoPlugin;
 
+    /**
+     * Type of the item to be given.
+     */
     private final Type itemType;
 
+    /**
+     * ID of the item to be given.
+     */
     private final String itemID;
 
+    /**
+     * Whether to scale the item.
+     */
     private final boolean scale;
 
+    /**
+     * Notification sender for the event.
+     */
     private final NotificationSender notify;
 
+    /**
+     * Whether to give the item in a single stack.
+     */
     private final boolean singleStack;
 
+    /**
+     * Variable number representing the amount of items to be given.
+     */
     private final VariableNumber amountVar;
 
+    /**
+     * Constructs a new MMOItemsGiveEvent.
+     *
+     * @param mmoPlugin   the MMOItems plugin instance
+     * @param itemType    the type of the item to be given
+     * @param itemID      the ID of the item to be given
+     * @param scale       whether to scale the item
+     * @param notify      the notification sender
+     * @param singleStack whether to give the item in a single stack
+     * @param amountVar   the variable number representing the amount of items to be given
+     */
     public MMOItemsGiveEvent(final MMOItems mmoPlugin, final Type itemType, final String itemID, final boolean scale, final NotificationSender notify, final boolean singleStack, final VariableNumber amountVar) {
         this.mmoPlugin = mmoPlugin;
         this.itemType = itemType;

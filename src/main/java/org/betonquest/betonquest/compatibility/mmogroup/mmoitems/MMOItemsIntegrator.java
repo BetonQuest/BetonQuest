@@ -7,6 +7,9 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.condition.MMOIt
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.condition.MMOItemsItemConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event.MMOItemsGiveEventFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event.MMOItemsTakeEventFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsApplyGemObjectiveFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsCraftObjectiveFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsUpgradeObjectiveFactory;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
@@ -39,9 +42,9 @@ public class MMOItemsIntegrator implements Integrator {
         conditionTypes.register("mmohand", new MMOItemsHandConditionFactory(loggerFactory, data));
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
-        objectiveTypes.register("mmoitemcraft", MMOItemsCraftObjective.class);
-        objectiveTypes.register("mmoitemupgrade", MMOItemsUpgradeObjective.class);
-        objectiveTypes.register("mmoitemapplygem", MMOItemsApplyGemObjective.class);
+        objectiveTypes.register("mmoitemcraft", new MMOItemsCraftObjectiveFactory());
+        objectiveTypes.register("mmoitemupgrade", new MMOItemsUpgradeObjectiveFactory());
+        objectiveTypes.register("mmoitemapplygem", new MMOItemsApplyGemObjectiveFactory());
 
         final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoitemgive", new MMOItemsGiveEventFactory(loggerFactory, plugin.getPluginMessage(), data));

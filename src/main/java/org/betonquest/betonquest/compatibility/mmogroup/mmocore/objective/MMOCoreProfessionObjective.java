@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
+package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
@@ -15,20 +15,40 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An objective that listens for the player leveling up in their MMOCore profession.
+ */
 public class MMOCoreProfessionObjective extends Objective implements Listener {
+    /**
+     * The name of the profession that the player needs to level up.
+     */
     @Nullable
     private final String professionName;
 
+    /**
+     * The target level to be reached.
+     */
     private final VariableNumber targetLevel;
 
-    public MMOCoreProfessionObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the MMOCoreProfessionObjective.
+     *
+     * @param instruction    the instruction object representing the objective
+     * @param professionName the name of the profession to be leveled up
+     * @param targetLevel    the target level to be reached
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
+     */
+    public MMOCoreProfessionObjective(final Instruction instruction, @Nullable final String professionName, final VariableNumber targetLevel) throws QuestException {
         super(instruction);
-        final String profession = instruction.next();
-        professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
-        targetLevel = instruction.get(VariableNumber::new);
+        this.professionName = professionName;
+        this.targetLevel = targetLevel;
     }
 
+    /**
+     * Listens for the player leveling up in their MMOCore profession.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());

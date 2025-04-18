@@ -13,10 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * An objective that is completed when a player activates a MythicLib skill.
@@ -32,37 +29,20 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      * Whether the skill must be "cast" by the player.
      * This indicates that the skill was triggered by MMOCore's ability system.
      */
-    private final List<TriggerType> triggerTypes = new ArrayList<>();
+    private final List<TriggerType> triggerTypes;
 
     /**
      * Parses the instruction and creates a new objective.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction  the user-provided instruction
+     * @param skillId      the skill ID to activate
+     * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final Instruction instruction) throws QuestException {
+    public MythicLibSkillObjective(final Instruction instruction, final String skillId, final List<TriggerType> triggerTypes) throws QuestException {
         super(instruction);
-        skillId = instruction.next();
-        final String triggerTypesString = instruction.getOptional("trigger");
-        if (triggerTypesString == null) {
-            triggerTypes.addAll(TriggerType.values());
-        } else {
-            triggerTypes.addAll(parseTriggerTypes(triggerTypesString));
-        }
-    }
-
-    private Collection<TriggerType> parseTriggerTypes(final String triggerTypeString) throws QuestException {
-        final Collection<TriggerType> types = new ArrayList<>();
-        final Collection<String> possibleTypes = TriggerType.values().stream().map(TriggerType::name).toList();
-        final String[] parts = triggerTypeString.toUpperCase(Locale.ROOT).split(",");
-        for (final String part : parts) {
-            if (!possibleTypes.contains(part)) {
-                throw new QuestException("Unknown trigger type: " + part);
-            }
-            final TriggerType triggerType = TriggerType.valueOf(part);
-            types.add(triggerType);
-        }
-        return types;
+        this.skillId = skillId;
+        this.triggerTypes = triggerTypes;
     }
 
     /**

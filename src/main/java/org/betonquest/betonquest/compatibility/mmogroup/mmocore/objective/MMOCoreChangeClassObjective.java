@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
+package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.event.PlayerChangeClassEvent;
 import org.betonquest.betonquest.BetonQuest;
@@ -25,16 +25,15 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
     private final String targetClassName;
 
     /**
-     * <p>
-     * Creates new instance of the objective.
+     * Constructor for the MMOCoreChangeClassObjective.
      *
-     * @param instruction Instruction object representing the objective;
+     * @param instruction     Instruction object representing the objective;
+     * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final Instruction instruction) throws QuestException {
+    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final String targetClassName) throws QuestException {
         super(instruction);
-
-        targetClassName = instruction.getOptional("class");
+        this.targetClassName = targetClassName;
     }
 
     /**

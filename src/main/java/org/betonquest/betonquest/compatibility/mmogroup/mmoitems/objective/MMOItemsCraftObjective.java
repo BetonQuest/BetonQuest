@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
+package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective;
 
 import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
 import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
@@ -11,8 +11,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -26,19 +27,34 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent.StationAction;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An objective that listens for the player crafting items using MMOItems.
+ */
 public class MMOItemsCraftObjective extends CountingObjective implements Listener {
+    /**
+     * The type of the item to be crafted.
+     */
     private final Type itemType;
 
+    /**
+     * The ID of the item to be crafted.
+     */
     private final String itemId;
 
-    public MMOItemsCraftObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructs a new MMOItemsCraftObjective.
+     *
+     * @param instruction  the instruction object representing the objective
+     * @param targetAmount the target amount of items to craft
+     * @param itemType     the type of the item to be crafted
+     * @param itemId       the ID of the item to be crafted
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
+     */
+    public MMOItemsCraftObjective(final Instruction instruction, final VariableNumber targetAmount, final Type itemType, final String itemId) throws QuestException {
         super(instruction, "items_to_craft");
-
-        itemType = MMOItemsUtils.getMMOItemType(instruction.next());
-        itemId = instruction.next();
-
-        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.targetAmount = targetAmount;
+        this.itemType = itemType;
+        this.itemId = itemId;
     }
 
     /**
