@@ -11,6 +11,9 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreCla
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreClassPointsEventFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreProfessionExperienceEventFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreSkillPointsEventFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreBreakCustomBlockObjectiveFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreChangeClassObjectiveFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreProfessionObjectiveFactory;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
@@ -41,9 +44,9 @@ public class MMOCoreIntegrator implements Integrator {
         conditionTypes.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
-        objectiveTypes.register("mmoprofessionlevelup", MMOCoreProfessionObjective.class);
-        objectiveTypes.register("mmochangeclass", MMOCoreChangeClassObjective.class);
-        objectiveTypes.register("mmocorebreakblock", MMOCoreBreakCustomBlockObjective.class);
+        objectiveTypes.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
+        objectiveTypes.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
+        objectiveTypes.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 
         final EventTypeRegistry eventTypes = questRegistries.event();
         eventTypes.register("mmoclassexperience", new MMOCoreClassExperienceEventFactory(data));

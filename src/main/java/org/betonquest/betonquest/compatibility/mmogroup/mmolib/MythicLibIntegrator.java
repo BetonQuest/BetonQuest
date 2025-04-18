@@ -29,7 +29,7 @@ public class MythicLibIntegrator implements Integrator {
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         plugin.getQuestRegistries().condition().register("mmostat", new MythicLibStatConditionFactory(data));
 
-        plugin.getQuestRegistries().objective().register("mmoskill", MythicLibSkillObjective.class);
+        plugin.getQuestRegistries().objective().register("mmoskill", new MythicLibSkillObjectiveFactory());
     }
 
     @Override

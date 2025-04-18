@@ -9,17 +9,39 @@ import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Condition that checks if a player has a certain amount of an MMOItems item in their hand.
+ */
 public class MMOItemsHandCondition implements OnlineCondition {
 
+    /**
+     * The type of the item to check for.
+     */
     private final Type itemType;
 
+    /**
+     * The ID of the item to check for.
+     */
     private final String itemID;
 
+    /**
+     * Whether to check the offhand.
+     */
     private final boolean offhand;
 
+    /**
+     * The amount of the item to check for.
+     */
     private final VariableNumber amount;
 
+    /**
+     * Constructs a new MMOItemsHandCondition.
+     *
+     * @param itemType the type of the item
+     * @param itemID   the ID of the item
+     * @param offhand  whether to check the offhand
+     * @param amount   the amount of the item
+     */
     public MMOItemsHandCondition(final Type itemType, final String itemID, final boolean offhand, final VariableNumber amount) {
         this.itemType = itemType;
         this.itemID = itemID;

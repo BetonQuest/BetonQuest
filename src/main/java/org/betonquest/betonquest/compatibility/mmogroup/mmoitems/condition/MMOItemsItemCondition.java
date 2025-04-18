@@ -11,16 +11,38 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Condition that checks if a player has a certain amount of an MMOItems item.
+ */
 public class MMOItemsItemCondition implements OnlineCondition {
+    /**
+     * The player data storage.
+     */
     private final PlayerDataStorage playerDataStorage;
 
+    /**
+     * The type of the item to check for.
+     */
     private final Type itemType;
 
+    /**
+     * The ID of the item to check for.
+     */
     private final String itemID;
 
+    /**
+     * The amount of the item to check for.
+     */
     private final VariableNumber amount;
 
+    /**
+     * Constructs a new MMOItemsItemCondition.
+     *
+     * @param playerDataStorage the player data storage
+     * @param itemType          the type of the item
+     * @param itemID            the ID of the item
+     * @param amount            the amount of the item
+     */
     public MMOItemsItemCondition(final PlayerDataStorage playerDataStorage, final Type itemType, final String itemID, final VariableNumber amount) {
         this.playerDataStorage = playerDataStorage;
         this.itemType = itemType;

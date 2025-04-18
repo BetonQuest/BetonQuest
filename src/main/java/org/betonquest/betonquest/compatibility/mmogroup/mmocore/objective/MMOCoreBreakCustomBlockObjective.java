@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
+package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 
 import net.Indyuce.mmocore.api.block.BlockType;
 import net.Indyuce.mmocore.api.block.SkullBlockType;
@@ -10,25 +10,41 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An objective that listens for the player breaking a custom block.
+ */
 public class MMOCoreBreakCustomBlockObjective extends CountingObjective implements Listener {
-
+    /**
+     * The ID of the block to be broken.
+     */
     private final String desiredBlockId;
 
-    public MMOCoreBreakCustomBlockObjective(final Instruction instruction) throws QuestException {
+    /**
+     * Constructor for the MMOCoreBreakCustomBlockObjective.
+     *
+     * @param instruction    the instruction object representing the objective
+     * @param targetAmount   the target amount of blocks to break
+     * @param desiredBlockId the ID of the block to be broken
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
+     */
+    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final VariableNumber targetAmount, final String desiredBlockId) throws QuestException {
         super(instruction, "blocks_to_break");
-        desiredBlockId = instruction.getOptionalArgument("block")
-                .orElseThrow(() -> new QuestException("Missing required argument: block"));
-        targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        this.targetAmount = targetAmount;
+        this.desiredBlockId = desiredBlockId;
     }
 
+    /**
+     * Listens for the player breaking a custom block.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final CustomBlockMineEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
