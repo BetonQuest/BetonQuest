@@ -46,18 +46,17 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * Constructor for the MobKillObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param entities     the entity types that should be killed
      * @param targetAmount the amount of mobs to kill
+     * @param entities     the entity types that should be killed
      * @param name         the optional name of the mob
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final Instruction instruction, final List<EntityType> entities,
-                            final VariableNumber targetAmount, @Nullable final String name,
+    public MobKillObjective(final Instruction instruction, final VariableNumber targetAmount,
+                            final List<EntityType> entities, @Nullable final String name,
                             @Nullable final VariableIdentifier marked) throws QuestException {
-        super(instruction, "mobs_to_kill");
+        super(instruction, targetAmount, "mobs_to_kill");
         this.entities = entities;
-        this.targetAmount = targetAmount;
         this.name = name;
         this.marked = marked;
     }

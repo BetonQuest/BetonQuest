@@ -42,8 +42,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
      */
     public KillPlayerObjective(final Instruction instruction, final VariableNumber targetAmount,
                                @Nullable final String name, final List<ConditionID> required) throws QuestException {
-        super(instruction, "players_to_kill");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "players_to_kill");
         this.name = name;
         this.required = required;
     }

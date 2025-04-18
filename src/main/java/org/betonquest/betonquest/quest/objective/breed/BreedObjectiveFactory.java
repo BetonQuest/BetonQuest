@@ -22,6 +22,6 @@ public class BreedObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final EntityType type = instruction.getEnum(EntityType.class);
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new BreedObjective(instruction, type, targetAmount);
+        return new BreedObjective(instruction, targetAmount, type);
     }
 }

@@ -42,6 +42,6 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final VariableLocation hookTargetLocation = hookIsNotNull ? instruction.get(loc, VariableLocation::new) : null;
         final VariableNumber rangeVar = hookIsNotNull ? instruction.get(range, VariableNumber::new) : null;
         final BetonQuestLogger log = loggerFactory.create(FishObjective.class);
-        return new FishObjective(instruction, log, questItem, targetAmount, hookTargetLocation, rangeVar);
+        return new FishObjective(instruction, targetAmount, log, questItem, hookTargetLocation, rangeVar);
     }
 }

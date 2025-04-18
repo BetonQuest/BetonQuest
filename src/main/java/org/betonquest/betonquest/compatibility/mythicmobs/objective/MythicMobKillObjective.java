@@ -74,8 +74,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                                   final VariableNumber minMobLevel, final VariableNumber maxMobLevel,
                                   final double deathRadiusAllPlayers, final double neutralDeathRadiusAllPlayers, @Nullable final VariableIdentifier marked)
             throws QuestException {
-        super(instruction, "mobs_to_kill");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "mobs_to_kill");
         this.names = names;
         this.minMobLevel = minMobLevel;
         this.maxMobLevel = maxMobLevel;

@@ -25,6 +25,6 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final List<Item> pickupItems = instruction.getList(instruction::getItem);
         final VariableNumber targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new PickupObjective(instruction, pickupItems, targetAmount);
+        return new PickupObjective(instruction, targetAmount, pickupItems);
     }
 }

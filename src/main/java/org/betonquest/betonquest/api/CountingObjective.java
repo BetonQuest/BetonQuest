@@ -31,29 +31,31 @@ public abstract class CountingObjective extends Objective {
     /**
      * The amount of units required for completion.
      */
-    @SuppressWarnings("NullAway.Init")
-    protected VariableNumber targetAmount;
+    private final VariableNumber targetAmount;
 
     /**
      * Create a counting objective.
      *
-     * @param instruction the objective instruction
+     * @param instruction  the objective instruction
+     * @param targetAmount the target amount of units required for completion
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction) throws QuestException {
-        this(instruction, null);
+    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount) throws QuestException {
+        this(instruction, targetAmount, null);
     }
 
     /**
      * Create a counting objective with default notify message name.
      *
      * @param instruction       the objective instruction
+     * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, @Nullable final String notifyMessageName) throws QuestException {
+    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount, @Nullable final String notifyMessageName) throws QuestException {
         super(instruction);
         template = CountingData.class;
+        this.targetAmount = targetAmount;
         final BetonQuest instance = BetonQuest.getInstance();
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(instance.getLoggerFactory().create(CountingObjective.class),
                 instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),

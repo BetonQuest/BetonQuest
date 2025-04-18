@@ -27,6 +27,6 @@ public class MobKillObjectiveFactory implements ObjectiveFactory {
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         final String name = instruction.getOptional("name");
         final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
-        return new MobKillObjective(instruction, entities, targetAmount, name, marked);
+        return new MobKillObjective(instruction, targetAmount, entities, name, marked);
     }
 }

@@ -77,6 +77,7 @@ public class BlockObjective extends CountingObjective implements Listener {
      * Constructor for the BlockObjective.
      *
      * @param instruction      the instruction that created this objective
+     * @param targetAmount     the target amount of blocks to break/place
      * @param log              the logger for this objective
      * @param selector         the block selector to match blocks
      * @param exactMatch       the exact match flag
@@ -86,18 +87,15 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param ignoreCancel     the ignore cancel flag
      * @param blockBreakSender the notification sender for block break
      * @param blockPlaceSender the notification sender for block place
-     * @param targetAmount     the target amount of blocks to break/place
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final BetonQuestLogger log, final BlockSelector selector,
-                          final boolean exactMatch, final boolean noSafety, @Nullable final VariableLocation location,
-                          @Nullable final VariableLocation region, final boolean ignoreCancel,
-                          final IngameNotificationSender blockBreakSender,
-                          final IngameNotificationSender blockPlaceSender, final VariableNumber targetAmount)
-            throws QuestException {
-        super(instruction);
-        this.targetAmount = targetAmount;
+    public BlockObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+                          final BlockSelector selector, final boolean exactMatch, final boolean noSafety,
+                          @Nullable final VariableLocation location, @Nullable final VariableLocation region,
+                          final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
+                          final IngameNotificationSender blockPlaceSender) throws QuestException {
+        super(instruction, targetAmount);
         this.log = log;
         this.selector = selector;
         this.exactMatch = exactMatch;

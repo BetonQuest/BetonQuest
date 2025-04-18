@@ -30,14 +30,14 @@ public class PickupObjective extends CountingObjective implements Listener {
      * Constructor for the PickupObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param pickupItems  the items to be picked up
      * @param targetAmount the target amount of items to be picked up
+     * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
-    public PickupObjective(final Instruction instruction, final List<Item> pickupItems, final VariableNumber targetAmount) throws QuestException {
-        super(instruction, "items_to_pickup");
+    public PickupObjective(final Instruction instruction, final VariableNumber targetAmount,
+                           final List<Item> pickupItems) throws QuestException {
+        super(instruction, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;
-        this.targetAmount = targetAmount;
     }
 
     /**

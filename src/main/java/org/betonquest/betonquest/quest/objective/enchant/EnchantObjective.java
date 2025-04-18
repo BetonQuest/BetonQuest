@@ -50,8 +50,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
      */
     public EnchantObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item,
                             final List<EnchantmentData> desiredEnchantments, final boolean requireOne) throws QuestException {
-        super(instruction, "items_to_enchant");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "items_to_enchant");
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;
         this.requireOne = requireOne;

@@ -33,6 +33,6 @@ public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
         final VariableString name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
         final VariableNumber targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         final BetonQuestLogger log = loggerFactory.create(TrainCartsRideObjective.class);
-        return new TrainCartsRideObjective(instruction, log, name, targetAmount);
+        return new TrainCartsRideObjective(instruction, targetAmount, log, name);
     }
 }

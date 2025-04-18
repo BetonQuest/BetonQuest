@@ -48,15 +48,14 @@ public class BrewObjective extends CountingObjective implements Listener {
      * The target amount of potions to brew.
      *
      * @param instruction     the instruction that created this objective
+     * @param targetAmount    the target amount of potions to brew
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
-     * @param targetAmount    the target amount of potions to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final ProfileProvider profileProvider, final Item potion,
-                         final VariableNumber targetAmount) throws QuestException {
-        super(instruction, "potions_to_brew");
-        this.targetAmount = targetAmount;
+    public BrewObjective(final Instruction instruction, final VariableNumber targetAmount,
+                         final ProfileProvider profileProvider, final Item potion) throws QuestException {
+        super(instruction, targetAmount, "potions_to_brew");
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
     }

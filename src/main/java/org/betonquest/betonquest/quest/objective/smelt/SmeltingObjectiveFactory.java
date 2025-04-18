@@ -22,6 +22,6 @@ public class SmeltingObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Item item = instruction.getItem();
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new SmeltingObjective(instruction, item, targetAmount);
+        return new SmeltingObjective(instruction, targetAmount, item);
     }
 }

@@ -44,8 +44,7 @@ public class ShearObjective extends CountingObjective implements Listener {
      */
     public ShearObjective(final Instruction instruction, final VariableNumber targetAmount, @Nullable final String name,
                           @Nullable final DyeColor color) throws QuestException {
-        super(instruction, "sheep_to_shear");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "sheep_to_shear");
         this.name = name;
         this.color = color;
     }

@@ -31,14 +31,14 @@ public class SmeltingObjective extends CountingObjective implements Listener {
      * Constructor for the SmeltingObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param item         the item to be smelted
      * @param targetAmount the target amount of items to be smelted
+     * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final Item item, final VariableNumber targetAmount) throws QuestException {
-        super(instruction, "items_to_smelt");
+    public SmeltingObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item)
+            throws QuestException {
+        super(instruction, targetAmount, "items_to_smelt");
         this.item = item;
-        this.targetAmount = targetAmount;
     }
 
     /**

@@ -25,8 +25,7 @@ public class JumpObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public JumpObjective(final Instruction instruction, final VariableNumber targetAmount) throws QuestException {
-        super(instruction, "times_to_jump");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "times_to_jump");
     }
 
     /**
