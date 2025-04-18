@@ -12,7 +12,7 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
- * Factory to create {@link MenuQuestEvent}s from {@link Instruction}s.
+ * Factory to create {@link MenuEvent}s from {@link Instruction}s.
  */
 public class MenuEventFactory implements PlayerEventFactory {
     /**
@@ -47,8 +47,8 @@ public class MenuEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.getEnum(Operation.class);
         final MenuID menuID = operation == Operation.OPEN ? instruction.getID(MenuID::new) : null;
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuQuestEvent(rpgMenu, menuID),
-                loggerFactory.create(MenuQuestEvent.class), instruction.getPackage()), data);
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuEvent(rpgMenu, menuID),
+                loggerFactory.create(MenuEvent.class), instruction.getPackage()), data);
     }
 
     /**

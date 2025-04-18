@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 /**
  * Event to open or close menus.
  */
-public class MenuQuestEvent implements OnlineEvent {
+public class MenuEvent implements OnlineEvent {
     /**
      * The stuff to do with the profile.
      */
@@ -24,7 +24,7 @@ public class MenuQuestEvent implements OnlineEvent {
      * @param rpgMenu the rpg menu instance to open and close menus
      * @param menuID  the menu id to open or null if open menus should be closed
      */
-    public MenuQuestEvent(final RPGMenu rpgMenu, @Nullable final MenuID menuID) {
+    public MenuEvent(final RPGMenu rpgMenu, @Nullable final MenuID menuID) {
         if (menuID != null) {
             doStuff = profile -> rpgMenu.openMenu(profile, menuID);
         } else {
