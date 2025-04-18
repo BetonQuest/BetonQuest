@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.mythicmobs;
+package org.betonquest.betonquest.compatibility.mythicmobs.objective;
 
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
@@ -21,8 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,7 +29,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The names of all mobs that this objective should count.
      */
-    private final Set<String> names = new HashSet<>();
+    private final Set<String> names;
 
     /**
      * The minimal level the killed mob must have to count.
@@ -58,31 +55,33 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * The text with which the mob must have been marked to count.
      */
     @Nullable
-    protected VariableIdentifier marked;
+    private final VariableIdentifier marked;
 
     /**
      * Creates a new MythicMobKillObjective.
      *
-     * @param instruction the user-provided instruction
+     * @param instruction                  the user-provided instruction
+     * @param targetAmount                 the target amount of kills
+     * @param names                        the names of all mobs that this objective should count
+     * @param minMobLevel                  the minimal level the mob must have to count
+     * @param maxMobLevel                  the maximal level the mob must have to count
+     * @param deathRadiusAllPlayers        the radius of a death mob to count for all players
+     * @param neutralDeathRadiusAllPlayers the radius of a death mob to count for all players if the killer is not a player
+     * @param marked                       the text with which the mob must have been marked to count
      * @throws QuestException if the instruction is invalid
      */
-    public MythicMobKillObjective(final Instruction instruction) throws QuestException {
+    public MythicMobKillObjective(final Instruction instruction, final VariableNumber targetAmount, final Set<String> names,
+                                  final VariableNumber minMobLevel, final VariableNumber maxMobLevel,
+                                  final double deathRadiusAllPlayers, final double neutralDeathRadiusAllPlayers, @Nullable final VariableIdentifier marked)
+            throws QuestException {
         super(instruction, "mobs_to_kill");
-
-        Collections.addAll(names, instruction.getArray());
-        targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-
-        final double deathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
-        deathRadiusAllPlayers = deathRadiusAllPlayersTemp * deathRadiusAllPlayersTemp;
-        final double neutralDeathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("neutralDeathRadiusAllPlayers"), 0);
-        neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayersTemp * neutralDeathRadiusAllPlayersTemp;
-
-        final String unsafeMinMobLevel = instruction.getOptional("minLevel");
-        final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
-
-        minMobLevel = instruction.get(unsafeMinMobLevel == null ? String.valueOf(Double.NEGATIVE_INFINITY) : unsafeMinMobLevel, VariableNumber::new);
-        maxMobLevel = instruction.get(unsafeMaxMobLevel == null ? String.valueOf(Double.POSITIVE_INFINITY) : unsafeMaxMobLevel, VariableNumber::new);
-        marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        this.targetAmount = targetAmount;
+        this.names = names;
+        this.minMobLevel = minMobLevel;
+        this.maxMobLevel = maxMobLevel;
+        this.deathRadiusAllPlayers = deathRadiusAllPlayers * deathRadiusAllPlayers;
+        this.neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayers * neutralDeathRadiusAllPlayers;
+        this.marked = marked;
     }
 
     /**
