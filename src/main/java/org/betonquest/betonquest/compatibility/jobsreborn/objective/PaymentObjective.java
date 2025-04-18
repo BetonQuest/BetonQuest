@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.jobsreborn;
+package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -9,10 +9,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -21,22 +19,40 @@ import org.bukkit.event.Listener;
 import java.util.Locale;
 import java.util.Objects;
 
-@SuppressWarnings("PMD.CommentRequired")
-public class ObjectivePaymentEvent extends Objective implements Listener {
+/**
+ * Objective that tracks the payment received by a player.
+ */
+public class PaymentObjective extends Objective implements Listener {
+    /**
+     * The target amount of money to be received.
+     */
     private final VariableNumber targetAmount;
 
+    /**
+     * The {@link IngameNotificationSender} to send notifications.
+     */
     private final IngameNotificationSender paymentSender;
 
-    public ObjectivePaymentEvent(final Instruction instructions) throws QuestException {
-        super(instructions);
+    /**
+     * Constructor for the PaymentObjective.
+     *
+     * @param instruction   the instruction of the objective
+     * @param targetAmount  the target amount of money to be received
+     * @param paymentSender the {@link IngameNotificationSender} to send notifications
+     * @throws QuestException if the instruction is invalid
+     */
+    public PaymentObjective(final Instruction instruction, final VariableNumber targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+        super(instruction);
         template = PaymentData.class;
-        targetAmount = instructions.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        final BetonQuest instance = BetonQuest.getInstance();
-        paymentSender = new IngameNotificationSender(instance.getLoggerFactory().create(ObjectivePaymentEvent.class),
-                instance.getPluginMessage(), instructions.getPackage(), instructions.getID().getFullID(),
-                NotificationLevel.INFO, "payment_to_receive");
+        this.targetAmount = targetAmount;
+        this.paymentSender = paymentSender;
     }
 
+    /**
+     * Check if the player has received a payment.
+     *
+     * @param event the event that triggered the payment
+     */
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
         final Profile profile = profileProvider.getProfile(event.getPlayer());
@@ -89,17 +105,35 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     }
 
     /**
+     * Get the {@link PaymentData} for the given {@link Profile}.
+     *
      * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     private PaymentData getPaymentData(final Profile profile) {
         return Objects.requireNonNull((PaymentData) dataMap.get(profile));
     }
 
+    /**
+     * Data class for the Payment objective.
+     */
     public static class PaymentData extends ObjectiveData {
+        /**
+         * The amount of money the player has to earn to complete the objective.
+         */
         private final double targetAmount;
 
+        /**
+         * The amount of money the player has earned. This is used to check if the objective is completed.
+         */
         private double amount;
 
+        /**
+         * Constructor for the PaymentData class.
+         *
+         * @param instruction the instruction of the data object; parse it to get all required information
+         * @param profile     the {@link Profile} to load the data for
+         * @param objID       ID of the objective, used by BetonQuest to store this ObjectiveData in the database
+         */
         public PaymentData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
             targetAmount = Double.parseDouble(instruction);

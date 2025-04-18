@@ -10,9 +10,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
- * Factory to create {@link EventSetLevel}s from {@link Instruction}s.
+ * Factory to create {@link AddLevelEvent}s from {@link Instruction}s.
  */
-public class FactoryEventSetLevel implements PlayerEventFactory {
+public class AddLevelEventFactory implements PlayerEventFactory {
     /**
      * The data for the primary server thread.
      */
@@ -23,7 +23,7 @@ public class FactoryEventSetLevel implements PlayerEventFactory {
      *
      * @param data the data for the primary server thread.
      */
-    public FactoryEventSetLevel(final PrimaryServerThreadData data) {
+    public AddLevelEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
@@ -31,6 +31,6 @@ public class FactoryEventSetLevel implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final VariableJob job = instruction.get(VariableJob::new);
         final VariableNumber amount = instruction.get(VariableNumber::new);
-        return new PrimaryServerThreadEvent(new EventSetLevel(job, amount), data);
+        return new PrimaryServerThreadEvent(new AddLevelEvent(job, amount), data);
     }
 }

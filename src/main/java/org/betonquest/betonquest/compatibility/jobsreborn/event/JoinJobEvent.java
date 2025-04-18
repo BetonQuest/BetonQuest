@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 
 /**
- * Event to leave a job.
+ * Event to join a job.
  */
-public class EventLeaveJob implements PlayerEvent {
+public class JoinJobEvent implements PlayerEvent {
 
     /**
      * Job to join.
@@ -21,12 +21,12 @@ public class EventLeaveJob implements PlayerEvent {
      *
      * @param job the job to check
      */
-    public EventLeaveJob(final VariableJob job) {
+    public JoinJobEvent(final VariableJob job) {
         this.job = job;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).leaveJob(job.getValue(profile));
+        Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).joinJob(job.getValue(profile));
     }
 }

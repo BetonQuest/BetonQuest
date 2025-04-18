@@ -9,7 +9,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 /**
  * Condition to check if the player has a job.
  */
-public class ConditionHasJob implements PlayerCondition {
+public class HasJobCondition implements PlayerCondition {
 
     /**
      * Job to check.
@@ -21,7 +21,7 @@ public class ConditionHasJob implements PlayerCondition {
      *
      * @param job the job to check
      */
-    public ConditionHasJob(final VariableJob job) {
+    public HasJobCondition(final VariableJob job) {
         this.job = job;
     }
 

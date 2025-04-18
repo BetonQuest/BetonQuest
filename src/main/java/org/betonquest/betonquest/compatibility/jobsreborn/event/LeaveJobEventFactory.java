@@ -9,9 +9,9 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
 /**
- * Factory to create {@link EventLeaveJob}s from {@link Instruction}s.
+ * Factory to create {@link LeaveJobEvent}s from {@link Instruction}s.
  */
-public class FactoryEventLeaveJob implements PlayerEventFactory {
+public class LeaveJobEventFactory implements PlayerEventFactory {
     /**
      * The data for the primary server thread.
      */
@@ -22,13 +22,13 @@ public class FactoryEventLeaveJob implements PlayerEventFactory {
      *
      * @param data the data for the primary server thread.
      */
-    public FactoryEventLeaveJob(final PrimaryServerThreadData data) {
+    public LeaveJobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final VariableJob job = instruction.get(VariableJob::new);
-        return new PrimaryServerThreadEvent(new EventLeaveJob(job), data);
+        return new PrimaryServerThreadEvent(new LeaveJobEvent(job), data);
     }
 }
