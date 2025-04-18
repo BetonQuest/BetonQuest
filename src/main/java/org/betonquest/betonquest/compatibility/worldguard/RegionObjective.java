@@ -24,11 +24,12 @@ public class RegionObjective extends AbstractLocationObjective {
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
+     * @param name        the name of the region
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public RegionObjective(final Instruction instruction) throws QuestException {
+    public RegionObjective(final Instruction instruction, final VariableString name) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(RegionObjective.class), instruction);
-        name = instruction.get(VariableString::new);
+        this.name = name;
     }
 
     @Override
