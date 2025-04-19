@@ -110,20 +110,16 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      * @param event PlayerMoveEvent event, for extracting the necessary data
      */
     private void moveBack(final PlayerMoveEvent event) {
-        // if the player is in other world (he teleported himself), teleport him
-        // back to the center of the conversation
         if (!event.getTo().getWorld().equals(conv.getCenter().getWorld()) || event.getTo()
                 .distance(conv.getCenter()) > maxNpcDistance * 2) {
             event.getPlayer().teleport(conv.getCenter());
             return;
         }
-        // if not, then calculate the vector
         final float yaw = event.getTo().getYaw();
         final float pitch = event.getTo().getPitch();
         Vector vector = new Vector(conv.getCenter().getX() - event.getTo().getX(),
                 conv.getCenter().getY() - event.getTo().getY(), conv.getCenter().getZ() - event.getTo().getZ());
         vector = vector.multiply(1 / vector.length());
-        // and teleport him back using this vector
         final Location newLocation = event.getTo().clone();
         newLocation.add(vector);
         newLocation.setPitch(pitch);
@@ -138,7 +134,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
@@ -154,7 +149,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
                 return;
             }
         }
-        // redisplay the conversation after player's message so he can see it
         new BukkitRunnable() {
             @Override
             public void run() {
