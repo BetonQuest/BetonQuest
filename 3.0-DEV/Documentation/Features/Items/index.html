@@ -4970,8 +4970,10 @@
   <h1>Quest Items</h1>
 
 <h2 id="item-basics">Item Basics<a class="headerlink" href="#item-basics" title="Permanent link">🔗</a></h2>
-<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLOCK_SELECTOR other arguments...</span>
+<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similarly to events, conditions etc.
+BetonQuest provides the <code>simple</code> item type, which this page describes.
+Basic syntax is very simple:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple BLOCK_SELECTOR other arguments...</span>
 </code></pre></div>
 <p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> is a type of the item. It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).</p>
 <p>Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction. The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that. Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether. You can also accept an item only if some value (like enchantment level) is greater/less than <em>x</em>. You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.</p>
@@ -5148,14 +5150,19 @@ Such an item wouldn't be dropped (on death), instead it would be placed in the p
 <p>You can add a specific line to an item's lore to make it persistent. It's <code>&amp;2Quest_Item</code> (<code>_</code> is a space in an item's definition) if your default language is english.
 The translation of the line can be found in <em>messages.yml</em> if a different default language is configured. It's also possible to change the translation. </p>
 <p>Note that this must be an entirely new line in the lore!    </p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">important_sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DIAMOND_SWORD</span><span class="nv"> </span><span class="s">name:Sword_for_destroying__The_Concrete</span><span class="nv"> </span><span class="s">lore:Made_of_pure_Mithril;&amp;2Quest_Item&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">important_sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">DIAMOND_SWORD</span><span class="nv"> </span><span class="s">name:Sword_for_destroying__The_Concrete</span><span class="nv"> </span><span class="s">lore:Made_of_pure_Mithril;&amp;2Quest_Item&quot;</span>
 </code></pre></div>
-<p>The backpack can be opened with the <strong>/backpack</strong> command. The inventory window will open, displaying your stored items. The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them. Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.</p>
-<p>If you will ever have more than one page of quest items, the buttons will appear. You can customize those buttons by creating <code>previous_button</code> and <code>next_button</code> items in the <em>items</em> section. Their name will be overwritten with the one defined in <em>messages.yml</em>.</p>
-<p>Quest items cannot be dropped in any way other than using them. This way you can create a quest for eating cookies by giving the player a stack of cookies flagged as quest items and not continuing until there are no more cookies in his inventory/backpack. The player cannot drop the cookies, so he must eat every one of them to complete the quest.</p>
+<p>The backpack can be opened with the <strong>/backpack</strong> command. The inventory window will open, displaying your stored items.
+The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them.
+Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.</p>
+<p>If you will ever have more than one page of quest items, the buttons will appear.
+You can customize those buttons by creating <code>previous_button</code> and <code>next_button</code> items in the <em>items</em> section.
+Their name will be overwritten with the one defined in <em>messages.yml</em>.</p>
+<p>Quest items cannot be dropped and most world interaction is blocked.</p>
 <div class="admonition note">
 <p class="admonition-title">Creative Mode</p>
-<p>Don't worry if the item-dropping filter isn't working for your items when you're in creative mode - it's not a bug. It's a feature. Creative-mode players should be able to easily put quest items in containers like TreasureChests.</p>
+<p>Don't worry if the item-dropping filter isn't working for your items when you're in creative mode - it's not a bug.
+It's a feature. Creative-mode players should be able to easily put quest items in containers like TreasureChests.</p>
 </div>
 
 

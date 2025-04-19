@@ -4912,7 +4912,7 @@ Simply provide the Type to sync and a <code>PrimaryServerThreadData</code> (in t
 which store them and make them accessible on the server by different parts of BetonQuest.</p>
 <p>The separation is as follows:</p>
 <ul>
-<li><strong>QuestTypeRegistries</strong>, which provide instruction-based object creation:</li>
+<li><strong>QuestTypeRegistries</strong>, which provide the instruction-based core features object creation:</li>
 <li><code>Condition</code></li>
 <li><code>Event</code></li>
 <li><code>Objective</code></li>
@@ -4920,12 +4920,12 @@ which store them and make them accessible on the server by different parts of Be
 <li><strong>FeatureRegistries</strong>, which cover more complex and varied creation patterns:</li>
 <li><code>ConversationIO</code></li>
 <li><code>Interceptor</code></li>
+<li><code>Item</code></li>
 <li><code>MessageParser</code></li>
 <li><code>NotifyIO</code></li>
 <li><code>Schedule</code></li>
 </ul>
 <p>These can be accessed through the <code>getQuestRegistries()</code> and <code>getFeatureRegistries()</code> methods on the plugin.</p>
-<p>The <code>QuestItem</code> will be added to the <code>QuestTypeRegistries</code> after its overhaul.</p>
 <p>For writing new features, you currently need to reference existing code.
 See also <a href="../Legacy-API/#creating-additional-conversation-inputoutput-methods">Legacy creating ConversationIO</a>.</p>
 
