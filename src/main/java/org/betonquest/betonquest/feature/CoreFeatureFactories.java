@@ -3,12 +3,13 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
+import org.betonquest.betonquest.conversation.io.InventoryConvIOFactory;
 import org.betonquest.betonquest.conversation.io.SimpleConvIOFactory;
 import org.betonquest.betonquest.conversation.io.SlowTellrawConvIOFactory;
 import org.betonquest.betonquest.conversation.io.TellrawConvIOFactory;
@@ -57,17 +58,24 @@ public class CoreFeatureFactories {
     private final QuestTypeAPI questTypeAPI;
 
     /**
+     * The Config.
+     */
+    private final ConfigAccessor config;
+
+    /**
      * Create a new Core Other Factories class for registering.
      *
      * @param loggerFactory      the factory to create new class specific loggers
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeAPI       the class for executing events
+     * @param config             the config
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
-                                final QuestTypeAPI questTypeAPI) {
+                                final QuestTypeAPI questTypeAPI, final ConfigAccessor config) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeAPI = questTypeAPI;
+        this.config = config;
     }
 
     /**
@@ -79,8 +87,8 @@ public class CoreFeatureFactories {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory());
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory());
-        conversationIOTypes.register("chest", InventoryConvIO.class);
-        conversationIOTypes.register("combined", InventoryConvIO.Combined.class);
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, config, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, config, true));
         conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory());
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();

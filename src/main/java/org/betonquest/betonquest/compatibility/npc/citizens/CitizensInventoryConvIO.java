@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -34,19 +35,17 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     private static final Pattern SKIN_JSON_URL_PATTERN = Pattern.compile("\"SKIN\" ?: ?\\{\\n *\"url\" ?: ?\"(?<url>.*)\"");
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * Creates a new {@link CitizensInventoryConvIO} instance.
      *
      * @param conv          the conversation
      * @param onlineProfile the online profile
+     * @param log           the custom logger for the conversation
+     * @param colors        the conversation colors
      */
-    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
-        super(conv, onlineProfile);
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
+                                   final ConversationColors.Colors colors, final boolean showNumber, final boolean showNPCText,
+                                   final boolean printMessages) {
+        super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages);
     }
 
     @Override
@@ -97,23 +96,6 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
             return new URL(variable);
         } catch (final MalformedURLException e) {
             throw new SkinFormatParseException("Could not parse the skin URL!", e);
-        }
-    }
-
-    /**
-     * A CitizensInventoryConvIO that also prints the messages in the chat.
-     */
-    public static class CitizensCombined extends CitizensInventoryConvIO {
-
-        /**
-         * Creates a new {@link CitizensCombined} conversationIO instance.
-         *
-         * @param conv          the conversation
-         * @param onlineProfile the online profile
-         */
-        public CitizensCombined(final Conversation conv, final OnlineProfile onlineProfile) {
-            super(conv, onlineProfile);
-            super.printMessages = true;
         }
     }
 }

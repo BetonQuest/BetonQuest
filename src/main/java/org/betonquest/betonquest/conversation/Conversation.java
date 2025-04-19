@@ -146,11 +146,6 @@ public class Conversation implements Listener {
     private final boolean messagesDelaying;
 
     /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Notification sender when commands are blocked in a conversation.
      */
     private final IngameNotificationSender blockedSender;
@@ -223,7 +218,6 @@ public class Conversation implements Listener {
     public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
                         final Location center, @Nullable final String startingOption) {
         this.log = log;
-        this.pluginMessage = pluginMessage;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;

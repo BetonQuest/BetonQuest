@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -80,8 +81,9 @@ public class CitizensIntegrator implements Integrator {
 
         final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
         final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();
-        conversationIOTypes.register("chest", CitizensInventoryConvIO.class);
-        conversationIOTypes.register("combined", CitizensInventoryConvIO.CitizensCombined.class);
+        final ConfigAccessor pluginConfig = plugin.getPluginConfig();
+        conversationIOTypes.register("chest", new CitizensInventoryConvIOFactory(loggerFactory, pluginConfig, false));
+        conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, pluginConfig, true));
 
         final NpcTypeRegistry npcTypes = featureRegistries.npc();
         manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, citizensMoveController), plugin);
