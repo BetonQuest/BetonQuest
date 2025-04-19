@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -41,8 +40,7 @@ import java.util.Objects;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity", "PMD.CouplingBetweenObjects", "NullAway.Init"})
+@SuppressWarnings({"PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CouplingBetweenObjects", "NullAway.Init"})
 public class InventoryConvIO implements Listener, ConversationIO {
 
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -54,7 +52,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log;
+    protected final BetonQuestLogger log;
+
+    /**
+     * If the messages should also be printed in the chat.
+     */
+    protected final boolean printMessages;
 
     @Nullable
     protected Component response;
@@ -89,13 +92,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected Location loc;
 
-    protected boolean printMessages;
-
-    public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+    public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
+                           final ConversationColors.Colors colors, final boolean showNumber, final boolean showNPCText, final boolean printMessages) {
+        this.log = log;
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
-        final ConversationColors.Colors colors = ConversationColors.getColors();
         this.npcNameColor = collect(colors.npc());
         this.npcTextColor = collect(colors.text());
         this.numberFormat = collect(colors.number()) + "%number%.";
@@ -111,9 +112,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
         answerPrefix = string.toString();
         loc = player.getLocation();
 
-        final ConfigAccessor pluginConfig = BetonQuest.getInstance().getPluginConfig();
-        showNumber = pluginConfig.getBoolean("conversation_IO_config.chest.show_number", true);
-        showNPCText = pluginConfig.getBoolean("conversation_IO_config.chest.show_npc_text", true);
+        this.showNumber = showNumber;
+        this.showNPCText = showNPCText;
+        this.printMessages = printMessages;
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -139,8 +140,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
-            "PMD.CognitiveComplexity", "PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
     @Override
     public void display() {
         if (conv.isEnded()) {
@@ -165,7 +165,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         int rows = options.size() / 7;
         rows++;
         // this itemstack represents slots in the inventory
-        inv = Bukkit.createInventory(null, 9 * rows, "NPC");
+        inv = Bukkit.createInventory(null, 9 * rows, Component.text("NPC"));
         inv.setContents(new ItemStack[9 * rows]);
         final ItemStack[] buttons = new ItemStack[9 * rows];
         buttons[0] = createNpcHead();
@@ -186,7 +186,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         });
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     private void generateRows(final int rows, final ItemStack... buttons) {
         // this is the number of an option
         int next = 0;
@@ -314,6 +314,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return meta;
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
@@ -410,16 +411,5 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     private boolean mustBeClosed() {
         return inv != null && conv.nextNPCOption == null;
-    }
-
-    /**
-     * Inventory GUI that also outputs the conversation to chat.
-     */
-    public static class Combined extends InventoryConvIO {
-
-        public Combined(final Conversation conv, final OnlineProfile onlineProfile) {
-            super(conv, onlineProfile);
-            super.printMessages = true;
-        }
     }
 }

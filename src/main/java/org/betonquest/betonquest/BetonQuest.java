@@ -384,7 +384,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 profileProvider, this)
                 .register(questTypeRegistries);
 
-        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI).register(featureRegistries);
+        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI, config).register(featureRegistries);
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
