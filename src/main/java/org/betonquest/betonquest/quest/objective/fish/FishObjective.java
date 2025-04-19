@@ -53,20 +53,19 @@ public class FishObjective extends CountingObjective implements Listener {
      * Constructor for the FishObjective.
      *
      * @param instruction        the instruction that created this objective
+     * @param targetAmount       the target amount of fish to catch
      * @param log                the logger for this objective
      * @param questItem          the quest item to catch
-     * @param targetAmount       the target amount of fish to catch
      * @param hookTargetLocation the location where the fish should be caught
      * @param rangeVar           the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
-    public FishObjective(final Instruction instruction, final BetonQuestLogger log, final QuestItem questItem,
-                         final VariableNumber targetAmount, @Nullable final VariableLocation hookTargetLocation,
+    public FishObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+                         final QuestItem questItem, @Nullable final VariableLocation hookTargetLocation,
                          @Nullable final VariableNumber rangeVar) throws QuestException {
-        super(instruction, "fish_to_catch");
+        super(instruction, targetAmount, "fish_to_catch");
         this.log = log;
         this.questItem = questItem;
-        this.targetAmount = targetAmount;
         this.hookTargetLocation = hookTargetLocation;
         this.rangeVar = rangeVar;
     }

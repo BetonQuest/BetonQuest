@@ -111,8 +111,8 @@ public class EntityInteractObjective extends CountingObjective {
      * Creates a new instance of the EntityInteractObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param log          the logger for this objective
      * @param targetAmount the target amount of entities to interact with
+     * @param log          the logger for this objective
      * @param loc          the location of the entities
      * @param range        the range of the entities
      * @param customName   the custom name of the entities
@@ -125,14 +125,14 @@ public class EntityInteractObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final Instruction instruction, final BetonQuestLogger log,
-                                   final VariableNumber targetAmount, @Nullable final VariableLocation loc, final VariableNumber range,
-                                   @Nullable final String customName, @Nullable final String realName,
-                                   @Nullable final EquipmentSlot slot, final EntityType mobType,
-                                   @Nullable final VariableIdentifier marked, final Interaction interaction, final boolean cancel) throws QuestException {
-        super(instruction, "mobs_to_click");
+    public EntityInteractObjective(final Instruction instruction, final VariableNumber targetAmount,
+                                   final BetonQuestLogger log, @Nullable final VariableLocation loc,
+                                   final VariableNumber range, @Nullable final String customName,
+                                   @Nullable final String realName, @Nullable final EquipmentSlot slot,
+                                   final EntityType mobType, @Nullable final VariableIdentifier marked,
+                                   final Interaction interaction, final boolean cancel) throws QuestException {
+        super(instruction, targetAmount, "mobs_to_click");
         template = EntityInteractData.class;
-        this.targetAmount = targetAmount;
         this.log = log;
         this.loc = loc;
         this.range = range;

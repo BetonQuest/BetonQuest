@@ -27,13 +27,12 @@ public class BreedObjective extends CountingObjective implements Listener {
      * Constructor for the BreedObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param type         the type of animal to breed
      * @param targetAmount the target amount of animals to breed
+     * @param type         the type of animal to breed
      * @throws QuestException if there is an error in the instruction
      */
-    public BreedObjective(final Instruction instruction, final EntityType type, final VariableNumber targetAmount) throws QuestException {
-        super(instruction, "animals_to_breed");
-        this.targetAmount = targetAmount;
+    public BreedObjective(final Instruction instruction, final VariableNumber targetAmount, final EntityType type) throws QuestException {
+        super(instruction, targetAmount, "animals_to_breed");
         this.type = type;
     }
 

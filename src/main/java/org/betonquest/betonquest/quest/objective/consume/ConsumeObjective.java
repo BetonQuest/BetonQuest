@@ -27,14 +27,13 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
      *
      * @param instruction  the instruction out of a quest package
-     * @param item         the item to consume
      * @param targetAmount the amount of items to consume
+     * @param item         the item to consume
      * @throws QuestException if the instruction is invalid
      */
-    public ConsumeObjective(final Instruction instruction, final Item item, final VariableNumber targetAmount) throws QuestException {
-        super(instruction);
+    public ConsumeObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item) throws QuestException {
+        super(instruction, targetAmount);
         this.item = item;
-        this.targetAmount = targetAmount;
     }
 
     /**

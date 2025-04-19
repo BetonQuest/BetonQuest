@@ -31,6 +31,6 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Item potion = instruction.getItem();
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
-        return new BrewObjective(instruction, profileProvider, potion, targetAmount);
+        return new BrewObjective(instruction, targetAmount, profileProvider, potion);
     }
 }

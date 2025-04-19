@@ -51,8 +51,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public MMOItemsCraftObjective(final Instruction instruction, final VariableNumber targetAmount, final Type itemType, final String itemId) throws QuestException {
-        super(instruction, "items_to_craft");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "items_to_craft");
         this.itemType = itemType;
         this.itemId = itemId;
     }

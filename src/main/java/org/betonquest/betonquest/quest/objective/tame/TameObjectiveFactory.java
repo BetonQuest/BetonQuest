@@ -25,7 +25,7 @@ public class TameObjectiveFactory implements ObjectiveFactory {
         if (type.getEntityClass() == null || !Tameable.class.isAssignableFrom(type.getEntityClass())) {
             throw new QuestException("Entity cannot be tamed: " + type);
         }
-        final VariableNumber amount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new TameObjective(instruction, type, amount);
+        final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        return new TameObjective(instruction, targetAmount, type);
     }
 }

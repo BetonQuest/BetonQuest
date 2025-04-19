@@ -34,8 +34,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
     public NPCKillObjective(final Instruction instruction, final VariableNumber targetAmount, final Predicate<NPC> predicate) throws QuestException {
-        super(instruction, "mobs_to_kill");
-        this.targetAmount = targetAmount;
+        super(instruction, targetAmount, "mobs_to_kill");
         this.predicate = predicate;
     }
 

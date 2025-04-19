@@ -51,7 +51,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final VariableNumber range = instruction.get(stringRange == null ? "1" : stringRange, VariableNumber::new);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         final BetonQuestLogger log = loggerFactory.create(EntityInteractObjective.class);
-        return new EntityInteractObjective(instruction, log, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
+        return new EntityInteractObjective(instruction, targetAmount, log, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }
 
     @Nullable

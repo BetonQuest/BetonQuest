@@ -26,15 +26,14 @@ public class TameObjective extends CountingObjective implements Listener {
     /**
      * Constructor for the TameObjective.
      *
-     * @param instruction the instruction that created this objective
-     * @param type        the entity type to be tamed
-     * @param amount      the target amount of entities to be tamed
+     * @param instruction  the instruction that created this objective
+     * @param targetAmount the target amount of entities to be tamed
+     * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction
      */
-    public TameObjective(final Instruction instruction, final EntityType type, final VariableNumber amount) throws QuestException {
-        super(instruction, "animals_to_tame");
+    public TameObjective(final Instruction instruction, final VariableNumber targetAmount, final EntityType type) throws QuestException {
+        super(instruction, targetAmount, "animals_to_tame");
         this.type = type;
-        this.targetAmount = amount;
     }
 
     /**

@@ -22,6 +22,6 @@ public class CraftingObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Item item = instruction.getItem();
         final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
-        return new CraftingObjective(instruction, item, targetAmount);
+        return new CraftingObjective(instruction, targetAmount, item);
     }
 }

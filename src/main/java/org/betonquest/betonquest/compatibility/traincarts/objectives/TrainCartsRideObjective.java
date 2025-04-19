@@ -56,14 +56,13 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
      *
      * @param instruction  the user-provided instruction
+     * @param targetAmount the target amount of time in seconds
      * @param log          the logger for this objective
      * @param name         the name of the train, maybe empty
-     * @param targetAmount the target amount of time in seconds
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString name, final VariableNumber targetAmount) throws QuestException {
-        super(instruction);
-        this.targetAmount = targetAmount;
+    public TrainCartsRideObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log, final VariableString name) throws QuestException {
+        super(instruction, targetAmount);
         this.log = log;
         this.name = name;
         this.startTimes = new HashMap<>();
