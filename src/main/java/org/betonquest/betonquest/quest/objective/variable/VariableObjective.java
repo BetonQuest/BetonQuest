@@ -49,8 +49,7 @@ public class VariableObjective extends Objective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public VariableObjective(final Instruction instruction, final boolean noChat) throws QuestException {
-        super(instruction);
-        template = VariableData.class;
+        super(instruction, VariableData.class);
         this.noChat = noChat;
     }
 

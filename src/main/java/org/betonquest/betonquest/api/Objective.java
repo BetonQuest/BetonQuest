@@ -61,6 +61,11 @@ public abstract class Objective {
     private final BetonQuestLogger log;
 
     /**
+     * Should be set to the data class used to hold the objective specific information.
+     */
+    private final Class<? extends ObjectiveData> template;
+
+    /**
      * Instruction of this.
      */
     protected Instruction instruction;
@@ -91,24 +96,29 @@ public abstract class Objective {
     protected Map<Profile, ObjectiveData> dataMap = new ProfileKeyMap<>(BetonQuest.getInstance().getProfileProvider());
 
     /**
-     * Should be set to the data class used to hold the objective specific information.
-     */
-    protected Class<? extends ObjectiveData> template = ObjectiveData.class;
-
-    /**
-     * <p>
-     * Creates new instance of the objective. The objective should parse
-     * instruction string at this point and extract all the data from it.
-     * </p>
-     * <b>Do not register listeners here!</b> There is a {@link #start()} method
-     * for it.
+     * Creates a new instance of the objective.
+     * <b>Do not register listeners here!</b>
+     * There is a {@link #start()} method for it.
      *
-     * @param instruction Instruction object representing the objective; you need to
-     *                    extract all required information from it
+     * @param instruction Instruction object representing the objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public Objective(final Instruction instruction) throws QuestException {
+        this(instruction, ObjectiveData.class);
+    }
+
+    /**
+     * Creates a new instance of the objective.
+     * <b>Do not register listeners here!</b>
+     * There is a {@link #start()} method for it.
+     *
+     * @param instruction Instruction object representing the objective
+     * @param template    the class of the objective data object
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
+     */
+    public Objective(final Instruction instruction, final Class<? extends ObjectiveData> template) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.template = template;
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
         persistent = instruction.hasArgument("persistent");
@@ -508,7 +518,7 @@ public abstract class Objective {
     /**
      * Stores the profile's data for the objective.
      */
-    protected static class ObjectiveData {
+    public static class ObjectiveData {
         /**
          * Instruction containing all required information.
          */

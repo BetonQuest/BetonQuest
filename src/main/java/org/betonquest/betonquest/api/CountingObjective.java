@@ -36,25 +36,29 @@ public abstract class CountingObjective extends Objective {
     /**
      * Create a counting objective.
      *
-     * @param instruction  the objective instruction
-     * @param targetAmount the target amount of units required for completion
-     * @throws QuestException if the syntax is wrong or any error happens while parsing
-     */
-    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount) throws QuestException {
-        this(instruction, targetAmount, null);
-    }
-
-    /**
-     * Create a counting objective with default notify message name.
-     *
      * @param instruction       the objective instruction
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount, @Nullable final String notifyMessageName) throws QuestException {
-        super(instruction);
-        template = CountingData.class;
+    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount,
+                             @Nullable final String notifyMessageName) throws QuestException {
+        this(instruction, CountingData.class, targetAmount, notifyMessageName);
+    }
+
+    /**
+     * Create a counting objective.
+     *
+     * @param instruction       the objective instruction
+     * @param template          the class of the objective data object
+     * @param targetAmount      the target amount of units required for completion
+     * @param notifyMessageName the message name used for notifying by default
+     * @throws QuestException if the syntax is wrong or any error happens while parsing
+     */
+    public CountingObjective(final Instruction instruction, final Class<? extends ObjectiveData> template,
+                             final VariableNumber targetAmount, @Nullable final String notifyMessageName)
+            throws QuestException {
+        super(instruction, template);
         this.targetAmount = targetAmount;
         final BetonQuest instance = BetonQuest.getInstance();
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(instance.getLoggerFactory().create(CountingObjective.class),

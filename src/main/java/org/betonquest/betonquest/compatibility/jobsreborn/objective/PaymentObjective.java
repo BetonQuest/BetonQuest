@@ -42,8 +42,7 @@ public class PaymentObjective extends Objective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public PaymentObjective(final Instruction instruction, final VariableNumber targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
-        super(instruction);
-        template = PaymentData.class;
+        super(instruction, PaymentData.class);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
