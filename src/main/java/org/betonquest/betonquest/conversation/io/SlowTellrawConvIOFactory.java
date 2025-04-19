@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
 
 /**
  * SlowTellraw conversation output.
  */
-public class SlowTellrawConvIOFactory implements ConversationIORegistry.ConversationIOFactory {
+public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new SlowTellraw conversation IO factory.
      */
