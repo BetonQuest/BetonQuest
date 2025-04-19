@@ -1,7 +1,9 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 
 /**

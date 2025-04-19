@@ -1,8 +1,9 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.io;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.util.LocalChatPaginator;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.ChatColor;

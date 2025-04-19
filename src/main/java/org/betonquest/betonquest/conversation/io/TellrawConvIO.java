@@ -1,11 +1,14 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.io;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.conversation.ChatConvIO;
+import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,6 +53,7 @@ public class TellrawConvIO extends ChatConvIO {
     private int count;
 
     @SuppressWarnings("NullAway.Init")
+    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
         hashes = new HashMap<>();

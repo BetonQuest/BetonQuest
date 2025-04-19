@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.conversation.SimpleConvIOFactory;
-import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
-import org.betonquest.betonquest.conversation.TellrawConvIO;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
+import org.betonquest.betonquest.conversation.io.SimpleConvIOFactory;
+import org.betonquest.betonquest.conversation.io.SlowTellrawConvIOFactory;
+import org.betonquest.betonquest.conversation.io.TellrawConvIOFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
@@ -78,10 +78,10 @@ public class CoreFeatureFactories {
     public void register(final FeatureRegistries registries) {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory());
-        conversationIOTypes.register("tellraw", TellrawConvIO.class);
+        conversationIOTypes.register("tellraw", new TellrawConvIOFactory());
         conversationIOTypes.register("chest", InventoryConvIO.class);
         conversationIOTypes.register("combined", InventoryConvIO.Combined.class);
-        conversationIOTypes.register("slowtellraw", SlowTellrawConvIO.class);
+        conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory());
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
         interceptorTypes.register("simple", new SimpleInterceptorFactory());
