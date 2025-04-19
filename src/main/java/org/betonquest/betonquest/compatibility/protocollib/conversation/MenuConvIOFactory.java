@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
 
 /**
  * Menu conversation output.
  */
-public class MenuConvIOFactory implements ConversationIORegistry.ConversationIOFactory {
+public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Menu conversation IO factory.
      */

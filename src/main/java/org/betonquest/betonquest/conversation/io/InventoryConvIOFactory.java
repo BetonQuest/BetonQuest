@@ -8,13 +8,13 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 
 /**
  * Factory to create {@link InventoryConvIO}s.
  */
-public class InventoryConvIOFactory implements ConversationIORegistry.ConversationIOFactory {
+public class InventoryConvIOFactory implements ConversationIOFactory {
     /**
      * Logger Factory to create new class specific loggers.
      */

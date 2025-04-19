@@ -1,59 +1,20 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.kernel.registry.FromClassFactoryRegistry;
-
-import java.lang.reflect.Constructor;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 
 /**
  * Stores the Conversation IOs that can be used in BetonQuest.
  */
-public class ConversationIORegistry extends FromClassFactoryRegistry<ConversationIO, ConversationIORegistry.ConversationIOFactory> {
+public class ConversationIORegistry extends FactoryRegistry<ConversationIOFactory> {
 
     /**
      * Create a new ConversationIO registry.
      *
-     * @param log the logger that will be used for logging
+     * @param log the logger that will be used
      */
     public ConversationIORegistry(final BetonQuestLogger log) {
         super(log, "Conversation IO");
-    }
-
-    @Override
-    protected ConversationIOFactory createFactory(final Class<? extends ConversationIO> clazz) throws NoSuchMethodException {
-        return new FactoryImpl(clazz.getConstructor(Conversation.class, OnlineProfile.class));
-    }
-
-    /**
-     * Factory to create Conversation IO for a conversation and online profile.
-     */
-    @FunctionalInterface
-    public interface ConversationIOFactory {
-        /**
-         * Create the Conversation IO.
-         *
-         * @param conversation  the conversation to display
-         * @param onlineProfile the player to show the conversation
-         * @return the created conversation IO
-         * @throws QuestException when the creation fails
-         */
-        ConversationIO parse(Conversation conversation, OnlineProfile onlineProfile) throws QuestException;
-    }
-
-    /**
-     * Class Constructor based implementation.
-     *
-     * @param constructor the used constructor
-     */
-    private record FactoryImpl(Constructor<? extends ConversationIO> constructor) implements ConversationIOFactory {
-
-        @Override
-        public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-            return catchConstructionException(constructor, conversation, onlineProfile);
-        }
     }
 }

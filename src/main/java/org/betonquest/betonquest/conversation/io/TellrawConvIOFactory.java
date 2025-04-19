@@ -4,12 +4,12 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationIO;
-import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
 
 /**
  * Tellraw conversation output.
  */
-public class TellrawConvIOFactory implements ConversationIORegistry.ConversationIOFactory {
+public class TellrawConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Tellraw conversation IO factory.
      */

@@ -25,7 +25,6 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.util.Utils;
@@ -743,7 +742,7 @@ public class Conversation implements Listener {
                 // started, causing it to display "null" all the time
                 try {
                     final String name = data.getPublicData().convIO();
-                    final ConversationIORegistry.ConversationIOFactory factory = Utils.getNN(
+                    final ConversationIOFactory factory = Utils.getNN(
                             plugin.getFeatureRegistries().conversationIO().getFactory(name),
                             "No '" + name + "' registered!");
                     conv.inOut = factory.parse(conv, onlineProfile);
