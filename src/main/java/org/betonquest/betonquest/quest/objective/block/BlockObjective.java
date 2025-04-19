@@ -95,7 +95,7 @@ public class BlockObjective extends CountingObjective implements Listener {
                           @Nullable final VariableLocation location, @Nullable final VariableLocation region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
                           final IngameNotificationSender blockPlaceSender) throws QuestException {
-        super(instruction, targetAmount);
+        super(instruction, targetAmount, null);
         this.log = log;
         this.selector = selector;
         this.exactMatch = exactMatch;

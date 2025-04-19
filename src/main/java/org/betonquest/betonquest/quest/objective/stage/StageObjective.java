@@ -42,8 +42,7 @@ public class StageObjective extends Objective {
      * @throws QuestException if the instruction is invalid
      */
     public StageObjective(final Instruction instruction, final BetonQuestLogger log, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
-        super(instruction);
-        template = StageData.class;
+        super(instruction, StageData.class);
         this.log = log;
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;

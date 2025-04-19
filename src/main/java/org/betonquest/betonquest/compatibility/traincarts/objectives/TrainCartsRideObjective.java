@@ -62,7 +62,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * @throws QuestException if the instruction is invalid
      */
     public TrainCartsRideObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log, final VariableString name) throws QuestException {
-        super(instruction, targetAmount);
+        super(instruction, targetAmount, null);
         this.log = log;
         this.name = name;
         this.startTimes = new HashMap<>();

@@ -131,8 +131,7 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final String realName, @Nullable final EquipmentSlot slot,
                                    final EntityType mobType, @Nullable final VariableIdentifier marked,
                                    final Interaction interaction, final boolean cancel) throws QuestException {
-        super(instruction, targetAmount, "mobs_to_click");
-        template = EntityInteractData.class;
+        super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
         this.log = log;
         this.loc = loc;
         this.range = range;

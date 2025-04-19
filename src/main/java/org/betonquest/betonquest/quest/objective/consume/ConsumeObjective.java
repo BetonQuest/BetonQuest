@@ -32,7 +32,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public ConsumeObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item) throws QuestException {
-        super(instruction, targetAmount);
+        super(instruction, targetAmount, null);
         this.item = item;
     }
 
