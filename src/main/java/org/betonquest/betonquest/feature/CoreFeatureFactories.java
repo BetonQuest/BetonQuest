@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.conversation.SimpleConvIO;
+import org.betonquest.betonquest.conversation.SimpleConvIOFactory;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
@@ -77,7 +77,7 @@ public class CoreFeatureFactories {
      */
     public void register(final FeatureRegistries registries) {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
-        conversationIOTypes.register("simple", SimpleConvIO.class);
+        conversationIOTypes.register("simple", new SimpleConvIOFactory());
         conversationIOTypes.register("tellraw", TellrawConvIO.class);
         conversationIOTypes.register("chest", InventoryConvIO.class);
         conversationIOTypes.register("combined", InventoryConvIO.Combined.class);
