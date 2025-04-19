@@ -1,6 +1,8 @@
-package org.betonquest.betonquest.conversation;
+package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.conversation.ChatConvIO;
+import org.betonquest.betonquest.conversation.Conversation;
 import org.bukkit.ChatColor;
 
 /**
