@@ -2,10 +2,12 @@
 icon: material/sword
 ---
 ## Item Basics  
-Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:
+Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similarly to events, conditions etc.
+BetonQuest provides the `simple` item type, which this page describes.
+Basic syntax is very simple:
 
 ```YAML
-item: BLOCK_SELECTOR other arguments...
+item: simple BLOCK_SELECTOR other arguments...
 ```
 
 [BLOCK_SELECTOR](../Scripting/Data-Formats.md#block-selectors) is a type of the item. It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).
@@ -201,14 +203,19 @@ The translation of the line can be found in *messages.yml* if a different defaul
 Note that this must be an entirely new line in the lore!    
 
 ```YAML title="Example" 
-important_sword: "DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item"
+important_sword: "simple DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item"
 ```
 
-The backpack can be opened with the **/backpack** command. The inventory window will open, displaying your stored items. The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them. Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.
+The backpack can be opened with the **/backpack** command. The inventory window will open, displaying your stored items.
+The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them.
+Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.
 
-If you will ever have more than one page of quest items, the buttons will appear. You can customize those buttons by creating `previous_button` and `next_button` items in the _items_ section. Their name will be overwritten with the one defined in _messages.yml_.
+If you will ever have more than one page of quest items, the buttons will appear.
+You can customize those buttons by creating `previous_button` and `next_button` items in the _items_ section.
+Their name will be overwritten with the one defined in _messages.yml_.
 
-Quest items cannot be dropped in any way other than using them. This way you can create a quest for eating cookies by giving the player a stack of cookies flagged as quest items and not continuing until there are no more cookies in his inventory/backpack. The player cannot drop the cookies, so he must eat every one of them to complete the quest.
+Quest items cannot be dropped and most world interaction is blocked.
 
 !!! note "Creative Mode"
-    Don't worry if the item-dropping filter isn't working for your items when you're in creative mode - it's not a bug. It's a feature. Creative-mode players should be able to easily put quest items in containers like TreasureChests.
+    Don't worry if the item-dropping filter isn't working for your items when you're in creative mode - it's not a bug.
+    It's a feature. Creative-mode players should be able to easily put quest items in containers like TreasureChests.

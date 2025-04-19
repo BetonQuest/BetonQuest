@@ -47,8 +47,9 @@ public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
      * Adds the equipment to the mob and sets the drop chances to 0 for the equipment.
      *
      * @param mob the mob to add the equipment to
+     * @throws QuestException if a QuestItem does not exist
      */
-    public void addEquipment(final Mob mob) {
+    public void addEquipment(final Mob mob) throws QuestException {
         final EntityEquipment equipment = mob.getEquipment();
         equipment.setHelmet(generate(helmet));
         equipment.setChestplate(generate(chestplate));
@@ -65,7 +66,7 @@ public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
     }
 
     @Nullable
-    private ItemStack generate(@Nullable final Item item) {
+    private ItemStack generate(@Nullable final Item item) throws QuestException {
         return item == null ? null : item.getItem().generate(1);
     }
 }

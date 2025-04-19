@@ -417,7 +417,8 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage, questTypeAPI, profileProvider, this);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage,
+                questTypeAPI, featureAPI, profileProvider, this);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -454,7 +455,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         List.of(
                 new CombatTagger(profileProvider, config.getInt("combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureAPI),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider)

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.brew;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -35,6 +36,11 @@ import java.util.stream.Collectors;
  */
 public class BrewObjective extends CountingObjective implements Listener {
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The potion item to brew.
      */
     private final Item potion;
@@ -49,13 +55,15 @@ public class BrewObjective extends CountingObjective implements Listener {
      *
      * @param instruction     the instruction that created this objective
      * @param targetAmount    the target amount of potions to brew
+     * @param log             the logger for this objective
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final VariableNumber targetAmount,
+    public BrewObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
                          final ProfileProvider profileProvider, final Item potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
+        this.log = log;
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
     }
@@ -113,7 +121,13 @@ public class BrewObjective extends CountingObjective implements Listener {
         if (profile == null) {
             return;
         }
-        final QuestItem potion = this.potion.getItem();
+        final QuestItem potion;
+        try {
+            potion = this.potion.getItem();
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Exception while processing Brew Objective: " + e.getMessage(), e);
+            return;
+        }
         final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
 
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {

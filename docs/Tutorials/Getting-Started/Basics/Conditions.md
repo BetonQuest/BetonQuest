@@ -347,10 +347,10 @@ in the `items` section of your "_package.yml_" file.
     ```YAML title="package.yml" hl_lines="3-6"
     items:
       # Other items not shown
-      ironHelmet: "IRON_HELMET"
-      ironChestplate: "IRON_CHESTPLATE"
-      ironLeggings: "IRON_LEGGINGS"
-      ironBoots: "IRON_BOOTS"
+      ironHelmet: "simple IRON_HELMET"
+      ironChestplate: "simple IRON_CHESTPLATE"
+      ironLeggings: "simple IRON_LEGGINGS"
+      ironBoots: "simple IRON_BOOTS"
     ```
     
     ```YAML title="events.yml" hl_lines="3"
@@ -434,5 +434,3 @@ in events.
 You've learned what conditions are and how to they are used in objectives, conversations and events.
 More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
 ---
-
-

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -39,6 +40,11 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Class to get initialized feature API.
+     */
+    private final BetonQuest plugin;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -68,18 +74,20 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create new class specific logger
+     * @param plugin            the class to get initialized feature API.
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param variableProcessor the variable processor to create new variables
      * @param messageParser     the message parser to parse messages
      * @param playerDataStorage the player data storage to get the player language
      * @param languageProvider  the language provider to get the default language
      */
-    public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+    public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                              final PluginMessage pluginMessage, final VariableProcessor variableProcessor,
                              final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
                              final LanguageProvider languageProvider) {
         super(log, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
+        this.plugin = plugin;
         this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
         this.messageParser = messageParser;
@@ -104,7 +112,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final VariableLocation location = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(conditions, location, events, objectives, tags, points, journal);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
-        return new QuestCanceler(logger, section.getName(), pluginMessage, names, item, pack, cancelData);
+        return new QuestCanceler(logger, section.getName(), plugin.getFeatureAPI(), pluginMessage, names, item, pack, cancelData);
     }
 
     @Override

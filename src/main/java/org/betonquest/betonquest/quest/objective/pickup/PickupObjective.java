@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.pickup;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -22,6 +23,11 @@ import java.util.List;
  */
 public class PickupObjective extends CountingObjective implements Listener {
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The target amount of items to be picked up.
      */
     private final List<Item> pickupItems;
@@ -31,12 +37,14 @@ public class PickupObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the instruction that created this objective
      * @param targetAmount the target amount of items to be picked up
+     * @param log          the logger for this objective
      * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
     public PickupObjective(final Instruction instruction, final VariableNumber targetAmount,
-                           final List<Item> pickupItems) throws QuestException {
+                           final BetonQuestLogger log, final List<Item> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
+        this.log = log;
         this.pickupItems = pickupItems;
     }
 
@@ -47,17 +55,21 @@ public class PickupObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
-        if (isValidItem(event.getItem().getItemStack()) && event.getEntity() instanceof Player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getEntity());
-            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                final ItemStack pickupItem = event.getItem().getItemStack();
-                getCountingData(onlineProfile).progress(pickupItem.getAmount());
-                completeIfDoneOrNotify(onlineProfile);
+        if (event.getEntity() instanceof Player player) {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+            try {
+                if (containsPlayer(onlineProfile) && isValidItem(event.getItem().getItemStack()) && checkConditions(onlineProfile)) {
+                    final ItemStack pickupItem = event.getItem().getItemStack();
+                    getCountingData(onlineProfile).progress(pickupItem.getAmount());
+                    completeIfDoneOrNotify(onlineProfile);
+                }
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Exception while processing Pickup Objective: " + e.getMessage(), e);
             }
         }
     }
 
-    private boolean isValidItem(final ItemStack itemStack) {
+    private boolean isValidItem(final ItemStack itemStack) throws QuestException {
         for (final Item item : pickupItems) {
             if (item.matches(itemStack)) {
                 return true;

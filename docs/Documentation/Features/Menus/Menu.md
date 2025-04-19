@@ -127,8 +127,8 @@ You can define one or multiple events (separated by `,`) that are run whenever t
 ``` YAML title="Example"
 items:
   skeletonQuestDone: 
-    item: "questDoneItem"
-    click: "startQuest,closeMenu"
+    item: "simple questDoneItem"
+    click: "simple startQuest,closeMenu"
 ```
 
 #### Click Types

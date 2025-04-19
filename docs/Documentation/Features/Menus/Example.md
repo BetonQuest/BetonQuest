@@ -93,13 +93,12 @@ conditions:
 events:
   locationNotify: "notify &cThe skeletons roam at x\\:123 z\\:456!"
 items:
-  openMenuItem: "BOOK title:Quests"
+  openMenuItem: "simple BOOK title:Quests"
   
-  xpBottle: "EXPERIENCE_BOTTLE"
-  filler: "GRAY_STAINED_GLASS_PANE"
+  xpBottle: "simple EXPERIENCE_BOTTLE"
+  filler: "simple GRAY_STAINED_GLASS_PANE"
 
-  skeletonQuestActiveItem: "BONE"
-  goldQuestActiveItem: "RAW_GOLD"
-  questDone: "LIME_CONCRETE"
+  skeletonQuestActiveItem: "simple BONE"
+  goldQuestActiveItem: "simple RAW_GOLD"
+  questDone: "simple LIME_CONCRETE"
 ```
-

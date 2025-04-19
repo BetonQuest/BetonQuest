@@ -11,7 +11,7 @@ If not, feel free to ask us in the
 There is no such command. BetonQuest is too complex to edit it using commands or chest GUI's.
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integration-List.md/#effectlib) compatibility documentation.
+Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integration-List.md#effectlib) compatibility documentation.
 
 
 ## Can I assign multiple conversation files to one NPC?
@@ -25,7 +25,7 @@ Or use a `run` event in which you specify all tag-deleting events at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective event](../Documentation/Scripting/Building-Blocks/Events-List.md/#objective-objective).
+Use the [objective event](../Documentation/Scripting/Building-Blocks/Events-List.md#objective-objective).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
@@ -103,7 +103,7 @@ More specifically, you can have a [*Block Selector*](../Documentation/Scripting/
 It would look like this in the example:
 ```YAML
 items:
-  anyPotato: ".*potato.*"
+  anyPotato: "simple .*potato.*"
 
 conditions:
   hasAnyPotato: "item anyPotato"

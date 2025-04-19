@@ -26,6 +26,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :exclamation:
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
 - [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
+- [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :exclamation:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -246,3 +247,26 @@ notifications:
 ```
 
 </div>
+
+### 3.0.0-DEV-217 - Item Type :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    To allow usage of 3rd-party items in QuestItems the standard definition is now prefixed with `simple`.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    items:
+      blizz: "DIAMOND_SWORD name:The_Blizz lore:Made_of_Ice"
+    ```
+    
+    ```YAML title="New Syntax"
+    items:
+      blizz: "simple DIAMOND_SWORD name:The_Blizz lore:Made_of_Ice"
+    ```
+
+    </div>

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.NpcH
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.PackageSection;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RemoveEntity;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddSimpleTypeToQuestItem;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 import org.betonquest.betonquest.config.quest.Quest;
@@ -98,6 +99,7 @@ public class QuestMigrator {
         this.migrations = new TreeMap<>(VERSION_COMPARATOR);
         migrations.put(questVersion("3.0.0", 1), new LanguageRename());
         migrations.put(questVersion("3.0.0", 2), new NpcRename());
+        migrations.put(questVersion("3.0.0", 3), new AddSimpleTypeToQuestItem());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

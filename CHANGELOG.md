@@ -45,6 +45,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `mobkill` objective - name
   - `password` objective - password
   - `interact` objective - custom name and real name
+- `items` now have a type like events
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.crafting;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -23,6 +24,11 @@ import org.bukkit.inventory.PlayerInventory;
  */
 public class CraftingObjective extends CountingObjective implements Listener {
     /**
+     * Custom logger for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The item to be crafted.
      */
     private final Item item;
@@ -32,11 +38,14 @@ public class CraftingObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the instruction that created this objective
      * @param targetAmount the target amount of items to be crafted
+     * @param log          the custom logger instance for this objective
      * @param item         the item to be crafted
      * @throws QuestException if there is an error in the instruction
      */
-    public CraftingObjective(final Instruction instruction, final VariableNumber targetAmount, final Item item) throws QuestException {
+    public CraftingObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+                             final Item item) throws QuestException {
         super(instruction, targetAmount, "items_to_craft");
+        this.log = log;
         this.item = item;
     }
 
@@ -65,9 +74,14 @@ public class CraftingObjective extends CountingObjective implements Listener {
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            if (containsPlayer(onlineProfile) && item.matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress(calculateCraftAmount(event));
-                completeIfDoneOrNotify(onlineProfile);
+            try {
+
+                if (containsPlayer(onlineProfile) && item.matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
+                    getCountingData(onlineProfile).progress(calculateCraftAmount(event));
+                    completeIfDoneOrNotify(onlineProfile);
+                }
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Exception while processing Crafting Objective: " + e.getMessage(), e);
             }
         }
     }
