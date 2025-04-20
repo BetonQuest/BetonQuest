@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
@@ -20,7 +21,7 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Items that should be in the chest.
      */
-    private final List<Item> items;
+    private final VariableList<Item> items;
 
     /**
      * Location of the chest.
@@ -33,7 +34,7 @@ public class ChestItemCondition implements NullableCondition {
      * @param items items that should be in the chest
      * @param loc   location of the chest
      */
-    public ChestItemCondition(final VariableLocation loc, final List<Item> items) {
+    public ChestItemCondition(final VariableLocation loc, final VariableList<Item> items) {
         this.items = items;
         this.loc = loc;
     }
@@ -49,7 +50,8 @@ public class ChestItemCondition implements NullableCondition {
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
-        for (final Item item : items) {
+        final List<Item> resolvedItems = items.getValue(profile);
+        for (final Item item : resolvedItems) {
             int amount = item.getAmount().getValue(profile).intValue();
             final ItemStack[] inventoryItems = chest.getInventory().getContents();
             for (final ItemStack stack : inventoryItems) {
@@ -66,6 +68,6 @@ public class ChestItemCondition implements NullableCondition {
                 }
             }
         }
-        return counter == items.size();
+        return counter == resolvedItems.size();
     }
 }

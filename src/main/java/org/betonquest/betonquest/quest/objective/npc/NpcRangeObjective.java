@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,7 +27,7 @@ public class NpcRangeObjective extends Objective {
     /**
      * Stores the relevant Npc Ids to get their locations.
      */
-    private final List<NpcID> npcIds;
+    private final VariableList<NpcID> npcIds;
 
     /**
      * Maximal distance between player and NPC.
@@ -57,7 +58,7 @@ public class NpcRangeObjective extends Objective {
      * @param trigger     the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction, final List<NpcID> npcIds, final VariableNumber radius,
+    public NpcRangeObjective(final Instruction instruction, final VariableList<NpcID> npcIds, final VariableNumber radius,
                              final Trigger trigger) throws QuestException {
         super(instruction);
         this.npcIds = npcIds;
@@ -111,9 +112,9 @@ public class NpcRangeObjective extends Objective {
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> allOnlineProfiles = profileProvider.getOnlineProfiles();
-        for (final NpcID npcId : npcIds) {
-            final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
-            for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+        for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+            for (final NpcID npcId : npcIds.getValue(onlineProfile)) { //TODO: handle Exception in a better way?
+                final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
                 if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
                     profilesInside.add(onlineProfile.getProfileUUID());
                 }

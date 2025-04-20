@@ -418,7 +418,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("breed", new BreedObjectiveFactory());
         objectiveTypes.register("brew", new BrewObjectiveFactory(loggerFactory, profileProvider));
         objectiveTypes.register("chestput", new ChestPutObjectiveFactory(loggerFactory, pluginMessage));
-        objectiveTypes.register("command", new CommandObjectiveFactory());
+        objectiveTypes.register("command", new CommandObjectiveFactory(loggerFactory));
         objectiveTypes.register("consume", new ConsumeObjectiveFactory(loggerFactory));
         objectiveTypes.register("craft", new CraftingObjectiveFactory(loggerFactory));
         objectiveTypes.register("delay", new DelayObjectiveFactory(loggerFactory));
@@ -427,11 +427,11 @@ public class CoreQuestTypes {
         objectiveTypes.register("experience", new ExperienceObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("fish", new FishObjectiveFactory(loggerFactory));
         objectiveTypes.register("interact", new EntityInteractObjectiveFactory(loggerFactory));
-        objectiveTypes.register("kill", new KillPlayerObjectiveFactory());
+        objectiveTypes.register("kill", new KillPlayerObjectiveFactory(loggerFactory));
         objectiveTypes.register("location", new LocationObjectiveFactory());
         objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", new LogoutObjectiveFactory());
-        objectiveTypes.register("mobkill", new MobKillObjectiveFactory());
+        objectiveTypes.register("mobkill", new MobKillObjectiveFactory(loggerFactory));
         objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory());
         objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
         objectiveTypes.register("password", new PasswordObjectiveFactory(loggerFactory));

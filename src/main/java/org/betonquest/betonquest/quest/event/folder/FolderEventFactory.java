@@ -12,10 +12,11 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -70,13 +71,13 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final List<EventID> events = instruction.getIDList(EventID::new);
+        final VariableList<EventID> events = instruction.get(IDArgument.ofList(EventID::new));
         final VariableNumber delay = instruction.get(instruction.getOptional("delay"), VariableNumber::new);
         final VariableNumber period = instruction.get(instruction.getOptional("period"), VariableNumber::new);
         final VariableNumber random = instruction.get(instruction.getOptional("random"), VariableNumber::new);
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        final List<ConditionID> cancelConditions = instruction.getIDList(instruction.getOptional("cancelConditions"), ConditionID::new);
+        final VariableList<ConditionID> cancelConditions = instruction.get(instruction.getOptional("cancelConditions", ""), IDArgument.ofList(ConditionID::new));
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events,
                 questTypeAPI, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));

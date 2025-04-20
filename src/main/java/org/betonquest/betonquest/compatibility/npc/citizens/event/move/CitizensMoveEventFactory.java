@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -59,8 +61,8 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
             throw new QuestException("Not enough arguments");
         }
         final int waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
-        final List<EventID> doneEvents = instruction.getIDList(instruction.getOptional("done"), EventID::new);
-        final List<EventID> failEvents = instruction.getIDList(instruction.getOptional("fail"), EventID::new);
+        final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), IDArgument.ofList(EventID::new));
+        final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), IDArgument.ofList(EventID::new));
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations, instruction.getPackage());

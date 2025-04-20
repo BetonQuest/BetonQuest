@@ -18,6 +18,7 @@ import org.betonquest.betonquest.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -227,11 +228,6 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
     }
 
     @Override
-    public <T extends ID> List<T> getIDList(@Nullable final String string, final IDArgument<T> argument) throws QuestException {
-        return getList(string, value -> getID(value, argument));
-    }
-
-    @Override
     @Contract("_, _, !null -> !null")
     @Nullable
     public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws QuestException {
@@ -269,10 +265,13 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         }
     }
 
-    @Override
     @SuppressWarnings("NullAway")
-    public List<Item> getItemList(@Nullable final String string) throws QuestException {
-        return getList(string, this::getItem);
+    @Override
+    public VariableList<Item> getItemList(@Nullable final String string) throws QuestException {
+        if (string == null) {
+            return new VariableList<>(List.of()); //TODO: If this line gets deleted, also delete the constructors.
+        }
+        return get(string, Argument.ofList(this::getItem));
     }
 
     @Override

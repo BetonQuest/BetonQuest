@@ -6,8 +6,6 @@ import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 /**
  * Interface for parsing {@link ID}s.
  */
@@ -37,27 +35,4 @@ public interface IDParser extends Parser {
     @Contract("!null, _ -> !null")
     @Nullable
     <T extends ID> T getID(@Nullable String string, IDArgument<T> argument) throws QuestException;
-
-    /**
-     * Parses {@link #getIDList(String, IDArgument)} with {@link #next()}.
-     *
-     * @param argument the argument to parse the IDs
-     * @param <T>      the specific ID
-     * @return the parsed IDs
-     * @throws QuestException when there is no part left or no such ids
-     */
-    default <T extends ID> List<T> getIDList(final IDArgument<T> argument) throws QuestException {
-        return getIDList(next(), argument);
-    }
-
-    /**
-     * Parses IDs from the given string.
-     *
-     * @param string   the string to parse as IDs
-     * @param argument the argument to parse the IDs
-     * @param <T>      the specific ID
-     * @return the parsed IDs or empty list if no string was provided
-     * @throws QuestException when there is no part left
-     */
-    <T extends ID> List<T> getIDList(@Nullable String string, IDArgument<T> argument) throws QuestException;
 }

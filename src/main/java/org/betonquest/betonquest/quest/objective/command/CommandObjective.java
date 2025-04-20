@@ -3,11 +3,13 @@ package org.betonquest.betonquest.quest.objective.command;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -16,12 +18,15 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.List;
-
 /**
  * Requires the player to execute a specific command.
  */
 public class CommandObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
     /**
      * Command that the player has to execute.
      */
@@ -45,12 +50,13 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Events to trigger if the command is not matched.
      */
-    private final List<EventID> failEvents;
+    private final VariableList<EventID> failEvents;
 
     /**
      * Creates a new instance of the CommandObjective.
      *
      * @param instruction the instruction that created this objective
+     * @param log         the logger for this objective
      * @param command     the command that the player has to execute
      * @param ignoreCase  whether the command should ignore the capitalization
      * @param exact       whether the command should be matched exactly or just the start
@@ -58,8 +64,11 @@ public class CommandObjective extends Objective implements Listener {
      * @param failEvents  events to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final VariableString command, final boolean ignoreCase, final boolean exact, final boolean cancel, final List<EventID> failEvents) throws QuestException {
+    public CommandObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString command,
+                            final boolean ignoreCase, final boolean exact, final boolean cancel,
+                            final VariableList<EventID> failEvents) throws QuestException {
         super(instruction);
+        this.log = log;
         this.command = command;
         this.ignoreCase = ignoreCase;
         this.exact = exact;
@@ -83,8 +92,12 @@ public class CommandObjective extends Objective implements Listener {
                 }
                 completeObjective(onlineProfile);
             } else {
-                for (final EventID failEvent : failEvents) {
-                    BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, failEvent);
+                try {
+                    for (final EventID failEvent : failEvents.getValue(onlineProfile)) {
+                        BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, failEvent);
+                    }
+                } catch (final QuestException e) {
+                    log.warn(instruction.getPackage(), "Failed to resolve events for command objective: " + e.getMessage(), e);
                 }
             }
         }

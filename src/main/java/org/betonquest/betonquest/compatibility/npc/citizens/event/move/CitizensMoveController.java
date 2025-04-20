@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -108,7 +109,7 @@ public class CitizensMoveController implements Listener {
     public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestException {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
-            for (final EventID event : oldMoveInstance.moveData.failEvents()) {
+            for (final EventID event : oldMoveInstance.moveData.failEvents().getValue(profile)) {
                 questTypeAPI.event(profile, event);
             }
             return;
@@ -169,8 +170,8 @@ public class CitizensMoveController implements Listener {
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      * @param sourcePackage      the quest package that started the movement, used for debug logging
      */
-    public record MoveData(List<VariableLocation> locations, int waitTicks, List<EventID> doneEvents,
-                           List<EventID> failEvents, boolean blockConversations, QuestPackage sourcePackage) {
+    public record MoveData(List<VariableLocation> locations, int waitTicks, VariableList<EventID> doneEvents,
+                           VariableList<EventID> failEvents, boolean blockConversations, QuestPackage sourcePackage) {
     }
 
     /**
@@ -274,8 +275,12 @@ public class CitizensMoveController implements Listener {
                 public void run() {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
-                    for (final EventID event : moveData.doneEvents()) {
-                        questTypeAPI.event(currentProfile, event);
+                    try {
+                        for (final EventID event : moveData.doneEvents().getValue(currentProfile)) {
+                            questTypeAPI.event(currentProfile, event);
+                        }
+                    } catch (final QuestException e) {
+                        log.warn(moveData.sourcePackage(), "Error while executing done events for NPC '" + npcId + "': " + e.getMessage(), e);
                     }
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());

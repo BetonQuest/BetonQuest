@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -24,7 +25,7 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * The type of the mob.
      */
-    private final List<EntityType> types;
+    private final VariableList<EntityType> types;
 
     /**
      * The location of the mob.
@@ -63,7 +64,7 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param marked   the mark of the entity
      * @param kill     whether to kill the entities
      */
-    public RemoveEntityEvent(final List<EntityType> types, final VariableLocation location, final VariableNumber radius,
+    public RemoveEntityEvent(final VariableList<EntityType> types, final VariableLocation location, final VariableNumber radius,
                              @Nullable final VariableString name, @Nullable final VariableIdentifier marked, final boolean kill) {
         this.types = types;
         this.loc = location;
@@ -80,7 +81,7 @@ public class RemoveEntityEvent implements NullableEvent {
         final String resolvedMarked = marked == null ? null : marked.getValue(profile);
         final double resolvedRange = range.getValue(profile).doubleValue();
         final List<Entity> entities = EntityUtils.getSelectedEntity(location, resolvedName, resolvedMarked, resolvedRange);
-        for (final EntityType type : types) {
+        for (final EntityType type : types.getValue(profile)) {
             entities.stream()
                     .filter(entity -> entity.getType() == type)
                     .forEach(entity -> {

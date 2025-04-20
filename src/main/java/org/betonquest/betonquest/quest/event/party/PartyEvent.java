@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,12 +45,12 @@ public class PartyEvent implements OnlineEvent {
     /**
      * The conditions that must be met by the party members.
      */
-    private final List<ConditionID> conditions;
+    private final VariableList<ConditionID> conditions;
 
     /**
      * The events to fire.
      */
-    private final List<EventID> events;
+    private final VariableList<EventID> events;
 
     /**
      * Creates a new PartyEvent instance.
@@ -64,19 +64,19 @@ public class PartyEvent implements OnlineEvent {
      * @param events          the events to fire
      */
     public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final VariableNumber range,
-                      @Nullable final VariableNumber amount, final List<ConditionID> conditions, final List<EventID> events) {
+                      @Nullable final VariableNumber amount, final VariableList<ConditionID> conditions, final VariableList<EventID> events) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.range = range;
         this.amount = amount;
-        this.conditions = List.copyOf(conditions);
-        this.events = List.copyOf(events);
+        this.conditions = conditions;
+        this.events = events;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         for (final OnlineProfile member : getMemberList(profile)) {
-            for (final EventID event : events) {
+            for (final EventID event : events.getValue(profile)) {
                 questTypeAPI.event(member, event);
             }
         }
@@ -85,7 +85,7 @@ public class PartyEvent implements OnlineEvent {
     private Set<OnlineProfile> getMemberList(final OnlineProfile profile) throws QuestException {
         final int toExecute = amount != null ? amount.getValue(profile).intValue() : -1;
         final Map<OnlineProfile, Double> members = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
-                profile.getPlayer().getLocation(), range.getValue(profile).doubleValue(), conditions);
+                profile.getPlayer().getLocation(), range.getValue(profile).doubleValue(), conditions.getValue(profile));
 
         if (toExecute < 0) {
             return members.keySet();

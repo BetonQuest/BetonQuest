@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,8 +16,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 /**
  * Represents an objective that is completed when a player picks up a specific item.
@@ -30,7 +29,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     /**
      * The target amount of items to be picked up.
      */
-    private final List<Item> pickupItems;
+    private final VariableList<Item> pickupItems;
 
     /**
      * Constructor for the PickupObjective.
@@ -42,7 +41,7 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public PickupObjective(final Instruction instruction, final VariableNumber targetAmount,
-                           final BetonQuestLogger log, final List<Item> pickupItems) throws QuestException {
+                           final BetonQuestLogger log, final VariableList<Item> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.log = log;
         this.pickupItems = pickupItems;
@@ -55,10 +54,10 @@ public class PickupObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             try {
-                if (containsPlayer(onlineProfile) && isValidItem(event.getItem().getItemStack()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile) && isValidItem(onlineProfile, event.getItem().getItemStack()) && checkConditions(onlineProfile)) {
                     final ItemStack pickupItem = event.getItem().getItemStack();
                     getCountingData(onlineProfile).progress(pickupItem.getAmount());
                     completeIfDoneOrNotify(onlineProfile);
@@ -69,8 +68,8 @@ public class PickupObjective extends CountingObjective implements Listener {
         }
     }
 
-    private boolean isValidItem(final ItemStack itemStack) throws QuestException {
-        for (final Item item : pickupItems) {
+    private boolean isValidItem(final OnlineProfile onlineProfile, final ItemStack itemStack) throws QuestException {
+        for (final Item item : pickupItems.getValue(onlineProfile)) {
             if (item.matches(itemStack)) {
                 return true;
             }

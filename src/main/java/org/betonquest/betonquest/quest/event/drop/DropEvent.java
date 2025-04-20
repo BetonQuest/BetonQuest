@@ -5,11 +5,10 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * Event that drops items at a location.
@@ -18,7 +17,7 @@ public class DropEvent implements NullableEvent {
     /**
      * Items to be dropped.
      */
-    private final List<Item> items;
+    private final VariableList<Item> items;
 
     /**
      * Selector for the drop location.
@@ -31,7 +30,7 @@ public class DropEvent implements NullableEvent {
      * @param items            items to be dropped
      * @param locationSelector selector for the drop location
      */
-    public DropEvent(final List<Item> items, final Selector<Location> locationSelector) {
+    public DropEvent(final VariableList<Item> items, final Selector<Location> locationSelector) {
         this.items = items;
         this.locationSelector = locationSelector;
     }
@@ -39,7 +38,7 @@ public class DropEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = locationSelector.selectFor(profile);
-        for (final Item itemDefinition : items) {
+        for (final Item itemDefinition : items.getValue(profile)) {
             final ItemStack item = itemDefinition.getItem().generate(1, profile);
             final int amount = itemDefinition.getAmount().getValue(profile).intValue();
 
