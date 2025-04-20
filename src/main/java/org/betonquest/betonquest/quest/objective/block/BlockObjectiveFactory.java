@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.util.BlockSelector;
 
 /**
  * Factory for creating {@link BlockObjective} instances from {@link Instruction}s.
@@ -41,7 +41,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final BlockSelector selector = instruction.get(BlockSelector::new);
+        final VariableBlockSelector selector = instruction.get(VariableBlockSelector::new);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final VariableNumber targetAmount = instruction.get(VariableNumber::new);
         final boolean noSafety = instruction.hasArgument("noSafety");

@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.util.BlockSelector;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -42,7 +42,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableLocation loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
-        final BlockSelector selector = instruction.get(instruction.getOptional("type"), BlockSelector::new);
+        final VariableBlockSelector selector = instruction.get(instruction.getOptional("type"), VariableBlockSelector::new);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);
         return new PrimaryServerThreadPlayerCondition(
@@ -51,7 +51,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
         );
     }
 
-    private LookingAtCondition createCondition(@Nullable final VariableLocation loc, @Nullable final BlockSelector selector, final boolean exactMatch) {
+    private LookingAtCondition createCondition(@Nullable final VariableLocation loc, @Nullable final VariableBlockSelector selector, final boolean exactMatch) {
         if (loc != null) {
             return new LookingAtCondition(loc);
         } else if (selector != null) {

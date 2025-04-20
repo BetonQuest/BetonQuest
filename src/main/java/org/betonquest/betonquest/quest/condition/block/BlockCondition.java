@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.condition.block;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.block.Block;
@@ -20,7 +21,7 @@ public class BlockCondition implements NullableCondition {
     /**
      * Selector to validate the block.
      */
-    private final BlockSelector selector;
+    private final VariableBlockSelector selector;
 
     /**
      * If the selector match has to be exact.
@@ -34,7 +35,7 @@ public class BlockCondition implements NullableCondition {
      * @param selector   the selector to validate the block
      * @param exactMatch if the selector match has to be exact
      */
-    public BlockCondition(final VariableLocation loc, final BlockSelector selector, final boolean exactMatch) {
+    public BlockCondition(final VariableLocation loc, final VariableBlockSelector selector, final boolean exactMatch) {
         this.loc = loc;
         this.selector = selector;
         this.exactMatch = exactMatch;
@@ -43,6 +44,7 @@ public class BlockCondition implements NullableCondition {
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final Block block = loc.getValue(profile).getBlock();
-        return selector.match(block, exactMatch);
+        final BlockSelector blockSelector = selector.getValue(profile);
+        return blockSelector.match(block, exactMatch);
     }
 }
