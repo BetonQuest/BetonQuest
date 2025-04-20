@@ -40,7 +40,7 @@ public interface ListParser extends ArgumentParser {
         }
         final List<T> list = new ArrayList<>();
         for (final String part : getList(string)) {
-            list.add(get(part, argument));
+            list.add(argument.apply(part));
         }
         return list;
     }

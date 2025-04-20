@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -34,7 +35,7 @@ public class BlockObjective extends CountingObjective implements Listener {
     /**
      * Blockselector parameter.
      */
-    private final BlockSelector selector;
+    private final VariableBlockSelector selector;
 
     /**
      * Optional exactMatch parameter.
@@ -91,7 +92,7 @@ public class BlockObjective extends CountingObjective implements Listener {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public BlockObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
-                          final BlockSelector selector, final boolean exactMatch, final boolean noSafety,
+                          final VariableBlockSelector selector, final boolean exactMatch, final boolean noSafety,
                           @Nullable final VariableLocation location, @Nullable final VariableLocation region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
                           final IngameNotificationSender blockPlaceSender) throws QuestException {
@@ -113,19 +114,25 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param event the event that triggered this method
      */
     @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.isCancelled() && !ignoreCancel) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
-            if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
-                return;
+        try {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            final BlockSelector blockSelector = selector.getValue(onlineProfile);
+            if (containsPlayer(onlineProfile) && blockSelector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+                if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
+                    return;
+                }
+                if (getCountingData(onlineProfile).getDirectionFactor() < 0 && noSafety) {
+                    return;
+                }
+                handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
             }
-            if (getCountingData(onlineProfile).getDirectionFactor() < 0 && noSafety) {
-                return;
-            }
-            handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
+        } catch (final QuestException e) {
+            log.warn("Could not get block selector for player " + event.getPlayer().getName() + ": " + e.getMessage(), e);
         }
     }
 
@@ -135,19 +142,25 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param event the event that triggered this method
      */
     @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onBlockBreak(final BlockBreakEvent event) {
         if (event.isCancelled() && !ignoreCancel) {
             return;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
-            if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
-                return;
+        try {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            final BlockSelector blockSelector = selector.getValue(onlineProfile);
+            if (containsPlayer(onlineProfile) && blockSelector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+                if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
+                    return;
+                }
+                if (getCountingData(onlineProfile).getDirectionFactor() > 0 && noSafety) {
+                    return;
+                }
+                handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
             }
-            if (getCountingData(onlineProfile).getDirectionFactor() > 0 && noSafety) {
-                return;
-            }
-            handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
+        } catch (final QuestException e) {
+            log.warn("Could not get block selector for player " + event.getPlayer().getName() + ": " + e.getMessage(), e);
         }
     }
 

@@ -27,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `ZNPCsPlus`
 - `tag` and `globaltag` events and conditions now support variables
 - `package.version` for QuestPackages and -Templates
+- BlockSelector now supports variables when used in events, conditions, objectives
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

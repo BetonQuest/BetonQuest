@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
@@ -47,7 +48,7 @@ public class ActionObjective extends Objective implements Listener {
      * The selector to check for the block.
      */
     @Nullable
-    private final BlockSelector selector;
+    private final VariableBlockSelector selector;
 
     /**
      * If the block should be checked for exact match.
@@ -90,7 +91,10 @@ public class ActionObjective extends Objective implements Listener {
      * @param slot        the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action, @Nullable final BlockSelector selector, final boolean exactMatch, @Nullable final VariableLocation loc, final VariableNumber range, final boolean cancel, @Nullable final EquipmentSlot slot) throws QuestException {
+    public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action,
+                           @Nullable final VariableBlockSelector selector, final boolean exactMatch,
+                           @Nullable final VariableLocation loc, final VariableNumber range, final boolean cancel,
+                           @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
         this.log = log;
         this.action = action;
@@ -116,37 +120,38 @@ public class ActionObjective extends Objective implements Listener {
         }
 
         final Block clickedBlock = event.getClickedBlock();
-        if (loc != null) {
-            final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
-            try {
+        try {
+            if (loc != null) {
+                final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
                 final Location location = loc.getValue(onlineProfile);
                 final double pRange = range.getValue(onlineProfile).doubleValue();
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-                return;
             }
-        }
 
-        if (checkBlock(clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
-            if (cancel) {
-                event.setCancelled(true);
+            if (checkBlock(onlineProfile, clickedBlock, event.getBlockFace()) && checkConditions(onlineProfile)) {
+                if (cancel) {
+                    event.setCancelled(true);
+                }
+                completeObjective(onlineProfile);
             }
-            completeObjective(onlineProfile);
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 
-    private boolean checkBlock(@Nullable final Block clickedBlock, final BlockFace blockFace) {
+    private boolean checkBlock(final Profile profile, @Nullable final Block clickedBlock, final BlockFace blockFace) throws QuestException {
         if (selector == null) {
             return true;
         }
         if (clickedBlock == null) {
             return false;
         }
-        return (selector.match(Material.WATER) || selector.match(Material.LAVA))
-                && selector.match(clickedBlock.getRelative(blockFace), exactMatch) || selector.match(clickedBlock, exactMatch);
+        final BlockSelector blockSelector = selector.getValue(profile);
+        return (blockSelector.match(Material.WATER) || blockSelector.match(Material.LAVA))
+                && blockSelector.match(clickedBlock.getRelative(blockFace), exactMatch)
+                || blockSelector.match(clickedBlock, exactMatch);
     }
 
     @Override
