@@ -270,6 +270,12 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
     }
 
     @Override
+    @SuppressWarnings("NullAway")
+    public List<Item> getItemList(@Nullable final String string) throws QuestException {
+        return getList(string, this::getItem);
+    }
+
+    @Override
     public Number parseNumber(final String string, final Argument<Number> argument) throws QuestException {
         try {
             return argument.apply(string);

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Gives the player items.
@@ -24,7 +24,7 @@ public class GiveEvent implements OnlineEvent {
     /**
      * The items to give.
      */
-    private final Item[] questItems;
+    private final List<Item> questItems;
 
     /**
      * The notification sender to use when putting items into the player's inventory.
@@ -61,9 +61,10 @@ public class GiveEvent implements OnlineEvent {
      * @param backpack              whether to put the items to the player's backpack
      * @param dataStorage           the storage providing player backpack
      */
-    public GiveEvent(final Item[] questItems, final NotificationSender itemsGivenSender, final NotificationSender itemsInBackpackSender,
-                     final NotificationSender itemsDroppedSender, final boolean backpack, final PlayerDataStorage dataStorage) {
-        this.questItems = Arrays.copyOf(questItems, questItems.length);
+    public GiveEvent(final List<Item> questItems, final NotificationSender itemsGivenSender,
+                     final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender,
+                     final boolean backpack, final PlayerDataStorage dataStorage) {
+        this.questItems = questItems;
         this.itemsGivenSender = itemsGivenSender;
         this.itemsInBackpackSender = itemsInBackpackSender;
         this.itemsDroppedSender = itemsDroppedSender;

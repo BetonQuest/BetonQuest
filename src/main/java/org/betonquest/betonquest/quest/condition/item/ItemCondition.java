@@ -8,7 +8,6 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -25,7 +24,7 @@ public class ItemCondition implements OnlineCondition {
     /**
      * The items to check for.
      */
-    private final Item[] items;
+    private final List<Item> items;
 
     /**
      * Create a new item condition.
@@ -33,8 +32,8 @@ public class ItemCondition implements OnlineCondition {
      * @param items       the items to check for
      * @param dataStorage the storage providing player data
      */
-    public ItemCondition(final Item[] items, final PlayerDataStorage dataStorage) {
-        this.items = Arrays.copyOf(items, items.length);
+    public ItemCondition(final List<Item> items, final PlayerDataStorage dataStorage) {
+        this.items = items;
         this.dataStorage = dataStorage;
     }
 

@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Event that drops items at a location.
  */
@@ -16,7 +18,7 @@ public class DropEvent implements NullableEvent {
     /**
      * Items to be dropped.
      */
-    private final Item[] items;
+    private final List<Item> items;
 
     /**
      * Selector for the drop location.
@@ -29,8 +31,8 @@ public class DropEvent implements NullableEvent {
      * @param items            items to be dropped
      * @param locationSelector selector for the drop location
      */
-    public DropEvent(final Item[] items, final Selector<Location> locationSelector) {
-        this.items = items.clone();
+    public DropEvent(final List<Item> items, final Selector<Location> locationSelector) {
+        this.items = items;
         this.locationSelector = locationSelector;
     }
 

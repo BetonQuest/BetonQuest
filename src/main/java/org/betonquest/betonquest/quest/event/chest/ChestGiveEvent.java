@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public class ChestGiveEvent implements NullableEvent {
     /**
      * The items to put in the blocks inventory.
      */
-    private final Item[] questItems;
+    private final List<Item> questItems;
 
     /**
      * The location of the block.
@@ -36,8 +35,8 @@ public class ChestGiveEvent implements NullableEvent {
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block
      */
-    public ChestGiveEvent(final VariableLocation location, final Item... questItems) {
-        this.questItems = Arrays.copyOf(questItems, questItems.length);
+    public ChestGiveEvent(final VariableLocation location, final List<Item> questItems) {
+        this.questItems = questItems;
         this.location = location;
     }
 

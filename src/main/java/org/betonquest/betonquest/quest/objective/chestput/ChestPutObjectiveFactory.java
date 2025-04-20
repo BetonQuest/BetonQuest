@@ -14,6 +14,8 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 
+import java.util.List;
+
 /**
  * Factory for creating {@link ChestPutObjective} instances from {@link Instruction}s.
  */
@@ -42,7 +44,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final VariableLocation loc = instruction.get(VariableLocation::new);
-        final Item[] items = instruction.getItemList();
+        final List<Item> items = instruction.getItemList();
         final boolean multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
         final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);
