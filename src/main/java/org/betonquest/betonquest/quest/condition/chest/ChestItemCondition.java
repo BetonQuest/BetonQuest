@@ -10,7 +10,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Checks if the chest contains specified items.
@@ -20,7 +20,7 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Items that should be in the chest.
      */
-    private final Item[] items;
+    private final List<Item> items;
 
     /**
      * Location of the chest.
@@ -33,8 +33,8 @@ public class ChestItemCondition implements NullableCondition {
      * @param items items that should be in the chest
      * @param loc   location of the chest
      */
-    public ChestItemCondition(final VariableLocation loc, final Item... items) {
-        this.items = Arrays.copyOf(items, items.length);
+    public ChestItemCondition(final VariableLocation loc, final List<Item> items) {
+        this.items = items;
         this.loc = loc;
     }
 
@@ -66,6 +66,6 @@ public class ChestItemCondition implements NullableCondition {
                 }
             }
         }
-        return counter == items.length;
+        return counter == items.size();
     }
 }

@@ -13,6 +13,8 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 
+import java.util.List;
+
 /**
  * Factory to create chest events from {@link Instruction}s.
  */
@@ -43,7 +45,7 @@ public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createChestTakeEvent(final Instruction instruction) throws QuestException {
         final VariableLocation variableLocation = instruction.get(VariableLocation::new);
-        final Item[] item = instruction.getItemList();
+        final List<Item> item = instruction.getItemList();
         return new NullableEventAdapter(new ChestTakeEvent(variableLocation, item));
     }
 }

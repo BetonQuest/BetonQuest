@@ -25,7 +25,7 @@ public class TakeEvent extends AbstractTakeEvent {
     /**
      * The items to be removed.
      */
-    private final Item[] questItems;
+    private final List<Item> questItems;
 
     /**
      * A map to keep track of the needed deletions for each player.
@@ -39,9 +39,9 @@ public class TakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public TakeEvent(final Item[] questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public TakeEvent(final List<Item> questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
-        this.questItems = questItems.clone();
+        this.questItems = questItems;
     }
 
     @Override

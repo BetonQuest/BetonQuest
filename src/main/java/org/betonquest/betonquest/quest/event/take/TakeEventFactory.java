@@ -31,7 +31,7 @@ public class TakeEventFactory extends AbstractTakeEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(TakeEvent.class);
         final List<CheckType> checkOrder = getCheckOrder(instruction);
-        final Item[] questItems = instruction.getItemList();
+        final List<Item> questItems = instruction.getItemList();
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
         return new OnlineEventAdapter(new TakeEvent(questItems, checkOrder, notificationSender), log, instruction.getPackage());
     }

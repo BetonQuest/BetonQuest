@@ -13,6 +13,8 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 
+import java.util.List;
+
 /**
  * Factory to create chest item conditions from {@link Instruction}s.
  */
@@ -44,7 +46,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
         final VariableLocation loc = instruction.get(VariableLocation::new);
-        final Item[] items = instruction.getItemList();
+        final List<Item> items = instruction.getItemList();
         return new ChestItemCondition(loc, items);
     }
 }

@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * A wrapper for the equipment and drops of a mob.
  *
@@ -24,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
                         @Nullable Item leggings, @Nullable Item boots, @Nullable Item mainHand,
-                        @Nullable Item offHand, Item[] drops) {
+                        @Nullable Item offHand, List<Item> drops) {
 
     /**
      * Adds the drops to the mob.

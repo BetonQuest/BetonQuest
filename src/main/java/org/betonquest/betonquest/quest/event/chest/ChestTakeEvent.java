@@ -9,6 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Removes items from a chest.
  */
@@ -17,7 +19,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
     /**
      * The items to take from the chest.
      */
-    private final Item[] items;
+    private final List<Item> items;
 
     /**
      * Creates a new ChestTakeEvent.
@@ -25,9 +27,9 @@ public class ChestTakeEvent extends AbstractChestEvent {
      * @param variableLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final VariableLocation variableLocation, final Item... items) {
+    public ChestTakeEvent(final VariableLocation variableLocation, final List<Item> items) {
         super(variableLocation);
-        this.items = items.clone();
+        this.items = items;
     }
 
     @Override
