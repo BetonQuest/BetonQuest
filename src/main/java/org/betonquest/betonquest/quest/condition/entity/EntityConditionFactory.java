@@ -63,8 +63,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private Map<EntityType, VariableNumber> getEntityAmounts(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = new EnumMap<>(EntityType.class);
-        final String[] rawTypes = instruction.getArray();
-        for (final String rawType : rawTypes) {
+        for (final String rawType : instruction.getList()) {
             final String[] typeParts = rawType.split(":");
             try {
                 final EntityType type = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));

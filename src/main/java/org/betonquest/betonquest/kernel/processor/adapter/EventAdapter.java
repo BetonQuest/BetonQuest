@@ -10,6 +10,9 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Wrapper for player and playerless events.
  */
@@ -33,7 +36,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     /**
      * Conditions that must be met to execute.
      */
-    private final ConditionID[] conditions;
+    private final List<ConditionID> conditions;
 
     /**
      * Create a new Wrapper for variables with instruction.
@@ -51,18 +54,9 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.instruction = instruction;
-        final String[] tempConditions1 = instruction.getArray(instruction.getOptional("condition"));
-        final String[] tempConditions2 = instruction.getArray(instruction.getOptional("conditions"));
-        final int length = tempConditions1.length + tempConditions2.length;
-        conditions = new ConditionID[length];
-        for (int i = 0; i < length; i++) {
-            final String condition = i >= tempConditions1.length ? tempConditions2[i - tempConditions1.length] : tempConditions1[i];
-            try {
-                conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (final QuestException exception) {
-                throw new QuestException("Error while parsing event conditions: " + exception.getMessage(), exception);
-            }
-        }
+        conditions = new ArrayList<>();
+        conditions.addAll(instruction.getList(instruction.getOptional("condition"), value -> new ConditionID(instruction.getPackage(), value)));
+        conditions.addAll(instruction.getList(instruction.getOptional("conditions"), value -> new ConditionID(instruction.getPackage(), value)));
     }
 
     /**

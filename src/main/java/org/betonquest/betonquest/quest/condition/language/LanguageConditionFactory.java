@@ -8,8 +8,8 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -48,13 +48,13 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String[] languages = instruction.getArray();
+        final List<String> languages = instruction.getList();
         for (final String language : languages) {
             if (!pluginMessage.getLanguages().contains(language)) {
                 throw new QuestException("Language " + language + " does not exist.");
             }
         }
-        final Set<String> expectedLanguages = new HashSet<>(Arrays.asList(languages));
+        final Set<String> expectedLanguages = new HashSet<>(languages);
         return new LanguageCondition(dataStorage, languageProvider, expectedLanguages);
     }
 }

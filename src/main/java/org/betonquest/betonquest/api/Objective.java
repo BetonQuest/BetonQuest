@@ -130,18 +130,9 @@ public abstract class Objective {
     }
 
     private <I extends ID> List<I> parseIDs(final String baseName, final IDArgument<I> argument) throws QuestException {
-        final String[] temp1 = instruction.getArray(instruction.getOptional(baseName));
-        final String[] temp2 = instruction.getArray(instruction.getOptional(baseName + "s"));
-        final int length = temp1.length + temp2.length;
-        final List<I> ids = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            final String raw = i >= temp1.length ? temp2[i - temp1.length] : temp1[i];
-            try {
-                ids.add(argument.convert(instruction.getPackage(), raw));
-            } catch (final QuestException e) {
-                throw new QuestException("Error while parsing objective " + baseName + "s: " + e.getMessage(), e);
-            }
-        }
+        final List<I> ids = new ArrayList<>();
+        ids.addAll(instruction.getIDList(instruction.getOptional(baseName), argument));
+        ids.addAll(instruction.getIDList(instruction.getOptional(baseName + "s"), argument));
         return ids;
     }
 

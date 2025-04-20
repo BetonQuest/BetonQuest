@@ -8,7 +8,7 @@ import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Factory for creating {@link MythicMobKillObjective} instances from {@link Instruction}s.
@@ -22,7 +22,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Set<String> names = Set.of(instruction.getArray());
+        final List<String> names = instruction.getList();
         final VariableNumber targetAmount = instruction.get(instruction.getOptional("amount", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
 
         final double deathRadiusAllPlayers = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);

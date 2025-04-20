@@ -11,7 +11,6 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,8 +55,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final List<String> groupNames = new ArrayList<>();
-        Collections.addAll(groupNames, instruction.getArray());
+        final List<String> groupNames = instruction.getList();
         checkForNotExistingGroups(groupNames);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);

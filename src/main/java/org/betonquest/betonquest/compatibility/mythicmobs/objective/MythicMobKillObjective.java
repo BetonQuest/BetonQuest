@@ -20,7 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Player has to kill MythicMobs monster.
@@ -29,7 +29,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The names of all mobs that this objective should count.
      */
-    private final Set<String> names;
+    private final List<String> names;
 
     /**
      * The minimal level the killed mob must have to count.
@@ -70,7 +70,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @param marked                       the text with which the mob must have been marked to count
      * @throws QuestException if the instruction is invalid
      */
-    public MythicMobKillObjective(final Instruction instruction, final VariableNumber targetAmount, final Set<String> names,
+    public MythicMobKillObjective(final Instruction instruction, final VariableNumber targetAmount, final List<String> names,
                                   final VariableNumber minMobLevel, final VariableNumber maxMobLevel,
                                   final double deathRadiusAllPlayers, final double neutralDeathRadiusAllPlayers, @Nullable final VariableIdentifier marked)
             throws QuestException {

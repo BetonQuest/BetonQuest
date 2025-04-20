@@ -16,6 +16,7 @@ import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,8 +59,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final CheckType type = instruction.getEnum(CheckType.class);
-        final String[] array = instruction.getArray(instruction.getOptional("spells"));
-        final Map<String, VariableNumber> spells = parseSpells(array, instruction.getPackage());
+        final Map<String, VariableNumber> spells = parseSpells(instruction.getList(instruction.getOptional("spells")), instruction.getPackage());
         final VariableString name = instruction.get(instruction.getOptional("name"), VariableString::new);
         final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
 
@@ -69,7 +69,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
                 log, instruction.getPackage()), data);
     }
 
-    private Map<String, VariableNumber> parseSpells(final String[] spells, final QuestPackage questPackage) throws QuestException {
+    private Map<String, VariableNumber> parseSpells(final List<String> spells, final QuestPackage questPackage) throws QuestException {
         final Map<String, VariableNumber> parsed = new HashMap<>();
         for (final String spell : spells) {
             final String[] spellParts = spell.split(":");

@@ -26,7 +26,7 @@ public interface ListParser extends ArgumentParser {
     }
 
     /**
-     * Parses the string with {@link #getArray(String)} and converts the parts it.
+     * Parses the string with {@link #getList(String)} and converts the parts it.
      *
      * @param string   the string to convert
      * @param argument the converter creating the values
@@ -38,9 +38,8 @@ public interface ListParser extends ArgumentParser {
         if (string == null) {
             return new ArrayList<>(0);
         }
-        final String[] array = getArray(string);
-        final List<T> list = new ArrayList<>(array.length);
-        for (final String part : array) {
+        final List<T> list = new ArrayList<>();
+        for (final String part : getList(string)) {
             list.add(get(part, argument));
         }
         return list;
@@ -59,7 +58,7 @@ public interface ListParser extends ArgumentParser {
     }
 
     /**
-     * Parses the string with {@link #getArray(String)} and converts the parts it.
+     * Parses the string with {@link #getList(String)} and converts the parts it.
      *
      * @param string   the string to convert
      * @param argument the converter creating the values
@@ -71,9 +70,8 @@ public interface ListParser extends ArgumentParser {
         if (string == null) {
             return new ArrayList<>(0);
         }
-        final String[] array = getArray(string);
-        final List<T> list = new ArrayList<>(array.length);
-        for (final String part : array) {
+        final List<T> list = new ArrayList<>();
+        for (final String part : getList(string)) {
             list.add(get(part, argument));
         }
         return list;
