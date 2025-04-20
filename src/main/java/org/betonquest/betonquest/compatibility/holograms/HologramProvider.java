@@ -150,30 +150,34 @@ public final class HologramProvider implements Integrator {
     public void hook() throws HookException {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
-                this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                        plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc()), 1);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
+            this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
+                    plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc());
+        }, 1);
         Bukkit.getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }
 
     @Override
     public void reload() {
         synchronized (HologramProvider.class) {
-            if (instance != null && instance.locationHologramLoop != null) {
-                HologramRunner.cancel();
+            if (instance == null || locationHologramLoop == null) {
+                return;
+            }
+            HologramRunner.cancel();
 
-                Collections.sort(ATTEMPTED_INTEGRATIONS);
+            Collections.sort(ATTEMPTED_INTEGRATIONS);
 
-                instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
-                final BetonQuest plugin = BetonQuest.getInstance();
-                final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-                instance.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
-                if (instance.npcHologramLoop != null) {
-                    instance.npcHologramLoop.close();
-                    instance.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                            plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc());
-                }
+            integrator = ATTEMPTED_INTEGRATIONS.get(0);
+            final BetonQuest plugin = BetonQuest.getInstance();
+            final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+                    locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class)), 1);
+            if (npcHologramLoop != null) {
+                npcHologramLoop.close();
+                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+                        npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
+                                plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc()), 1);
             }
         }
     }
@@ -181,13 +185,14 @@ public final class HologramProvider implements Integrator {
     @Override
     public void close() {
         synchronized (HologramProvider.class) {
-            if (instance != null && instance.locationHologramLoop != null) {
-                HologramRunner.cancel();
-                instance.locationHologramLoop = null;
-                if (instance.npcHologramLoop != null) {
-                    instance.npcHologramLoop.close();
-                    instance.npcHologramLoop = null;
-                }
+            if (instance == null || locationHologramLoop == null) {
+                return;
+            }
+            HologramRunner.cancel();
+            locationHologramLoop = null;
+            if (npcHologramLoop != null) {
+                npcHologramLoop.close();
+                npcHologramLoop = null;
             }
         }
     }
