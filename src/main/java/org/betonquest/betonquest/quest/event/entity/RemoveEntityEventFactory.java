@@ -17,7 +17,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.EntityType;
 
-import java.util.Locale;
+import java.util.List;
 
 /**
  * Factory for {@link RemoveEntityEvent} to create from {@link Instruction}.
@@ -49,15 +49,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
-        final String[] entities = instruction.getArray();
-        final EntityType[] types = new EntityType[entities.length];
-        for (int i = 0; i < types.length; i++) {
-            try {
-                types[i] = EntityType.valueOf(entities[i].toUpperCase(Locale.ROOT));
-            } catch (final IllegalArgumentException e) {
-                throw new QuestException("Entity type '" + entities[i] + "' does not exist", e);
-            }
-        }
+        final List<EntityType> types = instruction.getList(value -> instruction.getEnum(value, EntityType.class));
         final VariableLocation loc = instruction.get(VariableLocation::new);
         final VariableNumber range = instruction.get(VariableNumber::new);
         final boolean kill = instruction.hasArgument("kill");

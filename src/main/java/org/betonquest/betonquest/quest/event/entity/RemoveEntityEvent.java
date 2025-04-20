@@ -14,7 +14,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * The type of the mob.
      */
-    private final EntityType[] types;
+    private final List<EntityType> types;
 
     /**
      * The location of the mob.
@@ -64,9 +63,9 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param marked   the mark of the entity
      * @param kill     whether to kill the entities
      */
-    public RemoveEntityEvent(final EntityType[] types, final VariableLocation location, final VariableNumber radius,
+    public RemoveEntityEvent(final List<EntityType> types, final VariableLocation location, final VariableNumber radius,
                              @Nullable final VariableString name, @Nullable final VariableIdentifier marked, final boolean kill) {
-        this.types = Arrays.copyOf(types, types.length);
+        this.types = types;
         this.loc = location;
         this.range = radius;
         this.name = name;

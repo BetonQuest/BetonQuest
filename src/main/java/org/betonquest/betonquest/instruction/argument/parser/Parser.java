@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -55,27 +56,27 @@ public interface Parser {
     Optional<String> getOptionalArgument(String prefix);
 
     /**
-     * Gets {@link #getArray(String)} with {@link #next()}.
+     * Gets {@link #getList(String)} with {@link #next()}.
      *
      * @return the split string
      * @throws QuestException when there is no part left
      */
-    default String[] getArray() throws QuestException {
-        return getArray(next());
+    default List<String> getList() throws QuestException {
+        return getList(next());
     }
 
     /**
      * Splits the string by {@code ,}.
      * <p>
-     * Passing null results in an empty array.
+     * Passing null results in an empty list.
      *
      * @param string the string to split
      * @return the split string
      */
-    default String[] getArray(@Nullable final String string) {
+    default List<String> getList(@Nullable final String string) {
         if (string == null) {
-            return new String[0];
+            return List.of();
         }
-        return StringUtils.split(string, ",");
+        return List.of(StringUtils.split(string, ","));
     }
 }
