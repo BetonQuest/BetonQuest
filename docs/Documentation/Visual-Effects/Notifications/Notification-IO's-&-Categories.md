@@ -167,7 +167,7 @@ and the z axis is before / behind the players face. It will move along the playe
 
 @snippet:general:relativeAxisExplanation@
 
-This makes it possible to go crazy with sounds. Just one example: A halloween special
+This makes it possible to go crazy with sounds. Just one example: A Halloween special
 where the player hears a :ghost: whispering into his left ear—no matter where he is or how he turns his head... 🎃
 
 Here is a small example:

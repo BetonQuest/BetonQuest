@@ -13,6 +13,10 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 !!! warning 
     Before you start migrating, you should **back up your server**!
 
+!!! warning "Automatic Migrations in 3.0.0+"
+    If you're using version 3.0.0 or higher, and you want the automated migrations to run, you need to set `legacy`
+    as version in your package.yml, as described in the [Info Box on the 2-3 Migration Page](Migration-1-2.md).
+
 ## Changes
 
 Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
