@@ -4970,13 +4970,20 @@
   <h1>Quest Items</h1>
 
 <h2 id="item-basics">Item Basics<a class="headerlink" href="#item-basics" title="Permanent link">🔗</a></h2>
-<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similarly to events, conditions etc.
-BetonQuest provides the <code>simple</code> item type, which this page describes.
+<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similarly to events, conditions etc.</p>
+<p>BetonQuest provides the <code>simple</code> item type, which this page describes.
 Basic syntax is very simple:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple BLOCK_SELECTOR other arguments...</span>
 </code></pre></div>
-<p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> is a type of the item. It doesn't have to be all in uppercase. Other arguments specify data like name of the item, lore, enchantments or potion effects. There are two categories of these arguments: the ones you can apply to every item and type specific arguments. Examples would be name (for every item type) and text (only in books).</p>
-<p>Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction. The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that. Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether. You can also accept an item only if some value (like enchantment level) is greater/less than <em>x</em>. You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.</p>
+<p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> is a type of the item. It doesn't have to be all in uppercase.
+Other arguments specify data like name of the item, lore, enchantments or potion effects.
+There are two categories of these arguments: the ones you can apply to every item and type specific arguments.
+Examples would be name (for every item type) and text (only in books).</p>
+<p>Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction.
+The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that.
+Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether.
+You can also accept an item only if some value (like enchantment level) is greater/less than <em>x</em>.
+You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.</p>
 <p>These are arguments that can be applied to every item:</p>
 <ul>
 <li>
@@ -4999,14 +5006,23 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <li>level (only positive numbers, including zero)</li>
 </ul>
 <p>For example <code>damage_all:3</code> is <em>Sharpness III</em>. You can specify additional enchantments by separating them with commas.</p>
-<p>You can require the item not to have any enchantments by using <code>none</code> keyword. You can also add <code>+</code>/<code>-</code> character to the enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about the level, replace the number with a question mark.</p>
-<p>By default, all specified enchantments are required. If you want to check if the item contains a matching enchantment (and/or more enchants), add <code>enchants-containing</code> argument to the instruction string. Each specified enchantment will be required on the item by default unless you prefix its name with <code>none-</code>, for example <code>none-knockback</code> means that the item must not have any knockback enchantment. <strong>Do not use <code>none-</code> prefix unless you're using <code>enchants-containing</code> argument</strong>, it doesn't make any sense and will break the check!</p>
+<p>You can require the item not to have any enchantments by using <code>none</code> keyword.
+You can also add <code>+</code>/<code>-</code> character to the enchantment level to make the check require levels greater/less (and equal) than specified.
+If you don't care about the level, replace the number with a question mark.</p>
+<p>By default, all specified enchantments are required.
+If you want to check if the item contains a matching enchantment (and/or more enchants), add <code>enchants-containing</code> argument to the instruction string.
+Each specified enchantment will be required on the item by default unless you prefix its name with <code>none-</code>,
+for example <code>none-knockback</code> means that the item must not have any knockback enchantment.
+<strong>Do not use <code>none-</code> prefix unless you're using <code>enchants-containing</code> argument</strong>, it doesn't make any sense and will break the check!</p>
 </li>
 <li>
-<p><code>unbreakable</code> - this makes the item unbreakable. You can specify it either as <code>unbreakable</code> or <code>unbreakable:true</code> to require an item to be unbreakable. If you want to check if the item is breakable, use <code>unbreakable:false</code>.</p>
+<p><code>unbreakable</code> - this makes the item unbreakable.
+   You can specify it either as <code>unbreakable</code> or <code>unbreakable:true</code> to require an item to be unbreakable.
+   If you want to check if the item is breakable, use <code>unbreakable:false</code>.</p>
 </li>
 <li>
-<p><code>custom-model-data</code> - set the custom model data of the item. You have to specify the data value: <code>custom-model-data:3</code>. To check that an item does not have custom model data set <code>no-custom-model-data</code>.</p>
+<p><code>custom-model-data</code> - set the custom model data of the item. You have to specify the data value: <code>custom-model-data:3</code>.
+   To check that an item does not have custom model data set <code>no-custom-model-data</code>.</p>
 </li>
 <li>
 <p><code>flags</code> - item flags that govern the visibility of some item info (comma delimited) including:</p>
@@ -5038,13 +5054,19 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <p><em>This applies to a written book and a book and quill.</em></p>
 <ul>
 <li>
-<p><code>title</code> - the title of a book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes. If you want to specifically say that the book must not have any title, use <code>none</code> keyword.</p>
+<p><code>title</code> - the title of a book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes.
+   If you want to specifically say that the book must not have any title, use <code>none</code> keyword.</p>
 </li>
 <li>
-<p><code>author</code> - the author of a book. All underscores will be replaced with spaces, you cannot use color codes here. If you want to specifically say that the book must not have any author, use <code>none</code> keyword.</p>
+<p><code>author</code> - the author of a book. All underscores will be replaced with spaces, you cannot use color codes here.
+    If you want to specifically say that the book must not have any author, use <code>none</code> keyword.</p>
 </li>
 <li>
-<p><code>text</code> - the text of the book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes. The text will wrap to the next page if amount of characters exceeds <code>journal.chars_per_page</code> setting in <em>config.yml</em>. If you want to manually wrap the page, use <code>|</code> character. To go to new line use <code>\n</code>. Keep in mind that you can't use any spaces here, you must only use underscores (<code>_</code>). This needs to be a single argument, even if it's really long. If you don't want the book to have any text, use <code>none</code> keyword instead.</p>
+<p><code>text</code> - the text of the book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes.
+    The text will wrap to the next page if amount of characters exceeds <code>journal.chars_per_page</code> setting in <em>config.yml</em>.
+    If you want to manually wrap the page, use <code>|</code> character. To go to new line use <code>\n</code>.
+    Keep in mind that you can't use any spaces here, you must only use underscores (<code>_</code>).
+    This needs to be a single argument, even if it's really long. If you don't want the book to have any text, use <code>none</code> keyword instead.</p>
 </li>
 </ul>
 <div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">title:Malleus_Maleficarum</span>
@@ -5055,24 +5077,33 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <p><em>This applies to potions, splash potions and lingering potions.</em></p>
 <ul>
 <li>
-<p><code>type</code> - type of a potion. Here's <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionType.html">the list</a> of possible types. Do not mistake this for a custom effect, this argument corresponds to the default vanilla potion types.</p>
+<p><code>type</code> - type of a potion. Here's <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionType.html">the list</a> of possible types.
+    Do not mistake this for a custom effect, this argument corresponds to the default vanilla potion types.</p>
 </li>
 <li>
-<p><code>extended</code> - extended property of the potion (you can achieve it in-game by adding redstone). It can be specified as <code>extended</code> or <code>extended:true</code>. If you want to check the potion that is NOT extended, use <code>extended:false</code>.</p>
+<p><code>extended</code> - extended property of the potion (you can achieve it in-game by adding redstone).
+    It can be specified as <code>extended</code> or <code>extended:true</code>. If you want to check the potion that is NOT extended, use <code>extended:false</code>.</p>
 </li>
 <li>
-<p><code>upgraded</code> - upgraded property of the potion (you can achieve it in-game by adding glowstone). It can be specified as <code>upgraded</code> or <code>upgraded:true</code>. If you want to check the potion that is NOT upgraded, use <code>upgraded:false</code>.</p>
+<p><code>upgraded</code> - upgraded property of the potion (you can achieve it in-game by adding glowstone).
+    It can be specified as <code>upgraded</code> or <code>upgraded:true</code>. If you want to check the potion that is NOT upgraded, use <code>upgraded:false</code>.</p>
 </li>
 <li>
-<p><code>effects</code> - a list of custom effects. These are independent of the potion type. The effects must be separated by commas. Each effect consists of these things, separated by colons:</p>
+<p><code>effects</code> - a list of custom effects. These are independent of the potion type. The effects must be separated by commas.
+    Each effect consists of these things, separated by colons:</p>
 <ul>
 <li><a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html">type</a> (this is different stuff that the link above!)</li>
 <li>power</li>
 <li>duration (in seconds)</li>
 </ul>
 <p>An example would be <code>WITHER:2:30</code>, which is a wither effect of level 2 for 30 seconds.</p>
-<p>If you want to target only potions without custom effects, use <code>none</code> keyword. You can target potions with level and time greater/less (and equal) than specified with <code>+</code>/<code>-</code> character after the number. If you don't care about the level/time, you can replace them with question mark.</p>
-<p>By default, all specified effects are required. If you want to check if the potion contains these effects among others, add <code>effects-containing</code> argument to the instruction string. Now if you want to make sure the potion doesn't contain a specific effect, prefix the effect name with <code>none-</code>. <strong>Don't use that prefix unless you're also using <code>effects-containing</code> argument</strong>, it doesn't make any sense and it will break the check.</p>
+<p>If you want to target only potions without custom effects, use <code>none</code> keyword. You can target potions with level
+and time greater/less (and equal) than specified with <code>+</code>/<code>-</code> character after the number.
+If you don't care about the level/time, you can replace them with question mark.</p>
+<p>By default, all specified effects are required.
+If you want to check if the potion contains these effects among others, add <code>effects-containing</code> argument to the instruction string.
+Now if you want to make sure the potion doesn't contain a specific effect, prefix the effect name with <code>none-</code>.
+<strong>Don't use that prefix unless you're also using <code>effects-containing</code> argument</strong>, it doesn't make any sense and it will break the check.</p>
 </li>
 </ul>
 <p><strong>Examples</strong>:</p>
@@ -5085,7 +5116,8 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <h3 id="heads">Heads<a class="headerlink" href="#heads" title="Permanent link">🔗</a></h3>
 <h4 id="player-heads">Player Heads<a class="headerlink" href="#player-heads" title="Permanent link">🔗</a></h4>
 <ul>
-<li><code>owner</code> - this is the name of the head owner. It will <strong>not</strong> use color codes nor replace underscores with spaces. If you want to check for heads without any owner, use <code>none</code> keyword.</li>
+<li><code>owner</code> - this is the name of the head owner. It will <strong>not</strong> use color codes nor replace underscores with spaces.
+    If you want to check for heads without any owner, use <code>none</code> keyword.</li>
 <li>Use <code>%player%</code> to get the current players head.</li>
 </ul>
 <div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">owner:Co0sh</span>
@@ -5105,7 +5137,9 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <h3 id="leather-armor">Leather armor<a class="headerlink" href="#leather-armor" title="Permanent link">🔗</a></h3>
 <p><em>This applies to all parts of leather armor.</em></p>
 <ul>
-<li><code>color</code> - this is the color of the armor piece. It can be either one of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html">these values</a>, a hexadecimal RGB value prefixed with <code>#</code> character or its decimal representation without the prefix. You can also check if the armor piece doesn't have any color with <code>none</code> keyword.</li>
+<li><code>color</code> - this is the color of the armor piece. It can be either one of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html">these values</a>,
+    a hexadecimal RGB value prefixed with <code>#</code> character or its decimal representation without the prefix.
+    You can also check if the armor piece doesn't have any color with <code>none</code> keyword.</li>
 </ul>
 <p><strong>Examples</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">color:light_blue</span>
@@ -5116,7 +5150,8 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <p><em>This applies to fireworks.</em></p>
 <ul>
 <li>
-<p><code>firework</code> - this is a list of effects of the firework rocket. They are separated by commas. Each effect consists of these things separated by colons:</p>
+<p><code>firework</code> - this is a list of effects of the firework rocket. They are separated by commas.
+    Each effect consists of these things separated by colons:</p>
 <ul>
 <li><a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/FireworkEffect.Type.html">effect type</a></li>
 <li>a list of main colors (refer to leather armor colors above for syntax) separated by semicolons</li>
@@ -5125,8 +5160,14 @@ add <code>lore-containing</code> argument to the instruction string.</p>
 <li><code>true</code>/<code>false</code> keyword for flicker.</li>
 </ul>
 <p>Note the separation characters, this is important: commas separate effects, colons separate effect properties, semicolons separate colors.</p>
-<p>If you want to target fireworks without any effects, use <code>none</code> keyword. If you want to target any effect type, use question mark instead of the effect name. If you don't want the effect to have any main/fade colors, use <code>none</code> keyword in the place of colors. If you don't care about main/fade colors, use question marks in that place. If you don't care about trail/flicker effect, use question marks instead of <code>true</code>/<code>false</code> keyword.</p>
-<p>By default, the check will require all specified effects to be present on the firework. You can check if the firework contains specified effects among others by adding <code>firework-containing</code> argument to the instruction string. To match the item which must not have an effect, prefix the effect name with <code>none-</code> keyword. <strong>Don't use that prefix unless you're also using <code>firework-containing</code> argument</strong>, it doesn't make any sense and will break the check.</p>
+<p>If you want to target fireworks without any effects, use <code>none</code> keyword. If you want to target any effect type, use question mark instead of the effect name.
+If you don't want the effect to have any main/fade colors, use <code>none</code> keyword in the place of colors.
+If you don't care about main/fade colors, use question marks in that place.
+If you don't care about trail/flicker effect, use question marks instead of <code>true</code>/<code>false</code> keyword.</p>
+<p>By default, the check will require all specified effects to be present on the firework.
+You can check if the firework contains specified effects among others by adding <code>firework-containing</code> argument to the instruction string.
+To match the item which must not have an effect, prefix the effect name with <code>none-</code> keyword.
+<strong>Don't use that prefix unless you're also using <code>firework-containing</code> argument</strong>, it doesn't make any sense and will break the check.</p>
 </li>
 <li>
 <p><code>power</code> - flight duration of the firework, in levels. You can use <code>+</code>/<code>-</code> character to target greater/less (and equal) levels.</p>

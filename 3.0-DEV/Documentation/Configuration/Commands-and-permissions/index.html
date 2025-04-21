@@ -5625,13 +5625,13 @@ Beware though, the debug level might be spammy.</p>
 <p>The download command (<code>/q download</code>) can be used to download tutorial quests &amp; quest templates from
 the <a href="https://github.com/BetonQuest/Quest-Tutorials">Quest-Tutorials</a> repository. For
 example <code>/q download BetonQuest/Quest-Tutorials refs/tags/v2.0.0 QuestPackages /default</code> will download the <code>default</code> tutorial quest and
-place it in the same folder. The first argument (<code>gitHubNamespace</code>) is the github repository in the format user/repo or
+place it in the same folder. The first argument (<code>gitHubNamespace</code>) is the GitHub repository in the format user/repo or
 organisation/repo. Before you can download from a repo you need to add the namespace to
 the <a href="../Configuration/#quest-downloader"><code>repo_whitelist</code></a> in the BetonQuest config. This is a security measure that
 prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
 command by accident. The second argument (<code>ref</code>) is either a commit SHA or a git reference to a specific commit that
-should be downloaded. For a branch (eg. <code>main</code>)  <code>refs/heads/main</code> works. For a tag it is <code>refs/tags/tagname</code>. Pull request references (
-eg. <code>refs/pull/1731/head</code>) are also possible but must be enabled in the <a href="../Configuration/#quest-downloader">config</a>.
+should be downloaded. For a branch (e.g. <code>main</code>)  <code>refs/heads/main</code> works. For a tag it is <code>refs/tags/tagname</code>. Pull request references (
+e.g. <code>refs/pull/1731/head</code>) are also possible but must be enabled in the <a href="../Configuration/#quest-downloader">config</a>.
 Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (<code>type</code>) is
 either <code>QuestPackages</code> or <code>QuestTemplates</code> depending on what type you want to download. As 4<sup>th</sup> argument (<code>sourcePath</code>)
 you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.

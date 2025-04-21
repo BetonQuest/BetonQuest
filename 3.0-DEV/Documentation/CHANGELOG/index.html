@@ -3001,13 +3001,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-228-2025-04-20">
+  <a class="md-nav__link" href="#300-dev-229-2025-04-21">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-228] - 2025-04-20
+          [3.0.0-DEV-229] - 2025-04-21
         </span>
 
       
@@ -3017,7 +3017,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-228] - 2025-04-20" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-229] - 2025-04-21" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -9987,13 +9987,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-228-2025-04-20">
+  <a class="md-nav__link" href="#300-dev-229-2025-04-21">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-228] - 2025-04-20
+          [3.0.0-DEV-229] - 2025-04-21
         </span>
 
       
@@ -10003,7 +10003,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-228] - 2025-04-20" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-229] - 2025-04-21" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -15743,14 +15743,14 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="300-dev-228-2025-04-20">[3.0.0-DEV-228] - 2025-04-20<a class="headerlink" href="#300-dev-228-2025-04-20" title="Permanent link">🔗</a></h2>
+<h2 id="300-dev-229-2025-04-21">[3.0.0-DEV-229] - 2025-04-21<a class="headerlink" href="#300-dev-229-2025-04-21" title="Permanent link">🔗</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>quest compass</code> location now allows variables</li>
 <li><code>point</code> and <code>globalpoint</code> events and conditions now support variables</li>
 <li><code>cancel</code> event now has <code>bypass</code> keyword to ignore conditions in Quest Canceler</li>
 <li><code>quester</code> in conversation now supports variables</li>
-<li>Support for Message Parsing Formatter</li>
+<li>Support for Message Parsing Formatter<ul>
 <li><code>notify</code> event</li>
 <li><code>notifyall</code> event</li>
 <li><code>npc</code> Variable</li>
@@ -15759,12 +15759,16 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Quest Canceler</li>
 <li>Conversation</li>
 <li>Plugin Messages / Translations</li>
+</ul>
+</li>
 <li><code>region</code> and <code>wand</code> conditions now supports variables</li>
 <li><code>JobsReborn</code>, <code>Quests</code>, <code>McMMO</code> now supports variables</li>
 <li>notification categories <code>conversation_start</code> and <code>conversation_end</code></li>
-<li>Support for Npc plugins</li>
+<li>Support for Npc plugins<ul>
 <li><code>FancyNpcs</code></li>
 <li><code>ZNPCsPlus</code></li>
+</ul>
+</li>
 <li><code>tag</code> and <code>globaltag</code> events and conditions now support variables</li>
 <li><code>package.version</code> for QuestPackages and -Templates</li>
 <li>BlockSelector now supports variables when used in events, conditions, objectives</li>
@@ -15782,12 +15786,14 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>fish</code> objective use block selector instead of a QuestItem</li>
 <li>everything that used <code>Citizens</code> NPC ids now uses the BQ NpcIDs</li>
 <li>conversations now always print their start and stop conversation message</li>
-<li><code>events</code>, <code>objectives</code>, <code>conditions</code>, <code>variables</code> and co. are now case insensitive</li>
-<li>underscores aren't replaced anymore, instead quoting needs to be used now</li>
+<li><code>events</code>, <code>objectives</code>, <code>conditions</code>, <code>variables</code> and co. are now case-insensitive</li>
+<li>underscores aren't replaced anymore, instead quoting needs to be used now<ul>
 <li><code>shear</code> objective - name </li>
 <li><code>mobkill</code> objective - name</li>
 <li><code>password</code> objective - password</li>
 <li><code>interact</code> objective - custom name and real name</li>
+</ul>
+</li>
 <li><code>items</code> now have a type like events</li>
 </ul>
 <h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
@@ -15859,19 +15865,23 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>mmochangeclass</code> objective for MMOCore that listens for a player changing their class</li>
 <li><code>removeentity</code> event now supports variables for the entity name</li>
 <li><code>variable</code> condition can now be used in a static context</li>
-<li>TrainCarts integration</li>
+<li>TrainCarts integration<ul>
 <li><code>traincartslocation</code> objective that executes when the player passed a location </li>
 <li><code>traincartsride</code> objective that executes when the player is riding a train</li>
 <li><code>traincartsexit</code> objective that executes when the player exited a train</li>
 <li><code>traincartsride</code> condition to check if the player is riding a specific named train</li>
+</ul>
+</li>
 <li><code>scoretag</code> event and condition</li>
 <li><code>action</code> objective now supports configuring the hand used for the interaction, preventing multiple objective completions at the same time</li>
 </ul>
 <h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>spawn</code> event now only spawn mobs and no other entities</li>
-<li>ProSkillAPI rename to Fabled</li>
+<li>ProSkillAPI rename to Fabled<ul>
 <li>this includes the class and level condition</li>
+</ul>
+</li>
 </ul>
 <h3 id="deprecated_2">Deprecated<a class="headerlink" href="#deprecated_2" title="Permanent link">🔗</a></h3>
 <h3 id="removed_2">Removed<a class="headerlink" href="#removed_2" title="Permanent link">🔗</a></h3>
@@ -15889,8 +15899,10 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>QuestItem</code> Potions cannot be saved in 1.20.5+</li>
 <li>Schedules could run twice on some systems by an inaccurate time returned java's Instant.now()</li>
 <li><code>Journal</code> interaction with blocks like lecterns</li>
-<li>sections that are created in templates by write operations, where no edits should actually be done</li>
+<li>sections that are created in templates by write operations, where no edits should actually be done<ul>
 <li>this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more</li>
+</ul>
+</li>
 <li>Conversations work in 1.21.3 again</li>
 </ul>
 <h3 id="security_2">Security<a class="headerlink" href="#security_2" title="Permanent link">🔗</a></h3>
@@ -15920,18 +15932,22 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="212-2024-06-23">[2.1.2] - 2024-06-23<a class="headerlink" href="#212-2024-06-23" title="Permanent link">🔗</a></h2>
 <h3 id="added_4">Added<a class="headerlink" href="#added_4" title="Permanent link">🔗</a></h3>
 <ul>
-<li>LuckPerms permission events</li>
+<li>LuckPerms permission events<ul>
 <li><code>addPermission</code> event adds a permission to a player</li>
 <li><code>removePermission</code> event removes a permission from a player</li>
+</ul>
+</li>
 <li>Location Vectors can now be chained</li>
 <li><code>eval</code> variable to resolve a variable string as variable</li>
 </ul>
 <h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">🔗</a></h3>
 <ul>
-<li><code>AureliumSkills</code> was renamed to <code>AuraSkills</code> the following was changed in BQ</li>
+<li><code>AureliumSkills</code> was renamed to <code>AuraSkills</code> the following was changed in BQ<ul>
 <li><code>aureliumskillslevel</code> condition was renamed to <code>auraskillslevel</code></li>
 <li><code>aureliumstatslevel</code> condition was renamed to <code>auraskillsstatslevel</code></li>
 <li><code>aureliumskillsxp</code> event was renamed to <code>auraskillsxp</code></li>
+</ul>
+</li>
 <li>prevent reply when the text is not completely displayed for the SlowTellRaw conversation IO</li>
 <li><code>resourcepack</code> objective is now paper only</li>
 <li><code>die</code> objective now support respawns without canceling the actual death of the player</li>
@@ -15972,11 +15988,13 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 </ul>
 <h3 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="Permanent link">🔗</a></h3>
 <ul>
-<li>player variable</li>
+<li>player variable<ul>
 <li><code>%player%</code> is now the same as <code>%player.name%</code></li>
 <li><code>%player.name%</code> will display the name of the player</li>
 <li><code>%player.display%</code> will use the display name used in chat</li>
 <li><code>%player.uuid%</code> will display the UUID of the player</li>
+</ul>
+</li>
 <li>marking of mobs now uses variables in all contexts of spawning killing and removing</li>
 <li>marking of mobs is now stored in the persistent data container of the entity to prevent loss on server restart</li>
 <li>default <code>default_conversation_IO</code> in config from <code>menu,chest</code> to <code>menu,tellraw</code></li>
@@ -16033,9 +16051,11 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li>Log history length can be freely configured</li>
 </ul>
 </li>
-<li>Quest Templates</li>
+<li>Quest Templates<ul>
 <li>A new folder <code>QuestTemplates</code> can now be used to define templates for packages</li>
 <li>templates can also extend templates</li>
+</ul>
+</li>
 <li>add AureliumSkills Compatiblity<ul>
 <li>added AureliumSkillsLevelCondition</li>
 <li>All existing users must add aureliumskills: 'true' to their config.yml's hook section.</li>
