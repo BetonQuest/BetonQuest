@@ -3,6 +3,7 @@ icon: material/sword
 ---
 ## Item Basics  
 Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similarly to events, conditions etc.
+
 BetonQuest provides the `simple` item type, which this page describes.
 Basic syntax is very simple:
 
