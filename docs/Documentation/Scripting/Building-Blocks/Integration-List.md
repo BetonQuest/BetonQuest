@@ -136,21 +136,8 @@ npcs:
 ```
 
 ### Npc Hiding: `hide_npcs`
+[You can find information about it here](https://betonquest.org/DEV/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/#force-visibility-update)
 @snippet:integrations:protocollib@
-
-To make it work you need to assign a condition to npc id.
-Please note that you *must* provide an existing npc id.
-
-```YAML title="Example"
-event:
-  hideInnkeeper: tag add innkeeperIsSleeping
-  showInnkeeper: tag delete innkeeperIsSleeping
-conditions:
-  hideNpc: tag innkeeperIsSleeping
-hide_npcs:
-  0 : hideNpc
-```
-[More on it](https://betonquest.org/DEV/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/#force-visibility-update)
 
 ### Events
 
