@@ -134,7 +134,7 @@ the package name and the path from the "_QuestPackages_" folder to the package.
 You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" from 
 the current packages "_package.yml_". In turn, a leading dash (`-`) combined with a folder name navigates 
 "one folder down" into the given folder.
-Each package in the path must be seperated by a dash.
+Each package in the path must be separated by a dash.
 
 This can be useful when distributing or moving packages. Instead of rewriting every package path
 to match the current location, relative paths will still work.

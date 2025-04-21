@@ -71,8 +71,8 @@ be added. You can disable this behaviour by setting the option to `-1`. BetonQue
 
 ### Npc left click
 
-`npcs.accept_left_click` activates that a conversation with an NPC can also be started by left clicking the NPC and not only
-by right clicking the NPC.
+`npcs.accept_left_click` activates that a conversation with an NPC can also be started by left-clicking the NPC and not only
+by right-clicking the NPC.
 
 ### Npc interact limit
 
@@ -215,7 +215,7 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
 * `pullrequests` defines if pull requests may be downloaded. **Only enable this if you really know what you are doing!**
   Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
   will make your server vulnerable to attacks.
-* `repo_whitelist` is a list of trusted github repositories from which quests and templates can be downloaded.  
+* `repo_whitelist` is a list of trusted GitHub repositories from which quests and templates can be downloaded.  
   By default only or official tutorial repo [BetonQuest/Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
   is on this list.
 

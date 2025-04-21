@@ -45,7 +45,7 @@ Where:
   If the regex ends with square brackets you have to add another pair of empty square brackets even if you don't want to 
   use the state argument (`[regex][]`).  
   Instead of using a regex to match multiple materials you can also define a [tag](https://minecraft.wiki/w/Tag).
-  Every tag matches a special group of blocks or items that can be grouped together logically. They can be used using this format `:blocks:flowers` or `minecraft:blocks:flowers`.
+  Every tag matches a special group of blocks or items that can be grouped together logically. They can be using this format `:blocks:flowers` or `minecraft:blocks:flowers`.
   Be aware that a tag always starts with either `:` or a namespace. 
   
   - `state` - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets.

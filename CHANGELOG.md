@@ -11,20 +11,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 - `quester` in conversation now supports variables
 - Support for Message Parsing Formatter
-  - `notify` event
-  - `notifyall` event
-  - `npc` Variable
-  - Compass Names
-  - Journal
-  - Quest Canceler
-  - Conversation
-  - Plugin Messages / Translations
+    - `notify` event
+    - `notifyall` event
+    - `npc` Variable
+    - Compass Names
+    - Journal
+    - Quest Canceler
+    - Conversation
+    - Plugin Messages / Translations
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`
 - Support for Npc plugins
-  - `FancyNpcs`
-  - `ZNPCsPlus`
+    - `FancyNpcs`
+    - `ZNPCsPlus`
 - `tag` and `globaltag` events and conditions now support variables
 - `package.version` for QuestPackages and -Templates
 - BlockSelector now supports variables when used in events, conditions, objectives
@@ -40,12 +40,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `fish` objective use block selector instead of a QuestItem
 - everything that used `Citizens` NPC ids now uses the BQ NpcIDs
 - conversations now always print their start and stop conversation message
-- `events`, `objectives`, `conditions`, `variables` and co. are now case insensitive
+- `events`, `objectives`, `conditions`, `variables` and co. are now case-insensitive
 - underscores aren't replaced anymore, instead quoting needs to be used now
-  - `shear` objective - name 
-  - `mobkill` objective - name
-  - `password` objective - password
-  - `interact` objective - custom name and real name
+    - `shear` objective - name 
+    - `mobkill` objective - name
+    - `password` objective - password
+    - `interact` objective - custom name and real name
 - `items` now have a type like events
 ### Deprecated
 ### Removed
@@ -110,16 +110,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `removeentity` event now supports variables for the entity name
 - `variable` condition can now be used in a static context
 - TrainCarts integration
-  - `traincartslocation` objective that executes when the player passed a location 
-  - `traincartsride` objective that executes when the player is riding a train
-  - `traincartsexit` objective that executes when the player exited a train
-  - `traincartsride` condition to check if the player is riding a specific named train
+    - `traincartslocation` objective that executes when the player passed a location 
+    - `traincartsride` objective that executes when the player is riding a train
+    - `traincartsexit` objective that executes when the player exited a train
+    - `traincartsride` condition to check if the player is riding a specific named train
 - `scoretag` event and condition
 - `action` objective now supports configuring the hand used for the interaction, preventing multiple objective completions at the same time
 ### Changed
 - `spawn` event now only spawn mobs and no other entities
 - ProSkillAPI rename to Fabled
-  - this includes the class and level condition
+    - this includes the class and level condition
 ### Deprecated
 ### Removed
 ### Fixed
@@ -136,7 +136,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Schedules could run twice on some systems by an inaccurate time returned java's Instant.now()
 - `Journal` interaction with blocks like lecterns
 - sections that are created in templates by write operations, where no edits should actually be done
-  - this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more
+    - this caused a lot of "ghost" sections that could not be loaded like schedules, menus and manny more
 - Conversations work in 1.21.3 again
 ### Security
 
@@ -161,15 +161,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [2.1.2] - 2024-06-23
 ### Added
 - LuckPerms permission events
-  - `addPermission` event adds a permission to a player
-  - `removePermission` event removes a permission from a player
+    - `addPermission` event adds a permission to a player
+    - `removePermission` event removes a permission from a player
 - Location Vectors can now be chained
 - `eval` variable to resolve a variable string as variable
 ### Changed
 - `AureliumSkills` was renamed to `AuraSkills` the following was changed in BQ
-  - `aureliumskillslevel` condition was renamed to `auraskillslevel`
-  - `aureliumstatslevel` condition was renamed to `auraskillsstatslevel`
-  - `aureliumskillsxp` event was renamed to `auraskillsxp`
+    - `aureliumskillslevel` condition was renamed to `auraskillslevel`
+    - `aureliumstatslevel` condition was renamed to `auraskillsstatslevel`
+    - `aureliumskillsxp` event was renamed to `auraskillsxp`
 - prevent reply when the text is not completely displayed for the SlowTellRaw conversation IO
 - `resourcepack` objective is now paper only
 - `die` objective now support respawns without canceling the actual death of the player
@@ -205,10 +205,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - support to execute BetonQuest commands from command blocks
 ### Changed
 - player variable
-  - `%player%` is now the same as `%player.name%`
-  - `%player.name%` will display the name of the player
-  - `%player.display%` will use the display name used in chat
-  - `%player.uuid%` will display the UUID of the player
+    - `%player%` is now the same as `%player.name%`
+    - `%player.name%` will display the name of the player
+    - `%player.display%` will use the display name used in chat
+    - `%player.uuid%` will display the UUID of the player
 - marking of mobs now uses variables in all contexts of spawning killing and removing
 - marking of mobs is now stored in the persistent data container of the entity to prevent loss on server restart
 - default `default_conversation_IO` in config from `menu,chest` to `menu,tellraw`
@@ -254,8 +254,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Debug logging to separate file
     - Log history length can be freely configured
 - Quest Templates
-  - A new folder `QuestTemplates` can now be used to define templates for packages
-  - templates can also extend templates
+    - A new folder `QuestTemplates` can now be used to define templates for packages
+    - templates can also extend templates
 - add AureliumSkills Compatiblity
     - added AureliumSkillsLevelCondition
     - All existing users must add aureliumskills: 'true' to their config.yml's hook section.
