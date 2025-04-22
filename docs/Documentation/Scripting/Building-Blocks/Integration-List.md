@@ -136,6 +136,7 @@ npcs:
 ```
 
 ### Npc Hiding: `hide_npcs`
+[You can find information about it here](../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
 @snippet:integrations:protocollib@
 
 ### Events
