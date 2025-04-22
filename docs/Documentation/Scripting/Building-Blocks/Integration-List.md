@@ -136,7 +136,7 @@ npcs:
 ```
 
 ### Npc Hiding: `hide_npcs`
-[You can find information about it here](https://betonquest.org/DEV/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/#force-visibility-update)
+[You can find information about it here](../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
 @snippet:integrations:protocollib@
 
 ### Events
