@@ -185,24 +185,24 @@ conversations:
     NPC_options:
       firstGreeting: #(2)!
         text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
-        pointer: "whereYouFrom"
+        pointers: "whereYouFrom"
       # Other NPC_options not shown
       foodAnswer:
         text: "You're welcome! Take it... &7*gives food*"
         events: "giveFoodToPlayer,{==addFoodReceivedTag==}" #(3)!
-        pointer: "thankYou"
+        pointers: "thankYou"
         conditions: "!hasReceivedFood"
       alreadyReceivedFood:
         text: "Hey %player%! I think I already gave you your welcome food..."
         conditions: "hasReceivedFood"  #(4)!
-        pointer: "saySorry"
+        pointers: "saySorry"
       # Other NPC_options not shown
 
     player_options:
       # Other player_options not shown
       saySorry:
         text: "You are right. Thanks again!"
-        pointer: "townTour"
+        pointers: "townTour"
       # Other player_options not shown
 ```
 
@@ -265,8 +265,8 @@ conversations:
       # Other player_options not shown
       accept:
         text: "Sure! I could use a new armour."
-        event: "startFishingObj{==,addStartedFishingTag==}"
-        pointer: "goodLuck"
+        events: "startFishingObj{==,addStartedFishingTag==}"
+        pointers: "goodLuck"
       # Other player_options not shown
 ```
 
@@ -309,11 +309,11 @@ conversations:
         # Other player_options not shown
       caughtAllFish:
         text: "Oh let me see! Amazing.. Can I have them?"
-        pointer: "agree"
+        pointers: "agree"
         conditions: "hasFishInInv"
       giveFishToBlacksmith:
         text: "Thank you very much and here is the promised armour!"
-        pointer: "seeYouSoon"
+        pointers: "seeYouSoon"
         events: "takeFishFromPlayer,addQuestDoneTag"
         conditions: "hasFishInInv" #(1)!
       goodbye:
@@ -325,13 +325,13 @@ conversations:
       # Other player_options not shown
       deny:
         text: "I dont have time right now."
-        pointer: "maybeLater"
+        pointers: "maybeLater"
       agree:
         text: "Of course! Take em."
-        pointer: "giveFishToBlacksmith"
+        pointers: "giveFishToBlacksmith"
       seeYouSoon:
         text: "That was a pleasure! See you soon..."
-        pointer: "goodbye"
+        pointers: "goodbye"
 ```
 
 1. This is the cheat protection we talked about earlier. If the player drops the items, the conversation will end.
@@ -362,7 +362,7 @@ in the `items` section of your "_package.yml_" file.
     ```YAML title="blacksmith.yml"
     giveFishToBlacksmith:
       text: "Thank you very much and here is the promised armour!"
-      pointer: "seeYouSoon"
+      pointers: "seeYouSoon"
       events: "takeFishFromPlayer,addQuestDoneTag{==,rewardPlayer==}"
       conditions: "hasFishInInv"
     ``` 

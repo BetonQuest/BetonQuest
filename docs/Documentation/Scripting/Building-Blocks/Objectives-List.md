@@ -291,7 +291,7 @@ The player must click on entities to complete this objective.
 | _range_         | range:number                                                                                  | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                           |
 
 ```YAML title="Example"
-interact right creeper 1 marked:sick condition:syringeInHand cancel
+interact right creeper 1 marked:sick conditions:syringeInHand cancel
 ```
 
 <h5> Variable Properties </h5>
@@ -345,7 +345,7 @@ if the player just moves inside the location's range.
 
 !!! example
     ```YAML
-    location 100;200;300;world 5 condition:started events:notifyWelcome,start
+    location 100;200;300;world 5 conditions:started events:notifyWelcome,start
     location 100;200;300;world 5 exit conditions:started events:notifyBye
     ```
 <h5> Variable Properties </h5> 
@@ -514,7 +514,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 !!! example
     ```YAML
-    brew weird_concoction 4 event:add_tag
+    brew weird_concoction 4 events:add_tag
     ```
 
 ## Sheep shearing: `shear`

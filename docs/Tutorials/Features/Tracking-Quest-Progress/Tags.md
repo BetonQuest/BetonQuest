@@ -62,14 +62,14 @@ to them after you have introduced yourself to the first NPC.
         NPC_options:
           firstGreeting:
             text: "Hey Stranger! You look new to me. Can you introduce yourself?"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you %player%. Please also introduce yourself to Joe and Fren and come back when 
             you've done it!"
         player_options:
           introduce:
             text: "I am %player%"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
     ```
 
 === "joe.yml"
@@ -94,13 +94,13 @@ to them after you have introduced yourself to the first NPC.
         NPC_options:
           firstGreeting:
             text: "Hey %player%. Already know you because bonny told me about you and that you're new here!"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you tho! I really like new people in our town!"
         player_options:
           introduce:
             text: "That's correct!"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
     ```
 
 === "package.yml"
@@ -139,14 +139,14 @@ will add these events with the corresponding conditions to our events/conditions
         NPC_options:
           firstGreeting:
             text: "Hey Stranger! You look new to me. Can you introduce yourself?"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you %player%. Please also introduce yourself to Joe and Fren and come back when 
             you've done it!"
         player_options:
           introduce:
             text: "I am %player%"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagIntroducedToBonny"
     ```
 
@@ -173,13 +173,13 @@ will add these events with the corresponding conditions to our events/conditions
         NPC_options:
           firstGreeting:
             text: "Hey %player%. Already know you because Bonny told me about you and that you're new here!"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you tho! I really like new people in our town!"
         player_options:
           introduce:
             text: "That's correct!"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagMetFren"
     ```
 
@@ -222,7 +222,7 @@ conversations and also add some more conversation so that it makes more sense. T
         NPC_options:
           firstGreeting:
             text: "Hey Stranger! You look new to me. Can you introduce yourself?"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you %player%. Please also introduce yourself to Joe and Fren and come back when 
             you've done it!"
@@ -235,7 +235,7 @@ conversations and also add some more conversation so that it makes more sense. T
         player_options:
           introduce:
             text: "I am %player%"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagIntroducedToBonny"
     ```
     
@@ -273,14 +273,14 @@ conversations and also add some more conversation so that it makes more sense. T
         NPC_options:
           firstGreeting:
             text: "Hey %player%. Already know you because Bonny told me about you and that you're new here!"
-            pointer: "introduce"
+            pointers: "introduce"
             conditions: "introducedToBonny" #(1)!
           niceToMeetYou:
             text: "Nice to meet you tho! I really like new people in our town!"
         player_options:
           introduce:
             text: "That's correct!"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagMetFren"
     ```
 
@@ -312,7 +312,7 @@ Let us have a look:
         NPC_options:
           firstGreeting:
             text: "Hey Stranger! You look new to me. Can you introduce yourself?"
-            pointer: "introduce"
+            pointers: "introduce"
           niceToMeetYou:
             text: "Nice to meet you %player%. Please also introduce yourself to Joe and Fren and come back when 
             you've done it!"
@@ -327,11 +327,11 @@ Let us have a look:
             text: "Now I could need your help! Would you mind bringing me XXX?"
             conditions: "introducedToEveryone"
             events: #(1)!
-            pointer: #(2)!
+            pointers: #(2)!
         player_options:
           introduce:
             text: "I am %player%"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagIntroducedToBonny"
     ```
 
@@ -368,7 +368,7 @@ Let us have a look:
         NPC_options:
           firstGreeting:
             text: "Hey %player%. Already know you because Bonny told me about you and that you're new here!"
-            pointer: "introduce"
+            pointers: "introduce"
             conditions: "introducedToBonny"
           niceToMeetYou:
             text: "Nice to meet you tho! I really like new people in our town!"
@@ -378,7 +378,7 @@ Let us have a look:
         player_options:
           introduce:
             text: "That's correct!"
-            pointer: "niceToMeetYou"
+            pointers: "niceToMeetYou"
             events: "addTagMetFren"
     ```
 

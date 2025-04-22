@@ -64,7 +64,7 @@ conversations:
     NPC_options: # (4)!
       firstGreeting:
         text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
-        pointer: "whereYouFrom" # (5)!
+        pointers: "whereYouFrom" # (5)!
    
     player_options: # (6)!
       whereYouFrom:
@@ -134,10 +134,10 @@ conversations:
     NPC_options:
       firstGreeting:
         text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
-        pointer: "whereYouFrom"
+        pointers: "whereYouFrom"
       whoAmI:
         text: "I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?"
-        pointer: "smallIsland,bigCity" # (1)!
+        pointers: "smallIsland,bigCity" # (1)!
       islandAnswer: 
         text: "That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?"
       cityAnswer: 
@@ -146,13 +146,13 @@ conversations:
     player_options:
       whereYouFrom: 
         text: "First I want to know who you are!"
-        pointer: "whoAmI" 
+        pointers: "whoAmI" 
       smallIsland: # (2)!
         text: "From a small island located east."
-        pointer: "islandAnswer" # (4)!
+        pointers: "islandAnswer" # (4)!
       bigCity:  # (3)!
         text: "From a big city located west."
-        pointer: "cityAnswer" # (5)!
+        pointers: "cityAnswer" # (5)!
 ```
 
 1. This `NPC_option` points to multiple `player_options`. This allows the player to choose. The names of the `player_options` must be comma seperated.
@@ -178,32 +178,32 @@ conversations:
     NPC_options:
       firstGreeting:
         text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
-        pointer: "whereYouFrom"
+        pointers: "whereYouFrom"
       whoAmI:
         text: "I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?"
-        pointer: "smallIsland,bigCity"
+        pointers: "smallIsland,bigCity"
       islandAnswer:
         text: "That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?"
-        pointer: "yesPlease" # (1)!
+        pointers: "yesPlease" # (1)!
       cityAnswer:
         text: "Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?"
-        pointer: "yesPlease" # (2)!
+        pointers: "yesPlease" # (2)!
       foodAnswer:
         text: "You're welcome! Take it... &7*gives food*"
     
     player_options:
       whereYouFrom:
         text: "First I want to know who you are!"
-        pointer: "whoAmI"
+        pointers: "whoAmI"
       smallIsland:
         text: "From a small island located east."
-        pointer: "islandAnswer"
+        pointers: "islandAnswer"
       bigCity:
         text: "From a big city located west."
-        pointer: "cityAnswer"
+        pointers: "cityAnswer"
       yesPlease: # (3)!
         text: "Oh yes I'm starving! Thank you."
-        pointer: "foodAnswer"
+        pointers: "foodAnswer"
 ```
 
 1. I point to `yesPlease` in the `player_options` section.

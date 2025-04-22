@@ -35,11 +35,11 @@ conversations: #(1)!
     player_options: #(9)!
       friendly:
         text: "Thank you your honor, I'm happy to be here."
-        event: "givePresent"
-        pointer: "blacksmithReminder"
+        events: "givePresent"
+        pointers: "blacksmithReminder"
       hostile:
         text: "Your Honor, I come bearing a ultimatum letter from the people. They have grown tired of your corruption and greed."
-        condition: 'hasUltimatumLetter'
+        conditions: 'hasUltimatumLetter'
         pointers: "howDareYou"
 ```
     
@@ -301,7 +301,7 @@ NPC_options:
   ## Useless addition as example
   tonight:
     # Always false
-    condition: random 0-1
+    conditions: random 0-1
     text: ' tonight?'
     extends: main_menu
 

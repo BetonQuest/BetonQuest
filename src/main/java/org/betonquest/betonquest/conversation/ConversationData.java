@@ -615,25 +615,25 @@ public class ConversationData {
             }
 
             this.text = parseText(conv);
-            this.conditions = parseID(conv, "condition", ConditionID::new);
-            this.events = parseID(conv, "event", EventID::new);
+            this.conditions = parseID(conv, "conditions", ConditionID::new);
+            this.events = parseID(conv, "events", EventID::new);
 
-            pointers = Arrays.stream(splitPlural(conv, "pointer"))
+            pointers = Arrays.stream(resolveAndSplit(conv, "pointers"))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
 
-            extendLinks = Arrays.stream(splitPlural(conv, "extend"))
+            extendLinks = Arrays.stream(resolveAndSplit(conv, "extends"))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
         }
 
-        private String[] splitPlural(final ConfigurationSection conv, final String singular) {
-            return GlobalVariableResolver.resolve(pack, conv.getString(singular + "s", conv.getString(singular, ""))).split(",");
+        private String[] resolveAndSplit(final ConfigurationSection conv, final String identifier) {
+            return GlobalVariableResolver.resolve(pack, conv.getString(identifier, "")).split(",");
         }
 
-        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String singularPath, final IDArgument<T> argument) throws QuestException {
+        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String identifier, final IDArgument<T> argument) throws QuestException {
             try {
-                final String[] split = splitPlural(conv, singularPath);
+                final String[] split = resolveAndSplit(conv, identifier);
                 final List<T> list = new ArrayList<>(split.length);
                 for (final String raw : split) {
                     if (!raw.isEmpty()) {
@@ -642,7 +642,7 @@ public class ConversationData {
                 }
                 return list;
             } catch (final QuestException e) {
-                throw new QuestException("Error in '" + optionName + "' " + type.getReadable() + " option's " + singularPath + "s: "
+                throw new QuestException("Error in '" + optionName + "' " + type.getReadable() + " option's " + identifier + ": "
                         + e.getMessage(), e);
             }
         }

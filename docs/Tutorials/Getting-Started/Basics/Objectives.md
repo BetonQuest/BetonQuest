@@ -168,13 +168,13 @@ conversations:
     NPC_options:
       firstGreeting:
         text: Welcome %player% in Valencia! The mayor already told me that you are new to our town.
-        pointer: thatsRight
+        pointers: thatsRight
       newArmorForNewCitizens:
         text: So every new citizens in our town will get a new armour from me but you have to do something for me in order to get this really nice upgrade!
-        pointer: whatToDo
+        pointers: whatToDo
       collectFish:
         text: You will have to fish 3 fresh cod for me and bring them to me. After that I will give you the nice new armour! Is that a deal?
-        pointer: accept,deny # (1)!
+        pointers: accept,deny # (1)!
       maybeLater:
         text: No problem! You can comeback later aswell. Bye!
       goodLuck:
@@ -182,17 +182,17 @@ conversations:
     player_options:
       thatsRight:
         text: Yeah thats true. Thank you!
-        pointer: newArmorForNewCitizens
+        pointers: newArmorForNewCitizens
       whatToDo:
         text: What can I do for you?
-        pointer: collectFish
+        pointers: collectFish
       accept:
         text: Sure! I could use a new armour.
-        event: startFishingObj # (2)!
-        pointer: goodLuck
+        events: startFishingObj # (2)!
+        pointers: goodLuck
       deny:
         text: I dont have time right now.
-        pointer: maybeLater
+        pointers: maybeLater
 ```
 
 1. The player have the choice to say yes or no.

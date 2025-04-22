@@ -679,9 +679,9 @@ This objective requires the player to activate a MythicLib skill (e.g. with MMOI
 
 
 ```YAML title="Example" linenums="1"
-triggerSkill: "mmoskill LIFE_ENDER event:updateStatistics"
-castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST event:completeTutorial"
-itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK event:giveReward"
+triggerSkill: "mmoskill LIFE_ENDER events:updateStatistics"
+castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST events:completeTutorial"
+itemSkill: "mmoskill DEEP_WOUND trigger:RIGHT_CLICK,LEFT_CLICK events:giveReward"
 ```
 
 ### Events

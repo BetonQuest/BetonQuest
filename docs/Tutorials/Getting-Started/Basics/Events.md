@@ -94,7 +94,7 @@ conversations:
       foodAnswer:
         text: "Your welcome! Take it... &7*gives food*"
         events: "giveFoodToPlayer" # (2)!
-        pointer: "thankYou"
+        pointers: "thankYou"
     player_options:
       #...
       thankYou: 
@@ -179,10 +179,10 @@ conversations:
       foodAnswer:
         text: "You're welcome! Take it... &7*gives food*"
         events: "giveFoodToPlayer"
-        pointer: "thankYou"
+        pointers: "thankYou"
       townTour:
         text: "Yeah that's true. You know what also smells good? The fresh air in my town! Would you like to take a little tour?"
-        pointer: "enoughTime,noTimeForThat" # (1)!
+        pointers: "enoughTime,noTimeForThat" # (1)!
       startTheTour:
         text: "Great! It is a honor for me to guide you through the town."
         events: "townTour" # (2)!
@@ -192,13 +192,13 @@ conversations:
       #...
       thankYou:
         text: "Oh that smells really good!"
-        pointer: "townTour" # (3)!
+        pointers: "townTour" # (3)!
       enoughTime:
         text: "Yes of course! Show me everything."
-        pointer: "startTheTour"
+        pointers: "startTheTour"
       noTimeForThat:
         text: "Sorry but I don't have time now..."
-        pointer: "noProblem"
+        pointers: "noProblem"
 ```
 
 1. The player once again has a choice.
