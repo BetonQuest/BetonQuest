@@ -13,16 +13,12 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -122,18 +118,11 @@ public abstract class Objective {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
         persistent = instruction.hasArgument("persistent");
-        events = parseIDs("event", EventID::new).toArray(new EventID[0]);
-        conditions = parseIDs("condition", ConditionID::new).toArray(new ConditionID[0]);
+        events = instruction.getIDList(instruction.getOptional("events"), EventID::new).toArray(new EventID[0]);
+        conditions = instruction.getIDList(instruction.getOptional("conditions"), ConditionID::new).toArray(new ConditionID[0]);
         final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
-    }
-
-    private <I extends ID> List<I> parseIDs(final String baseName, final IDArgument<I> argument) throws QuestException {
-        final List<I> ids = new ArrayList<>();
-        ids.addAll(instruction.getIDList(instruction.getOptional(baseName), argument));
-        ids.addAll(instruction.getIDList(instruction.getOptional(baseName + "s"), argument));
-        return ids;
     }
 
     /**

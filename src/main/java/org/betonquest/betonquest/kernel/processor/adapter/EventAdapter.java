@@ -10,7 +10,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,9 +53,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.instruction = instruction;
-        conditions = new ArrayList<>();
-        conditions.addAll(instruction.getList(instruction.getOptional("condition"), value -> new ConditionID(instruction.getPackage(), value)));
-        conditions.addAll(instruction.getList(instruction.getOptional("conditions"), value -> new ConditionID(instruction.getPackage(), value)));
+        conditions = instruction.getList(instruction.getOptional("conditions"), value -> new ConditionID(instruction.getPackage(), value));
     }
 
     /**

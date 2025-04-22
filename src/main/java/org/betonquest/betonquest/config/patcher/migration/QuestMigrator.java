@@ -12,6 +12,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Remo
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddSimpleTypeToQuestItem;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.ListNamesRenameToPlural;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
@@ -93,6 +94,7 @@ public class QuestMigrator {
      * @param pluginDescription the PluginDescriptionFile containing a semantic version,
      *                          used as fallback when no migrator is applied
      */
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public QuestMigrator(final BetonQuestLogger log, final PluginDescriptionFile pluginDescription) {
         this.log = log;
         this.legacyMigrations = getLegacy();
@@ -100,6 +102,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 1), new LanguageRename());
         migrations.put(questVersion("3.0.0", 2), new NpcRename());
         migrations.put(questVersion("3.0.0", 3), new AddSimpleTypeToQuestItem());
+        migrations.put(questVersion("3.0.0", 4), new ListNamesRenameToPlural());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

@@ -21,7 +21,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,9 +146,7 @@ public class MenuItem extends SimpleYMLSection {
                 this.shiftRightClick = list;
                 this.middleMouseClick = list;
             }
-            this.conditions = new ArrayList<>();
-            this.conditions.addAll(getConditions("conditions", pack));
-            this.conditions.addAll(getConditions("condition", pack));
+            this.conditions = getConditions("conditions", pack);
             //load if menu should close when item is clicked
             this.close = new DefaultSetting<>(defaultClose) {
                 @Override
