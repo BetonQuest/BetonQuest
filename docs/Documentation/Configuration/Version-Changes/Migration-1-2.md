@@ -550,7 +550,7 @@ If you are facing errors for instructions containing the double quote character 
 events:
   literal: notify "special\secret"message #(1)!
   quoted: notify this" was quoted" previously #(2)!
-  parameter: tag add x condition:"with space"
+  parameter: tag add x conditions:"with space"
 conditions:
   "with space": tag "other tag"
 ```
@@ -562,7 +562,7 @@ conditions:
 events:
   literal: notify "\"special\\secret\"message" #(1)!
   quoted: notify "this was quoted previously" #(2)!
-  parameter: tag add x "condition:with space" #(3)!
+  parameter: tag add x "conditions:with space" #(3)!
 conditions:
   "with space": tag "other tag"
 ```

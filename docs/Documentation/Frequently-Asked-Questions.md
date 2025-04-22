@@ -208,7 +208,7 @@ reached a certain value.
     # Adds 1 to the global variable
     gQuestIncrementCounter: globalpoint gQuest 1
     # Runs completion events only when the condition is met (= the global variable reached X points)
-    gQuestCheckCompletion: folder gQuestNotify,gQuestOnCompletion,gDeleteObjective condition:gQuestComplete
+    gQuestCheckCompletion: folder gQuestNotify,gQuestOnCompletion,gDeleteObjective conditions:gQuestComplete
     # Deletes the objective from everyone that fished a salmon after the goal was met
     qDeleteObjective: "objective delete gQuest"
     ```
@@ -305,7 +305,7 @@ objectives.
 
 === "events"
     ```YAML
-    Rewards: RewardEventArguments condition:All_Objectives_Done
+    Rewards: RewardEventArguments conditions:All_Objectives_Done
     ```
 
 Now, simply add this `Rewards` event to every one of your objectives, and you have now created a way for players to

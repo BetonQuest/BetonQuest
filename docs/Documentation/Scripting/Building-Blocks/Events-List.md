@@ -287,15 +287,15 @@ This event wraps multiple events inside itself, similar `folder`. Unlike `folder
 starting from the first onward. Once it successfully executes one event, it stops executing the rest. This is useful for
 collapsing long if-else chains into single events.
 
-This event is especially powerful when it is used in conjunction with the `condition:` keyword,
+This event is especially powerful when it is used in conjunction with the `conditions:` keyword,
 which can be used with any event.
 
 ```YAML title="Example"
 events: # (1)!
   firstExample: "first event1,event2,event3"
-  event1: "point carry boxes 10 action:add condition:firstCondition"
-  event2: "point carry boxes 20 action:add condition:secondCondition"
-  event3: "point carry boxes 40 action:add condition:thirdCondition"
+  event1: "point carry boxes 10 action:add conditions:firstCondition"
+  event2: "point carry boxes 20 action:add conditions:secondCondition"
+  event3: "point carry boxes 40 action:add conditions:thirdCondition"
 ```
 
 1. If firstCondition is false, secondCondition is true, and thirdCondition is true, event2 is the only event that will

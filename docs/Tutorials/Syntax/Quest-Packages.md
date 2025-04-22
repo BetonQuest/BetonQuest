@@ -121,10 +121,10 @@ Then play around with this system to get a feel for it.
             NPC_options:
               firstGreeting:
                 text: "Yoo! You look like you can handle those heavy axes to cut down some trees..?"
-                pointer: "probably"
+                pointers: "probably"
               woodAmountAnswer:
                 text: "Bring me 20 logs of oak and you will get my special axe for woodcutting!"
-                pointer: "letsDoIt"
+                pointers: "letsDoIt"
               seeYou:
                 text: "See you soon!"
               noWoodInInv:
@@ -146,10 +146,10 @@ Then play around with this system to get a feel for it.
             player_options:
               probably:
                 text: "Yes I can do that for you! How much wood do you need?"
-                pointer: "woodAmountAnswer"
+                pointers: "woodAmountAnswer"
               letsDoIt:
                 text: "Alright let's get the job done!"
-                pointer: "seeYou"
+                pointers: "seeYou"
                 events: "questStarted"
         ```
     === "myEventsList1.yml"
@@ -219,10 +219,10 @@ It's the exact same quest but in just one file:
          NPC_options:
            firstGreeting:
              text: "Yoo! You look like you can handle those heavy axes to cut down some trees..?"
-             pointer: "probably"
+             pointers: "probably"
            woodAmountAnswer:
              text: "Bring me 20 logs of oak and you will get my special axe for woodcutting!"
-             pointer: "letsDoIt"
+             pointers: "letsDoIt"
            seeYou:
              text: "See you soon!"
            noWoodInInv:
@@ -244,10 +244,10 @@ It's the exact same quest but in just one file:
          player_options:
            probably:
              text: "Yes I can do that for you! How much wood do you need?"
-             pointer: "woodAmountAnswer"
+             pointers: "woodAmountAnswer"
            letsDoIt:
              text: "Alright let's get the job done!"
-             pointer: "seeYou"
+             pointers: "seeYou"
              events: "questStarted"
 
      {==events==}:

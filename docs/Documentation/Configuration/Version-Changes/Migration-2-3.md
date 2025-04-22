@@ -27,6 +27,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
 - [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
 - [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :gear:
+- [3.0.0-DEV-231 - Singular to Plural](#300-dev-231-singular-to-plural) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -267,6 +268,39 @@ notifications:
     ```YAML title="New Syntax"
     items:
       blizz: "simple DIAMOND_SWORD name:The_Blizz lore:Made_of_Ice"
+    ```
+
+    </div>
+
+
+### 3.0.0-DEV-231 - Singular to Plural :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    BetonQuest allows a lot of lists (comma separated values) to reference for example events and conditions.
+    In the past the key of those lists was always `event` or `condition`.
+    Then someone introduced the first plural `events` and `conditions`, and so the project supported both.
+    As this leads into a lot of bad code and confusion, we decided to remove the singular version.
+    Therefore the follorwing changes were made:
+    
+    - objectives - `event` and `condition` are now `events` and `conditions`
+    - events - `condition` is now `conditions`
+    - menus - `condition` is now `conditions`
+    - conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `events`, `pointers` and `extends`
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    objectives:
+      action: action LEFT ANY global persistent event:notify condition:sneak
+    ```
+    
+    ```YAML title="New Syntax"
+    items:
+      action: action LEFT ANY global persistent events:notify conditions:sneak
     ```
 
     </div>
