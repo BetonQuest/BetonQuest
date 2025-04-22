@@ -4618,7 +4618,7 @@ in order to comprehend and apply this tutorial.</p>
 <details class="hint">
 <summary>Download the files for this tutorial</summary>
 <p>Instead of manually creating / filling the files, just download them using the command below:
-<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 6bee5bf9c2c14db9395e7fb56a2fb53411aef005 QuestPackages /Advanced/Tracking-Quest-Progress/1-ExampleQuest /trackingTutorial overwrite
+<div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials b4b7bfa311f52bd5d0b46b98e155384a1c6ba625 QuestPackages /Advanced/Tracking-Quest-Progress/1-ExampleQuest /trackingTutorial overwrite
 </code></pre></div>
 You can now find all files needed for this tutorial in this location:
 "<em>YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/questTracking</em>"</p>
@@ -4652,14 +4652,14 @@ to them after you have introduced yourself to the first NPC.</p>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">Stranger!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">me.</span><span class="nv"> </span><span class="s">Can</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself?&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">also</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Joe</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Fren</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">when</span><span class="w"> </span>
 <span class="w">        </span><span class="s">you&#39;ve</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">it!&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">%player%&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 </code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -4699,13 +4699,13 @@ to them after you have introduced yourself to the first NPC.</p>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Already</span><span class="nv"> </span><span class="s">know</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">because</span><span class="nv"> </span><span class="s">bonny</span><span class="nv"> </span><span class="s">told</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">you&#39;re</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">here!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">tho!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">really</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">our</span><span class="nv"> </span><span class="s">town!&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">correct!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 </code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -4764,14 +4764,14 @@ will add these events with the corresponding conditions to our events/conditions
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">Stranger!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">me.</span><span class="nv"> </span><span class="s">Can</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself?&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">also</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Joe</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Fren</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">when</span><span class="w"> </span>
 <span class="w">        </span><span class="s">you&#39;ve</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">it!&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">%player%&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="hll"><span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagIntroducedToBonny&quot;</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
@@ -4815,13 +4815,13 @@ will add these events with the corresponding conditions to our events/conditions
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Already</span><span class="nv"> </span><span class="s">know</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">because</span><span class="nv"> </span><span class="s">Bonny</span><span class="nv"> </span><span class="s">told</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">you&#39;re</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">here!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">tho!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">really</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">our</span><span class="nv"> </span><span class="s">town!&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">correct!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="hll"><span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagMetFren&quot;</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
@@ -4887,7 +4887,7 @@ you will make significantly fewer mistakes.</p>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">Stranger!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">me.</span><span class="nv"> </span><span class="s">Can</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself?&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">also</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Joe</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Fren</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">when</span><span class="w"> </span>
 <span class="w">        </span><span class="s">you&#39;ve</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">it!&quot;</span>
@@ -4900,7 +4900,7 @@ you will make significantly fewer mistakes.</p>
 </span><span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">%player%&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagIntroducedToBonny&quot;</span>
 </code></pre></div></td></tr></table></div>
 <ol>
@@ -4962,14 +4962,14 @@ himself to Bonny first.</li>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Already</span><span class="nv"> </span><span class="s">know</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">because</span><span class="nv"> </span><span class="s">Bonny</span><span class="nv"> </span><span class="s">told</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">you&#39;re</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">here!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="hll"><span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introducedToBonny&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 </span><span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">tho!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">really</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">our</span><span class="nv"> </span><span class="s">town!&quot;</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">correct!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagMetFren&quot;</span>
 </code></pre></div></td></tr></table></div>
 <ol>
@@ -4986,7 +4986,7 @@ You can now only talk to <strong>Fren and Joe</strong> after you introduced your
 <p>Get the correct configs by running the following command.<br>
 <img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> <em>This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br></em>
 Linking NPCs to conversations is explained in the <a href="../../../Getting-Started/Basics/Conversations/#1-linking-a-conversation-to-a-npc">basics tutorial</a>.
-   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 6bee5bf9c2c14db9395e7fb56a2fb53411aef005 QuestPackages /Features/Tracking-Quest-Progress/2-HalfExample /trackingTutorial overwrite
+   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials b4b7bfa311f52bd5d0b46b98e155384a1c6ba625 QuestPackages /Features/Tracking-Quest-Progress/2-HalfExample /trackingTutorial overwrite
 </code></pre></div></p>
 </details>
 <h2 id="3-complete-the-introduction-quest-optional">3. Complete the introduction quest (optional)<a class="headerlink" href="#3-complete-the-introduction-quest-optional" title="Permanent link">🔗</a></h2>
@@ -5030,7 +5030,7 @@ Let us have a look:</p>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">Stranger!</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">me.</span><span class="nv"> </span><span class="s">Can</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself?&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Please</span><span class="nv"> </span><span class="s">also</span><span class="nv"> </span><span class="s">introduce</span><span class="nv"> </span><span class="s">yourself</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Joe</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Fren</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">when</span><span class="w"> </span>
 <span class="w">        </span><span class="s">you&#39;ve</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">it!&quot;</span>
@@ -5045,11 +5045,11 @@ Let us have a look:</p>
 </span><span class="hll"><span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Now</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">could</span><span class="nv"> </span><span class="s">need</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">help!</span><span class="nv"> </span><span class="s">Would</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">mind</span><span class="nv"> </span><span class="s">bringing</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">XXX?&quot;</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introducedToEveryone&quot;</span>
 </span><span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I</span><span class="nv"> </span><span class="s">am</span><span class="nv"> </span><span class="s">%player%&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagIntroducedToBonny&quot;</span>
 </code></pre></div></td></tr></table></div>
 <ol>
@@ -5115,7 +5115,7 @@ conversation or a <strong>event</strong> to start something.</p>
 <span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">firstGreeting</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hey</span><span class="nv"> </span><span class="s">%player%.</span><span class="nv"> </span><span class="s">Already</span><span class="nv"> </span><span class="s">know</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">because</span><span class="nv"> </span><span class="s">Bonny</span><span class="nv"> </span><span class="s">told</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">you&#39;re</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">here!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introduce&quot;</span>
 <span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;introducedToBonny&quot;</span>
 <span class="hll"><span class="w">      </span><span class="nt">niceToMeetYou</span><span class="p">:</span>
 </span><span class="hll"><span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nice</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">meet</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">tho!</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">really</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">people</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">our</span><span class="nv"> </span><span class="s">town!&quot;</span>
@@ -5125,7 +5125,7 @@ conversation or a <strong>event</strong> to start something.</p>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">introduce</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;That&#39;s</span><span class="nv"> </span><span class="s">correct!&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;niceToMeetYou&quot;</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;addTagMetFren&quot;</span>
 </code></pre></div></td></tr></table></div>
 </div>
@@ -5161,7 +5161,7 @@ conversation or a <strong>event</strong> to start something.</p>
 <details class="info">
 <summary>Download this part of the tutorial</summary>
 <p>Enter this command in the chat to download this part of the tutorial:
-   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials 6bee5bf9c2c14db9395e7fb56a2fb53411aef005 QuestPackages /Features/Tracking-Quest-Progress/3-FullExample /trackingTutorial overwrite
+   <div class="highlight"><pre><span></span><code>/bq download BetonQuest/Quest-Tutorials b4b7bfa311f52bd5d0b46b98e155384a1c6ba625 QuestPackages /Features/Tracking-Quest-Progress/3-FullExample /trackingTutorial overwrite
 </code></pre></div></p>
 </details>
 

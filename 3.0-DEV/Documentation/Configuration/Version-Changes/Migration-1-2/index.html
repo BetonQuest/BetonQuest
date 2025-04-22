@@ -5687,7 +5687,7 @@ while keeping the syntax more or less the same.</p>
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">literal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;special\secret&quot;message</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">quoted</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify this&quot; was quoted&quot; previously</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x condition:&quot;with space&quot;</span>
+<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x conditions:&quot;with space&quot;</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="s">&quot;with</span><span class="nv"> </span><span class="s">space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag &quot;other tag&quot;</span>
 </code></pre></div>
@@ -5698,7 +5698,7 @@ while keeping the syntax more or less the same.</p>
 <div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">literal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;\&quot;special\\secret\&quot;message&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">quoted</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify &quot;this was quoted previously&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x &quot;condition:with space&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">parameter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag add x &quot;conditions:with space&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="s">&quot;with</span><span class="nv"> </span><span class="s">space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag &quot;other tag&quot;</span>
 </code></pre></div>

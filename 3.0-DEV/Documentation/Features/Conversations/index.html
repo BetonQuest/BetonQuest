@@ -4811,11 +4811,11 @@ the NPC.</p>
 <span class="w">    </span><span class="nt">player_options</span><span class="p">:</span><span class="w"> </span><span class="c1">#(9)!</span>
 <span class="w">      </span><span class="nt">friendly</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">honor,</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">happy</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">here.&quot;</span>
-<span class="w">        </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;givePresent&quot;</span>
-<span class="w">        </span><span class="nt">pointer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blacksmithReminder&quot;</span>
+<span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;givePresent&quot;</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;blacksmithReminder&quot;</span>
 <span class="w">      </span><span class="nt">hostile</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">Honor,</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">bearing</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">ultimatum</span><span class="nv"> </span><span class="s">letter</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">people.</span><span class="nv"> </span><span class="s">They</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">grown</span><span class="nv"> </span><span class="s">tired</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">corruption</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">greed.&quot;</span>
-<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;hasUltimatumLetter&#39;</span>
+<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;hasUltimatumLetter&#39;</span>
 <span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;howDareYou&quot;</span>
 </code></pre></div>
 <ol>
@@ -5072,7 +5072,7 @@ that you want to be excluded from interception. In this case you can just set <c
 <span class="w">  </span><span class="c1">## Useless addition as example</span>
 <span class="w">  </span><span class="nt">tonight</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Always false</span>
-<span class="w">    </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random 0-1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random 0-1</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="nv"> </span><span class="s">tonight?&#39;</span>
 <span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main_menu</span>
 

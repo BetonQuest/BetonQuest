@@ -3149,6 +3149,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-231-singular-to-plural">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-231 - Singular to Plural <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4704,6 +4727,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-231-singular-to-plural">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-231 - Singular to Plural <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4841,6 +4887,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 <li><a href="#300-dev-142-conversation-sounds">3.0.0-DEV-142 - Conversation Sounds</a> <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /></li>
 <li><a href="#300-dev-217-item-type">3.0.0-DEV-217 - Item Type</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
+<li><a href="#300-dev-231-singular-to-plural">3.0.0-DEV-231 - Singular to Plural</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -5076,6 +5123,31 @@ that now also has the two new build in categories <code>conversation_start</code
 </code></pre></div>
 <div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">blizz</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">DIAMOND_SWORD</span><span class="nv"> </span><span class="s">name:The_Blizz</span><span class="nv"> </span><span class="s">lore:Made_of_Ice&quot;</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="300-dev-231-singular-to-plural">3.0.0-DEV-231 - Singular to Plural <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#300-dev-231-singular-to-plural" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>BetonQuest allows a lot of lists (comma separated values) to reference for example events and conditions.
+In the past the key of those lists was always <code>event</code> or <code>condition</code>.
+Then someone introduced the first plural <code>events</code> and <code>conditions</code>, and so the project supported both.
+As this leads into a lot of bad code and confusion, we decided to remove the singular version.
+Therefore the follorwing changes were made:</p>
+<ul>
+<li>objectives - <code>event</code> and <code>condition</code> are now <code>events</code> and <code>conditions</code></li>
+<li>events - <code>condition</code> is now <code>conditions</code></li>
+<li>menus - <code>condition</code> is now <code>conditions</code></li>
+<li>conversations - options <code>condition</code>, <code>event</code>, <code>pointer</code> and <code>extend</code> are now <code>conditions</code>, <code>events</code>, <code>pointers</code> and <code>extends</code></li>
+</ul>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">action LEFT ANY global persistent event:notify condition:sneak</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">action LEFT ANY global persistent events:notify conditions:sneak</span>
 </code></pre></div>
 </div>
 </details>
