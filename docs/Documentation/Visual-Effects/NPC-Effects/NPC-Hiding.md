@@ -15,7 +15,7 @@ hide_npcs:
   Guard: '!questStarted'
 ```
 
-Where NpcID is declared when you register the NPC which is described [here](https://betonquest.org/DEV/Documentation/Features/Npcs/#provided-integrations).
+Where NpcID is declared when you register the NPC which is described [here](../../Features/Npcs.md#provided-integrations).
 ## Full examples
 === "Citizens"
   ```YAML
