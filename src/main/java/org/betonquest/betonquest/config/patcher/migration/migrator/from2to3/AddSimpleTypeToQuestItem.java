@@ -10,7 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class AddSimpleTypeToQuestItem implements QuestMigration {
 
     /**
-     * Empty default constructor.
+     * Creates a new simple quest item migration.
      */
     public AddSimpleTypeToQuestItem() {
     }

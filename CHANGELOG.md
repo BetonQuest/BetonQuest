@@ -47,6 +47,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `password` objective - password
     - `interact` objective - custom name and real name
 - `items` now have a type like events
+- renamed list keys from singular to plural
+    - objectives - `event` and `condition` are now `events` and `conditions`
+    - events - `condition` is now `conditions`
+    - menus - `condition` is now `conditions`
+    - conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `events`, `pointers` and `extends`
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

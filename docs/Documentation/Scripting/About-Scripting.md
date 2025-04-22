@@ -108,8 +108,7 @@ You define them in the `objectives` section as shown above. At the end of the in
 and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
 given location), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which
 will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2`
-at the end of instruction text. Separate them
-by commas and never use spaces! You can also use the singular forms of these arguments: `conditions:` and `events:`.
+at the end of instruction text. Separate them by commas and never use spaces!
 
 If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its instruction string.
 For example, you could create a custom respawn system with a `die` objective. When the player dies, they will be

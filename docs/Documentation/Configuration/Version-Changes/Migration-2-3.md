@@ -272,7 +272,6 @@ notifications:
 
     </div>
 
-
 ### 3.0.0-DEV-231 - Singular to Plural :gear:
 
 ??? info "Automated Migration"

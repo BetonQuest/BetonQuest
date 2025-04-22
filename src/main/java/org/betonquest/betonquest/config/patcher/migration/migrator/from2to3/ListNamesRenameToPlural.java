@@ -7,12 +7,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
- * Adds the {@code simple } prefix to the {@code items} section to conform the Factory identifiers.
+ * Changes list keys from singular to plural.
  */
 public class ListNamesRenameToPlural implements QuestMigration {
 
     /**
-     * Empty default constructor.
+     * Creates a new List names to plural migration.
      */
     public ListNamesRenameToPlural() {
     }
