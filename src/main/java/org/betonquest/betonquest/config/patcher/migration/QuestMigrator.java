@@ -134,7 +134,7 @@ public class QuestMigrator {
      * @throws IOException                   when an error occurs
      * @throws VersionMissmatchException     when the Quest version is newer than the max settable version
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidCatchingGenericException", "PMD.CognitiveComplexity"})
     public void migrate(final Quest quest) throws IOException, InvalidConfigurationException, VersionMissmatchException {
         log.debug("Attempting to migrate package '" + quest.getQuestPath() + "'");
         final String versionString = quest.getQuestConfig().getString(QUEST_VERSION_PATH);
@@ -150,7 +150,11 @@ public class QuestMigrator {
         if (LEGACY.equalsIgnoreCase(versionString)) {
             log.debug("  Legacy identifier set, applying legacy and versioned migrations");
             for (final QuestMigration legacyMigration : legacyMigrations) {
-                legacyMigration.migrate(quest);
+                try {
+                    legacyMigration.migrate(quest);
+                } catch (final Exception e) {
+                    throw new InvalidConfigurationException("Unexpected error while applying legacy migration: " + e.getMessage(), e);
+                }
                 quest.saveAll();
             }
             actualMigrations = migrations;
@@ -178,7 +182,11 @@ public class QuestMigrator {
         }
 
         for (final Map.Entry<SettableVersion, QuestMigration> entry : actualMigrations.entrySet()) {
-            entry.getValue().migrate(quest);
+            try {
+                entry.getValue().migrate(quest);
+            } catch (final Exception e) {
+                throw new InvalidConfigurationException("Unexpected error while applying migration '" + entry.getKey() + "': " + e.getMessage(), e);
+            }
             entry.getKey().setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
         }

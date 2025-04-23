@@ -5,7 +5,6 @@ import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Handles the pick random percentage migration.
@@ -45,7 +44,6 @@ public class PickRandomPercentage implements QuestMigration {
         return StringUtils.join(events, ",");
     }
 
-    @NotNull
     private String replacePercentage(final String event) {
         final char[] chars = event.toCharArray();
         chars[event.lastIndexOf('%')] = '~';
