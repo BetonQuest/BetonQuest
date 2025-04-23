@@ -36,6 +36,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
@@ -424,8 +425,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineEvent give = new GiveEvent(
-                    List.of(new Item(instance.getFeatureAPI(), itemID, new VariableNumber(instance.getVariableProcessor(),
-                            itemID.getPackage(), "1"))),
+                    new VariableList<>(List.of(new Item(instance.getFeatureAPI(), itemID, new VariableNumber(instance.getVariableProcessor(),
+                            itemID.getPackage(), "1")))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),

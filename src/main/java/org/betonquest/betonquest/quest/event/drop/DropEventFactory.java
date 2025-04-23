@@ -11,6 +11,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
@@ -19,7 +21,6 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -66,17 +67,14 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
-        final List<Item> items = parseItemList(instruction);
+        final VariableList<Item> items = parseItemList(instruction);
         final Selector<Location> location = parseLocationSelector(instruction);
         return new NullableEventAdapter(new DropEvent(items, location));
     }
 
-    private List<Item> parseItemList(final Instruction instruction) throws QuestException {
-        final List<Item> items = instruction.getItemList(instruction.getOptional("items"));
-        if (items.isEmpty()) {
-            throw new QuestException("No items to drop defined");
-        }
-        return items;
+    @SuppressWarnings("NullAway")
+    private VariableList<Item> parseItemList(final Instruction instruction) throws QuestException {
+        return instruction.get(instruction.getOptional("items", ""), Argument.ofList(instruction::getItem, VariableList.notEmptyChecker()));
     }
 
     private Selector<Location> parseLocationSelector(final Instruction instruction) throws QuestException {

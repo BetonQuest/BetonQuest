@@ -2,10 +2,12 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestListException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -31,12 +33,12 @@ public class RunForAllEvent implements PlayerlessEvent {
     /**
      * List of Events to run.
      */
-    private final List<EventID> events;
+    private final VariableList<EventID> events;
 
     /**
      * List of conditions each profile must meet to run the events.
      */
-    private final List<ConditionID> conditions;
+    private final VariableList<ConditionID> conditions;
 
     /**
      * Create a new RunForAllEvent instance.
@@ -46,7 +48,9 @@ public class RunForAllEvent implements PlayerlessEvent {
      * @param events                    the events to run
      * @param conditions                the conditions each profile must meet to run the events
      */
-    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier, final QuestTypeAPI questTypeAPI, final List<EventID> events, final List<ConditionID> conditions) {
+    public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,
+                          final QuestTypeAPI questTypeAPI, final VariableList<EventID> events,
+                          final VariableList<ConditionID> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
         this.questTypeAPI = questTypeAPI;
         this.events = events;
@@ -55,12 +59,19 @@ public class RunForAllEvent implements PlayerlessEvent {
 
     @Override
     public void execute() throws QuestException {
+        final QuestListException questListException = new QuestListException("Could not run events for all profiles:");
         for (final Profile profile : profileCollectionSupplier.get()) {
-            if (conditions.isEmpty() || questTypeAPI.conditions(profile, conditions.toArray(new ConditionID[0]))) {
-                for (final EventID event : events) {
-                    questTypeAPI.event(profile, event);
+            try {
+                final List<ConditionID> resolvedConditions = conditions.getValue(profile);
+                if (resolvedConditions.isEmpty() || questTypeAPI.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
+                    for (final EventID event : events.getValue(profile)) {
+                        questTypeAPI.event(profile, event);
+                    }
                 }
+            } catch (final QuestException e) {
+                questListException.addException(profile.toString(), e);
             }
         }
+        questListException.throwIfNotEmpty();
     }
 }

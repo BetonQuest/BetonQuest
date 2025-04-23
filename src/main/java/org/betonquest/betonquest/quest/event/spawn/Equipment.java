@@ -4,14 +4,13 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * A wrapper for the equipment and drops of a mob.
@@ -26,7 +25,7 @@ import java.util.List;
  */
 public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
                         @Nullable Item leggings, @Nullable Item boots, @Nullable Item mainHand,
-                        @Nullable Item offHand, List<Item> drops) {
+                        @Nullable Item offHand, VariableList<Item> drops) {
 
     /**
      * Adds the drops to the mob.
@@ -37,7 +36,7 @@ public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
      */
     public void addDrops(final Mob mob, @Nullable final Profile profile) throws QuestException {
         int dropIndex = 0;
-        for (final Item item : drops) {
+        for (final Item item : drops.getValue(profile)) {
             final String value = item.getID().getFullID() + ":" + item.getAmount().getValue(profile).intValue();
             final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
             mob.getPersistentDataContainer().set(key, PersistentDataType.STRING, value);

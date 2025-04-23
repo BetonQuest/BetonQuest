@@ -4,9 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.event.CallPlayerlessEventAdapter;
-
-import java.util.List;
 
 /**
  * Runs specified events player independently.
@@ -25,7 +24,7 @@ public class RunIndependentEvent implements PlayerlessEvent {
     /**
      * List of Events to run.
      */
-    private final List<EventID> events;
+    private final VariableList<EventID> events;
 
     /**
      * Create a new RunIndependentEvent instance.
@@ -33,14 +32,14 @@ public class RunIndependentEvent implements PlayerlessEvent {
      * @param questTypeAPI the Quest Type API
      * @param events       the events to run
      */
-    public RunIndependentEvent(final QuestTypeAPI questTypeAPI, final List<EventID> events) {
+    public RunIndependentEvent(final QuestTypeAPI questTypeAPI, final VariableList<EventID> events) {
         this.questTypeAPI = questTypeAPI;
         this.events = events;
     }
 
     @Override
     public void execute() throws QuestException {
-        for (final EventID event : events) {
+        for (final EventID event : events.getValue(null)) {
             questTypeAPI.event(null, event);
         }
     }

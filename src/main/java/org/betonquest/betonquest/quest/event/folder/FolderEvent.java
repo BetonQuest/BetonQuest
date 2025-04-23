@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -75,7 +76,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * The events to run.
      */
-    private final List<EventID> events;
+    private final VariableList<EventID> events;
 
     /**
      * The time unit to use for the delay and period.
@@ -90,7 +91,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Conditions to check if the event should be canceled.
      */
-    private final List<ConditionID> cancelConditions;
+    private final VariableList<ConditionID> cancelConditions;
 
     /**
      * Create a folder event with the given parameters.
@@ -109,9 +110,11 @@ public class FolderEvent implements NullableEvent {
      * @param cancelConditions conditions to check if the event should be canceled
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager, final List<EventID> events,
-                       final QuestTypeAPI questTypeAPI, final Random randomGenerator, @Nullable final VariableNumber delay, @Nullable final VariableNumber period, @Nullable final VariableNumber random,
-                       final TimeUnit timeUnit, final boolean cancelOnLogout, final List<ConditionID> cancelConditions) {
+    public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
+                       final VariableList<EventID> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
+                       @Nullable final VariableNumber delay, @Nullable final VariableNumber period,
+                       @Nullable final VariableNumber random, final TimeUnit timeUnit, final boolean cancelOnLogout,
+                       final VariableList<ConditionID> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -120,14 +123,20 @@ public class FolderEvent implements NullableEvent {
         this.delay = delay;
         this.period = period;
         this.random = random;
-        this.events = List.copyOf(events);
+        this.events = events;
         this.timeUnit = timeUnit;
         this.cancelOnLogout = cancelOnLogout;
-        this.cancelConditions = List.copyOf(cancelConditions);
+        this.cancelConditions = cancelConditions;
     }
 
     private boolean checkCancelConditions(@Nullable final Profile profile) {
-        return !cancelConditions.isEmpty() && questTypeAPI.conditions(profile, cancelConditions);
+        try {
+            final List<ConditionID> resolvedCancelConditions = cancelConditions.getValue(profile);
+            return !resolvedCancelConditions.isEmpty() && questTypeAPI.conditions(profile, resolvedCancelConditions);
+        } catch (final QuestException e) {
+            log.warn("Exception while checking cancel conditions: " + e.getMessage(), e);
+            return false;
+        }
     }
 
     private void executeAllEvents(@Nullable final Profile profile, final Deque<EventID> chosenList) {
@@ -153,7 +162,7 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) {
+    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) throws QuestException {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
             final EventID event = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {
@@ -196,9 +205,10 @@ public class FolderEvent implements NullableEvent {
         final Deque<EventID> chosenList = new LinkedList<>();
         // choose randomly which events should be fired
         final int randomInt = random == null ? 0 : random.getValue(profile).intValue();
-        if (randomInt > 0 && randomInt <= events.size()) {
+        final List<EventID> resolvedEvents = events.getValue(profile);
+        if (randomInt > 0 && randomInt <= resolvedEvents.size()) {
             // copy events into the modifiable ArrayList
-            final List<EventID> eventsList = new ArrayList<>(events);
+            final List<EventID> eventsList = new ArrayList<>(resolvedEvents);
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
@@ -206,7 +216,7 @@ public class FolderEvent implements NullableEvent {
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {
-            chosenList.addAll(events);
+            chosenList.addAll(resolvedEvents);
         }
         return chosenList;
     }

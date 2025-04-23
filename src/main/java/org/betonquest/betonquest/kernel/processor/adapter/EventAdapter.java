@@ -8,9 +8,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * Wrapper for player and playerless events.
@@ -35,7 +35,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     /**
      * Conditions that must be met to execute.
      */
-    private final List<ConditionID> conditions;
+    private final VariableList<ConditionID> conditions;
 
     /**
      * Create a new Wrapper for variables with instruction.
@@ -53,7 +53,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.instruction = instruction;
-        conditions = instruction.getList(instruction.getOptional("conditions"), value -> new ConditionID(instruction.getPackage(), value));
+        conditions = instruction.get(instruction.getOptional("conditions", ""), IDArgument.ofList(ConditionID::new));
     }
 
     /**
@@ -70,7 +70,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         log.debug(getPackage(), "Event will be fired for "
                 + (profile.getOnlineProfile().isPresent() ? "online" : "offline") + " profile.");
 
-        if (!questTypeAPI.conditions(profile, conditions)) {
+        if (!questTypeAPI.conditions(profile, conditions.getValue(profile))) {
             log.debug(getPackage(), "Event conditions were not met for " + profile);
             return false;
         }
@@ -85,7 +85,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
             return false;
         }
         log.debug(getPackage(), "Static event will be fired without a profile.");
-        if (!questTypeAPI.conditions(null, conditions)) {
+        if (!questTypeAPI.conditions(null, conditions.getValue(null))) {
             log.debug(getPackage(), "Event conditions were not met");
             return false;
         }

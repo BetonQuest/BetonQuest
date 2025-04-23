@@ -6,12 +6,13 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Factory to create delete effect events from {@link Instruction}s.
@@ -40,16 +41,18 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        List<PotionEffectType> effects = Collections.emptyList();
+        final VariableList<PotionEffectType> effects;
         if (!instruction.hasArgument("any") && instruction.size() > 1) {
-            effects = instruction.getList(type -> {
+            effects = instruction.get(Argument.ofList(type -> {
                 final PotionEffectType effect = PotionEffectType.getByName(type);
                 if (effect == null) {
                     throw new QuestException("Unknown effect type: " + type);
                 } else {
                     return effect;
                 }
-            });
+            }));
+        } else {
+            effects = new VariableList<>(Collections.emptyList());
         }
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new DeleteEffectEvent(effects),

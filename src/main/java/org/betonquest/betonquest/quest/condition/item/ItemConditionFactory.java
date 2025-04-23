@@ -9,10 +9,9 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
-
-import java.util.List;
 
 /**
  * Factory for {@link ItemCondition}s.
@@ -49,7 +48,7 @@ public class ItemConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final List<Item> items = instruction.getItemList();
+        final VariableList<Item> items = instruction.getItemList();
         final BetonQuestLogger log = loggerFactory.create(ItemCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new ItemCondition(items, dataStorage), log, instruction.getPackage()), data

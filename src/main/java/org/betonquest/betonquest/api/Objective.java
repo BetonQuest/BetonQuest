@@ -15,6 +15,8 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,12 +71,12 @@ public abstract class Objective {
     /**
      * Conditions to count progress.
      */
-    protected ConditionID[] conditions;
+    protected VariableList<ConditionID> conditions;
 
     /**
      * Events to fire on completion.
      */
-    protected EventID[] events;
+    protected VariableList<EventID> events;
 
     /**
      * If the objective should start again on completion.
@@ -118,8 +120,8 @@ public abstract class Objective {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
         persistent = instruction.hasArgument("persistent");
-        events = instruction.getIDList(instruction.getOptional("events"), EventID::new).toArray(new EventID[0]);
-        conditions = instruction.getIDList(instruction.getOptional("conditions"), ConditionID::new).toArray(new ConditionID[0]);
+        events = instruction.get(instruction.getOptional("events", ""), IDArgument.ofList(EventID::new));
+        conditions = instruction.get(instruction.getOptional("consitions", ""), IDArgument.ofList(ConditionID::new));
         final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
@@ -208,15 +210,20 @@ public abstract class Objective {
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         log.debug(instruction.getPackage(),
-                "Objective \"" + instruction.getID().getFullID() + "\" has been completed for "
+                "Objective '" + instruction.getID().getFullID() + "' has been completed for "
                         + profile + ", firing events.");
         // fire all events
-        for (final EventID event : events) {
-            BetonQuest.getInstance().getQuestTypeAPI().event(profile, event);
-        }
         log.debug(instruction.getPackage(),
-                "Firing events in objective \"" + instruction.getID().getFullID() + "\" for "
+                "Firing events in objective '" + instruction.getID().getFullID() + "' for "
                         + profile + " finished");
+        try {
+            for (final EventID event : events.getValue(profile)) {
+                BetonQuest.getInstance().getQuestTypeAPI().event(profile, event);
+            }
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID().getFullID()
+                    + "' for " + profile + ": " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -230,7 +237,14 @@ public abstract class Objective {
     public final boolean checkConditions(final Profile profile) {
         log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for " + profile);
-        return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions);
+        try {
+            return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions.getValue(profile));
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(),
+                    "Error while checking conditions in objective '" + instruction.getID().getFullID()
+                            + "' for " + profile + ": " + e.getMessage(), e);
+            return false;
+        }
     }
 
     /**

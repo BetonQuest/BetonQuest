@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
@@ -18,8 +19,6 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
@@ -70,7 +69,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Item boots = getItem(instruction, "b");
         final Item mainHand = getItem(instruction, "m");
         final Item offHand = getItem(instruction, "o");
-        final List<Item> drops = instruction.getItemList(instruction.getOptional("drops"));
+        final VariableList<Item> drops = instruction.getItemList(instruction.getOptional("drops"));
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

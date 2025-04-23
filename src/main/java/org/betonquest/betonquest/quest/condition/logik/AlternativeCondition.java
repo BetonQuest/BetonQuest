@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +29,7 @@ public class AlternativeCondition implements NullableCondition {
     /**
      * List of condition IDs.
      */
-    private final List<ConditionID> conditionIDs;
+    private final VariableList<ConditionID> conditionIDs;
 
     /**
      * The quest package.
@@ -42,7 +43,7 @@ public class AlternativeCondition implements NullableCondition {
      * @param conditionIDs the condition IDs
      * @param questPackage the quest package
      */
-    public AlternativeCondition(final BetonQuestLogger log, final List<ConditionID> conditionIDs, final QuestPackage questPackage) {
+    public AlternativeCondition(final BetonQuestLogger log, final VariableList<ConditionID> conditionIDs, final QuestPackage questPackage) {
         this.log = log;
         this.conditionIDs = conditionIDs;
         this.questPackage = questPackage;
@@ -52,14 +53,14 @@ public class AlternativeCondition implements NullableCondition {
     @SuppressWarnings("PMD.CognitiveComplexity")
     public boolean check(@Nullable final Profile profile) throws QuestException {
         if (Bukkit.isPrimaryThread()) {
-            for (final ConditionID id : conditionIDs) {
+            for (final ConditionID id : conditionIDs.getValue(profile)) {
                 if (BetonQuest.getInstance().getQuestTypeAPI().condition(profile, id)) {
                     return true;
                 }
             }
         } else {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID id : conditionIDs) {
+            for (final ConditionID id : conditionIDs.getValue(profile)) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
                         () -> BetonQuest.getInstance().getQuestTypeAPI().condition(profile, id));
                 conditions.add(future);

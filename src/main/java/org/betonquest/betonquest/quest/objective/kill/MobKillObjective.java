@@ -3,10 +3,12 @@ package org.betonquest.betonquest.quest.objective.kill;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -17,8 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 /**
  * Player has to kill specified amount of specified mobs. It can also require
  * the player to kill specifically named mobs and notify them about the required
@@ -26,9 +26,14 @@ import java.util.List;
  */
 public class MobKillObjective extends CountingObjective implements Listener {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The entity types that should be killed.
      */
-    private final List<EntityType> entities;
+    private final VariableList<EntityType> entities;
 
     /**
      * The optional name of the mob.
@@ -46,16 +51,18 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * Constructor for the MobKillObjective.
      *
      * @param instruction  the instruction that created this objective
+     * @param log          the logger for this objective
      * @param targetAmount the amount of mobs to kill
      * @param entities     the entity types that should be killed
      * @param name         the optional name of the mob
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final Instruction instruction, final VariableNumber targetAmount,
-                            final List<EntityType> entities, @Nullable final String name,
+    public MobKillObjective(final Instruction instruction, final BetonQuestLogger log, final VariableNumber targetAmount,
+                            final VariableList<EntityType> entities, @Nullable final String name,
                             @Nullable final VariableIdentifier marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
+        this.log = log;
         this.entities = entities;
         this.name = name;
         this.marked = marked;
@@ -70,11 +77,15 @@ public class MobKillObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
         final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
-        if (!containsPlayer(onlineProfile)
-                || !entities.contains(event.getEntity().getType())
-                || name != null && (event.getEntity().getCustomName() == null
-                || !event.getEntity().getCustomName().equals(name))) {
-            return;
+        try {
+            if (!containsPlayer(onlineProfile)
+                    || !entities.getValue(onlineProfile).contains(event.getEntity().getType())
+                    || name != null && (event.getEntity().getCustomName() == null
+                    || !event.getEntity().getCustomName().equals(name))) {
+                return;
+            }
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Failed to resolve entitys for kill objective: " + e.getMessage(), e);
         }
         if (marked != null) {
             try {

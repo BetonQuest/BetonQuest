@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,7 +25,7 @@ public class ItemCondition implements OnlineCondition {
     /**
      * The items to check for.
      */
-    private final List<Item> items;
+    private final VariableList<Item> items;
 
     /**
      * Create a new item condition.
@@ -32,7 +33,7 @@ public class ItemCondition implements OnlineCondition {
      * @param items       the items to check for
      * @param dataStorage the storage providing player data
      */
-    public ItemCondition(final List<Item> items, final PlayerDataStorage dataStorage) {
+    public ItemCondition(final VariableList<Item> items, final PlayerDataStorage dataStorage) {
         this.items = items;
         this.dataStorage = dataStorage;
     }
@@ -42,7 +43,7 @@ public class ItemCondition implements OnlineCondition {
         final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
         final List<ItemStack> backpackItems = dataStorage.get(profile).getBackpack();
 
-        for (final Item item : items) {
+        for (final Item item : items.getValue(profile)) {
             final QuestItem questItem = item.getItem();
             final long totalAmount = Stream.concat(
                             Stream.of(inventoryItems),

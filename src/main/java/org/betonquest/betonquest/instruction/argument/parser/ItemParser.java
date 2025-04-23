@@ -2,10 +2,9 @@ package org.betonquest.betonquest.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /**
  * Parses QuestItems and the Item wrapper.
@@ -38,7 +37,7 @@ public interface ItemParser extends IDParser {
      * @return the parsed IDs
      * @throws QuestException when there is no part left or item parsing fails
      */
-    default List<Item> getItemList() throws QuestException {
+    default VariableList<Item> getItemList() throws QuestException {
         return getItemList(next());
     }
 
@@ -49,5 +48,5 @@ public interface ItemParser extends IDParser {
      * @return the parsed Items or empty list if no string was provided
      * @throws QuestException when there is no part left or item parsing fails
      */
-    List<Item> getItemList(@Nullable String string) throws QuestException;
+    VariableList<Item> getItemList(@Nullable String string) throws QuestException;
 }

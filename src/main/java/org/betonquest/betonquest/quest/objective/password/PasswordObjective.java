@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +20,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -46,7 +46,7 @@ public class PasswordObjective extends Objective implements Listener {
     /**
      * Events to be triggered on failure.
      */
-    private final List<EventID> failEvents;
+    private final VariableList<EventID> failEvents;
 
     /**
      * Constructor for the PasswordObjective.
@@ -58,7 +58,8 @@ public class PasswordObjective extends Objective implements Listener {
      * @param failEvents     the events to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
-    public PasswordObjective(final Instruction instruction, final BetonQuestLogger log, final Pattern regex, @Nullable final String passwordPrefix, final List<EventID> failEvents) throws QuestException {
+    public PasswordObjective(final Instruction instruction, final BetonQuestLogger log, final Pattern regex,
+                             @Nullable final String passwordPrefix, final VariableList<EventID> failEvents) throws QuestException {
         super(instruction);
         this.log = log;
         this.regex = regex;
@@ -114,8 +115,12 @@ public class PasswordObjective extends Objective implements Listener {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
                 return !fromCommand || !prefix.isEmpty();
             } else {
-                for (final EventID event : failEvents) {
-                    BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                try {
+                    for (final EventID event : failEvents.getValue(onlineProfile)) {
+                        BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                    }
+                } catch (final QuestException e) {
+                    log.warn(instruction.getPackage(), "Failed to resolve events for password objective: " + e.getMessage(), e);
                 }
             }
         }
