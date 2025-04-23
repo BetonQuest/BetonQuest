@@ -6,8 +6,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.util.BlockSelector;
+import org.bukkit.Location;
 
 /**
  * Factory for creating {@link StepObjective} instances from {@link Instruction}s.
@@ -29,7 +31,7 @@ public class StepObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final BlockSelector selector = new BlockSelector(".*_PRESSURE_PLATE");
         final BetonQuestLogger log = loggerFactory.create(StepObjective.class);
         return new StepObjective(instruction, log, loc, selector);

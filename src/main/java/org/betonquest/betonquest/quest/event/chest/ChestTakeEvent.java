@@ -3,9 +3,10 @@ package org.betonquest.betonquest.quest.event.chest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +27,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
      * @param variableLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final VariableLocation variableLocation, final VariableList<Item> items) {
+    public ChestTakeEvent(final Variable<Location> variableLocation, final VariableList<Item> items) {
         super(variableLocation);
         this.items = items;
     }

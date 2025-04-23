@@ -7,11 +7,13 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
+import org.bukkit.Location;
 
 /**
  * Factory to create test for block conditions from {@link Instruction}s.
@@ -42,7 +44,7 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final VariableBlockSelector selector = instruction.get(VariableBlockSelector::new);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));

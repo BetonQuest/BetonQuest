@@ -7,14 +7,16 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.util.Utils;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 import java.util.EnumMap;
@@ -52,7 +54,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Map<EntityType, VariableNumber> entityAmounts = getEntityAmounts(instruction);
-        final VariableLocation location = instruction.get(VariableLocation::new);
+        final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         final VariableNumber range = instruction.get(VariableNumber::new);
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(

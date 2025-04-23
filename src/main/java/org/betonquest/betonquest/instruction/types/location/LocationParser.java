@@ -1,22 +1,20 @@
-package org.betonquest.betonquest.instruction.variable.location;
+package org.betonquest.betonquest.instruction.types.location;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
-import static org.betonquest.betonquest.instruction.variable.location.VariableVector.REGEX_DATA;
+import static org.betonquest.betonquest.instruction.types.location.VectorParser.REGEX_DATA;
 
 /**
- * Represents a location that can contain variables.
+ * Parses a string to a location.
  */
-public class VariableLocation extends Variable<Location> {
+public class LocationParser implements Argument<Location> {
 
     /**
      * This regex matches the format of a location.
@@ -30,44 +28,46 @@ public class VariableLocation extends Variable<Location> {
     private static final Pattern PATTERN_LOCATION = Pattern.compile("^" + REGEX_LOCATION + "$");
 
     /**
-     * Resolves a string that may contain variables to a variable of the given type.
-     *
-     * @param variableProcessor the processor to create the variables
-     * @param pack              the package in which the variable is used in
-     * @param input             the string that may contain variables
-     * @throws QuestException if the variables could not be created or resolved to the given type
+     * The server to use.
      */
-    public VariableLocation(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input)
-            throws QuestException {
-        super(variableProcessor, pack, input, VariableLocation::parse);
+    private final Server server;
+
+    /**
+     * Creates a new parser for locations.
+     *
+     * @param server the server to use
+     */
+    public LocationParser(final Server server) {
+        this.server = server;
     }
 
     /**
      * Parses the given value to a location.
      *
-     * @param value the value to parse
+     * @param value  the value to parse
+     * @param server the server to use
      * @return the parsed location
      * @throws QuestException if the value could not be parsed
      */
-    public static Location parse(final String value) throws QuestException {
+    public static Location parse(final String value, final Server server) throws QuestException {
         final int index = value.indexOf("->");
         if (index == -1) {
-            return parseLocation(value);
+            return parseLocation(value, server);
         }
 
-        final Vector vector = VariableVector.parse(value.substring(index + 2));
-        return parseLocation(value.substring(0, index)).add(vector);
+        final Vector vector = VectorParser.parse(value.substring(index + 2));
+        return parseLocation(value.substring(0, index), server).add(vector);
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private static Location parseLocation(final String loc) throws QuestException {
+    private static Location parseLocation(final String loc, final Server server) throws QuestException {
         if (!PATTERN_LOCATION.matcher(loc).find()) {
             throw new QuestException("Incorrect location format '" + loc
                     + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
         }
         final String[] parts = loc.split(";");
 
-        final World world = VariableWorld.parse(parts[3]);
+        final World world = WorldParser.parse(parts[3], server);
         final double locX;
         final double locY;
         final double locZ;
@@ -85,5 +85,10 @@ public class VariableLocation extends Variable<Location> {
             throw new QuestException("Could not parse a number in the location. " + e.getMessage(), e);
         }
         return new Location(world, locX, locY, locZ, yaw, pitch);
+    }
+
+    @Override
+    public Location apply(final String string) throws QuestException {
+        return parse(string, server);
     }
 }

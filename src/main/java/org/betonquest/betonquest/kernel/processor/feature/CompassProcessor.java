@@ -9,12 +9,14 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.types.location.LocationParser;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -68,7 +70,8 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
         if (location == null) {
             throw new QuestException("Location not defined");
         }
-        final VariableLocation loc = new VariableLocation(variableProcessor, pack, GlobalVariableResolver.resolve(pack, location));
+        final String rawLoc = GlobalVariableResolver.resolve(pack, location);
+        final Variable<Location> loc = new Variable<>(variableProcessor, pack, rawLoc, LocationParser.LOCATION);
         final String itemName = section.getString("item");
         final ItemID itemID = itemName == null ? null : new ItemID(pack, itemName);
         return new QuestCompass(names, loc, itemID);

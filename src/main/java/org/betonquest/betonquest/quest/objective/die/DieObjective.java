@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -43,7 +43,7 @@ public class DieObjective extends Objective implements Listener {
      * Location where the player should respawn.
      */
     @Nullable
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * Constructor for the DieObjective.
@@ -54,7 +54,7 @@ public class DieObjective extends Objective implements Listener {
      * @param location    the location where the player should respawn
      * @throws QuestException if there is an error in the instruction
      */
-    public DieObjective(final Instruction instruction, final BetonQuestLogger log, final boolean cancel, @Nullable final VariableLocation location) throws QuestException {
+    public DieObjective(final Instruction instruction, final BetonQuestLogger log, final boolean cancel, @Nullable final Variable<Location> location) throws QuestException {
         super(instruction);
         this.log = log;
         this.cancel = cancel;

@@ -2,8 +2,12 @@ package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.types.location.LocationParser;
+import org.betonquest.betonquest.instruction.types.location.VectorParser;
+import org.betonquest.betonquest.instruction.types.location.WorldParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
@@ -14,6 +18,22 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface Argument<T> extends QuestFunction<String, T> {
+
+    /**
+     * The default instance of {@link VectorParser}.
+     */
+    VectorParser VECTOR = new VectorParser();
+
+    /**
+     * The default instance of {@link WorldParser}.
+     */
+    WorldParser WORLD = new WorldParser(Bukkit.getServer());
+
+    /**
+     * The default instance of {@link LocationParser}.
+     */
+    LocationParser LOCATION = new LocationParser(Bukkit.getServer());
+
     /**
      * Gets a list of {@link T}s from string.
      *

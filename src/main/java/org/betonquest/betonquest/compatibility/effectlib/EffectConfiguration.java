@@ -2,7 +2,8 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Set;
  * @param settings               the whole configuration settings
  * @param conditionCheckInterval the interval when the conditions should be checked
  */
-public record EffectConfiguration(String effectClass, List<VariableLocation> locations, Set<NpcID> npcs,
+public record EffectConfiguration(String effectClass, List<Variable<Location>> locations, Set<NpcID> npcs,
                                   List<ConditionID> conditions, ConfigurationSection settings,
                                   Integer conditionCheckInterval) {
 }

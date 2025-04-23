@@ -7,11 +7,13 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.bukkit.Location;
 
 /**
  * Factory for creating {@link BlockObjective} instances from {@link Instruction}s.
@@ -45,8 +47,8 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final VariableNumber targetAmount = instruction.get(VariableNumber::new);
         final boolean noSafety = instruction.hasArgument("noSafety");
-        final VariableLocation location = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
-        final VariableLocation region = instruction.get(instruction.getOptional("region"), VariableLocation::new);
+        final Variable<Location> location = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
+        final Variable<Location> region = instruction.getVariable(instruction.getOptional("region"), Argument.LOCATION);
         final boolean ignoreCancel = instruction.hasArgument("ignorecancel");
         final BetonQuestLogger log = loggerFactory.create(BlockObjective.class);
         final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),

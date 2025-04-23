@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
-import org.betonquest.betonquest.instruction.variable.location.VariableVector;
+import org.betonquest.betonquest.instruction.types.location.LocationParser;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -50,14 +50,14 @@ class NotifySound {
             return;
         }
 
-        final VariableLocation variableLocation = getVariableLocation(data);
+        final Variable<Location> variableLocation = getVariableLocation(data);
         final SoundCategory soundCategory = getSoundCategory(data);
         final float volume = notify.getFloatData(KEY_SOUND_VOLUME, 1);
         final float pitch = notify.getFloatData(KEY_SOUND_PITCH, 1);
 
         final String playerOffsetString = data.get(KEY_SOUND_PLAYER_OFFSET);
         Float playerOffsetDistance = null;
-        VariableVector playerOffset = null;
+        Variable<Vector> playerOffset = null;
         try {
             playerOffsetDistance = getPlayerOffsetDistance(playerOffsetString);
         } catch (final QuestException e) {
@@ -76,7 +76,7 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, variableLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private QuestConsumer<OnlineProfile> getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private QuestConsumer<OnlineProfile> getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final Variable<Location> variableLocation, @Nullable final Variable<Vector> playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, variableLocation, playerOffset, playerOffsetDistance);
             final Player player = onlineProfile.getPlayer();
@@ -88,7 +88,7 @@ class NotifySound {
         };
     }
 
-    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final VariableLocation variableLocation, @Nullable final VariableVector playerOffset, @Nullable final Float playerOffsetDistance) throws QuestException {
+    private Location getLocation(final OnlineProfile onlineProfile, @Nullable final Variable<Location> variableLocation, @Nullable final Variable<Vector> playerOffset, @Nullable final Float playerOffsetDistance) throws QuestException {
         final Location location = variableLocation == null ? onlineProfile.getPlayer().getLocation() : variableLocation.getValue(onlineProfile);
 
         if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(location) > playerOffsetDistance) {
@@ -107,7 +107,7 @@ class NotifySound {
         return player.getLocation().add(directionVector);
     }
 
-    private Location getLocationRelativeVector(final Location location, final Player player, final Profile profile, final VariableVector playerOffset) throws QuestException {
+    private Location getLocationRelativeVector(final Location location, final Player player, final Profile profile, final Variable<Vector> playerOffset) throws QuestException {
         final Vector relative = playerOffset.getValue(profile);
         final Location playerLoc = player.getLocation();
 
@@ -131,9 +131,9 @@ class NotifySound {
     }
 
     @Nullable
-    private VariableLocation getVariableLocation(final Map<String, String> data) throws QuestException {
+    private Variable<Location> getVariableLocation(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, locationString);
+        return locationString == null ? null : new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, locationString, LocationParser.LOCATION);
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws QuestException {
@@ -146,10 +146,10 @@ class NotifySound {
     }
 
     @Nullable
-    private VariableVector getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
+    private Variable<Vector> getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
         if (playerOffsetString != null) {
             try {
-                return new VariableVector(BetonQuest.getInstance().getVariableProcessor(), pack, playerOffsetString);
+                return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, playerOffsetString, LocationParser.VECTOR);
             } catch (final QuestException e) {
                 throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
             }

@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.quest.event.drop;
 
-import org.betonquest.betonquest.api.common.function.Selector;
-import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -12,16 +10,13 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.Optional;
 
 /**
  * Factory to create {@link DropEvent}s for items from {@link Instruction}s.
@@ -68,21 +63,12 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
         final VariableList<Item> items = parseItemList(instruction);
-        final Selector<Location> location = parseLocationSelector(instruction);
+        final Variable<Location> location = instruction.getVariable(instruction.getOptional("location", "%location%"), Argument.LOCATION);
         return new NullableEventAdapter(new DropEvent(items, location));
     }
 
     @SuppressWarnings("NullAway")
     private VariableList<Item> parseItemList(final Instruction instruction) throws QuestException {
         return instruction.get(instruction.getOptional("items", ""), Argument.ofList(instruction::getItem, VariableList.notEmptyChecker()));
-    }
-
-    private Selector<Location> parseLocationSelector(final Instruction instruction) throws QuestException {
-        final Optional<String> location = instruction.getOptionalArgument("location");
-        if (location.isPresent()) {
-            return instruction.get(location.get(), VariableLocation::new)::getValue;
-        } else {
-            return Selectors.fromPlayer(Player::getLocation);
-        }
     }
 }

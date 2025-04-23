@@ -7,13 +7,15 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
+import org.bukkit.World;
 
 /**
  * Factory to create moon cycle conditions from {@link Instruction}s.
@@ -44,7 +46,8 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableNumber moonCycle = instruction.get(VariableNumber::new);
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"),
+                Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
     }
@@ -56,7 +59,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
             return new ThrowExceptionPlayerlessCondition();
         }
         final VariableNumber moonCycle = instruction.get(VariableNumber::new);
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
     }

@@ -6,9 +6,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
 
 /**
@@ -44,7 +46,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
             selector = instruction.get(instruction.current(), VariableBlockSelector::new);
         }
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final VariableLocation loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
         final VariableNumber range = instruction.get(instruction.getOptional("range", "0"), VariableNumber::new);
         final boolean cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getOptional("hand");

@@ -18,6 +18,7 @@ import org.betonquest.betonquest.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Contract;
@@ -211,6 +212,16 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
             return null;
         }
         return argument.convert(BetonQuest.getInstance().getVariableProcessor(), pack, string);
+    }
+
+    @Override
+    @Contract("!null, _ -> !null")
+    @Nullable
+    public <T> Variable<T> getVariable(@Nullable final String string, final Argument<T> argument) throws QuestException {
+        if (string == null) {
+            return null;
+        }
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, argument);
     }
 
     @Override

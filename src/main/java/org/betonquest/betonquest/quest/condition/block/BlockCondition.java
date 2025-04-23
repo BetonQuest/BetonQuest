@@ -3,9 +3,10 @@ package org.betonquest.betonquest.quest.condition.block;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +17,7 @@ public class BlockCondition implements NullableCondition {
     /**
      * Location to test for the block.
      */
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * Selector to validate the block.
@@ -35,7 +36,7 @@ public class BlockCondition implements NullableCondition {
      * @param selector   the selector to validate the block
      * @param exactMatch if the selector match has to be exact
      */
-    public BlockCondition(final VariableLocation loc, final VariableBlockSelector selector, final boolean exactMatch) {
+    public BlockCondition(final Variable<Location> loc, final VariableBlockSelector selector, final boolean exactMatch) {
         this.loc = loc;
         this.selector = selector;
         this.exactMatch = exactMatch;

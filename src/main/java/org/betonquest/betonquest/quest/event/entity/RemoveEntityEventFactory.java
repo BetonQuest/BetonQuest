@@ -8,15 +8,16 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -50,7 +51,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
         final VariableList<EntityType> types = instruction.get(Argument.ofList(value -> instruction.getEnum(value, EntityType.class)));
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final VariableNumber range = instruction.get(VariableNumber::new);
         final boolean kill = instruction.hasArgument("kill");
         final String nameString = instruction.getOptional("name");

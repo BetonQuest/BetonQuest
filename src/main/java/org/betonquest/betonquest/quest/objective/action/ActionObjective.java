@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -59,7 +59,7 @@ public class ActionObjective extends Objective implements Listener {
      * The location where the player has to click.
      */
     @Nullable
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * The range of the location.
@@ -93,7 +93,7 @@ public class ActionObjective extends Objective implements Listener {
      */
     public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action,
                            @Nullable final VariableBlockSelector selector, final boolean exactMatch,
-                           @Nullable final VariableLocation loc, final VariableNumber range, final boolean cancel,
+                           @Nullable final Variable<Location> loc, final VariableNumber range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
         this.log = log;

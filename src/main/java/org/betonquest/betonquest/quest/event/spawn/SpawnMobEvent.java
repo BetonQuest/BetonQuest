@@ -4,10 +4,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -23,7 +23,7 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * The location to spawn the mob at.
      */
-    private final VariableLocation variableLocation;
+    private final Variable<Location> variableLocation;
 
     /**
      * The type of mob to spawn.
@@ -63,7 +63,7 @@ public class SpawnMobEvent implements NullableEvent {
      * @param marked           the marked variable
      * @throws QuestException if the entity type is not a mob
      */
-    public SpawnMobEvent(final VariableLocation variableLocation, final EntityType type, final Equipment equipment,
+    public SpawnMobEvent(final Variable<Location> variableLocation, final EntityType type, final Equipment equipment,
                          final VariableNumber amount, @Nullable final VariableString name, @Nullable final VariableIdentifier marked) throws QuestException {
         if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
             throw new QuestException("The entity type must be a mob");

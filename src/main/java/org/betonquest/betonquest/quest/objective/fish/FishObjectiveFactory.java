@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.bukkit.Location;
 
 /**
  * Factory for creating {@link FishObjective} instances from {@link Instruction}s.
@@ -38,7 +40,7 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final String loc = instruction.getOptional("hookLocation");
         final String range = instruction.getOptional("range");
         final boolean hookIsNotNull = loc != null && range != null;
-        final VariableLocation hookTargetLocation = hookIsNotNull ? instruction.get(loc, VariableLocation::new) : null;
+        final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.getVariable(loc, Argument.LOCATION) : null;
         final VariableNumber rangeVar = hookIsNotNull ? instruction.get(range, VariableNumber::new) : null;
         final BetonQuestLogger log = loggerFactory.create(FishObjective.class);
         return new FishObjective(instruction, targetAmount, log, item, hookTargetLocation, rangeVar);

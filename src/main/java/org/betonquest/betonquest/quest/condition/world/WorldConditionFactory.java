@@ -7,10 +7,12 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
+import org.bukkit.World;
 
 /**
  * Factory to create world conditions from {@link Instruction}s.
@@ -47,7 +49,7 @@ public class WorldConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.next());
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.next(), Argument.WORLD);
         final BetonQuestLogger logger = loggerFactory.create(WorldCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new WorldCondition(world), logger, instruction.getPackage()), data);

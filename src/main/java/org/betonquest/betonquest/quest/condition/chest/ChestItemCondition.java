@@ -4,8 +4,9 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +27,7 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Location of the chest.
      */
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * Constructor of the ChestItemCondition.
@@ -34,7 +35,7 @@ public class ChestItemCondition implements NullableCondition {
      * @param items items that should be in the chest
      * @param loc   location of the chest
      */
-    public ChestItemCondition(final VariableLocation loc, final VariableList<Item> items) {
+    public ChestItemCondition(final Variable<Location> loc, final VariableList<Item> items) {
         this.items = items;
         this.loc = loc;
     }

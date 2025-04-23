@@ -17,10 +17,11 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -242,7 +243,7 @@ public class QuestCanceler {
      * @param points     the points to remove
      * @param journal    the journal entries to remove
      */
-    public record CancelData(@Nullable ConditionID[] conditions, @Nullable VariableLocation location,
+    public record CancelData(@Nullable ConditionID[] conditions, @Nullable Variable<Location> location,
                              @Nullable EventID[] events, @Nullable ObjectiveID[] objectives, @Nullable String[] tags,
                              @Nullable String[] points, @Nullable JournalEntryID[] journal) {
     }

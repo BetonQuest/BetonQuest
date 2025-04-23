@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.condition.looking;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class LookingAtCondition implements OnlineCondition {
      * The location to check.
      */
     @Nullable
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * The block selector.
@@ -37,7 +37,7 @@ public class LookingAtCondition implements OnlineCondition {
      *
      * @param loc the location to check
      */
-    public LookingAtCondition(final VariableLocation loc) {
+    public LookingAtCondition(final Variable<Location> loc) {
         this.loc = loc;
         this.selector = null;
         this.exactMatch = false;

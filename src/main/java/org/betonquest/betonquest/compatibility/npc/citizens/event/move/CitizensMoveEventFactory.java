@@ -7,13 +7,12 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-
-import java.util.List;
+import org.bukkit.Location;
 
 /**
  * Factory for {@link CitizensMoveEvent} from the {@link Instruction}.
@@ -56,10 +55,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
         if (!"citizens".equals(npcInstruction.getPart(0))) {
             throw new QuestException("Cannot use non-Citizens NPC ID!");
         }
-        final List<VariableLocation> locations = instruction.getList(VariableLocation::new);
-        if (locations.isEmpty()) {
-            throw new QuestException("Not enough arguments");
-        }
+        final VariableList<Location> locations = instruction.get(Argument.ofList(Argument.LOCATION, VariableList.notEmptyChecker()));
         final int waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
         final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), IDArgument.ofList(EventID::new));
         final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), IDArgument.ofList(EventID::new));
