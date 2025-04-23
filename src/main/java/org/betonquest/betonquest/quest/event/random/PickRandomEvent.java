@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class PickRandomEvent implements NullableEvent {
     /**
      * The events with there chance.
      */
-    private final List<RandomEvent> events;
+    private final VariableList<RandomEvent> events;
 
     /**
      * The amount of events to fire.
@@ -38,7 +38,7 @@ public class PickRandomEvent implements NullableEvent {
      * @param amount       the amount of events to fire
      * @param questTypeAPI the Quest Type API
      */
-    public PickRandomEvent(final List<RandomEvent> events, @Nullable final VariableNumber amount, final QuestTypeAPI questTypeAPI) {
+    public PickRandomEvent(final VariableList<RandomEvent> events, @Nullable final VariableNumber amount, final QuestTypeAPI questTypeAPI) {
         this.events = events;
         this.amount = amount;
         this.questTypeAPI = questTypeAPI;
@@ -46,19 +46,16 @@ public class PickRandomEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final List<ResolvedRandomEvent> resolvedEvents = new LinkedList<>();
-        for (final RandomEvent randomEvent : events) {
-            resolvedEvents.add(randomEvent.resolveFor(profile));
-        }
-        double total = resolvedEvents.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
+        final List<RandomEvent> resolvedEvents = events.getValue(profile);
+        double total = resolvedEvents.stream().mapToDouble(RandomEvent::chance).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getValue(profile).intValue();
         while (pick > 0 && !resolvedEvents.isEmpty()) {
             pick--;
             double random = Math.random() * total;
-            final Iterator<ResolvedRandomEvent> iterator = resolvedEvents.iterator();
+            final Iterator<RandomEvent> iterator = resolvedEvents.iterator();
             while (iterator.hasNext()) {
-                final ResolvedRandomEvent event = iterator.next();
+                final RandomEvent event = iterator.next();
                 random -= event.chance();
                 if (random < 0) {
                     questTypeAPI.event(profile, event.eventID());

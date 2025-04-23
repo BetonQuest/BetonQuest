@@ -34,6 +34,15 @@ public class Variable<T> {
     private final ValueResolver<T> value;
 
     /**
+     * Creates a constant variable.
+     *
+     * @param value the value of the variable
+     */
+    public Variable(final T value) {
+        this.value = profile -> value;
+    }
+
+    /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
      * @param variableProcessor the processor to create the variables

@@ -16,6 +16,14 @@ import java.util.List;
  * @param <T> the variable type
  */
 public class VariableList<T> extends Variable<List<T>> {
+    /**
+     * Creates a new VariableList.
+     *
+     * @param value the list of values
+     */
+    public VariableList(final List<T> value) {
+        super(value);
+    }
 
     /**
      * Resolves a string that may contain variables to a variable of the given type.
@@ -29,11 +37,30 @@ public class VariableList<T> extends Variable<List<T>> {
      */
     public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
                         final QuestFunction<String, T> resolver) throws QuestException {
+        this(variableProcessor, pack, input, resolver, (value) -> {
+        });
+
+    }
+
+    /**
+     * Resolves a string that may contain variables to a variable of the given type.
+     * Any constant part will be validated in construction.
+     *
+     * @param variableProcessor the processor to create the variables
+     * @param pack              the package in which the variable is used in
+     * @param input             the string that may contain variables
+     * @param resolver          the resolver to convert the resolved variable to the given type
+     * @param valueChecker      the checker to verify valid lists
+     * @throws QuestException if the variables could not be created or resolved to the given type
+     */
+    public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
+                        final QuestFunction<String, T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
         this(variableProcessor, pack, input, new MarkedResolver<>(value -> {
             final List<T> list = new ArrayList<>();
             for (final String part : StringUtils.split(value, ',')) {
                 list.add(resolver.apply(part));
             }
+            valueChecker.check(list);
             return list;
         }));
     }
@@ -75,5 +102,19 @@ public class VariableList<T> extends Variable<List<T>> {
             called = true;
             return resolver.apply(arg);
         }
+    }
+
+    /**
+     * {@link Variable.ValueChecker} for Lists that must not be empty.
+     *
+     * @param <T> the type of the list
+     * @return the value checker
+     */
+    public static <T> ValueChecker<List<T>> notEmptyChecker() {
+        return (value) -> {
+            if (value.isEmpty()) {
+                throw new QuestException("List must not be empty");
+            }
+        };
     }
 }
