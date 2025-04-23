@@ -12,11 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Fires randomly events by chance and amount.
+ * Fires randomly events by weight and amount.
  */
 public class PickRandomEvent implements NullableEvent {
     /**
-     * The events with there chance.
+     * The events with there weight.
      */
     private final VariableList<RandomEvent> events;
 
@@ -34,7 +34,7 @@ public class PickRandomEvent implements NullableEvent {
     /**
      * Creates a new PickRandomEvent.
      *
-     * @param events       the events with there chance
+     * @param events       the events with there weight
      * @param amount       the amount of events to fire
      * @param questTypeAPI the Quest Type API
      */
@@ -47,7 +47,7 @@ public class PickRandomEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final List<RandomEvent> resolvedEvents = events.getValue(profile);
-        double total = resolvedEvents.stream().mapToDouble(RandomEvent::chance).sum();
+        double total = resolvedEvents.stream().mapToDouble(RandomEvent::weight).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getValue(profile).intValue();
         while (pick > 0 && !resolvedEvents.isEmpty()) {
@@ -56,11 +56,11 @@ public class PickRandomEvent implements NullableEvent {
             final Iterator<RandomEvent> iterator = resolvedEvents.iterator();
             while (iterator.hasNext()) {
                 final RandomEvent event = iterator.next();
-                random -= event.chance();
+                random -= event.weight();
                 if (random < 0) {
                     questTypeAPI.event(profile, event.eventID());
                     iterator.remove();
-                    total -= event.chance();
+                    total -= event.weight();
                     break;
                 }
             }

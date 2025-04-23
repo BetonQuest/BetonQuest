@@ -312,7 +312,7 @@ notifications:
     
     -------------
 
-    So allow a list of events also containing variables in any form, it is not possible anymore to use the percentage,
+    To allow a list of events also containing variables in any form, it is not possible anymore to use the percentage,
     instead the tilde `~` is used to separate the chance from the event.
     
     <div class="grid" markdown>

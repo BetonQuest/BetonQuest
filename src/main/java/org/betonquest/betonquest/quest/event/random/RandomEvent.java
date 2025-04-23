@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.event.random;
 import org.betonquest.betonquest.id.EventID;
 
 /**
- * Represents an event with its chance.
+ * Represents an event with its weight.
  *
  * @param eventID the event to be executed
- * @param chance  the chance of the event
+ * @param weight  the weight of the event
  */
-public record RandomEvent(EventID eventID, Double chance) {
+public record RandomEvent(EventID eventID, double weight) {
 }

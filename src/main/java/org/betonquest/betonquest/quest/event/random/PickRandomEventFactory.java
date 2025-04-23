@@ -23,7 +23,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     /**
      * The character used to separate the percentage and event in the instruction.
      */
-    private static final Pattern PERCENTAGE_EVENT = Pattern.compile("(?<percentage>\\d+\\.?\\d?)~(?<event>.+)");
+    private static final Pattern EVENT_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<event>.+)");
 
     /**
      * Quest Type API.
@@ -52,16 +52,21 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     @SuppressWarnings("PMD.CognitiveComplexity")
     private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
         final VariableList<RandomEvent> events = instruction.get(Argument.ofList(string -> {
-            final Matcher matcher = PERCENTAGE_EVENT.matcher(string);
+            final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {
-                throw new QuestException("Percentage must be specified correctly: " + string);
+                throw new QuestException("Weight must be specified correctly: " + string);
             }
 
-            final String percentageString = matcher.group("percentage");
+            final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final Double percentage = Double.parseDouble(percentageString);
+            final double weight;
+            try {
+                weight = Double.parseDouble(weightString);
+            } catch (final NumberFormatException e) {
+                throw new QuestException("Weight must be a number: " + weightString, e);
+            }
             final EventID eventID = new EventID(instruction.getPackage(), eventString);
-            return new RandomEvent(eventID, percentage);
+            return new RandomEvent(eventID, weight);
         }));
         final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
