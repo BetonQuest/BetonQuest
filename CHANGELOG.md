@@ -52,6 +52,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - events - `condition` is now `conditions`
     - menus - `condition` is now `conditions`
     - conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `events`, `pointers` and `extends`
+- `pickrandom` event now use tilde instead of percentage
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

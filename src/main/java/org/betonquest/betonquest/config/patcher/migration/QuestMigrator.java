@@ -14,6 +14,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddS
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.ListNamesRenameToPlural;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.PickRandomPercentage;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -103,6 +104,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 2), new NpcRename());
         migrations.put(questVersion("3.0.0", 3), new AddSimpleTypeToQuestItem());
         migrations.put(questVersion("3.0.0", 4), new ListNamesRenameToPlural());
+        migrations.put(questVersion("3.0.0", 5), new PickRandomPercentage());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

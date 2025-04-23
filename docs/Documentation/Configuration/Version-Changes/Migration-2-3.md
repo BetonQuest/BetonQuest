@@ -27,7 +27,8 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
 - [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
 - [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :gear:
-- [3.0.0-DEV-231 - Singular to Plural](#300-dev-231-singular-to-plural) :gear:
+- [3.0.0-DEV-232 - Singular to Plural](#300-dev-231-singular-to-plural) :gear:
+- [3.0.0-DEV-233 - `pickrandom` event](#300-dev-232-pickrandom-event) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -272,7 +273,7 @@ notifications:
 
     </div>
 
-### 3.0.0-DEV-231 - Singular to Plural :gear:
+### 3.0.0-DEV-232 - Singular to Plural :gear:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -300,6 +301,30 @@ notifications:
     ```YAML title="New Syntax"
     items:
       action: action LEFT ANY global persistent events:notify conditions:sneak
+    ```
+
+    </div>
+
+### 3.0.0-DEV-233 - `pickrandom` event :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    To allow a list of events also containing variables in any form, it is not possible anymore to use the percentage,
+    instead the tilde `~` is used to separate the chance from the event.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    events:
+      pickRandom: pickrandom 1%pickRandom1,2%pickRandom2,3%pickRandom3
+    ```
+    
+    ```YAML title="New Syntax"
+    events:
+      pickRandom: pickrandom 1~pickRandom1,2~pickRandom2,3~pickRandom3
     ```
 
     </div>

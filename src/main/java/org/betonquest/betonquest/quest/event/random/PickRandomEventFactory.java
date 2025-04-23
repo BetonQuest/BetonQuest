@@ -9,28 +9,21 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
  */
 public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
-     * The percentage character.
+     * The character used to separate the percentage and event in the instruction.
      */
-    private static final char PERCENTAGE = '%';
-
-    /**
-     * The number of minimum percentages.
-     */
-    private static final int NUMBER_OF_MINIMUM_PERCENTAGES = 1;
-
-    /**
-     * The number of maximum percentages.
-     */
-    private static final int NUMBER_OF_MAXIMUM_PERCENTAGES = 3;
+    private static final Pattern EVENT_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<event>.+)");
 
     /**
      * Quest Type API.
@@ -58,42 +51,23 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
-        final List<RandomEvent> events = instruction.getList(string -> {
-            if (!string.matches("(\\d+\\.?\\d?|%.*%)%.+")) {
-                throw new QuestException("Percentage must be specified correctly: " + string);
+        final VariableList<RandomEvent> events = instruction.get(Argument.ofList(string -> {
+            final Matcher matcher = EVENT_WEIGHT.matcher(string);
+            if (!matcher.matches()) {
+                throw new QuestException("Weight must be specified correctly: " + string);
             }
 
-            int index = 0;
-            int count = 0;
-            while (index < string.length()) {
-                if (string.charAt(index) == PERCENTAGE) {
-                    count++;
-                }
-                index++;
+            final String weightString = matcher.group("weight");
+            final String eventString = matcher.group("event");
+            final double weight;
+            try {
+                weight = Double.parseDouble(weightString);
+            } catch (final NumberFormatException e) {
+                throw new QuestException("Weight must be a number: " + weightString, e);
             }
-
-            final String[] parts = string.split(String.valueOf(PERCENTAGE));
-            final EventID eventID;
-
-            if (NUMBER_OF_MINIMUM_PERCENTAGES == count) {
-                try {
-                    eventID = new EventID(instruction.getPackage(), parts[1]);
-                } catch (final QuestException e) {
-                    throw new QuestException("Error while loading event: " + e.getMessage(), e);
-                }
-                final VariableNumber chance = instruction.get(parts[0], VariableNumber::new);
-                return new RandomEvent(eventID, chance);
-            } else if (NUMBER_OF_MAXIMUM_PERCENTAGES == count) {
-                try {
-                    eventID = new EventID(instruction.getPackage(), parts[3]);
-                } catch (final QuestException e) {
-                    throw new QuestException("Error while loading event: " + e.getMessage(), e);
-                }
-                final VariableNumber chance = instruction.get("%" + parts[1] + "%", VariableNumber::new);
-                return new RandomEvent(eventID, chance);
-            }
-            throw new QuestException("Error while loading event: '" + instruction.getID(EventID::new).getFullID() + "'. Wrong number of % detected. Check your event.");
-        });
+            final EventID eventID = new EventID(instruction.getPackage(), eventString);
+            return new RandomEvent(eventID, weight);
+        }));
         final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
     }
