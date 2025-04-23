@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
@@ -61,11 +60,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final QuestTypeAPI questTypeAPI;
 
     /**
-     * Feature API.
-     */
-    private final FeatureAPI featureAPI;
-
-    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -74,11 +68,6 @@ public class Menu extends SimpleYMLSection implements Listener {
      * The internal id of the menu.
      */
     private final MenuID menuID;
-
-    /**
-     * The language provider to get the default language.
-     */
-    private final LanguageProvider languageProvider;
 
     /**
      * The height of the menu in slots.
@@ -135,31 +124,28 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Creates a new Menu.
      *
-     * @param log              the custom logger for this class
-     * @param loggerFactory    the logger factory for new class specific custom logger
-     * @param rpgMenu          the rpg menu instance to open menus
-     * @param config           the configuration file of the plugin
-     * @param pluginMessage    the plugin message instance
-     * @param questTypeAPI     the Quest Type API
-     * @param featureAPI       the Feature API
-     * @param profileProvider  the profile provider instance
-     * @param menuID           the id of the menu
-     * @param languageProvider the language provider to get the default language
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory for new class specific custom logger
+     * @param rpgMenu         the rpg menu instance to open menus
+     * @param config          the configuration file of the plugin
+     * @param pluginMessage   the plugin message instance
+     * @param questTypeAPI    the Quest Type API
+     * @param featureAPI      the Feature API
+     * @param profileProvider the profile provider instance
+     * @param menuID          the id of the menu
      * @throws InvalidConfigurationException if config options are missing or invalid
      */
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
                 final ConfigAccessor config, final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
-                final ProfileProvider profileProvider, final MenuID menuID, final LanguageProvider languageProvider)
+                final ProfileProvider profileProvider, final MenuID menuID)
             throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.rpgMenu = rpgMenu;
         this.log = log;
         pluginConfig = config;
         this.questTypeAPI = questTypeAPI;
-        this.featureAPI = featureAPI;
         this.profileProvider = profileProvider;
         this.menuID = menuID;
-        this.languageProvider = languageProvider;
         //load size
         this.height = getInt("height");
         if (this.height < 1 || this.height > 6) {
@@ -226,7 +212,7 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         final Map<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection(itemsSection).getKeys(false)) {
-            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, languageProvider, menuID, key,
+            itemsMap.put(key, new MenuItem(loggerFactory.create(MenuItem.class), pack, key,
                     config.getConfigurationSection("items." + key), pluginConfig.getBoolean("default_close")));
         }
 
@@ -254,11 +240,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
         }
         //check for doubled assigned slots
-        try {
-            Slots.checkSlots(slots, this.getSize());
-        } catch (final Slots.SlotException e) {
-            throw new Invalid("slots." + e.getSlots(), e);
-        }
+        Slots.checkSlots(slots, this.getSize());
         return slots;
     }
 
@@ -271,7 +253,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
             if (!questTypeAPI.condition(profile, conditionID)) {
-                log.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
+                log.debug(menuID.getPackage(), "Denied opening of " + menuID + ": Condition " + conditionID + "returned false.");
                 return false;
             }
         }
@@ -305,7 +287,7 @@ public class Menu extends SimpleYMLSection implements Listener {
                 return;
             }
         } catch (final QuestException e) {
-            log.warn(pack, "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
+            log.warn(menuID.getPackage(), "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
         }
         event.setCancelled(true);
         final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());
@@ -314,7 +296,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         //open the menu
-        log.debug(pack, onlineprofile + " used bound item of menu " + this.menuID);
+        log.debug(menuID.getPackage(), onlineprofile + " used bound item of menu " + this.menuID);
         rpgMenu.openMenu(onlineprofile, this.menuID);
     }
 
@@ -325,10 +307,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void runOpenEvents(final Profile profile) {
-        log.debug(pack, "Menu " + menuID + ": Running open events");
+        log.debug(menuID.getPackage(), "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
             questTypeAPI.event(profile, event);
-            log.debug(pack, "Menu " + menuID + ": Run event " + event);
+            log.debug(menuID.getPackage(), "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -338,10 +320,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param player the player to run the events for
      */
     public void runCloseEvents(final Player player) {
-        log.debug(pack, "Menu " + menuID + ": Running close events");
+        log.debug(menuID.getPackage(), "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
             questTypeAPI.event(profileProvider.getProfile(player), event);
-            log.debug(pack, "Menu " + menuID + ": Run event " + event);
+            log.debug(menuID.getPackage(), "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -356,7 +338,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the package this menu is located in
      */
     public QuestPackage getPackage() {
-        return pack;
+        return menuID.getPackage();
     }
 
     /**
@@ -427,7 +409,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             if (mayOpen(onlineProfile)) {
-                log.debug(pack, onlineProfile + " run bound command of " + menuID);
+                log.debug(menuID.getPackage(), onlineProfile + " run bound command of " + menuID);
                 rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } else {

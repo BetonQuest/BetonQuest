@@ -5,7 +5,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -62,10 +61,10 @@ public class RPGMenuCommand extends SimpleCommand {
             case "o":
             case "reload":
                 if (!args[1].contains(".")) {
-                    return new ArrayList<>(BetonQuest.getInstance().getPackages().keySet());
+                    return new ArrayList<>(getPlugin().getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf('.'));
-                final QuestPackage configPack = BetonQuest.getInstance().getPackages().get(pack);
+                final QuestPackage configPack = getPlugin().getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
                 }
@@ -157,7 +156,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return false;
                 }
                 //open the menu and send feedback
-                this.menu.openMenu(BetonQuest.getInstance().getProfileProvider().getProfile(player), menu);
+                this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
                 sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", Component.text(menu.toString())));
                 break;
             case "reload":
@@ -165,7 +164,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 ChatColor color = ChatColor.GRAY;
                 if (menu == null) {
                     //reload all data
-                    info = this.menu.reloadData();
+                    info = this.menu.reloadData(getPlugin().getPackages().values());
                 } else {
                     // reload one menu
                     info = this.menu.reloadMenu(menu);

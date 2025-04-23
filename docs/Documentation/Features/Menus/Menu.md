@@ -75,7 +75,7 @@ The three basic optional settings.
 
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
-You can overwrite this by using the `text` setting.
+You can overwrite this by using the `text` setting. If you only define one line, only the name will be overwritten.
 Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 

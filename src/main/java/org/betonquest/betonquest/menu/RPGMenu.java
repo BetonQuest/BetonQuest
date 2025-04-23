@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
@@ -69,18 +68,13 @@ public class RPGMenu {
      */
     private final ProfileProvider profileProvider;
 
-    /**
-     * The language provider to get the default language.
-     */
-    private final LanguageProvider languageProvider;
-
     private final Map<MenuID, Menu> menus;
 
     private final RPGMenuCommand pluginCommand;
 
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
                    final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
-                   final FeatureAPI featureAPI, final ProfileProvider profileProvider, final LanguageProvider languageProvider) {
+                   final FeatureAPI featureAPI, final ProfileProvider profileProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
         this.config = config;
@@ -88,7 +82,6 @@ public class RPGMenu {
         this.questTypeAPI = questTypeAPI;
         this.featureAPI = featureAPI;
         this.profileProvider = profileProvider;
-        this.languageProvider = languageProvider;
         this.menus = new HashMap<>();
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final String menu = "menu";
@@ -156,6 +149,9 @@ public class RPGMenu {
         log.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 
+    /**
+     * Disables and closes all Menus.
+     */
     public void onDisable() {
         //close all menus
         OpenedMenu.closeAll();
@@ -167,20 +163,19 @@ public class RPGMenu {
     /**
      * Reload all plugin data.
      *
+     * @param packs the Quest Packages to load
      * @return information if the reload was successful
      */
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public ReloadInformation reloadData() {
-        if (!menus.isEmpty()) {
-            final Iterator<Menu> iterator = this.menus.values().iterator();
-            while (iterator.hasNext()) {
-                iterator.next().unregister();
-                iterator.remove();
-            }
+    public ReloadInformation reloadData(final Collection<QuestPackage> packs) {
+        final Iterator<Menu> iterator = this.menus.values().iterator();
+        while (iterator.hasNext()) {
+            iterator.next().unregister();
+            iterator.remove();
         }
         final ReloadInformation info = new ReloadInformation();
         //load files for all packages
-        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
+        for (final QuestPackage pack : packs) {
             final ConfigurationSection menus = pack.getConfig().getConfigurationSection("menus");
             if (menus == null) {
                 continue;
@@ -189,7 +184,7 @@ public class RPGMenu {
                 try {
                     final MenuID menuID = new MenuID(pack, name);
                     this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                            pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID, languageProvider));
+                            pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     log.warn(pack, e.getMessage());
@@ -222,7 +217,7 @@ public class RPGMenu {
         final ReloadInformation info = new ReloadInformation();
         try {
             this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                    pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID, languageProvider));
+                    pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
             log.info(menuID.getPackage(), "Reloaded menu " + menuID);
@@ -235,6 +230,8 @@ public class RPGMenu {
     }
 
     /**
+     * Get all loaded menu's ids.
+     *
      * @return a collection containing all loaded menus
      */
     public Collection<MenuID> getMenus() {
@@ -242,6 +239,8 @@ public class RPGMenu {
     }
 
     /**
+     * Get a menu by their id.
+     *
      * @param menuID menuID of the menu
      * @return menu with the given menuID
      */
@@ -272,10 +271,19 @@ public class RPGMenu {
      * Class containing all information about a reload.
      */
     public static class ReloadInformation {
+        /**
+         * Error messages got while loading.
+         */
         private final List<String> errorMessages = new ArrayList<>();
 
+        /**
+         * Amount of loaded Menus.
+         */
         private int loaded;
 
+        /**
+         * Reload Result.
+         */
         private ReloadResult result = ReloadResult.FULL_SUCCESS;
 
         private void addError(final Throwable throwable) {
@@ -283,13 +291,17 @@ public class RPGMenu {
         }
 
         /**
-         * @return a list containing all errors that where thrown while reloading
+         * Get all errors that where thrown while reloading.
+         *
+         * @return the same list
          */
         public List<String> getErrorMessages() {
             return errorMessages;
         }
 
         /**
+         * Get the amount of loaded Menus.
+         *
          * @return amount of menus that were loaded
          */
         public int getLoaded() {
@@ -297,7 +309,9 @@ public class RPGMenu {
         }
 
         /**
-         * @return the result of the reload (if it was fully successful, partially successful, or failed)
+         * Get if the reload was fully successful, partially successful, or failed.
+         *
+         * @return the result of the reload
          */
         public ReloadResult getResult() {
             return result;
