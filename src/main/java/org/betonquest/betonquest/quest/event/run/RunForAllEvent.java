@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestListException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
@@ -58,13 +59,19 @@ public class RunForAllEvent implements PlayerlessEvent {
 
     @Override
     public void execute() throws QuestException {
-        for (final Profile profile : profileCollectionSupplier.get()) { //TODO: should we log for every simgle player and continue? Alternatives?
-            final List<ConditionID> resolvedConditions = conditions.getValue(profile);
-            if (resolvedConditions.isEmpty() || questTypeAPI.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
-                for (final EventID event : events.getValue(profile)) {
-                    questTypeAPI.event(profile, event);
+        final QuestListException questListException = new QuestListException("Could not run events for all profiles:");
+        for (final Profile profile : profileCollectionSupplier.get()) {
+            try {
+                final List<ConditionID> resolvedConditions = conditions.getValue(profile);
+                if (resolvedConditions.isEmpty() || questTypeAPI.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
+                    for (final EventID event : events.getValue(profile)) {
+                        questTypeAPI.event(profile, event);
+                    }
                 }
+            } catch (final QuestException e) {
+                questListException.addException(profile.toString(), e);
             }
         }
+        questListException.throwIfNotEmpty();
     }
 }

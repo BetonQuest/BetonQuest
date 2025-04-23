@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestListException;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.VariableList;
@@ -112,17 +113,23 @@ public class NpcRangeObjective extends Objective {
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> allOnlineProfiles = profileProvider.getOnlineProfiles();
+        final QuestListException questListException = new QuestListException("Could not loop all online profiles:");
         for (final OnlineProfile onlineProfile : allOnlineProfiles) {
-            for (final NpcID npcId : npcIds.getValue(onlineProfile)) { //TODO: handle Exception in a better way?
-                final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
-                if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
-                    profilesInside.add(onlineProfile.getProfileUUID());
+            try {
+                for (final NpcID npcId : npcIds.getValue(onlineProfile)) {
+                    final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
+                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
+                        profilesInside.add(onlineProfile.getProfileUUID());
+                    }
                 }
+            } catch (final QuestException e) {
+                questListException.addException(onlineProfile.toString(), e);
             }
         }
         for (final OnlineProfile onlineProfile : allOnlineProfiles) {
             checkPlayer(onlineProfile.getProfileUUID(), onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
+        questListException.throwIfNotEmpty();
     }
 
     private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
