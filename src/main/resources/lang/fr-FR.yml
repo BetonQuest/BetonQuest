@@ -62,7 +62,6 @@ chest_occupied: '@[legacy]Ce coffre est déjà en cours d''utilisation'
 menu:
   no_permission: '@[legacy]&7[&c&l!&7] Pas de permissions!'
   command_usage: "@[legacy]&cusage:\n&7{usage}"
-  command_info_reload: '@[legacy]&brecharges tous/un menu(s)'
   command_info_list: '@[legacy]&bouvre un menu [pour un joueur]'
   command_info_open: '@[legacy]&bliste tous les menus'
   command_invalid_menu: '@[legacy]&7[&c&l!&7] &c{menu}&7 n''est pas un menu connu!'
@@ -70,7 +69,5 @@ menu:
   command_invalid_player: '@[legacy]&7[&c&l!&7] Il n''y a pas de joueur avec le nom &c{player}&7!'
   command_no_menu: '@[legacy]&7[&c&l!&7] Veuillez specifier un menu!'
   command_open_successful: '@[legacy]&7[&a&li&7]&7{menu}&a a ete ouvert!'
-  command_reload_successful: '@[legacy]&7[{color}&li&7]{color} Recharge &7{amount}{color} menu(s) avec succes!'
-  command_reload_failed: '@[legacy]&7[&4&l!&7]&4 Le rechargement a echoue!'
   command_list: "@[legacy]&e----- &aRPGMenu &e-----\n&aMenus connu:&e "
   click_to_open: '@[legacy]&bcliquez pour ouvrir le menu'

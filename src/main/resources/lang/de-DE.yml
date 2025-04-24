@@ -62,7 +62,6 @@ chest_occupied: '@[legacy]Die Truhe wird bereits benutzt'
 menu:
   no_permission: '@[legacy]&7[&c&l!&7] Fehlende Berechtigung!'
   command_usage: "@[legacy]&cVerwendung:\n&7{usage}"
-  command_info_reload: '@[legacy]&blaedt alle/ein Menue(s) neu  '
   command_info_list: '@[legacy]&boeffnet ein Menue[fuer einen Spieler]'
   command_info_open: '@[legacy]&blistet alle geladenen Menues auf'
   command_invalid_menu: '@[legacy]&7[&c&l!&7] Es ist kein Menue mit der Id &c{menu}&7 geladen!'
@@ -70,7 +69,5 @@ menu:
   command_invalid_player: '@[legacy]&7[&c&l!&7] Es ist kein Spieler mit dem Namen &c{player}&7 online!'
   command_no_menu: '@[legacy]&7[&c&l!&7] Bitte gib ein Menue an!'
   command_open_successful: '@[legacy]&7[&a&li&7]&a Menue &7{menu}&a wurde geoeffnet!'
-  command_reload_successful: '@[legacy]&7[{color}&li&7]{color} Reload erfolgreich! &7{amount}{color} Menue(s) wurden geladen!'
-  command_reload_failed: '@[legacy]&7[&4&l!&7]&4 Reload fehlgeschlagen!'
   command_list: "@[legacy]&e----- &aRPGMenu &e-----\n&aGeladene Menues:&e "
   click_to_open: '@[legacy]&bklicke um das Menue zu oeffnen'

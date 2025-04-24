@@ -62,7 +62,6 @@ chest_occupied: '@[legacy]Этот сундук уже кем-то исполь�
 menu:
   no_permission: '@[legacy]&7[&c&l!&7] У вас нет разрешения!'
   command_usage: "@[legacy]&cИспользуйте:\n&7{usage}"
-  command_info_reload: '@[legacy]&bперезагрузить все/одно меню'
   command_info_list: '@[legacy]&bоткрывает определенное меню [для игрока]'
   command_info_open: '@[legacy]&bсписок всех меню'
   command_invalid_menu: '@[legacy]&7[&c&l!&7] меню &c{menu}&7 не найдено!'
@@ -70,7 +69,5 @@ menu:
   command_invalid_player: '@[legacy]&7[&c&l!&7] Игрок с ником &c{player}&7 не найден!'
   command_no_menu: '@[legacy]&7[&c&l!&7] Пожалуйста, укажите меню!'
   command_open_successful: '@[legacy]&7[&a&li&7]&a Меню &7{menu}&a успешно открыто!'
-  command_reload_successful: '@[legacy]&7[{color}&li&7]{color} Успешно перезагружено &7{amount}{color} меню!'
-  command_reload_failed: '@[legacy]&7[&4&l!&7]&4 Ошибка перезагрузки!'
   command_list: "@[legacy]&e----- &aRPGMenu &e-----\n&aМеню загружено:&e "
   click_to_open: '@[legacy]&bнажмите для открытия меню'

@@ -1,0 +1,7 @@
+3.0.0.1:
+  - type: REMOVE
+    key: menu.command_info_reload
+  - type: REMOVE
+    key: menu.command_reload_successful
+  - type: REMOVE
+    key: menu.command_reload_failed

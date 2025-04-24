@@ -20,18 +20,15 @@ import org.betonquest.betonquest.menu.command.RPGMenuCommand;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -164,17 +161,13 @@ public class RPGMenu {
      * Reload all plugin data.
      *
      * @param packs the Quest Packages to load
-     * @return information if the reload was successful
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public ReloadInformation reloadData(final Collection<QuestPackage> packs) {
+    public void reloadData(final Collection<QuestPackage> packs) {
         final Iterator<Menu> iterator = this.menus.values().iterator();
         while (iterator.hasNext()) {
             iterator.next().unregister();
             iterator.remove();
         }
-        final ReloadInformation info = new ReloadInformation();
-        //load files for all packages
         for (final QuestPackage pack : packs) {
             final ConfigurationSection menus = pack.getConfig().getConfigurationSection("menus");
             if (menus == null) {
@@ -185,48 +178,15 @@ public class RPGMenu {
                     final MenuID menuID = new MenuID(pack, name);
                     this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
                             pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID));
-                    info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     log.warn(pack, e.getMessage());
-                    info.addError(e);
-                    info.result = ReloadResult.SUCCESS;
                 } catch (final QuestException e) {
                     log.error(pack, "Strange unhandled exception during loading: " + e);
-                    info.result = ReloadResult.FAILED;
-                    return info;
+                    return;
                 }
             }
         }
-        final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-        log.info(color + "Reloaded " + info.loaded + color + " menus");
-        return info;
-    }
-
-    /**
-     * Reloads only one menu with the given menuID.
-     *
-     * @param menuID menuID of the menu which should be reloaded
-     * @return information if the reload was successful
-     */
-    public ReloadInformation reloadMenu(final MenuID menuID) {
-        //unregister old menu if it exists
-        if (this.menus.containsKey(menuID)) {
-            this.menus.get(menuID).unregister();
-            this.menus.remove(menuID);
-        }
-        final ReloadInformation info = new ReloadInformation();
-        try {
-            this.menus.put(menuID, new Menu(loggerFactory.create(Menu.class), loggerFactory, this, config,
-                    pluginMessage, questTypeAPI, featureAPI, profileProvider, menuID));
-            info.result = ReloadResult.FULL_SUCCESS;
-            info.loaded = 1;
-            log.info(menuID.getPackage(), "Reloaded menu " + menuID);
-        } catch (final InvalidConfigurationException e) {
-            log.warn(menuID.getPackage(), e.getMessage());
-            info.result = ReloadResult.FAILED;
-            info.addError(e);
-        }
-        return info;
+        log.info("Reloaded " + menus.size() + " menus");
     }
 
     /**
@@ -247,74 +207,5 @@ public class RPGMenu {
     @Nullable
     public Menu getMenu(final MenuID menuID) {
         return menus.get(menuID);
-    }
-
-    /**
-     * Tells whether a reload was successful.
-     */
-    public enum ReloadResult {
-        /**
-         * If all data could be successfully loaded.
-         */
-        FULL_SUCCESS,
-        /**
-         * If reload was successful but some menus could not be loaded.
-         */
-        SUCCESS,
-        /**
-         * If reload completely failed.
-         */
-        FAILED
-    }
-
-    /**
-     * Class containing all information about a reload.
-     */
-    public static class ReloadInformation {
-        /**
-         * Error messages got while loading.
-         */
-        private final List<String> errorMessages = new ArrayList<>();
-
-        /**
-         * Amount of loaded Menus.
-         */
-        private int loaded;
-
-        /**
-         * Reload Result.
-         */
-        private ReloadResult result = ReloadResult.FULL_SUCCESS;
-
-        private void addError(final Throwable throwable) {
-            errorMessages.add(throwable.getMessage());
-        }
-
-        /**
-         * Get all errors that where thrown while reloading.
-         *
-         * @return the same list
-         */
-        public List<String> getErrorMessages() {
-            return errorMessages;
-        }
-
-        /**
-         * Get the amount of loaded Menus.
-         *
-         * @return amount of menus that were loaded
-         */
-        public int getLoaded() {
-            return loaded;
-        }
-
-        /**
-         * Get if the reload was fully successful, partially successful, or failed.
-         *
-         * @return the result of the reload
-         */
-        public ReloadResult getResult() {
-            return result;
-        }
     }
 }
