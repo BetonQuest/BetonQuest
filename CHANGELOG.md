@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Quest Canceler
     - Conversation
     - Plugin Messages / Translations
+    - Menu Items
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`
@@ -54,6 +55,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - menus - `condition` is now `conditions`
     - conversations - options `condition`, `event`, `pointer` and `extend` are now `conditions`, `events`, `pointers` and `extends`
 - `pickrandom` event now use tilde instead of percentage
+- `Menu Items` name and lore are no longer italic by default, name can be overridden while keeping original lore
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -76,6 +78,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - scrolling the mouse in the menu conversation IO did not work
 - `MMOCore` attribute loading with MMOCore 1.13
 - missing messages `animals_to_tame` and `times_to_jump` in language files by adding them
+- `Menu Item` parsing with newlines lead in some cases to missing lines
 ### Security
 
 ## [2.2.1] - 2025-01-12

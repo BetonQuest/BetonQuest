@@ -31,7 +31,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private final BetonQuestLogger log;
+    protected final BetonQuestLogger log;
 
     @Nullable
     private final Permission permission;

@@ -99,6 +99,8 @@ public class OpenedMenu implements Listener {
     }
 
     /**
+     * Get the closed state.
+     *
      * @return true if menu was closed
      */
     public boolean isClosed() {
@@ -106,6 +108,8 @@ public class OpenedMenu implements Listener {
     }
 
     /**
+     * Get the id.
+     *
      * @return the id of this menu
      */
     public final MenuID getId() {
@@ -113,6 +117,8 @@ public class OpenedMenu implements Listener {
     }
 
     /**
+     * Get the represented Menu.
+     *
      * @return the menu object containing all data
      */
     public Menu getData() {
@@ -120,6 +126,8 @@ public class OpenedMenu implements Listener {
     }
 
     /**
+     * Get the profile this opened menu is for.
+     *
      * @return the player the menu is displayed to
      */
     public OnlineProfile getProfile() {
@@ -127,6 +135,8 @@ public class OpenedMenu implements Listener {
     }
 
     /**
+     * Get the menu inventory.
+     *
      * @return the inventory which shows the menu
      */
     public Inventory getInventory() {
@@ -194,7 +204,7 @@ public class OpenedMenu implements Listener {
             case SHIFT_LEFT:
             case LEFT:
             case MIDDLE:
-                Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> clickLogic(event, player, item));
+                Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> clickLogic(event, item));
                 break;
             default:
                 break;
@@ -202,7 +212,7 @@ public class OpenedMenu implements Listener {
     }
 
     @SuppressWarnings("PMD.PrematureDeclaration")
-    private void clickLogic(final InventoryClickEvent event, final Player player, final MenuItem item) {
+    private void clickLogic(final InventoryClickEvent event, final MenuItem item) {
         //call event
         final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
         Bukkit.getPluginManager().callEvent(clickEvent);
@@ -217,7 +227,7 @@ public class OpenedMenu implements Listener {
         }
 
         //run click events
-        final boolean close = item.onClick(player, event.getClick());
+        final boolean close = item.onClick(onlineProfile, event.getClick());
 
         //check if the inventory was closed by an event (teleport event etc.)
         if (closed) {

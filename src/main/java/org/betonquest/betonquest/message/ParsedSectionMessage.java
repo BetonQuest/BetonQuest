@@ -43,6 +43,9 @@ public class ParsedSectionMessage extends ParsedMessage {
                                                      final LanguageProvider languageProvider) throws QuestException {
         if (section.isConfigurationSection(path)) {
             return parseSection(variableProcessor, pack, section, path);
+        } else if (section.isList(path)) {
+            return Map.of(languageProvider.getDefaultLanguage(), new VariableString(variableProcessor, pack,
+                    GlobalVariableResolver.resolve(pack, String.join("\n", section.getStringList(path)))));
         } else if (section.isString(path)) {
             final String raw = GlobalVariableResolver.resolve(pack, section.getString(path));
             if (raw == null) {
@@ -62,6 +65,11 @@ public class ParsedSectionMessage extends ParsedMessage {
         }
         final Map<String, VariableString> messages = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
+            if (subSection.isList(key)) {
+                messages.put(key, new VariableString(variableProcessor, pack,
+                        GlobalVariableResolver.resolve(pack, String.join("\n", subSection.getStringList(key)))));
+                continue;
+            }
             final String raw = GlobalVariableResolver.resolve(pack, subSection.getString(key));
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");

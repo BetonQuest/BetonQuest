@@ -130,26 +130,6 @@ public abstract class SimpleYMLSection {
     }
 
     /**
-     * Parse a boolean from config file.
-     *
-     * @param key where to search
-     * @return requested Boolean
-     * @throws Missing if nothing is given
-     * @throws Invalid if given string is not a boolean
-     */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected final boolean getBoolean(final String key) throws Missing, Invalid {
-        final String stringBoolean = this.getString(key).trim();
-        if ("true".equalsIgnoreCase(stringBoolean)) {
-            return true;
-        } else if ("false".equalsIgnoreCase(stringBoolean)) {
-            return false;
-        } else {
-            throw new Invalid(key);
-        }
-    }
-
-    /**
      * Parse a list of events from config file.
      *
      * @param key  where to search

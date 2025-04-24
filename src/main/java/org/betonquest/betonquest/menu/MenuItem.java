@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.menu;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -11,33 +13,23 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
+import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
  */
 public class MenuItem extends SimpleYMLSection {
-    /**
-     * Text config property for Item lore.
-     */
-    private static final String CONFIG_TEXT = "text";
-
-    /**
-     * Path component for text config property for Item lore.
-     */
-    private static final String CONFIG_TEXT_PATH = CONFIG_TEXT + ".";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -45,44 +37,20 @@ public class MenuItem extends SimpleYMLSection {
     private final BetonQuestLogger log;
 
     /**
-     * The language provider instance.
-     */
-    private final LanguageProvider languageProvider;
-
-    /**
      * The betonquest quest item this item is based on.
      */
     private final Item item;
 
     /**
-     * HashMap with a language as key and the corresponding description as value.
+     * Parsed message which can be got.
      */
-    private final Map<String, ItemDescription> descriptions;
+    @Nullable
+    private final ParsedSectionMessage descriptions;
 
     /**
-     * Ids of all events that should be run on left click.
+     * Ids of all events that should be run on clicks.
      */
-    private final List<EventID> leftClick;
-
-    /**
-     * Ids of all events that should be run on shift-left click.
-     */
-    private final List<EventID> shiftLeftClick;
-
-    /**
-     * Ids of all events that should be run on right click.
-     */
-    private final List<EventID> rightClick;
-
-    /**
-     * Ids of all events that should be run on shift-right click.
-     */
-    private final List<EventID> shiftRightClick;
-
-    /**
-     * Ids of all events that should be run on middle-mouse click.
-     */
-    private final List<EventID> middleMouseClick;
+    private final ClickEvents clickEvents;
 
     /**
      * Conditions that have to be matched to view the item.
@@ -97,25 +65,23 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Creates a new Menu Item.
      *
-     * @param log              the custom logger for this class
-     * @param pack             the quest package the item is in
-     * @param languageProvider the language provider instance
-     * @param menuID           the menu the item is in
-     * @param name             the name of the item
-     * @param section          the configuration representing the item
-     * @param defaultClose     if the item click closes as default
+     * @param log          the custom logger for this class
+     * @param pack         the quest package the item is in
+     * @param name         the name of the item
+     * @param section      the configuration representing the item
+     * @param defaultClose if the item click closes as default
      * @throws InvalidConfigurationException if there are missing or invalid entries
      */
-    public MenuItem(final BetonQuestLogger log, final QuestPackage pack, final LanguageProvider languageProvider,
-                    final MenuID menuID, final String name, final ConfigurationSection section, final boolean defaultClose)
+    public MenuItem(final BetonQuestLogger log, final QuestPackage pack,
+                    final String name, final ConfigurationSection section, final boolean defaultClose)
             throws InvalidConfigurationException {
         super(pack, name, section);
         this.log = log;
-        this.languageProvider = languageProvider;
+        final BetonQuest instance = BetonQuest.getInstance();
         try {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
-            final VariableNumber amount = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack,
+            final VariableNumber amount = new VariableNumber(instance.getVariableProcessor(), pack,
                     new DefaultSetting<>("1") {
                         @Override
                         @SuppressWarnings("PMD.ShortMethodName")
@@ -123,28 +89,25 @@ public class MenuItem extends SimpleYMLSection {
                             return getString("amount");
                         }
                     }.get());
-            this.item = new Item(BetonQuest.getInstance().getFeatureAPI(), itemID, amount);
+            this.item = new Item(instance.getFeatureAPI(), itemID, amount);
             // load description
-            this.descriptions = new HashMap<>();
-            try {
-                this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
-            } catch (final Missing e) {
-                log.warn("Missing description for menu item  '" + itemID.getFullID() + "' in menu '"
-                        + menuID.getFullID() + "' in package '" + pack.getQuestPath() + "'! Reason: " + e.getMessage(), e);
+            if (section.contains("text")) {
+                this.descriptions = new ParsedSectionMessage(instance.getVariableProcessor(), instance.getMessageParser(),
+                        instance.getPlayerDataStorage(), pack, section, "text", instance);
+            } else {
+                this.descriptions = null;
+                log.debug(pack, "No description for menu item '" + pack.getQuestPath() + "." + section.getName() + "' set.");
             }
             if (config.isConfigurationSection("click")) {
-                this.leftClick = getEvents("click.left", pack);
-                this.shiftLeftClick = getEvents("click.shiftLeft", pack);
-                this.rightClick = getEvents("click.right", pack);
-                this.shiftRightClick = getEvents("click.shiftRight", pack);
-                this.middleMouseClick = getEvents("click.middleMouse", pack);
+                this.clickEvents = new ClickEvents(
+                        getEvents("click.left", pack),
+                        getEvents("click.shiftLeft", pack),
+                        getEvents("click.right", pack),
+                        getEvents("click.shiftRight", pack),
+                        getEvents("click.middleMouse", pack)
+                );
             } else {
-                final List<EventID> list = getEvents("click", pack);
-                this.leftClick = list;
-                this.shiftLeftClick = list;
-                this.rightClick = list;
-                this.shiftRightClick = list;
-                this.middleMouseClick = list;
+                this.clickEvents = new ClickEvents(getEvents("click", pack));
             }
             this.conditions = getConditions("conditions", pack);
             //load if menu should close when item is clicked
@@ -152,7 +115,11 @@ public class MenuItem extends SimpleYMLSection {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {
-                    return getBoolean("close");
+                    try {
+                        return Argument.BOOLEAN.apply(getString("close"));
+                    } catch (final QuestException e) {
+                        throw new Invalid(e.getMessage(), e);
+                    }
                 }
             }.get();
         } catch (final QuestException e) {
@@ -163,23 +130,22 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Action that happens on click.
      *
-     * @param player that has clicked the item
-     * @param type   type of the click action
+     * @param profile that has clicked the item
+     * @param type    type of the click action
      * @return if the menu should be closed after this operation
      */
-    public boolean onClick(final Player player, final ClickType type) {
+    public boolean onClick(final OnlineProfile profile, final ClickType type) {
         return switch (type) {
-            case LEFT -> executeEvents(leftClick, player);
-            case SHIFT_LEFT -> executeEvents(shiftLeftClick, player);
-            case RIGHT -> executeEvents(rightClick, player);
-            case SHIFT_RIGHT -> executeEvents(shiftRightClick, player);
-            case MIDDLE -> executeEvents(middleMouseClick, player);
+            case LEFT -> executeEvents(clickEvents.leftClick, profile);
+            case SHIFT_LEFT -> executeEvents(clickEvents.shiftLeftClick, profile);
+            case RIGHT -> executeEvents(clickEvents.rightClick, profile);
+            case SHIFT_RIGHT -> executeEvents(clickEvents.shiftRightClick, profile);
+            case MIDDLE -> executeEvents(clickEvents.middleMouseClick, profile);
             default -> false;
         };
     }
 
-    private boolean executeEvents(final List<EventID> variables, final Player player) {
-        final OnlineProfile profile = BetonQuest.getInstance().getProfileProvider().getProfile(player);
+    private boolean executeEvents(final List<EventID> variables, final OnlineProfile profile) {
         for (final EventID eventID : variables) {
             log.debug(pack, "Item " + name + ": Run event " + eventID);
             BetonQuest.getInstance().getQuestTypeAPI().event(profile, eventID);
@@ -213,21 +179,24 @@ public class MenuItem extends SimpleYMLSection {
      */
     public ItemStack generateItem(final Profile profile) {
         try {
-            final String lang = BetonQuest.getInstance().getPlayerDataStorage().get(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
             final ItemStack item = this.item.generate(profile);
-            final ItemMeta meta = item.getItemMeta();
-            if (!descriptions.isEmpty()) {
-                ItemDescription description = this.descriptions.get(lang);
-                if (description == null) {
-                    description = this.descriptions.get(languageProvider.getDefaultLanguage());
+            if (descriptions != null) {
+                Component description = descriptions.asComponent(profile);
+                if (description.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
+                    // TODO version switch:
+                    //  Replace with decorationIfAbsent with Adventure 4.12 (in Paper 1.19?)
+                    description = description.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
                 }
-                if (description == null) {
-                    log.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
-                            + languageProvider.getDefaultLanguage() + "' " + "specified");
-                } else {
-                    meta.setDisplayName(description.getDisplayName(profile));
-                    meta.setLore(description.getLore(profile));
-                    item.setItemMeta(meta);
+                final List<Component> lines = ComponentLineWrapper.splitNewLine(description);
+                if (!lines.isEmpty()) {
+                    final Component displayName = lines.get(0);
+                    final List<Component> lore = lines.subList(1, lines.size());
+                    item.editMeta(meta -> {
+                        meta.displayName(displayName);
+                        if (!lore.isEmpty()) {
+                            meta.lore(lore);
+                        }
+                    });
                 }
             }
             return item;
@@ -246,47 +215,20 @@ public class MenuItem extends SimpleYMLSection {
         return name;
     }
 
-    private Map<String, ItemDescription> generateDescriptions(final String menuID, final ConfigurationSection section)
-            throws Missing, QuestException {
-        final Map<String, ItemDescription> descriptions = new HashMap<>();
+    /**
+     * Contains the ids of events that should be run on a click.
+     */
+    public record ClickEvents(List<EventID> leftClick, List<EventID> shiftLeftClick,
+                              List<EventID> rightClick, List<EventID> shiftRightClick,
+                              List<EventID> middleMouseClick) {
 
-        if (section.contains(CONFIG_TEXT)) {
-            if (section.isConfigurationSection(CONFIG_TEXT)) {
-                descriptions.putAll(generateLanguageDescriptions(menuID, section));
-            } else if (section.isString(CONFIG_TEXT)) {
-                descriptions.put(languageProvider.getDefaultLanguage(), new ItemDescription(this.pack, getString(CONFIG_TEXT).lines().toList()));
-            } else if (section.isList(CONFIG_TEXT)) {
-                descriptions.put(languageProvider.getDefaultLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
-            } else {
-                throw new QuestException("Unrecognized item '" + name + "' text configuration in menu '"
-                        + menuID + "'");
-            }
+        /**
+         * Fills all click types with the same list.
+         *
+         * @param click the events to execute on any click
+         */
+        public ClickEvents(final List<EventID> click) {
+            this(click, click, click, click, click);
         }
-
-        return descriptions;
-    }
-
-    private Map<String, ItemDescription> generateLanguageDescriptions(final String menuID, final ConfigurationSection section)
-            throws Missing, QuestException {
-        final Map<String, ItemDescription> descriptions = new HashMap<>();
-
-        final ConfigurationSection textSection = section.getConfigurationSection(CONFIG_TEXT);
-        if (textSection != null) {
-            for (final String lang : textSection.getKeys(false)) {
-                if (section.isString(CONFIG_TEXT_PATH + lang)) {
-                    descriptions.put(lang, new ItemDescription(this.pack, getString(CONFIG_TEXT_PATH + lang).lines().toList()));
-                } else if (section.isList(CONFIG_TEXT_PATH + lang)) {
-                    descriptions.put(lang, new ItemDescription(this.pack, getStringList(CONFIG_TEXT_PATH + lang)));
-                } else {
-                    throw new QuestException("Unrecognized item '" + name + "' text language '" + lang
-                            + "' configuration in menu '" + menuID + "'");
-                }
-            }
-            if (!descriptions.containsKey(languageProvider.getDefaultLanguage())) {
-                throw new Missing(CONFIG_TEXT_PATH + languageProvider.getDefaultLanguage());
-            }
-        }
-
-        return descriptions;
     }
 }

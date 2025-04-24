@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,21 +56,20 @@ public class Slots {
      *
      * @param slots         a iterable containing all slots objects to check
      * @param inventorySize the size of the inventory in which the slots should be
-     * @throws SlotException if a defined list of slots is invalid
+     * @throws InvalidConfigurationException if a defined list of slots is invalid
      */
-    @SuppressWarnings("PMD.PreserveStackTrace")
-    public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws SlotException {
+    public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws InvalidConfigurationException {
         final boolean[] contained = new boolean[inventorySize]; //initialized with 'false'
         for (final Slots s : slots) {
             for (final int slot : s.getSlots()) {
                 try {
                     if (contained[slot]) {
-                        throw new SlotException(slot, s.toString(), "slot " + slot + " was already specified");
+                        throw new InvalidConfigurationException("Slots '" + s + "': slot " + slot + " was already specified");
                     } else {
                         contained[slot] = true;
                     }
                 } catch (final IndexOutOfBoundsException e) {
-                    throw new SlotException(slot, s.toString(), "slot " + slot + " exceeds inventory size");
+                    throw new InvalidConfigurationException("Slots '" + s + "': slot " + slot + " exceeds inventory size", e);
                 }
             }
         }
@@ -181,6 +180,8 @@ public class Slots {
     }
 
     /**
+     * Get the slot type.
+     *
      * @return the type of this slots object
      */
     public Type getType() {
@@ -214,28 +215,5 @@ public class Slots {
          * Multiple slots ordered in a rectangle.
          */
         RECTANGLE
-    }
-
-    public static class SlotException extends Exception {
-        @Serial
-        private static final long serialVersionUID = 2796975671139425046L;
-
-        private final int slot;
-
-        private final String slots;
-
-        public SlotException(final int slot, final String slots, final String message) {
-            super(message);
-            this.slots = slots;
-            this.slot = slot;
-        }
-
-        public int getSlot() {
-            return slot;
-        }
-
-        public String getSlots() {
-            return slots;
-        }
     }
 }

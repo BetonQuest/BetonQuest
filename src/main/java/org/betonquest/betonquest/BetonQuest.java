@@ -418,7 +418,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         setupUpdater();
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage,
-                questTypeAPI, featureAPI, profileProvider, this);
+                questTypeAPI, featureAPI, profileProvider);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -525,7 +525,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     public void loadData() {
         questRegistry.loadData(getPackages().values());
         playerDataStorage.startObjectives();
-        rpgMenu.reloadData();
+        rpgMenu.reloadData(getPackages().values());
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }
 

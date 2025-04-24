@@ -2,6 +2,7 @@ package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.types.BooleanParser;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.types.location.VectorParser;
 import org.betonquest.betonquest.instruction.types.location.WorldParser;
@@ -18,6 +19,11 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface Argument<T> extends QuestFunction<String, T> {
+
+    /**
+     * The default instance of {@link BooleanParser}.
+     */
+    BooleanParser BOOLEAN = new BooleanParser();
 
     /**
      * The default instance of {@link VectorParser}.
