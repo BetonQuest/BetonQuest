@@ -7,7 +7,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * The condition factory for the number compare condition.
@@ -31,9 +32,9 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
-        final VariableNumber first = instruction.get(VariableNumber::new);
+        final Variable<Number> first = instruction.getVariable(Argument.NUMBER);
         final Operation operation = Operation.fromSymbol(instruction.next());
-        final VariableNumber second = instruction.get(VariableNumber::new);
+        final Variable<Number> second = instruction.getVariable(Argument.NUMBER);
         return new NumberCompareCondition(first, second, operation);
     }
 }

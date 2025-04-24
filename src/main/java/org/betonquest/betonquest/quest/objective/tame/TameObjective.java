@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class TameObjective extends CountingObjective implements Listener {
      * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction
      */
-    public TameObjective(final Instruction instruction, final VariableNumber targetAmount, final EntityType type) throws QuestException {
+    public TameObjective(final Instruction instruction, final Variable<Number> targetAmount, final EntityType type) throws QuestException {
         super(instruction, targetAmount, "animals_to_tame");
         this.type = type;
     }

@@ -4,8 +4,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -21,19 +20,12 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * The variable processor to use.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the scoreboard event factory.
      *
-     * @param data              the data for primary server thread access
-     * @param variableProcessor the variable processor to use
+     * @param data the data for primary server thread access
      */
-    public ScoreboardObjectiveEventFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public ScoreboardObjectiveEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -45,7 +37,7 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
             try {
                 final ScoreModification type = ScoreModification.valueOf(action.toUpperCase(Locale.ROOT));
                 return new PrimaryServerThreadEvent(
-                        new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), type),
+                        new ScoreboardObjectiveEvent(objective, instruction.getVariable(number, Argument.NUMBER), type),
                         data);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + instruction.current(), e);
@@ -53,11 +45,11 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
             return new PrimaryServerThreadEvent(
-                    new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number.replace("*", "")), ScoreModification.MULTIPLY),
+                    new ScoreboardObjectiveEvent(objective, instruction.getVariable(number.replace("*", ""), Argument.NUMBER), ScoreModification.MULTIPLY),
                     data);
         }
         return new PrimaryServerThreadEvent(
-                new ScoreboardObjectiveEvent(objective, new VariableNumber(variableProcessor, instruction.getPackage(), number), ScoreModification.ADD),
+                new ScoreboardObjectiveEvent(objective, instruction.getVariable(number, Argument.NUMBER), ScoreModification.ADD),
                 data);
     }
 }

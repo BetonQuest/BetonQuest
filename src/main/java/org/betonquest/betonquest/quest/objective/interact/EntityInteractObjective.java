@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -54,7 +53,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * The range around the target location to look for the entity.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * The custom name of the entity to interact with.
@@ -125,9 +124,9 @@ public class EntityInteractObjective extends CountingObjective {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final Instruction instruction, final VariableNumber targetAmount,
+    public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
                                    final BetonQuestLogger log, @Nullable final Variable<Location> loc,
-                                   final VariableNumber range, @Nullable final String customName,
+                                   final Variable<Number> range, @Nullable final String customName,
                                    @Nullable final String realName, @Nullable final EquipmentSlot slot,
                                    final EntityType mobType, @Nullable final VariableIdentifier marked,
                                    final Interaction interaction, final boolean cancel) throws QuestException {

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.number;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,12 +14,12 @@ public class NumberCompareCondition implements NullableCondition {
     /**
      * The number on the left side.
      */
-    private final VariableNumber first;
+    private final Variable<Number> first;
 
     /**
      * The number of the right side.
      */
-    private final VariableNumber second;
+    private final Variable<Number> second;
 
     /**
      * The compare operand between the numbers used for comparing.
@@ -33,7 +33,7 @@ public class NumberCompareCondition implements NullableCondition {
      * @param second    the second number
      * @param operation the operation to use
      */
-    public NumberCompareCondition(final VariableNumber first, final VariableNumber second, final Operation operation) {
+    public NumberCompareCondition(final Variable<Number> first, final Variable<Number> second, final Operation operation) {
         this.first = first;
         this.second = second;
         this.operation = operation;

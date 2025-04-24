@@ -8,7 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -48,7 +49,7 @@ public class HeroesExperienceEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final HeroesClassType classType = instruction.getEnum(HeroesClassType.class);
-        final VariableNumber amountVar = instruction.get(VariableNumber::new);
+        final Variable<Number> amountVar = instruction.getVariable(Argument.NUMBER);
         final boolean isPrimary = classType.equals(HeroesClassType.PRIMARY);
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, isPrimary, amountVar),

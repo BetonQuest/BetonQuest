@@ -2,8 +2,9 @@ package org.betonquest.betonquest.util.math.tokens;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.Number;
 
 /**
  * A token that is a Variable.
@@ -17,14 +18,14 @@ public class Variable implements Token {
     /**
      * Underlying variable.
      */
-    private final VariableNumber variableNumber;
+    private final org.betonquest.betonquest.instruction.variable.Variable<Number> variableNumber;
 
     /**
      * Creates a new variable token from a variable number.
      *
      * @param variableNumber underlying variable
      */
-    public Variable(final VariableNumber variableNumber) {
+    public Variable(final org.betonquest.betonquest.instruction.variable.Variable<Number> variableNumber) {
         this.variableNumber = variableNumber;
     }
 

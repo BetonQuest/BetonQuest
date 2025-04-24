@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -37,7 +38,7 @@ public class DamageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber damage = instruction.get(VariableNumber::new);
+        final Variable<Number> damage = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new DamageEvent(damage),
                 loggerFactory.create(DamageEvent.class),

@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for creating {@link DelayObjective} instances from {@link Instruction}s.
@@ -30,7 +30,7 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableNumber delay = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
+        final Variable<Number> delay = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
         final int interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
         if (interval <= 0) {
             throw new QuestException("Interval cannot be less than 1 tick");

@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class DelayObjective extends Objective {
     /**
      * The delay time in seconds, minutes, or ticks.
      */
-    private final VariableNumber delay;
+    private final Variable<Number> delay;
 
     /**
      * The runnable task that checks the delay.
@@ -62,7 +62,7 @@ public class DelayObjective extends Objective {
      * @param delay       the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final int interval, final VariableNumber delay) throws QuestException {
+    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final int interval, final Variable<Number> delay) throws QuestException {
         super(instruction, DelayData.class);
         this.interval = interval;
         this.delay = delay;
@@ -116,9 +116,13 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        final double time = delay.getDouble(profile);
-        final double millis = timeToMilliSeconds(time);
-        return Double.toString(new Date().getTime() + millis);
+        try {
+            final double millis = timeToMilliSeconds(delay.getValue(profile).doubleValue());
+            return Double.toString(new Date().getTime() + millis);
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            return "";
+        }
     }
 
     @Override

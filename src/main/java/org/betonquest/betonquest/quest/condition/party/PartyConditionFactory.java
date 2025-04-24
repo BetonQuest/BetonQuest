@@ -14,7 +14,6 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.bukkit.Location;
 
@@ -61,11 +60,11 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private PartyCondition parse(final Instruction instruction, final Variable<Location> location) throws QuestException {
-        final VariableNumber range = instruction.get(VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         final VariableList<ConditionID> conditions = instruction.get(IDArgument.ofList(ConditionID::new));
         final VariableList<ConditionID> everyone = instruction.get(instruction.getOptional("every", ""), IDArgument.ofList(ConditionID::new));
         final VariableList<ConditionID> anyone = instruction.get(instruction.getOptional("any", ""), IDArgument.ofList(ConditionID::new));
-        final VariableNumber count = instruction.get(instruction.getOptional("count"), VariableNumber::new);
+        final Variable<Number> count = instruction.getVariable(instruction.getOptional("count"), Argument.NUMBER);
 
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);
     }

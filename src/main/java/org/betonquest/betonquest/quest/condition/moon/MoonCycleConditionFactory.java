@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -45,7 +44,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber moonCycle = instruction.get(VariableNumber::new);
+        final Variable<Number> moonCycle = instruction.getVariable(Argument.NUMBER);
         final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"),
                 Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
@@ -58,7 +57,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final VariableNumber moonCycle = instruction.get(VariableNumber::new);
+        final Variable<Number> moonCycle = instruction.getVariable(Argument.NUMBER);
         final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);

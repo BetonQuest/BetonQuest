@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Condition to check if the current player level in a job is in an interval.
@@ -21,12 +21,12 @@ public class JobLevelCondition implements PlayerCondition {
     /**
      * Minimum level in job.
      */
-    private final VariableNumber nMinLevel;
+    private final Variable<Number> nMinLevel;
 
     /**
      * Maximum level in job.
      */
-    private final VariableNumber nMaxLevel;
+    private final Variable<Number> nMaxLevel;
 
     /**
      * Create a new job level condition.
@@ -35,7 +35,7 @@ public class JobLevelCondition implements PlayerCondition {
      * @param nMinLevel the minimum required level in the job
      * @param nMaxLevel the maximum required level in the job
      */
-    public JobLevelCondition(final VariableJob job, final VariableNumber nMinLevel, final VariableNumber nMaxLevel) {
+    public JobLevelCondition(final VariableJob job, final Variable<Number> nMinLevel, final Variable<Number> nMaxLevel) {
         this.job = job;
         this.nMinLevel = nMinLevel;
         this.nMaxLevel = nMaxLevel;

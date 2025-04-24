@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
@@ -28,7 +27,7 @@ public class LocationObjective extends AbstractLocationObjective {
     /**
      * The range around the location.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
@@ -38,7 +37,7 @@ public class LocationObjective extends AbstractLocationObjective {
      * @param range       the VariableNumber object representing the range
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public LocationObjective(final Instruction instruction, final Variable<Location> loc, final VariableNumber range) throws QuestException {
+    public LocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
         this.loc = loc;
         this.range = range;

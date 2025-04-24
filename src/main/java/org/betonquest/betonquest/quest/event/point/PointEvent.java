@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**
@@ -29,7 +29,7 @@ public class PointEvent implements PlayerEvent {
     /**
      * The count.
      */
-    private final VariableNumber count;
+    private final Variable<Number> count;
 
     /**
      * The point type, how the points should be modified.
@@ -50,7 +50,7 @@ public class PointEvent implements PlayerEvent {
      * @param pointType   the point type
      * @param dataStorage the storage providing player data
      */
-    public PointEvent(final NotificationSender pointSender, final VariableIdentifier category, final VariableNumber count,
+    public PointEvent(final NotificationSender pointSender, final VariableIdentifier category, final Variable<Number> count,
                       final Point pointType, final PlayerDataStorage dataStorage) {
         this.pointSender = pointSender;
         this.category = category;

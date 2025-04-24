@@ -6,7 +6,7 @@ import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the player owns specified amount of shops.
@@ -16,14 +16,14 @@ public class HavingShopCondition implements PlayerCondition {
     /**
      * Target shop amount.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Create a new shop condition.
      *
      * @param amount the required shop amount
      */
-    public HavingShopCondition(final VariableNumber amount) {
+    public HavingShopCondition(final Variable<Number> amount) {
         this.amount = amount;
     }
 

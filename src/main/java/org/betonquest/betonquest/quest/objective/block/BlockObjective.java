@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
@@ -91,7 +90,7 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+    public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
                           final VariableBlockSelector selector, final boolean exactMatch, final boolean noSafety,
                           @Nullable final Variable<Location> location, @Nullable final Variable<Location> region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,

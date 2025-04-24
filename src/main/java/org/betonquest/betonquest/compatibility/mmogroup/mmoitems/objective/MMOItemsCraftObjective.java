@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -50,7 +50,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      * @param itemId       the ID of the item to be crafted
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsCraftObjective(final Instruction instruction, final VariableNumber targetAmount, final Type itemType, final String itemId) throws QuestException {
+    public MMOItemsCraftObjective(final Instruction instruction, final Variable<Number> targetAmount, final Type itemType, final String itemId) throws QuestException {
         super(instruction, targetAmount, "items_to_craft");
         this.itemType = itemType;
         this.itemId = itemId;

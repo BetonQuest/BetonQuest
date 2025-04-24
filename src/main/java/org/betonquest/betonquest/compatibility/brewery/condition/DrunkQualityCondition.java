@@ -6,23 +6,23 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * If a player has reached a certain level of drunkenness.
  */
 public class DrunkQualityCondition implements OnlineCondition {
     /**
-     * The {@link VariableNumber} for the drunkenness level.
+     * The drunkenness level.
      */
-    private final VariableNumber qualityVar;
+    private final Variable<Number> qualityVar;
 
     /**
      * Create a new Drunk Condition.
      *
-     * @param qualityVar the {@link VariableNumber} for the drunkenness level.
+     * @param qualityVar the drunkenness level.
      */
-    public DrunkQualityCondition(final VariableNumber qualityVar) {
+    public DrunkQualityCondition(final Variable<Number> qualityVar) {
         this.qualityVar = qualityVar;
     }
 

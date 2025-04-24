@@ -126,21 +126,4 @@ public class Variable<T> {
         @Override
         T apply(@Nullable Profile arg) throws QuestException;
     }
-
-    /**
-     * Checks if the value of the variable is valid.
-     * <p>
-     * This is a pre-made implementation
-     * that can be used by any implementation of {@link Variable} to avoid code duplication.
-     */
-    @FunctionalInterface
-    public interface ValueChecker<T> {
-        /**
-         * Checks if the value of the variable is valid.
-         *
-         * @param value the value to check
-         * @throws QuestException if the value is invalid
-         */
-        void check(T value) throws QuestException;
-    }
 }

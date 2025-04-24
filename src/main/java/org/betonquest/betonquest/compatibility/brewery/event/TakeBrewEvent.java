@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,9 +16,9 @@ import org.bukkit.inventory.PlayerInventory;
  */
 public class TakeBrewEvent implements OnlineEvent {
     /**
-     * The {@link VariableNumber} for the amount of brews to take.
+     * The amount of brews to take.
      */
-    private final VariableNumber countVar;
+    private final Variable<Number> countVar;
 
     /**
      * The {@link VariableString} for the name of the brew to take.
@@ -28,10 +28,10 @@ public class TakeBrewEvent implements OnlineEvent {
     /**
      * Create a new Take Brew Event.
      *
-     * @param countVar The {@link VariableNumber} for the amount of brews to take.
+     * @param countVar The amount of brews to take.
      * @param nameVar  The {@link VariableString} for the name of the brew to take.
      */
-    public TakeBrewEvent(final VariableNumber countVar, final VariableString nameVar) {
+    public TakeBrewEvent(final Variable<Number> countVar, final VariableString nameVar) {
         this.countVar = countVar;
         this.nameVar = nameVar;
     }

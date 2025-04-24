@@ -4,7 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the player has specified amount of Vault money
@@ -18,7 +18,7 @@ public class MoneyCondition implements PlayerCondition {
     /**
      * Amount the balance needs to match.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Create a new Vault Balance Condition.
@@ -26,7 +26,7 @@ public class MoneyCondition implements PlayerCondition {
      * @param economy the economy where the balance will be checked
      * @param amount  the amount the balance needs to match - needs to be positive
      */
-    public MoneyCondition(final Economy economy, final VariableNumber amount) {
+    public MoneyCondition(final Economy economy, final Variable<Number> amount) {
         this.economy = economy;
         this.amount = amount;
     }

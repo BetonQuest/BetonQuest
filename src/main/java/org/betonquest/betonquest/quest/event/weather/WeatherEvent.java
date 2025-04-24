@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +26,7 @@ public class WeatherEvent implements NullableEvent {
     /**
      * The time weather will not change naturally.
      */
-    private final VariableNumber duration;
+    private final Variable<Number> duration;
 
     /**
      * Creates the weather event to set the given state.
@@ -35,7 +35,7 @@ public class WeatherEvent implements NullableEvent {
      * @param worldSelector to get the world that should be affected
      * @param duration      how long the weather will not change - values &lt;= 0 won't set a duration
      */
-    public WeatherEvent(final Weather weather, final Selector<World> worldSelector, final VariableNumber duration) {
+    public WeatherEvent(final Weather weather, final Selector<World> worldSelector, final Variable<Number> duration) {
         this.weather = weather;
         this.worldSelector = worldSelector;
         this.duration = duration;

@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -53,9 +52,9 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
-        final Map<EntityType, VariableNumber> entityAmounts = getEntityAmounts(instruction);
+        final Map<EntityType, Variable<Number>> entityAmounts = getEntityAmounts(instruction);
         final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
-        final VariableNumber range = instruction.get(VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(
                 Utils.format(nameString, true, false).replace('_', ' '), VariableString::new);
@@ -63,13 +62,13 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 
-    private Map<EntityType, VariableNumber> getEntityAmounts(final Instruction instruction) throws QuestException {
-        final Map<EntityType, VariableNumber> entityAmounts = new EnumMap<>(EntityType.class);
+    private Map<EntityType, Variable<Number>> getEntityAmounts(final Instruction instruction) throws QuestException {
+        final Map<EntityType, Variable<Number>> entityAmounts = new EnumMap<>(EntityType.class);
         for (final String rawType : instruction.getList()) {
             final String[] typeParts = rawType.split(":");
             try {
                 final EntityType type = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                final VariableNumber amount = instruction.get(typeParts.length == 2 ? typeParts[1] : "1", VariableNumber::new);
+                final Variable<Number> amount = typeParts.length == 2 ? instruction.getVariable(typeParts[1], Argument.NUMBER) : new Variable<>(1);
                 entityAmounts.put(type, amount);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Invalid entity type: " + typeParts[0], e);

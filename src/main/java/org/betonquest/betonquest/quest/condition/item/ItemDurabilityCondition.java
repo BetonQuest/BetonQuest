@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.item;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -21,7 +21,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
     /**
      * The durability needed.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * If the durability should be handled as value from 0 to 1.
@@ -35,7 +35,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
      * @param amount   the durability needed
      * @param relative if the durability should be handled as value from 0 to 1
      */
-    public ItemDurabilityCondition(final EquipmentSlot slot, final VariableNumber amount, final boolean relative) {
+    public ItemDurabilityCondition(final EquipmentSlot slot, final Variable<Number> amount, final boolean relative) {
         this.slot = slot;
         this.amount = amount;
         this.relative = relative;

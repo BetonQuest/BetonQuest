@@ -79,6 +79,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param playerDataStorage   the player data storage to get the player language
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
+     * @param languageProvider    the language provider to get the default language
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final VariableProcessor variableProcessor,

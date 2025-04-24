@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -34,7 +35,7 @@ public class MMOCoreClassConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String className = instruction.next();
-        final VariableNumber classLevel = instruction.hasNext() ? instruction.get(VariableNumber::new) : null;
+        final Variable<Number> classLevel = instruction.hasNext() ? instruction.getVariable(Argument.NUMBER) : null;
         final boolean equal = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(
                 new MMOCoreClassCondition(CURRENT_CLASS.equals(className) ? null : className, classLevel, equal),

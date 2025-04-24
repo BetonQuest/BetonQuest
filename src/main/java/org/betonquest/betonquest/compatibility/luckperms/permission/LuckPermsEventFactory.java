@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 
 import java.util.ArrayList;
@@ -57,8 +57,8 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
         final List<VariableString> permissions = parseList(instruction, unparsedPermissions);
         final List<VariableString> contexts = parseList(instruction, instruction.getOptional("context", ""));
         final VariableString value = instruction.get(instruction.getOptional("value", ""), VariableString::new);
-        final VariableNumber expiry = instruction.get(instruction.getOptional("expiry", "0"),
-                VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> expiry = instruction.getVariable(instruction.getOptional("expiry", "0"),
+                Argument.NUMBER_NOT_LESS_THAN_ONE);
         final VariableString timeUnit = instruction.get(instruction.getOptional("unit", TimeUnit.DAYS.name()), VariableString::new);
 
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);

@@ -6,13 +6,12 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Event to add profession experience to a player.
  */
 public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
-
     /**
      * Profession to add experience to.
      */
@@ -21,7 +20,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
     /**
      * Amount to grant.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * If level should be added instead of experience.
@@ -35,7 +34,7 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
      * @param amount     the amount to grant
      * @param isLevel    whether to add level instead of experience
      */
-    public MMOCoreProfessionExperienceEvent(final Profession profession, final VariableNumber amount, final boolean isLevel) {
+    public MMOCoreProfessionExperienceEvent(final Profession profession, final Variable<Number> amount, final boolean isLevel) {
         this.profession = profession;
         this.amountVar = amount;
         this.isLevel = isLevel;

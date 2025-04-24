@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.health;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Requires the player to have specified amount of health (or more).
@@ -13,14 +13,14 @@ public class HealthCondition implements OnlineCondition {
     /**
      * The health value.
      */
-    private final VariableNumber health;
+    private final Variable<Number> health;
 
     /**
      * Creates a new health condition.
      *
      * @param health The health value
      */
-    public HealthCondition(final VariableNumber health) {
+    public HealthCondition(final Variable<Number> health) {
         this.health = health;
     }
 

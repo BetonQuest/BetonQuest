@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.take.AbstractTakeEventFactory;
 import org.betonquest.betonquest.quest.event.take.CheckType;
@@ -38,7 +39,7 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
         MMOItemsUtils.getMMOItemStack(itemType, itemID);
-        final VariableNumber deleteAmountVar = instruction.get(instruction.getOptional("amount", "1"), VariableNumber::new);
+        final Variable<Number> deleteAmountVar = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER);
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
         return new OnlineEventAdapter(new MMOItemsTakeEvent(itemType, itemID, deleteAmountVar, checkOrder, notificationSender), log, instruction.getPackage());
     }

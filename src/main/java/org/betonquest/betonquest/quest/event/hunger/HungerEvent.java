@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.hunger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,7 +18,7 @@ public class HungerEvent implements OnlineEvent {
     /**
      * The amount of hunger to apply.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Create the hunger event to set the given state.
@@ -26,7 +26,7 @@ public class HungerEvent implements OnlineEvent {
      * @param hunger the hunger type
      * @param amount the amount of hunger to apply
      */
-    public HungerEvent(final Hunger hunger, final VariableNumber amount) {
+    public HungerEvent(final Hunger hunger, final Variable<Number> amount) {
         this.hunger = hunger;
         this.amount = amount;
     }

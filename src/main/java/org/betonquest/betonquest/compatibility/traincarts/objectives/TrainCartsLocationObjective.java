@@ -8,7 +8,6 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,9 +24,9 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
     private final Variable<Location> loc;
 
     /**
-     * The {@link VariableNumber} that stores the range around the location.
+     * The range around the location.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * Creates a new {@link TrainCartsLocationObjective}.
@@ -37,7 +36,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      * @param range       the range around the location
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsLocationObjective(final Instruction instruction, final Variable<Location> loc, final VariableNumber range) throws QuestException {
+    public TrainCartsLocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
         super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
         this.loc = loc;
         this.range = range;

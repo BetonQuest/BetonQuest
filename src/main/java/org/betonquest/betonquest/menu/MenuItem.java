@@ -14,7 +14,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.bukkit.Material;
@@ -81,14 +81,14 @@ public class MenuItem extends SimpleYMLSection {
         try {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
-            final VariableNumber amount = new VariableNumber(instance.getVariableProcessor(), pack,
+            final Variable<Number> amount = new Variable<>(instance.getVariableProcessor(), pack,
                     new DefaultSetting<>("1") {
                         @Override
                         @SuppressWarnings("PMD.ShortMethodName")
                         protected String of() throws Missing {
                             return getString("amount");
                         }
-                    }.get());
+                    }.get(), Argument.NUMBER);
             this.item = new Item(instance.getFeatureAPI(), itemID, amount);
             // load description
             if (section.contains("text")) {

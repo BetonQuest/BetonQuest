@@ -9,7 +9,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -47,7 +46,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
         }
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
-        final VariableNumber range = instruction.get(instruction.getOptional("range", "0"), VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(instruction.getOptional("range", "0"), Argument.NUMBER);
         final boolean cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getOptional("hand");
         final EquipmentSlot slot;

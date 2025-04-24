@@ -12,7 +12,8 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.types.NumberParser;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -106,7 +107,7 @@ public abstract class HologramLoop {
         } catch (final NumberFormatException e) {
             throw new QuestException("Could not parse check interval", e);
         }
-        final VariableNumber maxRange = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, section.getString("max_range", "0"));
+        final Variable<Number> maxRange = new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, section.getString("max_range", "0"), NumberParser.NUMBER);
 
         final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
         final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));

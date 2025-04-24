@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +25,7 @@ public class MoneyEvent implements PlayerEvent {
     /**
      * Amount to modify the balance.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * If the current balance should be multiplied with the amount.
@@ -53,7 +53,7 @@ public class MoneyEvent implements PlayerEvent {
      * @param givenSender the notification wrapper if the player should get a message when getting money
      * @param takenSender the notification wrapper if the player should get a message when loosing money
      */
-    public MoneyEvent(final Economy economy, final VariableNumber amount, final boolean multi,
+    public MoneyEvent(final Economy economy, final Variable<Number> amount, final boolean multi,
                       @Nullable final IngameNotificationSender givenSender, @Nullable final IngameNotificationSender takenSender) {
         this.economy = economy;
         this.amount = amount;

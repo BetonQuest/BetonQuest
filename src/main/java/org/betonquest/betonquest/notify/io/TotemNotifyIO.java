@@ -6,7 +6,9 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,7 +29,7 @@ public class TotemNotifyIO extends NotifyIO {
      * The totems customModelData.
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
-    private final int customModelData;
+    private final Variable<Number> variableCustomModelData;
 
     /**
      * Creates a new TotemNotifyIO instance based on the user's instruction string.
@@ -38,18 +40,19 @@ public class TotemNotifyIO extends NotifyIO {
      */
     public TotemNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
-        customModelData = getIntegerData("custommodeldata", 2);
+        variableCustomModelData = getNumberData("custommodeldata", 2);
     }
 
     @Override
-    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
-        sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem());
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
+        sendOffhandPacket(onlineProfile.getPlayer(), buildFakeTotem(onlineProfile));
         playSilentTotemEffect(onlineProfile.getPlayer());
         sendOffhandPacket(onlineProfile.getPlayer(), onlineProfile.getPlayer().getInventory().getItemInOffHand());
     }
 
-    private ItemStack buildFakeTotem() {
+    private ItemStack buildFakeTotem(final Profile profile) throws QuestException {
         final ItemStack fakeTotem = new ItemStack(Material.TOTEM_OF_UNDYING);
+        final int customModelData = variableCustomModelData.getValue(profile).intValue();
         fakeTotem.editMeta(meta -> meta.setCustomModelData(customModelData));
         return fakeTotem;
     }

@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -58,7 +59,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final HeroesClassType classType = instruction.getEnum(HeroesClassType.class);
         final VariableString heroClass = instruction.get(VariableString::new);
-        final VariableNumber level = instruction.get(instruction.getOptional("level"), VariableNumber::new);
+        final Variable<Number> level = instruction.getVariable(instruction.getOptional("level"), Argument.NUMBER);
 
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new HeroesClassCondition(characterManager, classManager, classType, heroClass, level),

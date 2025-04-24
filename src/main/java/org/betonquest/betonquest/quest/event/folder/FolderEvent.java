@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,19 +59,19 @@ public class FolderEvent implements NullableEvent {
      * The delay to apply before running the events.
      */
     @Nullable
-    private final VariableNumber delay;
+    private final Variable<Number> delay;
 
     /**
      * The delay to apply between each event.
      */
     @Nullable
-    private final VariableNumber period;
+    private final Variable<Number> period;
 
     /**
      * The number of events to run.
      */
     @Nullable
-    private final VariableNumber random;
+    private final Variable<Number> random;
 
     /**
      * The events to run.
@@ -112,8 +112,8 @@ public class FolderEvent implements NullableEvent {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
                        final VariableList<EventID> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
-                       @Nullable final VariableNumber delay, @Nullable final VariableNumber period,
-                       @Nullable final VariableNumber random, final TimeUnit timeUnit, final boolean cancelOnLogout,
+                       @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
+                       @Nullable final Variable<Number> random, final TimeUnit timeUnit, final boolean cancelOnLogout,
                        final VariableList<ConditionID> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;

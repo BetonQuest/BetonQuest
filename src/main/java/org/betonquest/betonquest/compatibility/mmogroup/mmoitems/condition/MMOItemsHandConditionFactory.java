@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -50,14 +51,14 @@ public class MMOItemsHandConditionFactory implements PlayerConditionFactory {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
 
-        VariableNumber amount = instruction.get("1", VariableNumber::new);
+        Variable<Number> amount = new Variable<>(1);
         boolean offhand = false;
         while (instruction.hasNext()) {
             final String next = instruction.next();
             if (OFFHAND_KEY.equals(next)) {
                 offhand = true;
             } else {
-                amount = instruction.get(next, VariableNumber::new);
+                amount = instruction.getVariable(next, Argument.NUMBER);
             }
         }
         final BetonQuestLogger log = loggerFactory.create(MMOItemsHandCondition.class);

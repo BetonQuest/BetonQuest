@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -30,7 +31,7 @@ public class ScoreboardObjectiveConditionFactory implements PlayerConditionFacto
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String objective = instruction.next();
-        final VariableNumber count = instruction.get(VariableNumber::new);
+        final Variable<Number> count = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new ScoreboardObjectiveCondition(objective, count), data);
     }
 }

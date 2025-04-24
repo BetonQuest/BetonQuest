@@ -10,9 +10,10 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Fires specified events for every player in the party.
@@ -48,8 +49,8 @@ public class PartyEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber range = instruction.get(VariableNumber::new);
-        final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
         final VariableList<ConditionID> conditions = instruction.get(IDArgument.ofList(ConditionID::new));
         final VariableList<EventID> events = instruction.get(IDArgument.ofList(EventID::new));
         return new OnlineEventAdapter(

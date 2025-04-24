@@ -3,7 +3,6 @@ package org.betonquest.betonquest.instruction.argument;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableEnum;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 
@@ -14,18 +13,6 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
  */
 @FunctionalInterface
 public interface VariableArgument<T> {
-
-    /**
-     * {@link VariableNumber} argument with {@link VariableNumber#NOT_LESS_THAN_ZERO_CHECKER}.
-     */
-    VariableArgument<VariableNumber> NUMBER_NOT_LESS_THAN_ZERO = (variableProcessor, pack, input) ->
-            new VariableNumber(variableProcessor, pack, input, VariableNumber.NOT_LESS_THAN_ZERO_CHECKER);
-
-    /**
-     * {@link VariableNumber} argument with {@link VariableNumber#NOT_LESS_THAN_ONE_CHECKER}.
-     */
-    VariableArgument<VariableNumber> NUMBER_NOT_LESS_THAN_ONE = (variableProcessor, pack, input) ->
-            new VariableNumber(variableProcessor, pack, input, VariableNumber.NOT_LESS_THAN_ONE_CHECKER);
 
     /**
      * {@link VariableString} argument with the {@code replaceUnderscores} flag set.

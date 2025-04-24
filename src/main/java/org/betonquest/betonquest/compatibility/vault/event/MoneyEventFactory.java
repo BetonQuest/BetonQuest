@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -73,9 +74,9 @@ public class MoneyEventFactory implements PlayerEventFactory {
         } else {
             multi = false;
         }
-        final VariableNumber amount;
+        final Variable<Number> amount;
         try {
-            amount = new VariableNumber(variableProcessor, instruction.getPackage(), string);
+            amount = new Variable<>(variableProcessor, instruction.getPackage(), string, Argument.NUMBER);
         } catch (final QuestException e) {
             throw new QuestException("Could not parse money amount: " + e.getMessage(), e);
         }

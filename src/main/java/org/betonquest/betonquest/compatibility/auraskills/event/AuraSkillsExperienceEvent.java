@@ -7,7 +7,7 @@ import dev.aurelium.auraskills.api.user.SkillsUser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
 
@@ -21,9 +21,9 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
     private final AuraSkillsApi auraSkillsApi;
 
     /**
-     * The {@link VariableNumber} of experience to give.
+     * The amount of experience to give.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * The {@link VariableString} of the Skill name to give experience in.
@@ -39,11 +39,11 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
      * Create a new AuraSkills experience event.
      *
      * @param auraSkillsApi the {@link AuraSkillsApi}.
-     * @param amountVar     the {@link VariableNumber} amount of experience to give the player in the skill.
+     * @param amountVar     the amount of experience to give the player in the skill.
      * @param nameVar       the {@link VariableString} of the {@link Skill} name to give experience in.
      * @param isLevel       {@code true} if the amount is a level. Otherwise {@code false} if the amount is experience.
      */
-    public AuraSkillsExperienceEvent(final AuraSkillsApi auraSkillsApi, final VariableNumber amountVar,
+    public AuraSkillsExperienceEvent(final AuraSkillsApi auraSkillsApi, final Variable<Number> amountVar,
                                      final VariableString nameVar, final boolean isLevel) {
         this.auraSkillsApi = auraSkillsApi;
         this.amountVar = amountVar;

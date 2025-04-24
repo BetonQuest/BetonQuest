@@ -7,7 +7,8 @@ import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
@@ -57,8 +58,8 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         } else {
             throw new QuestException("Invalid type for random number variable");
         }
-        final VariableNumber low = parseFirst(instruction);
-        final VariableNumber high = parseSecond(instruction);
+        final Variable<Number> low = parseFirst(instruction);
+        final Variable<Number> high = parseSecond(instruction);
         return new NullableVariableAdapter(new RandomNumberVariable(ThreadLocalRandom.current(), low, high, fractional, format));
     }
 
@@ -77,45 +78,45 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         return null;
     }
 
-    private VariableNumber parseFirst(final Instruction instruction) throws QuestException {
+    private Variable<Number> parseFirst(final Instruction instruction) throws QuestException {
         final String start = instruction.next();
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
-                return instruction.get(start.substring(0, start.indexOf('~')), VariableNumber::new);
+                return instruction.getVariable(start.substring(0, start.indexOf('~')), Argument.NUMBER);
             } else {
                 final String next = instruction.next();
-                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), VariableNumber::new);
+                return instruction.getVariable(start + '.' + next.substring(0, next.indexOf('~')), Argument.NUMBER);
             }
         }
     }
 
-    private VariableNumber parseSecond(final Instruction instruction) throws QuestException {
+    private Variable<Number> parseSecond(final Instruction instruction) throws QuestException {
         final String start = instruction.current().substring(instruction.current().indexOf('~') + 1);
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, VariableNumber::new);
+            return instruction.getVariable(instruction.hasNext() ? start + '.' + instruction.next() : start, Argument.NUMBER);
         }
     }
 
     /**
-     * Converts a variable part into the a {@link VariableNumber}.
+     * Converts a variable part into a Variable Number.
      *
      * @param start       The String to start with, including '{'
      * @param instruction The {@link Instruction} to retrieve a Variable
-     * @return a new {@link VariableNumber} from the variable
-     * @throws QuestException if instruction ends before a variable is resolved
+     * @return a new Variable Number
+     * @throws QuestException if the instruction ends before a variable is resolved
      */
-    private VariableNumber parseToVariable(final String start, final Instruction instruction) throws QuestException {
+    private Variable<Number> parseToVariable(final String start, final Instruction instruction) throws QuestException {
         final StringBuilder builder = new StringBuilder("%");
         builder.append(start.substring(1)).append('.');
         while (true) {
             final String current = instruction.next();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return instruction.get(builder.toString(), VariableNumber::new);
+                return instruction.getVariable(builder.toString(), Argument.NUMBER);
             } else {
                 builder.append(current).append('.');
             }

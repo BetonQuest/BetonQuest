@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.random;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
@@ -23,12 +23,12 @@ public class RandomNumberVariable implements NullableVariable {
     /**
      * The lower bar of the random amount.
      */
-    private final VariableNumber low;
+    private final Variable<Number> low;
 
     /**
      * The higher bar of the random amount.
      */
-    private final VariableNumber high;
+    private final Variable<Number> high;
 
     /**
      * If the value should be returned as {@code double}.
@@ -50,7 +50,7 @@ public class RandomNumberVariable implements NullableVariable {
      * @param fractional if the value should be returned as {@code double}
      * @param format     the digit amount to round to in fractional mode stored in pattern
      */
-    public RandomNumberVariable(final Random random, final VariableNumber low, final VariableNumber high, final boolean fractional, @Nullable final DecimalFormat format) {
+    public RandomNumberVariable(final Random random, final Variable<Number> low, final Variable<Number> high, final boolean fractional, @Nullable final DecimalFormat format) {
         this.random = random;
         this.low = low;
         this.high = high;

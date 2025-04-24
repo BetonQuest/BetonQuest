@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,7 +40,7 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
-    public PickupObjective(final Instruction instruction, final VariableNumber targetAmount,
+    public PickupObjective(final Instruction instruction, final Variable<Number> targetAmount,
                            final BetonQuestLogger log, final VariableList<Item> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.log = log;

@@ -8,8 +8,9 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Factory to create global point conditions from {@link Instruction}s.
@@ -42,7 +43,7 @@ public class GlobalPointConditionFactory implements PlayerConditionFactory, Play
 
     private GlobalPointCondition parse(final Instruction instruction) throws QuestException {
         final VariableIdentifier category = instruction.get(VariableIdentifier::new);
-        final VariableNumber count = instruction.get(VariableNumber::new);
+        final Variable<Number> count = instruction.getVariable(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");
         return new GlobalPointCondition(globalData, category, count, equal);
     }

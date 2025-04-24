@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -43,8 +44,8 @@ public class EffectEventFactory implements PlayerEventFactory {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final VariableNumber duration = instruction.get(VariableNumber::new);
-            final VariableNumber level = instruction.get(VariableNumber::new);
+            final Variable<Number> duration = instruction.getVariable(Argument.NUMBER);
+            final Variable<Number> level = instruction.getVariable(Argument.NUMBER);
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

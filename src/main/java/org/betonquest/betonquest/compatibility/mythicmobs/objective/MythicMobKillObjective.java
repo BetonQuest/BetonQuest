@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -34,12 +34,12 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The minimal level the killed mob must have to count.
      */
-    private final VariableNumber minMobLevel;
+    private final Variable<Number> minMobLevel;
 
     /**
      * The maximal level the killed mob must have to count.
      */
-    private final VariableNumber maxMobLevel;
+    private final Variable<Number> maxMobLevel;
 
     /**
      * The radius in which any of the specified mobs dying will progress the objective for players.
@@ -70,8 +70,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @param marked                       the text with which the mob must have been marked to count
      * @throws QuestException if the instruction is invalid
      */
-    public MythicMobKillObjective(final Instruction instruction, final VariableNumber targetAmount, final List<String> names,
-                                  final VariableNumber minMobLevel, final VariableNumber maxMobLevel,
+    public MythicMobKillObjective(final Instruction instruction, final Variable<Number> targetAmount, final List<String> names,
+                                  final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
                                   final double deathRadiusAllPlayers, final double neutralDeathRadiusAllPlayers, @Nullable final VariableIdentifier marked)
             throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");

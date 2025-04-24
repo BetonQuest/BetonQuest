@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +28,7 @@ public class Item {
     /**
      * Size of the stack to create.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Create a wrapper for Quest Item and target stack size.
@@ -38,7 +38,7 @@ public class Item {
      * @param amount     the size to set the created ItemStack to
      * @throws QuestException when the QuestItem could not be created
      */
-    public Item(final FeatureAPI featureAPI, final ItemID itemID, final VariableNumber amount) throws QuestException {
+    public Item(final FeatureAPI featureAPI, final ItemID itemID, final Variable<Number> amount) throws QuestException {
         this.itemID = itemID;
         this.featureAPI = featureAPI;
         this.amount = amount;
@@ -90,7 +90,7 @@ public class Item {
      *
      * @return the stores amount
      */
-    public VariableNumber getAmount() {
+    public Variable<Number> getAmount() {
         return amount;
     }
 }

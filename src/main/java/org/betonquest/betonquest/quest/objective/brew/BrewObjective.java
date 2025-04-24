@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileValueMap;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -60,7 +60,7 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
+    public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
                          final ProfileProvider profileProvider, final Item potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
         this.log = log;

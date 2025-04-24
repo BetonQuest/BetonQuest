@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.random;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -21,12 +21,12 @@ public class RandomCondition implements NullableCondition {
     /**
      * The range of the random number to be true.
      */
-    private final VariableNumber rangeOfRandom;
+    private final Variable<Number> rangeOfRandom;
 
     /**
      * The maximum value that the random number can be.
      */
-    private final VariableNumber valueMax;
+    private final Variable<Number> valueMax;
 
     /**
      * The constructor of the random condition.
@@ -35,7 +35,7 @@ public class RandomCondition implements NullableCondition {
      * @param valueMax      The maximum value that the random number can be.
      * @param rangeOfRandom The range of the random number to be true.
      */
-    public RandomCondition(final Random random, final VariableNumber valueMax, final VariableNumber rangeOfRandom) {
+    public RandomCondition(final Random random, final Variable<Number> valueMax, final Variable<Number> rangeOfRandom) {
         this.random = random;
         this.valueMax = valueMax;
         this.rangeOfRandom = rangeOfRandom;

@@ -5,17 +5,16 @@ import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Event to add class experience to a player.
  */
 public class MMOCoreClassExperienceEvent implements PlayerEvent {
-
     /**
      * Amount to grant.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * If level should be added instead of experience.
@@ -28,7 +27,7 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
      * @param amount  the amount to grant
      * @param isLevel whether to add level instead of experience
      */
-    public MMOCoreClassExperienceEvent(final VariableNumber amount, final boolean isLevel) {
+    public MMOCoreClassExperienceEvent(final Variable<Number> amount, final boolean isLevel) {
         this.amountVar = amount;
         this.isLevel = isLevel;
     }

@@ -22,7 +22,6 @@ public class CachingBetonQuestLoggerFactory implements BetonQuestLoggerFactory {
 
     /**
      * Creates a new instance of a caching logger factory.
-     * <p>
      *
      * @param loggerFactory The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.time;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -11,8 +10,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -37,21 +36,14 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private final PrimaryServerThreadData data;
 
     /**
-     * The variable processor to use for creating the time variable.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Creates the time event factory.
      *
-     * @param server            the server to use
-     * @param data              the data for primary server thread access
-     * @param variableProcessor variable processor to create variables with
+     * @param server the server to use
+     * @param data   the data for primary server thread access
      */
-    public TimeEventFactory(final Server server, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public TimeEventFactory(final Server server, final PrimaryServerThreadData data) {
         this.server = server;
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -71,7 +63,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
-        final VariableNumber rawTime = parseTime(instruction.getPackage(), timeString, time != Time.SET);
+        final Variable<Number> rawTime = parseTime(instruction, timeString, time != Time.SET);
         final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
         final boolean hourFormat = !instruction.hasArgument("ticks");
         return new NullableEventAdapter(new TimeEvent(time, rawTime, worldSelector, hourFormat));
@@ -88,9 +80,9 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         };
     }
 
-    private VariableNumber parseTime(final QuestPackage questPackage, final String timeString, final boolean cutFirst) throws QuestException {
+    private Variable<Number> parseTime(final Instruction instruction, final String timeString, final boolean cutFirst) throws QuestException {
         final String rawTime = cutFirst ? timeString.substring(1) : timeString;
-        return new VariableNumber(variableProcessor, questPackage, rawTime);
+        return instruction.getVariable(rawTime, Argument.NUMBER);
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {

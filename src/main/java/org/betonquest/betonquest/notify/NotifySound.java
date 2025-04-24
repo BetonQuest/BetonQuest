@@ -52,8 +52,8 @@ class NotifySound {
 
         final Variable<Location> variableLocation = getVariableLocation(data);
         final SoundCategory soundCategory = getSoundCategory(data);
-        final float volume = notify.getFloatData(KEY_SOUND_VOLUME, 1);
-        final float pitch = notify.getFloatData(KEY_SOUND_PITCH, 1);
+        final Variable<Number> volume = notify.getNumberData(KEY_SOUND_VOLUME, 1);
+        final Variable<Number> pitch = notify.getNumberData(KEY_SOUND_PITCH, 1);
 
         final String playerOffsetString = data.get(KEY_SOUND_PLAYER_OFFSET);
         Float playerOffsetDistance = null;
@@ -76,9 +76,14 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, variableLocation, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
-    private QuestConsumer<OnlineProfile> getSoundPlayer(@Nullable final Sound sound, final String soundString, @Nullable final Variable<Location> variableLocation, @Nullable final Variable<Vector> playerOffset, @Nullable final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
+    private QuestConsumer<OnlineProfile> getSoundPlayer(
+            @Nullable final Sound sound, final String soundString, @Nullable final Variable<Location> variableLocation,
+            @Nullable final Variable<Vector> playerOffset, @Nullable final Float playerOffsetDistance,
+            final SoundCategory soundCategory, final Variable<Number> variableVolume, final Variable<Number> variablePitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, variableLocation, playerOffset, playerOffsetDistance);
+            final float volume = variableVolume.getValue(onlineProfile).floatValue();
+            final float pitch = variablePitch.getValue(onlineProfile).floatValue();
             final Player player = onlineProfile.getPlayer();
             if (sound == null) {
                 player.playSound(finalLocation, soundString, soundCategory, volume, pitch);

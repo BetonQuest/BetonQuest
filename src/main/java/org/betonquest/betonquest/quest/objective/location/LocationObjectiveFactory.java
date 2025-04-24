@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Location;
 
 /**
@@ -22,7 +21,7 @@ public class LocationObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableNumber range = instruction.get(VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         return new LocationObjective(instruction, loc, range);
     }
 }

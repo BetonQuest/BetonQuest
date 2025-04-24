@@ -41,6 +41,9 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param onlineProfile the online profile
      * @param log           the custom logger for the conversation
      * @param colors        the conversation colors
+     * @param showNumber    whether to show the number of the conversation
+     * @param showNPCText   whether to show the NPC text
+     * @param printMessages whether to print messages
      */
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                                    final ConversationColors.Colors colors, final boolean showNumber, final boolean showNPCText,

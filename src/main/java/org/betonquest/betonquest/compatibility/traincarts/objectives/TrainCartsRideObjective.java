@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log, final VariableString name) throws QuestException {
+    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final VariableString name) throws QuestException {
         super(instruction, targetAmount, null);
         this.log = log;
         this.name = name;

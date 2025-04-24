@@ -3,10 +3,12 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiPredicate;
 
 /**
  * Checks if the player is holding a wand.
@@ -30,12 +31,12 @@ public class WandCondition implements OnlineCondition {
     /**
      * Execution of the wand type check.
      */
-    private final BiPredicate<Player, Profile> typeCheck;
+    private final QuestBiPredicate<Player, Profile> typeCheck;
 
     /**
      * Required spells on the wand.
      */
-    private final Map<String, VariableNumber> spells;
+    private final Map<String, Variable<Number>> spells;
 
     /**
      * Wand name.
@@ -47,7 +48,7 @@ public class WandCondition implements OnlineCondition {
      * Required Wand amount.
      */
     @Nullable
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Create a new Magic Wand Condition.
@@ -59,7 +60,7 @@ public class WandCondition implements OnlineCondition {
      * @param amount optional required wand amount
      */
     public WandCondition(final MagicAPI api, final CheckType type, @Nullable final VariableString name,
-                         final Map<String, VariableNumber> spells, @Nullable final VariableNumber amount) {
+                         final Map<String, Variable<Number>> spells, @Nullable final Variable<Number> amount) {
         this.api = api;
         this.name = name;
         this.spells = spells;
@@ -68,7 +69,7 @@ public class WandCondition implements OnlineCondition {
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.SwitchDensity"})
-    private BiPredicate<Player, Profile> getCheck(final CheckType checkType) {
+    private QuestBiPredicate<Player, Profile> getCheck(final CheckType checkType) {
         return (player, profile) -> switch (checkType) {
             case LOST -> {
                 for (final LostWand lost : api.getLostWands()) {
@@ -99,7 +100,7 @@ public class WandCondition implements OnlineCondition {
                     final Wand wand = api.getWand(item);
                     if (checkWand(wand, profile)) {
                         heldAmount += item.getAmount();
-                        if (amount == null || heldAmount >= amount.getInt(profile)) {
+                        if (amount == null || heldAmount >= amount.getValue(profile).intValue()) {
                             yield true;
                         }
                     }
@@ -110,7 +111,7 @@ public class WandCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) {
+    public boolean check(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         return typeCheck.test(player, profile);
     }
@@ -122,14 +123,14 @@ public class WandCondition implements OnlineCondition {
      * @return true if the wand meets the conditions, false otherwise
      */
     @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
-    private boolean checkWand(final Wand wand, final Profile profile) {
-        if (name != null && !name.getString(profile).equalsIgnoreCase(wand.getTemplateKey())) {
+    private boolean checkWand(final Wand wand, final Profile profile) throws QuestException {
+        if (name != null && !name.getValue(profile).equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }
         if (!spells.isEmpty()) {
             spell:
-            for (final Map.Entry<String, VariableNumber> entry : spells.entrySet()) {
-                final int level = entry.getValue().getInt(profile);
+            for (final Map.Entry<String, Variable<Number>> entry : spells.entrySet()) {
+                final int level = entry.getValue().getValue(profile).intValue();
                 for (final String wandSpell : wand.getSpells()) {
                     if (wandSpell.toLowerCase(Locale.ROOT).startsWith(entry.getKey().toLowerCase(Locale.ROOT)) && wand.getSpellLevel(entry.getKey()) >= level) {
                         continue spell;
