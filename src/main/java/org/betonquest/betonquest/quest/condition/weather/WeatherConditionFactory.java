@@ -7,13 +7,15 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
+import org.bukkit.World;
 
 /**
  * Factory to create weather conditions from {@link Instruction}s.
@@ -44,7 +46,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Weather weather = Weather.parseWeather(instruction.next());
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"), Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }
@@ -56,7 +58,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
             return new ThrowExceptionPlayerlessCondition();
         }
         final Weather weather = Weather.parseWeather(instruction.next());
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }

@@ -7,11 +7,13 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
+import org.bukkit.Location;
 
 /**
  * Factory to create explosion events from {@link Instruction}s.
@@ -45,7 +47,7 @@ public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEven
         final boolean setsFire = "1".equals(instruction.next());
         final boolean breaksBlocks = "1".equals(instruction.next());
         final VariableNumber power = instruction.get(VariableNumber::new);
-        final VariableLocation location = instruction.get(VariableLocation::new);
+        final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         return new NullableEventAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));
     }
 }

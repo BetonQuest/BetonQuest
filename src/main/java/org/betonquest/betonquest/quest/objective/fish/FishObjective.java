@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -40,7 +40,7 @@ public class FishObjective extends CountingObjective implements Listener {
      * Location where the fish should be caught.
      */
     @Nullable
-    private final VariableLocation hookTargetLocation;
+    private final Variable<Location> hookTargetLocation;
 
     /**
      * Range around the location where the fish should be caught.
@@ -60,7 +60,7 @@ public class FishObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public FishObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log,
-                         final Item item, @Nullable final VariableLocation hookTargetLocation,
+                         final Item item, @Nullable final Variable<Location> hookTargetLocation,
                          @Nullable final VariableNumber rangeVar) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");
         this.log = log;

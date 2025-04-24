@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 
 /**
@@ -14,14 +14,14 @@ public class TeleportEvent implements OnlineEvent {
     /**
      * Location to teleport to.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * Create a new teleport event that teleports the player to the given location.
      *
      * @param location location to teleport to
      */
-    public TeleportEvent(final VariableLocation location) {
+    public TeleportEvent(final Variable<Location> location) {
         this.location = location;
     }
 

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.drop;
 
-import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -20,24 +20,24 @@ public class DropEvent implements NullableEvent {
     private final VariableList<Item> items;
 
     /**
-     * Selector for the drop location.
+     * Location to drop the items at.
      */
-    private final Selector<Location> locationSelector;
+    private final Variable<Location> location;
 
     /**
      * Creates an event that drops the given items at a location selected by the given selector.
      *
-     * @param items            items to be dropped
-     * @param locationSelector selector for the drop location
+     * @param items    items to be dropped
+     * @param location the location to drop the items at
      */
-    public DropEvent(final VariableList<Item> items, final Selector<Location> locationSelector) {
+    public DropEvent(final VariableList<Item> items, final Variable<Location> location) {
         this.items = items;
-        this.locationSelector = locationSelector;
+        this.location = location;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Location location = locationSelector.selectFor(profile);
+        final Location location = this.location.getValue(profile);
         for (final Item itemDefinition : items.getValue(profile)) {
             final ItemStack item = itemDefinition.getItem().generate(1, profile);
             final int amount = itemDefinition.getAmount().getValue(profile).intValue();

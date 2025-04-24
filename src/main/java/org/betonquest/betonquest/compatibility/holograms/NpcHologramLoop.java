@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.location.VariableVector;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
@@ -97,11 +98,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
-            try {
-                vector.add(new VariableVector(BetonQuest.getInstance().getVariableProcessor(), pack, "(" + stringVector + ")").getValue(null));
-            } catch (final QuestException e) {
-                throw new QuestException("Could not parse vector '" + stringVector + "': " + e.getMessage(), e);
-            }
+            vector.add(new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);

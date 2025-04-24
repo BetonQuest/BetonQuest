@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +28,7 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * The location to teleport the Npc to.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * Spawns the Npc if not already spawned.
@@ -43,7 +43,7 @@ public class NpcTeleportEvent implements NullableEvent {
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportEvent(final FeatureAPI featureAPI, final NpcID npcId, final VariableLocation location, final boolean spawn) {
+    public NpcTeleportEvent(final FeatureAPI featureAPI, final NpcID npcId, final Variable<Location> location, final boolean spawn) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.location = location;

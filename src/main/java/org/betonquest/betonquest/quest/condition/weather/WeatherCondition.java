@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.weather;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ public class WeatherCondition implements NullableCondition {
     /**
      * The world to check the weather in.
      */
-    private final VariableWorld variableWorld;
+    private final Variable<World> variableWorld;
 
     /**
      * Checks if the weather in the given world matches the weather of this condition.
@@ -29,7 +29,7 @@ public class WeatherCondition implements NullableCondition {
      * @param weather the weather to check for
      * @param world   the world to check the weather in
      */
-    public WeatherCondition(final Weather weather, final VariableWorld world) {
+    public WeatherCondition(final Weather weather, final Variable<World> world) {
         this.weather = weather;
         this.variableWorld = world;
     }

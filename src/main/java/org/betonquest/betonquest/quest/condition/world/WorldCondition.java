@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.world;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.World;
 
 /**
@@ -14,14 +14,14 @@ public class WorldCondition implements OnlineCondition {
     /**
      * The world to check.
      */
-    private final VariableWorld variableWorld;
+    private final Variable<World> variableWorld;
 
     /**
      * Create a new World condition.
      *
      * @param world the world to check
      */
-    public WorldCondition(final VariableWorld world) {
+    public WorldCondition(final Variable<World> world) {
         this.variableWorld = world;
     }
 

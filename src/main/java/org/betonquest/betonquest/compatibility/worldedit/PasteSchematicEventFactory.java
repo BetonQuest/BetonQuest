@@ -8,11 +8,13 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
+import org.bukkit.Location;
 
 import java.io.File;
 
@@ -52,7 +54,7 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final VariableNumber rotation = instruction.get(instruction.getOptional("rotation", "0"), VariableNumber::new);
 
         if (!folder.exists() || !folder.isDirectory()) {

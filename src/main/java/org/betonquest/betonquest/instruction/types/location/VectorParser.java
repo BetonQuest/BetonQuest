@@ -1,20 +1,17 @@
-package org.betonquest.betonquest.instruction.variable.location;
+package org.betonquest.betonquest.instruction.types.location;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Represents a vector that can contain variables.
+ * Parses a string to a vector.
  */
-public class VariableVector extends Variable<Vector> {
+public class VectorParser implements Argument<Vector> {
     /**
      * This regex matches everything except ';'.
      */
@@ -31,15 +28,9 @@ public class VariableVector extends Variable<Vector> {
     private static final Pattern PATTERN_VECTOR = Pattern.compile("^" + REGEX_VECTOR + "$");
 
     /**
-     * Resolves a string that may contain variables to a variable of the given type.
-     *
-     * @param variableProcessor the processor to create the variables
-     * @param pack              the package in which the variable is used in
-     * @param input             the string that may contain variables
-     * @throws QuestException if the variables could not be created or resolved to the given type
+     * Creates a new parser for vectors.
      */
-    public VariableVector(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input) throws QuestException {
-        super(variableProcessor, pack, input, VariableVector::parse);
+    public VectorParser() {
     }
 
     /**
@@ -78,5 +69,10 @@ public class VariableVector extends Variable<Vector> {
         } catch (final NumberFormatException e) {
             throw new QuestException("Could not parse a number in the vector. " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public Vector apply(final String string) throws QuestException {
+        return parse(string);
     }
 }

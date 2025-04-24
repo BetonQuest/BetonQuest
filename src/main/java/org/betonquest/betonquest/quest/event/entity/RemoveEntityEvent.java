@@ -3,11 +3,11 @@ package org.betonquest.betonquest.quest.event.entity;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -30,7 +30,7 @@ public class RemoveEntityEvent implements NullableEvent {
     /**
      * The location of the mob.
      */
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * The radius around the location.
@@ -64,7 +64,7 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param marked   the mark of the entity
      * @param kill     whether to kill the entities
      */
-    public RemoveEntityEvent(final VariableList<EntityType> types, final VariableLocation location, final VariableNumber radius,
+    public RemoveEntityEvent(final VariableList<EntityType> types, final Variable<Location> location, final VariableNumber radius,
                              @Nullable final VariableString name, @Nullable final VariableIdentifier marked, final boolean kill) {
         this.types = types;
         this.loc = location;

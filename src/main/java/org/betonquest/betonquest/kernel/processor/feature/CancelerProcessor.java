@@ -17,12 +17,14 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,7 +111,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final String[] points = helper.split("points");
         final JournalEntryID[] journal = helper.parseID("journal", JournalEntryID::new);
         final String rawLoc = GlobalVariableResolver.resolve(pack, section.getString("location"));
-        final VariableLocation location = rawLoc == null ? null : new VariableLocation(variableProcessor, pack, rawLoc);
+        final Variable<Location> location = rawLoc == null ? null : new Variable<>(variableProcessor, pack, rawLoc, Argument.LOCATION);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(conditions, location, events, objectives, tags, points, journal);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
         return new QuestCanceler(logger, section.getName(), plugin.getFeatureAPI(), pluginMessage, names, item, pack, cancelData);

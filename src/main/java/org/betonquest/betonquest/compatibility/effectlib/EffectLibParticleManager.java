@@ -11,8 +11,10 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -126,7 +128,7 @@ public class EffectLibParticleManager {
                 }
 
                 final Set<NpcID> npcs = loadNpcs(settings, pack);
-                final List<VariableLocation> locations = loadLocations(pack, settings, key);
+                final List<Variable<Location>> locations = loadLocations(pack, settings, key);
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
@@ -150,15 +152,16 @@ public class EffectLibParticleManager {
         loadParticleConfiguration();
     }
 
-    private List<VariableLocation> loadLocations(final QuestPackage pack, final ConfigurationSection settings, final String key) {
-        final List<VariableLocation> locations = new ArrayList<>();
+    private List<Variable<Location>> loadLocations(final QuestPackage pack, final ConfigurationSection settings, final String key) {
+        final List<Variable<Location>> locations = new ArrayList<>();
         if (settings.isList("locations")) {
             for (final String rawLocation : settings.getStringList("locations")) {
                 if (rawLocation == null) {
                     continue;
                 }
                 try {
-                    locations.add(new VariableLocation(BetonQuest.getInstance().getVariableProcessor(), pack, GlobalVariableResolver.resolve(pack, rawLocation)));
+                    final String rawLoc = GlobalVariableResolver.resolve(pack, rawLocation);
+                    locations.add(new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, rawLoc, Argument.LOCATION));
                 } catch (final QuestException exception) {
                     log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
                             + "Location is invalid:" + exception.getMessage());

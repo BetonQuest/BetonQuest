@@ -7,10 +7,12 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.util.Utils;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -51,7 +53,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");
         final String effectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
-        final VariableLocation loc = instruction.get(instruction.getOptional("loc"), VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
         final PlayerEvent playerEvent = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());

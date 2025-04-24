@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.condition.entity;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -29,7 +29,7 @@ public class EntityCondition implements NullableCondition {
     /**
      * The location of the entity's.
      */
-    private final VariableLocation loc;
+    private final Variable<Location> loc;
 
     /**
      * The range around the location to check for entities.
@@ -57,7 +57,7 @@ public class EntityCondition implements NullableCondition {
      * @param name          the name of the entity to check for
      * @param marked        the marked entity to check for
      */
-    public EntityCondition(final Map<EntityType, VariableNumber> entityAmounts, final VariableLocation loc,
+    public EntityCondition(final Map<EntityType, VariableNumber> entityAmounts, final Variable<Location> loc,
                            final VariableNumber range, @Nullable final VariableString name, @Nullable final VariableIdentifier marked) {
         this.entityAmounts = entityAmounts;
         this.loc = loc;

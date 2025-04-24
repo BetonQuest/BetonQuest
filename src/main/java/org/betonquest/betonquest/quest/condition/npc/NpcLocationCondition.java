@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +29,7 @@ public class NpcLocationCondition implements NullableCondition {
     /**
      * The location where the NPC has to be around.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * The maximal distance between the NPC and the radius location.
@@ -45,7 +45,7 @@ public class NpcLocationCondition implements NullableCondition {
      * @param radius     the maximal distance between the npc and the radius location
      */
     public NpcLocationCondition(final FeatureAPI featureAPI, final NpcID npcId,
-                                final VariableLocation location, final VariableNumber radius) {
+                                final Variable<Location> location, final VariableNumber radius) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.location = location;

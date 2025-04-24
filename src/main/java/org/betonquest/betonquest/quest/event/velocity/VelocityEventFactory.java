@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableVector;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.bukkit.util.Vector;
 
 /**
  * Factory to create velocity events from {@link Instruction}s.
@@ -42,7 +44,7 @@ public class VelocityEventFactory implements PlayerEventFactory {
         if (rawVector == null) {
             throw new QuestException("A 'vector' is required");
         }
-        final VariableVector vector = new VariableVector(BetonQuest.getInstance().getVariableProcessor(), instruction.getPackage(), rawVector);
+        final Variable<Vector> vector = new Variable<>(BetonQuest.getInstance().getVariableProcessor(), instruction.getPackage(), rawVector, Argument.VECTOR);
         final VectorDirection direction = instruction.getEnum(instruction.getOptional("direction"), VectorDirection.class, VectorDirection.ABSOLUTE);
         final VectorModification modification = instruction.getEnum(instruction.getOptional("modification"), VectorModification.class, VectorModification.SET);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(

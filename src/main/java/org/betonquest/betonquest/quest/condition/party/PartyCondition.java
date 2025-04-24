@@ -7,11 +7,12 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class PartyCondition implements NullableCondition {
     /**
      * The location to check for party members.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * The range to check for party members.
@@ -75,7 +76,7 @@ public class PartyCondition implements NullableCondition {
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyCondition(final VariableLocation location, final VariableNumber range,
+    public PartyCondition(final Variable<Location> location, final VariableNumber range,
                           final VariableList<ConditionID> conditions, final VariableList<ConditionID> everyone,
                           final VariableList<ConditionID> anyone, @Nullable final VariableNumber count,
                           final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {

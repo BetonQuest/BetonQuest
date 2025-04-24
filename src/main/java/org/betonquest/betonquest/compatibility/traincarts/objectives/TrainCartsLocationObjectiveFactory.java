@@ -4,9 +4,11 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.bukkit.Location;
 
 /**
  * Factory for creating {@link TrainCartsLocationObjective} instances from {@link Instruction}s.
@@ -20,7 +22,7 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final VariableNumber range = instruction.get(instruction.getOptional("range", "1"), VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
         return new TrainCartsLocationObjective(instruction, loc, range);
     }

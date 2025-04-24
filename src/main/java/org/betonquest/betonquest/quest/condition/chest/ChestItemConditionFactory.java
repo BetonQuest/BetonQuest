@@ -8,11 +8,13 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
+import org.bukkit.Location;
 
 /**
  * Factory to create chest item conditions from {@link Instruction}s.
@@ -44,7 +46,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
-        final VariableLocation loc = instruction.get(VariableLocation::new);
+        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final VariableList<Item> items = instruction.getItemList();
         return new ChestItemCondition(loc, items);
     }

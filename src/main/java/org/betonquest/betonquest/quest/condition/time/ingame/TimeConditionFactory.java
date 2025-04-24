@@ -7,13 +7,15 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
+import org.bukkit.World;
 
 /**
  * Factory to create test for time conditions from {@link Instruction}s.
@@ -44,7 +46,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final TimeFrame timeFrame = TimeFrame.parse(instruction.next());
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"));
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"), Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
     }
@@ -56,7 +58,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
             return new ThrowExceptionPlayerlessCondition();
         }
         final TimeFrame timeFrame = TimeFrame.parse(instruction.next());
-        final VariableWorld world = new VariableWorld(variableProcessor, instruction.getPackage(), worldString);
+        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
     }

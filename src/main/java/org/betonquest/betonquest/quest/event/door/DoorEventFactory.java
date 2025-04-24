@@ -7,10 +7,12 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
+import org.bukkit.Location;
 
 import java.util.Locale;
 
@@ -43,7 +45,7 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
-        final VariableLocation location = instruction.get(VariableLocation::new);
+        final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         final String action = instruction.next();
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
@@ -54,15 +56,15 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
         return new NullableEventAdapter(doorEvent);
     }
 
-    private DoorEvent createOpenDoorEvent(final VariableLocation location) {
+    private DoorEvent createOpenDoorEvent(final Variable<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(true));
     }
 
-    private DoorEvent createCloseDoorEvent(final VariableLocation location) {
+    private DoorEvent createCloseDoorEvent(final Variable<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(false));
     }
 
-    private DoorEvent createToggleDoorEvent(final VariableLocation location) {
+    private DoorEvent createToggleDoorEvent(final Variable<Location> location) {
         return new DoorEvent(location, door -> door.setOpen(!door.isOpen()));
     }
 }

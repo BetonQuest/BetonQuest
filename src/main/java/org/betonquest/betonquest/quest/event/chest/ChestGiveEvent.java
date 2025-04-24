@@ -4,9 +4,10 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +29,7 @@ public class ChestGiveEvent implements NullableEvent {
     /**
      * The location of the block.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * Create the chest give event.
@@ -36,7 +37,7 @@ public class ChestGiveEvent implements NullableEvent {
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block
      */
-    public ChestGiveEvent(final VariableLocation location, final VariableList<Item> questItems) {
+    public ChestGiveEvent(final Variable<Location> location, final VariableList<Item> questItems) {
         this.questItems = questItems;
         this.location = location;
     }

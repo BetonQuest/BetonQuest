@@ -6,7 +6,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.bukkit.Location;
 
 /**
  * Factory for creating {@link DieObjective} instances from {@link Instruction}s.
@@ -30,7 +32,7 @@ public class DieObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final boolean cancel = instruction.hasArgument("cancel");
-        final VariableLocation location = instruction.get(instruction.getOptional("respawn"), VariableLocation::new);
+        final Variable<Location> location = instruction.getVariable(instruction.getOptional("respawn"), Argument.LOCATION);
         final BetonQuestLogger log = loggerFactory.create(DieObjective.class);
         return new DieObjective(instruction, log, cancel, location);
     }

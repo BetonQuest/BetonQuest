@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.explosion;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,7 +15,7 @@ public class ExplosionEvent implements NullableEvent {
     /**
      * The location of the explosion.
      */
-    private final VariableLocation location;
+    private final Variable<Location> location;
 
     /**
      * The power of the explosion.
@@ -40,7 +40,7 @@ public class ExplosionEvent implements NullableEvent {
      * @param setsFire     whether the explosion should set fire
      * @param breaksBlocks whether the explosion should break blocks
      */
-    public ExplosionEvent(final VariableLocation location, final VariableNumber power, final boolean setsFire, final boolean breaksBlocks) {
+    public ExplosionEvent(final Variable<Location> location, final VariableNumber power, final boolean setsFire, final boolean breaksBlocks) {
         this.location = location;
         this.power = power;
         this.setsFire = setsFire;

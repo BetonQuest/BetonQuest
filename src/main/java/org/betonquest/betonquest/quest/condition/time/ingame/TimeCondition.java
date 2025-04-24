@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.time.ingame;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.instruction.variable.location.VariableWorld;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.condition.time.Time;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.bukkit.World;
@@ -22,7 +22,7 @@ public class TimeCondition implements NullableCondition {
     /**
      * The variable world.
      */
-    private final VariableWorld variableWorld;
+    private final Variable<World> variableWorld;
 
     /**
      * Creates a new TimeCondition.
@@ -30,7 +30,7 @@ public class TimeCondition implements NullableCondition {
      * @param timeFrame     the time frame
      * @param variableWorld the variable world
      */
-    public TimeCondition(final TimeFrame timeFrame, final VariableWorld variableWorld) {
+    public TimeCondition(final TimeFrame timeFrame, final Variable<World> variableWorld) {
         this.timeFrame = timeFrame;
         this.variableWorld = variableWorld;
     }

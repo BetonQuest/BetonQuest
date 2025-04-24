@@ -3,8 +3,8 @@ package org.betonquest.betonquest.quest.event.setblock;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ public class SetBlockEvent implements NullableEvent {
     /**
      * The location.
      */
-    private final VariableLocation variableLocation;
+    private final Variable<Location> variableLocation;
 
     /**
      * Whether to apply physics.
@@ -35,7 +35,7 @@ public class SetBlockEvent implements NullableEvent {
      * @param variableLocation the location
      * @param applyPhysics     whether to apply physics
      */
-    public SetBlockEvent(final VariableBlockSelector selector, final VariableLocation variableLocation, final boolean applyPhysics) {
+    public SetBlockEvent(final VariableBlockSelector selector, final Variable<Location> variableLocation, final boolean applyPhysics) {
         this.selector = selector;
         this.variableLocation = variableLocation;
         this.applyPhysics = applyPhysics;

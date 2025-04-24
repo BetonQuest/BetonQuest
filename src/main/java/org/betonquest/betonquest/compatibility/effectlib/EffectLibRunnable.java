@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.location.VariableLocation;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -138,7 +138,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     }
 
     private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
-        for (final VariableLocation variableLocation : effect.locations()) {
+        for (final Variable<Location> variableLocation : effect.locations()) {
             final Location location;
             try {
                 location = variableLocation.getValue(profile);
