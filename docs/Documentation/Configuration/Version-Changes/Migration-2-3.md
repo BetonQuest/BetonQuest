@@ -261,7 +261,7 @@ notifications:
     io: suppress
 ````
 
-and if you only want sounds and no message, you configure the io to sound like this: `io: sound`.
+and if you only want sounds and no message, you use `sound` instead of `suppress` as io.
 
 ### 3.0.0-DEV-217 - Item Type :gear:
 
