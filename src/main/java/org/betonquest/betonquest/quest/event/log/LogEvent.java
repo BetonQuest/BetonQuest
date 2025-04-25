@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,7 +15,7 @@ public class LogEvent implements NullableEvent {
     /**
      * Message to log.
      */
-    private final VariableString message;
+    private final Variable<String> message;
 
     /**
      * Logger to use.
@@ -34,7 +34,7 @@ public class LogEvent implements NullableEvent {
      * @param level   level to log the message at.
      * @param message message that should be printed to the server log.
      */
-    public LogEvent(final BetonQuestLogger logger, final LogEventLevel level, final VariableString message) {
+    public LogEvent(final BetonQuestLogger logger, final LogEventLevel level, final Variable<String> message) {
         this.logger = logger;
         this.message = message;
         this.level = level;

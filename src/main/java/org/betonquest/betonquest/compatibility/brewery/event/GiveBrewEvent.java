@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,18 +27,18 @@ public class GiveBrewEvent implements OnlineEvent {
     private final Variable<Number> qualityVar;
 
     /**
-     * The {@link VariableString} for the name of the brew to give.
+     * The name of the brew to give.
      */
-    private final VariableString nameVar;
+    private final Variable<String> nameVar;
 
     /**
      * Create a new Give Brew Event.
      *
      * @param amountVar  the amount of brews to give.
      * @param qualityVar the quality of the brews.
-     * @param nameVar    the {@link VariableString} for the name of the brew to give.
+     * @param nameVar    the name of the brew to give.
      */
-    public GiveBrewEvent(final Variable<Number> amountVar, final Variable<Number> qualityVar, final VariableString nameVar) {
+    public GiveBrewEvent(final Variable<Number> amountVar, final Variable<Number> qualityVar, final Variable<String> nameVar) {
         this.amountVar = amountVar;
         this.qualityVar = qualityVar;
         this.nameVar = nameVar;

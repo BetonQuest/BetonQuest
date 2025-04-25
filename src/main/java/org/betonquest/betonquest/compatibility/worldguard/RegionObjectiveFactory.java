@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for creating {@link RegionObjective} instances from {@link Instruction}s.
@@ -18,7 +19,7 @@ public class RegionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableString name = instruction.get(VariableString::new);
+        final Variable<String> name = instruction.getVariable(Argument.STRING);
         return new RegionObjective(instruction, name);
     }
 }

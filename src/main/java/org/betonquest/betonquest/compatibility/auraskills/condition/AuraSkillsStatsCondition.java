@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.Utils;
 
 /**
@@ -26,9 +25,9 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
     private final Variable<Number> targetLevelVar;
 
     /**
-     * The {@link VariableString} of the {@link Stat} name to check.
+     * The {@link Stat} name to check.
      */
-    private final VariableString nameVar;
+    private final Variable<String> nameVar;
 
     /**
      * If the actual level must be equal to the target level.
@@ -40,11 +39,11 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
      *
      * @param auraSkillsApi  the {@link AuraSkillsApi}.
      * @param targetLevelVar the target level.
-     * @param nameVar        the {@link VariableString} of the {@link Stat} name to check.
+     * @param nameVar        the {@link Stat} name to check.
      * @param mustBeEqual    if the actual level must be equal to the target level.
      */
     public AuraSkillsStatsCondition(final AuraSkillsApi auraSkillsApi, final Variable<Number> targetLevelVar,
-                                    final VariableString nameVar, final boolean mustBeEqual) {
+                                    final Variable<String> nameVar, final boolean mustBeEqual) {
         this.auraSkillsApi = auraSkillsApi;
         this.targetLevelVar = targetLevelVar;
         this.nameVar = nameVar;

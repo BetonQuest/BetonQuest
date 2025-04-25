@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.menu.event.MenuClickEvent;
 import org.betonquest.betonquest.menu.event.MenuCloseEvent;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class OpenedMenu implements Listener {
 
     private boolean closed;
 
-    public OpenedMenu(final BetonQuestLogger log, final OnlineProfile onlineProfile, final Menu menu) {
+    public OpenedMenu(final BetonQuestLogger log, final OnlineProfile onlineProfile, final Menu menu) throws QuestException {
         this.log = log;
         // If player already has an open menu we close it first
         final OpenedMenu current = getMenu(onlineProfile);

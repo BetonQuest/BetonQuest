@@ -5,7 +5,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create language events from {@link Instruction}s.
@@ -28,7 +29,7 @@ public class LanguageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableString language = instruction.get(VariableString::new);
+        final Variable<String> language = instruction.getVariable(Argument.STRING);
         return new LanguageEvent(language, dataStorage);
     }
 }

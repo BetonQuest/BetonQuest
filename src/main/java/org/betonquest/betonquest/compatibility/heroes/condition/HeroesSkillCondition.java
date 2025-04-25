@@ -5,7 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the player has access to specified Heroes skill.
@@ -17,17 +17,17 @@ public class HeroesSkillCondition implements OnlineCondition {
     private final CharacterManager characterManager;
 
     /**
-     * The {@link VariableString} of the skill name.
+     * The skill name.
      */
-    private final VariableString skillNameVar;
+    private final Variable<String> skillNameVar;
 
     /**
      * Create a new Heroes Skill Condition.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
-     * @param skillNameVar     The {@link VariableString} of the skill name.
+     * @param skillNameVar     The skill name.
      */
-    public HeroesSkillCondition(final CharacterManager characterManager, final VariableString skillNameVar) {
+    public HeroesSkillCondition(final CharacterManager characterManager, final Variable<String> skillNameVar) {
         this.characterManager = characterManager;
         this.skillNameVar = skillNameVar;
     }

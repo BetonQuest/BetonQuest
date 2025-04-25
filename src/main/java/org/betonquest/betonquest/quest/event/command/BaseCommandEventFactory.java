@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 
 import java.util.ArrayList;
@@ -57,8 +58,8 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
      * @return list of commands
      * @throws QuestException if the instruction is invalid
      */
-    public List<VariableString> parseCommands(final Instruction instruction) throws QuestException {
-        final List<VariableString> commands = new ArrayList<>();
+    public List<Variable<String>> parseCommands(final Instruction instruction) throws QuestException {
+        final List<Variable<String>> commands = new ArrayList<>();
         final String string = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(string);
         final int end = conditionsMatcher.find() ? conditionsMatcher.start() : string.length();
@@ -68,7 +69,7 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
                 .map(String::trim)
                 .toList();
         for (final String rawCommand : rawCommands) {
-            commands.add(instruction.get(rawCommand, VariableString::new));
+            commands.add(instruction.getVariable(rawCommand, Argument.STRING));
         }
         return commands;
     }

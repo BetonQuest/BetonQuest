@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,23 +53,23 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
             throw new QuestException("Missing permissions argument. Expected permissions:permission1,"
                     + "permission2,permission3,...");
         }
-        final List<VariableString> permissions = parseList(instruction, unparsedPermissions);
-        final List<VariableString> contexts = parseList(instruction, instruction.getOptional("context", ""));
-        final VariableString value = instruction.get(instruction.getOptional("value", ""), VariableString::new);
+        final List<Variable<String>> permissions = parseList(instruction, unparsedPermissions);
+        final List<Variable<String>> contexts = parseList(instruction, instruction.getOptional("context", ""));
+        final Variable<String> value = instruction.getVariable(instruction.getOptional("value", ""), Argument.STRING);
         final Variable<Number> expiry = instruction.getVariable(instruction.getOptional("expiry", "0"),
                 Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final VariableString timeUnit = instruction.get(instruction.getOptional("unit", TimeUnit.DAYS.name()), VariableString::new);
+        final Variable<String> timeUnit = instruction.getVariable(instruction.getOptional("unit", TimeUnit.DAYS.name()), Argument.STRING);
 
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
 
-    private List<VariableString> parseList(final Instruction instruction, final String unparsed) throws QuestException {
+    private List<Variable<String>> parseList(final Instruction instruction, final String unparsed) throws QuestException {
         if (unparsed.isEmpty()) {
             return List.of();
         }
-        final List<VariableString> list = new ArrayList<>();
+        final List<Variable<String>> list = new ArrayList<>();
         for (final String input : unparsed.split(",")) {
-            list.add(instruction.get(input, VariableString::new));
+            list.add(instruction.getVariable(input, Argument.STRING));
         }
         return list;
     }

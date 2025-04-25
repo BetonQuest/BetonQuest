@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,12 +71,12 @@ public final class TrainCartsUtils {
      * @param pack          the {@link QuestPackage} of the instruction.
      * @param packId        the {@link ID} of the instruction.
      * @param onlineProfile the {@link OnlineProfile} to get the value from the variable.
-     * @param name          the {@link VariableString} name of the train from the instruction.
+     * @param name          the name of the train from the instruction.
      * @param trainName     the name of the train to check.
      * @return {@code true} if the train name matches with the name from the instruction, otherwise {@code false}.
      */
     public static boolean isValidTrain(final BetonQuestLogger log, final QuestPackage pack, final ID packId,
-                                       final OnlineProfile onlineProfile, final VariableString name, final String trainName) {
+                                       final OnlineProfile onlineProfile, final Variable<String> name, final String trainName) {
         try {
             final String result = name.getValue(onlineProfile);
             return result.isEmpty() || result.equals(trainName);

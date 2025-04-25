@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 
 /**
@@ -32,7 +33,7 @@ public class StageConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
         final Operation operation = Operation.fromSymbol(instruction.next());
-        final VariableString targetStage = instruction.get(VariableString::new);
+        final Variable<String> targetStage = instruction.getVariable(Argument.STRING);
         return new StageCondition(questTypeAPI, objectiveID, targetStage, operation);
     }
 }

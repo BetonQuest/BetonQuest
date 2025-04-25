@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for creating {@link TrainCartsExitObjective} instances from {@link Instruction}s.
@@ -28,7 +29,7 @@ public class TrainCartsExitObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableString name = instruction.get(instruction.getOptional("name", ""), VariableString::new);
+        final Variable<String> name = instruction.getVariable(instruction.getOptional("name", ""), Argument.STRING);
         final BetonQuestLogger log = loggerFactory.create(TrainCartsExitObjective.class);
         return new TrainCartsExitObjective(instruction, log, name);
     }

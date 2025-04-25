@@ -162,5 +162,4 @@ public class ScheduledTask implements BukkitTask {
     public void addOnCancelled(final Runnable callback) {
         cancelListeners.add(callback);
     }
-
 }

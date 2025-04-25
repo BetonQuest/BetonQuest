@@ -43,7 +43,7 @@ public final class OnlineEventAdapter implements PlayerEvent {
      * Create an event that runs the given online event if the player is online
      * and falls back to the fallback event otherwise.
      *
-     * @param onlineEvent   event to run for online players
+     * @param onlineEvent         event to run for online players
      * @param fallbackPlayerEvent fallback event to run for offline players
      */
     public OnlineEventAdapter(final OnlineEvent onlineEvent, final PlayerEvent fallbackPlayerEvent) {

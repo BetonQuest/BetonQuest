@@ -3,7 +3,6 @@ package org.betonquest.betonquest.instruction.argument;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.VariableEnum;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 
 /**
@@ -13,13 +12,6 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
  */
 @FunctionalInterface
 public interface VariableArgument<T> {
-
-    /**
-     * {@link VariableString} argument with the {@code replaceUnderscores} flag set.
-     */
-    VariableArgument<VariableString> STRING_REPLACE_UNDERSCORES = (variableProcessor, pack, input) ->
-            new VariableString(variableProcessor, pack, input, true);
-
     /**
      * A variable interpreted as enum when resolved.
      *

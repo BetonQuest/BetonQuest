@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Checks an attribute of a player and if greater than or equal to a level.
@@ -19,9 +18,9 @@ public class HeroesAttributeCondition implements OnlineCondition {
     private final CharacterManager characterManager;
 
     /**
-     * The {@link VariableString} of the attribute name.
+     * The attribute name.
      */
-    private final VariableString attributeVar;
+    private final Variable<String> attributeVar;
 
     /**
      * The level.
@@ -32,10 +31,10 @@ public class HeroesAttributeCondition implements OnlineCondition {
      * Create a new Heroes Attribute Condition.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
-     * @param attributeVar     The {@link VariableString} of the attribute name.
+     * @param attributeVar     The attribute name.
      * @param levelVar         The level.
      */
-    public HeroesAttributeCondition(final CharacterManager characterManager, final VariableString attributeVar, final Variable<Number> levelVar) {
+    public HeroesAttributeCondition(final CharacterManager characterManager, final Variable<String> attributeVar, final Variable<Number> levelVar) {
         this.characterManager = characterManager;
         this.attributeVar = attributeVar;
         this.levelVar = levelVar;

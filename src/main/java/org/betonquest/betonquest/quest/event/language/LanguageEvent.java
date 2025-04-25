@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Changes player's language.
@@ -14,7 +14,7 @@ public class LanguageEvent implements PlayerEvent {
     /**
      * The language to set.
      */
-    private final VariableString language;
+    private final Variable<String> language;
 
     /**
      * Storage for player data.
@@ -27,7 +27,7 @@ public class LanguageEvent implements PlayerEvent {
      * @param language    the language to set
      * @param dataStorage the storage providing player data
      */
-    public LanguageEvent(final VariableString language, final PlayerDataStorage dataStorage) {
+    public LanguageEvent(final Variable<String> language, final PlayerDataStorage dataStorage) {
         this.language = language;
         this.dataStorage = dataStorage;
     }

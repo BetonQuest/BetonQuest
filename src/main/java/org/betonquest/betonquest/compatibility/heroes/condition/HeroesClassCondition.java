@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -40,9 +39,9 @@ public class HeroesClassCondition implements OnlineCondition {
     private final HeroesClassType classType;
 
     /**
-     * The {@link VariableString} of the class.
+     * The class.
      */
-    private final VariableString heroClassVar;
+    private final Variable<String> heroClassVar;
 
     /**
      * The level of the class.
@@ -56,11 +55,11 @@ public class HeroesClassCondition implements OnlineCondition {
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param classManager     The {@link HeroClassManager} of the Heroes plugin.
      * @param classType        The {@link HeroesClassType} of the class.
-     * @param heroClassVar     The {@link VariableString} of the name of the class.
+     * @param heroClassVar     The name of the class.
      * @param levelVar         The optional level of the class.
      */
     public HeroesClassCondition(final CharacterManager characterManager, final HeroClassManager classManager,
-                                final HeroesClassType classType, final VariableString heroClassVar,
+                                final HeroesClassType classType, final Variable<String> heroClassVar,
                                 @Nullable final Variable<Number> levelVar) {
         this.characterManager = characterManager;
         this.classManager = classManager;

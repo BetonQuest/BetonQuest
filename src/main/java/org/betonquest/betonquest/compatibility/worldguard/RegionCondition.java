@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the player is in specified region.
@@ -13,14 +13,14 @@ public class RegionCondition implements OnlineCondition {
     /**
      * Region name.
      */
-    private final VariableString name;
+    private final Variable<String> name;
 
     /**
      * Creates a new region condition.
      *
      * @param name the name of the region
      */
-    public RegionCondition(final VariableString name) {
+    public RegionCondition(final Variable<String> name) {
         this.name = name;
     }
 

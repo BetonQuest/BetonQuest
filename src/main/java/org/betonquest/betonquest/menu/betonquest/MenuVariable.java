@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
 import org.betonquest.betonquest.menu.OpenedMenu;
 
@@ -16,7 +17,7 @@ public class MenuVariable implements OnlineVariable {
     }
 
     @Override
-    public String getValue(final OnlineProfile profile) {
+    public String getValue(final OnlineProfile profile) throws QuestException {
         final OpenedMenu menu = OpenedMenu.getMenu(profile);
         if (menu == null) {
             return "";

@@ -2,11 +2,12 @@ package org.betonquest.betonquest.quest.objective.resourcepack;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -19,21 +20,27 @@ import java.util.Locale;
  * Represents an objective that is completed when the status of the received resource pack matches the target status.
  */
 public class ResourcepackObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The target status for the received resource pack.
      */
-    private final VariableString targetStatus;
+    private final Variable<String> targetStatus;
 
     /**
      * Constructs a new ResourcepackObjective instance.
      *
      * @param instruction  The instruction object.
+     * @param log          the logger for this objective
      * @param targetStatus The target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcepackObjective(final Instruction instruction, final VariableString targetStatus) throws QuestException {
+    public ResourcepackObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<String> targetStatus) throws QuestException {
         super(instruction);
+        this.log = log;
         this.targetStatus = targetStatus;
     }
 
@@ -67,9 +74,13 @@ public class ResourcepackObjective extends Objective implements Listener {
      */
     public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            final PlayerResourcePackStatusEvent.Status expectedStatus = PlayerResourcePackStatusEvent.Status.valueOf(targetStatus.getString(onlineProfile).toUpperCase(Locale.ROOT));
-            if (expectedStatus.equals(status)) {
-                completeObjective(onlineProfile);
+            try {
+                final PlayerResourcePackStatusEvent.Status expectedStatus = PlayerResourcePackStatusEvent.Status.valueOf(targetStatus.getValue(onlineProfile).toUpperCase(Locale.ROOT));
+                if (expectedStatus.equals(status)) {
+                    completeObjective(onlineProfile);
+                }
+            } catch (final QuestException e) {
+                log.warn("Failed to resolve resource pack objective: " + e.getMessage(), e);
             }
         }
     }

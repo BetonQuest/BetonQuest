@@ -12,7 +12,8 @@ import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedMessage;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -190,9 +191,9 @@ public class PluginMessage {
         final Map<String, Message> loadedMessages = new HashMap<>();
         for (final Map.Entry<String, Map<String, String>> entry : languageMessages.entrySet()) {
             final String key = entry.getKey();
-            final Map<String, VariableString> values = new HashMap<>();
+            final Map<String, Variable<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
-                values.put(value.getKey(), new VariableString(variableProcessor, null, value.getValue()));
+                values.put(value.getKey(), new Variable<>(variableProcessor, null, value.getValue(), Argument.STRING));
             }
             loadedMessages.put(key, new ParsedMessage(messageParser, values, playerDataStorage, languageProvider));
         }

@@ -61,7 +61,7 @@ public class PlayerLogWatcher {
     /**
      * Check whether the given pattern is active for the given player, regardless of the level.
      *
-     * @param subject the player to check
+     * @param subject        the player to check
      * @param packagePattern the pattern to check
      * @return true if the pattern is active for the player; false otherwise
      */
@@ -77,9 +77,9 @@ public class PlayerLogWatcher {
      * If a filter was previously set for the subject player and package pattern combination then just the level will be
      * overwritten to the given (new) level.
      *
-     * @param subject the player that the filter is for
+     * @param subject        the player that the filter is for
      * @param packagePattern the package pattern that should be filtered for
-     * @param minimumLevel the minimum logging level to filter for
+     * @param minimumLevel   the minimum logging level to filter for
      */
     public void addFilter(final UUID subject, final String packagePattern, final Level minimumLevel) {
         final PlayerPackageReceiverSelector newSelector = new PlayerPackageReceiverSelector(
@@ -93,7 +93,7 @@ public class PlayerLogWatcher {
      * Remove a filter. An equal UUID and pattern needs to be used for removal, no pattern matching will be done.
      * If there was no filter for the given combination it will be silently ignored.
      *
-     * @param subject the player to remove the filter from
+     * @param subject        the player to remove the filter from
      * @param packagePattern the package pattern to be removed
      */
     public void removeFilter(final UUID subject, final String packagePattern) {

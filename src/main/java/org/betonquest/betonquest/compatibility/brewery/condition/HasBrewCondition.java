@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,17 +19,17 @@ public class HasBrewCondition implements OnlineCondition {
     private final Variable<Number> countVar;
 
     /**
-     * The {@link VariableString} for the name of the brew to check.
+     * The name of the brew to check.
      */
-    private final VariableString nameVar;
+    private final Variable<String> nameVar;
 
     /**
      * Creates a new has Brew condition.
      *
      * @param countVar the amount of brews to check.
-     * @param nameVar  the {@link VariableString} for the name of the brew to check.
+     * @param nameVar  the name of the brew to check.
      */
-    public HasBrewCondition(final Variable<Number> countVar, final VariableString nameVar) {
+    public HasBrewCondition(final Variable<Number> countVar, final Variable<String> nameVar) {
         this.countVar = countVar;
         this.nameVar = nameVar;
     }

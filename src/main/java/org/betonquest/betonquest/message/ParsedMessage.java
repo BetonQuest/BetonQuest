@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -24,7 +24,7 @@ public class ParsedMessage implements Message {
     /**
      * The messages to use for each language.
      */
-    private final Map<String, VariableString> messages;
+    private final Map<String, Variable<String>> messages;
 
     /**
      * The data storage to use for getting the player's language.
@@ -45,7 +45,7 @@ public class ParsedMessage implements Message {
      * @param languageProvider the language provider to get the default language
      * @throws QuestException if an error occurs while constructing the message
      */
-    public ParsedMessage(final MessageParser parser, final Map<String, VariableString> messages,
+    public ParsedMessage(final MessageParser parser, final Map<String, Variable<String>> messages,
                          final PlayerDataStorage dataStorage, final LanguageProvider languageProvider) throws QuestException {
         this.parser = parser;
         this.messages = messages;
@@ -59,7 +59,7 @@ public class ParsedMessage implements Message {
     @Override
     public Component asComponent(@Nullable final Profile profile) throws QuestException {
         String language = null;
-        VariableString message = null;
+        Variable<String> message = null;
         if (profile != null) {
             language = dataStorage.get(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
             message = messages.get(language);

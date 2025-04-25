@@ -422,7 +422,7 @@ Solution: The Cake is a lie!
 
 The objective's instruction string is defined as follows:
 
-1. The first argument is the password, use underscore characters (`_`) instead of spaces.
+1. The first argument is the password, use [quoting](../Quoting-&-YAML.md#quoting) for spaces
    The password is a [regular expression](../Data-Formats.md#regex-regular-expressions). 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
@@ -442,7 +442,8 @@ The objective's instruction string is defined as follows:
 
 ```YAML
 objectives:
-  theBetonPassword: "password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward"
+  theBetonPassword: 'password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward'
+  theBetonPasswordSpaced: 'password "beton quest" ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward'
 ```
 
 ## Pickup item: `pickup`
@@ -521,7 +522,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
 name. The first, required argument is amount (integer). Optionally, you can add a `name:` argument to only count specific sheep.
-All underscores will be replaced by spaces - if you want to use underscores, put a `\` before them.
+If you want to use spaces use [quoting](../Quoting-&-YAML.md#quoting) syntax.
 You can also check for the sheep's `color:` using these [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
 You can use the `notify` keyword to display a message each time the player advances the objective,
 optionally with the notification interval after a colon.
@@ -532,8 +533,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 !!! example
     ```YAML
     shear 1 name:Bob color:black
-    shear 1 name:jeb\_
-    "shear 1 name:jeb\\_" #Use two backslashes if quoted
+    shear 1 name:jeb
+    shear 1 "name:jeb 2"
     ```
 
 ## Smelting: `smelt`
@@ -641,14 +642,13 @@ This objective can be completed by riding the specified
 ## Run a Command: `command`
 
 To complete this objective the player must execute a specified command. It can be both an existing or a new, custom
-command. The first argument is the command text. Use `_` in place of spaces for the command. If you need an actual `_`
-in your command, you must escape it using a backslash (`\`, see example below). The command argument is case-sensitive
-and also supports using placeholders. The second required argument is a list of events to execute when the objective is
-met.
+command. The first argument is the command text. To allow spaces use [quoting](../Quoting-&-YAML.md#quoting) syntax.
+The command argument is case-sensitive and also supports using placeholders.
+The second required argument is a list of events to execute when the objective ismet.
 
 !!! example
     ```YAML
-    command /warp_%player%_farms events:event1,event2
+    command "/warp %player% farms" events:event1,event2
     command //replace_oak\_wood events:event1,event2
     ```
 
@@ -665,19 +665,8 @@ Optional arguments:
 
 !!! complex example
     ```YAML
-    command /warp_%player%_farms ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
+    command "/warp %player% farms" ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
     ```
-
-!!! warning
-    Sometimes you want to use actual underscores in your command. These will however be replaced with spaces by default.
-    You can "escape" them using backslashes:
-    One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
-    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).
-
-    Examples:<br>
-    `eventName: command /enchant_@s_minecraft:aqua_affinity` :arrow_right: `eventName:command /enchant_@s_minecraft:aqua{++\++}_affinity`<br>
-    `eventName: {=='==}command /enchant_@s_minecraft:aqua_affinity{=='==}` :arrow_right: `eventName: {=='==}command /enchant_@s_minecraft:aqua{++\++}_affinity{=='==}`<br>
-    `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
 
 ## Equip Armor Item: `equip`
 **:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**

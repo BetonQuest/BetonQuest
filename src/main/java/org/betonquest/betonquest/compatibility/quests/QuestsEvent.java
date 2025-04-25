@@ -5,7 +5,7 @@ import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Starts a quests in Quests plugin.
@@ -20,7 +20,7 @@ public class QuestsEvent implements PlayerEvent {
     /**
      * Name of quest to start.
      */
-    private final VariableString questName;
+    private final Variable<String> questName;
 
     /**
      * If the quest start should be forced.
@@ -34,7 +34,7 @@ public class QuestsEvent implements PlayerEvent {
      * @param questName name of quest to start
      * @param override  whether to force quest start
      */
-    public QuestsEvent(final Quests quests, final VariableString questName, final boolean override) {
+    public QuestsEvent(final Quests quests, final Variable<String> questName, final boolean override) {
         this.quests = quests;
         this.questName = questName;
         this.override = override;
