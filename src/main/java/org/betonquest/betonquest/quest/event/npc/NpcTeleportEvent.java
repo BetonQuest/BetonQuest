@@ -53,7 +53,7 @@ public class NpcTeleportEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
-        final Npc<?> npc = featureAPI.getNpc(npcId);
+        final Npc<?> npc = featureAPI.getNpc(npcId, profile);
         if (npc.isSpawned()) {
             npc.teleport(loc);
         } else if (spawn) {

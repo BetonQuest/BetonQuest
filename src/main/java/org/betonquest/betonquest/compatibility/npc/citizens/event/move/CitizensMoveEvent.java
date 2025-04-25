@@ -51,7 +51,7 @@ public class CitizensMoveEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId);
+        final Npc<?> bqNpc = featureAPI.getNpc(npcId, profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use Citizens MoveEvent for non Citizens NPC");
         }

@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +14,7 @@ import static org.betonquest.betonquest.quest.variable.npc.Argument.LOCATION;
 /**
  * Provides information about a npc.
  */
-public class NpcVariable implements PlayerlessVariable {
+public class NpcVariable implements NullableVariable {
 
     /**
      * Feature API.
@@ -64,8 +65,8 @@ public class NpcVariable implements PlayerlessVariable {
     }
 
     @Override
-    public String getValue() throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcID);
+    public String getValue(@Nullable final Profile profile) throws QuestException {
+        final Npc<?> npc = featureAPI.getNpc(npcID, profile);
         return key.resolve(npc, formationMode, decimalPlaces);
     }
 }

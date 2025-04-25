@@ -2,8 +2,10 @@ package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * FancyNpcs wrapper to get a Npc.
@@ -39,7 +41,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     }
 
     @Override
-    public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc() throws QuestException {
+    public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc(@Nullable final Profile profile) throws QuestException {
         Npc npc = null;
         if (byName) {
             for (final Npc aNpc : npcManager.getAllNpcs()) {

@@ -2,15 +2,17 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Stop the NPC when he is walking.
  */
-public class CitizensStopEvent implements PlayerlessEvent {
+public class CitizensStopEvent implements NullableEvent {
 
     /**
      * Feature API.
@@ -41,8 +43,8 @@ public class CitizensStopEvent implements PlayerlessEvent {
     }
 
     @Override
-    public void execute() throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId);
+    public void execute(@Nullable final Profile profile) throws QuestException {
+        final Npc<?> bqNpc = featureAPI.getNpc(npcId, profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use non Citizens NPC!");
         }

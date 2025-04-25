@@ -117,7 +117,7 @@ public class NpcRangeObjective extends Objective {
         for (final OnlineProfile onlineProfile : allOnlineProfiles) {
             try {
                 for (final NpcID npcId : npcIds.getValue(onlineProfile)) {
-                    final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId).getLocation();
+                    final Location npcLocation = BetonQuest.getInstance().getFeatureAPI().getNpc(npcId, onlineProfile).getLocation();
                     if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
                         profilesInside.add(onlineProfile.getProfileUUID());
                     }

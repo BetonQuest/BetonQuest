@@ -77,7 +77,6 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
                 decimalPlaces = Integer.parseInt(instruction.next());
             }
         }
-        final NpcVariable npcVariable = new NpcVariable(featureAPI, npcID, key, locationFormationMode, decimalPlaces);
-        return profile -> npcVariable.getValue();
+        return new NpcVariable(featureAPI, npcID, key, locationFormationMode, decimalPlaces);
     }
 }

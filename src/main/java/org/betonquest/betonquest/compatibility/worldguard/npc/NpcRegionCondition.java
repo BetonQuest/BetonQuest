@@ -44,6 +44,6 @@ public class NpcRegionCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return WorldGuardIntegrator.isInsideRegion(featureAPI.getNpc(npcId).getLocation(), region.getValue(profile));
+        return WorldGuardIntegrator.isInsideRegion(featureAPI.getNpc(npcId, profile).getLocation(), region.getValue(profile));
     }
 }

@@ -53,7 +53,7 @@ public class NpcLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcId);
+        final Npc<?> npc = featureAPI.getNpc(npcId, profile);
         final Location location = this.location.getValue(profile);
         final Location npcLocation = npc.getLocation();
         if (!location.getWorld().equals(npcLocation.getWorld())) {

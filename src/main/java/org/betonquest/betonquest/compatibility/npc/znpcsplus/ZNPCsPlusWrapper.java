@@ -2,9 +2,11 @@ package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
 import lol.pyr.znpcsplus.api.npc.NpcEntry;
 import lol.pyr.znpcsplus.api.npc.NpcRegistry;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * ZNPCsPlus wrapper to get a Npc.
@@ -33,7 +35,7 @@ public class ZNPCsPlusWrapper implements NpcWrapper<NpcEntry> {
     }
 
     @Override
-    public Npc<NpcEntry> getNpc() throws QuestException {
+    public Npc<NpcEntry> getNpc(@Nullable final Profile profile) throws QuestException {
         final NpcEntry npcEntry = npcRegistry.getById(npcId);
         if (npcEntry == null) {
             throw new QuestException("ZNPCsPlus Npc with ID " + npcId + " not found");
