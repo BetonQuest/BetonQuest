@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +23,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class CountingObjective extends Objective {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The message used for notifying the player.
      */
     @Nullable
@@ -31,7 +36,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * The amount of units required for completion.
      */
-    private final VariableNumber targetAmount;
+    private final Variable<Number> targetAmount;
 
     /**
      * Create a counting objective.
@@ -41,7 +46,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final VariableNumber targetAmount,
+    public CountingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         this(instruction, CountingData.class, targetAmount, notifyMessageName);
     }
@@ -56,9 +61,10 @@ public abstract class CountingObjective extends Objective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public CountingObjective(final Instruction instruction, final Class<? extends ObjectiveData> template,
-                             final VariableNumber targetAmount, @Nullable final String notifyMessageName)
+                             final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
         super(instruction, template);
+        log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.targetAmount = targetAmount;
         final BetonQuest instance = BetonQuest.getInstance();
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(instance.getLoggerFactory().create(CountingObjective.class),
@@ -73,7 +79,12 @@ public abstract class CountingObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        return String.valueOf(targetAmount.getInt(profile));
+        try {
+            return String.valueOf(targetAmount.getValue(profile).intValue());
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            return "0";
+        }
     }
 
     @Override

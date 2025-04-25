@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.Random;
 
@@ -18,17 +18,9 @@ import java.util.Random;
 public class RandomConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * The variable processor used to process variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the random condition factory.
-     *
-     * @param variableProcessor the variable processor used to process variables
      */
-    public RandomConditionFactory(final VariableProcessor variableProcessor) {
-        this.variableProcessor = variableProcessor;
+    public RandomConditionFactory() {
     }
 
     @Override
@@ -47,13 +39,13 @@ public class RandomConditionFactory implements PlayerConditionFactory, Playerles
         if (values.length != expectedLength) {
             throw new QuestException("Wrong randomness format. Use <chance>-<max>");
         }
-        final VariableNumber valueMax;
-        final VariableNumber rangeOfRandom;
+        final Variable<Number> valueMax;
+        final Variable<Number> rangeOfRandom;
         try {
-            valueMax = new VariableNumber(variableProcessor, instruction.getPackage(), values[0]);
-            rangeOfRandom = new VariableNumber(variableProcessor, instruction.getPackage(), values[1]);
+            valueMax = instruction.getVariable(values[0], Argument.NUMBER);
+            rangeOfRandom = instruction.getVariable(values[1], Argument.NUMBER);
         } catch (final QuestException e) {
-            throw new QuestException("Cannot parse randomness values", e);
+            throw new QuestException("Cannot parse randomness values: " + e.getMessage(), e);
         }
         return new RandomCondition(new Random(), valueMax, rangeOfRandom);
     }

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class MMOItemsItemCondition implements OnlineCondition {
     /**
      * The amount of the item to check for.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Constructs a new MMOItemsItemCondition.
@@ -43,7 +43,7 @@ public class MMOItemsItemCondition implements OnlineCondition {
      * @param itemID            the ID of the item
      * @param amount            the amount of the item
      */
-    public MMOItemsItemCondition(final PlayerDataStorage playerDataStorage, final Type itemType, final String itemID, final VariableNumber amount) {
+    public MMOItemsItemCondition(final PlayerDataStorage playerDataStorage, final Type itemType, final String itemID, final Variable<Number> amount) {
         this.playerDataStorage = playerDataStorage;
         this.itemType = itemType;
         this.itemID = itemID;

@@ -20,7 +20,6 @@ import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -261,14 +260,14 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
         }
         try {
             final ItemID item;
-            final VariableNumber number;
+            final Variable<Number> number;
             if (string.contains(":")) {
                 final String[] parts = string.split(":", 2);
                 item = getID(parts[0], ItemID::new);
-                number = get(parts[1], VariableNumber::new);
+                number = getVariable(parts[1], Argument.NUMBER);
             } else {
                 item = getID(string, ItemID::new);
-                number = get("1", VariableNumber::new);
+                number = new Variable<>(1);
             }
             return new Item(BetonQuest.getInstance().getFeatureAPI(), item, number);
         } catch (final QuestException | NumberFormatException e) {

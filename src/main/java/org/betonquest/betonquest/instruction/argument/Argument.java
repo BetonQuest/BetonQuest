@@ -2,11 +2,12 @@ package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.ValueChecker;
 import org.betonquest.betonquest.instruction.types.BooleanParser;
+import org.betonquest.betonquest.instruction.types.NumberParser;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.types.location.VectorParser;
 import org.betonquest.betonquest.instruction.types.location.WorldParser;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 
@@ -41,6 +42,29 @@ public interface Argument<T> extends QuestFunction<String, T> {
     LocationParser LOCATION = new LocationParser(Bukkit.getServer());
 
     /**
+     * The default instance of {@link NumberParser}.
+     */
+    NumberParser NUMBER = new NumberParser();
+
+    /**
+     * The default instance of {@link NumberParser} that checks if the number is not less than zero.
+     */
+    NumberParser NUMBER_NOT_LESS_THAN_ZERO = new NumberParser(value -> {
+        if (value.doubleValue() < 0) {
+            throw new QuestException("Value must be greater than or equal to 0: " + value);
+        }
+    });
+
+    /**
+     * The default instance of {@link NumberParser} that checks if the number is not less than one.
+     */
+    NumberParser NUMBER_NOT_LESS_THAN_ONE = new NumberParser(value -> {
+        if (value.doubleValue() <= 0) {
+            throw new QuestException("Value must be greater than or equal to 1: " + value);
+        }
+    });
+
+    /**
      * Gets a list of {@link T}s from string.
      *
      * @param argument the argument to parse
@@ -60,7 +84,7 @@ public interface Argument<T> extends QuestFunction<String, T> {
      * @param <T>      what the argument returns
      * @return the list of {@link T}s
      */
-    static <T> VariableArgument<VariableList<T>> ofList(final Argument<T> argument, final Variable.ValueChecker<List<T>> checker) {
+    static <T> VariableArgument<VariableList<T>> ofList(final Argument<T> argument, final ValueChecker<List<T>> checker) {
         return (variableProcessor, pack, string)
                 -> new VariableList<>(variableProcessor, pack, string, argument, checker);
     }

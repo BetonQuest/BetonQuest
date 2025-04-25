@@ -11,7 +11,8 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -63,7 +64,7 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
 
         final BetonQuestLogger log = loggerFactory.create(MMOItemsGiveEvent.class);
 
-        VariableNumber amount = instruction.get("1", VariableNumber::new);
+        Variable<Number> amount = new Variable<>(1);
         boolean scale = false;
         boolean singleStack = false;
         NotificationSender notificationSender = new NoNotificationSender();
@@ -78,7 +79,7 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
                 case "notify" ->
                         notificationSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                                 instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
-                default -> amount = instruction.get(next, VariableNumber::new);
+                default -> amount = instruction.getVariable(next, Argument.NUMBER);
             }
         }
 

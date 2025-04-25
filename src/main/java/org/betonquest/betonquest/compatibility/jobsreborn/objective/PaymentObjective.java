@@ -5,11 +5,12 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -24,9 +25,14 @@ import java.util.Objects;
  */
 public class PaymentObjective extends Objective implements Listener {
     /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The target amount of money to be received.
      */
-    private final VariableNumber targetAmount;
+    private final Variable<Number> targetAmount;
 
     /**
      * The {@link IngameNotificationSender} to send notifications.
@@ -37,12 +43,14 @@ public class PaymentObjective extends Objective implements Listener {
      * Constructor for the PaymentObjective.
      *
      * @param instruction   the instruction of the objective
+     * @param log           the logger for this objective
      * @param targetAmount  the target amount of money to be received
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    public PaymentObjective(final Instruction instruction, final VariableNumber targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+    public PaymentObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(instruction, PaymentData.class);
+        this.log = log;
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
@@ -86,8 +94,12 @@ public class PaymentObjective extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        final double value = targetAmount.getDouble(profile);
-        return value > 0 ? String.valueOf(value) : "1";
+        try {
+            return String.valueOf(targetAmount.getValue(profile).doubleValue());
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            return "1";
+        }
     }
 
     @Override

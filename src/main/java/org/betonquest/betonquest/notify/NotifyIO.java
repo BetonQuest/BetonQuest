@@ -5,10 +5,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -44,37 +43,13 @@ public abstract class NotifyIO {
         sound.sendSound(onlineProfile);
     }
 
-    protected abstract void notifyPlayer(Component message, OnlineProfile onlineProfile);
+    protected abstract void notifyPlayer(Component message, OnlineProfile onlineProfile) throws QuestException;
 
-    protected final float getFloatData(final String dataKey, final float defaultData) throws QuestException {
-        final String dataString = data.get(dataKey);
-
-        if (dataString == null || dataString.startsWith("%")) {
-            return defaultData;
-        }
-        try {
-            return Float.parseFloat(dataString);
-        } catch (final NumberFormatException exception) {
-            throw new QuestException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
-        }
-    }
-
-    protected float getFloatData(final Player player, final String dataKey, final float defaultData) throws QuestException {
+    protected final Variable<Number> getNumberData(final String dataKey, final Number defaultData) throws QuestException {
         final String dataString = data.get(dataKey);
         if (dataString == null) {
-            return defaultData;
+            return new Variable<>(defaultData);
         }
-        final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-        return new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, dataString)
-                .getValue(profileProvider.getProfile(player)).floatValue();
-    }
-
-    protected final int getIntegerData(final String dataKey, final int defaultData) throws QuestException {
-        final String dataString = data.get(dataKey);
-        try {
-            return dataString == null ? defaultData : Integer.parseInt(dataString);
-        } catch (final NumberFormatException exception) {
-            throw new QuestException(String.format(CATCH_MESSAGE_INTEGER, dataKey, dataString), exception);
-        }
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, dataString, Argument.NUMBER);
     }
 }

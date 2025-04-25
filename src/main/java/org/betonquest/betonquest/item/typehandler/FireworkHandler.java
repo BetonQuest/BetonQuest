@@ -77,7 +77,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * Converts the item meta into QuestItem format.
      *
      * @param fireworkMeta the meta to serialize
-     * @return @return parsed values with leading space or empty string
+     * @return parsed values with leading space or empty string
      */
     @Nullable
     public String serializeToString(final FireworkEffectMeta fireworkMeta) {

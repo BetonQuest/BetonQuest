@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.ValueChecker;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,15 @@ public class VariableList<T> extends Variable<List<T>> {
     }
 
     /**
+     * Creates a new VariableList.
+     *
+     * @param values the list of values
+     */
+    public VariableList(final T... values) {
+        super(List.of(values));
+    }
+
+    /**
      * Resolves a string that may contain variables to a variable of the given type.
      * Any constant part will be validated in construction.
      *
@@ -39,7 +49,6 @@ public class VariableList<T> extends Variable<List<T>> {
                         final QuestFunction<String, T> resolver) throws QuestException {
         this(variableProcessor, pack, input, resolver, (value) -> {
         });
-
     }
 
     /**
@@ -76,6 +85,20 @@ public class VariableList<T> extends Variable<List<T>> {
     }
 
     /**
+     * {@link ValueChecker} for Lists that must not be empty.
+     *
+     * @param <T> the type of the list
+     * @return the value checker
+     */
+    public static <T> ValueChecker<List<T>> notEmptyChecker() {
+        return (value) -> {
+            if (value.isEmpty()) {
+                throw new QuestException("List must not be empty");
+            }
+        };
+    }
+
+    /**
      * A Resolver Decorator to check if a resolver has been applied.
      *
      * @param <T> the type to resolve to
@@ -102,19 +125,5 @@ public class VariableList<T> extends Variable<List<T>> {
             called = true;
             return resolver.apply(arg);
         }
-    }
-
-    /**
-     * {@link Variable.ValueChecker} for Lists that must not be empty.
-     *
-     * @param <T> the type of the list
-     * @return the value checker
-     */
-    public static <T> ValueChecker<List<T>> notEmptyChecker() {
-        return (value) -> {
-            if (value.isEmpty()) {
-                throw new QuestException("List must not be empty");
-            }
-        };
     }
 }

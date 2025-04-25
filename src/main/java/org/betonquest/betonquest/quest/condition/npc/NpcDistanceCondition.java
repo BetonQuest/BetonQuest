@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ public class NpcDistanceCondition implements OnlineCondition {
     /**
      * The maximal distance between player and Npc.
      */
-    private final VariableNumber distance;
+    private final Variable<Number> distance;
 
     /**
      * Create a new Npc Distance Condition.
@@ -36,7 +36,7 @@ public class NpcDistanceCondition implements OnlineCondition {
      * @param npcID      the id of the npc
      * @param distance   the maximal distance between player and npc
      */
-    public NpcDistanceCondition(final FeatureAPI featureAPI, final NpcID npcID, final VariableNumber distance) {
+    public NpcDistanceCondition(final FeatureAPI featureAPI, final NpcID npcID, final Variable<Number> distance) {
         this.featureAPI = featureAPI;
         this.npcID = npcID;
         this.distance = distance;

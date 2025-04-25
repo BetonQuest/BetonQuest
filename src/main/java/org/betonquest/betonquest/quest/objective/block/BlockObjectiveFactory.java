@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Location;
@@ -45,7 +44,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final VariableBlockSelector selector = instruction.get(VariableBlockSelector::new);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final VariableNumber targetAmount = instruction.get(VariableNumber::new);
+        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER);
         final boolean noSafety = instruction.hasArgument("noSafety");
         final Variable<Location> location = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
         final Variable<Location> region = instruction.getVariable(instruction.getOptional("region"), Argument.LOCATION);

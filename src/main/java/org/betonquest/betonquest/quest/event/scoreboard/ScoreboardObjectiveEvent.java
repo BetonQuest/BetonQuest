@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -21,7 +21,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
     /**
      * The number to modify the score by.
      */
-    private final VariableNumber count;
+    private final Variable<Number> count;
 
     /**
      * The modification to apply to the score.
@@ -35,7 +35,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
      * @param count             the number to modify the score by
      * @param scoreModification the modification to apply to the score
      */
-    public ScoreboardObjectiveEvent(final String objective, final VariableNumber count, final ScoreModification scoreModification) {
+    public ScoreboardObjectiveEvent(final String objective, final Variable<Number> count, final ScoreModification scoreModification) {
         this.objective = objective;
         this.count = count;
         this.scoreModification = scoreModification;

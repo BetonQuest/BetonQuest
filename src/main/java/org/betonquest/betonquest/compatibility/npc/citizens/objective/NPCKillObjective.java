@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -33,7 +33,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @param predicate    the predicate to test if the NPC is the right one
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final Instruction instruction, final VariableNumber targetAmount, final Predicate<NPC> predicate) throws QuestException {
+    public NPCKillObjective(final Instruction instruction, final Variable<Number> targetAmount, final Predicate<NPC> predicate) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.predicate = predicate;
     }

@@ -5,8 +5,9 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Factory to create point conditions from {@link Instruction}s.
@@ -30,7 +31,7 @@ public class PointConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final VariableIdentifier category = instruction.get(VariableIdentifier::new);
-        final VariableNumber count = instruction.get(VariableNumber::new);
+        final Variable<Number> count = instruction.getVariable(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");
         return new PointCondition(dataStorage, category, count, equal);
     }

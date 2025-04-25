@@ -4,7 +4,7 @@ import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * A condition that checks the value of a MythicLib stat.
@@ -19,7 +19,7 @@ public class MythicLibStatCondition implements PlayerCondition {
     /**
      * The required minimum target level of the stat.
      */
-    private final VariableNumber targetLevel;
+    private final Variable<Number> targetLevel;
 
     /**
      * Whether the actual level must be equal to the target level.
@@ -33,7 +33,7 @@ public class MythicLibStatCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the level should be equal
      */
-    public MythicLibStatCondition(final String stat, final VariableNumber targetLevel, final boolean equal) {
+    public MythicLibStatCondition(final String stat, final Variable<Number> targetLevel, final boolean equal) {
         this.statName = stat;
         this.targetLevel = targetLevel;
         this.mustBeEqual = equal;

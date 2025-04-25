@@ -8,9 +8,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Location;
 
 /**
@@ -35,13 +33,13 @@ public class FishObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Item item = instruction.getItem();
-        final VariableNumber targetAmount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
 
         final String loc = instruction.getOptional("hookLocation");
         final String range = instruction.getOptional("range");
         final boolean hookIsNotNull = loc != null && range != null;
         final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.getVariable(loc, Argument.LOCATION) : null;
-        final VariableNumber rangeVar = hookIsNotNull ? instruction.get(range, VariableNumber::new) : null;
+        final Variable<Number> rangeVar = hookIsNotNull ? instruction.getVariable(range, Argument.NUMBER) : null;
         final BetonQuestLogger log = loggerFactory.create(FishObjective.class);
         return new FishObjective(instruction, targetAmount, log, item, hookTargetLocation, rangeVar);
     }

@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
@@ -24,18 +24,18 @@ public class HeroesAttributeCondition implements OnlineCondition {
     private final VariableString attributeVar;
 
     /**
-     * The {@link VariableNumber} of the level.
+     * The level.
      */
-    private final VariableNumber levelVar;
+    private final Variable<Number> levelVar;
 
     /**
      * Create a new Heroes Attribute Condition.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param attributeVar     The {@link VariableString} of the attribute name.
-     * @param levelVar         The {@link VariableNumber} of the level.
+     * @param levelVar         The level.
      */
-    public HeroesAttributeCondition(final CharacterManager characterManager, final VariableString attributeVar, final VariableNumber levelVar) {
+    public HeroesAttributeCondition(final CharacterManager characterManager, final VariableString attributeVar, final Variable<Number> levelVar) {
         this.characterManager = characterManager;
         this.attributeVar = attributeVar;
         this.levelVar = levelVar;

@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableEnum;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 /**
  * Checks if the player has specified level in an mcMMO skill.
@@ -21,7 +21,7 @@ public class McMMOSkillLevelCondition implements OnlineCondition {
     /**
      * Required level in Skill.
      */
-    private final VariableNumber level;
+    private final Variable<Number> level;
 
     /**
      * Create a new level condition.
@@ -29,7 +29,7 @@ public class McMMOSkillLevelCondition implements OnlineCondition {
      * @param skillType the type to check
      * @param level     the required level
      */
-    public McMMOSkillLevelCondition(final VariableEnum<PrimarySkillType> skillType, final VariableNumber level) {
+    public McMMOSkillLevelCondition(final VariableEnum<PrimarySkillType> skillType, final Variable<Number> level) {
         this.skillType = skillType;
         this.level = level;
     }

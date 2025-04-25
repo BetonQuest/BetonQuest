@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -30,7 +31,7 @@ public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFa
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String professionName = instruction.next();
-        final VariableNumber targetLevelVar = instruction.get(VariableNumber::new);
+        final Variable<Number> targetLevelVar = instruction.getVariable(Argument.NUMBER);
         final boolean mustBeEqual = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(new MMOCoreProfessionLevelCondition(professionName, targetLevelVar, mustBeEqual), data);
     }

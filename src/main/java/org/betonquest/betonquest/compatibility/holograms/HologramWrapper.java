@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,12 +35,11 @@ import java.util.List;
  *                      revalidating content and dealing with potential errors.
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
  * @param varMaxRange   The maximum range in which the hologram is visible.
- *                      {@link VariableNumber} represents this range.
  */
 public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHologram> holograms, boolean staticContent,
                               ConditionID[] conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
-                              VariableNumber varMaxRange) {
+                              Variable<Number> varMaxRange) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */

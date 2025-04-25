@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -21,7 +20,7 @@ public class LocationCondition implements OnlineCondition {
     /**
      * The range around the location.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * Creates a new location condition.
@@ -29,7 +28,7 @@ public class LocationCondition implements OnlineCondition {
      * @param loc   The location
      * @param range The range around the location
      */
-    public LocationCondition(final Variable<Location> loc, final VariableNumber range) {
+    public LocationCondition(final Variable<Location> loc, final Variable<Number> range) {
         this.loc = loc;
         this.range = range;
     }

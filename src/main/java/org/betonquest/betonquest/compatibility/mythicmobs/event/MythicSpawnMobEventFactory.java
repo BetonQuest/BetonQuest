@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
@@ -55,8 +54,8 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
             throw new QuestException("Wrong mob format");
         }
         final String mob = mobParts[0];
-        final VariableNumber level = instruction.get(mobParts[1], VariableNumber::new);
-        final VariableNumber amount = instruction.get(VariableNumber::new);
+        final Variable<Number> level = instruction.getVariable(mobParts[1], Argument.NUMBER);
+        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         final boolean privateMob;
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             privateMob = instruction.hasArgument("private");
@@ -77,8 +76,8 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
             throw new QuestException("Wrong mob format");
         }
         final String mob = mobParts[0];
-        final VariableNumber level = instruction.get(mobParts[1], VariableNumber::new);
-        final VariableNumber amount = instruction.get(VariableNumber::new);
+        final Variable<Number> level = instruction.getVariable(mobParts[1], Argument.NUMBER);
+        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         final String markedString = instruction.getOptional("marked");
         final VariableIdentifier marked = instruction.get(markedString, VariableIdentifier::new);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);

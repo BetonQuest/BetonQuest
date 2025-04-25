@@ -7,8 +7,8 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,13 +34,13 @@ public class PartyEvent implements OnlineEvent {
     /**
      * The range of the party.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * The optional maximum amount of players affected by this party event.
      */
     @Nullable
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * The conditions that must be met by the party members.
@@ -63,8 +63,8 @@ public class PartyEvent implements OnlineEvent {
      * @param conditions      the conditions that must be met by the party members
      * @param events          the events to fire
      */
-    public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final VariableNumber range,
-                      @Nullable final VariableNumber amount, final VariableList<ConditionID> conditions, final VariableList<EventID> events) {
+    public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final Variable<Number> range,
+                      @Nullable final Variable<Number> amount, final VariableList<ConditionID> conditions, final VariableList<EventID> events) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.range = range;

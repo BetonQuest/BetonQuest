@@ -10,7 +10,8 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -51,8 +52,7 @@ public class MMOItemsItemConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
-        final VariableNumber amount = instruction.hasNext() ? instruction.get(VariableNumber::new)
-                : instruction.get("1", VariableNumber::new);
+        final Variable<Number> amount = instruction.hasNext() ? instruction.getVariable(Argument.NUMBER) : new Variable<>(1);
 
         final BetonQuestLogger log = loggerFactory.create(MMOItemsItemCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
@@ -30,11 +30,11 @@ public class BossBarNotifyIO extends NotifyIO {
 
     private final BossBar.Overlay style;
 
-    private final float progress;
+    private final Variable<Number> variableProgress;
 
-    private final VariableNumber stayVariable;
+    private final Variable<Number> variableStay;
 
-    private final int countdown;
+    private final Variable<Number> variableCountdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public BossBarNotifyIO(final BetonQuestLogger log, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
@@ -69,40 +69,29 @@ public class BossBarNotifyIO extends NotifyIO {
             throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", upperCaseBarStyle), exception);
         }
 
-        progress = normalizeBossBarProgress(getFloatData("progress", 1));
-        final String stayString = data.getOrDefault("stay", "70");
-        stayVariable = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), pack, stayString);
-        countdown = getIntegerData("countdown", 0);
+        variableProgress = getNumberData("progress", 1);
+        variableStay = getNumberData("stay", 70);
+        variableCountdown = getNumberData("countdown", 0);
     }
 
     @Override
-    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
-        final BossBar bossBar = BossBar.bossBar(message, getResolvedProgress(onlineProfile), color, style);
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
+        final float progress = Math.max(0.0F, Math.min(1.0F, variableProgress.getValue(onlineProfile).floatValue()));
+        final int countdown = variableCountdown.getValue(onlineProfile).intValue();
+        final int stay = Math.max(0, variableStay.getValue(onlineProfile).intValue());
+
+        final BossBar bossBar = BossBar.bossBar(message, progress, color, style);
         for (final BossBar.Flag flag : flags) {
             bossBar.addFlag(flag);
         }
         onlineProfile.getPlayer().showBossBar(bossBar);
 
-        final int stay = Math.max(0, stayVariable.getInt(onlineProfile));
         scheduleRemoval(bossBar, onlineProfile, stay);
         if (countdown > 0) {
             final int interval = stay / countdown;
             final float amount = progress / countdown;
-            scheduleAnimation(bossBar, interval, amount);
+            scheduleAnimation(bossBar, interval, amount, countdown, progress);
         }
-    }
-
-    private float getResolvedProgress(final OnlineProfile onlineProfile) {
-        try {
-            return normalizeBossBarProgress(getFloatData(onlineProfile.getPlayer(), "progress", 1));
-        } catch (final QuestException e) {
-            log.warn(pack, "Invalid variable in bossbar notification from package '" + (pack == null ? "null" : pack.getQuestPath()) + "': " + e.getMessage(), e);
-        }
-        return 0;
-    }
-
-    private float normalizeBossBarProgress(final float value) {
-        return Math.max(0.0F, Math.min(1.0F, value));
     }
 
     private void scheduleRemoval(final BossBar bossBar, final OnlineProfile onlineProfile, final int stay) {
@@ -114,12 +103,12 @@ public class BossBarNotifyIO extends NotifyIO {
         }.runTaskLater(BetonQuest.getInstance(), stay);
     }
 
-    private void scheduleAnimation(final BossBar bossBar, final int interval, final float amount) {
-
+    private void scheduleAnimation(final BossBar bossBar, final int interval, final float amount,
+                                   final int startCountdown, final float startProgress) {
         new BukkitRunnable() {
-            private int currentCountdown = countdown;
+            private int currentCountdown = startCountdown;
 
-            private float currentProgress = progress;
+            private float currentProgress = startProgress;
 
             @Override
             public void run() {

@@ -10,7 +10,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
@@ -59,9 +60,9 @@ public class WandConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final CheckType type = instruction.getEnum(CheckType.class);
-        final Map<String, VariableNumber> spells = parseSpells(instruction.getList(instruction.getOptional("spells")), instruction.getPackage());
+        final Map<String, Variable<Number>> spells = parseSpells(instruction.getList(instruction.getOptional("spells")), instruction.getPackage());
         final VariableString name = instruction.get(instruction.getOptional("name"), VariableString::new);
-        final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
+        final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
@@ -69,16 +70,16 @@ public class WandConditionFactory implements PlayerConditionFactory {
                 log, instruction.getPackage()), data);
     }
 
-    private Map<String, VariableNumber> parseSpells(final List<String> spells, final QuestPackage questPackage) throws QuestException {
-        final Map<String, VariableNumber> parsed = new HashMap<>();
+    private Map<String, Variable<Number>> parseSpells(final List<String> spells, final QuestPackage questPackage) throws QuestException {
+        final Map<String, Variable<Number>> parsed = new HashMap<>();
         for (final String spell : spells) {
             final String[] spellParts = spell.split(":");
             if (spellParts.length != SPELL_FORMAT_LENGTH) {
                 throw new QuestException("Incorrect spell format");
             }
-            final VariableNumber level;
+            final Variable<Number> level;
             try {
-                level = new VariableNumber(BetonQuest.getInstance().getVariableProcessor(), questPackage, spellParts[1]);
+                level = new Variable<>(BetonQuest.getInstance().getVariableProcessor(), questPackage, spellParts[1], Argument.NUMBER);
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse spell level", e);
             }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,14 +18,14 @@ import java.util.stream.IntStream;
  */
 public class GiveBrewEvent implements OnlineEvent {
     /**
-     * The {@link VariableNumber} for the amount of brews to give.
+     * The amount of brews to give.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
-     * The {@link VariableNumber} for the quality of the brews.
+     * The quality of the brews.
      */
-    private final VariableNumber qualityVar;
+    private final Variable<Number> qualityVar;
 
     /**
      * The {@link VariableString} for the name of the brew to give.
@@ -35,11 +35,11 @@ public class GiveBrewEvent implements OnlineEvent {
     /**
      * Create a new Give Brew Event.
      *
-     * @param amountVar  the {@link VariableNumber} for the amount of brews to give.
-     * @param qualityVar the {@link VariableNumber} for the quality of the brews.
+     * @param amountVar  the amount of brews to give.
+     * @param qualityVar the quality of the brews.
      * @param nameVar    the {@link VariableString} for the name of the brew to give.
      */
-    public GiveBrewEvent(final VariableNumber amountVar, final VariableNumber qualityVar, final VariableString nameVar) {
+    public GiveBrewEvent(final Variable<Number> amountVar, final Variable<Number> qualityVar, final VariableString nameVar) {
         this.amountVar = amountVar;
         this.qualityVar = qualityVar;
         this.nameVar = nameVar;

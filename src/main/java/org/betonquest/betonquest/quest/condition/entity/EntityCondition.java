@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.util.EntityUtils;
 import org.bukkit.Location;
@@ -24,7 +23,7 @@ public class EntityCondition implements NullableCondition {
     /**
      * The amount per entity.
      */
-    private final Map<EntityType, VariableNumber> entityAmounts;
+    private final Map<EntityType, Variable<Number>> entityAmounts;
 
     /**
      * The location of the entity's.
@@ -34,7 +33,7 @@ public class EntityCondition implements NullableCondition {
     /**
      * The range around the location to check for entities.
      */
-    private final VariableNumber range;
+    private final Variable<Number> range;
 
     /**
      * The name of the entity to check for.
@@ -57,8 +56,8 @@ public class EntityCondition implements NullableCondition {
      * @param name          the name of the entity to check for
      * @param marked        the marked entity to check for
      */
-    public EntityCondition(final Map<EntityType, VariableNumber> entityAmounts, final Variable<Location> loc,
-                           final VariableNumber range, @Nullable final VariableString name, @Nullable final VariableIdentifier marked) {
+    public EntityCondition(final Map<EntityType, Variable<Number>> entityAmounts, final Variable<Location> loc,
+                           final Variable<Number> range, @Nullable final VariableString name, @Nullable final VariableIdentifier marked) {
         this.entityAmounts = entityAmounts;
         this.loc = loc;
         this.range = range;
@@ -73,7 +72,7 @@ public class EntityCondition implements NullableCondition {
         final String resolvedName = name == null ? null : name.getValue(profile);
         final String resolvedMarked = marked == null ? null : marked.getValue(profile);
         final List<Entity> selectedEntity = EntityUtils.getSelectedEntity(location, resolvedName, resolvedMarked, resolvedRange);
-        for (final Map.Entry<EntityType, VariableNumber> entry : entityAmounts.entrySet()) {
+        for (final Map.Entry<EntityType, Variable<Number>> entry : entityAmounts.entrySet()) {
             final long count = selectedEntity.stream().filter(entity -> entity.getType() == entry.getKey()).count();
             if (count < entry.getValue().getValue(profile).intValue()) {
                 return false;

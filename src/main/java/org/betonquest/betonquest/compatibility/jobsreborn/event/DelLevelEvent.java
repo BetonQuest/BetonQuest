@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Event to reduce job level.
@@ -20,7 +20,7 @@ public class DelLevelEvent implements PlayerEvent {
     /**
      * Amount to remove.
      */
-    private final VariableNumber nAddLevel;
+    private final Variable<Number> nAddLevel;
 
     /**
      * Create a new level delete event.
@@ -29,7 +29,7 @@ public class DelLevelEvent implements PlayerEvent {
      * @param job    the job to remove level from
      * @param amount the level amount
      */
-    public DelLevelEvent(final VariableJob job, final VariableNumber amount) {
+    public DelLevelEvent(final VariableJob job, final Variable<Number> amount) {
         this.job = job;
         this.nAddLevel = amount;
     }

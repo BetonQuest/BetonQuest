@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,22 +17,26 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class TitleNotifyIO extends NotifyIO {
 
-    private final Duration fadeIn;
+    private final Variable<Number> variableFadeIn;
 
-    private final Duration stay;
+    private final Variable<Number> variableStay;
 
-    private final Duration fadeOut;
+    private final Variable<Number> variableFadeOut;
 
     public TitleNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
 
-        fadeIn = Duration.ofMillis(getIntegerData("fadein", 10) * 50L);
-        stay = Duration.ofMillis(getIntegerData("stay", 70) * 50L);
-        fadeOut = Duration.ofMillis(getIntegerData("fadeout", 20) * 50L);
+        variableFadeIn = getNumberData("fadein", 10);
+        variableStay = getNumberData("stay", 70);
+        variableFadeOut = getNumberData("fadeout", 20);
     }
 
     @Override
-    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
+    protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) throws QuestException {
+        final Duration fadeIn = Duration.ofMillis(variableFadeIn.getValue(onlineProfile).longValue() * 50L);
+        final Duration stay = Duration.ofMillis(variableStay.getValue(onlineProfile).longValue() * 50L);
+        final Duration fadeOut = Duration.ofMillis(variableFadeOut.getValue(onlineProfile).longValue() * 50L);
+
         final List<Component> messageComponents = ComponentLineWrapper.splitNewLine(message);
         final int size = messageComponents.size();
         final Component titleComponent = size >= 1 ? messageComponents.get(0) : Component.empty();

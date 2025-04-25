@@ -10,8 +10,8 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,7 +68,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             final EventID eventID = new EventID(instruction.getPackage(), eventString);
             return new RandomEvent(eventID, weight);
         }));
-        final VariableNumber amount = instruction.get(instruction.getOptional("amount"), VariableNumber::new);
+        final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
     }
 }

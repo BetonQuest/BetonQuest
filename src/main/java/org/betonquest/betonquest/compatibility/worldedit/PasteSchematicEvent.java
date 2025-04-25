@@ -16,7 +16,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +36,7 @@ public class PasteSchematicEvent implements NullableEvent {
     /**
      * Rotation of placement.
      */
-    private final VariableNumber rotation;
+    private final Variable<Number> rotation;
 
     /**
      * 'No Air' boolean for pasting.
@@ -57,7 +56,7 @@ public class PasteSchematicEvent implements NullableEvent {
      * @param noAir    the 'no air' paste argument
      * @param file     the schematic file
      */
-    public PasteSchematicEvent(final Variable<Location> loc, final VariableNumber rotation, final boolean noAir, final File file) {
+    public PasteSchematicEvent(final Variable<Location> loc, final Variable<Number> rotation, final boolean noAir, final File file) {
         this.loc = loc;
         this.rotation = rotation;
         this.noAir = noAir;

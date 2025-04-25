@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.armor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 
@@ -15,14 +15,14 @@ public class ArmorRatingCondition implements OnlineCondition {
     /**
      * The required armor rating.
      */
-    private final VariableNumber requiredRating;
+    private final Variable<Number> requiredRating;
 
     /**
      * Creates a new ArmorRatingCondition.
      *
      * @param requiredRating the required armor rating
      */
-    public ArmorRatingCondition(final VariableNumber requiredRating) {
+    public ArmorRatingCondition(final Variable<Number> requiredRating) {
         this.requiredRating = requiredRating;
     }
 

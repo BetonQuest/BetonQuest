@@ -92,7 +92,7 @@ Additionally, there are common non-standard constructor implementations in the `
 passed as arguments. The following example demonstrates how a number can be validated to ensure it is positive or zero.
 
 ```JAVA title="Example for number validation"
-VariableNumber number = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ZERO);
+VariableNumber number = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
 VariableNumber number = instruction.get((variableProcessor, pack, input) ->
   new VariableNumber(variableProcessor, pack, input, value -> {
     if (value.doubleValue() < 0) {
@@ -113,7 +113,7 @@ List<VariableLocation> locs = instruction.getList(VariableLocation::new);
 Common implementations are also available within the `VariableArgument` interface:
 
 ```JAVA title="Number above 0"
-VariableNumber number = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+VariableNumber number = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
 ```
 
 ## Custom Parsing

@@ -16,7 +16,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
@@ -167,7 +167,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected Item of() throws Missing, Invalid {
                 try {
-                    return new Item(featureAPI, new ItemID(Menu.this.pack, getString("bind")), new VariableNumber(variableProcessor, null, "1"));
+                    return new Item(featureAPI, new ItemID(Menu.this.pack, getString("bind")), new Variable<>(1));
                 } catch (final QuestException e) {
                     throw new Invalid("bind", e);
                 }

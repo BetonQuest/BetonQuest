@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +52,7 @@ public class MMOItemsGiveEvent implements OnlineEvent {
     /**
      * Variable number representing the amount of items to be given.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * Constructs a new MMOItemsGiveEvent.
@@ -65,7 +65,7 @@ public class MMOItemsGiveEvent implements OnlineEvent {
      * @param singleStack whether to give the item in a single stack
      * @param amountVar   the variable number representing the amount of items to be given
      */
-    public MMOItemsGiveEvent(final MMOItems mmoPlugin, final Type itemType, final String itemID, final boolean scale, final NotificationSender notify, final boolean singleStack, final VariableNumber amountVar) {
+    public MMOItemsGiveEvent(final MMOItems mmoPlugin, final Type itemType, final String itemID, final boolean scale, final NotificationSender notify, final boolean singleStack, final Variable<Number> amountVar) {
         this.mmoPlugin = mmoPlugin;
         this.itemType = itemType;
         this.itemID = itemID;

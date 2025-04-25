@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -24,7 +24,7 @@ public class JumpObjective extends CountingObjective implements Listener {
      * @param targetAmount the target amount of jumps
      * @throws QuestException if there is an error in the instruction
      */
-    public JumpObjective(final Instruction instruction, final VariableNumber targetAmount) throws QuestException {
+    public JumpObjective(final Instruction instruction, final Variable<Number> targetAmount) throws QuestException {
         super(instruction, targetAmount, "times_to_jump");
     }
 

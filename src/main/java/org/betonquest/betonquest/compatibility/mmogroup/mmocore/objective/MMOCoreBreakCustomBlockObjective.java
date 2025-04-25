@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -34,7 +34,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
      * @param desiredBlockId the ID of the block to be broken
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final VariableNumber targetAmount, final String desiredBlockId) throws QuestException {
+    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final Variable<Number> targetAmount, final String desiredBlockId) throws QuestException {
         super(instruction, targetAmount, "blocks_to_break");
         this.desiredBlockId = desiredBlockId;
     }

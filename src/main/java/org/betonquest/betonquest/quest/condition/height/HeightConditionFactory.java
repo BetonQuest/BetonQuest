@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -29,41 +28,29 @@ public class HeightConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * The variable processor.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the height factory.
      *
-     * @param loggerFactory     the logger factory to create a logger for the conditions
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the variable processor
+     * @param loggerFactory the logger factory to create a logger for the conditions
+     * @param data          the data used for checking the condition on the main thread
      */
-    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
-        final String string = instruction.next();
-        final Variable<Number> height = new Variable<>(variableProcessor, instruction.getPackage(), string, (value) -> {
+        final Variable<Number> height = instruction.getVariable(value -> {
             try {
-                final double parsedValue;
                 if (value.matches("-?\\d+\\.?\\d*")) {
-                    parsedValue = Double.parseDouble(value);
-                } else {
-                    parsedValue = Argument.LOCATION.apply(value).getY();
+                    return Double.parseDouble(value);
                 }
-
-                return parsedValue;
+                return Argument.LOCATION.apply(value).getY();
             } catch (final NumberFormatException e) {
                 throw new QuestException("Could not parse number: " + value, e);
             }
         });
+        final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new HeightCondition(height), log, instruction.getPackage()), data
         );

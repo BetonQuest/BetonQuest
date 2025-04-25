@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -28,11 +28,6 @@ public class PointEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The variable processor to use.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Storage for player data.
      */
     private final PlayerDataStorage dataStorage;
@@ -45,15 +40,13 @@ public class PointEventFactory implements PlayerEventFactory {
     /**
      * Create the points event factory.
      *
-     * @param loggerFactory     the logger factory to create a logger for the events
-     * @param variableProcessor variable processor to use
-     * @param dataStorage       the storage providing player data
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param loggerFactory the logger factory to create a logger for the events
+     * @param dataStorage   the storage providing player data
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor,
-                             final PlayerDataStorage dataStorage, final PluginMessage pluginMessage) {
+    public PointEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
+                             final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
-        this.variableProcessor = variableProcessor;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
     }
@@ -88,7 +81,7 @@ public class PointEventFactory implements PlayerEventFactory {
             pointSender = new NoNotificationSender();
         }
 
-        final VariableNumber amount = new VariableNumber(variableProcessor, instruction.getPackage(), number);
+        final Variable<Number> amount = instruction.getVariable(number, Argument.NUMBER);
         return new PointEvent(pointSender, category, amount, type, dataStorage);
     }
 }

@@ -4,7 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Event to add attribute reallocation points to a player.
@@ -14,14 +14,14 @@ public class MMOCoreAttributeReallocationPointsEvent implements PlayerEvent {
     /**
      * Amount to grant.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * Create a new attribute reallocation point event.
      *
      * @param amount the amount to grant
      */
-    public MMOCoreAttributeReallocationPointsEvent(final VariableNumber amount) {
+    public MMOCoreAttributeReallocationPointsEvent(final Variable<Number> amount) {
         this.amountVar = amount;
     }
 

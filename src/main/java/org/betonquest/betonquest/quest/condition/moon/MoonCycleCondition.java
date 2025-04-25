@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +20,7 @@ public class MoonCycleCondition implements NullableCondition {
     /**
      * The moon cycle to check for.
      */
-    private final VariableNumber moonCycle;
+    private final Variable<Number> moonCycle;
 
     /**
      * Checks if the moon cycle in the given world matches the moon cycle of this condition.
@@ -29,7 +28,7 @@ public class MoonCycleCondition implements NullableCondition {
      * @param variableWorld the world to check the moon cycle in
      * @param moonCycle     the moon cycle to check for
      */
-    public MoonCycleCondition(final Variable<World> variableWorld, final VariableNumber moonCycle) {
+    public MoonCycleCondition(final Variable<World> variableWorld, final Variable<Number> moonCycle) {
         this.variableWorld = variableWorld;
         this.moonCycle = moonCycle;
     }

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.util.InventoryUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -42,7 +42,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final VariableNumber targetAmount, final BetonQuestLogger log, final Item item)
+    public SmeltingObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final Item item)
             throws QuestException {
         super(instruction, targetAmount, "items_to_smelt");
         this.log = log;

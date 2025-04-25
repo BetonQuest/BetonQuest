@@ -2,7 +2,7 @@ package org.betonquest.betonquest.util.math;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.variable.math.MathVariable;
 import org.betonquest.betonquest.util.math.tokens.AbsoluteValue;
@@ -118,7 +118,7 @@ public class Tokenizer {
             final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
 
             try {
-                nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + variableName + "%"));
+                nextInLine = new Variable(new org.betonquest.betonquest.instruction.variable.Variable<>(variableProcessor, pack, "%" + variableName + "%", Argument.NUMBER));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -161,7 +161,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new VariableNumber(variableProcessor, pack, "%" + val2.substring(start, index--) + "%"));
+                nextInLine = new Variable(new org.betonquest.betonquest.instruction.variable.Variable<>(variableProcessor, pack, "%" + val2.substring(start, index--) + "%", Argument.NUMBER));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }

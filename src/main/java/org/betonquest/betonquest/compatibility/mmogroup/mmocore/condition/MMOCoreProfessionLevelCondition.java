@@ -4,7 +4,7 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Condition to check if the player has a level in a profession.
@@ -16,14 +16,14 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
     private final String professionName;
 
     /**
-     * Required level.
-     */
-    private final VariableNumber targetLevelVar;
-
-    /**
      * If the actual must be equal to the target level.
      */
     private final boolean mustBeEqual;
+
+    /**
+     * Required level.
+     */
+    private final Variable<Number> targetLevelVar;
 
     /**
      * Create a new attribute condition.
@@ -32,7 +32,7 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the actual must be equal to the target level
      */
-    public MMOCoreProfessionLevelCondition(final String profession, final VariableNumber targetLevel, final boolean equal) {
+    public MMOCoreProfessionLevelCondition(final String profession, final Variable<Number> targetLevel, final boolean equal) {
         this.professionName = profession;
         this.targetLevelVar = targetLevel;
         this.mustBeEqual = equal;

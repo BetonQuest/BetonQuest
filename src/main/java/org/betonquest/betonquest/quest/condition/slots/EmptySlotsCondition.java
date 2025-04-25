@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.slots;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -14,7 +14,7 @@ public class EmptySlotsCondition implements OnlineCondition {
     /**
      * Number of required empty slots.
      */
-    private final VariableNumber required;
+    private final Variable<Number> required;
 
     /**
      * Whether the number of empty slots should be equal.
@@ -27,7 +27,7 @@ public class EmptySlotsCondition implements OnlineCondition {
      * @param required the number of empty slots required
      * @param equal    whether the number of empty slots should be equal
      */
-    public EmptySlotsCondition(final VariableNumber required, final boolean equal) {
+    public EmptySlotsCondition(final Variable<Number> required, final boolean equal) {
         this.required = required;
         this.equal = equal;
     }

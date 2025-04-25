@@ -6,7 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.util.Utils;
@@ -35,7 +36,7 @@ public class MMOCoreAttributeConditionFactory implements PlayerConditionFactory 
         final String attributeName = instruction.next();
         final PlayerAttribute attribute = Utils.getNN(MMOCore.plugin.attributeManager.get(attributeName),
                 "Attribute does not exist: " + attributeName);
-        final VariableNumber targetLevelVar = instruction.get(VariableNumber::new);
+        final Variable<Number> targetLevelVar = instruction.getVariable(Argument.NUMBER);
         final boolean mustBeEqual = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(new MMOCoreAttributeCondition(attribute, targetLevelVar, mustBeEqual), data);
     }

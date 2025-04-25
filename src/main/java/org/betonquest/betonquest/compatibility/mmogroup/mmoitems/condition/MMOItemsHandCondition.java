@@ -5,7 +5,7 @@ import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -32,7 +32,7 @@ public class MMOItemsHandCondition implements OnlineCondition {
     /**
      * The amount of the item to check for.
      */
-    private final VariableNumber amount;
+    private final Variable<Number> amount;
 
     /**
      * Constructs a new MMOItemsHandCondition.
@@ -42,7 +42,7 @@ public class MMOItemsHandCondition implements OnlineCondition {
      * @param offhand  whether to check the offhand
      * @param amount   the amount of the item
      */
-    public MMOItemsHandCondition(final Type itemType, final String itemID, final boolean offhand, final VariableNumber amount) {
+    public MMOItemsHandCondition(final Type itemType, final String itemID, final boolean offhand, final Variable<Number> amount) {
         this.itemType = itemType;
         this.itemID = itemID;
         this.offhand = offhand;

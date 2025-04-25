@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -52,7 +51,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
         final VariableList<EntityType> types = instruction.get(Argument.ofList(value -> instruction.getEnum(value, EntityType.class)));
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableNumber range = instruction.get(VariableNumber::new);
+        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         final boolean kill = instruction.hasArgument("kill");
         final String nameString = instruction.getOptional("name");
         final VariableString name = nameString == null ? null : instruction.get(

@@ -7,7 +7,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 import org.jetbrains.annotations.Nullable;
@@ -51,27 +52,27 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
-        final VariableNumber amount = getVariableNumber(instruction);
+        final Variable<Number> amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, getAmount(profile, amount)));
     }
 
     private PlayerEvent createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
-        final VariableNumber amount = getVariableNumber(instruction);
+        final Variable<Number> amount = getVariableNumber(instruction);
         return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, getAmount(profile, amount)));
     }
 
     @Nullable
-    private VariableNumber getVariableNumber(final Instruction instruction) throws QuestException {
+    private Variable<Number> getVariableNumber(final Instruction instruction) throws QuestException {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.next();
             if (!stringAmount.matches("condition(s)?:.+")) {
-                return instruction.get(stringAmount, VariableNumber::new);
+                return instruction.getVariable(stringAmount, Argument.NUMBER);
             }
         }
         return null;
     }
 
-    private int getAmount(final Profile profile, @Nullable final VariableNumber amount) throws QuestException {
+    private int getAmount(final Profile profile, @Nullable final Variable<Number> amount) throws QuestException {
         if (amount == null) {
             return 1;
         }

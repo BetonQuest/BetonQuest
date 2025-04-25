@@ -6,7 +6,7 @@ import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Adds the experience to a class.
@@ -25,16 +25,16 @@ public class HeroesExperienceEvent implements OnlineEvent {
     /**
      * The amount of experience to add.
      */
-    private final VariableNumber amountVar;
+    private final Variable<Number> amountVar;
 
     /**
      * Create a new Heroes Experience Event.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
      * @param isPrimary        If the type is the primary class or the secondary class.
-     * @param amountVar        The {@link VariableNumber} of the amount of experience to add.
+     * @param amountVar        The amount of experience to add.
      */
-    public HeroesExperienceEvent(final CharacterManager characterManager, final boolean isPrimary, final VariableNumber amountVar) {
+    public HeroesExperienceEvent(final CharacterManager characterManager, final boolean isPrimary, final Variable<Number> amountVar) {
         this.characterManager = characterManager;
         this.isPrimary = isPrimary;
         this.amountVar = amountVar;

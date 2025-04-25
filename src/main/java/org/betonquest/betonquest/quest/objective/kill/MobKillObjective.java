@@ -7,9 +7,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -58,7 +58,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final Instruction instruction, final BetonQuestLogger log, final VariableNumber targetAmount,
+    public MobKillObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> targetAmount,
                             final VariableList<EntityType> entities, @Nullable final String name,
                             @Nullable final VariableIdentifier marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");

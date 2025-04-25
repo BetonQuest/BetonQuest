@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Event to add job level.
@@ -21,7 +21,7 @@ public class AddLevelEvent implements PlayerEvent {
     /**
      * Amount to add.
      */
-    private final VariableNumber nAddLevel;
+    private final Variable<Number> nAddLevel;
 
     /**
      * Create a new level add event.
@@ -29,7 +29,7 @@ public class AddLevelEvent implements PlayerEvent {
      * @param job    the job to add level to
      * @param amount the level amount
      */
-    public AddLevelEvent(final VariableJob job, final VariableNumber amount) {
+    public AddLevelEvent(final VariableJob job, final Variable<Number> amount) {
         this.job = job;
         this.nAddLevel = amount;
     }

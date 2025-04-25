@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.take.AbstractTakeEvent;
 import org.betonquest.betonquest.quest.event.take.CheckType;
@@ -37,7 +37,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
     /**
      * The variable number representing the amount of items to delete.
      */
-    private final VariableNumber deleteAmountVar;
+    private final Variable<Number> deleteAmountVar;
 
     /**
      * A map to keep track of the needed deletions for each player.
@@ -53,7 +53,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public MMOItemsTakeEvent(final Type itemType, final String itemID, final VariableNumber deleteAmountVar, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public MMOItemsTakeEvent(final Type itemType, final String itemID, final Variable<Number> deleteAmountVar, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
         this.itemType = itemType;
         this.itemID = itemID;

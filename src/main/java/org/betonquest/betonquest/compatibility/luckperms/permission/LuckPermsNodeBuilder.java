@@ -4,7 +4,7 @@ import net.luckperms.api.context.MutableContextSet;
 import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public record LuckPermsNodeBuilder(List<VariableString> permissions, VariableString value,
                                    List<VariableString> contexts,
-                                   VariableNumber expiry, VariableString timeUnit) {
+                                   Variable<Number> expiry, VariableString timeUnit) {
 
     /**
      * Builds a list of {@link Node}s.

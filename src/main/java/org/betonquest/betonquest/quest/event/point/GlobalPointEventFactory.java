@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 
 import java.util.Locale;
 
@@ -52,14 +52,14 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
         if (action != null) {
             try {
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
-                return new GlobalPointEvent(globalData, category, instruction.get(number, VariableNumber::new), type);
+                return new GlobalPointEvent(globalData, category, instruction.getVariable(number, Argument.NUMBER), type);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + instruction.current(), e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
-            return new GlobalPointEvent(globalData, category, instruction.get(number.replace("*", ""), VariableNumber::new), Point.MULTIPLY);
+            return new GlobalPointEvent(globalData, category, instruction.getVariable(number.replace("*", ""), Argument.NUMBER), Point.MULTIPLY);
         }
-        return new GlobalPointEvent(globalData, category, instruction.get(number, VariableNumber::new), Point.ADD);
+        return new GlobalPointEvent(globalData, category, instruction.getVariable(number, Argument.NUMBER), Point.ADD);
     }
 }

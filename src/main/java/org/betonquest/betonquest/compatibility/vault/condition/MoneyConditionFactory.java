@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -37,7 +37,7 @@ public class MoneyConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableNumber amount = instruction.get(VariableArgument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
         return new PrimaryServerThreadPlayerCondition(new MoneyCondition(economy, amount), data);
     }
 }

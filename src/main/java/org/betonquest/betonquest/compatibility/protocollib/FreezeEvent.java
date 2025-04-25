@@ -7,7 +7,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -28,14 +28,14 @@ public class FreezeEvent implements OnlineEvent {
     /**
      * Freeze duration.
      */
-    private final VariableNumber ticksVar;
+    private final Variable<Number> ticksVar;
 
     /**
      * Create a new event that freezes a player.
      *
      * @param ticks the freeze duration
      */
-    public FreezeEvent(final VariableNumber ticks) {
+    public FreezeEvent(final Variable<Number> ticks) {
         ticksVar = ticks;
     }
 

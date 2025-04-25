@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-import org.betonquest.betonquest.instruction.variable.VariableNumber;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -32,9 +31,9 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
 
     private final String mob;
 
-    private final VariableNumber amount;
+    private final Variable<Number> level;
 
-    private final VariableNumber level;
+    private final Variable<Number> amount;
 
     private final boolean privateMob;
 
@@ -43,8 +42,8 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
     @Nullable
     private final VariableIdentifier marked;
 
-    public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Variable<Location> loc, final String mob, final VariableNumber level,
-                               final VariableNumber amount, final boolean privateMob, final boolean targetPlayer, @Nullable final VariableIdentifier marked) {
+    public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Variable<Location> loc, final String mob, final Variable<Number> level,
+                               final Variable<Number> amount, final boolean privateMob, final boolean targetPlayer, @Nullable final VariableIdentifier marked) {
         this.apiHelper = apiHelper;
         this.loc = loc;
         this.mob = mob;
