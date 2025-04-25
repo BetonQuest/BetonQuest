@@ -229,6 +229,7 @@ Citizens integration.
 
 The start and stop sound in the configuration for conversations were removed in favor of the notification system,
 that now also has the two new build in categories `conversation_start` and `conversation_end`.
+Also the messages it self are now printed in every conversation and can now be configured with the notification system.
 
 To get the previous sounds back, you need to configure it now like the following in any quest package:
 
@@ -249,6 +250,18 @@ notifications:
 ```
 
 </div>
+
+If you want to disable the the start and end message, now you can configure the following:
+
+````YAML title="Disable Messages"
+notifications:
+  conversation_start:
+    io: suppress
+  conversation_end:
+    io: suppress
+````
+
+and if you only want sounds and no message, you use `sound` instead of `suppress` as io.
 
 ### 3.0.0-DEV-217 - Item Type :gear:
 
