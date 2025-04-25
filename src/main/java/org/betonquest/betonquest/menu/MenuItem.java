@@ -2,24 +2,18 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.menu.config.SimpleYMLSection;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +23,7 @@ import java.util.List;
 /**
  * An Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
  */
-public class MenuItem extends SimpleYMLSection {
+public class MenuItem {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -37,15 +31,25 @@ public class MenuItem extends SimpleYMLSection {
     private final BetonQuestLogger log;
 
     /**
+     * The QuestTypeAPI.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * The betonquest quest item this item is based on.
      */
     private final Item item;
 
     /**
-     * Parsed message which can be got.
+     * The ID of this item.
+     */
+    private final MenuItemID itemId;
+
+    /**
+     * HashMap with a language as key and the corresponding description as value.
      */
     @Nullable
-    private final ParsedSectionMessage descriptions;
+    private final Message descriptions;
 
     /**
      * Ids of all events that should be run on clicks.
@@ -55,7 +59,7 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Conditions that have to be matched to view the item.
      */
-    private final List<ConditionID> conditions;
+    private final VariableList<ConditionID> conditions;
 
     /**
      * If the menu should be closed when the item is clicked.
@@ -66,65 +70,25 @@ public class MenuItem extends SimpleYMLSection {
      * Creates a new Menu Item.
      *
      * @param log          the custom logger for this class
-     * @param pack         the quest package the item is in
-     * @param name         the name of the item
-     * @param section      the configuration representing the item
-     * @param defaultClose if the item click closes as default
-     * @throws InvalidConfigurationException if there are missing or invalid entries
+     * @param questTypeAPI the QuestTypeAPI
+     * @param item         the item to display
+     * @param itemId       the id of the item
+     * @param descriptions the descriptions overriding name and lore of the Item
+     * @param clickEvents  the events to execute on click
+     * @param conditions   the conditions required to show the item
+     * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestPackage pack,
-                    final String name, final ConfigurationSection section, final boolean defaultClose)
-            throws InvalidConfigurationException {
-        super(pack, name, section);
+    public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Item item, final MenuItemID itemId,
+                    @Nullable final Message descriptions, final ClickEvents clickEvents,
+                    final VariableList<ConditionID> conditions, final boolean close) {
         this.log = log;
-        final BetonQuest instance = BetonQuest.getInstance();
-        try {
-            //load item
-            final ItemID itemID = new ItemID(pack, getString("item").trim());
-            final Variable<Number> amount = new Variable<>(instance.getVariableProcessor(), pack,
-                    new DefaultSetting<>("1") {
-                        @Override
-                        @SuppressWarnings("PMD.ShortMethodName")
-                        protected String of() throws Missing {
-                            return getString("amount");
-                        }
-                    }.get(), Argument.NUMBER);
-            this.item = new Item(instance.getFeatureAPI(), itemID, amount);
-            // load description
-            if (section.contains("text")) {
-                this.descriptions = new ParsedSectionMessage(instance.getVariableProcessor(), instance.getMessageParser(),
-                        instance.getPlayerDataStorage(), pack, section, "text", instance);
-            } else {
-                this.descriptions = null;
-                log.debug(pack, "No description for menu item '" + pack.getQuestPath() + "." + section.getName() + "' set.");
-            }
-            if (config.isConfigurationSection("click")) {
-                this.clickEvents = new ClickEvents(
-                        getEvents("click.left", pack),
-                        getEvents("click.shiftLeft", pack),
-                        getEvents("click.right", pack),
-                        getEvents("click.shiftRight", pack),
-                        getEvents("click.middleMouse", pack)
-                );
-            } else {
-                this.clickEvents = new ClickEvents(getEvents("click", pack));
-            }
-            this.conditions = getConditions("conditions", pack);
-            //load if menu should close when item is clicked
-            this.close = new DefaultSetting<>(defaultClose) {
-                @Override
-                @SuppressWarnings("PMD.ShortMethodName")
-                protected Boolean of() throws Missing, Invalid {
-                    try {
-                        return Argument.BOOLEAN.apply(getString("close"));
-                    } catch (final QuestException e) {
-                        throw new Invalid(e.getMessage(), e);
-                    }
-                }
-            }.get();
-        } catch (final QuestException e) {
-            throw new InvalidConfigurationException(e.getMessage(), e);
-        }
+        this.questTypeAPI = questTypeAPI;
+        this.item = item;
+        this.itemId = itemId;
+        this.descriptions = descriptions;
+        this.clickEvents = clickEvents;
+        this.conditions = conditions;
+        this.close = close;
     }
 
     /**
@@ -145,10 +109,17 @@ public class MenuItem extends SimpleYMLSection {
         };
     }
 
-    private boolean executeEvents(final List<EventID> variables, final OnlineProfile profile) {
-        for (final EventID eventID : variables) {
-            log.debug(pack, "Item " + name + ": Run event " + eventID);
-            BetonQuest.getInstance().getQuestTypeAPI().event(profile, eventID);
+    private boolean executeEvents(final VariableList<EventID> events, final OnlineProfile profile) {
+        final List<EventID> resolved;
+        try {
+            resolved = events.getValue(profile);
+        } catch (final QuestException exception) {
+            log.warn(itemId.getPackage(), "Error while resolving events in menu item '" + itemId + "': " + exception.getMessage(), exception);
+            return false;
+        }
+        for (final EventID eventID : resolved) {
+            log.debug(itemId.getPackage(), "Item " + itemId + ": Run event " + eventID);
+            questTypeAPI.event(profile, eventID);
         }
         return this.close;
     }
@@ -160,11 +131,18 @@ public class MenuItem extends SimpleYMLSection {
      * @return true if all display conditions are met, false otherwise
      */
     public boolean display(final Profile profile) {
-        for (final ConditionID condition : this.conditions) {
-            if (BetonQuest.getInstance().getQuestTypeAPI().condition(profile, condition)) {
-                log.debug(pack, "Item " + name + ": condition " + condition + " returned true");
+        final List<ConditionID> resolved;
+        try {
+            resolved = this.conditions.getValue(profile);
+        } catch (final QuestException exception) {
+            log.warn(itemId.getPackage(), "Error while resolving condition in menu item '" + itemId + "': " + exception.getMessage(), exception);
+            return false;
+        }
+        for (final ConditionID condition : resolved) {
+            if (questTypeAPI.condition(profile, condition)) {
+                log.debug(itemId.getPackage(), "Item " + itemId + ": condition " + condition + " returned true");
             } else {
-                log.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
+                log.debug(itemId.getPackage(), "Item " + itemId + " wont be displayed: condition" + condition + " returned false.");
                 return false;
             }
         }
@@ -201,33 +179,33 @@ public class MenuItem extends SimpleYMLSection {
             }
             return item;
         } catch (final QuestException e) {
-            log.error(pack, "QuestException while creating '" + name + "': " + e.getMessage());
+            log.error(itemId.getPackage(), "QuestException while creating '" + itemId + "': " + e.getMessage());
             return new ItemStack(Material.AIR);
         }
     }
 
     /**
-     * The name of the menu item.
+     * The id of the menu item.
      *
      * @return the items internal id
      */
-    public String getId() {
-        return name;
+    public MenuItemID getId() {
+        return itemId;
     }
 
     /**
      * Contains the ids of events that should be run on a click.
      */
-    public record ClickEvents(List<EventID> leftClick, List<EventID> shiftLeftClick,
-                              List<EventID> rightClick, List<EventID> shiftRightClick,
-                              List<EventID> middleMouseClick) {
+    public record ClickEvents(VariableList<EventID> leftClick, VariableList<EventID> shiftLeftClick,
+                              VariableList<EventID> rightClick, VariableList<EventID> shiftRightClick,
+                              VariableList<EventID> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
          * @param click the events to execute on any click
          */
-        public ClickEvents(final List<EventID> click) {
+        public ClickEvents(final VariableList<EventID> click) {
             this(click, click, click, click, click);
         }
     }

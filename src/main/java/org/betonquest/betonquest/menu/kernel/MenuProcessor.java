@@ -1,0 +1,158 @@
+package org.betonquest.betonquest.menu.kernel;
+
+import org.apache.commons.lang3.StringUtils;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.menu.Menu;
+import org.betonquest.betonquest.menu.MenuID;
+import org.betonquest.betonquest.menu.MenuItemID;
+import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.menu.Slots;
+import org.betonquest.betonquest.quest.event.IngameNotificationSender;
+import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Processor to create and store {@link Menu}s.
+ */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
+public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
+    /**
+     * RPG Menu instance.
+     */
+    private final RPGMenu rpgMenu;
+
+    /**
+     * Plugin message instance to get messages from.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
+     * Profile Provider instance.
+     */
+    private final ProfileProvider profileProvider;
+
+    /**
+     * Create a new Processor to create and store Menu Items.
+     *
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the logger factory to class specific loggers with
+     * @param questTypeAPI      the QuestTypeAPI
+     * @param variableProcessor the variable resolver
+     * @param featureAPI        the Feature API
+     * @param rpgMenu           the RPG Menu instance
+     * @param pluginMessage     the Plugin message instance to get messages from
+     * @param profileProvider   the Profile Provider
+     */
+    public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI,
+                         final VariableProcessor variableProcessor, final FeatureAPI featureAPI, final RPGMenu rpgMenu,
+                         final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+        super(log, "Menu", "menus", loggerFactory, variableProcessor, questTypeAPI, featureAPI);
+        this.rpgMenu = rpgMenu;
+        this.pluginMessage = pluginMessage;
+        this.profileProvider = profileProvider;
+    }
+
+    @Override
+    public void clear() {
+        final Iterator<Menu> iterator = values.values().iterator();
+        while (iterator.hasNext()) {
+            iterator.next().unregister();
+            iterator.remove();
+        }
+        super.clear();
+    }
+
+    @Override
+    public Menu loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
+        final MenuCreationHelper helper = new MenuCreationHelper(pack, section);
+        final Menu.MenuData menuData = helper.getMenuData();
+        final MenuID menuID = getIdentifier(pack, section.getName());
+        final Item boundItem = section.isSet("bind") ? new Item(featureAPI, new ItemID(pack, helper.getRequired("bind")),
+                new Variable<>(1)) : null;
+        final String boundCommand = section.isSet("command") ? helper.getRequired("command") : null;
+        final BetonQuestLogger log = loggerFactory.create(MenuID.class);
+        final IngameNotificationSender noPermissionSender = new IngameNotificationSender(log, pluginMessage, pack,
+                menuID.getFullID(), NotificationLevel.ERROR, "no_permission");
+        return new Menu(log, loggerFactory, rpgMenu, menuID, profileProvider, questTypeAPI, menuData, boundItem, boundCommand, noPermissionSender);
+    }
+
+    @Override
+    protected MenuID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+        return new MenuID(pack, identifier);
+    }
+
+    /**
+     * Class to bundle objects required to create a Menu.
+     */
+    private class MenuCreationHelper extends CreationHelper {
+
+        /**
+         * Creates a new Creation Helper.
+         *
+         * @param pack    the pack to create from
+         * @param section the section to create from
+         */
+        protected MenuCreationHelper(final QuestPackage pack, final ConfigurationSection section) {
+            super(pack, section);
+        }
+
+        @NotNull
+        private Menu.MenuData getMenuData() throws QuestException {
+            final int height = new Variable<>(variableProcessor, pack, getRequired("height"), Argument.NUMBER)
+                    .getValue(null).intValue();
+            if (height < 1 || height > 6) {
+                throw new QuestException("height is invalid!");
+            }
+            final Variable<String> title = new Variable<>(variableProcessor, pack, getRequired("title"), Argument.STRING);
+            final VariableList<ConditionID> openConditions = getID("open_conditions", ConditionID::new);
+            final VariableList<EventID> openEvents = getID("open_events", EventID::new);
+            final VariableList<EventID> closeEvents = getID("close_events", EventID::new);
+
+            final List<Slots> slots = loadSlots(height);
+            return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);
+        }
+
+        private List<Slots> loadSlots(final int height) throws QuestException {
+            final ConfigurationSection slotsSection = section.getConfigurationSection("slots");
+            if (slotsSection == null) {
+                throw new QuestException("slots are missing!");
+            }
+            final List<Slots> slots = new ArrayList<>();
+            for (final String key : slotsSection.getKeys(false)) {
+                final String rawItems = GlobalVariableResolver.resolve(pack, slotsSection.getString(key, ""));
+                final List<MenuItemID> itemsList = new ArrayList<>();
+                for (final String item : StringUtils.split(rawItems, ',')) {
+                    itemsList.add(new MenuItemID(pack, item));
+                }
+                try {
+                    slots.add(new Slots(rpgMenu, key, itemsList));
+                } catch (final IllegalArgumentException e) {
+                    throw new QuestException("slots." + key + " is invalid: " + e.getMessage(), e);
+                }
+            }
+            Slots.checkSlots(slots, height * 9);
+            return slots;
+        }
+    }
+}

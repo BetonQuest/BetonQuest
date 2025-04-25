@@ -60,6 +60,7 @@ import org.betonquest.betonquest.logger.handler.chat.AccumulatingReceiverSelecto
 import org.betonquest.betonquest.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.message.DecidingMessageParser;
 import org.betonquest.betonquest.message.TagMessageParserDecider;
 import org.betonquest.betonquest.notify.Notify;
@@ -417,7 +418,9 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         setupUpdater();
 
-        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, pluginMessage,
+        final MenuItemProcessor menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
+                messageParser, playerDataStorage, this, questTypeAPI, config, getVariableProcessor(), featureAPI);
+        rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, menuItemProcessor, pluginMessage,
                 questTypeAPI, featureAPI, profileProvider);
 
         log.info("BetonQuest successfully enabled!");

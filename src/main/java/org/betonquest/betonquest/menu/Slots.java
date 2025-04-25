@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.configuration.InvalidConfigurationException;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -12,16 +12,20 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class Slots {
+
     private final int start;
 
     private final int end;
 
-    private final List<MenuItem> items;
+    private final List<MenuItemID> items;
 
     private final Type type;
 
+    private final RPGMenu rpgMenu;
+
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidUncheckedExceptionsInSignatures"})
-    public Slots(final String slots, final List<MenuItem> items) throws IllegalArgumentException {
+    public Slots(final RPGMenu rpgMenu, final String slots, final List<MenuItemID> items) throws IllegalArgumentException {
+        this.rpgMenu = rpgMenu;
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;
             this.start = Integer.parseInt(slots);
@@ -52,24 +56,24 @@ public class Slots {
     }
 
     /**
-     * checks if all defined slots are valid.
+     * Checks if all defined slots are valid.
      *
-     * @param slots         a iterable containing all slots objects to check
+     * @param slots         an iterable containing all slots objects to check
      * @param inventorySize the size of the inventory in which the slots should be
-     * @throws InvalidConfigurationException if a defined list of slots is invalid
+     * @throws QuestException if a defined list of slots is invalid
      */
-    public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws InvalidConfigurationException {
+    public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws QuestException {
         final boolean[] contained = new boolean[inventorySize]; //initialized with 'false'
         for (final Slots s : slots) {
             for (final int slot : s.getSlots()) {
                 try {
                     if (contained[slot]) {
-                        throw new InvalidConfigurationException("Slots '" + s + "': slot " + slot + " was already specified");
+                        throw new QuestException("Slots '" + s + "': slot " + slot + " was already specified");
                     } else {
                         contained[slot] = true;
                     }
                 } catch (final IndexOutOfBoundsException e) {
-                    throw new InvalidConfigurationException("Slots '" + s + "': slot " + slot + " exceeds inventory size", e);
+                    throw new QuestException("Slots '" + s + "': slot " + slot + " exceeds inventory size", e);
                 }
             }
         }
@@ -123,7 +127,7 @@ public class Slots {
     /**
      * @return all items assigned to the slots covered by this object
      */
-    public List<MenuItem> getItems() {
+    public List<MenuItemID> getItems() {
         return items;
     }
 
@@ -131,9 +135,10 @@ public class Slots {
      * @param profile the player from the {@link Profile} for which these slots should get displayed for
      * @return all items which should be shown to the specified player of the slots covered by this object
      */
-    public List<MenuItem> getItems(final Profile profile) {
+    public List<MenuItem> getItems(final Profile profile) throws QuestException {
         final List<MenuItem> items = new ArrayList<>();
-        for (final MenuItem item : this.items) {
+        for (final MenuItemID itemID : this.items) {
+            final MenuItem item = rpgMenu.getMenuItem(itemID);
             if (item.display(profile)) {
                 items.add(item);
             }
@@ -167,7 +172,7 @@ public class Slots {
      * @return the menu item which should be displayed in the given slot to the player
      */
     @Nullable
-    public MenuItem getItem(final Profile profile, final int slot) {
+    public MenuItem getItem(final Profile profile, final int slot) throws QuestException {
         final int index = this.getIndex(slot);
         if (index == -1) {
             throw new IllegalStateException("Invalid slot for Slots '" + this + "': " + slot);

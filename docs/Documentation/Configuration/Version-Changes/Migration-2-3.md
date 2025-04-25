@@ -27,8 +27,9 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
 - [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
 - [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :gear:
-- [3.0.0-DEV-232 - Singular to Plural](#300-dev-231-singular-to-plural) :gear:
-- [3.0.0-DEV-233 - `pickrandom` event](#300-dev-232-pickrandom-event) :gear:
+- [3.0.0-DEV-232 - Singular to Plural](#300-dev-232-singular-to-plural) :gear:
+- [3.0.0-DEV-233 - `pickrandom` event](#300-dev-233-pickrandom-event) :gear:
+- [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -338,6 +339,65 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     ```YAML title="New Syntax"
     events:
       pickRandom: pickrandom 1~pickRandom1,2~pickRandom2,3~pickRandom3
+    ```
+
+    </div>
+
+### 3.0.0-DEV-244 - Menu Item move :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    To use a Menu Item in multiple Menus they are now defined in their own `menu_items` section.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    menus:
+      questMenu:
+        height: 4
+        title: "&6&lQuests"
+        bind: "openMenuItem"
+        command: "/quests"
+        slots:
+          4: "reputation"
+          5-8: "filler,filler,filler,filler"
+    
+        items:
+          reputation:
+            item: "xpBottle"
+            amount: 1
+            text:
+                - "&2Quest Level: &6&l%point.quest_reputation.amount%"
+            close: true
+          filler:
+            text: "&a "
+            item: "filler"
+    ```
+    
+    ```YAML title="New Syntax"
+    menus:
+      questMenu:
+        height: 4
+        title: "&6&lQuests"
+        bind: "openMenuItem"
+        command: "/quests"
+        slots:
+          4: "reputation"
+          5-8: "filler,filler,filler,filler"
+    
+    menu_items:
+      reputation:
+        item: "xpBottle"
+        amount: 1
+        text:
+            - "&2Quest Level: &6&l%point.quest_reputation.amount%"
+        close: true
+      filler:
+        text: "&a "
+        item: "filler"
     ```
 
     </div>
