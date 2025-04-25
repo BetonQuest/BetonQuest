@@ -9,10 +9,10 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
+import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 
 /**
@@ -45,7 +45,7 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableBlockSelector selector = instruction.get(VariableBlockSelector::new);
+        final Variable<BlockSelector> selector = instruction.getVariable(Argument.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));
     }

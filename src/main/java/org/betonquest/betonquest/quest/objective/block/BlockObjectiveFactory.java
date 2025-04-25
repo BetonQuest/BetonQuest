@@ -9,9 +9,9 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 
 /**
@@ -42,7 +42,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableBlockSelector selector = instruction.get(VariableBlockSelector::new);
+        final Variable<BlockSelector> selector = instruction.getVariable(Argument.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER);
         final boolean noSafety = instruction.hasArgument("noSafety");

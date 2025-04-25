@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,7 +46,7 @@ public class ActionObjective extends Objective implements Listener {
      * The selector to check for the block.
      */
     @Nullable
-    private final VariableBlockSelector selector;
+    private final Variable<BlockSelector> selector;
 
     /**
      * If the block should be checked for exact match.
@@ -91,7 +90,7 @@ public class ActionObjective extends Objective implements Listener {
      * @throws QuestException if an error occurs while creating the objective
      */
     public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action,
-                           @Nullable final VariableBlockSelector selector, final boolean exactMatch,
+                           @Nullable final Variable<BlockSelector> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
