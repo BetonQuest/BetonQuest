@@ -5144,7 +5144,8 @@ Citizens integration. </li>
 </div>
 <h3 id="300-dev-142-conversation-sounds">3.0.0-DEV-142 - Conversation Sounds <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-142-conversation-sounds" title="Permanent link">🔗</a></h3>
 <p>The start and stop sound in the configuration for conversations were removed in favor of the notification system,
-that now also has the two new build in categories <code>conversation_start</code> and <code>conversation_end</code>.</p>
+that now also has the two new build in categories <code>conversation_start</code> and <code>conversation_end</code>.
+Also the messages it self are now printed in every conversation and can now be configured with the notification system.</p>
 <p>To get the previous sounds back, you need to configure it now like the following in any quest package:</p>
 <div class="grid">
 <div class="highlight"><span class="filename">Old Syntax (config.yml)</span><pre><span></span><code><span class="nt">sounds</span><span class="p">:</span>
@@ -5158,6 +5159,14 @@ that now also has the two new build in categories <code>conversation_start</code
 <span class="w">    </span><span class="nt">sound</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENTITY_VILLAGER_YES</span>
 </code></pre></div>
 </div>
+<p>If you want to disable the the start and end message, now you can configure the following:</p>
+<div class="highlight"><span class="filename">Disable Messages</span><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">conversation_start</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">suppress</span>
+<span class="w">  </span><span class="nt">conversation_end</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">suppress</span>
+</code></pre></div>
+<p>and if you only want sounds and no message, you use <code>sound</code> instead of <code>suppress</code> as io.</p>
 <h3 id="300-dev-217-item-type">3.0.0-DEV-217 - Item Type <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#300-dev-217-item-type" title="Permanent link">🔗</a></h3>
 <details class="info">
 <summary>Automated Migration</summary>
