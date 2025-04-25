@@ -9,9 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableEnum;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -43,7 +41,7 @@ public class McMMOSkillLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableEnum<PrimarySkillType> skillType = instruction.get(VariableArgument.ofEnum(PrimarySkillType.class));
+        final Variable<PrimarySkillType> skillType = instruction.getVariable(Argument.ENUM(PrimarySkillType.class));
         final Variable<Number> level = instruction.getVariable(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(McMMOSkillLevelCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;
 import org.betonquest.betonquest.instruction.types.BlockSelectorParser;
 import org.betonquest.betonquest.instruction.types.BooleanParser;
+import org.betonquest.betonquest.instruction.types.EnumParser;
 import org.betonquest.betonquest.instruction.types.NumberParser;
 import org.betonquest.betonquest.instruction.types.StringParser;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
@@ -53,11 +54,6 @@ public interface Argument<T> extends QuestFunction<String, T> {
     NumberParser NUMBER = new NumberParser();
 
     /**
-     * The default instance of {@link BlockSelectorParser}.
-     */
-    BlockSelectorParser BLOCK_SELECTOR = new BlockSelectorParser();
-
-    /**
      * The default instance of {@link NumberParser} that checks if the number is not less than zero.
      */
     NumberParser NUMBER_NOT_LESS_THAN_ZERO = new NumberParser(value -> {
@@ -74,6 +70,23 @@ public interface Argument<T> extends QuestFunction<String, T> {
             throw new QuestException("Value must be greater than or equal to 1: " + value);
         }
     });
+
+    /**
+     * The default instance of {@link BlockSelectorParser}.
+     */
+    BlockSelectorParser BLOCK_SELECTOR = new BlockSelectorParser();
+
+    /**
+     * The default instance of {@link EnumParser}.
+     *
+     * @param <E>      the type of the enum
+     * @param enumType the type of the enum
+     * @return the parser for the enum
+     */
+    @SuppressWarnings("PMD.MethodNamingConventions")
+    static <E extends Enum<E>> Argument<E> ENUM(final Class<E> enumType) {
+        return new EnumParser<>(enumType);
+    }
 
     /**
      * Gets a list of {@link T}s from string.
