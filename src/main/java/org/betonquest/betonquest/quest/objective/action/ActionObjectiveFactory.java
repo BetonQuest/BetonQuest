@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableBlockSelector;
+import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -38,11 +38,11 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Click action = instruction.getEnum(Click.class);
-        final VariableBlockSelector selector;
+        final Variable<BlockSelector> selector;
         if (ANY.equalsIgnoreCase(instruction.next())) {
             selector = null;
         } else {
-            selector = instruction.get(instruction.current(), VariableBlockSelector::new);
+            selector = instruction.getVariable(instruction.current(), Argument.BLOCK_SELECTOR);
         }
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);

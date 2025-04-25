@@ -3,6 +3,7 @@ package org.betonquest.betonquest.instruction.argument;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;
+import org.betonquest.betonquest.instruction.types.BlockSelectorParser;
 import org.betonquest.betonquest.instruction.types.BooleanParser;
 import org.betonquest.betonquest.instruction.types.NumberParser;
 import org.betonquest.betonquest.instruction.types.StringParser;
@@ -50,6 +51,11 @@ public interface Argument<T> extends QuestFunction<String, T> {
      * The default instance of {@link NumberParser}.
      */
     NumberParser NUMBER = new NumberParser();
+
+    /**
+     * The default instance of {@link BlockSelectorParser}.
+     */
+    BlockSelectorParser BLOCK_SELECTOR = new BlockSelectorParser();
 
     /**
      * The default instance of {@link NumberParser} that checks if the number is not less than zero.
