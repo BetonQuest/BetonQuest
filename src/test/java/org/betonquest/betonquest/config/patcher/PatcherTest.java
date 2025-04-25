@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +42,7 @@ class PatcherTest {
     private BetonQuestLogger logger;
 
     @BeforeAll
-    static void setUp() throws FileNotFoundException, InvalidConfigurationException {
+    static void setUp() {
         registry = new DefaultPatchTransformerRegistry();
     }
 
@@ -56,7 +55,7 @@ class PatcherTest {
     }
 
     @Test
-    void applies_updates() throws InvalidConfigurationException, IOException {
+    void applies_updates() throws InvalidConfigurationException {
         resource.set("copied", "resource");
         new Patcher(logger, resource, registry, patch).patch(config);
 
@@ -191,8 +190,10 @@ class PatcherTest {
     void empty_patch_file(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
         final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", "");
         new Patcher(logger, resource, registry, patch).patch(config);
-        verify(logger, times(1)).debug("The config file 'config.yml' has no patches to apply.");
+        verify(logger, times(1)).debug("The config file 'config.yml' has no patches to apply, setting zero version.");
         verifyNoMoreInteractions(logger);
+        assertEquals("0.0.0-CONFIG-0", config.getString("configVersion"),
+                "Config does not match the expected result.");
     }
 
     @Test

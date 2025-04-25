@@ -50,6 +50,11 @@ public class Patcher {
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
 
     /**
+     * The 'version' indicating no version set, but already present as file.
+     */
+    private static final Version ZERO_VERSION = new Version("0.0.0-CONFIG-0");
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -130,7 +135,8 @@ public class Patcher {
 
         final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
         if (patches.isEmpty()) {
-            log.debug(logPrefix + "has no patches to apply.");
+            log.debug(logPrefix + "has no patches to apply, setting zero version.");
+            setConfigVersion(config, ZERO_VERSION);
         } else if (configVersionString != null && configVersionString.isEmpty()) {
             log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
             setConfigVersion(config, patches.lastKey());

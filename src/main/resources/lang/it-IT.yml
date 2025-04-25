@@ -62,7 +62,6 @@ chest_occupied: '@[legacy]Questo baule è già in uso'
 menu:
   no_permission: '@[legacy]&7[&c&l!&7] Non hai i permessi!'
   command_usage: "@[legacy]&cUso:\n&7{usage}"
-  command_info_reload: '@[legacy]&bricarica tutti/un menu'
   command_info_list: '@[legacy]&bapre un menu specifico [per un giocatore]'
   command_info_open: '@[legacy]&belenca tutti i menu conosciuti'
   command_invalid_menu: '@[legacy]&7[&c&l!&7] &c{menu}&7 non e un menu conosciuto!'
@@ -70,7 +69,5 @@ menu:
   command_invalid_player: '@[legacy]&7[&c&l!&7] Non c''e nessun giocatore chiamato &c{player}&7!'
   command_no_menu: '@[legacy]&7[&c&l!&7] Per favore specifica un menu!'
   command_open_successful: '@[legacy]&7[&a&li&7]&a &7{menu}&a aperto con successo!'
-  command_reload_successful: '@[legacy]&7[{color}&li&7]{color} Ricaricati con successo &7{amount}{color} menu!'
-  command_reload_failed: '@[legacy]&7[&4&l!&7]&4 Ricaricamento fallito!'
   command_list: "@[legacy]&e----- &aRPGMenu &e-----\n&aMenu caricati:&e "
   click_to_open: '@[legacy]&bclicca per aprire il menu'

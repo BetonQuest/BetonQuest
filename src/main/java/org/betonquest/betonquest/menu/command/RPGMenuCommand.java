@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.md_5.bungee.api.ChatColor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -42,15 +41,15 @@ public class RPGMenuCommand extends SimpleCommand {
         super(log, "rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
         this.menu = menu;
         setDescription("Core command of the RPGMenu addon for BetonQuest");
-        setUsage("/rpgmenu <reload/open/list>");
+        setUsage("/rpgmenu <open/list>");
         register();
     }
 
     @Override
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
     public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("reload", "open", "list");
+            return Arrays.asList("open", "list");
         }
         if (args.length > 2) {
             return new ArrayList<>();
@@ -59,7 +58,6 @@ public class RPGMenuCommand extends SimpleCommand {
             //complete menu ids
             case "open":
             case "o":
-            case "reload":
                 if (!args[1].contains(".")) {
                     return new ArrayList<>(getPlugin().getPackages().keySet());
                 }
@@ -81,8 +79,7 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
-    @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity",
-            "PMD.AvoidLiteralsInIfCondition", "PMD.SwitchDensity", "PMD.NonExhaustiveSwitch"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 0) {
             //display command help
@@ -96,7 +93,6 @@ public class RPGMenuCommand extends SimpleCommand {
                 break;
             case "o":
             case "open":
-            case "reload":
                 //parse menu id
                 if (args.length >= 2) {
                     try {
@@ -110,7 +106,7 @@ public class RPGMenuCommand extends SimpleCommand {
             default:
                 // diplay help
                 showHelp(sender);
-                return false;
+                return true;
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "l":
@@ -158,42 +154,10 @@ public class RPGMenuCommand extends SimpleCommand {
                 //open the menu and send feedback
                 this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
                 sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", Component.text(menu.toString())));
-                break;
-            case "reload":
-                final RPGMenu.ReloadInformation info;
-                ChatColor color = ChatColor.GRAY;
-                if (menu == null) {
-                    //reload all data
-                    info = this.menu.reloadData(getPlugin().getPackages().values());
-                } else {
-                    // reload one menu
-                    info = this.menu.reloadMenu(menu);
-                }
-                //notify player, console gets automatically informed
-                if (sender instanceof Player) {
-                    switch (info.getResult()) {
-                        case FAILED:
-                            for (final String errorMessage : info.getErrorMessages()) {
-                                sender.sendMessage(errorMessage);
-                            }
-                            sendMessage(sender, "command_reload_failed");
-                            return true;
-                        case SUCCESS:
-                            color = ChatColor.YELLOW;
-                            break;
-                        case FULL_SUCCESS:
-                            color = ChatColor.GREEN;
-                            break;
-                    }
-                    for (final String errorMessage : info.getErrorMessages()) {
-                        sender.sendMessage(errorMessage);
-                    }
-                    sendMessage(sender, "command_reload_successful",
-                            new PluginMessage.Replacement("color", Component.text(color.toString())),
-                            new PluginMessage.Replacement("amount", Component.text(info.getLoaded())));
-                }
+                return true;
+            default:
+                return false;
         }
-        return true;
     }
 
     /**
@@ -205,9 +169,8 @@ public class RPGMenuCommand extends SimpleCommand {
         final TextComponent.Builder builder = Component.text();
         builder
                 .append(Component.text("----- RPGMenu for Betonquest -----").append(Component.newline()))
-                .append(Component.text("/rpgmenu reload [menu]").color(NamedTextColor.RED)
-                        .hoverEvent(getMessage(sender, "command_info_reload"))
-                        .clickEvent(ClickEvent.suggestCommand("/rpgmenu reload "))
+                .append(Component.text("To reload menus you need to reload BetonQuest").color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.suggestCommand("/betonquest reload"))
                         .append(Component.newline()))
                 .append(Component.text("/rpgmenu open <menu> [player]").color(NamedTextColor.RED)
                         .hoverEvent(getMessage(sender, "command_info_open"))
