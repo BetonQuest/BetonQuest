@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create variable events from {@link Instruction}s.
@@ -31,8 +31,8 @@ public class VariableEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
-        final VariableString key = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
-        final VariableString value = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
+        final Variable<String> key = instruction.getVariable(Argument.STRING);
+        final Variable<String> value = instruction.getVariable(Argument.STRING);
         return new VariableEvent(questTypeAPI, objectiveID, key, value);
     }
 }

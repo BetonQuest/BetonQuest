@@ -8,7 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +60,7 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
         final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
-        final VariableString message = instruction.get(raw.substring(msgStart, msgEnd), VariableString::new);
+        final Variable<String> message = instruction.getVariable(raw.substring(msgStart, msgEnd), Argument.STRING);
         return new NullableEventAdapter(new LogEvent(loggerFactory.create(LogEvent.class), level, message));
     }
 }

@@ -10,7 +10,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.message.ParsedMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
@@ -109,7 +110,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     }
 
     private Message getLanguages(final Instruction instruction, final String messages) throws QuestException {
-        final Map<String, VariableString> translations = new HashMap<>();
+        final Map<String, Variable<String>> translations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(messages);
 
         while (languageMatcher.find()) {
@@ -117,7 +118,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String message = languageMatcher.group("message")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, instruction.get(message, VariableString::new));
+            translations.put(lang, instruction.getVariable(message, Argument.STRING));
         }
 
         final String defaultLanguageKey = languageProvider.getDefaultLanguage();
@@ -125,7 +126,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String message = messages
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, instruction.get(message, VariableString::new));
+            translations.put(defaultLanguageKey, instruction.getVariable(message, Argument.STRING));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");

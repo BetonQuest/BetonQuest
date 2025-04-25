@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -61,7 +60,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final CheckType type = instruction.getEnum(CheckType.class);
         final Map<String, Variable<Number>> spells = parseSpells(instruction.getList(instruction.getOptional("spells")), instruction.getPackage());
-        final VariableString name = instruction.get(instruction.getOptional("name"), VariableString::new);
+        final Variable<String> name = instruction.getVariable(instruction.getOptional("name"), Argument.STRING);
         final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);

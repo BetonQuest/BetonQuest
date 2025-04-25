@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,7 +30,7 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Command that the player has to execute.
      */
-    private final VariableString command;
+    private final Variable<String> command;
 
     /**
      * Whether the command should ignore the capitalization.
@@ -64,7 +64,7 @@ public class CommandObjective extends Objective implements Listener {
      * @param failEvents  events to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString command,
+    public CommandObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<String> command,
                             final boolean ignoreCase, final boolean exact, final boolean cancel,
                             final VariableList<EventID> failEvents) throws QuestException {
         super(instruction);
@@ -85,20 +85,20 @@ public class CommandObjective extends Objective implements Listener {
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            final String replaceCommand = command.getString(onlineProfile);
-            if (foundMatch(event.getMessage(), replaceCommand)) {
-                if (cancel) {
-                    event.setCancelled(true);
-                }
-                completeObjective(onlineProfile);
-            } else {
-                try {
+            try {
+                final String replaceCommand = command.getValue(onlineProfile);
+                if (foundMatch(event.getMessage(), replaceCommand)) {
+                    if (cancel) {
+                        event.setCancelled(true);
+                    }
+                    completeObjective(onlineProfile);
+                } else {
                     for (final EventID failEvent : failEvents.getValue(onlineProfile)) {
                         BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, failEvent);
                     }
-                } catch (final QuestException e) {
-                    log.warn(instruction.getPackage(), "Failed to resolve events for command objective: " + e.getMessage(), e);
                 }
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Failed to resolve command objective: " + e.getMessage(), e);
             }
         }
     }

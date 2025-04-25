@@ -27,7 +27,7 @@ public class CompositeInstructionMetricsSupplier<T extends ID> implements Instru
      * Create the composite supplier by providing the partial suppliers.
      *
      * @param identifierSupplier supplier for {@link ID}s
-     * @param typeSupplier supplier for types
+     * @param typeSupplier       supplier for types
      */
     public CompositeInstructionMetricsSupplier(final Supplier<Set<T>> identifierSupplier, final Supplier<Set<String>> typeSupplier) {
         this.identifierSupplier = identifierSupplier;

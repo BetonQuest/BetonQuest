@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
@@ -60,8 +60,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final VariableString variable = instruction.get(VariableString::new);
-        final VariableString regex = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
+        final Variable<String> variable = instruction.getVariable(Argument.STRING);
+        final Variable<String> regex = instruction.getVariable(Argument.STRING);
         final String variableAddress = instruction.getID().toString();
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
         return new VariableCondition(log, variable, regex, variableAddress);

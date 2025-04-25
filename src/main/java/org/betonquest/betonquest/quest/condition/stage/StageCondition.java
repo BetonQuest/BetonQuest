@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 
@@ -22,7 +22,7 @@ public class StageCondition implements PlayerCondition {
     /**
      * The target stage.
      */
-    private final VariableString targetStage;
+    private final Variable<String> targetStage;
 
     /**
      * The compare operand between the numbers used for comparing.
@@ -42,7 +42,7 @@ public class StageCondition implements PlayerCondition {
      * @param targetStage  the target stage
      * @param operation    the operation
      */
-    public StageCondition(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final VariableString targetStage,
+    public StageCondition(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final Variable<String> targetStage,
                           final Operation operation) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;

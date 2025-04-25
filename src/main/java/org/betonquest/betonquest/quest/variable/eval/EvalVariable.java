@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.variable.eval;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,35 +13,28 @@ import org.jetbrains.annotations.Nullable;
  */
 public class EvalVariable implements NullableVariable {
     /**
-     * The variable processor used to create the evaluated variable.
+     * The original instruction.
      */
-    private final VariableProcessor variableProcessor;
-
-    /**
-     * The package.
-     */
-    private final QuestPackage pack;
+    private final Instruction instruction;
 
     /**
      * The evaluation input.
      */
-    private final VariableString evaluation;
+    private final Variable<String> evaluation;
 
     /**
      * Create a new Eval variable.
      *
-     * @param variableProcessor the variable processor
-     * @param pack              the package
-     * @param evaluation        the evaluation input
+     * @param instruction the original instruction
+     * @param evaluation  the evaluation input
      */
-    public EvalVariable(final VariableProcessor variableProcessor, final QuestPackage pack, final VariableString evaluation) {
-        this.variableProcessor = variableProcessor;
-        this.pack = pack;
+    public EvalVariable(final Instruction instruction, final Variable<String> evaluation) {
+        this.instruction = instruction;
         this.evaluation = evaluation;
     }
 
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        return new VariableString(variableProcessor, pack, "%" + evaluation.getValue(profile) + "%").getValue(profile);
+        return instruction.getVariable("%" + evaluation.getValue(profile) + "%", Argument.STRING).getValue(profile);
     }
 }

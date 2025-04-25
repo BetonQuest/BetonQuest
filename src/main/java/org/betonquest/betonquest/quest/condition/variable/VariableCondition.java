@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.PatternSyntaxException;
@@ -22,12 +22,12 @@ public class VariableCondition implements NullableCondition {
     /**
      * The variable to compare with the regex.
      */
-    private final VariableString variable;
+    private final Variable<String> variable;
 
     /**
      * The regex the variable must match.
      */
-    private final VariableString regex;
+    private final Variable<String> regex;
 
     /**
      * The address of the variable for logging.
@@ -42,7 +42,7 @@ public class VariableCondition implements NullableCondition {
      * @param regex           the regex the variable must match
      * @param variableAddress the address of the variable for logging
      */
-    public VariableCondition(final BetonQuestLogger log, final VariableString variable, final VariableString regex, final String variableAddress) {
+    public VariableCondition(final BetonQuestLogger log, final Variable<String> variable, final Variable<String> regex, final String variableAddress) {
         this.log = log;
         this.variable = variable;
         this.regex = regex;

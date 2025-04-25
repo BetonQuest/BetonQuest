@@ -28,7 +28,7 @@ public class TimeInterval {
      * @param end   the last match of the interval
      * @param type  the type for validating range
      * @throws QuestException when the input is out of range for the type
-     *                                   or {@code end} is less than {@code start}
+     *                        or {@code end} is less than {@code start}
      */
     public TimeInterval(final int start, final int end, final PartialDate type) throws QuestException {
         this.start = start;

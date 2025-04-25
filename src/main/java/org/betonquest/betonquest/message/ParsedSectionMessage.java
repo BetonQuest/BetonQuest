@@ -5,7 +5,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -38,43 +39,43 @@ public class ParsedSectionMessage extends ParsedMessage {
         super(messageParser, parse(variableProcessor, pack, section, path, languageProvider), playerDataStorage, languageProvider);
     }
 
-    private static Map<String, VariableString> parse(final VariableProcessor variableProcessor, final QuestPackage pack,
-                                                     final ConfigurationSection section, final String path,
-                                                     final LanguageProvider languageProvider) throws QuestException {
+    private static Map<String, Variable<String>> parse(final VariableProcessor variableProcessor, final QuestPackage pack,
+                                                       final ConfigurationSection section, final String path,
+                                                       final LanguageProvider languageProvider) throws QuestException {
         if (section.isConfigurationSection(path)) {
             return parseSection(variableProcessor, pack, section, path);
         } else if (section.isList(path)) {
-            return Map.of(languageProvider.getDefaultLanguage(), new VariableString(variableProcessor, pack,
-                    GlobalVariableResolver.resolve(pack, String.join("\n", section.getStringList(path)))));
+            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variableProcessor, pack,
+                    GlobalVariableResolver.resolve(pack, String.join("\n", section.getStringList(path))), Argument.STRING));
         } else if (section.isString(path)) {
             final String raw = GlobalVariableResolver.resolve(pack, section.getString(path));
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(languageProvider.getDefaultLanguage(), new VariableString(variableProcessor, pack, raw));
+            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variableProcessor, pack, raw, Argument.STRING));
         } else {
             throw new QuestException("The '" + path + "' is missing!");
         }
     }
 
-    private static Map<String, VariableString> parseSection(final VariableProcessor variableProcessor, final QuestPackage pack,
-                                                            final ConfigurationSection messageSection, final String path) throws QuestException {
+    private static Map<String, Variable<String>> parseSection(final VariableProcessor variableProcessor, final QuestPackage pack,
+                                                              final ConfigurationSection messageSection, final String path) throws QuestException {
         final ConfigurationSection subSection = messageSection.getConfigurationSection(path);
         if (subSection == null) {
             throw new QuestException("No configuration section for '" + path + "'!");
         }
-        final Map<String, VariableString> messages = new HashMap<>();
+        final Map<String, Variable<String>> messages = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
-                messages.put(key, new VariableString(variableProcessor, pack,
-                        GlobalVariableResolver.resolve(pack, String.join("\n", subSection.getStringList(key)))));
+                messages.put(key, new Variable<>(variableProcessor, pack,
+                        GlobalVariableResolver.resolve(pack, String.join("\n", subSection.getStringList(key))), Argument.STRING));
                 continue;
             }
             final String raw = GlobalVariableResolver.resolve(pack, subSection.getString(key));
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }
-            messages.put(key, new VariableString(variableProcessor, pack, raw));
+            messages.put(key, new Variable<>(variableProcessor, pack, raw, Argument.STRING));
         }
         if (messages.isEmpty()) {
             throw new QuestException("No values defined!");

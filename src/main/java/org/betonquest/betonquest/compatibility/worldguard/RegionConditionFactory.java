@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -41,6 +41,6 @@ public class RegionConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(RegionCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new RegionCondition(instruction.get(VariableString::new)), log, instruction.getPackage()), data);
+                new RegionCondition(instruction.getVariable(Argument.STRING)), log, instruction.getPackage()), data);
     }
 }

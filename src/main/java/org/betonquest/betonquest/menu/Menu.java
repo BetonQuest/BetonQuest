@@ -16,8 +16,8 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
@@ -77,7 +77,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * The title of the menu.
      */
-    private final VariableString title;
+    private final Variable<String> title;
 
     /**
      * List of all slots objects as defined in the slots section.
@@ -154,7 +154,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         //load title
         final VariableProcessor variableProcessor = BetonQuest.getInstance().getVariableProcessor();
         try {
-            this.title = new VariableString(variableProcessor, pack, getString("title"));
+            this.title = new Variable<>(variableProcessor, pack, getString("title"), Argument.STRING);
         } catch (final QuestException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
@@ -351,9 +351,10 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * @param profile the {@link Profile} of the player
      * @return the title of the menu
+     * @throws QuestException if the title cannot be parsed
      */
-    public String getTitle(final Profile profile) {
-        return ChatColor.translateAlternateColorCodes('&', title.getString(profile));
+    public String getTitle(final Profile profile) throws QuestException {
+        return ChatColor.translateAlternateColorCodes('&', title.getValue(profile));
     }
 
     /**

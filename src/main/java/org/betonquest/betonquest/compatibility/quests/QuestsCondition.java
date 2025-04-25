@@ -5,7 +5,7 @@ import me.pikamug.quests.quests.Quest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class QuestsCondition implements PlayerCondition {
     /**
      * Quest name to check.
      */
-    private final VariableString questName;
+    private final Variable<String> questName;
 
     /**
      * Create a new quest completed condition.
@@ -30,7 +30,7 @@ public class QuestsCondition implements PlayerCondition {
      * @param quests    active quests instance
      * @param questName name of quest which has to be completed
      */
-    public QuestsCondition(final Quests quests, final VariableString questName) {
+    public QuestsCondition(final Quests quests, final Variable<String> questName) {
         this.quests = quests;
         this.questName = questName;
     }

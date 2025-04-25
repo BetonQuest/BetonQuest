@@ -14,11 +14,11 @@ public class WrapperPlayClientSteerVehicleUpdated extends WrapperPlayClientSteer
      */
     public WrapperPlayClientSteerVehicleUpdated() {
         super();
-
     }
 
     /**
      * Constructor to wrap existing packet.
+     *
      * @param packet - the packet to wrap.
      */
     public WrapperPlayClientSteerVehicleUpdated(final PacketContainer packet) {
@@ -71,7 +71,6 @@ public class WrapperPlayClientSteerVehicleUpdated extends WrapperPlayClientSteer
         }
 
         return forward;
-
     }
 
     @Override
@@ -108,5 +107,4 @@ public class WrapperPlayClientSteerVehicleUpdated extends WrapperPlayClientSteer
     public void setUnmount(final boolean value) {
         this.handle.getStructures().read(0).getBooleans().write(5, value);
     }
-
 }

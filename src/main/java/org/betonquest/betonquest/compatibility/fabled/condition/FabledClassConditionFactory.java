@@ -4,7 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -28,7 +29,7 @@ public class FabledClassConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableString classNameVar = instruction.get(VariableString::new);
+        final Variable<String> classNameVar = instruction.getVariable(Argument.STRING);
         final boolean exact = instruction.hasArgument("exact");
         return new PrimaryServerThreadPlayerCondition(new FabledClassCondition(classNameVar, exact), data);
     }

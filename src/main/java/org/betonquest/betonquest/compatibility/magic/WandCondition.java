@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +41,7 @@ public class WandCondition implements OnlineCondition {
      * Wand name.
      */
     @Nullable
-    private final VariableString name;
+    private final Variable<String> name;
 
     /**
      * Required Wand amount.
@@ -59,7 +58,7 @@ public class WandCondition implements OnlineCondition {
      * @param spells the required spells on the wand
      * @param amount optional required wand amount
      */
-    public WandCondition(final MagicAPI api, final CheckType type, @Nullable final VariableString name,
+    public WandCondition(final MagicAPI api, final CheckType type, @Nullable final Variable<String> name,
                          final Map<String, Variable<Number>> spells, @Nullable final Variable<Number> amount) {
         this.api = api;
         this.name = name;

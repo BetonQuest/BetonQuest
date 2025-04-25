@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -42,7 +41,7 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> amountVar = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<Number> qualityVar = instruction.getVariable(Argument.NUMBER);
-        final VariableString nameVar = instruction.get(VariableString::new);
+        final Variable<String> nameVar = instruction.getVariable(Argument.STRING);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar), logger, instruction.getPackage()), data);

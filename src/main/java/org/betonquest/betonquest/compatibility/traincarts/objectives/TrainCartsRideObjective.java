@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,9 +47,9 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     private final Map<UUID, Pair<Long, BukkitTask>> startTimes;
 
     /**
-     * The {@link VariableString} that stores the name of the train, maybe empty.
+     * The name of the train, maybe empty.
      */
-    private final VariableString name;
+    private final Variable<String> name;
 
     /**
      * Creates a new {@link TrainCartsRideObjective} from the given instruction.
@@ -61,7 +60,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final VariableString name) throws QuestException {
+    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final Variable<String> name) throws QuestException {
         super(instruction, targetAmount, null);
         this.log = log;
         this.name = name;

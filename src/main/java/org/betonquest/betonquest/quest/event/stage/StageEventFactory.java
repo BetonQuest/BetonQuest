@@ -9,7 +9,6 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.objective.stage.StageObjective;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +46,7 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
-        final VariableString variableString = instruction.get(VariableString::new);
+        final Variable<String> variableString = instruction.getVariable(Argument.STRING);
         return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getValue(profile)));
     }
 

@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,9 +26,9 @@ public class TrainCartsExitObjective extends Objective implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link VariableString} that stores the name of the train, maybe empty.
+     * The name of the train, maybe empty.
      */
-    private final VariableString name;
+    private final Variable<String> name;
 
     /**
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
@@ -38,7 +38,7 @@ public class TrainCartsExitObjective extends Objective implements Listener {
      * @param name        the name of the train, maybe empty
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public TrainCartsExitObjective(final Instruction instruction, final BetonQuestLogger log, final VariableString name) throws QuestException {
+    public TrainCartsExitObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<String> name) throws QuestException {
         super(instruction);
         this.log = log;
         this.name = name;

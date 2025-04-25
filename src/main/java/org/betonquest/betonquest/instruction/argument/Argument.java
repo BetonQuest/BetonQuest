@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;
 import org.betonquest.betonquest.instruction.types.BooleanParser;
 import org.betonquest.betonquest.instruction.types.NumberParser;
+import org.betonquest.betonquest.instruction.types.StringParser;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.types.location.VectorParser;
 import org.betonquest.betonquest.instruction.types.location.WorldParser;
@@ -20,6 +21,10 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface Argument<T> extends QuestFunction<String, T> {
+    /**
+     * The default instance of {@link StringParser}.
+     */
+    StringParser STRING = new StringParser();
 
     /**
      * The default instance of {@link BooleanParser}.

@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Factory for creating {@link CommandObjective} instances from {@link Instruction}s.
@@ -32,7 +32,7 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableString command = instruction.get(VariableArgument.STRING_REPLACE_UNDERSCORES);
+        final Variable<String> command = instruction.getVariable(Argument.STRING);
         final boolean ignoreCase = instruction.hasArgument("ignoreCase");
         final boolean exact = instruction.hasArgument("exact");
         final boolean cancel = instruction.hasArgument("cancel");

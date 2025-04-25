@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import studio.magemonkey.fabled.Fabled;
 import studio.magemonkey.fabled.api.player.PlayerClass;
 import studio.magemonkey.fabled.api.player.PlayerData;
@@ -16,9 +15,9 @@ import java.util.Optional;
  */
 public class FabledLevelCondition implements PlayerCondition {
     /**
-     * The {@link VariableString} for the class name.
+     * The class name.
      */
-    private final VariableString classNameVar;
+    private final Variable<String> classNameVar;
 
     /**
      * The level.
@@ -28,10 +27,10 @@ public class FabledLevelCondition implements PlayerCondition {
     /**
      * Create a new {@link FabledLevelCondition}.
      *
-     * @param classNameVar the {@link VariableString} for the class name.
+     * @param classNameVar the class name.
      * @param levelVar     the level.
      */
-    public FabledLevelCondition(final VariableString classNameVar, final Variable<Number> levelVar) {
+    public FabledLevelCondition(final Variable<String> classNameVar, final Variable<Number> levelVar) {
         this.classNameVar = classNameVar;
         this.levelVar = levelVar;
     }

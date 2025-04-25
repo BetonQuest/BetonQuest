@@ -50,11 +50,10 @@ public enum LogEventLevel {
     /**
      * Log the message with the given logger at this level.
      *
-     * @param logger logger used to log the message.
+     * @param logger  logger used to log the message.
      * @param message message to log.
      */
     public void log(final BetonQuestLogger logger, final String message) {
         logFunction.accept(logger, message);
     }
-
 }

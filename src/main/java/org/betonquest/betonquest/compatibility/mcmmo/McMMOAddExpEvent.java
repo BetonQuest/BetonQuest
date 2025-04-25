@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 
 /**
  * Adds experience in specified skill.
@@ -15,7 +14,7 @@ public class McMMOAddExpEvent implements OnlineEvent {
     /**
      * Name of skill to add xp to.
      */
-    private final VariableString skillType;
+    private final Variable<String> skillType;
 
     /**
      * Amount to add.
@@ -28,7 +27,7 @@ public class McMMOAddExpEvent implements OnlineEvent {
      * @param skillType the type to add xp to
      * @param exp       the amount to add
      */
-    public McMMOAddExpEvent(final VariableString skillType, final Variable<Number> exp) {
+    public McMMOAddExpEvent(final Variable<String> skillType, final Variable<Number> exp) {
         this.skillType = skillType;
         this.exp = exp;
     }

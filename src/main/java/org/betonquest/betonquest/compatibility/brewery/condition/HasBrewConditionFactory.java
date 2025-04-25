@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableString;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -41,7 +40,7 @@ public class HasBrewConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> countVar = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final VariableString nameVar = instruction.get(VariableString::new);
+        final Variable<String> nameVar = instruction.getVariable(Argument.STRING);
         final BetonQuestLogger logger = loggerFactory.create(HasBrewCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new HasBrewCondition(countVar, nameVar), logger, instruction.getPackage()), data);

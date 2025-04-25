@@ -100,7 +100,12 @@ public class MenuObjective extends Objective implements Listener {
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }
-            return menuData.getTitle(profile);
+            try {
+                return menuData.getTitle(profile);
+            } catch (final QuestException e) {
+                log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                        + e.getMessage(), e);
+            }
         }
         return "";
     }

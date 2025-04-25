@@ -142,7 +142,12 @@ public class RPGMenu {
             log.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
             return;
         }
-        new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
+        try {
+            new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
+        } catch (final QuestException e) {
+            log.error(menu.getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+            return;
+        }
         log.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 

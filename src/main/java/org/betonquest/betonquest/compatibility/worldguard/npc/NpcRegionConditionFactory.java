@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableString;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
@@ -51,7 +52,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
 
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final NpcID npcId = instruction.getID(NpcID::new);
-        final VariableString region = instruction.get(VariableString::new);
+        final Variable<String> region = instruction.getVariable(Argument.STRING);
         return new NullableConditionAdapter(new NpcRegionCondition(featureAPI, npcId, region));
     }
 }

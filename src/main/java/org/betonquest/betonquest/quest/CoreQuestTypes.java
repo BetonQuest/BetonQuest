@@ -445,12 +445,12 @@ public class CoreQuestTypes {
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", new EquipItemObjectiveFactory(loggerFactory));
         objectiveTypes.register("jump", new JumpObjectiveFactory());
-        objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
+        objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory(loggerFactory));
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(questTypeAPI, pluginMessage));
-        variables.registerCombined("eval", new EvalVariableFactory(variableProcessor));
+        variables.registerCombined("eval", new EvalVariableFactory());
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
         variables.registerCombined("item", new ItemVariableFactory());
