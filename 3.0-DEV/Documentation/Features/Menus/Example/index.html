@@ -4553,63 +4553,63 @@ Then reload and execute the command <code>/q give YOUR_PACKAGE.openMenuItem</cod
 <span class="w">      </span><span class="nt">10</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goldQuestActive,goldQuestDone&quot;</span>
 <span class="w">      </span><span class="nt">27-35</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;filler,filler,filler,filler,filler,filler,filler,filler,filler&quot;</span>
 
-<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">skeletonQuestActive</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skeletonQuestActiveItem&quot;</span>
-<span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!skeletonQuestDone&quot;</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lBone</span><span class="nv"> </span><span class="s">ripper&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oRipp</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">skeletons</span><span class="nv"> </span><span class="s">off&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;otheir</span><span class="nv"> </span><span class="s">bones</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">complete&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;othis</span><span class="nv"> </span><span class="s">quest.&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;o&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;eLeft</span><span class="nv"> </span><span class="s">click</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">locate</span><span class="nv"> </span><span class="s">NPC.&quot;</span>
-<span class="w">        </span><span class="nt">click</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;locationNotify&quot;</span>
-<span class="w">        </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">skeletonQuestDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
-<span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skeletonQuestDone&quot;</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lBone</span><span class="nv"> </span><span class="s">ripper&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oRipp</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">skeletons</span><span class="nv"> </span><span class="s">off&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;otheir</span><span class="nv"> </span><span class="s">bones</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">complete&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;othis</span><span class="nv"> </span><span class="s">quest.&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;o&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">completed!&quot;</span>
-<span class="w">        </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">      </span><span class="nt">goldQuestActive</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goldQuestActiveItem&quot;</span>
-<span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!goldQuestDone&quot;</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lGold</span><span class="nv"> </span><span class="s">rush&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oMine</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">gold&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oto</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">quest.&quot;</span>
-<span class="w">        </span><span class="nt">click</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;locationNotify&quot;</span>
-<span class="w">        </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">goldQuestDone</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
-<span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goldQuestDone&quot;</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lGold</span><span class="nv"> </span><span class="s">rush&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oMine</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">gold&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oto</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">quest.&quot;</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">completed!&quot;</span>
-<span class="w">        </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">      </span><span class="nt">reputation</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xpBottle&quot;</span><span class="w"> </span>
-<span class="w">        </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">Level:</span><span class="nv"> </span><span class="s">&amp;6&amp;l%point.quest_reputation.amount%&quot;</span>
-<span class="w">        </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">filler</span><span class="p">:</span><span class="w"> </span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;a</span><span class="nv"> </span><span class="s">&quot;</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;filler&quot;</span>
+<span class="nt">menu_items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">skeletonQuestActive</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skeletonQuestActiveItem&quot;</span>
+<span class="w">    </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!skeletonQuestDone&quot;</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lBone</span><span class="nv"> </span><span class="s">ripper&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oRipp</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">skeletons</span><span class="nv"> </span><span class="s">off&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;otheir</span><span class="nv"> </span><span class="s">bones</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">complete&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;othis</span><span class="nv"> </span><span class="s">quest.&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;o&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;eLeft</span><span class="nv"> </span><span class="s">click</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">locate</span><span class="nv"> </span><span class="s">NPC.&quot;</span>
+<span class="w">    </span><span class="nt">click</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;locationNotify&quot;</span>
+<span class="w">    </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
+<span class="w">    </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skeletonQuestDone&quot;</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lBone</span><span class="nv"> </span><span class="s">ripper&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oRipp</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">skeletons</span><span class="nv"> </span><span class="s">off&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;otheir</span><span class="nv"> </span><span class="s">bones</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">complete&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;othis</span><span class="nv"> </span><span class="s">quest.&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;o&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">completed!&quot;</span>
+<span class="w">    </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">goldQuestActive</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goldQuestActiveItem&quot;</span>
+<span class="w">    </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!goldQuestDone&quot;</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;7[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lGold</span><span class="nv"> </span><span class="s">rush&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oMine</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">gold&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oto</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">quest.&quot;</span>
+<span class="w">    </span><span class="nt">click</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;locationNotify&quot;</span>
+<span class="w">    </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">goldQuestDone</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
+<span class="w">    </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;goldQuestDone&quot;</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2[Quest]</span><span class="nv"> </span><span class="s">&amp;f&amp;lGold</span><span class="nv"> </span><span class="s">rush&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oMine</span><span class="nv"> </span><span class="s">some</span><span class="nv"> </span><span class="s">gold&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;f&amp;oto</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">quest.&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">completed!&quot;</span>
+<span class="w">    </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">reputation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;xpBottle&quot;</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">amount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&amp;2Quest</span><span class="nv"> </span><span class="s">Level:</span><span class="nv"> </span><span class="s">&amp;6&amp;l%point.quest_reputation.amount%&quot;</span>
+<span class="w">    </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">filler</span><span class="p">:</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;a</span><span class="nv"> </span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;filler&quot;</span>
 
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tag</span><span class="nv"> </span><span class="s">skeletonQuestDone&quot;</span>

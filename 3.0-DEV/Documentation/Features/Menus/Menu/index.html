@@ -2195,13 +2195,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#the-items-section">
+  <a class="md-nav__link" href="#the-menu_items-section">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          The <code>items</code> section
+          The <code>menu_items</code> section
         </span>
 
       
@@ -2211,7 +2211,7 @@
 
   
   
-  <nav aria-label="The items section" class="md-nav">
+  <nav aria-label="The menu_items section" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -4741,13 +4741,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#the-items-section">
+  <a class="md-nav__link" href="#the-menu_items-section">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          The <code>items</code> section
+          The <code>menu_items</code> section
         </span>
 
       
@@ -4757,7 +4757,7 @@
 
   
   
-  <nav aria-label="The items section" class="md-nav">
+  <nav aria-label="The menu_items section" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -5060,7 +5060,8 @@ The name which can be used to identify each menu will be the name of another sec
 <span class="w">  </span><span class="nt">myMenuName</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">Menu</span><span class="nv"> </span><span class="s">Title&quot;</span>
 <span class="w">    </span><span class="nt">slots</span><span class="p">:</span><span class="w"> </span><span class="c1">#...</span>
-<span class="w">    </span><span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="c1">#...</span>
+<span class="nt">menu_items</span><span class="p">:</span><span class="w"> </span><span class="c1">#...</span>
+<span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="c1">#...</span>
 </code></pre></div>
 <h2 id="general-menu-settings">General Menu Settings<a class="headerlink" href="#general-menu-settings" title="Permanent link">🔗</a></h2>
 <p>These are general settings for customizing a menu.</p>
@@ -5123,21 +5124,21 @@ The name which can be used to identify each menu will be the name of another sec
 </tr>
 </tbody>
 </table>
-<h2 id="the-items-section">The <code>items</code> section<a class="headerlink" href="#the-items-section" title="Permanent link">🔗</a></h2>
+<h2 id="the-menu_items-section">The <code>menu_items</code> section<a class="headerlink" href="#the-menu_items-section" title="Permanent link">🔗</a></h2>
 <p>The items section contains all items which should be displayed in the menu, defined as individual sections of the config.</p>
 <p>A basic item section looks like this:
 <div class="highlight"><span class="filename">Item Section Example</span><pre><span></span><code><span class="nt">menus</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myMenuName</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">Menu</span><span class="nv"> </span><span class="s">Title&quot;</span>
 <span class="w">    </span><span class="nt">slots</span><span class="p">:</span><span class="w"> </span><span class="c1">#...</span>
-<span class="w">    </span><span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
-<span class="w">      </span><span class="nt">skeletonQuestDone</span><span class="p">:</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneItem&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
-<span class="w">      </span><span class="nt">goldQuestDone</span><span class="p">:</span><span class="w"> </span><span class="c1">#(4)!</span>
-<span class="w">        </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
+<span class="nt">menu_items</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneItem&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">goldQuestDone</span><span class="p">:</span><span class="w"> </span><span class="c1">#(4)!</span>
+<span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDone&quot;</span>
 </code></pre></div></p>
 <ol>
-<li>The <code>items</code> section with all items that are displayed in the menu.</li>
+<li>The <code>menu_items</code> section with all items that are displayed in a menu.</li>
 <li>The name of the item. Used to reference the item in the <code>slots</code> section.</li>
 <li>The name of any <a href="../../Items/">quest item</a>. This <strong>cannot</strong> be a vanilla item, it must be a quest item.</li>
 <li>Another item just like the previous one.</li>
@@ -5173,7 +5174,7 @@ The name which can be used to identify each menu will be the name of another sec
 <h3 id="the-optional-text-setting">The optional <code>text</code> setting<a class="headerlink" href="#the-optional-text-setting" title="Permanent link">🔗</a></h3>
 <p>By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the <code>text</code> setting. If you only define one line, only the name will be overwritten.
-Both <a href="https://minecraft.wiki/w/Formatting_codes">color codes</a> and <a href="../../../Scripting/Building-Blocks/Variables-List/">variables</a> are supported.
+Both <a href="https://minecraft.wiki/w/Formatting_codes">color codes</a> and <a href="../../../Scripting/Building-Blocks/Variables-List/">variables</a> are supported and carried into the next line, if not overriden.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.</p>
 <div class="highlight"><span class="filename">List Example</span><pre><span></span><code><span class="nt">skeletonQuestDone</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneItem&quot;</span>
@@ -5192,8 +5193,8 @@ The text can be provided as a single string with newlines, a multi-line string, 
 <span class="w">    </span><span class="no">Make quests to gain reputation!</span>
 </code></pre></div>
 <p>Just like the text in conversations you can provide <a href="../../Conversations/#translations">translations</a> for all languages:
-<div class="highlight"><span class="filename">Translation Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span><span class="w"> </span>
-<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span><span class="w"> </span>
+<div class="highlight"><span class="filename">Translation Example</span><pre><span></span><code><span class="nt">menu_items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneItem&quot;</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span>
 <span class="w">       </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
@@ -5221,7 +5222,7 @@ The text can be provided as a single string with newlines, a multi-line string, 
 <h4 id="click-types">Click Types<a class="headerlink" href="#click-types" title="Permanent link">🔗</a></h4>
 <p>Different types of clicks can be distinguished:</p>
 <div class="highlight"><span class="filename">Click Types Example</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">skeletonQuestDone</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;questDoneItem&quot;</span>
 <span class="w">    </span><span class="nt">click</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">left</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;give_xp,msg_give_xp&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
