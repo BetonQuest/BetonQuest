@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -14,15 +13,9 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,8 +23,8 @@ import java.util.List;
 /**
  * Class representing a menu.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.CouplingBetweenObjects"})
-public class Menu implements Listener {
+@SuppressWarnings("PMD.ShortClassName")
+public class Menu {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -75,29 +68,22 @@ public class Menu implements Listener {
     private final MenuBoundCommand boundCommand;
 
     /**
-     * The sender for no permission notifications.
-     */
-    private final IngameNotificationSender noPermissionSender;
-
-    /**
      * Creates a new Menu.
      *
-     * @param log                the custom logger for this class
-     * @param loggerFactory      the logger factory for new class specific custom logger
-     * @param rpgMenu            the rpg menu instance to open menus
-     * @param menuID             the id of the menu
-     * @param profileProvider    the profile provider instance
-     * @param questTypeAPI       the Quest Type API
-     * @param menuData           the Menu Data
-     * @param boundItem          the optional bound Item
-     * @param command            the optional bound command string
-     * @param noPermissionSender the ingame sender to use if the profile can't open the menu by missing permissions
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory for new class specific custom logger
+     * @param rpgMenu         the rpg menu instance to open menus
+     * @param menuID          the id of the menu
+     * @param profileProvider the profile provider instance
+     * @param questTypeAPI    the Quest Type API
+     * @param menuData        the Menu Data
+     * @param boundItem       the optional bound Item
+     * @param command         the optional bound command string
      * @throws QuestException if the bound command is invalid
      */
     public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
                 final MenuID menuID, final ProfileProvider profileProvider, final QuestTypeAPI questTypeAPI,
-                final MenuData menuData, @Nullable final Item boundItem, @Nullable final String command,
-                final IngameNotificationSender noPermissionSender) throws QuestException {
+                final MenuData menuData, @Nullable final Item boundItem, @Nullable final String command) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
@@ -105,16 +91,11 @@ public class Menu implements Listener {
         this.data = menuData;
         this.boundItem = boundItem;
         this.rpgMenu = rpgMenu;
-        this.noPermissionSender = noPermissionSender;
         if (command == null) {
             this.boundCommand = null;
         } else {
             this.boundCommand = getBoundCommand(loggerFactory, command);
             this.boundCommand.register();
-        }
-
-        if (this.boundItem != null) {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
     }
 
@@ -162,33 +143,6 @@ public class Menu implements Listener {
         if (boundCommand != null) {
             boundCommand.unregister();
         }
-        if (boundItem != null) {
-            HandlerList.unregisterAll(this);
-        }
-    }
-
-    /**
-     * Opens the menu on bound item interaction.
-     *
-     * @param event the event to process
-     */
-    @EventHandler
-    public void onItemClick(final PlayerInteractEvent event) {
-        try {
-            if (boundItem == null || !boundItem.matches(event.getItem())) {
-                return;
-            }
-        } catch (final QuestException e) {
-            log.warn(menuID.getPackage(), "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
-        }
-        event.setCancelled(true);
-        final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());
-        if (!mayOpen(onlineprofile)) {
-            noPermissionSender.sendNotification(onlineprofile);
-            return;
-        }
-        log.debug(menuID.getPackage(), onlineprofile + " used bound item of menu " + this.menuID);
-        rpgMenu.openMenu(onlineprofile, this.menuID);
     }
 
     /**
@@ -226,6 +180,8 @@ public class Menu implements Listener {
     }
 
     /**
+     * Get the id.
+     *
      * @return the menu id of this menu
      */
     public MenuID getMenuID() {
@@ -233,6 +189,8 @@ public class Menu implements Listener {
     }
 
     /**
+     * Get the inventory size.
+     *
      * @return the size of the menu in slots
      */
     public final int getSize() {
@@ -240,6 +198,8 @@ public class Menu implements Listener {
     }
 
     /**
+     * Get the title.
+     *
      * @param profile the {@link Profile} of the player
      * @return the title of the menu
      * @throws QuestException if the title cannot be parsed
@@ -249,6 +209,8 @@ public class Menu implements Listener {
     }
 
     /**
+     * Get the items.
+     *
      * @param profile the player of the {@link Profile} to get the items for
      * @return get the items for all slots
      */
@@ -261,10 +223,20 @@ public class Menu implements Listener {
     }
 
     /**
+     * Get the item which interaction opens this menu.
+     *
+     * @return the bound item, if any
+     */
+    @Nullable
+    public Item getBoundItem() {
+        return boundItem;
+    }
+
+    /**
      * Get a menu item for a specific slot.
      *
      * @param profile the player {@link Profile} to get the item for
-     * @param slot    for which the item should be get
+     * @param slot    for which the item should be got
      * @return menu item for that slot or null if none is specified
      */
     @Nullable
