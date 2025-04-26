@@ -26,24 +26,42 @@ document$.subscribe(async () => {
   async function showBuilds() {
     const builds = await getBuilds();
 
-    let cachedVersions = {};
+    const cache = loadCache(builds);
+    await loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
+    await loadBuilds("development-build", builds.filter(build => build.version.includes("-")), cache);
+    saveCache(cache);
+  }
+
+  function loadCache(builds) {
+    let cache;
     try {
-      cachedVersions = JSON.parse(localStorage.getItem("cachedVersions"));
+      cache = JSON.parse(localStorage.getItem("cachedVersions"));
     } catch (e) {
       console.log("Failed to parse cached versions");
     }
-    const newCachedVersions = {};
+    if (!cache) {
+      cache = {};
+    }
 
-    await loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
-    await loadBuilds("development-build", builds.filter(build => build.version.includes("-")), cachedVersions, newCachedVersions);
+    if (builds) {
+      for (const version of Object.keys(cache)) {
+        if (!builds.some(build => build.version === version)) {
+          delete cache[version];
+        }
+      }
+    }
 
-    localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
+    return cache;
   }
 
-  async function loadBuilds(idKey, builds, cachedVersions, newCachedVersions) {
+  function saveCache(cache) {
+    localStorage.setItem("cachedVersions", JSON.stringify(cache));
+  }
+
+  async function loadBuilds(idKey, builds, cache) {
     const latestBuild = document.getElementsByClassName("download-latest-" + idKey)[0];
     if (builds.length > 0) {
-      latestBuild.textContent = await getLazyVersion(builds[0], cachedVersions, newCachedVersions);
+      latestBuild.textContent = await getLazyVersion(builds[0], cache);
       const downloadUrl = builds[0].downloadUrl;
       latestBuild.onclick = function () {
         downloadWithRename(downloadUrl, "BetonQuest.jar");
@@ -55,6 +73,15 @@ document$.subscribe(async () => {
     builds.shift();
 
     const buildList = document.getElementById("download-all-" + idKey);
+    resetDisabled(buildList.parentNode);
+    buildList.parentNode.addEventListener("click", () => {
+      const cache = loadCache();
+      loadBuildsLazy(builds, buildList, cache).then(() => saveCache(cache));
+    });
+
+  }
+
+  async function loadBuildsLazy(builds, buildList, cache) {
     if (builds.length > 0) {
       const ul = document.createElement("ul");
       buildList.appendChild(ul);
@@ -62,7 +89,7 @@ document$.subscribe(async () => {
         const li = document.createElement("li");
         li.style.cssText = "padding: 0";
         const a = document.createElement("a");
-        a.textContent = await getLazyVersion(build, cachedVersions, newCachedVersions);
+        a.textContent = await getLazyVersion(build, cache);
         a.href = "#";
         a.onclick = function () {
           downloadWithRename(build.downloadUrl, "BetonQuest.jar");
@@ -73,26 +100,23 @@ document$.subscribe(async () => {
         li.appendChild(a);
         ul.appendChild(li);
       }
-      resetDisabled(buildList.parentNode);
     }
   }
 
-  async function getLazyVersion(build, cachedVersions, newCachedVersions) {
-    debugger;
+  async function getLazyVersion(build, cache) {
     if (!build.version.includes("-")) {
       return build.version;
     }
-    let version;
-    if (cachedVersions[build.version]) {
-      version = cachedVersions[build.version];
-    } else {
-      const result = await getPomResult(build);
-      if (!result) {
-        return null;
-      }
-      version = result[1];
+    const nexusVersion = build.version;
+    if (cache[nexusVersion]) {
+      return cache[nexusVersion];
     }
-    newCachedVersions[version] = version;
+    const result = await getPomResult(build);
+    if (!result) {
+      return null;
+    }
+    const version = result[1];
+    cache[nexusVersion] = version;
     return version;
   }
 
