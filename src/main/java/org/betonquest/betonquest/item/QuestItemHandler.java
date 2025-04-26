@@ -41,7 +41,7 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CyclomaticComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestItemHandler implements Listener {
     /**
      * The config provider.
@@ -79,6 +79,13 @@ public class QuestItemHandler implements Listener {
         this.profileProvider = profileProvider;
     }
 
+    /**
+     * Prevents dropping Quest Items.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the drop item event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
@@ -98,6 +105,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents moving the Journal and Quest Items out of the inventory.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the inventory click event, attempting moving items
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
@@ -162,6 +176,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents moving the Journal and Quest Items out of the inventory.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the inventory drag event, attempting moving items
+     */
     @EventHandler(ignoreCancelled = true)
     public void onItemDrag(final InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -173,6 +194,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents equipping ArmorStands with Quest Items.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the armor stand interaction event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onArmorStandEquip(final PlayerArmorStandManipulateEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
@@ -185,6 +213,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents dropping the Journal and Quest Items on death.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the death event
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
@@ -212,6 +247,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Moves Quest Items after respawn into the backpack.
+     * <p>
+     * Does not affect creative mode. Also, gives the Journal back into the inventory.
+     *
+     * @param event the respawn event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
         if (config.getBoolean("remove_items_after_respawn")) {
@@ -234,6 +276,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents putting the Journal and Quest Items in Item Frames.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the interact at entity event which is checked for Item Frames
+     */
     @EventHandler(ignoreCancelled = true)
     public void onItemFrameClick(final PlayerInteractEntityEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
@@ -251,6 +300,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents placing Quest Items.
+     * * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the block place event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
@@ -262,13 +318,17 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents the breaking of Quest Items.
+     *
+     * @param event the item break event
+     */
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
         if (!config.getBoolean("quest_items_unbreakable")) {
             return;
         }
-        // prevent quest items from breaking
         if (Utils.isQuestItem(event.getBrokenItem())) {
             final ItemStack original = event.getBrokenItem();
             original.setDurability((short) 0);
@@ -304,16 +364,37 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents filling bucket Quest Items.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the bucket fill event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onBucketFillEvent(final PlayerBucketFillEvent event) {
         onBucketEvent(event);
     }
 
+    /**
+     * Prevents emptying bucket Quest Items.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the bucket empty event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmptyEvent(final PlayerBucketEmptyEvent event) {
         onBucketEvent(event);
     }
 
+    /**
+     * Prevents interacting with bucket Quest Items.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the bucket event
+     */
     public void onBucketEvent(final PlayerBucketEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
@@ -325,6 +406,13 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Prevents moving the Journal and Quest Items out of the inventory with off-hand swapping.
+     * <p>
+     * Does not affect creative mode.
+     *
+     * @param event the hand swap event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerSwapHandItems(final PlayerSwapHandItemsEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
