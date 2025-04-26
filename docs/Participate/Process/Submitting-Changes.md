@@ -76,7 +76,7 @@ The following list is included in the PullRequest template, do not click any of 
     like writing a new tutorial or adjusting a bad example.
 
 ??? success "... adjust the ConfigPatcher?"
-    For the `config.yml` check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurationfiles).  
+    For the `config.yml` check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurations).  
     For quest files, this is currently not relevant. We are working on a new updater.
 
 ??? success "... clean the commit history?"

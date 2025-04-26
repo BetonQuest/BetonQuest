@@ -18,5 +18,8 @@ public class MenuItemID extends ID {
      */
     public MenuItemID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier);
+        if (!super.pack.getConfig().isConfigurationSection("menu_items." + super.getBaseID())) {
+            throw new QuestException("Menu Item '" + getFullID() + "' is not defined");
+        }
     }
 }

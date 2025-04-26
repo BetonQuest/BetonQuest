@@ -59,7 +59,7 @@ language: en
 
 The patcher will then automatically set the version to the newest available patch version.
 This frees you from the hassle of updating the `configVersion` key in the default resource file every time you add a patch.
- 
+
 !!! warning "Reloading Behaviour"
     When reloading the `ConfigAccessor`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
     This means that all references to old child `ConfigurationSection` in your code will be outdated and need to be updated.

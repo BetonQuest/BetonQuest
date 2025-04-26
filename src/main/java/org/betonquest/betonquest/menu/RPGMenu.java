@@ -136,27 +136,17 @@ public class RPGMenu {
      *
      * @param onlineProfile the player of the {@link OnlineProfile} for which the menu should be opened
      * @param menuID        id of the menu
+     * @throws QuestException when the menu is not loaded or an error while constructing occurred
      */
-    public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
-        final Menu menu;
-        try {
-            menu = menuProcessor.get(menuID);
-        } catch (final QuestException e) {
-            log.error(menuID.getPackage(), "Could not open menu: " + e.getMessage(), e);
-            return;
-        }
+    public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) throws QuestException {
+        final Menu menu = menuProcessor.get(menuID);
         final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
             log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
             return;
         }
-        try {
-            new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
-        } catch (final QuestException e) {
-            log.error(menu.getMenuID().getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
-            return;
-        }
+        new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
         log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 

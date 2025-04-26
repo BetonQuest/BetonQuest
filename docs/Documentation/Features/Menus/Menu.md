@@ -24,7 +24,7 @@ menu_items: #...
 items: #...
 ```
 
-## General Menu Settings 
+## General Menu Settings
 These are general settings for customizing a menu.
 
 #### Required Settings
@@ -58,7 +58,7 @@ menu_items: #(1)!
     item: "questDoneItem" #(3)!
   goldQuestDone: #(4)!
     item: "questDone"
-```    
+```
 
 1. The `menu_items` section with all items that are displayed in a menu.
 2. The name of the item. Used to reference the item in the `slots` section.
@@ -77,30 +77,33 @@ The three basic optional settings.
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting. If you only define one line, only the name will be overwritten.
-Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overriden.
+Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overridden.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
-``` YAML title="List Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text:
-    - "&2Reputation: &6&l%point.quest_reputation.amount%"
-    - "Make quests to gain reputation!"
-```
+=== "List"
+    ``` YAML title="List Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text:
+        - "&2Reputation: &6&l%point.quest_reputation.amount%"
+        - "Make quests to gain reputation!"
+    ```
 
-``` YAML title="String with Newlines Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text: "&2Reputation: &6&l%point.quest_reputation.amount% \nMake quests to gain reputation!"
-```
+=== "String with Newlines"
+    ``` YAML title="String with Newlines Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text: "&2Reputation: &6&l%point.quest_reputation.amount% \nMake quests to gain reputation!"
+    ```
 
-``` YAML title="Multi-line String Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text: |-
-    &2Reputation: &6&l%point.quest_reputation.amount%
-    Make quests to gain reputation!
-```
+=== "Multi-line String"
+    ``` YAML title="Multi-line String Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text: |-
+        &2Reputation: &6&l%point.quest_reputation.amount%
+        Make quests to gain reputation!
+    ```
 
 Just like the text in conversations you can provide [translations](../../Features/Conversations.md#translations) for all languages:
 ``` YAML title="Translation Example"
@@ -123,11 +126,11 @@ menu_items:
 1. The name and description of the item in english.
 2. The name and description of the item in german.
 
-### The optional `click` setting    
+### The optional `click` setting
 You can define one or multiple events (separated by `,`) that are run whenever the item is clicked.    
 ``` YAML title="Example"
 items:
-  skeletonQuestDone: 
+  skeletonQuestDone:
     item: "simple questDoneItem"
     click: "simple startQuest,closeMenu"
 ```
@@ -145,7 +148,7 @@ items:
       right: "take_xp,msg_take_xp" #(3)! 
       shiftRight: "take_xp,msg_take_xp" #(4)!
       middleMouse: "msg_beautifull_text" #(5)!
-```    
+```
 
 1. Run when left-clicking the item.
 2. Run when shift + left-clicking the item.
@@ -156,7 +159,7 @@ items:
 
 ## The `slots` section
 The slots section defines where the items from the items section should be displayed.    
-You can also assign multiple items to the same slot and use conditions in the [items section](#the-items-section) to
+You can also assign multiple items to the same slot and use conditions in the [items section](#the-menu_items-section) to
 specify which one should be used.
 If you assign multiple items the first one for which all conditions are true will be displayed.
 
@@ -183,7 +186,7 @@ menus:
 ### Row Assignment
 You can also assign multiple items to a row of slots. Now the slots are filled up one by one using the items whose conditions are true:
 
-``` YAML    
+``` YAML
 10-12: "quest1,quest2,quest3" #(1)!
 ```
   

@@ -3,32 +3,24 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * ID of a menu.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MenuID extends ID {
 
-    private final ConfigurationSection config;
-
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+    /**
+     * Create a new Menu ID.
+     *
+     * @param pack       the package of the menu
+     * @param identifier the complete identifier of the menu
+     * @throws QuestException if there is no such menu
+     */
     public MenuID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier);
-        config = super.pack.getConfig().getConfigurationSection("menus." + super.getBaseID());
-        if (config == null) {
+        if (!super.pack.getConfig().isConfigurationSection("menus." + super.getBaseID())) {
             throw new QuestException("Menu '" + getFullID() + "' is not defined");
         }
-    }
-
-    /**
-     * File where the menus config is located on disk.
-     *
-     * @return The menu's config file
-     */
-    public ConfigurationSection getConfig() {
-        return config;
     }
 }
