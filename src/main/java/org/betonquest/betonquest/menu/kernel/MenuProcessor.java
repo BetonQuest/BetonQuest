@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -22,15 +21,15 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.Slots;
-import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.betonquest.betonquest.quest.event.NotificationLevel;
+import org.betonquest.betonquest.menu.command.MenuBoundCommand;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Processor to create and store {@link Menu}s.
@@ -43,14 +42,14 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     private final RPGMenu rpgMenu;
 
     /**
-     * Plugin message instance to get messages from.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Profile Provider instance.
      */
     private final ProfileProvider profileProvider;
+
+    /**
+     * Commands to open specific menus.
+     */
+    private final Set<MenuBoundCommand> boundCommands;
 
     /**
      * Create a new Processor to create and store Menu Items.
@@ -61,21 +60,20 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param variableProcessor the variable resolver
      * @param featureAPI        the Feature API
      * @param rpgMenu           the RPG Menu instance
-     * @param pluginMessage     the Plugin message instance to get messages from
      * @param profileProvider   the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI,
                          final VariableProcessor variableProcessor, final FeatureAPI featureAPI, final RPGMenu rpgMenu,
-                         final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+                         final ProfileProvider profileProvider) {
         super(log, "Menu", "menus", loggerFactory, variableProcessor, questTypeAPI, featureAPI);
         this.rpgMenu = rpgMenu;
-        this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
+        this.boundCommands = new HashSet<>();
     }
 
     @Override
     public void clear() {
-        final Iterator<Menu> iterator = values.values().iterator();
+        final Iterator<MenuBoundCommand> iterator = boundCommands.iterator();
         while (iterator.hasNext()) {
             iterator.next().unregister();
             iterator.remove();
@@ -90,11 +88,24 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Item boundItem = section.isSet("bind") ? new Item(featureAPI, new ItemID(pack, helper.getRequired("bind")),
                 new Variable<>(1)) : null;
-        final String boundCommand = section.isSet("command") ? helper.getRequired("command") : null;
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
-        final IngameNotificationSender noPermissionSender = new IngameNotificationSender(log, pluginMessage, pack,
-                menuID.getFullID(), NotificationLevel.ERROR, "no_permission");
-        return new Menu(log, loggerFactory, rpgMenu, menuID, profileProvider, questTypeAPI, menuData, boundItem, boundCommand, noPermissionSender);
+        final Menu menu = new Menu(log, menuID, questTypeAPI, menuData, boundItem);
+        if (section.isSet("command")) {
+            createBoundCommand(menu, helper.getRequired("command").trim());
+        }
+        return menu;
+    }
+
+    private void createBoundCommand(final Menu menu, final String command)
+            throws QuestException {
+        if (!command.matches("/*[0-9A-Za-z\\-]+")) {
+            throw new QuestException("command is invalid!");
+        }
+        final String shortened = command.startsWith("/") ? command.substring(1) : command;
+        final MenuBoundCommand boundCommand = new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class),
+                rpgMenu, profileProvider, menu, shortened);
+        this.boundCommands.add(boundCommand);
+        boundCommand.register();
     }
 
     @Override
@@ -117,7 +128,6 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             super(pack, section);
         }
 
-        @NotNull
         private Menu.MenuData getMenuData() throws QuestException {
             final int height = new Variable<>(variableProcessor, pack, getRequired("height"), Argument.NUMBER)
                     .getValue(null).intValue();

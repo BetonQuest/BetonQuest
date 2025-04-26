@@ -17,6 +17,7 @@ import org.betonquest.betonquest.menu.betonquest.MenuObjectiveFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuVariableFactory;
 import org.betonquest.betonquest.menu.command.RPGMenuCommand;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
+import org.betonquest.betonquest.menu.kernel.MenuItemListener;
 import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.menu.kernel.MenuProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -58,6 +59,11 @@ public class RPGMenu {
     private final MenuProcessor menuProcessor;
 
     /**
+     * Opens menus when its bound item is interacted with.
+     */
+    private final MenuItemListener menuItemListener;
+
+    /**
      * Create a new RPG menu instance.
      *
      * @param log               the custom logger for this class
@@ -85,7 +91,10 @@ public class RPGMenu {
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
         this.menuItemProcessor = menuItemProcessor;
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, questTypeAPI,
-                betonQuest.getVariableProcessor(), featureAPI, this, pluginMessage, profileProvider);
+                betonQuest.getVariableProcessor(), featureAPI, this, profileProvider);
+        this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
+                menuProcessor, profileProvider, pluginMessage);
+        server.getPluginManager().registerEvents(menuItemListener, betonQuest);
     }
 
     /**
@@ -156,7 +165,10 @@ public class RPGMenu {
         //close all menus
         OpenedMenu.closeAll();
         //disable listeners
+        HandlerList.unregisterAll(menuItemListener);
         HandlerList.unregisterAll(BetonQuest.getInstance());
+        menuItemProcessor.clear();
+        menuProcessor.clear();
         this.pluginCommand.unregister();
     }
 
