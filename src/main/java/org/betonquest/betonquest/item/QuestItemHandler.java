@@ -233,16 +233,16 @@ public class QuestItemHandler implements Listener {
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
         final List<ItemStack> drops = event.getDrops();
-        final ListIterator<ItemStack> litr = drops.listIterator();
-        while (litr.hasNext()) {
-            final ItemStack stack = litr.next();
+        final ListIterator<ItemStack> listIterator = drops.listIterator();
+        while (listIterator.hasNext()) {
+            final ItemStack stack = listIterator.next();
             if (Journal.isJournal(onlineProfile, stack)) {
-                litr.remove();
+                listIterator.remove();
             }
             // remove all quest items and add them to backpack
             if (Utils.isQuestItem(stack)) {
                 dataStorage.get(onlineProfile).addItem(stack.clone(), stack.getAmount());
-                litr.remove();
+                listIterator.remove();
             }
         }
     }
@@ -399,9 +399,8 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final ItemStack itemMain = event.getPlayer().getInventory().getItemInMainHand();
-        final ItemStack itemOff = event.getPlayer().getInventory().getItemInOffHand();
-        if (Utils.isQuestItem(itemMain) || Utils.isQuestItem(itemOff)) {
+        final ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
+        if (Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
     }
