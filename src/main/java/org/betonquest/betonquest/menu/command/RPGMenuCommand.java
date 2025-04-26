@@ -42,7 +42,6 @@ public class RPGMenuCommand extends SimpleCommand {
         this.menu = menu;
         setDescription("Core command of the RPGMenu addon for BetonQuest");
         setUsage("/rpgmenu <open/list>");
-        register();
     }
 
     @Override

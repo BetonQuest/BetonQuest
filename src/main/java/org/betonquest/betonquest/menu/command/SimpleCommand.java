@@ -112,29 +112,21 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     /**
      * Method to register the command.
-     *
-     * @return Whether the command was successfully registered
      */
-    public final boolean register() {
+    public final void register() {
         this.commandMap = Bukkit.getCommandMap();
         if (!this.commandMap.register("betonquest", this)) {
             log.info("Command " + getName() + " is already in command map, using fallback!");
         }
-        if (syncCraftBukkitCommands()) {
-            return false;
-        }
         log.debug("Registered command " + getName() + "!");
-        return true;
     }
 
     /**
      * Method to unregister the command.
-     *
-     * @return Whether the command was successfully unregistered
      */
-    public boolean unregister() {
+    public void unregister() {
         if (this.commandMap == null) {
-            return false;
+            return;
         }
         int count = 0;
         while (commandMap.getKnownCommands().values().remove(this)) {
@@ -142,25 +134,22 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         }
         if (count == 0) {
             log.error("Could not unregister command '" + getName() + "' from command map");
-            return false;
-        }
-        if (syncCraftBukkitCommands()) {
-            return false;
+            return;
         }
         log.debug("Unregistered command " + getName() + " " + count + " times!");
-        return true;
     }
 
+    /**
+     * Syncs changes in the command map to all players.
+     */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private boolean syncCraftBukkitCommands() {
+    public void syncCraftBukkitCommands() {
         try {
             final Class<?> craftServer = Bukkit.getServer().getClass();
             final Method method = craftServer.getDeclaredMethod("syncCommands");
             method.invoke(Bukkit.getServer());
-            return false;
         } catch (final Exception e) {
             log.error("Could not sync commands: " + e.getMessage(), e);
-            return true;
         }
     }
 

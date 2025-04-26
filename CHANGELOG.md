@@ -82,6 +82,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `MMOCore` attribute loading with MMOCore 1.13
 - missing messages `animals_to_tame` and `times_to_jump` in language files by adding them
 - `Menu Item` parsing with newlines lead in some cases to missing lines
+- `Menu`s throwing exception on reload when bound commands are used
 ### Security
 
 ## [2.2.1] - 2025-01-12

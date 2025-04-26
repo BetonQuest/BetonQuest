@@ -120,7 +120,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         }
 
         private MenuItem.ClickEvents getClickEvents() throws QuestException {
-            if (config.isConfigurationSection("click")) {
+            if (section.isConfigurationSection("click")) {
                 return new MenuItem.ClickEvents(
                         getEvents("click.left"),
                         getEvents("click.shiftLeft"),
