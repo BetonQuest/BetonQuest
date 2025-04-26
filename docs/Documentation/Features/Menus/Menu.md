@@ -24,7 +24,7 @@ menu_items: #...
 items: #...
 ```
 
-## General Menu Settings 
+## General Menu Settings
 These are general settings for customizing a menu.
 
 #### Required Settings
@@ -58,7 +58,7 @@ menu_items: #(1)!
     item: "questDoneItem" #(3)!
   goldQuestDone: #(4)!
     item: "questDone"
-```    
+```
 
 1. The `menu_items` section with all items that are displayed in a menu.
 2. The name of the item. Used to reference the item in the `slots` section.
@@ -123,11 +123,11 @@ menu_items:
 1. The name and description of the item in english.
 2. The name and description of the item in german.
 
-### The optional `click` setting    
+### The optional `click` setting
 You can define one or multiple events (separated by `,`) that are run whenever the item is clicked.    
 ``` YAML title="Example"
 items:
-  skeletonQuestDone: 
+  skeletonQuestDone:
     item: "simple questDoneItem"
     click: "simple startQuest,closeMenu"
 ```
@@ -145,7 +145,7 @@ items:
       right: "take_xp,msg_take_xp" #(3)! 
       shiftRight: "take_xp,msg_take_xp" #(4)!
       middleMouse: "msg_beautifull_text" #(5)!
-```    
+```
 
 1. Run when left-clicking the item.
 2. Run when shift + left-clicking the item.
@@ -156,7 +156,7 @@ items:
 
 ## The `slots` section
 The slots section defines where the items from the items section should be displayed.    
-You can also assign multiple items to the same slot and use conditions in the [items section](#the-items-section) to
+You can also assign multiple items to the same slot and use conditions in the [items section](#the-menu_items-section) to
 specify which one should be used.
 If you assign multiple items the first one for which all conditions are true will be displayed.
 
@@ -183,7 +183,7 @@ menus:
 ### Row Assignment
 You can also assign multiple items to a row of slots. Now the slots are filled up one by one using the items whose conditions are true:
 
-``` YAML    
+``` YAML
 10-12: "quest1,quest2,quest3" #(1)!
 ```
   
