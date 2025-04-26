@@ -26,14 +26,24 @@ document$.subscribe(async () => {
   async function showBuilds() {
     const builds = await getBuilds();
 
-    loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
-    loadBuilds("development-build", builds.filter(build => build.version.includes("-")));
+    let cachedVersions = {};
+    try {
+      cachedVersions = JSON.parse(localStorage.getItem("cachedVersions"));
+    } catch (e) {
+      console.log("Failed to parse cached versions");
+    }
+    const newCachedVersions = {};
+
+    await loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
+    await loadBuilds("development-build", builds.filter(build => build.version.includes("-")), cachedVersions, newCachedVersions);
+
+    localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
   }
 
-  function loadBuilds(idKey, builds) {
+  async function loadBuilds(idKey, builds, cachedVersions, newCachedVersions) {
     const latestBuild = document.getElementsByClassName("download-latest-" + idKey)[0];
     if (builds.length > 0) {
-      latestBuild.textContent = builds[0].version;
+      latestBuild.textContent = await getLazyVersion(builds[0], cachedVersions, newCachedVersions);
       const downloadUrl = builds[0].downloadUrl;
       latestBuild.onclick = function () {
         downloadWithRename(downloadUrl, "BetonQuest.jar");
@@ -48,11 +58,11 @@ document$.subscribe(async () => {
     if (builds.length > 0) {
       const ul = document.createElement("ul");
       buildList.appendChild(ul);
-      builds.forEach(build => {
+      for (const build of builds) {
         const li = document.createElement("li");
         li.style.cssText = "padding: 0";
         const a = document.createElement("a");
-        a.textContent = build.version;
+        a.textContent = await getLazyVersion(build, cachedVersions, newCachedVersions);
         a.href = "#";
         a.onclick = function () {
           downloadWithRename(build.downloadUrl, "BetonQuest.jar");
@@ -62,9 +72,35 @@ document$.subscribe(async () => {
         a.classList.add("md-button--secondary");
         li.appendChild(a);
         ul.appendChild(li);
-      });
+      }
       resetDisabled(buildList.parentNode);
     }
+  }
+
+  async function getLazyVersion(build, cachedVersions, newCachedVersions) {
+    debugger;
+    if (!build.version.includes("-")) {
+      return build.version;
+    }
+    let version;
+    if (cachedVersions[build.version]) {
+      version = cachedVersions[build.version];
+    } else {
+      const result = await getPomResult(build);
+      if (!result) {
+        return null;
+      }
+      version = result[1];
+    }
+    newCachedVersions[version] = version;
+    return version;
+  }
+
+  async function getPomResult(build) {
+    const pomUrl = build.downloadUrl.replace("-shaded.jar", ".pom");
+    const pomResponse = await fetch(pomUrl);
+    const pomData = await pomResponse.text();
+    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   function resetDisabled(element) {
@@ -76,13 +112,6 @@ document$.subscribe(async () => {
     let prereleaseSearch = undefined;
     let continuationToken = undefined;
     const builds = [];
-    let cachedVersions = {};
-    try {
-      cachedVersions = JSON.parse(localStorage.getItem("cachedVersions"));
-    } catch (e) {
-      console.log("Failed to parse cached versions");
-    }
-    const newCachedVersions = {};
 
     nextPage: while (continuationToken !== null) {
       const params = getURLParams(prereleaseSearch, continuationToken);
@@ -91,7 +120,7 @@ document$.subscribe(async () => {
           .then(response => response.json());
 
         for (const build of data["items"]) {
-          const buildVersion = await getVersion(build, cachedVersions, newCachedVersions);
+          const buildVersion = {version: build["maven2"]["version"], downloadUrl: build["downloadUrl"]};
           if (buildVersion) {
             builds.push(buildVersion);
             if (prereleaseSearch === undefined && !buildVersion.version.includes("-")) {
@@ -108,8 +137,6 @@ document$.subscribe(async () => {
         continuationToken = null;
       }
     }
-
-    localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
     return builds;
   }
 
@@ -129,34 +156,6 @@ document$.subscribe(async () => {
       params.set("continuationToken", continuationToken);
     }
     return params;
-  }
-
-  async function getVersion(build, cachedVersions, newCachedVersions) {
-    const nexusVersion = build["maven2"]["version"];
-    let version;
-    if (!nexusVersion.includes("-")) {
-      version = nexusVersion;
-    } else {
-      if (cachedVersions && cachedVersions[nexusVersion]) {
-        version = cachedVersions[nexusVersion];
-      } else {
-        const result = await getPomResult(build);
-        if (!result || result[1].includes("$")) {
-          return null;
-        } else {
-          version = result[1];
-        }
-      }
-      newCachedVersions[nexusVersion] = version;
-    }
-    return {version: version, downloadUrl: build["downloadUrl"]};
-  }
-
-  async function getPomResult(build) {
-    const pomUrl = build["downloadUrl"].replace("-shaded.jar", ".pom");
-    const pomResponse = await fetch(pomUrl);
-    const pomData = await pomResponse.text();
-    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   function downloadWithRename(url, filename) {
