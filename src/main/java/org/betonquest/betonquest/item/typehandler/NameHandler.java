@@ -6,13 +6,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Display Names.
+ */
 public class NameHandler implements ItemMetaHandler<ItemMeta> {
+
+    /**
+     * The Item Display Name.
+     */
     @Nullable
     private String name;
 
+    /**
+     * The required existence.
+     */
     private Existence existence = Existence.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public NameHandler() {
     }
 
@@ -76,6 +88,11 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
         };
     }
 
+    /**
+     * Get the name.
+     *
+     * @return the name
+     */
     @Nullable
     public String get() {
         return name;

@@ -12,27 +12,63 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Firework Effects.
+ */
 public class FireworkEffectHandler {
+
+    /**
+     * The Effect Main Colors.
+     */
     private final List<Color> mainColors = new LinkedList<>();
 
+    /**
+     * The Effect Fade Colors.
+     */
     private final List<Color> fadeColors = new LinkedList<>();
 
-    private Type type = Type.BALL; // default type for giving is small ball
+    /**
+     * The Firework Effect Type, defaulting to Ball.
+     */
+    private Type type = Type.BALL;
 
+    /**
+     * The required type existence.
+     */
     private Existence typeE = Existence.WHATEVER;
 
+    /**
+     * The required main color existence.
+     */
     private Existence mainE = Existence.WHATEVER;
 
+    /**
+     * The required fade color existence.
+     */
     private Existence fadeE = Existence.WHATEVER;
 
+    /**
+     * The required trail existence.
+     */
     private Existence trail = Existence.WHATEVER;
 
+    /**
+     * The required flicker existence.
+     */
     private Existence flicker = Existence.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public FireworkEffectHandler() {
     }
 
+    /**
+     * Sets the firework effect data.
+     *
+     * @param string the serialized firework effect data
+     * @throws QuestException if the data is malformed
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Effect is missing", ":");
@@ -91,6 +127,11 @@ public class FireworkEffectHandler {
         }
     }
 
+    /**
+     * Build and get the stored Firework Effect.
+     *
+     * @return a new effect
+     */
     public FireworkEffect get() {
         return FireworkEffect.builder()
                 .with(type)
@@ -101,10 +142,21 @@ public class FireworkEffectHandler {
                 .build();
     }
 
+    /**
+     * Get the Firework Effect Type.
+     *
+     * @return the type to build
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * Checks if the Firework Effect matches.
+     *
+     * @param effect the firework effect to check
+     * @return whether the effect is accepted by this handler
+     */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
     public boolean check(@Nullable final FireworkEffect effect) {
         return switch (typeE) {

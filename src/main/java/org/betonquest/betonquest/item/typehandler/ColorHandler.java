@@ -10,12 +10,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Leather Armor Color.
+ */
 public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
+
+    /**
+     * The leather color, defaults to server default as "empty".
+     */
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
 
+    /**
+     * The required existence.
+     */
     private Existence colorE = Existence.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public ColorHandler() {
     }
 
