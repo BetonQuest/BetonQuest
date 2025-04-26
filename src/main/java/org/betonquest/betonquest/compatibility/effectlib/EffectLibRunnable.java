@@ -109,7 +109,7 @@ public class EffectLibRunnable extends BukkitRunnable {
     private void activateEffects(final List<OnlineProfile> activePlayers) {
         for (final OnlineProfile currentPlayer : activePlayers) {
             if (!effectConfiguration.npcs().isEmpty()) {
-                runNPCEffects(currentPlayer, effectConfiguration);
+                runNPCEffects(effectConfiguration, currentPlayer);
             }
             if (!effectConfiguration.locations().isEmpty()) {
                 runLocationEffects(currentPlayer, effectConfiguration);
@@ -117,11 +117,11 @@ public class EffectLibRunnable extends BukkitRunnable {
         }
     }
 
-    private void runNPCEffects(final OnlineProfile profile, final EffectConfiguration effect) {
+    private void runNPCEffects(final EffectConfiguration effect, final OnlineProfile profile) {
         for (final NpcID npcId : effect.npcs()) {
             final Npc<?> npc;
             try {
-                npc = featureAPI.getNpc(npcId);
+                npc = featureAPI.getNpc(npcId, profile);
             } catch (final QuestException exception) {
                 log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
                 continue;

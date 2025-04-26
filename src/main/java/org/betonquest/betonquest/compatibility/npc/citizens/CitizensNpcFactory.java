@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Creates validated Npc Wrapper for Citizens Npcs.
@@ -21,10 +23,7 @@ public class CitizensNpcFactory implements NpcFactory {
         if (instruction.hasArgument("byName")) {
             return new CitizensNameWrapper(instruction.next());
         }
-        final int npcId = instruction.getInt();
-        if (npcId < 0) {
-            throw new QuestException("NPC ID cannot be less than 0");
-        }
+        final Variable<Number> npcId = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
         return new CitizensWrapper(npcId);
     }
 }

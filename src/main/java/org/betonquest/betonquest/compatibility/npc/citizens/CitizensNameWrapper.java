@@ -2,9 +2,11 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Citizens wrapper to get a Npc.
@@ -25,7 +27,7 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
     }
 
     @Override
-    public Npc<NPC> getNpc() throws QuestException {
+    public Npc<NPC> getNpc(@Nullable final Profile profile) throws QuestException {
         NPC selectedNpc = null;
         for (final NPC npc : CitizensAPI.getNPCRegistry()) {
             if (npc.getName().equals(npcName)) {

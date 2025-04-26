@@ -44,7 +44,7 @@ public class NpcDistanceCondition implements OnlineCondition {
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Location npcLocation = featureAPI.getNpc(npcID).getLocation();
+        final Location npcLocation = featureAPI.getNpc(npcID, profile).getLocation();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;

@@ -107,7 +107,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
         npcIDs.forEach(npcID -> {
             final Npc<?> npc;
             try {
-                npc = featureAPI.getNpc(npcID);
+                npc = featureAPI.getNpc(npcID, null);
             } catch (final QuestException exception) {
                 log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
                 return;
@@ -145,7 +145,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
                     final BetonHologram hologram = entry.getValue();
                     final Npc<?> npc;
                     try {
-                        npc = featureAPI.getNpc(npcID);
+                        npc = featureAPI.getNpc(npcID, null);
                     } catch (final QuestException exception) {
                         log.warn("Could not get Npc for id '" + npcID.getFullID() + "' in hologram loop: " + exception.getMessage(), exception);
                         return;

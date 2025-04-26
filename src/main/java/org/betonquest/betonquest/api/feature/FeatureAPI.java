@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.feature;
 
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
@@ -18,6 +19,7 @@ import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,12 +127,13 @@ public final class FeatureAPI {
     /**
      * Gets a Npc by its id.
      *
-     * @param npcID the id of the Npc
+     * @param npcID   the id of the Npc
+     * @param profile the profile to resolve the Npc
      * @return the betonquest Npc
      * @throws QuestException when there is no Npc with that id
      */
-    public Npc<?> getNpc(final NpcID npcID) throws QuestException {
-        return questRegistry.npcs().get(npcID).getNpc();
+    public Npc<?> getNpc(final NpcID npcID, @Nullable final Profile profile) throws QuestException {
+        return questRegistry.npcs().get(npcID).getNpc(profile);
     }
 
     /**
