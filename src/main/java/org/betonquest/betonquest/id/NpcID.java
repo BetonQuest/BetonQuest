@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Identifies a {@link org.betonquest.betonquest.api.quest.npc.Npc Npc} via the path syntax.
- * Handles relative and absolute paths.
  */
 public class NpcID extends ID {
 

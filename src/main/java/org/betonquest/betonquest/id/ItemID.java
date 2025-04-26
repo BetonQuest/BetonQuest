@@ -4,9 +4,18 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * ID of an Item.
+ */
 public class ItemID extends ID {
 
+    /**
+     * Create a new Item ID.
+     *
+     * @param pack       the package of the item
+     * @param identifier the complete identifier of the item
+     * @throws QuestException if there is no such item
+     */
     public ItemID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier, "items", "Item");
     }

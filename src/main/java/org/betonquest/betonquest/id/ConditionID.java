@@ -4,14 +4,26 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName"})
+/**
+ * ID of a Condition.
+ */
 public class ConditionID extends ID {
 
-    private final boolean inverted;
+    /**
+     * If the condition is used inverted.
+     */
+    private final boolean isInverted;
 
+    /**
+     * Create a new Condition ID.
+     *
+     * @param pack       the package of the condition
+     * @param identifier the complete identifier of the condition, inclusive exclamation mark for negating
+     * @throws QuestException if there is no such condition
+     */
     public ConditionID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, removeExclamationMark(identifier), "conditions", "Condition");
-        this.inverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
+        this.isInverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
     }
 
     private static String removeExclamationMark(final String identifier) {
@@ -21,7 +33,12 @@ public class ConditionID extends ID {
         return identifier;
     }
 
+    /**
+     * If the Condition is defined as inverted.
+     *
+     * @return if the condition should be interpreted inverted
+     */
     public boolean inverted() {
-        return inverted;
+        return isInverted;
     }
 }
