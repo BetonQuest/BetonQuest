@@ -26,14 +26,42 @@ document$.subscribe(async () => {
   async function showBuilds() {
     const builds = await getBuilds();
 
-    loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
-    loadBuilds("development-build", builds.filter(build => build.version.includes("-")));
+    const cache = loadCache(builds);
+    await loadBuilds("release-build", builds.filter(build => !build.version.includes("-")));
+    await loadBuilds("development-build", builds.filter(build => build.version.includes("-")), cache);
+    saveCache(cache);
   }
 
-  function loadBuilds(idKey, builds) {
+  function loadCache(builds) {
+    let cache;
+    try {
+      cache = JSON.parse(localStorage.getItem("cachedVersions"));
+    } catch (e) {
+      console.log("Failed to parse cached versions");
+    }
+    if (!cache) {
+      cache = {};
+    }
+
+    if (builds) {
+      for (const version of Object.keys(cache)) {
+        if (!builds.some(build => build.version === version)) {
+          delete cache[version];
+        }
+      }
+    }
+
+    return cache;
+  }
+
+  function saveCache(cache) {
+    localStorage.setItem("cachedVersions", JSON.stringify(cache));
+  }
+
+  async function loadBuilds(idKey, builds, cache) {
     const latestBuild = document.getElementsByClassName("download-latest-" + idKey)[0];
     if (builds.length > 0) {
-      latestBuild.textContent = builds[0].version;
+      latestBuild.textContent = await getLazyVersion(builds[0], cache);
       const downloadUrl = builds[0].downloadUrl;
       latestBuild.onclick = function () {
         downloadWithRename(downloadUrl, "BetonQuest.jar");
@@ -45,14 +73,23 @@ document$.subscribe(async () => {
     builds.shift();
 
     const buildList = document.getElementById("download-all-" + idKey);
+    resetDisabled(buildList.parentNode);
+    buildList.parentNode.addEventListener("click", () => {
+      const cache = loadCache();
+      loadBuildsLazy(builds, buildList, cache).then(() => saveCache(cache));
+    });
+
+  }
+
+  async function loadBuildsLazy(builds, buildList, cache) {
     if (builds.length > 0) {
       const ul = document.createElement("ul");
       buildList.appendChild(ul);
-      builds.forEach(build => {
+      for (const build of builds) {
         const li = document.createElement("li");
         li.style.cssText = "padding: 0";
         const a = document.createElement("a");
-        a.textContent = build.version;
+        a.textContent = await getLazyVersion(build, cache);
         a.href = "#";
         a.onclick = function () {
           downloadWithRename(build.downloadUrl, "BetonQuest.jar");
@@ -62,9 +99,32 @@ document$.subscribe(async () => {
         a.classList.add("md-button--secondary");
         li.appendChild(a);
         ul.appendChild(li);
-      });
-      resetDisabled(buildList.parentNode);
+      }
     }
+  }
+
+  async function getLazyVersion(build, cache) {
+    if (!build.version.includes("-")) {
+      return build.version;
+    }
+    const nexusVersion = build.version;
+    if (cache[nexusVersion]) {
+      return cache[nexusVersion];
+    }
+    const result = await getPomResult(build);
+    if (!result) {
+      return null;
+    }
+    const version = result[1];
+    cache[nexusVersion] = version;
+    return version;
+  }
+
+  async function getPomResult(build) {
+    const pomUrl = build.downloadUrl.replace("-shaded.jar", ".pom");
+    const pomResponse = await fetch(pomUrl);
+    const pomData = await pomResponse.text();
+    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   function resetDisabled(element) {
@@ -76,13 +136,6 @@ document$.subscribe(async () => {
     let prereleaseSearch = undefined;
     let continuationToken = undefined;
     const builds = [];
-    let cachedVersions = {};
-    try {
-      cachedVersions = JSON.parse(localStorage.getItem("cachedVersions"));
-    } catch (e) {
-      console.log("Failed to parse cached versions");
-    }
-    const newCachedVersions = {};
 
     nextPage: while (continuationToken !== null) {
       const params = getURLParams(prereleaseSearch, continuationToken);
@@ -91,7 +144,7 @@ document$.subscribe(async () => {
           .then(response => response.json());
 
         for (const build of data["items"]) {
-          const buildVersion = await getVersion(build, cachedVersions, newCachedVersions);
+          const buildVersion = {version: build["maven2"]["version"], downloadUrl: build["downloadUrl"]};
           if (buildVersion) {
             builds.push(buildVersion);
             if (prereleaseSearch === undefined && !buildVersion.version.includes("-")) {
@@ -108,8 +161,6 @@ document$.subscribe(async () => {
         continuationToken = null;
       }
     }
-
-    localStorage.setItem("cachedVersions", JSON.stringify(newCachedVersions));
     return builds;
   }
 
@@ -129,34 +180,6 @@ document$.subscribe(async () => {
       params.set("continuationToken", continuationToken);
     }
     return params;
-  }
-
-  async function getVersion(build, cachedVersions, newCachedVersions) {
-    const nexusVersion = build["maven2"]["version"];
-    let version;
-    if (!nexusVersion.includes("-")) {
-      version = nexusVersion;
-    } else {
-      if (cachedVersions && cachedVersions[nexusVersion]) {
-        version = cachedVersions[nexusVersion];
-      } else {
-        const result = await getPomResult(build);
-        if (!result || result[1].includes("$")) {
-          return null;
-        } else {
-          version = result[1];
-        }
-      }
-      newCachedVersions[nexusVersion] = version;
-    }
-    return {version: version, downloadUrl: build["downloadUrl"]};
-  }
-
-  async function getPomResult(build) {
-    const pomUrl = build["downloadUrl"].replace("-shaded.jar", ".pom");
-    const pomResponse = await fetch(pomUrl);
-    const pomData = await pomResponse.text();
-    return pomData.match(/<betonquest\.version>(.+?)<\/betonquest\.version>/);
   }
 
   function downloadWithRename(url, filename) {
