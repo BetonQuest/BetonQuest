@@ -17,8 +17,7 @@ public class MenuID extends ID {
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public MenuID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier);
-        config = super.pack.getConfig().getConfigurationSection("menus." + super.getBaseID());
-        if (config == null) {
+        if (!super.pack.getConfig().isConfigurationSection("menus." + super.getBaseID())) {
             throw new QuestException("Menu '" + getFullID() + "' is not defined");
         }
     }
