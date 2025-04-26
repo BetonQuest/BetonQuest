@@ -1,10 +1,8 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
@@ -12,10 +10,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,16 +24,6 @@ public class Menu {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
-
-    /**
-     * The RPGMenu "plugin" instance to open menus.
-     */
-    private final RPGMenu rpgMenu;
-
-    /**
-     * The profile provider instance.
-     */
-    private final ProfileProvider profileProvider;
 
     /**
      * Quest Type API.
@@ -62,53 +47,22 @@ public class Menu {
     private final Item boundItem;
 
     /**
-     * Optional which contains the command this menu is bound to or is empty if none is bound.
-     */
-    @Nullable
-    private final MenuBoundCommand boundCommand;
-
-    /**
      * Creates a new Menu.
      *
-     * @param log             the custom logger for this class
-     * @param loggerFactory   the logger factory for new class specific custom logger
-     * @param rpgMenu         the rpg menu instance to open menus
-     * @param menuID          the id of the menu
-     * @param profileProvider the profile provider instance
-     * @param questTypeAPI    the Quest Type API
-     * @param menuData        the Menu Data
-     * @param boundItem       the optional bound Item
-     * @param command         the optional bound command string
+     * @param log          the custom logger for this class
+     * @param menuID       the id of the menu
+     * @param questTypeAPI the Quest Type API
+     * @param menuData     the Menu Data
+     * @param boundItem    the optional bound Item
      * @throws QuestException if the bound command is invalid
      */
-    public Menu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final RPGMenu rpgMenu,
-                final MenuID menuID, final ProfileProvider profileProvider, final QuestTypeAPI questTypeAPI,
-                final MenuData menuData, @Nullable final Item boundItem, @Nullable final String command) throws QuestException {
+    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeAPI questTypeAPI,
+                final MenuData menuData, @Nullable final Item boundItem) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
-        this.profileProvider = profileProvider;
         this.menuID = menuID;
         this.data = menuData;
         this.boundItem = boundItem;
-        this.rpgMenu = rpgMenu;
-        if (command == null) {
-            this.boundCommand = null;
-        } else {
-            this.boundCommand = getBoundCommand(loggerFactory, command);
-            this.boundCommand.register();
-        }
-    }
-
-    private MenuBoundCommand getBoundCommand(final BetonQuestLoggerFactory loggerFactory, final String command)
-            throws QuestException {
-        String trimmed = command.trim();
-        if (!trimmed.matches("/*[0-9A-Za-z\\-]+")) {
-            throw new QuestException("command is invalid!");
-        }
-        if (trimmed.startsWith("/")) {
-            trimmed = trimmed.substring(1);
-        }
-        return new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class), trimmed);
     }
 
     /**
@@ -132,17 +86,6 @@ public class Menu {
             }
         }
         return true;
-    }
-
-    /**
-     * Unregisters listeners and commands for this menu.
-     * <p>
-     * Run this method on reload
-     */
-    public void unregister() {
-        if (boundCommand != null) {
-            boundCommand.unregister();
-        }
     }
 
     /**
@@ -268,39 +211,5 @@ public class Menu {
                            VariableList<ConditionID> openConditions,
                            VariableList<EventID> openEvents, VariableList<EventID> closeEvents) {
 
-    }
-
-    /**
-     * A command which can be used to open the gui.
-     * To perform the command a player must match all open conditions.
-     */
-    private class MenuBoundCommand extends SimpleCommand {
-
-        /**
-         * Creates a new command for opening this menu.
-         *
-         * @param log  the custom logger
-         * @param name the command name
-         */
-        public MenuBoundCommand(final BetonQuestLogger log, final String name) {
-            super(log, name, 0);
-        }
-
-        @Override
-        public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
-            if (!(sender instanceof final Player player)) {
-                sender.sendMessage("Command can only be run by players!");
-                return false;
-            }
-            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            if (mayOpen(onlineProfile)) {
-                log.debug(menuID.getPackage(), onlineProfile + " run bound command of " + menuID);
-                rpgMenu.openMenu(onlineProfile, menuID);
-                return true;
-            } else {
-                sendMessage(sender, "no_permission");
-                return false;
-            }
-        }
     }
 }

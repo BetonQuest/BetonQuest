@@ -21,16 +21,20 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.Slots;
+import org.betonquest.betonquest.menu.command.MenuBoundCommand;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Processor to create and store {@link Menu}s.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     /**
      * RPG Menu instance.
@@ -41,6 +45,11 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * Profile Provider instance.
      */
     private final ProfileProvider profileProvider;
+
+    /**
+     * Commands to open specific menus.
+     */
+    private final Set<MenuBoundCommand> boundCommands;
 
     /**
      * Create a new Processor to create and store Menu Items.
@@ -59,11 +68,12 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         super(log, "Menu", "menus", loggerFactory, variableProcessor, questTypeAPI, featureAPI);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
+        this.boundCommands = new HashSet<>();
     }
 
     @Override
     public void clear() {
-        final Iterator<Menu> iterator = values.values().iterator();
+        final Iterator<MenuBoundCommand> iterator = boundCommands.iterator();
         while (iterator.hasNext()) {
             iterator.next().unregister();
             iterator.remove();
@@ -78,9 +88,24 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Item boundItem = section.isSet("bind") ? new Item(featureAPI, new ItemID(pack, helper.getRequired("bind")),
                 new Variable<>(1)) : null;
-        final String boundCommand = section.isSet("command") ? helper.getRequired("command") : null;
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
-        return new Menu(log, loggerFactory, rpgMenu, menuID, profileProvider, questTypeAPI, menuData, boundItem, boundCommand);
+        final Menu menu = new Menu(log, menuID, questTypeAPI, menuData, boundItem);
+        if (section.isSet("command")) {
+            createBoundCommand(menu, helper.getRequired("command").trim());
+        }
+        return menu;
+    }
+
+    private void createBoundCommand(final Menu menu, final String command)
+            throws QuestException {
+        if (!command.matches("/*[0-9A-Za-z\\-]+")) {
+            throw new QuestException("command is invalid!");
+        }
+        final String shortened = command.startsWith("/") ? command.substring(1) : command;
+        final MenuBoundCommand boundCommand = new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class),
+                rpgMenu, profileProvider, menu, shortened);
+        this.boundCommands.add(boundCommand);
+        boundCommand.register();
     }
 
     @Override
