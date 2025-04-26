@@ -89,6 +89,8 @@ public class RPGMenu {
         questRegistries.event().register(menu, new MenuEventFactory(loggerFactory, data, this));
         questRegistries.variable().register(menu, new MenuVariableFactory());
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
+        pluginCommand.register();
+        pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = menuItemProcessor;
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, questTypeAPI,
                 betonQuest.getVariableProcessor(), featureAPI, this, profileProvider);
@@ -170,6 +172,7 @@ public class RPGMenu {
         menuItemProcessor.clear();
         menuProcessor.clear();
         this.pluginCommand.unregister();
+        this.pluginCommand.syncCraftBukkitCommands();
     }
 
     /**
@@ -184,6 +187,7 @@ public class RPGMenu {
             menuItemProcessor.load(pack);
             menuProcessor.load(pack);
         }
+        pluginCommand.syncCraftBukkitCommands();
         log.info("Reloaded " + menuProcessor.readableSize() + " and " + menuItemProcessor.readableSize());
     }
 

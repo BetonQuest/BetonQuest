@@ -22,12 +22,12 @@ import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.Slots;
 import org.betonquest.betonquest.menu.command.MenuBoundCommand;
+import org.betonquest.betonquest.menu.command.SimpleCommand;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -73,11 +73,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
 
     @Override
     public void clear() {
-        final Iterator<MenuBoundCommand> iterator = boundCommands.iterator();
-        while (iterator.hasNext()) {
-            iterator.next().unregister();
-            iterator.remove();
-        }
+        boundCommands.forEach(SimpleCommand::unregister);
+        boundCommands.clear();
         super.clear();
     }
 
