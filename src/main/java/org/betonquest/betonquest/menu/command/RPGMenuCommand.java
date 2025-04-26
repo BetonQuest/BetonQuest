@@ -151,9 +151,14 @@ public class RPGMenuCommand extends SimpleCommand {
                     return false;
                 }
                 //open the menu and send feedback
-                this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
-                sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", Component.text(menu.toString())));
-                return true;
+                try {
+                    this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
+                    sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", Component.text(menu.toString())));
+                    return true;
+                } catch (final QuestException e) {
+                    log.error(menu.getPackage(), "Could not open menu '" + menu + "': " + e.getMessage(), e);
+                    return false;
+                }
             default:
                 return false;
         }

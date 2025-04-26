@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /**
  * Event to open or close menus.
@@ -16,7 +15,7 @@ public class MenuEvent implements OnlineEvent {
     /**
      * The stuff to do with the profile.
      */
-    private final Consumer<OnlineProfile> doStuff;
+    private final QuestConsumer<OnlineProfile> doStuff;
 
     /**
      * Creates a new MenuQuestEvent.

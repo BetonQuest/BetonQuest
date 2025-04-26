@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu.command;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -57,8 +58,13 @@ public class MenuBoundCommand extends SimpleCommand {
         if (menu.mayOpen(onlineProfile)) {
             final MenuID menuID = menu.getMenuID();
             log.debug(menuID.getPackage(), onlineProfile + " run bound command of " + menuID);
-            rpgMenu.openMenu(onlineProfile, menuID);
-            return true;
+            try {
+                rpgMenu.openMenu(onlineProfile, menuID);
+                return true;
+            } catch (final QuestException e) {
+                log.error(menu.getMenuID().getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+                return false;
+            }
         } else {
             sendMessage(sender, "no_permission");
             return false;

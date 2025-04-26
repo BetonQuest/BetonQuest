@@ -87,13 +87,17 @@ public class MenuItemListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        final OnlineProfile onlineprofile = profileProvider.getProfile(event.getPlayer());
-        if (!toOpen.mayOpen(onlineprofile)) {
-            noPermissionSender.sendNotification(onlineprofile);
+        final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
+        if (!toOpen.mayOpen(profile)) {
+            noPermissionSender.sendNotification(profile);
             return;
         }
         final MenuID menuID = toOpen.getMenuID();
-        log.debug(menuID.getPackage(), onlineprofile + " used bound item of menu " + menuID);
-        rpgMenu.openMenu(onlineprofile, menuID);
+        log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
+        try {
+            rpgMenu.openMenu(profile, menuID);
+        } catch (final QuestException e) {
+            log.error(menuID.getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+        }
     }
 }
