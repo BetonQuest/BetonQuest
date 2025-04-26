@@ -77,30 +77,33 @@ The three basic optional settings.
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting. If you only define one line, only the name will be overwritten.
-Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overriden.
+Both [color codes](https://minecraft.wiki/w/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported and carried into the next line, if not overridden.
 The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
-``` YAML title="List Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text:
-    - "&2Reputation: &6&l%point.quest_reputation.amount%"
-    - "Make quests to gain reputation!"
-```
+=== "List"
+    ``` YAML title="List Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text:
+        - "&2Reputation: &6&l%point.quest_reputation.amount%"
+        - "Make quests to gain reputation!"
+    ```
 
-``` YAML title="String with Newlines Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text: "&2Reputation: &6&l%point.quest_reputation.amount% \nMake quests to gain reputation!"
-```
+=== "String with Newlines"
+    ``` YAML title="String with Newlines Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text: "&2Reputation: &6&l%point.quest_reputation.amount% \nMake quests to gain reputation!"
+    ```
 
-``` YAML title="Multi-line String Example"
-skeletonQuestDone:
-  item: "questDoneItem"
-  text: |-
-    &2Reputation: &6&l%point.quest_reputation.amount%
-    Make quests to gain reputation!
-```
+=== "Multi-line String"
+    ``` YAML title="Multi-line String Example"
+    skeletonQuestDone:
+      item: "questDoneItem"
+      text: |-
+        &2Reputation: &6&l%point.quest_reputation.amount%
+        Make quests to gain reputation!
+    ```
 
 Just like the text in conversations you can provide [translations](../../Features/Conversations.md#translations) for all languages:
 ``` YAML title="Translation Example"
