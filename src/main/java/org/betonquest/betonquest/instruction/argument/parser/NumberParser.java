@@ -19,16 +19,6 @@ public interface NumberParser extends Parser {
     Number parseNumber(String string, Argument<Number> argument) throws QuestException;
 
     /**
-     * Parses {@link #next()} as int value.
-     *
-     * @return the parsed int
-     * @throws QuestException when there is no part left, or it can't be parsed as int
-     */
-    default int getInt() throws QuestException {
-        return getInt(next(), 0);
-    }
-
-    /**
      * Parses the string as int.
      *
      * @param string the string to parse as int
