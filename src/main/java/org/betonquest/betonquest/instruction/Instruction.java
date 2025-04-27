@@ -14,7 +14,6 @@ import org.betonquest.betonquest.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.instruction.argument.parser.IDParser;
 import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.instruction.argument.parser.ListParser;
-import org.betonquest.betonquest.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
@@ -31,7 +30,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, IDParser, ItemParser, NumberParser {
+public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, IDParser, ItemParser {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -285,14 +284,5 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
             return new VariableList<>(List.of()); //TODO: If this line gets deleted, also delete the constructors.
         }
         return get(string, Argument.ofList(this::getItem));
-    }
-
-    @Override
-    public Number parseNumber(final String string, final Argument<Number> argument) throws QuestException {
-        try {
-            return argument.apply(string);
-        } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parsing '" + string + "' number: " + e.getMessage(), e);
-        }
     }
 }
