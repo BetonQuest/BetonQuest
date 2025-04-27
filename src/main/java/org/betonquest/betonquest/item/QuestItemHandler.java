@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -112,7 +113,7 @@ public class QuestItemHandler implements Listener {
      *
      * @param event the inventory click event, attempting moving items
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -135,7 +136,7 @@ public class QuestItemHandler implements Listener {
                 if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
                     if (isJournalSlotLocked()) {
                         final ItemStack swapped;
-                        if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                        if (event.getHotbarButton() == -1 && ClickType.SWAP_OFFHAND == event.getClick()) {
                             swapped = event.getWhoClicked().getInventory().getItemInOffHand();
                         } else {
                             swapped = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
@@ -146,7 +147,7 @@ public class QuestItemHandler implements Listener {
                         }
                     }
                 } else {
-                    if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                    if (event.getHotbarButton() == -1 && ClickType.SWAP_OFFHAND == event.getClick()) {
                         item = event.getWhoClicked().getInventory().getItemInOffHand();
                     } else {
                         item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
