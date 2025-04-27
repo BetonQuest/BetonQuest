@@ -8,21 +8,6 @@ import org.jetbrains.annotations.Nullable;
  * Interface for parsing {@link Enum}s.
  */
 public interface EnumParser extends Parser {
-
-    /**
-     * Parses {@link #getEnum(String, Class)} with {@link #next()}.
-     * <p>
-     * The enum needs to be in upper case.
-     *
-     * @param clazz the enum class to parse
-     * @param <T>   the specific enum
-     * @return the parsed enum
-     * @throws QuestException when there is no part left or no such enum
-     */
-    default <T extends Enum<T>> T getEnum(final Class<T> clazz) throws QuestException {
-        return getEnum(next(), clazz);
-    }
-
     /**
      * Parses the string as enum.
      * <p>
