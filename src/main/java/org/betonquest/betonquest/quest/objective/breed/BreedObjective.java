@@ -21,7 +21,7 @@ public class BreedObjective extends CountingObjective implements Listener {
     /**
      * The type of animal to breed.
      */
-    private final EntityType type;
+    private final Variable<EntityType> type;
 
     /**
      * Constructor for the BreedObjective.
@@ -31,7 +31,7 @@ public class BreedObjective extends CountingObjective implements Listener {
      * @param type         the type of animal to breed
      * @throws QuestException if there is an error in the instruction
      */
-    public BreedObjective(final Instruction instruction, final Variable<Number> targetAmount, final EntityType type) throws QuestException {
+    public BreedObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<EntityType> type) throws QuestException {
         super(instruction, targetAmount, "animals_to_breed");
         this.type = type;
     }
@@ -43,13 +43,15 @@ public class BreedObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
-        if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getBreeder());
-            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
+        qeHandler.handle(() -> {
+            if (event.getBreeder() instanceof Player) {
+                final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getBreeder());
+                if (event.getEntityType() == type.getValue(onlineProfile) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                    getCountingData(onlineProfile).progress();
+                    completeIfDoneOrNotify(onlineProfile);
+                }
             }
-        }
+        });
     }
 
     @Override

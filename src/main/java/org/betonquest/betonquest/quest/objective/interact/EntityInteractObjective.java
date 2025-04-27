@@ -71,7 +71,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * The mob type to interact with.
      */
-    protected EntityType mobType;
+    protected Variable<EntityType> mobType;
 
     /**
      * The variable identifier for the marked entities.
@@ -82,7 +82,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * The interaction type (right, left, any).
      */
-    protected Interaction interaction;
+    protected Variable<Interaction> interaction;
 
     /**
      * Whether to cancel the interaction.
@@ -122,8 +122,8 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final Variable<Location> loc,
                                    final Variable<Number> range, @Nullable final String customName,
                                    @Nullable final String realName, @Nullable final EquipmentSlot slot,
-                                   final EntityType mobType, @Nullable final VariableIdentifier marked,
-                                   final Interaction interaction, final boolean cancel) throws QuestException {
+                                   final Variable<EntityType> mobType, @Nullable final VariableIdentifier marked,
+                                   final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
         super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;
@@ -138,24 +138,26 @@ public class EntityInteractObjective extends CountingObjective {
 
     @Override
     public void start() {
-        switch (interaction) {
-            case RIGHT:
-                rightClickListener = new RightClickListener();
-                break;
-            case LEFT:
-                leftClickListener = new LeftClickListener();
-                break;
-            case ANY:
-                rightClickListener = new RightClickListener();
-                leftClickListener = new LeftClickListener();
-                break;
-        }
+        qeHandler.handle(() -> {
+            switch (interaction.getValue(null)) {
+                case RIGHT:
+                    rightClickListener = new RightClickListener();
+                    break;
+                case LEFT:
+                    leftClickListener = new LeftClickListener();
+                    break;
+                case ANY:
+                    rightClickListener = new RightClickListener();
+                    leftClickListener = new LeftClickListener();
+                    break;
+            }
+        });
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     private boolean onInteract(final Player player, final Entity entity) throws QuestException {
-        // check if it's the right entity type
-        if (!entity.getType().equals(mobType)) {
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+        if (!entity.getType().equals(mobType.getValue(onlineProfile))) {
             return false;
         }
         if (customName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(customName))) {
@@ -164,7 +166,6 @@ public class EntityInteractObjective extends CountingObjective {
         if (realName != null && !realName.equals(entity.getName())) {
             return false;
         }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         // check if the entity is correctly marked
         if (marked != null) {
             final String value = marked.getValue(onlineProfile);

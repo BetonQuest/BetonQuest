@@ -27,7 +27,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Click action = instruction.getEnum(Click.class);
+        final Variable<Click> action = instruction.getVariable(Argument.ENUM(Click.class));
         final Variable<BlockSelector> selector;
         if (ANY.equalsIgnoreCase(instruction.next())) {
             selector = null;

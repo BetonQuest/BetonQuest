@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -26,7 +27,7 @@ public class EquipItemObjective extends Objective implements Listener {
     /**
      * The slot type where the item needs to be equipped.
      */
-    private final PlayerArmorChangeEvent.SlotType slotType;
+    private final Variable<PlayerArmorChangeEvent.SlotType> slotType;
 
     /**
      * Constructor for the EquipItemObjective.
@@ -36,7 +37,8 @@ public class EquipItemObjective extends Objective implements Listener {
      * @param slotType    the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final Instruction instruction, final Item item, final PlayerArmorChangeEvent.SlotType slotType) throws QuestException {
+    public EquipItemObjective(final Instruction instruction, final Item item,
+                              final Variable<PlayerArmorChangeEvent.SlotType> slotType) throws QuestException {
         super(instruction);
         this.item = item;
         this.slotType = slotType;
@@ -57,7 +59,7 @@ public class EquipItemObjective extends Objective implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
-                    && event.getSlotType() == slotType
+                    && event.getSlotType() == slotType.getValue(onlineProfile)
                     && item.matches(event.getNewItem())
                     && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
