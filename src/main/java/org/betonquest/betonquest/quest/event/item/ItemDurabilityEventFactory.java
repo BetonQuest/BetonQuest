@@ -42,8 +42,8 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final EquipmentSlot slot = instruction.getEnum(EquipmentSlot.class);
-        final Point operation = instruction.getEnum(Point.class);
+        final Variable<EquipmentSlot> slot = instruction.getVariable(Argument.ENUM(EquipmentSlot.class));
+        final Variable<Point> operation = instruction.getVariable(Argument.ENUM(Point.class));
         final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");

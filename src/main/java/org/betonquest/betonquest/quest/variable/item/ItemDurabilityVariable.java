@@ -16,7 +16,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
     /**
      * The slot of the item.
      */
-    private final EquipmentSlot slot;
+    private final Variable<EquipmentSlot> slot;
 
     /**
      * If the durability should be displayed relative to maximum.
@@ -42,7 +42,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
      * @param digitsAfter the amount of digits displayed after comma
      * @param inPercent   if the output should be multiplied with 100 and with a '%' in the end
      */
-    public ItemDurabilityVariable(final EquipmentSlot slot, final boolean relative, final Variable<Number> digitsAfter, final boolean inPercent) {
+    public ItemDurabilityVariable(final Variable<EquipmentSlot> slot, final boolean relative, final Variable<Number> digitsAfter, final boolean inPercent) {
         this.slot = slot;
         this.relative = relative;
         this.digitsAfter = digitsAfter;
@@ -51,7 +51,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
 
     @Override
     public String getValue(final OnlineProfile profile) throws QuestException {
-        final ItemStack itemStack = profile.getPlayer().getEquipment().getItem(slot);
+        final ItemStack itemStack = profile.getPlayer().getEquipment().getItem(slot.getValue(profile));
         final int maxDurability = itemStack.getType().getMaxDurability();
         if (!(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return String.valueOf(maxDurability);

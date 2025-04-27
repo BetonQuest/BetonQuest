@@ -5,6 +5,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
@@ -36,7 +37,7 @@ public class HeroesClassCondition implements OnlineCondition {
     /**
      * If the {@link HeroClass} should be the primary class.
      */
-    private final HeroesClassType classType;
+    private final Variable<HeroesClassType> classType;
 
     /**
      * The class.
@@ -59,7 +60,7 @@ public class HeroesClassCondition implements OnlineCondition {
      * @param levelVar         The optional level of the class.
      */
     public HeroesClassCondition(final CharacterManager characterManager, final HeroClassManager classManager,
-                                final HeroesClassType classType, final Variable<String> heroClassVar,
+                                final Variable<HeroesClassType> classType, final Variable<String> heroClassVar,
                                 @Nullable final Variable<Number> levelVar) {
         this.characterManager = characterManager;
         this.classManager = classManager;
@@ -80,14 +81,15 @@ public class HeroesClassCondition implements OnlineCondition {
         return heroClass;
     }
 
-    private List<HeroClass> getHeroClasses(final Hero hero) {
+    private List<HeroClass> getHeroClasses(final Profile profile, final Hero hero) throws QuestException {
         final List<HeroClass> heroClasses = new ArrayList<>();
-        if (classType.equals(HeroesClassType.MASTERED)) {
+        final HeroesClassType resolvedClassType = classType.getValue(profile);
+        if (resolvedClassType.equals(HeroesClassType.MASTERED)) {
             hero.getMasteredClasses().stream()
                     .map(classManager::getClass)
                     .forEach(heroClasses::add);
         } else {
-            heroClasses.add(classType.equals(HeroesClassType.PRIMARY) ? hero.getHeroClass() : hero.getSecondaryClass());
+            heroClasses.add(resolvedClassType.equals(HeroesClassType.PRIMARY) ? hero.getHeroClass() : hero.getSecondaryClass());
         }
         return heroClasses;
     }
@@ -106,7 +108,7 @@ public class HeroesClassCondition implements OnlineCondition {
             return false;
         }
 
-        final List<HeroClass> heroClasses = getHeroClasses(hero);
+        final List<HeroClass> heroClasses = getHeroClasses(profile, hero);
 
         final int playerLevel = levelVar == null ? -1 : levelVar.getValue(profile).intValue();
         if (any) {

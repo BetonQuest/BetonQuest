@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.bukkit.GameMode;
@@ -39,7 +41,7 @@ public class GameModeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final GameMode gameMode = instruction.getEnum(GameMode.class);
+        final Variable<GameMode> gameMode = instruction.getVariable(Argument.ENUM(GameMode.class));
         final BetonQuestLogger log = loggerFactory.create(GameModeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new GameModeCondition(gameMode), log, instruction.getPackage()), data);

@@ -16,7 +16,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
     /**
      * The slot to check.
      */
-    private final EquipmentSlot slot;
+    private final Variable<EquipmentSlot> slot;
 
     /**
      * The durability needed.
@@ -35,7 +35,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
      * @param amount   the durability needed
      * @param relative if the durability should be handled as value from 0 to 1
      */
-    public ItemDurabilityCondition(final EquipmentSlot slot, final Variable<Number> amount, final boolean relative) {
+    public ItemDurabilityCondition(final Variable<EquipmentSlot> slot, final Variable<Number> amount, final boolean relative) {
         this.slot = slot;
         this.amount = amount;
         this.relative = relative;
@@ -43,7 +43,7 @@ public class ItemDurabilityCondition implements OnlineCondition {
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final ItemStack itemStack = profile.getPlayer().getEquipment().getItem(slot);
+        final ItemStack itemStack = profile.getPlayer().getEquipment().getItem(slot.getValue(profile));
         if (itemStack.getType().isAir() || !(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return false;
         }

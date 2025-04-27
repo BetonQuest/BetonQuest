@@ -38,7 +38,7 @@ public class HungerEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Hunger hunger = instruction.getEnum(Hunger.class);
+        final Variable<Hunger> hunger = instruction.getVariable(Argument.ENUM(Hunger.class));
         final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new HungerEvent(hunger, amount),

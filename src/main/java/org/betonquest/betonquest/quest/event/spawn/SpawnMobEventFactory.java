@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.types.EnumParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
@@ -18,6 +19,7 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Mob;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -57,7 +59,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final EntityType type = instruction.getEnum(EntityType.class);
+        final Variable<EntityType> type = instruction.getVariable(new EntityTypeParser());
         final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         final String nameString = instruction.getOptional("name");
         final Variable<String> name = nameString == null ? null : instruction.getVariable(Utils.format(
@@ -78,5 +80,27 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     @Nullable
     private Item getItem(final Instruction instruction, final String key) throws QuestException {
         return instruction.getItem(instruction.getOptional(key));
+    }
+
+    /**
+     * Parser for entity types.
+     */
+    private static class EntityTypeParser extends EnumParser<EntityType> {
+
+        /**
+         * Creates a new parser for enums.
+         */
+        public EntityTypeParser() {
+            super(EntityType.class);
+        }
+
+        @Override
+        public EntityType apply(final String string) throws QuestException {
+            final EntityType type = super.apply(string);
+            if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
+                throw new QuestException("The entity type must be a mob");
+            }
+            return type;
+        }
     }
 }
