@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -22,7 +23,7 @@ public class CitizensStopEvent implements NullableEvent {
     /**
      * ID of the NPC to stop.
      */
-    private final NpcID npcId;
+    private final Variable<NpcID> npcId;
 
     /**
      * Move Controller where to stop NPC movement.
@@ -36,7 +37,7 @@ public class CitizensStopEvent implements NullableEvent {
      * @param npcId                  the id of the NPC to stop
      * @param citizensMoveController the move controller where to stop NPC movement
      */
-    public CitizensStopEvent(final FeatureAPI featureAPI, final NpcID npcId, final CitizensMoveController citizensMoveController) {
+    public CitizensStopEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.citizensMoveController = citizensMoveController;
@@ -44,7 +45,7 @@ public class CitizensStopEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId, profile);
+        final Npc<?> bqNpc = featureAPI.getNpc(npcId.getValue(profile), profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use non Citizens NPC!");
         }

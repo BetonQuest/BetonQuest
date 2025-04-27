@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.plugin.PluginManager;
@@ -53,8 +55,8 @@ public class CompassEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final CompassTargetAction action = instruction.getEnum(CompassTargetAction.class);
-        final CompassID compassId = instruction.getID(CompassID::new);
+        final Variable<CompassTargetAction> action = instruction.getVariable(Argument.ENUM(CompassTargetAction.class));
+        final Variable<CompassID> compassId = instruction.get(CompassID::new);
         return new PrimaryServerThreadEvent(
                 new CompassEvent(featureAPI, dataStorage, pluginManager, action, compassId),
                 data);

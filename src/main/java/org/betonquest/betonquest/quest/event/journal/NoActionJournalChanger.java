@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 
 /**
@@ -13,7 +14,7 @@ public class NoActionJournalChanger implements JournalChanger {
     }
 
     @Override
-    public void changeJournal(final Journal journal) {
+    public void changeJournal(final Journal journal, final Profile profile) {
         // null object pattern
     }
 }

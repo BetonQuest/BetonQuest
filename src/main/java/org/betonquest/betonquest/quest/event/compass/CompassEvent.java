@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
 import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagChanger;
@@ -39,12 +40,12 @@ public class CompassEvent implements PlayerEvent {
     /**
      * The action to perform on the compass.
      */
-    private final CompassTargetAction action;
+    private final Variable<CompassTargetAction> action;
 
     /**
      * The compass point to set.
      */
-    private final CompassID compassId;
+    private final Variable<CompassID> compassId;
 
     /**
      * Create the compass event.
@@ -56,7 +57,7 @@ public class CompassEvent implements PlayerEvent {
      * @param compassId     the compass point
      */
     public CompassEvent(final FeatureAPI featureAPI, final PlayerDataStorage storage, final PluginManager pluginManager,
-                        final CompassTargetAction action, final CompassID compassId) {
+                        final Variable<CompassTargetAction> action, final Variable<CompassID> compassId) {
         this.featureAPI = featureAPI;
         this.dataStorage = storage;
         this.pluginManager = pluginManager;
@@ -66,7 +67,8 @@ public class CompassEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        switch (action) {
+        final CompassID compassId = this.compassId.getValue(profile);
+        switch (action.getValue(profile)) {
             case ADD -> changeTag(new AddTagChanger(List.of(featureAPI.getCompassTag(compassId))), profile);
             case DEL -> changeTag(new DeleteTagChanger(List.of(featureAPI.getCompassTag(compassId))), profile);
             case SET -> {

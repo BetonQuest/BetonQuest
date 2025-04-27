@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create if-else events from {@link Instruction}s.
@@ -41,12 +42,12 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
-        final ConditionID condition = instruction.getID(ConditionID::new);
-        final EventID event = instruction.getID(EventID::new);
+        final Variable<ConditionID> condition = instruction.get(ConditionID::new);
+        final Variable<EventID> event = instruction.get(EventID::new);
         if (!"else".equalsIgnoreCase(instruction.next())) {
             throw new QuestException("Missing 'else' keyword");
         }
-        final EventID elseEvent = instruction.getID(EventID::new);
+        final Variable<EventID> elseEvent = instruction.get(EventID::new);
         return new NullableEventAdapter(new IfElseEvent(condition, event, elseEvent, questTypeAPI));
     }
 }

@@ -5,11 +5,12 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
     /**
      * Tests if the id matches the NPC.
      */
-    private final QuestBiPredicate<NPC, Profile> predicate;
+    private final Variable<NpcID> npcID;
 
     /**
      * Create a new Citizens NPC kill objective.
@@ -36,15 +37,14 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @param instruction  the user-provided instruction
      * @param targetAmount the amount of NPCs to kill
      * @param log          the logger for this objective
-     * @param predicate    the predicate to test if the NPC is the right one
+     * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
     public NPCKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final BetonQuestLogger log, final QuestBiPredicate<NPC, Profile> predicate)
-            throws QuestException {
+                            final BetonQuestLogger log, final Variable<NpcID> npcID) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.log = log;
-        this.predicate = predicate;
+        this.npcID = npcID;
     }
 
     /**
@@ -54,14 +54,29 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onNpcKill(final MobKilledEvent event) {
-        final Profile profile = event.getProfile();
         final NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getEntity());
+        if (npc == null) {
+            return;
+        }
+        final Profile profile = event.getProfile();
         try {
-            if (npc == null || !predicate.test(npc, profile)) {
-                return;
+            final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
+            final String argument = npcInstruction.getPart(1);
+            if (npcInstruction.hasArgument("byName")) {
+                final String resolvedName = npcInstruction.getVariable(argument, Argument.STRING).getValue(profile);
+                if (!resolvedName.equals(npc.getName())) {
+                    return;
+                }
+            } else {
+                final int resolvedId = npcInstruction.getVariable(argument, Argument.NUMBER_NOT_LESS_THAN_ONE).getValue(profile).intValue();
+                if (resolvedId != npc.getId()) {
+                    return;
+                }
             }
         } catch (final QuestException e) {
-            log.warn("Error while checking if NPC is the right one: " + e.getMessage(), e);
+            log.warn(instruction.getPackage(), "Could not resolve npc id in '" + instruction.getID() + "' in NpcKill Objective: "
+                    + e.getMessage(), e);
+            return;
         }
         if (containsPlayer(profile) && checkConditions(profile)) {
             getCountingData(profile).progress();

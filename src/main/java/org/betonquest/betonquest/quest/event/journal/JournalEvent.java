@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -49,10 +50,10 @@ public class JournalEvent implements PlayerEvent {
     }
 
     @Override
-    public void execute(final Profile profile) {
+    public void execute(final Profile profile) throws QuestException {
         final PlayerData playerData = dataStorage.getOffline(profile);
         final Journal journal = playerData.getJournal(pluginMessage);
-        journalChanger.changeJournal(journal);
+        journalChanger.changeJournal(journal, profile);
         journal.update();
         notificationSender.sendNotification(profile);
     }

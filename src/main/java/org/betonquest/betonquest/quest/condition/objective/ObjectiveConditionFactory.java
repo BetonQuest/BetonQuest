@@ -28,6 +28,6 @@ public class ObjectiveConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return new ObjectiveCondition(questTypeAPI, instruction.getID(ObjectiveID::new));
+        return new ObjectiveCondition(questTypeAPI, instruction.get(ObjectiveID::new));
     }
 }

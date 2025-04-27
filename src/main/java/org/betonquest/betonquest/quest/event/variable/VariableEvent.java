@@ -22,7 +22,7 @@ public class VariableEvent implements PlayerEvent {
     /**
      * The variable objective id to change the variable in.
      */
-    private final ObjectiveID objectiveID;
+    private final Variable<ObjectiveID> objectiveID;
 
     /**
      * The key of the variable to store.
@@ -42,7 +42,7 @@ public class VariableEvent implements PlayerEvent {
      * @param key          the key of the variable to store
      * @param value        the value of the variable to store
      */
-    public VariableEvent(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final Variable<String> key, final Variable<String> value) {
+    public VariableEvent(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> key, final Variable<String> value) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.key = key;
@@ -51,15 +51,16 @@ public class VariableEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final Objective obj = questTypeAPI.getObjective(objectiveID);
+        final ObjectiveID resolved = this.objectiveID.getValue(profile);
+        final Objective obj = questTypeAPI.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
-            throw new QuestException(objectiveID.getFullID() + " is not a variable objective");
+            throw new QuestException(resolved.getFullID() + " is not a variable objective");
         }
         final String keyReplaced = key.getValue(profile);
         final String valueReplaced = value.getValue(profile);
         if (!objective.store(profile, keyReplaced, valueReplaced)) {
             throw new QuestException("Player " + profile.getProfileName() + " does not have '"
-                    + objectiveID + "' objective, cannot store a variable.");
+                    + resolved + "' objective, cannot store a variable.");
         }
     }
 }

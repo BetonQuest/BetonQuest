@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Parses QuestItems and the Item wrapper.
  */
-public interface ItemParser extends IDParser {
+public interface ItemParser extends Parser {
     /**
      * Parses {@link #getItem(String)} with {@link #next()}.
      *

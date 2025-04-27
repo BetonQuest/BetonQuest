@@ -23,7 +23,7 @@ public class NpcLocationCondition implements NullableCondition {
     /**
      * Id of the npc.
      */
-    private final NpcID npcId;
+    private final Variable<NpcID> npcId;
 
     /**
      * The location where the NPC has to be around.
@@ -43,7 +43,7 @@ public class NpcLocationCondition implements NullableCondition {
      * @param location   the location where the npc has to be around
      * @param radius     the maximal distance between the npc and the radius location
      */
-    public NpcLocationCondition(final FeatureAPI featureAPI, final NpcID npcId,
+    public NpcLocationCondition(final FeatureAPI featureAPI, final Variable<NpcID> npcId,
                                 final Variable<Location> location, final Variable<Number> radius) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
@@ -53,7 +53,7 @@ public class NpcLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcId, profile);
+        final Npc<?> npc = featureAPI.getNpc(npcId.getValue(profile), profile);
         final Location location = this.location.getValue(profile);
         final Location npcLocation = npc.getLocation();
         if (!location.getWorld().equals(npcLocation.getWorld())) {

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,7 @@ class NoActionJournalChangerTest {
     @Test
     void testChangeJournalDoesNothing(@Mock final Journal journal) {
         final NoActionJournalChanger changer = new NoActionJournalChanger();
-        changer.changeJournal(journal);
+        changer.changeJournal(journal, mock(Profile.class));
         verifyNoInteractions(journal);
     }
 }

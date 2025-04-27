@@ -22,7 +22,7 @@ public class NpcDistanceCondition implements OnlineCondition {
     /**
      * Id of the npc.
      */
-    private final NpcID npcID;
+    private final Variable<NpcID> npcID;
 
     /**
      * The maximal distance between player and Npc.
@@ -36,7 +36,7 @@ public class NpcDistanceCondition implements OnlineCondition {
      * @param npcID      the id of the npc
      * @param distance   the maximal distance between player and npc
      */
-    public NpcDistanceCondition(final FeatureAPI featureAPI, final NpcID npcID, final Variable<Number> distance) {
+    public NpcDistanceCondition(final FeatureAPI featureAPI, final Variable<NpcID> npcID, final Variable<Number> distance) {
         this.featureAPI = featureAPI;
         this.npcID = npcID;
         this.distance = distance;
@@ -44,7 +44,7 @@ public class NpcDistanceCondition implements OnlineCondition {
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Location npcLocation = featureAPI.getNpc(npcID, profile).getLocation();
+        final Location npcLocation = featureAPI.getNpc(npcID.getValue(profile), profile).getLocation();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;

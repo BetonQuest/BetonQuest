@@ -35,7 +35,7 @@ public class StageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
+        final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
         final String action = instruction.next();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);
@@ -45,19 +45,19 @@ public class StageEventFactory implements PlayerEventFactory {
         };
     }
 
-    private PlayerEvent createSetEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createSetEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
         final Variable<String> variableString = instruction.getVariable(Argument.STRING);
-        return new StageEvent(profile -> getStageObjective(objectiveID).setStage(profile, variableString.getValue(profile)));
+        return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, variableString.getValue(profile)));
     }
 
-    private PlayerEvent createIncreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createIncreaseEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
         final Variable<Number> amount = getVariableNumber(instruction);
-        return new StageEvent(profile -> getStageObjective(objectiveID).increaseStage(profile, getAmount(profile, amount)));
+        return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).increaseStage(profile, getAmount(profile, amount)));
     }
 
-    private PlayerEvent createDecreaseEvent(final Instruction instruction, final ObjectiveID objectiveID) throws QuestException {
+    private PlayerEvent createDecreaseEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
         final Variable<Number> amount = getVariableNumber(instruction);
-        return new StageEvent(profile -> getStageObjective(objectiveID).decreaseStage(profile, getAmount(profile, amount)));
+        return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).decreaseStage(profile, getAmount(profile, amount)));
     }
 
     @Nullable

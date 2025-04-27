@@ -7,13 +7,13 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
 import org.betonquest.betonquest.instruction.argument.parser.EnumParser;
-import org.betonquest.betonquest.instruction.argument.parser.IDParser;
 import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.instruction.argument.parser.ListParser;
+import org.betonquest.betonquest.instruction.argument.parser.PackageParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
@@ -30,7 +30,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, IDParser, ItemParser {
+public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, PackageParser, ItemParser {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -228,15 +228,11 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
     @Override
     @Contract("!null, _ -> !null")
     @Nullable
-    public <T extends ID> T getID(@Nullable final String string, final IDArgument<T> argument) throws QuestException {
+    public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument) throws QuestException {
         if (string == null) {
             return null;
         }
-        try {
-            return argument.convert(pack, string);
-        } catch (final QuestException e) {
-            throw new QuestException("Error while loading '" + string + "' id: " + e.getMessage(), e);
-        }
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value));
     }
 
     @Override
@@ -265,10 +261,10 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
             final Variable<Number> number;
             if (string.contains(":")) {
                 final String[] parts = string.split(":", 2);
-                item = getID(parts[0], ItemID::new);
+                item = new ItemID(pack, parts[0]);
                 number = getVariable(parts[1], Argument.NUMBER);
             } else {
-                item = getID(string, ItemID::new);
+                item = new ItemID(pack, string);
                 number = new Variable<>(1);
             }
             return new Item(BetonQuest.getInstance().getFeatureAPI(), item, number);

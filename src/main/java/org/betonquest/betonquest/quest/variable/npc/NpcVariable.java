@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class NpcVariable implements NullableVariable {
     /**
      * Id of the npc.
      */
-    private final NpcID npcID;
+    private final Variable<NpcID> npcID;
 
     /**
      * The type of information to retrieve for the NPC: name, full_name, or location.
@@ -52,7 +53,7 @@ public class NpcVariable implements NullableVariable {
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NpcVariable(final FeatureAPI featureAPI, final NpcID npcID, final Argument key,
+    public NpcVariable(final FeatureAPI featureAPI, final Variable<NpcID> npcID, final Argument key,
                        @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
         this.featureAPI = featureAPI;
         this.npcID = npcID;
@@ -66,7 +67,7 @@ public class NpcVariable implements NullableVariable {
 
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcID, profile);
+        final Npc<?> npc = featureAPI.getNpc(npcID.getValue(profile), profile);
         return key.resolve(npc, formationMode, decimalPlaces);
     }
 }

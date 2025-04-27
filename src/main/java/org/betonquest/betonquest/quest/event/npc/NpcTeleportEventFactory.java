@@ -53,7 +53,7 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
-        final NpcID npcId = instruction.getID(NpcID::new);
+        final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         final boolean spawn = instruction.hasArgument("spawn");
         return new NullableEventAdapter(new NpcTeleportEvent(featureAPI, npcId, location, spawn));

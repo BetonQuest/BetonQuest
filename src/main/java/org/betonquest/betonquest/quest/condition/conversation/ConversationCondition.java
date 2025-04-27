@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the conversation with player has at least one possible option.
@@ -19,7 +20,7 @@ public class ConversationCondition implements PlayerCondition {
     /**
      * The conversation to check.
      */
-    private final ConversationID conversationID;
+    private final Variable<ConversationID> conversationID;
 
     /**
      * Creates a new ConversationCondition.
@@ -27,13 +28,13 @@ public class ConversationCondition implements PlayerCondition {
      * @param featureAPI     the feature API
      * @param conversationID the conversation to check
      */
-    public ConversationCondition(final FeatureAPI featureAPI, final ConversationID conversationID) {
+    public ConversationCondition(final FeatureAPI featureAPI, final Variable<ConversationID> conversationID) {
         this.featureAPI = featureAPI;
         this.conversationID = conversationID;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return featureAPI.getConversation(conversationID).isReady(profile);
+        return featureAPI.getConversation(conversationID.getValue(profile)).isReady(profile);
     }
 }

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 
@@ -36,7 +37,7 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final MenuID menuID = instruction.getID(MenuID::new);
+        final Variable<MenuID> menuID = instruction.get(MenuID::new);
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);
         return new MenuObjective(instruction, log, rpgMenu, menuID);
     }

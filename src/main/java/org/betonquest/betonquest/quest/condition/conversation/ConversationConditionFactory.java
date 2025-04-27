@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * A factory for creating ConversationCondition objects.
@@ -28,7 +29,7 @@ public class ConversationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final ConversationID conversationID = instruction.getID(ConversationID::new);
+        final Variable<ConversationID> conversationID = instruction.get(ConversationID::new);
         return new ConversationCondition(featureAPI, conversationID);
     }
 }

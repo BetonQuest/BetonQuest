@@ -7,8 +7,10 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
@@ -57,11 +59,7 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     }
 
     private NullableEventAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
-        final NpcID npcId = instruction.getID(NpcID::new);
-        final Instruction npcInstruction = npcId.getInstruction();
-        if (!"citizens".equals(npcInstruction.getPart(0))) {
-            throw new QuestException("Cannot use non-Citizens NPC ID!");
-        }
+        final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
         return new NullableEventAdapter(new CitizensStopEvent(featureAPI, npcId, citizensMoveController));
     }
 }

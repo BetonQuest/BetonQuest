@@ -1,8 +1,11 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,13 +26,13 @@ import static org.mockito.Mockito.*;
 class AddEntryJournalChangerTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testChangeJournalAddsPointer(@Mock final Journal journal) {
+    void testChangeJournalAddsPointer(@Mock final Journal journal) throws QuestException {
         final Instant now = Instant.now();
         final JournalEntryID entryID = mock(JournalEntryID.class);
-        final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), entryID);
+        final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), new Variable<>(entryID));
         final ArgumentCaptor<Pointer> captor = ArgumentCaptor.forClass(Pointer.class);
 
-        changer.changeJournal(journal);
+        changer.changeJournal(journal, mock(Profile.class));
 
         verify(journal).addPointer(captor.capture());
         verifyNoMoreInteractions(journal);
