@@ -66,7 +66,7 @@ public class CitizensIntegrator implements Integrator {
                 plugin.getQuestTypeAPI(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(loggerFactory));
+        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory());
 
         final BukkitScheduler scheduler = server.getScheduler();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);

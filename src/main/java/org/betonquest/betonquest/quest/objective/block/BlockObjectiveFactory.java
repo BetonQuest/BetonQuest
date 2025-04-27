@@ -54,7 +54,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
                 instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_break");
         final IngameNotificationSender blockPlaceSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFullID(), NotificationLevel.INFO, "blocks_to_place");
-        return new BlockObjective(instruction, targetAmount, log, selector, exactMatch, noSafety, location, region, ignoreCancel,
+        return new BlockObjective(instruction, targetAmount, selector, exactMatch, noSafety, location, region, ignoreCancel,
                 blockBreakSender, blockPlaceSender);
     }
 }

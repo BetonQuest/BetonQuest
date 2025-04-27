@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.objective.fish;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -17,17 +15,9 @@ import org.bukkit.Location;
 public class FishObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Logger factory to create a logger for the objectives.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Creates a new instance of the FishObjectiveFactory.
-     *
-     * @param loggerFactory the logger factory to create a logger for the objectives
      */
-    public FishObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
-        this.loggerFactory = loggerFactory;
+    public FishObjectiveFactory() {
     }
 
     @Override
@@ -40,7 +30,6 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final boolean hookIsNotNull = loc != null && range != null;
         final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.getVariable(loc, Argument.LOCATION) : null;
         final Variable<Number> rangeVar = hookIsNotNull ? instruction.getVariable(range, Argument.NUMBER) : null;
-        final BetonQuestLogger log = loggerFactory.create(FishObjective.class);
-        return new FishObjective(instruction, targetAmount, log, item, hookTargetLocation, rangeVar);
+        return new FishObjective(instruction, targetAmount, item, hookTargetLocation, rangeVar);
     }
 }

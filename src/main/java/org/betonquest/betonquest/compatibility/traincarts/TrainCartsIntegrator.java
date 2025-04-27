@@ -30,8 +30,8 @@ public class TrainCartsIntegrator implements Integrator {
     public void hook() throws HookException {
         final ObjectiveTypeRegistry objectiveTypes = plugin.getQuestRegistries().objective();
         objectiveTypes.register("traincartslocation", new TrainCartsLocationObjectiveFactory());
-        objectiveTypes.register("traincartsride", new TrainCartsRideObjectiveFactory(plugin.getLoggerFactory()));
-        objectiveTypes.register("traincartsexit", new TrainCartsExitObjectiveFactory(plugin.getLoggerFactory()));
+        objectiveTypes.register("traincartsride", new TrainCartsRideObjectiveFactory());
+        objectiveTypes.register("traincartsexit", new TrainCartsExitObjectiveFactory());
 
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
         plugin.getQuestRegistries().condition().register("traincartsride",

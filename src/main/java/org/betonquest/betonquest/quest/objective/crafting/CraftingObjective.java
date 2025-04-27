@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.crafting;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -23,10 +22,6 @@ import org.bukkit.inventory.PlayerInventory;
  * Player has to craft specified amount of items.
  */
 public class CraftingObjective extends CountingObjective implements Listener {
-    /**
-     * Custom logger for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The item to be crafted.
@@ -38,18 +33,16 @@ public class CraftingObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the instruction that created this objective
      * @param targetAmount the target amount of items to be crafted
-     * @param log          the custom logger instance for this objective
      * @param item         the item to be crafted
      * @throws QuestException if there is an error in the instruction
      */
-    public CraftingObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
+    public CraftingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              final Item item) throws QuestException {
         super(instruction, targetAmount, "items_to_craft");
-        this.log = log;
         this.item = item;
     }
 
-    private static int calculateCraftAmount(final CraftItemEvent event) {
+    private int calculateCraftAmount(final CraftItemEvent event) {
         final ItemStack result = event.getInventory().getResult();
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
         final ItemStack[] ingredients = event.getInventory().getMatrix();
@@ -74,15 +67,12 @@ public class CraftingObjective extends CountingObjective implements Listener {
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            try {
-
+            qeHandler.handle(() -> {
                 if (containsPlayer(onlineProfile) && item.matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
                     getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                     completeIfDoneOrNotify(onlineProfile);
                 }
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Exception while processing Crafting Objective: " + e.getMessage(), e);
-            }
+            });
         }
     }
 

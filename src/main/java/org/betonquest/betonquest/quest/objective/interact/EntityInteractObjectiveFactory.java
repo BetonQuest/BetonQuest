@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -24,17 +22,9 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     private static final String ANY = "any";
 
     /**
-     * Logger factory to create a logger for the objectives.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Creates a new instance of the EntityInteractObjectiveFactory.
-     *
-     * @param loggerFactory the logger factory to create a logger for the objectives
      */
-    public EntityInteractObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
-        this.loggerFactory = loggerFactory;
+    public EntityInteractObjectiveFactory() {
     }
 
     @Override
@@ -50,8 +40,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final String stringRange = instruction.getOptional("range");
         final Variable<Number> range = stringRange == null ? new Variable<>(1) : instruction.getVariable(stringRange, Argument.NUMBER);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
-        final BetonQuestLogger log = loggerFactory.create(EntityInteractObjective.class);
-        return new EntityInteractObjective(instruction, targetAmount, log, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
+        return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }
 
     @Nullable

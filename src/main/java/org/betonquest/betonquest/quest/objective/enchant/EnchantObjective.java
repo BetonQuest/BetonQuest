@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.enchant;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -25,10 +24,6 @@ import java.util.Map;
  * An objective that requires the player to enchant a {@link QuestItem}.
  */
 public class EnchantObjective extends CountingObjective implements Listener {
-    /**
-     * Custom logger for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The item to enchant.
@@ -49,17 +44,15 @@ public class EnchantObjective extends CountingObjective implements Listener {
      * Constructor for the EnchantObjective.
      *
      * @param instruction         the instruction that created this objective
-     * @param log                 the logger for this objective
      * @param targetAmount        the target amount of items to enchant
      * @param item                the item to enchant
      * @param desiredEnchantments the desired enchantments
      * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
      * @throws QuestException if there is an error in the instruction
      */
-    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final Item item,
+    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Item item,
                             final VariableList<EnchantmentData> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, targetAmount, "items_to_enchant");
-        this.log = log;
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;
         this.requireOne = requireOne;
@@ -76,7 +69,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             if (!item.matches(event.getItem())) {
                 return;
             }
@@ -84,9 +77,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Exception while processing Enchant Objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     private boolean matchesDesiredEnchants(final OnlineProfile onlineProfile, final Map<Enchantment, Integer> addedEnchants) throws QuestException {

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.block;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -25,13 +24,9 @@ import org.jetbrains.annotations.Nullable;
  * (breaking when should be placing) will reverse the progress.
  */
 public class BlockObjective extends CountingObjective implements Listener {
-    /**
-     * Logger for exception handling.
-     */
-    private final BetonQuestLogger log;
 
     /**
-     * Blockselector parameter.
+     * Block Selector parameter.
      */
     private final Variable<BlockSelector> selector;
 
@@ -77,7 +72,6 @@ public class BlockObjective extends CountingObjective implements Listener {
      *
      * @param instruction      the instruction that created this objective
      * @param targetAmount     the target amount of blocks to break/place
-     * @param log              the logger for this objective
      * @param selector         the block selector to match blocks
      * @param exactMatch       the exact match flag
      * @param noSafety         the no safety flag
@@ -89,13 +83,12 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
+    public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount,
                           final Variable<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
                           @Nullable final Variable<Location> location, @Nullable final Variable<Location> region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,
                           final IngameNotificationSender blockPlaceSender) throws QuestException {
         super(instruction, targetAmount, null);
-        this.log = log;
         this.selector = selector;
         this.exactMatch = exactMatch;
         this.noSafety = noSafety;
@@ -112,26 +105,21 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param event the event that triggered this method
      */
     @EventHandler(priority = EventPriority.HIGHEST)
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.isCancelled() && !ignoreCancel) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final BlockSelector blockSelector = selector.getValue(onlineProfile);
-            if (containsPlayer(onlineProfile) && blockSelector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
-                if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
-                    return;
-                }
-                if (getCountingData(onlineProfile).getDirectionFactor() < 0 && noSafety) {
-                    return;
-                }
+            if (containsPlayer(onlineProfile)
+                    && blockSelector.match(event.getBlock(), exactMatch)
+                    && checkConditions(onlineProfile)
+                    && checkLocation(event.getBlock().getLocation(), onlineProfile)
+                    && (getCountingData(onlineProfile).getDirectionFactor() >= 0 || !noSafety)) {
                 handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
             }
-        } catch (final QuestException e) {
-            log.warn("Could not get block selector for player " + event.getPlayer().getName() + ": " + e.getMessage(), e);
-        }
+        });
     }
 
     /**
@@ -140,26 +128,21 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param event the event that triggered this method
      */
     @EventHandler(priority = EventPriority.HIGHEST)
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void onBlockBreak(final BlockBreakEvent event) {
         if (event.isCancelled() && !ignoreCancel) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final BlockSelector blockSelector = selector.getValue(onlineProfile);
-            if (containsPlayer(onlineProfile) && blockSelector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
-                if (!checkLocation(event.getBlock().getLocation(), onlineProfile)) {
-                    return;
-                }
-                if (getCountingData(onlineProfile).getDirectionFactor() > 0 && noSafety) {
-                    return;
-                }
+            if (containsPlayer(onlineProfile)
+                    && blockSelector.match(event.getBlock(), exactMatch)
+                    && checkConditions(onlineProfile)
+                    && checkLocation(event.getBlock().getLocation(), onlineProfile)
+                    && (getCountingData(onlineProfile).getDirectionFactor() <= 0 || !noSafety)) {
                 handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
             }
-        } catch (final QuestException e) {
-            log.warn("Could not get block selector for player " + event.getPlayer().getName() + ": " + e.getMessage(), e);
-        }
+        });
     }
 
     private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
@@ -177,17 +160,12 @@ public class BlockObjective extends CountingObjective implements Listener {
         HandlerList.unregisterAll(this);
     }
 
-    private boolean checkLocation(final Location loc, final Profile profile) {
-        try {
-            if (location != null) {
-                if (region != null) {
-                    return isInRange(loc, profile, location, region);
-                }
-                return loc.getBlock().getLocation().equals(location.getValue(profile));
+    private boolean checkLocation(final Location loc, final Profile profile) throws QuestException {
+        if (location != null) {
+            if (region != null) {
+                return isInRange(loc, profile, location, region);
             }
-        } catch (final QuestException e) {
-            log.error(instruction.getPackage(), e.getMessage());
-            return false;
+            return loc.getBlock().getLocation().equals(location.getValue(profile));
         }
         return true;
     }

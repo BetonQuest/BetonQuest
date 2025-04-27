@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.fish;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -25,10 +24,6 @@ import org.jetbrains.annotations.Nullable;
  * Requires the player to catch the fish.
  */
 public class FishObjective extends CountingObjective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Item to catch.
@@ -52,17 +47,15 @@ public class FishObjective extends CountingObjective implements Listener {
      *
      * @param instruction        the instruction that created this objective
      * @param targetAmount       the target amount of fish to catch
-     * @param log                the logger for this objective
      * @param item               the item to catch
      * @param hookTargetLocation the location where the fish should be caught
      * @param rangeVar           the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
-    public FishObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
+    public FishObjective(final Instruction instruction, final Variable<Number> targetAmount,
                          final Item item, @Nullable final Variable<Location> hookTargetLocation,
                          @Nullable final Variable<Number> rangeVar) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");
-        this.log = log;
         this.item = item;
         this.hookTargetLocation = hookTargetLocation;
         this.rangeVar = rangeVar;
@@ -82,7 +75,7 @@ public class FishObjective extends CountingObjective implements Listener {
         if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             if (isInvalidLocation(event, onlineProfile)) {
                 return;
             }
@@ -91,9 +84,7 @@ public class FishObjective extends CountingObjective implements Listener {
                 getCountingData(onlineProfile).progress(item.getAmount());
                 completeIfDoneOrNotify(onlineProfile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Exception while processing Fish Objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) throws QuestException {
@@ -101,13 +92,7 @@ public class FishObjective extends CountingObjective implements Listener {
             return false;
         }
 
-        final Location targetLocation;
-        try {
-            targetLocation = hookTargetLocation.getValue(profile);
-        } catch (final QuestException e) {
-            log.warn(e.getMessage(), e);
-            return true;
-        }
+        final Location targetLocation = hookTargetLocation.getValue(profile);
         final double range = rangeVar.getValue(profile).doubleValue();
         final Location hookLocation = event.getHook().getLocation();
         return !hookLocation.getWorld().equals(targetLocation.getWorld()) || targetLocation.distanceSquared(hookLocation) > range * range;
