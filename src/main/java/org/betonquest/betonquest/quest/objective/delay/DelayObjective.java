@@ -194,6 +194,8 @@ public class DelayObjective extends Objective {
     }
 
     /**
+     * Get the delay data for a profile.
+     *
      * @throws NullPointerException when {@link #containsPlayer(Profile)} is false
      */
     private DelayData getDelayData(final Profile profile) {

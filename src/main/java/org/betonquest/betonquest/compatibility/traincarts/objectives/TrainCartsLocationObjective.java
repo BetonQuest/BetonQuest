@@ -37,7 +37,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
      * @throws QuestException if there is an error while parsing the instruction
      */
     public TrainCartsLocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
-        super(BetonQuest.getInstance().getLoggerFactory().create(TrainCartsLocationObjective.class), instruction);
+        super(instruction);
         this.loc = loc;
         this.range = range;
     }

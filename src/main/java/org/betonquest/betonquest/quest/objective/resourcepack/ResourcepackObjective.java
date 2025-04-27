@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.resourcepack;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -14,33 +13,25 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
-import java.util.Locale;
-
 /**
  * Represents an objective that is completed when the status of the received resource pack matches the target status.
  */
 public class ResourcepackObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The target status for the received resource pack.
      */
-    private final Variable<String> targetStatus;
+    private final Variable<PlayerResourcePackStatusEvent.Status> targetStatus;
 
     /**
      * Constructs a new ResourcepackObjective instance.
      *
      * @param instruction  The instruction object.
-     * @param log          the logger for this objective
      * @param targetStatus The target status for the received resource pack.
      * @throws QuestException if an error occurs while parsing the instruction.
      */
-    public ResourcepackObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<String> targetStatus) throws QuestException {
+    public ResourcepackObjective(final Instruction instruction, final Variable<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
         super(instruction);
-        this.log = log;
         this.targetStatus = targetStatus;
     }
 
@@ -74,14 +65,12 @@ public class ResourcepackObjective extends Objective implements Listener {
      */
     public void processObjective(final OnlineProfile onlineProfile, final PlayerResourcePackStatusEvent.Status status) {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            try {
-                final PlayerResourcePackStatusEvent.Status expectedStatus = PlayerResourcePackStatusEvent.Status.valueOf(targetStatus.getValue(onlineProfile).toUpperCase(Locale.ROOT));
+            qeHandler.handle(() -> {
+                final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
                 if (expectedStatus.equals(status)) {
                     completeObjective(onlineProfile);
                 }
-            } catch (final QuestException e) {
-                log.warn("Failed to resolve resource pack objective: " + e.getMessage(), e);
-            }
+            });
         }
     }
 

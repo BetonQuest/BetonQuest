@@ -38,7 +38,7 @@ public class LocationObjective extends AbstractLocationObjective {
      * @throws QuestException if there is an error while parsing the instruction
      */
     public LocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
-        super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
+        super(instruction);
         this.loc = loc;
         this.range = range;
     }
@@ -69,16 +69,9 @@ public class LocationObjective extends AbstractLocationObjective {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
+    public String getProperty(final String name, final Profile profile) throws QuestException {
         if (LOCATION_PROPERTY.equalsIgnoreCase(name)) {
-            final Location location;
-            try {
-                location = loc.getValue(profile);
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage(), e);
-                return "";
-            }
+            final Location location = loc.getValue(profile);
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
         }
         return "";

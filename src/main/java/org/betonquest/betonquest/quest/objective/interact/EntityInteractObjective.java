@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -35,14 +34,10 @@ import java.util.stream.Collectors;
  * Player has to interact with specified amount of specified mobs. It can also
  * require the player to interact with specifically named mobs and notify them
  * about the required amount. It can be specified if the player has to
- * rightclick or damage the entity. Each entity can only be interacted once.
+ * right-click or damage the entity. Each entity can only be interacted once.
  * The interaction can optionally be canceled by adding the argument cancel.
  */
 public class EntityInteractObjective extends CountingObjective {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The target location of the entity to interact with.
@@ -111,7 +106,6 @@ public class EntityInteractObjective extends CountingObjective {
      *
      * @param instruction  the instruction that created this objective
      * @param targetAmount the target amount of entities to interact with
-     * @param log          the logger for this objective
      * @param loc          the location of the entities
      * @param range        the range of the entities
      * @param customName   the custom name of the entities
@@ -125,13 +119,12 @@ public class EntityInteractObjective extends CountingObjective {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                                   final BetonQuestLogger log, @Nullable final Variable<Location> loc,
+                                   @Nullable final Variable<Location> loc,
                                    final Variable<Number> range, @Nullable final String customName,
                                    @Nullable final String realName, @Nullable final EquipmentSlot slot,
                                    final EntityType mobType, @Nullable final VariableIdentifier marked,
                                    final Interaction interaction, final boolean cancel) throws QuestException {
         super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
-        this.log = log;
         this.loc = loc;
         this.range = range;
         this.customName = customName;
@@ -160,7 +153,7 @@ public class EntityInteractObjective extends CountingObjective {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    private boolean onInteract(final Player player, final Entity entity) {
+    private boolean onInteract(final Player player, final Entity entity) throws QuestException {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {
             return false;
@@ -174,15 +167,11 @@ public class EntityInteractObjective extends CountingObjective {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         // check if the entity is correctly marked
         if (marked != null) {
-            try {
-                final String value = marked.getValue(onlineProfile);
-                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
-                    return false;
-                }
-            } catch (final QuestException ignored) {
-                // Empty
+            final String value = marked.getValue(onlineProfile);
+            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+                return false;
             }
         }
         // check if the profile has this objective
@@ -191,15 +180,11 @@ public class EntityInteractObjective extends CountingObjective {
         }
         // Check location matches
         if (loc != null) {
-            try {
-                final Location location = loc.getValue(onlineProfile);
-                final double pRange = range.getValue(onlineProfile).doubleValue();
-                if (!entity.getWorld().equals(location.getWorld())
-                        || entity.getLocation().distance(location) > pRange) {
-                    return false;
-                }
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            final Location location = loc.getValue(onlineProfile);
+            final double pRange = range.getValue(onlineProfile).doubleValue();
+            if (!entity.getWorld().equals(location.getWorld())
+                    || entity.getLocation().distance(location) > pRange) {
+                return false;
             }
         }
 
@@ -295,10 +280,12 @@ public class EntityInteractObjective extends CountingObjective {
             if (slot != null && slot != EquipmentSlot.HAND) {
                 return;
             }
-            final boolean success = onInteract(player, event.getEntity());
-            if (success && cancel) {
-                event.setCancelled(true);
-            }
+            qeHandler.handle(() -> {
+                final boolean success = onInteract(player, event.getEntity());
+                if (success && cancel) {
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 
@@ -323,10 +310,12 @@ public class EntityInteractObjective extends CountingObjective {
             if (slot != null && slot != event.getHand()) {
                 return;
             }
-            final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
-            if (success && cancel) {
-                event.setCancelled(true);
-            }
+            qeHandler.handle(() -> {
+                final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
+                if (success && cancel) {
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 }

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.kill;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -25,10 +24,6 @@ import org.jetbrains.annotations.Nullable;
  * amount.
  */
 public class MobKillObjective extends CountingObjective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The entity types that should be killed.
@@ -51,18 +46,16 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * Constructor for the MobKillObjective.
      *
      * @param instruction  the instruction that created this objective
-     * @param log          the logger for this objective
      * @param targetAmount the amount of mobs to kill
      * @param entities     the entity types that should be killed
      * @param name         the optional name of the mob
      * @param marked       the optional marker for the mobs to identify them
      * @throws QuestException if there is an error in the instruction
      */
-    public MobKillObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> targetAmount,
+    public MobKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
                             final VariableList<EntityType> entities, @Nullable final String name,
                             @Nullable final VariableIdentifier marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
-        this.log = log;
         this.entities = entities;
         this.name = name;
         this.marked = marked;
@@ -73,37 +66,30 @@ public class MobKillObjective extends CountingObjective implements Listener {
      *
      * @param event the event containing the mob kill information
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
         final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
-        try {
+        qeHandler.handle(() -> {
             if (!containsPlayer(onlineProfile)
                     || !entities.getValue(onlineProfile).contains(event.getEntity().getType())
                     || name != null && (event.getEntity().getCustomName() == null
                     || !event.getEntity().getCustomName().equals(name))) {
                 return;
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Failed to resolve entitys for kill objective: " + e.getMessage(), e);
-        }
-        if (marked != null) {
-            try {
+            if (marked != null) {
                 final String value = marked.getValue(onlineProfile);
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                 final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                     return;
                 }
-            } catch (final QuestException ignored) {
-                // Empty
             }
-        }
 
-        if (checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
-        }
+            if (checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        });
     }
 
     @Override

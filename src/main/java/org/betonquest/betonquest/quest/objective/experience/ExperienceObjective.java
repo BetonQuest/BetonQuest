@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.experience;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -27,10 +26,6 @@ import java.util.Locale;
  * Player needs to get specified experience level or more.
  */
 public class ExperienceObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The experience level the player needs to get.
@@ -47,29 +42,21 @@ public class ExperienceObjective extends Objective implements Listener {
      * Constructor for the ExperienceObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param amount      the experience level the player needs to get
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+    public ExperienceObjective(final Instruction instruction, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
         super(instruction);
-        this.log = log;
         this.amount = amount;
         this.levelSender = levelSender;
     }
 
-    private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) {
+    private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) throws QuestException {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        final double amount;
-        try {
-            amount = this.amount.getValue(onlineProfile).doubleValue();
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return;
-        }
+        final double amount = this.amount.getValue(onlineProfile).doubleValue();
         if (newAmount >= amount) {
             if (checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
@@ -99,7 +86,7 @@ public class ExperienceObjective extends Objective implements Listener {
                 .ifPresent(onlineProfile -> {
                     final Player player = onlineProfile.getPlayer();
                     final double newAmount = player.getLevel() + player.getExp();
-                    onExperienceChange(onlineProfile, newAmount, false);
+                    qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
                 });
     }
 
@@ -109,30 +96,25 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
-        try {
-            return switch (name.toLowerCase(Locale.ROOT)) {
-                case "amount" -> profile.getOnlineProfile()
+    public String getProperty(final String name, final Profile profile) throws QuestException {
+        return switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount" -> profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(player -> player.getLevel() + player.getExp())
+                    .map(String::valueOf)
+                    .orElse("");
+            case "left" -> {
+                final double pAmount = amount.getValue(profile).doubleValue();
+                yield profile.getOnlineProfile()
                         .map(OnlineProfile::getPlayer)
                         .map(player -> player.getLevel() + player.getExp())
+                        .map(exp -> pAmount - exp)
                         .map(String::valueOf)
                         .orElse("");
-                case "left" -> {
-                    final double pAmount = amount.getValue(profile).doubleValue();
-                    yield profile.getOnlineProfile()
-                            .map(OnlineProfile::getPlayer)
-                            .map(player -> player.getLevel() + player.getExp())
-                            .map(exp -> pAmount - exp)
-                            .map(String::valueOf)
-                            .orElse("");
-                }
-                case "total" -> String.valueOf(amount.getValue(profile).doubleValue());
-                default -> "";
-            };
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return "";
-        }
+            }
+            case "total" -> String.valueOf(amount.getValue(profile).doubleValue());
+            default -> "";
+        };
     }
 
     /**
@@ -144,7 +126,7 @@ public class ExperienceObjective extends Objective implements Listener {
     public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
         final Player player = event.getPlayer();
         final double newAmount = player.getLevel() + player.getExp();
-        onExperienceChange(profileProvider.getProfile(player), newAmount, true);
+        qeHandler.handle(() -> onExperienceChange(profileProvider.getProfile(player), newAmount, true));
     }
 
     /**
@@ -157,7 +139,7 @@ public class ExperienceObjective extends Objective implements Listener {
         final Player player = event.getPlayer();
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             final double newAmount = player.getLevel() + player.getExp();
-            onExperienceChange(profileProvider.getProfile(player), newAmount, false);
+            qeHandler.handle(() -> onExperienceChange(profileProvider.getProfile(player), newAmount, false));
         });
     }
 
@@ -171,6 +153,6 @@ public class ExperienceObjective extends Objective implements Listener {
         final Player player = event.getPlayer();
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final double newAmount = player.getLevel() + player.getExp();
-        onExperienceChange(onlineProfile, newAmount, false);
+        qeHandler.handle(() -> onExperienceChange(onlineProfile, newAmount, false));
     }
 }

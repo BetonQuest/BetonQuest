@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.objective.arrow;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -16,24 +14,15 @@ import org.bukkit.Location;
 public class ArrowShootObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Logger factory to create a logger for the objectives.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Creates a new instance of the ArrowShootObjectiveFactory.
-     *
-     * @param loggerFactory the logger factory to create a logger for the objectives
      */
-    public ArrowShootObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
-        this.loggerFactory = loggerFactory;
+    public ArrowShootObjectiveFactory() {
     }
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
-        final BetonQuestLogger log = loggerFactory.create(ArrowShootObjective.class);
-        return new ArrowShootObjective(instruction, log, location, range);
+        return new ArrowShootObjective(instruction, location, range);
     }
 }

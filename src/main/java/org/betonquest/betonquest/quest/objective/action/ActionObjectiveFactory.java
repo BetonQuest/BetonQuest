@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -22,17 +20,9 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     private static final String ANY = "any";
 
     /**
-     * Logger factory to create a logger for the objectives.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Creates a new instance of the ActionObjectiveFactory.
-     *
-     * @param loggerFactory the logger factory to create a logger for the objectives
      */
-    public ActionObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
-        this.loggerFactory = loggerFactory;
+    public ActionObjectiveFactory() {
     }
 
     @Override
@@ -59,7 +49,6 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
         } else {
             throw new QuestException("Invalid hand value: " + handString);
         }
-        final BetonQuestLogger log = loggerFactory.create(ActionObjective.class);
-        return new ActionObjective(instruction, log, action, selector, exactMatch, loc, range, cancel, slot);
+        return new ActionObjective(instruction, action, selector, exactMatch, loc, range, cancel, slot);
     }
 }

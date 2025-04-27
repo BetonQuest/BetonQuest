@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.password;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -27,10 +26,6 @@ import java.util.regex.Pattern;
  * Requires the player to type a password in chat.
  */
 public class PasswordObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Regex pattern to match the password.
@@ -52,16 +47,14 @@ public class PasswordObjective extends Objective implements Listener {
      * Constructor for the PasswordObjective.
      *
      * @param instruction    the instruction that created this objective
-     * @param log            the logger for this objective
      * @param regex          the regex pattern to match the password
      * @param passwordPrefix the prefix to be shown to the player
      * @param failEvents     the events to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
-    public PasswordObjective(final Instruction instruction, final BetonQuestLogger log, final Pattern regex,
+    public PasswordObjective(final Instruction instruction, final Pattern regex,
                              @Nullable final String passwordPrefix, final VariableList<EventID> failEvents) throws QuestException {
         super(instruction);
-        this.log = log;
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;
         this.failEvents = failEvents;
@@ -74,9 +67,11 @@ public class PasswordObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        if (chatInput(false, event.getPlayer(), event.getMessage())) {
-            event.setCancelled(true);
-        }
+        qeHandler.handle(() -> {
+            if (chatInput(false, event.getPlayer(), event.getMessage())) {
+                event.setCancelled(true);
+            }
+        });
     }
 
     /**
@@ -86,13 +81,15 @@ public class PasswordObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
-        if (chatInput(true, event.getPlayer(), event.getMessage())) {
-            event.setCancelled(true);
-        }
+        qeHandler.handle(() -> {
+            if (chatInput(true, event.getPlayer(), event.getMessage())) {
+                event.setCancelled(true);
+            }
+        });
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
+    private boolean chatInput(final boolean fromCommand, final Player player, final String message) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile)) {
             return false;
@@ -103,8 +100,7 @@ public class PasswordObjective extends Objective implements Listener {
                     ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage("password").asComponent(onlineProfile))
                     : passwordPrefix;
         } catch (final QuestException e) {
-            log.warn("Failed to get password prefix: " + e.getMessage(), e);
-            return false;
+            throw new QuestException("Failed to get password prefix: " + e.getMessage(), e);
         }
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
@@ -120,7 +116,7 @@ public class PasswordObjective extends Objective implements Listener {
                         BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
                     }
                 } catch (final QuestException e) {
-                    log.warn(instruction.getPackage(), "Failed to resolve events for password objective: " + e.getMessage(), e);
+                    throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
                 }
             }
         }

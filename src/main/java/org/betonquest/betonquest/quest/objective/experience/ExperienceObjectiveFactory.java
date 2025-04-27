@@ -45,6 +45,6 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFullID(),
                 NotificationLevel.INFO, "level_to_gain");
-        return new ExperienceObjective(instruction, log, amount, levelSender);
+        return new ExperienceObjective(instruction, amount, levelSender);
     }
 }

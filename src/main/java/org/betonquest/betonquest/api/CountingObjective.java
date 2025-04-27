@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -64,10 +65,11 @@ public abstract class CountingObjective extends Objective {
                              final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
         super(instruction, template);
-        log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.targetAmount = targetAmount;
         final BetonQuest instance = BetonQuest.getInstance();
-        countSender = notifyMessageName == null ? null : new IngameNotificationSender(instance.getLoggerFactory().create(CountingObjective.class),
+        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
+        log = loggerFactory.create(getClass());
+        this.targetAmount = targetAmount;
+        countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
                 instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),
                 NotificationLevel.INFO, notifyMessageName);
     }

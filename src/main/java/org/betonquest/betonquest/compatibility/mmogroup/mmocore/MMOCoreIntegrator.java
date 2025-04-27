@@ -44,7 +44,7 @@ public class MMOCoreIntegrator implements Integrator {
         conditionTypes.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
-        objectiveTypes.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory(plugin.getLoggerFactory()));
+        objectiveTypes.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
         objectiveTypes.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
         objectiveTypes.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 

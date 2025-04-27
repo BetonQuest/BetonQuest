@@ -5,7 +5,6 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
@@ -21,10 +20,6 @@ import org.bukkit.event.Listener;
  * Player has to kill an NPC.
  */
 public class NPCKillObjective extends CountingObjective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Tests if the id matches the NPC.
@@ -36,14 +31,12 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      *
      * @param instruction  the user-provided instruction
      * @param targetAmount the amount of NPCs to kill
-     * @param log          the logger for this objective
      * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
     public NPCKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final BetonQuestLogger log, final Variable<NpcID> npcID) throws QuestException {
+                            final Variable<NpcID> npcID) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
-        this.log = log;
         this.npcID = npcID;
     }
 
@@ -59,7 +52,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
             return;
         }
         final Profile profile = event.getProfile();
-        try {
+        qeHandler.handle(() -> {
             final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);
             if (npcInstruction.hasArgument("byName")) {
@@ -73,15 +66,11 @@ public class NPCKillObjective extends CountingObjective implements Listener {
                     return;
                 }
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Could not resolve npc id in '" + instruction.getID() + "' in NpcKill Objective: "
-                    + e.getMessage(), e);
-            return;
-        }
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
-        }
+            if (containsPlayer(profile) && checkConditions(profile)) {
+                getCountingData(profile).progress();
+                completeIfDoneOrNotify(profile);
+            }
+        });
     }
 
     @Override

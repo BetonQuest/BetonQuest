@@ -92,7 +92,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the profiles with this objective active.
      */
-    protected Map<Profile, ObjectiveData> dataMap = new ProfileKeyMap<>(BetonQuest.getInstance().getProfileProvider());
+    protected Map<Profile, ObjectiveData> dataMap;
 
     /**
      * Creates a new instance of the objective.
@@ -118,11 +118,12 @@ public abstract class Objective {
     public Objective(final Instruction instruction, final Class<? extends ObjectiveData> template) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.template = template;
-        this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.instruction = instruction;
+        this.profileProvider = BetonQuest.getInstance().getProfileProvider();
+        this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.hasArgument("persistent");
         events = instruction.get(instruction.getOptional("events", ""), IDArgument.ofList(EventID::new));
-        conditions = instruction.get(instruction.getOptional("consitions", ""), IDArgument.ofList(ConditionID::new));
+        conditions = instruction.get(instruction.getOptional("conditions", ""), IDArgument.ofList(ConditionID::new));
         final int customNotifyInterval = instruction.getVariable(instruction.getOptional("notify"), Argument.NUMBER, 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
@@ -192,8 +193,9 @@ public abstract class Objective {
      *                to extract additional information
      * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
+     * @throws QuestException when the property cannot e resolved
      */
-    public abstract String getProperty(String name, Profile profile);
+    public abstract String getProperty(String name, Profile profile) throws QuestException;
 
     /**
      * This method fires events for the objective and removes it from the profile's
@@ -608,10 +610,9 @@ public abstract class Objective {
         }
 
         /**
-         * Runs a task and logs occurring quest runtime exceptions with a rate
-         * limit.
+         * Runs a task and logs occurring quest exceptions with a rate limit.
          *
-         * @param qeThrowing a task that may throw a quest runtime exception
+         * @param qeThrowing a task that may throw a quest exception
          */
         public void handle(final QuestExceptionThrowing qeThrowing) {
             try {

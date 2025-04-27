@@ -2,12 +2,7 @@ package org.betonquest.betonquest.compatibility.traincarts;
 
 import com.bergerkiller.bukkit.tc.controller.MinecartMember;
 import com.bergerkiller.bukkit.tc.controller.MinecartMemberStore;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,22 +62,11 @@ public final class TrainCartsUtils {
     /**
      * Checks if the train Name matches with the name from the instruction.
      *
-     * @param log           the {@link BetonQuestLogger} to log upcoming errors.
-     * @param pack          the {@link QuestPackage} of the instruction.
-     * @param packId        the {@link ID} of the instruction.
-     * @param onlineProfile the {@link OnlineProfile} to get the value from the variable.
-     * @param name          the name of the train from the instruction.
-     * @param trainName     the name of the train to check.
+     * @param name      the name of the train from the instruction.
+     * @param trainName the name of the train to check.
      * @return {@code true} if the train name matches with the name from the instruction, otherwise {@code false}.
      */
-    public static boolean isValidTrain(final BetonQuestLogger log, final QuestPackage pack, final ID packId,
-                                       final OnlineProfile onlineProfile, final Variable<String> name, final String trainName) {
-        try {
-            final String result = name.getValue(onlineProfile);
-            return result.isEmpty() || result.equals(trainName);
-        } catch (final QuestException e) {
-            log.warn(pack, "Error while handling '" + packId + "' objective: " + e.getMessage(), e);
-            return false;
-        }
+    public static boolean isValidTrain(final String name, final String trainName) {
+        return name.isEmpty() || name.equals(trainName);
     }
 }

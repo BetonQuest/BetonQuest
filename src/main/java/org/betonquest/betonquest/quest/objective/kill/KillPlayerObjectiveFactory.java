@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.objective.kill;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.ConditionID;
@@ -16,18 +14,11 @@ import org.betonquest.betonquest.instruction.variable.VariableList;
  * Factory for creating {@link KillPlayerObjective} instances from {@link Instruction}s.
  */
 public class KillPlayerObjectiveFactory implements ObjectiveFactory {
-    /**
-     * Logger factory to create a logger for the objectives.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Creates a new instance of the KillPlayerObjectiveFactory.
-     *
-     * @param loggerFactory the logger factory to create a logger for the objectives
      */
-    public KillPlayerObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
-        this.loggerFactory = loggerFactory;
+    public KillPlayerObjectiveFactory() {
     }
 
     @Override
@@ -35,7 +26,6 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
         final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final String name = instruction.getOptional("name");
         final VariableList<ConditionID> required = instruction.get(instruction.getOptional("required", ""), IDArgument.ofList(ConditionID::new));
-        final BetonQuestLogger log = loggerFactory.create(KillPlayerObjective.class);
-        return new KillPlayerObjective(instruction, log, targetAmount, name, required);
+        return new KillPlayerObjective(instruction, targetAmount, name, required);
     }
 }

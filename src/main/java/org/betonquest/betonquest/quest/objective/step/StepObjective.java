@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.step;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -29,11 +28,6 @@ public class StepObjective extends Objective implements Listener {
     private static final String LOCATION_KEY = "location";
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The location of the pressure plate.
      */
     private final Variable<Location> loc;
@@ -47,14 +41,12 @@ public class StepObjective extends Objective implements Listener {
      * Constructor for the StepObjective.
      *
      * @param instruction           the instruction that created this objective
-     * @param log                   the logger for this objective
      * @param loc                   the location of the pressure plate
      * @param pressurePlateSelector the selector for the pressure plate block
      * @throws QuestException if there is an error in the instruction
      */
-    public StepObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
+    public StepObjective(final Instruction instruction, final Variable<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
         super(instruction);
-        this.log = log;
         this.loc = loc;
         this.pressurePlateSelector = pressurePlateSelector;
     }
@@ -64,7 +56,6 @@ public class StepObjective extends Objective implements Listener {
      *
      * @param event the PlayerInteractEvent
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onStep(final PlayerInteractEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
@@ -77,7 +68,7 @@ public class StepObjective extends Objective implements Listener {
         if (clickedBlock == null) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
             final Block block = loc.getValue(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
@@ -93,9 +84,7 @@ public class StepObjective extends Objective implements Listener {
             if (checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     @Override
@@ -114,16 +103,9 @@ public class StepObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
+    public String getProperty(final String name, final Profile profile) throws QuestException {
         if (LOCATION_KEY.equalsIgnoreCase(name)) {
-            final Block block;
-            try {
-                block = loc.getValue(profile).getBlock();
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage(), e);
-                return "";
-            }
+            final Block block = loc.getValue(profile).getBlock();
             return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
         }
         return "";

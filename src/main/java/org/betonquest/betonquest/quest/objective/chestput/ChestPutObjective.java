@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -33,10 +32,6 @@ import java.util.List;
  * disappear once the chest is closed.
  */
 public class ChestPutObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Condition to check if the items are in the chest.
@@ -69,7 +64,6 @@ public class ChestPutObjective extends Objective implements Listener {
      * Constructor for the ChestPutObjective.
      *
      * @param instruction        the instruction that created this objective
-     * @param log                the logger for this objective
      * @param chestItemCondition the condition to check if the items are in the chest
      * @param chestTakeEvent     the event to execute when the items are put in the chest to take them out
      * @param loc                the location of the chest
@@ -77,12 +71,11 @@ public class ChestPutObjective extends Objective implements Listener {
      * @param multipleAccess     argument to manage the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
-    public ChestPutObjective(final Instruction instruction, final BetonQuestLogger log,
+    public ChestPutObjective(final Instruction instruction,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeEvent chestTakeEvent,
                              final Variable<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {
         super(instruction);
-        this.log = log;
         this.chestItemCondition = chestItemCondition;
         this.chestTakeEvent = chestTakeEvent;
         this.loc = loc;
@@ -98,17 +91,13 @@ public class ChestPutObjective extends Objective implements Listener {
     @EventHandler
     public void onChestOpen(final InventoryOpenEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getPlayer());
-        try {
-            if (!checkIsInventory(loc.getValue(onlineProfile))) {
-                return;
+        qeHandler.handle(() -> {
+            checkIsInventory(loc.getValue(onlineProfile));
+            if (!multipleAccess && !checkForNoOtherPlayer(event)) {
+                occupiedSender.sendNotification(onlineProfile);
+                event.setCancelled(true);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-        }
-        if (!multipleAccess && !checkForNoOtherPlayer(event)) {
-            occupiedSender.sendNotification(onlineProfile);
-            event.setCancelled(true);
-        }
+        });
     }
 
     /**
@@ -126,7 +115,7 @@ public class ChestPutObjective extends Objective implements Listener {
      *
      * @param event the event that triggered this method
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onChestClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
@@ -136,11 +125,9 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             final Location targetLocation = loc.getValue(onlineProfile);
-            if (!checkIsInventory(targetLocation)) {
-                return;
-            }
+            checkIsInventory(targetLocation);
 
             final Location invLocation = event.getInventory().getLocation();
             if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
@@ -159,9 +146,7 @@ public class ChestPutObjective extends Objective implements Listener {
                     }
                 }
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     private void checkItems(final OnlineProfile onlineProfile) throws QuestException {
@@ -173,20 +158,17 @@ public class ChestPutObjective extends Objective implements Listener {
         }
     }
 
-    private boolean checkIsInventory(final Location targetChestLocation) {
+    private void checkIsInventory(final Location targetChestLocation) throws QuestException {
         final Block block = targetChestLocation.getBlock();
         if (!(block.getState() instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
-            log.warn(instruction.getPackage(),
-                    String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
-                            instruction.getID().getFullID(),
+            throw new QuestException(
+                    String.format("Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                             targetChestLocation.getBlockX(),
                             targetChestLocation.getBlockY(),
                             targetChestLocation.getBlockZ(),
                             world == null ? "null" : world.getName()));
-            return false;
         }
-        return true;
     }
 
     @Override

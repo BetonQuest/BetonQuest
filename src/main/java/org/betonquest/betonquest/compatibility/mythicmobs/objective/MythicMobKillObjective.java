@@ -27,6 +27,11 @@ import java.util.List;
  */
 public class MythicMobKillObjective extends CountingObjective implements Listener {
     /**
+     * The marked key.
+     */
+    private final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+
+    /**
      * The names of all mobs that this objective should count.
      */
     private final List<String> names;
@@ -93,7 +98,6 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) throws QuestException {
-        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
         if (!names.contains(event.getMobType().getInternalName())
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;

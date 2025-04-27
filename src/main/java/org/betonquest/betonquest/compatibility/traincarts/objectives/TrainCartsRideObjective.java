@@ -5,7 +5,6 @@ import com.bergerkiller.bukkit.tc.events.seat.MemberSeatExitEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -37,11 +36,6 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     private static final long MILLISECONDS_TO_SECONDS = 1000L;
 
     /**
-     * The {@link BetonQuestLogger} for logging.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The {@link Map} that stores the current amount of time the player has ridden the train.
      */
     private final Map<UUID, Pair<Long, BukkitTask>> startTimes;
@@ -56,13 +50,12 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      *
      * @param instruction  the user-provided instruction
      * @param targetAmount the target amount of time in seconds
-     * @param log          the logger for this objective
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final Variable<String> name) throws QuestException {
+    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount,
+                                   final Variable<String> name) throws QuestException {
         super(instruction, targetAmount, null);
-        this.log = log;
         this.name = name;
         this.startTimes = new HashMap<>();
     }
@@ -84,10 +77,12 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
         if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        if (TrainCartsUtils.isValidTrain(log, instruction.getPackage(), instruction.getID(), onlineProfile, name,
-                event.getMember().getGroup().getProperties().getTrainName())) {
-            startCount(onlineProfile);
-        }
+        qeHandler.handle(() -> {
+            if (TrainCartsUtils.isValidTrain(name.getValue(onlineProfile),
+                    event.getMember().getGroup().getProperties().getTrainName())) {
+                startCount(onlineProfile);
+            }
+        });
     }
 
     /**

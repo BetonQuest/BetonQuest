@@ -4,7 +4,6 @@ import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -20,10 +19,6 @@ import org.jetbrains.annotations.Nullable;
  * An objective that listens for the player leveling up in their MMOCore profession.
  */
 public class MMOCoreProfessionObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The name of the profession that the player needs to level up.
@@ -40,14 +35,13 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
      * Constructor for the MMOCoreProfessionObjective.
      *
      * @param instruction    the instruction object representing the objective
-     * @param log            the logger for this objective
      * @param professionName the name of the profession to be leveled up
      * @param targetLevel    the target level to be reached
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreProfessionObjective(final Instruction instruction, final BetonQuestLogger log, @Nullable final String professionName, final Variable<Number> targetLevel) throws QuestException {
+    public MMOCoreProfessionObjective(final Instruction instruction, @Nullable final String professionName,
+                                      final Variable<Number> targetLevel) throws QuestException {
         super(instruction);
-        this.log = log;
         this.professionName = professionName;
         this.targetLevel = targetLevel;
     }
@@ -67,14 +61,12 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (profession != null && !profession.getName().equalsIgnoreCase(professionName)) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             if (event.getNewLevel() < targetLevel.getValue(onlineProfile).intValue()) {
                 return;
             }
-        } catch (final QuestException e) {
-            log.warn("Error while getting target level for MMOCoreProfessionObjective: " + e.getMessage(), e);
-        }
-        completeObjective(onlineProfile);
+            completeObjective(onlineProfile);
+        });
     }
 
     @Override

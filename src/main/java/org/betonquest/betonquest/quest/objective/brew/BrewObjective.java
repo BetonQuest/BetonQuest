@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.brew;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -35,10 +34,6 @@ import java.util.stream.Collectors;
  * Requires the player to manually brew a potion.
  */
 public class BrewObjective extends CountingObjective implements Listener {
-    /**
-     * Custom logger for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The potion item to brew.
@@ -55,15 +50,13 @@ public class BrewObjective extends CountingObjective implements Listener {
      *
      * @param instruction     the instruction that created this objective
      * @param targetAmount    the target amount of potions to brew
-     * @param log             the logger for this objective
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log,
+    public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount,
                          final ProfileProvider profileProvider, final Item potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
-        this.log = log;
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
     }
@@ -115,42 +108,39 @@ public class BrewObjective extends CountingObjective implements Listener {
      *
      * @param event the event that triggered this method
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final Profile profile = locations.remove(event.getBlock().getLocation());
         if (profile == null) {
             return;
         }
-        final QuestItem potion;
-        try {
-            potion = this.potion.getItem();
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Exception while processing Brew Objective: " + e.getMessage(), e);
-            return;
-        }
-        final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
+        qeHandler.handle(() -> {
+            final QuestItem potion = this.potion.getItem();
+            final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
 
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                final boolean[] newlyDone = getMatchingPotions(potion, event.getContents(), alreadyDone);
 
-            int progress = 0;
-            for (final boolean brewed : newlyDone) {
-                if (brewed) {
-                    progress++;
+                int progress = 0;
+                for (final boolean brewed : newlyDone) {
+                    if (brewed) {
+                        progress++;
+                    }
                 }
-            }
 
-            if (progress > 0 && checkConditions(profile)) {
-                getCountingData(profile).progress(progress);
-                final boolean completed = completeIfDoneOrNotify(profile);
-                if (completed) {
-                    final Set<Location> removals = locations.entrySet().stream()
-                            .filter(location -> profile.equals(location.getValue()))
-                            .map(Map.Entry::getKey)
-                            .collect(Collectors.toSet());
-                    removals.forEach(locations::remove);
+                if (progress > 0 && checkConditions(profile)) {
+                    getCountingData(profile).progress(progress);
+                    final boolean completed = completeIfDoneOrNotify(profile);
+                    if (completed) {
+                        final Set<Location> removals = locations.entrySet().stream()
+                                .filter(location -> profile.equals(location.getValue()))
+                                .map(Map.Entry::getKey)
+                                .collect(Collectors.toSet());
+                        removals.forEach(locations::remove);
+                    }
                 }
-            }
+            });
         });
     }
 

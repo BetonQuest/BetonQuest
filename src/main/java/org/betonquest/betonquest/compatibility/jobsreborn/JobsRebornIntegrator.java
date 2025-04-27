@@ -69,9 +69,9 @@ public class JobsRebornIntegrator implements Integrator {
         log.info("Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 
         final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
-        objectiveTypes.register("nujobs_joinjob", new JoinJobObjectiveFactory(plugin.getLoggerFactory()));
-        objectiveTypes.register("nujobs_leavejob", new LeaveJobObjectiveFactory(plugin.getLoggerFactory()));
-        objectiveTypes.register("nujobs_levelup", new LevelUpObjectiveFactory(plugin.getLoggerFactory()));
+        objectiveTypes.register("nujobs_joinjob", new JoinJobObjectiveFactory());
+        objectiveTypes.register("nujobs_leavejob", new LeaveJobObjectiveFactory());
+        objectiveTypes.register("nujobs_levelup", new LevelUpObjectiveFactory());
         objectiveTypes.register("nujobs_payment", new PaymentObjectiveFactory(plugin.getLoggerFactory(), plugin.getPluginMessage()));
         log.info("Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
     }
