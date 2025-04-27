@@ -2,6 +2,10 @@ package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.NpcID;
@@ -9,16 +13,22 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
-import java.util.function.Predicate;
-
 /**
  * Factory for creating {@link NPCKillObjective} instances from {@link Instruction}s.
  */
 public class NPCKillObjectiveFactory implements ObjectiveFactory {
     /**
-     * Creates a new instance of the NPCKillObjectiveFactory.
+     * Logger factory to create a logger for the objectives.
      */
-    public NPCKillObjectiveFactory() {
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Creates a new instance of the NPCKillObjectiveFactory.
+     *
+     * @param loggerFactory the logger factory to create a logger for the objectives
+     */
+    public NPCKillObjectiveFactory(final BetonQuestLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
     }
 
     @Override
@@ -28,14 +38,15 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
             throw new QuestException("Cannot use non-Citizens NPC ID!");
         }
         final String argument = npcInstruction.getPart(1);
-        final Predicate<NPC> predicate;
+        final QuestBiPredicate<NPC, Profile> predicate;
         if (npcInstruction.hasArgument("byName")) {
-            predicate = npc -> argument.equals(npc.getName());
+            predicate = (npc, profile) -> argument.equals(npc.getName());
         } else {
-            final int npcId = npcInstruction.getInt(argument, -1);
-            predicate = npc -> npcId == npc.getId();
+            final Variable<Number> npcId = npcInstruction.getVariable(argument, Argument.NUMBER);
+            predicate = (npc, profile) -> npcId.getValue(profile).intValue() == npc.getId();
         }
         final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
-        return new NPCKillObjective(instruction, targetAmount, predicate);
+        final BetonQuestLogger log = loggerFactory.create(NPCKillObjective.class);
+        return new NPCKillObjective(instruction, targetAmount, log, predicate);
     }
 }
