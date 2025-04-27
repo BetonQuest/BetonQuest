@@ -9,6 +9,7 @@ import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -56,12 +57,12 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
             throw new QuestException("Cannot use non-Citizens NPC ID!");
         }
         final VariableList<Location> locations = instruction.get(Argument.ofList(Argument.LOCATION, VariableList.notEmptyChecker()));
-        final int waitTicks = instruction.getInt(instruction.getOptional("wait"), 0);
+        final Variable<Number> waitTicks = instruction.getVariable(instruction.getOptional("wait"), Argument.NUMBER, 0);
         final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), IDArgument.ofList(EventID::new));
         final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), IDArgument.ofList(EventID::new));
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
-                doneEvents, failEvents, blockConversations, instruction.getPackage());
+                doneEvents, failEvents, blockConversations);
         return new PrimaryServerThreadEvent(new CitizensMoveEvent(featureAPI, npcId, citizensMoveController, moveAction), data);
     }
 }

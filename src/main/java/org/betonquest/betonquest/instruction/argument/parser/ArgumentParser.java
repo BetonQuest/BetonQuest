@@ -59,5 +59,21 @@ public interface ArgumentParser extends Parser {
      */
     @Contract("!null, _ -> !null")
     @Nullable
-    <T> Variable<T> getVariable(@Nullable String string, Argument<T> argument) throws QuestException;
+    default <T> Variable<T> getVariable(@Nullable final String string, final Argument<T> argument) throws QuestException {
+        return getVariable(string, argument, null);
+    }
+
+    /**
+     * Parses the string with the converter.
+     *
+     * @param string       the string to convert
+     * @param argument     the converter creating the value
+     * @param defaultValue the default value to use when the string is null
+     * @param <T>          the value to create
+     * @return the created value or null if no string was provided
+     * @throws QuestException when the value can't be created
+     */
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
+    @Nullable
+    <T> Variable<T> getVariable(@Nullable String string, Argument<T> argument, @Nullable T defaultValue) throws QuestException;
 }

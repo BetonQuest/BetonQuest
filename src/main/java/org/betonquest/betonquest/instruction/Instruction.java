@@ -214,10 +214,13 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
     }
 
     @Override
-    @Contract("!null, _ -> !null")
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Nullable
-    public <T> Variable<T> getVariable(@Nullable final String string, final Argument<T> argument) throws QuestException {
+    public <T> Variable<T> getVariable(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
+            if (defaultValue != null) {
+                return new Variable<>(defaultValue);
+            }
             return null;
         }
         return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, argument);
