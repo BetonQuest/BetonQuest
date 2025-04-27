@@ -7,14 +7,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Durability/Damage.
+ */
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
+
+    /**
+     * If a durability is set.
+     */
     private boolean isSet;
 
+    /**
+     * The durability.
+     */
     private int durability;
 
+    /**
+     * The number compare state.
+     */
     private Number number = Number.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public DurabilityHandler() {
     }
 

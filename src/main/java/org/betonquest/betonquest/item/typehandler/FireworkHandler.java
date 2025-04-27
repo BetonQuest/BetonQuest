@@ -16,14 +16,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.TooManyMethods"})
+/**
+ * Handles de-/serialization of Fireworks.
+ */
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
+
+    /**
+     * The individual Firework Effect Handlers.
+     */
     private final List<FireworkEffectHandler> effects = new ArrayList<>();
 
+    /**
+     * The firework power.
+     */
     private int power;
 
+    /**
+     * The number compare state.
+     */
     private Number powerN = Number.WHATEVER;
 
+    /**
+     * The required firework effect existence.
+     */
     private Existence effectsE = Existence.WHATEVER;
 
     /**
@@ -31,6 +47,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      */
     private boolean exact = true;
 
+    /**
+     * The empty default Constructor.
+     */
     public FireworkHandler() {
     }
 
@@ -179,7 +198,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         };
     }
 
-    public List<FireworkEffect> getEffects() {
+    private List<FireworkEffect> getEffects() {
         final List<FireworkEffect> list = new LinkedList<>();
         for (final FireworkEffectHandler effect : effects) {
             list.add(effect.get());
@@ -187,7 +206,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         return list;
     }
 
-    public void setEffects(final String string) throws QuestException {
+    private void setEffects(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(string, "Firework effects missing", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             effectsE = Existence.FORBIDDEN;
@@ -201,7 +220,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         }
     }
 
-    public boolean checkEffects(final List<FireworkEffect> list) {
+    private boolean checkEffects(final List<FireworkEffect> list) {
         return switch (effectsE) {
             case WHATEVER -> true;
             case REQUIRED -> checkRequired(list);

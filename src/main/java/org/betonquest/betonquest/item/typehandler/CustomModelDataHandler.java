@@ -6,12 +6,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of CustomModelData.
+ */
 public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
+
+    /**
+     * The required existence.
+     */
     private Existence existence = Existence.WHATEVER;
 
+    /**
+     * The CustomModelData.
+     */
     private int modelData;
 
+    /**
+     * The empty default Constructor.
+     */
     public CustomModelDataHandler() {
     }
 

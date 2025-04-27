@@ -14,10 +14,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Enchantments.
+ */
 public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
+
+    /**
+     * The individual Enchantment Handlers.
+     */
     private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
 
+    /**
+     * The required existence.
+     */
     private Existence checkersE = Existence.WHATEVER;
 
     /**
@@ -25,6 +34,9 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
      */
     private boolean exact = true;
 
+    /**
+     * The empty default Constructor.
+     */
     public EnchantmentsHandler() {
     }
 
@@ -95,7 +107,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         }
     }
 
-    public void set(final String enchants) throws QuestException {
+    private void set(final String enchants) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(enchants, "Enchantment is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             checkersE = Existence.FORBIDDEN;
@@ -109,7 +121,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         checkersE = Existence.REQUIRED;
     }
 
-    public Map<Enchantment, Integer> get() {
+    private Map<Enchantment, Integer> get() {
         final Map<Enchantment, Integer> map = new HashMap<>();
         if (checkersE == Existence.FORBIDDEN) {
             return map;
@@ -122,7 +134,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         return map;
     }
 
-    public boolean check(final Map<Enchantment, Integer> map) {
+    private boolean check(final Map<Enchantment, Integer> map) {
         if (checkersE == Existence.WHATEVER) {
             return true;
         }
@@ -140,18 +152,33 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         return true;
     }
 
+    /**
+     * Checks a single Enchantments validity.
+     */
     private static final class SingleEnchantmentHandler {
         /**
          * The expected argument count of the formatted enchantment.
          */
         private static final int INSTRUCTION_FORMAT_LENGTH = 2;
 
+        /**
+         * The enchantment to check.
+         */
         private final Enchantment type;
 
+        /**
+         * The required existence.
+         */
         private final Existence existence;
 
+        /**
+         * The number compare state.
+         */
         private final Number number;
 
+        /**
+         * The set enchantment level.
+         */
         private final int level;
 
         private SingleEnchantmentHandler(final String enchant) throws QuestException {

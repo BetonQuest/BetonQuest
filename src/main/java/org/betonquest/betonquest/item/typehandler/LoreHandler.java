@@ -8,10 +8,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Item Lore.
+ */
 public class LoreHandler implements ItemMetaHandler<ItemMeta> {
+
+    /**
+     * The lore.
+     */
     private final List<String> lore = new LinkedList<>();
 
+    /**
+     * The required existence.
+     */
     private Existence existence = Existence.WHATEVER;
 
     /**
@@ -19,6 +28,9 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      */
     private boolean exact = true;
 
+    /**
+     * The empty default Constructor.
+     */
     public LoreHandler() {
     }
 

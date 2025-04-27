@@ -10,22 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of Books.
+ */
 public class BookHandler implements ItemMetaHandler<BookMeta> {
+
+    /**
+     * The title.
+     */
     @Nullable
     private String title;
 
+    /**
+     * The required title existence.
+     */
     private Existence titleE = Existence.WHATEVER;
 
+    /**
+     * The author.
+     */
     @Nullable
     private String author;
 
+    /**
+     * The required author existence.
+     */
     private Existence authorE = Existence.WHATEVER;
 
+    /**
+     * The text pages.
+     */
     private List<String> text = new ArrayList<>();
 
+    /**
+     * The required text existence.
+     */
     private Existence textE = Existence.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public BookHandler() {
     }
 
@@ -64,7 +88,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     private String buildPages(final BookMeta bookMeta) {
         if (bookMeta.hasPages()) {
-            final StringBuilder strBldr = new StringBuilder();
+            final StringBuilder builder = new StringBuilder();
             for (final String page : bookMeta.getPages()) {
                 String processedPage = page;
                 if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
@@ -72,9 +96,9 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
                 }
                 // this will remove black color code between lines
                 // Bukkit is adding it for some reason (probably to mess people's code)
-                strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
+                builder.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
             }
-            return " text:" + strBldr.substring(0, strBldr.length() - 1);
+            return " text:" + builder.substring(0, builder.length() - 1);
         }
         return "";
     }
@@ -103,7 +127,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
                 && checkText(bookMeta.getPages());
     }
 
-    public void setTitle(final String string) {
+    private void setTitle(final String string) {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             titleE = Existence.FORBIDDEN;
         } else {
@@ -113,7 +137,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    public void setAuthor(final String string) {
+    private void setAuthor(final String string) {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
         } else {
@@ -122,7 +146,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    public void setText(final String string) {
+    private void setText(final String string) {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             text.add(""); // this will prevent "Invalid book tag" message in the empty book
             textE = Existence.FORBIDDEN;
@@ -142,13 +166,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public boolean checkText(@Nullable final List<String> list) {
-        switch (textE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
+    private boolean checkText(@Nullable final List<String> list) {
+        return switch (textE) {
+            case WHATEVER -> true;
+            case REQUIRED -> {
                 if (list == null || list.size() != text.size()) {
-                    return false;
+                    yield false;
                 }
                 for (int i = 0; i < text.size(); i++) {
                     // this removes black color codes, bukkit adds them for some reason
@@ -167,13 +190,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
                         pattern = pattern.substring(0, pattern.length() - 1);
                     }
                     if (!line.equals(pattern)) {
-                        return false;
+                        yield false;
                     }
                 }
-                return true;
-            case FORBIDDEN:
-                return list == null || list.isEmpty() || list.size() == 1 && list.get(0).isEmpty();
-        }
-        return true;
+                yield true;
+            }
+            case FORBIDDEN -> list == null || list.isEmpty() || list.size() == 1 && list.get(0).isEmpty();
+        };
     }
 }

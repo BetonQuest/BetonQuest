@@ -6,7 +6,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles de-/serialization of the Unbreakable state.
+ */
 public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
 
     /**
@@ -14,8 +16,14 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
      */
     private static final String UNBREAKABLE = "unbreakable";
 
+    /**
+     * The required existence.
+     */
     private Existence unbreakable = Existence.WHATEVER;
 
+    /**
+     * The empty default Constructor.
+     */
     public UnbreakableHandler() {
     }
 

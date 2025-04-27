@@ -10,21 +10,43 @@ import java.util.List;
 /**
  * Utility object that handles which items are assigned to which slots.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class Slots {
 
-    private final int start;
-
-    private final int end;
-
-    private final List<MenuItemID> items;
-
-    private final Type type;
-
+    /**
+     * RPG Menu instance to get ItemStacks.
+     */
     private final RPGMenu rpgMenu;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidUncheckedExceptionsInSignatures"})
-    public Slots(final RPGMenu rpgMenu, final String slots, final List<MenuItemID> items) throws IllegalArgumentException {
+    /**
+     * First slot.
+     */
+    private final int start;
+
+    /**
+     * Last slot.
+     */
+    private final int end;
+
+    /**
+     * Items to set into the form.
+     */
+    private final List<MenuItemID> items;
+
+    /**
+     * The slots form.
+     */
+    private final Type type;
+
+    /**
+     * .
+     *
+     * @param rpgMenu the rpg menu instance to get Menu Items
+     * @param slots   the slot definition
+     * @param items   the items to put at the slots
+     * @throws IllegalArgumentException when the slot form is invalid or a number cannot be parsed
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    public Slots(final RPGMenu rpgMenu, final String slots, final List<MenuItemID> items) {
         this.rpgMenu = rpgMenu;
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;
@@ -80,6 +102,8 @@ public class Slots {
     }
 
     /**
+     * Get the ids of used inventory slots.
+     *
      * @return a sorted list of all slots which are covered by this slots object
      */
     public List<Integer> getSlots() {
@@ -110,6 +134,8 @@ public class Slots {
     }
 
     /**
+     * Checks if the slot id is part of this.
+     *
      * @param slot the slot to check for
      * @return if this slots object covers the given slot
      */
@@ -125,6 +151,8 @@ public class Slots {
     }
 
     /**
+     * Get the potential displayed item's ids.
+     *
      * @return all items assigned to the slots covered by this object
      */
     public List<MenuItemID> getItems() {
@@ -132,6 +160,8 @@ public class Slots {
     }
 
     /**
+     * Get the actual displayed items.
+     *
      * @param profile the player from the {@link Profile} for which these slots should get displayed for
      * @return all items which should be shown to the specified player of the slots covered by this object
      */
@@ -147,6 +177,8 @@ public class Slots {
     }
 
     /**
+     * Get the inventory's index as relative index within this.
+     *
      * @param slot the index of the slot in the menu
      * @return the index of the given slot within this collection of slots, -1 if slot is not within this collection
      */
@@ -167,6 +199,8 @@ public class Slots {
     }
 
     /**
+     * Get the item from the inventory's index.
+     *
      * @param profile the player {@link Profile} for which these slots should get displayed for
      * @param slot    the slot which should contain this item
      * @return the menu item which should be displayed in the given slot to the player

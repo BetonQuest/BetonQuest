@@ -21,7 +21,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
+/**
+ * Handles de-/serialization of Potions.
+ */
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
@@ -51,20 +54,44 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      */
     private static boolean methodsInit;
 
+    /**
+     * The potion type, defaulting to water.
+     */
     private PotionType type = PotionType.WATER;
 
+    /**
+     * The required potion type existence.
+     */
     private Existence typeE = Existence.WHATEVER;
 
+    /**
+     * If the potion is extended.
+     */
     private boolean extended;
 
+    /**
+     * The required extended existence.
+     */
     private Existence extendedE = Existence.WHATEVER;
 
+    /**
+     * If the potion is upgraded.
+     */
     private boolean upgraded;
 
+    /**
+     * The required upgraded existence.
+     */
     private Existence upgradedE = Existence.WHATEVER;
 
+    /**
+     * The custom potion effects.
+     */
     private List<CustomEffectHandler> custom = new ArrayList<>();
 
+    /**
+     * The required custom potion effects existence.
+     */
     private Existence customE = Existence.WHATEVER;
 
     /**
@@ -72,6 +99,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      */
     private boolean exact = true;
 
+    /**
+     * The empty default Constructor.
+     */
     public PotionHandler() {
     }
 
@@ -206,7 +236,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
     }
 
-    public void setType(final String type) throws QuestException {
+    private void setType(final String type) throws QuestException {
         typeE = Existence.REQUIRED;
         try {
             this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
@@ -215,7 +245,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    public List<PotionEffect> getCustom() {
+    private List<PotionEffect> getCustom() {
         final List<PotionEffect> effects = new LinkedList<>();
         if (customE == Existence.FORBIDDEN) {
             return effects;
@@ -228,7 +258,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return effects;
     }
 
-    public void setCustom(final String custom) throws QuestException {
+    private void setCustom(final String custom) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
@@ -242,7 +272,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         customE = Existence.REQUIRED;
     }
 
-    public boolean checkBase(@Nullable final PotionData base) {
+    private boolean checkBase(@Nullable final PotionData base) {
         switch (typeE) {
             case WHATEVER:
                 return true;
@@ -260,7 +290,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public boolean checkCustom(final List<PotionEffect> custom) {
+    private boolean checkCustom(final List<PotionEffect> custom) {
         if (customE == Existence.WHATEVER) {
             return true;
         }
@@ -285,16 +315,28 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return true;
     }
 
+    /**
+     * Handles additional potion effects.
+     */
     private static class CustomEffectHandler {
         /**
          * The expected argument count of the formatted effect.
          */
         private static final int INSTRUCTION_FORMAT_LENGTH = 3;
 
+        /**
+         * The custom potion type.
+         */
         private final PotionEffectType customType;
 
+        /**
+         * The required existence.
+         */
         private final Existence customTypeE;
 
+        /**
+         * The number compare state for the duration.
+         */
         private final Number durationE;
 
         /**
@@ -307,8 +349,17 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
          */
         private final int power;
 
+        /**
+         * The number compare state for the power.
+         */
         private final Number powerE;
 
+        /**
+         * Create a new Custom Potion data from serialized string.
+         *
+         * @param custom the serialized potion data
+         * @throws QuestException if the data is malformed
+         */
         public CustomEffectHandler(final String custom) throws QuestException {
             final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ":");
             if (parts[0].startsWith("none-")) {
