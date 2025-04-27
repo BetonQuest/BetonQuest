@@ -10,7 +10,6 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
-import org.betonquest.betonquest.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.instruction.argument.parser.ListParser;
 import org.betonquest.betonquest.instruction.argument.parser.PackageParser;
@@ -30,7 +29,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, EnumParser, ListParser, PackageParser, ItemParser {
+public class Instruction implements InstructionParts, ArgumentParser, ListParser, PackageParser, ItemParser {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -233,20 +232,6 @@ public class Instruction implements InstructionParts, ArgumentParser, EnumParser
             return null;
         }
         return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value));
-    }
-
-    @Override
-    @Contract("_, _, !null -> !null")
-    @Nullable
-    public <T extends Enum<T>> T getEnum(@Nullable final String string, final Class<T> clazz, @Nullable final T defaultValue) throws QuestException {
-        if (string == null) {
-            return defaultValue;
-        }
-        try {
-            return Enum.valueOf(clazz, string.toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Error while parsing '" + string + "' enum class '" + clazz.getSimpleName() + "': " + e.getMessage(), e);
-        }
     }
 
     @Override
