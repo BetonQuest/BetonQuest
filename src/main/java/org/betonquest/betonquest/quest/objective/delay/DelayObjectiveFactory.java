@@ -31,10 +31,7 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Number> delay = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
-        final int interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
-        if (interval <= 0) {
-            throw new QuestException("Interval cannot be less than 1 tick");
-        }
+        final Variable<Number> interval = instruction.getVariable(instruction.getOptional("interval"), Argument.NUMBER_NOT_LESS_THAN_ONE, 20 * 10);
         final BetonQuestLogger log = loggerFactory.create(DelayObjective.class);
         return new DelayObjective(instruction, log, interval, delay);
     }
