@@ -19,12 +19,12 @@ public class VelocityEvent implements OnlineEvent {
     /**
      * Sets in which direction the vector is directed.
      */
-    private final VectorDirection direction;
+    private final Variable<VectorDirection> direction;
 
     /**
      * Sets how the vector should get merged with the player-velocity.
      */
-    private final VectorModification modification;
+    private final Variable<VectorModification> modification;
 
     /**
      * Create a velocity event with the given parameters.
@@ -33,7 +33,8 @@ public class VelocityEvent implements OnlineEvent {
      * @param direction    direction in which the vector is directed
      * @param modification modification how the vector should get merged with the player-velocity
      */
-    public VelocityEvent(final Variable<Vector> vector, final VectorDirection direction, final VectorModification modification) {
+    public VelocityEvent(final Variable<Vector> vector, final Variable<VectorDirection> direction,
+                         final Variable<VectorModification> modification) {
         this.vector = vector;
         this.direction = direction;
         this.modification = modification;
@@ -43,8 +44,8 @@ public class VelocityEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final Vector pVector = vector.getValue(profile);
-        final Vector directionVector = direction.calculate(player, pVector);
-        final Vector modificationVector = modification.calculate(player, directionVector);
+        final Vector directionVector = direction.getValue(profile).calculate(player, pVector);
+        final Vector modificationVector = modification.getValue(profile).calculate(player, directionVector);
         player.setVelocity(modificationVector);
     }
 }

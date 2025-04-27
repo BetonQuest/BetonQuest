@@ -25,7 +25,7 @@ public class LogEvent implements NullableEvent {
     /**
      * Level to log the message at.
      */
-    private final LogEventLevel level;
+    private final Variable<LogEventLevel> level;
 
     /**
      * Create a new {@link LogEvent}.
@@ -34,7 +34,7 @@ public class LogEvent implements NullableEvent {
      * @param level   level to log the message at.
      * @param message message that should be printed to the server log.
      */
-    public LogEvent(final BetonQuestLogger logger, final LogEventLevel level, final Variable<String> message) {
+    public LogEvent(final BetonQuestLogger logger, final Variable<LogEventLevel> level, final Variable<String> message) {
         this.logger = logger;
         this.message = message;
         this.level = level;
@@ -42,6 +42,6 @@ public class LogEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        level.log(logger, message.getValue(profile));
+        level.getValue(profile).log(logger, message.getValue(profile));
     }
 }
