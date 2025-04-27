@@ -8,13 +8,13 @@ import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class CitizensMoveController implements Listener {
      * @return false if you can talk to the npc true if not
      */
     public boolean blocksTalking(final NPC npc) {
-        return movingNpcs.containsKey(npc.getId()) && movingNpcs.get(npc.getId()).moveData.blockConversations;
+        return movingNpcs.containsKey(npc.getId()) && movingNpcs.get(npc.getId()).moveData.blockConversations();
     }
 
     /**
@@ -107,7 +108,7 @@ public class CitizensMoveController implements Listener {
     public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestException {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
-            for (final EventID event : oldMoveInstance.moveData.failEvents().getValue(profile)) {
+            for (final EventID event : oldMoveInstance.moveData.failEvents()) {
                 questTypeAPI.event(profile, event);
             }
             return;
@@ -166,10 +167,35 @@ public class CitizensMoveController implements Listener {
      * @param doneEvents         the events to execute when the NPC reaches the last destination
      * @param failEvents         the events to execute when the NPC can't reach the last destination
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
-     * @param sourcePackage      the quest package that started the movement, used for debug logging
      */
-    public record MoveData(VariableList<Location> locations, int waitTicks, VariableList<EventID> doneEvents,
-                           VariableList<EventID> failEvents, boolean blockConversations, QuestPackage sourcePackage) {
+    public record MoveData(VariableList<Location> locations, Variable<Number> waitTicks,
+                           VariableList<EventID> doneEvents, VariableList<EventID> failEvents,
+                           boolean blockConversations) {
+        /**
+         * Creates a new MoveData instance.
+         *
+         * @param profile the profile to resolve the variables
+         * @return the resolved move data
+         * @throws QuestException if there was an error resolving the variables
+         */
+        public ResolvedMoveData getResolvedMoveData(final Profile profile) throws QuestException {
+            return new ResolvedMoveData(locations.getValue(profile), waitTicks.getValue(profile).longValue(),
+                    doneEvents.getValue(profile), failEvents.getValue(profile), blockConversations);
+        }
+    }
+
+    /**
+     * All data required for the movement of an NPC.
+     *
+     * @param locations          the target location of the movement
+     * @param waitTicks          the amount of ticks the NPC will wait before moving to the next location
+     * @param doneEvents         the events to execute when the NPC reaches the last destination
+     * @param failEvents         the events to execute when the NPC can't reach the last destination
+     * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
+     */
+    public record ResolvedMoveData(List<Location> locations, long waitTicks,
+                                   List<EventID> doneEvents, List<EventID> failEvents,
+                                   boolean blockConversations) {
     }
 
     /**
@@ -179,7 +205,7 @@ public class CitizensMoveController implements Listener {
         /**
          * Move data used for the npc movement.
          */
-        private final MoveData moveData;
+        private final ResolvedMoveData moveData;
 
         /**
          * ID of the moving NPC.
@@ -189,7 +215,7 @@ public class CitizensMoveController implements Listener {
         /**
          * The profile used to start this move instance and to work on.
          */
-        private final Profile currentProfile;
+        private final Profile profile;
 
         /**
          * Iterator for the next target location.
@@ -197,10 +223,10 @@ public class CitizensMoveController implements Listener {
         private final ListIterator<Location> locationsIterator;
 
         private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestException {
-            this.moveData = moveData;
+            this.moveData = moveData.getResolvedMoveData(profile);
             this.npcId = npc.getId();
-            this.currentProfile = profile;
-            this.locationsIterator = moveData.locations.getValue(profile).listIterator(0);
+            this.profile = profile;
+            this.locationsIterator = this.moveData.locations.listIterator(0);
             final Location firstLocation = locationsIterator.next();
             stopNPCMoving(npc);
 
@@ -264,12 +290,8 @@ public class CitizensMoveController implements Listener {
                 public void run() {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
-                    try {
-                        for (final EventID event : moveData.doneEvents().getValue(currentProfile)) {
-                            questTypeAPI.event(currentProfile, event);
-                        }
-                    } catch (final QuestException e) {
-                        log.warn(moveData.sourcePackage(), "Error while executing done events for NPC '" + npcId + "': " + e.getMessage(), e);
+                    for (final EventID event : moveData.doneEvents()) {
+                        questTypeAPI.event(profile, event);
                     }
                 }
             }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());

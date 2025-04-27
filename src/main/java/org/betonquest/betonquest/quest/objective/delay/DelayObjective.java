@@ -40,7 +40,7 @@ public class DelayObjective extends Objective {
     /**
      * The interval in ticks at which the objective checks if the time is up.
      */
-    private final int interval;
+    private final Variable<Number> interval;
 
     /**
      * The delay time in seconds, minutes, or ticks.
@@ -62,7 +62,8 @@ public class DelayObjective extends Objective {
      * @param delay       the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final int interval, final Variable<Number> delay) throws QuestException {
+    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> interval,
+                          final Variable<Number> delay) throws QuestException {
         super(instruction, DelayData.class);
         this.interval = interval;
         this.delay = delay;
@@ -81,25 +82,29 @@ public class DelayObjective extends Objective {
 
     @Override
     public void start() {
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                final List<Profile> players = new LinkedList<>();
-                final long time = new Date().getTime();
-                for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
-                    final Profile profile = entry.getKey();
-                    final DelayData playerData = (DelayData) entry.getValue();
-                    if (time >= playerData.getTime() && checkConditions(profile)) {
-                        // don't complete the objective, it will throw CME/
-                        // store the player instead, complete later
-                        players.add(profile);
+        try {
+            runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    final List<Profile> players = new LinkedList<>();
+                    final long time = new Date().getTime();
+                    for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+                        final Profile profile = entry.getKey();
+                        final DelayData playerData = (DelayData) entry.getValue();
+                        if (time >= playerData.getTime() && checkConditions(profile)) {
+                            // don't complete the objective, it will throw CME/
+                            // store the player instead, complete later
+                            players.add(profile);
+                        }
+                    }
+                    for (final Profile profile : players) {
+                        completeObjective(profile);
                     }
                 }
-                for (final Profile profile : players) {
-                    completeObjective(profile);
-                }
-            }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, interval);
+            }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
+        } catch (final QuestException e) {
+            log.warn("Error while starting DelayObjective: " + e.getMessage(), e);
+        }
     }
 
     @Override

@@ -25,8 +25,8 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
         final List<String> names = instruction.getList();
         final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
 
-        final double deathRadiusAllPlayers = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
-        final double neutralDeathRadiusAllPlayers = instruction.getDouble(instruction.getOptional("neutralDeathRadiusAllPlayers"), 0);
+        final Variable<Number> deathRadiusAllPlayers = instruction.getVariable(instruction.getOptional("deathRadiusAllPlayers"), Argument.NUMBER, 0);
+        final Variable<Number> neutralDeathRadiusAllPlayers = instruction.getVariable(instruction.getOptional("neutralDeathRadiusAllPlayers"), Argument.NUMBER, 0);
 
         final Variable<Number> minMobLevel = instruction.getVariable(instruction.getOptional("minLevel", String.valueOf(Double.NEGATIVE_INFINITY)), Argument.NUMBER);
         final Variable<Number> maxMobLevel = instruction.getVariable(instruction.getOptional("maxLevel", String.valueOf(Double.POSITIVE_INFINITY)), Argument.NUMBER);

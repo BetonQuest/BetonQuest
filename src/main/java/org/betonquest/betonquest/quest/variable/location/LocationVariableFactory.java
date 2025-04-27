@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create location variables from {@link Instruction}s.
@@ -26,11 +28,11 @@ public class LocationVariableFactory implements PlayerVariableFactory {
             mode = LocationFormationMode.ULF_LONG;
         }
 
-        final int decimalPlaces;
+        final Variable<Number> decimalPlaces;
         if (instruction.hasNext()) {
-            decimalPlaces = instruction.getInt();
+            decimalPlaces = instruction.getVariable(Argument.NUMBER);
         } else {
-            decimalPlaces = 0;
+            decimalPlaces = new Variable<>(0);
         }
 
         return new OnlineVariableAdapter(new LocationVariable(mode, decimalPlaces));

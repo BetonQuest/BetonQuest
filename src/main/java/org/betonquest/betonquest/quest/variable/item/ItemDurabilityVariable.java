@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.variable.item;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -26,7 +27,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
     /**
      * The amount of digits displayed after comma.
      */
-    private final int digitsAfter;
+    private final Variable<Number> digitsAfter;
 
     /**
      * If the output should be multiplied with 100 and with a '%' in the end.
@@ -41,7 +42,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
      * @param digitsAfter the amount of digits displayed after comma
      * @param inPercent   if the output should be multiplied with 100 and with a '%' in the end
      */
-    public ItemDurabilityVariable(final EquipmentSlot slot, final boolean relative, final int digitsAfter, final boolean inPercent) {
+    public ItemDurabilityVariable(final EquipmentSlot slot, final boolean relative, final Variable<Number> digitsAfter, final boolean inPercent) {
         this.slot = slot;
         this.relative = relative;
         this.digitsAfter = digitsAfter;
@@ -57,7 +58,7 @@ public class ItemDurabilityVariable implements OnlineVariable {
         }
         final int durability = maxDurability - damageable.getDamage();
         if (relative && maxDurability != 0) {
-            String format = "%." + digitsAfter + 'f';
+            String format = "%." + digitsAfter.getValue(profile).intValue() + 'f';
             double value = (double) durability / maxDurability;
             if (inPercent) {
                 format += "%%";

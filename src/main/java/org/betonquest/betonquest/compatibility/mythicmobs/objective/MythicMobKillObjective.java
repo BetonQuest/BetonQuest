@@ -44,12 +44,12 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The radius in which any of the specified mobs dying will progress the objective for players.
      */
-    private final double deathRadiusAllPlayers;
+    private final Variable<Number> deathRadiusAllPlayers;
 
     /**
      * The radius in which any of the specified mobs dying without a killer will progress the objective for players.
      */
-    private final double neutralDeathRadiusAllPlayers;
+    private final Variable<Number> neutralDeathRadiusAllPlayers;
 
     /**
      * The text with which the mob must have been marked to count.
@@ -72,14 +72,16 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     public MythicMobKillObjective(final Instruction instruction, final Variable<Number> targetAmount, final List<String> names,
                                   final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
-                                  final double deathRadiusAllPlayers, final double neutralDeathRadiusAllPlayers, @Nullable final VariableIdentifier marked)
+                                  final Variable<Number> deathRadiusAllPlayers,
+                                  final Variable<Number> neutralDeathRadiusAllPlayers,
+                                  @Nullable final VariableIdentifier marked)
             throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.names = names;
         this.minMobLevel = minMobLevel;
         this.maxMobLevel = maxMobLevel;
-        this.deathRadiusAllPlayers = deathRadiusAllPlayers * deathRadiusAllPlayers;
-        this.neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayers * neutralDeathRadiusAllPlayers;
+        this.deathRadiusAllPlayers = deathRadiusAllPlayers;
+        this.neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayers;
         this.marked = marked;
     }
 
@@ -96,6 +98,10 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;
         }
+        final double deathRadius = deathRadiusAllPlayers.getValue(null).doubleValue();
+        final double neutralDeathRadius = neutralDeathRadiusAllPlayers.getValue(null).doubleValue();
+        final double deathRadiusAllPlayers = deathRadius * deathRadius;
+        final double neutralDeathRadiusAllPlayers = neutralDeathRadius * neutralDeathRadius;
         if (deathRadiusAllPlayers > 0) {
             executeForEveryoneInRange(event, deathRadiusAllPlayers, key);
         } else if (event.getKiller() instanceof Player) {
