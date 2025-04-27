@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
@@ -22,6 +23,6 @@ public class MenuVariable implements OnlineVariable {
         if (menu == null) {
             return "";
         }
-        return menu.getData().getTitle(profile);
+        return LegacyComponentSerializer.legacySection().serialize(menu.getTitle());
     }
 }

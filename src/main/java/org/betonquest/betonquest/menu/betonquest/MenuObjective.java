@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -101,7 +102,7 @@ public class MenuObjective extends Objective implements Listener {
                 return "";
             }
             try {
-                return menuData.getTitle(profile);
+                return LegacyComponentSerializer.legacySection().serialize(menuData.getTitle(profile));
             } catch (final QuestException e) {
                 log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);

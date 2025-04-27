@@ -29,10 +29,10 @@ These are general settings for customizing a menu.
 
 #### Required Settings
 
-| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                              |
-|:------------:|:---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Variables are supported. |
-|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                       |
+| Setting Name | <div style="width:160px">Example</div> | Description                                                                                                                                                                                     |
+|:------------:|:---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   `title`    | `title: "&6&lQuests"`                  | Will be displayed in the top left corner of your menu. You can use [color codes](https://minecraft.wiki/w/Formatting_codes) to color the title. Variables and defining languages are supported. |
+|   `height`   | `height: 3`                            | How many lines of slots your menu will have. Minimum 1, Maximum 6.                                                                                                                              |
 
 #### Optional Settings
 

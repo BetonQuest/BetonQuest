@@ -19,7 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Quest Canceler
     - Conversation
     - Plugin Messages / Translations
-    - Menu Items
+    - Menu Items & Title
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`
@@ -31,6 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - BlockSelector now supports variables when used in events, conditions, objectives
 - Variable support for all lists in events objectives and conditions for things like events conditions items and co.
 - `Menu Item` are now in the `menu_items` section, allowing references from multiple Menus
+- `Menu` title allows defining different messages
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
