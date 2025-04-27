@@ -3,22 +3,19 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.MessageParser;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
@@ -61,19 +58,9 @@ public class ConversationData {
     private final FeatureAPI featureAPI;
 
     /**
-     * Processor to create new variables.
+     * Message creator to parse messages.
      */
-    private final VariableProcessor variableProcessor;
-
-    /**
-     * Message parser to parse messages.
-     */
-    private final MessageParser messageParser;
-
-    /**
-     * Player data storage to get the player language.
-     */
-    private final PlayerDataStorage playerDataStorage;
+    private final ParsedSectionMessageCreator messageCreator;
 
     /**
      * The {@link QuestPackage} this conversation is in.
@@ -108,41 +95,28 @@ public class ConversationData {
     private final Map<String, ConversationOption> playerOptions;
 
     /**
-     * The language provider to get the default language.
-     */
-    private final LanguageProvider languageProvider;
-
-    /**
      * Loads conversation from package.
      *
-     * @param log               the custom logger for this class
-     * @param questTypeAPI      the quest type api
-     * @param featureAPI        the feature api
-     * @param variableProcessor the variable processor to create new variables
-     * @param messageParser     the message parser to parse messages
-     * @param playerDataStorage the player data storage to get the player language
-     * @param pack              the package of the conversation this data represents
-     * @param convSection       the configuration section of the conversation
-     * @param publicData        the external used data
-     * @param languageProvider  the language provider to get the default language
+     * @param log            the custom logger for this class
+     * @param questTypeAPI   the quest type api
+     * @param featureAPI     the feature api
+     * @param messageCreator the message creator to parse messages
+     * @param pack           the package of the conversation this data represents
+     * @param convSection    the configuration section of the conversation
+     * @param publicData     the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     public ConversationData(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
-                            final VariableProcessor variableProcessor, final MessageParser messageParser,
-                            final PlayerDataStorage playerDataStorage, final QuestPackage pack,
-                            final ConfigurationSection convSection, final PublicData publicData,
-                            final LanguageProvider languageProvider) throws QuestException {
+                            final ParsedSectionMessageCreator messageCreator, final QuestPackage pack,
+                            final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.featureAPI = featureAPI;
-        this.variableProcessor = variableProcessor;
-        this.messageParser = messageParser;
-        this.playerDataStorage = playerDataStorage;
         this.pack = pack;
         this.convName = publicData.convName();
         this.publicData = publicData;
-        this.languageProvider = languageProvider;
+        this.messageCreator = messageCreator;
 
         this.npcOptions = loadNpcOptions(convSection);
         this.startingOptions = loadStartingOptions(convSection);
@@ -527,7 +501,7 @@ public class ConversationData {
      * @param convIO        The conversation IO that should be used for this conversation.
      * @param interceptor   The interceptor that should be used for this conversation.
      */
-    public record PublicData(String convName, ParsedSectionMessage quester, boolean blockMovement,
+    public record PublicData(String convName, Message quester, boolean blockMovement,
                              List<EventID> finalEvents,
                              String convIO, String interceptor) {
 
@@ -570,7 +544,7 @@ public class ConversationData {
          * A map of the text of the option in different languages.
          */
         @Nullable
-        private final ParsedSectionMessage text;
+        private final Message text;
 
         /**
          * Conditions that must be met for the option to be available.
@@ -648,13 +622,13 @@ public class ConversationData {
         }
 
         @Nullable
-        private ParsedSectionMessage parseText(final ConfigurationSection conv) throws QuestException {
+        private Message parseText(final ConfigurationSection conv) throws QuestException {
             if (!conv.contains("text")) {
                 return null;
             }
-            final ParsedSectionMessage text;
+            final Message text;
             try {
-                text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, conv, "text", languageProvider);
+                text = messageCreator.parseFromSection(pack, conv, "text");
             } catch (final QuestException e) {
                 throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
             }

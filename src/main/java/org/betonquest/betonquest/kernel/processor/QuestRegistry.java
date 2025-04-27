@@ -1,15 +1,12 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
@@ -20,6 +17,7 @@ import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcess
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.schedule.EventScheduling;
 
 import java.util.Collection;
@@ -64,26 +62,23 @@ public record QuestRegistry(
      * @param coreQuestRegistry the core quest type processors
      * @param otherRegistries   the available other types
      * @param pluginMessage     the {@link PluginMessage} instance
-     * @param messageParser     the {@link MessageParser} instance
+     * @param messageCreator    the message creator to parse messages
      * @param profileProvider   the profile provider instance
-     * @param languageProvider  the language provider instance
      * @return the newly created QuestRegistry
      */
     public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                        final BetonQuest plugin, final CoreQuestRegistry coreQuestRegistry,
                                        final FeatureRegistries otherRegistries, final PluginMessage pluginMessage,
-                                       final MessageParser messageParser, final ProfileProvider profileProvider,
-                                       final LanguageProvider languageProvider) {
+                                       final ParsedSectionMessageCreator messageCreator, final ProfileProvider profileProvider) {
         final VariableProcessor variables = coreQuestRegistry.variables();
-        final PlayerDataStorage playerDataStorage = plugin.getPlayerDataStorage();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
-        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, messageParser, playerDataStorage, languageProvider);
-        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, messageParser, playerDataStorage, languageProvider);
-        final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin, variables, messageParser,
-                playerDataStorage, otherRegistries.conversationIO(), otherRegistries.interceptor(), languageProvider);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, messageCreator);
+        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, messageCreator);
+        final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
+                messageCreator, otherRegistries.conversationIO(), otherRegistries.interceptor());
         final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), otherRegistries.item());
-        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables, messageParser, playerDataStorage, languageProvider);
-        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, messageParser, playerDataStorage, languageProvider);
+        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), messageCreator);
+        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), messageCreator);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider);
         return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs);
     }

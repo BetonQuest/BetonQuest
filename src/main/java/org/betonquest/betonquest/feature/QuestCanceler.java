@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,7 +19,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Location;
@@ -55,7 +55,7 @@ public class QuestCanceler {
     /**
      * Names to displaying in different languages.
      */
-    private final ParsedSectionMessage names;
+    private final Message names;
 
     /**
      * Relevant data to cancel.
@@ -91,7 +91,7 @@ public class QuestCanceler {
      * @param cancelData    the relevant data to cancel a quest
      */
     public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
-                         final ParsedSectionMessage names, @Nullable final ItemID item,
+                         final Message names, @Nullable final ItemID item,
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.cancelerID = cancelerID;

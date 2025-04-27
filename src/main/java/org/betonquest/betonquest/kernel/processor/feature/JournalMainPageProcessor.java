@@ -1,17 +1,14 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.MessageParser;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -24,42 +21,19 @@ import java.util.List;
 public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID, JournalMainPageEntry> {
 
     /**
-     * Processor to create new variables.
+     * Message creator to parse messages.
      */
-    private final VariableProcessor variableProcessor;
-
-    /**
-     * Message parser to parse messages.
-     */
-    private final MessageParser messageParser;
-
-    /**
-     * Player data storage to get the player language.
-     */
-    private final PlayerDataStorage playerDataStorage;
-
-    /**
-     * The language provider to get the default language.
-     */
-    private final LanguageProvider languageProvider;
+    private final ParsedSectionMessageCreator messageCreator;
 
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log               the custom logger for this class
-     * @param variableProcessor the variable processor to create new variables
-     * @param messageParser     the message parser to parse messages
-     * @param playerDataStorage the player data storage to get the player language
-     * @param languageProvider  the language provider to get the default language
+     * @param log            the custom logger for this class
+     * @param messageCreator the message creator to parse messages
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                                    final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
-                                    final LanguageProvider languageProvider) {
+    public JournalMainPageProcessor(final BetonQuestLogger log, final ParsedSectionMessageCreator messageCreator) {
         super(log, "Journal Main Page", "journal_main_page");
-        this.variableProcessor = variableProcessor;
-        this.messageParser = messageParser;
-        this.playerDataStorage = playerDataStorage;
-        this.languageProvider = languageProvider;
+        this.messageCreator = messageCreator;
     }
 
     @Override
@@ -81,7 +55,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
                 }
             }
         }
-        final ParsedSectionMessage text = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack, section, "text", languageProvider);
+        final Message text = messageCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, List.copyOf(conditions), text);
     }
 

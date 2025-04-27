@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.feature;
 
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,5 +13,5 @@ import org.jetbrains.annotations.Nullable;
  * @param location the compass location
  * @param itemID   possible item id, when it should be displayed in the backpack
  */
-public record QuestCompass(ParsedSectionMessage names, Variable<Location> location, @Nullable ItemID itemID) {
+public record QuestCompass(Message names, Variable<Location> location, @Nullable ItemID itemID) {
 }
