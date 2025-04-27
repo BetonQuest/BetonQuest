@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -48,6 +49,11 @@ public class OpenedMenu implements Listener {
     private final Menu data;
 
     /**
+     * Resolved title to use.
+     */
+    private final Component resolvedTitle;
+
+    /**
      * Actual displayed Menu Items.
      */
     private MenuItem[] items;
@@ -75,8 +81,9 @@ public class OpenedMenu implements Listener {
 
         this.data = menu;
         this.onlineProfile = onlineProfile;
+        this.resolvedTitle = data.getTitle(onlineProfile);
         this.data.runOpenEvents(onlineProfile);
-        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(onlineProfile));
+        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), resolvedTitle);
         this.update(onlineProfile, inventory);
         onlineProfile.getPlayer().openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -284,5 +291,14 @@ public class OpenedMenu implements Listener {
         closed = true;
         //run close events
         this.data.runCloseEvents(onlineProfile);
+    }
+
+    /**
+     * Get the title of the opened menu.
+     *
+     * @return the resolved title
+     */
+    public Component getTitle() {
+        return resolvedTitle;
     }
 }

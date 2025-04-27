@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.menu;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -8,9 +10,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -147,8 +147,8 @@ public class Menu {
      * @return the title of the menu
      * @throws QuestException if the title cannot be parsed
      */
-    public String getTitle(final Profile profile) throws QuestException {
-        return ChatColor.translateAlternateColorCodes('&', data.title.getValue(profile));
+    public Component getTitle(final Profile profile) throws QuestException {
+        return data.title.asComponent(profile);
     }
 
     /**
@@ -207,7 +207,7 @@ public class Menu {
      * @param openEvents     Events which are fired when the menu is opened.
      * @param closeEvents    Events which are fired when the menu is closed.
      */
-    public record MenuData(Variable<String> title, int height, List<Slots> slots,
+    public record MenuData(Message title, int height, List<Slots> slots,
                            VariableList<ConditionID> openConditions,
                            VariableList<EventID> openEvents, VariableList<EventID> closeEvents) {
 

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -28,6 +29,11 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
      * Logger Factory to create Menu Item Logger.
      */
     protected final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * Message creator to parse messages.
+     */
+    protected final ParsedSectionMessageCreator messageCreator;
 
     /**
      * The QuestTypeAPI.
@@ -51,15 +57,17 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      * @param loggerFactory     the logger factory to class specific loggers with
+     * @param messageCreator    the message creator to parse messages
      * @param variableProcessor the variable resolver
      * @param questTypeAPI      the QuestTypeAPI
      * @param featureAPI        the Feature API
      */
     public RPGMenuProcessor(final BetonQuestLogger log, final String readable, final String internal,
-                            final BetonQuestLoggerFactory loggerFactory, final VariableProcessor variableProcessor,
-                            final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI) {
+                            final BetonQuestLoggerFactory loggerFactory, final ParsedSectionMessageCreator messageCreator,
+                            final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI) {
         super(log, readable, internal);
         this.loggerFactory = loggerFactory;
+        this.messageCreator = messageCreator;
         this.questTypeAPI = questTypeAPI;
         this.variableProcessor = variableProcessor;
         this.featureAPI = featureAPI;

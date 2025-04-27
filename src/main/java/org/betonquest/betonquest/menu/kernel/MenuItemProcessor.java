@@ -1,15 +1,13 @@
 package org.betonquest.betonquest.menu.kernel;
 
-import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.MessageParser;
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
-import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
@@ -20,7 +18,7 @@ import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.MenuItem;
 import org.betonquest.betonquest.menu.MenuItemID;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -34,21 +32,6 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     private static final String CONFIG_TEXT = "text";
 
     /**
-     * The Message parser.
-     */
-    private final MessageParser messageParser;
-
-    /**
-     * Storage for Player Data.
-     */
-    private final PlayerDataStorage playerDataStorage;
-
-    /**
-     * Language Provider to create item descriptions.
-     */
-    private final LanguageProvider languageProvider;
-
-    /**
      * Config to load menu options from.
      */
     private final ConfigAccessor config;
@@ -58,21 +41,16 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param messageParser     the message parser
-     * @param playerDataStorage the player data storage
-     * @param languageProvider  the language provider to create item descriptions
+     * @param messageCreator    the message creator to parse messages
      * @param questTypeAPI      the QuestTypeAPI
      * @param config            the config to load menu item options from
      * @param variableProcessor the variable resolver
      * @param featureAPI        the Feature API
      */
-    public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final MessageParser messageParser,
-                             final PlayerDataStorage playerDataStorage, final LanguageProvider languageProvider, final QuestTypeAPI questTypeAPI,
+    public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                             final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
                              final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureAPI featureAPI) {
-        super(log, "Menu Item", "menu_items", loggerFactory, variableProcessor, questTypeAPI, featureAPI);
-        this.messageParser = messageParser;
-        this.playerDataStorage = playerDataStorage;
-        this.languageProvider = languageProvider;
+        super(log, "Menu Item", "menu_items", loggerFactory, messageCreator, variableProcessor, questTypeAPI, featureAPI);
         this.config = config;
     }
 
@@ -83,10 +61,9 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final String amountString = GlobalVariableResolver.resolve(pack, section.getString("amount"));
         final Variable<Number> amount = amountString == null ? new Variable<>(1) : new Variable<>(variableProcessor, pack, amountString, Argument.NUMBER);
         final Item item = new Item(featureAPI, new ItemID(pack, itemString), amount);
-        final ParsedSectionMessage descriptions;
+        final Message descriptions;
         if (section.contains(CONFIG_TEXT)) {
-            descriptions = new ParsedSectionMessage(variableProcessor, messageParser, playerDataStorage, pack,
-                    section, CONFIG_TEXT, languageProvider);
+            descriptions = messageCreator.parseFromSection(pack, section, CONFIG_TEXT);
         } else {
             log.debug(pack, "No description for menu item '" + pack.getQuestPath() + "." + section.getName() + "'");
             descriptions = null;

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.menu.betonquest.MenuConditionFactory;
 import org.betonquest.betonquest.menu.betonquest.MenuEventFactory;
@@ -20,6 +22,7 @@ import org.betonquest.betonquest.menu.event.MenuOpenEvent;
 import org.betonquest.betonquest.menu.kernel.MenuItemListener;
 import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.menu.kernel.MenuProcessor;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -68,14 +71,17 @@ public class RPGMenu {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the factory to crete new custom logger instances
-     * @param menuItemProcessor the processor to create and store Menu Items
+     * @param pluginConfig      the plugin config
+     * @param variableProcessor the variable processor instance to get and create variables
      * @param pluginMessage     the plugin message instance
+     * @param messageCreator    the message creator to parse messages
      * @param questTypeAPI      the Quest Type API
      * @param featureAPI        the Feature API
      * @param profileProvider   the profile provider instance
      */
-    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final MenuItemProcessor menuItemProcessor,
-                   final PluginMessage pluginMessage, final QuestTypeAPI questTypeAPI,
+    public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                   final ConfigAccessor pluginConfig, final VariableProcessor variableProcessor,
+                   final PluginMessage pluginMessage, final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
                    final FeatureAPI featureAPI, final ProfileProvider profileProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
@@ -91,9 +97,10 @@ public class RPGMenu {
         this.pluginCommand = new RPGMenuCommand(loggerFactory.create(RPGMenuCommand.class), this);
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
-        this.menuItemProcessor = menuItemProcessor;
-        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, questTypeAPI,
-                betonQuest.getVariableProcessor(), featureAPI, this, profileProvider);
+        this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
+                messageCreator, questTypeAPI, pluginConfig, variableProcessor, featureAPI);
+        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, messageCreator,
+                questTypeAPI, variableProcessor, featureAPI, this, profileProvider);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);
         server.getPluginManager().registerEvents(menuItemListener, betonQuest);
