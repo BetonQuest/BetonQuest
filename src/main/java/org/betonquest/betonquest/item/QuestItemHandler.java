@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -112,7 +113,7 @@ public class QuestItemHandler implements Listener {
      *
      * @param event the inventory click event, attempting moving items
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof final Player player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -135,7 +136,7 @@ public class QuestItemHandler implements Listener {
                 if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
                     if (isJournalSlotLocked()) {
                         final ItemStack swapped;
-                        if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                        if (event.getHotbarButton() == -1 && ClickType.SWAP_OFFHAND == event.getClick()) {
                             swapped = event.getWhoClicked().getInventory().getItemInOffHand();
                         } else {
                             swapped = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
@@ -146,7 +147,7 @@ public class QuestItemHandler implements Listener {
                         }
                     }
                 } else {
-                    if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                    if (event.getHotbarButton() == -1 && ClickType.SWAP_OFFHAND == event.getClick()) {
                         item = event.getWhoClicked().getInventory().getItemInOffHand();
                     } else {
                         item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
@@ -233,16 +234,16 @@ public class QuestItemHandler implements Listener {
         // this prevents the journal from dropping on death by removing it from
         // the list of drops
         final List<ItemStack> drops = event.getDrops();
-        final ListIterator<ItemStack> litr = drops.listIterator();
-        while (litr.hasNext()) {
-            final ItemStack stack = litr.next();
+        final ListIterator<ItemStack> listIterator = drops.listIterator();
+        while (listIterator.hasNext()) {
+            final ItemStack stack = listIterator.next();
             if (Journal.isJournal(onlineProfile, stack)) {
-                litr.remove();
+                listIterator.remove();
             }
             // remove all quest items and add them to backpack
             if (Utils.isQuestItem(stack)) {
                 dataStorage.get(onlineProfile).addItem(stack.clone(), stack.getAmount());
-                litr.remove();
+                listIterator.remove();
             }
         }
     }
@@ -399,9 +400,8 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final ItemStack itemMain = event.getPlayer().getInventory().getItemInMainHand();
-        final ItemStack itemOff = event.getPlayer().getInventory().getItemInOffHand();
-        if (Utils.isQuestItem(itemMain) || Utils.isQuestItem(itemOff)) {
+        final ItemStack item = event.getPlayer().getInventory().getItem(event.getHand());
+        if (Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
     }
