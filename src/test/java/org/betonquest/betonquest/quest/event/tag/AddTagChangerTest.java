@@ -2,12 +2,11 @@ package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.TagData;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -15,12 +14,11 @@ import static org.mockito.Mockito.*;
  * Test {@link AddTagChanger}.
  */
 @ExtendWith(MockitoExtension.class)
-class AddTagChangerTest extends TagFixture {
+class AddTagChangerTest {
 
     @Test
     void testAddTagChangerAddNoTags(@Mock final TagData tagData) throws QuestException {
-        final AddTagChanger changer = new AddTagChanger(List.of());
-
+        final AddTagChanger changer = new AddTagChanger(new VariableList<>());
         changer.changeTags(tagData, null);
         verifyNoInteractions(tagData);
     }
@@ -28,7 +26,7 @@ class AddTagChangerTest extends TagFixture {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAddTagChangerAddMultipleTags(@Mock final TagData tagData) throws QuestException {
-        final AddTagChanger changer = new AddTagChanger(createIdList("tag-1", "tag-2", "tag-3"));
+        final AddTagChanger changer = new AddTagChanger(new VariableList<>("tag-1", "tag-2", "tag-3"));
 
         changer.changeTags(tagData, null);
         verify(tagData).addTag("tag-1");

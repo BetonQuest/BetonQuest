@@ -9,7 +9,8 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.Locale;
 
@@ -46,7 +47,7 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
-        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
+        final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final String number = instruction.next();
         final String action = instruction.getOptional("action");
         if (action != null) {

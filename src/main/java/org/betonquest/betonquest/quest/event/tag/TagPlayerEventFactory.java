@@ -9,10 +9,10 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -51,7 +51,7 @@ public class TagPlayerEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final List<VariableIdentifier> tags = instruction.getList(VariableIdentifier::new);
+        final VariableList<String> tags = instruction.get(PackageArgument.ofList(PackageArgument.IDENTIFIER));
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
             case "delete", "del" -> createDeleteTagEvent(tags);
@@ -62,7 +62,7 @@ public class TagPlayerEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final List<VariableIdentifier> tags = instruction.getList(VariableIdentifier::new);
+        final VariableList<String> tags = instruction.get(PackageArgument.ofList(PackageArgument.IDENTIFIER));
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> new DoNothingPlayerlessEvent();
             case "delete", "del" -> new DeleteTagPlayerlessEvent(dataStorage, saver, profileProvider, tags);
@@ -70,12 +70,12 @@ public class TagPlayerEventFactory implements PlayerEventFactory, PlayerlessEven
         };
     }
 
-    private TagEvent createAddTagEvent(final List<VariableIdentifier> tags) {
+    private TagEvent createAddTagEvent(final VariableList<String> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(dataStorage::getOffline, tagChanger);
     }
 
-    private TagEvent createDeleteTagEvent(final List<VariableIdentifier> tags) {
+    private TagEvent createDeleteTagEvent(final VariableList<String> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(dataStorage::getOffline, tagChanger);
     }

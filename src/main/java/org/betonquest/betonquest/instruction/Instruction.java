@@ -11,7 +11,6 @@ import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
 import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
-import org.betonquest.betonquest.instruction.argument.parser.ListParser;
 import org.betonquest.betonquest.instruction.argument.parser.PackageParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
@@ -29,7 +28,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, ListParser, PackageParser, ItemParser {
+public class Instruction implements InstructionParts, ArgumentParser, PackageParser, ItemParser {
     /**
      * The quest package that this instruction belongs to.
      */

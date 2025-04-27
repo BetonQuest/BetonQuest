@@ -484,7 +484,7 @@ public class Backpack implements Listener {
             for (final Map.Entry<CompassID, QuestCompass> entry : featureAPI.getCompasses().entrySet()) {
                 final CompassID compassId = entry.getKey();
                 try {
-                    if (playerData.hasTag(featureAPI.getCompassTag(compassId).getValue(onlineProfile))) {
+                    if (playerData.hasTag(featureAPI.getCompassTag(compassId))) {
                         compasses.put(counter, entry.getValue());
                         counter++;
                     }

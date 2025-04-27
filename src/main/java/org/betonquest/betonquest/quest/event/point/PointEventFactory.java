@@ -8,8 +8,8 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -62,7 +62,7 @@ public class PointEventFactory implements PlayerEventFactory {
                 throw new QuestException("Unknown modification action: " + action, e);
             }
         }
-        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
+        final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         String number = instruction.next();
         if (!number.isEmpty() && number.charAt(0) == '*') {
             type = Point.MULTIPLY;

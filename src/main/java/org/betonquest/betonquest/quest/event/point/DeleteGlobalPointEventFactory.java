@@ -8,7 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for the delete global point event.
@@ -40,7 +41,7 @@ public class DeleteGlobalPointEventFactory implements PlayerEventFactory, Player
     }
 
     private NullableEventAdapter createDeleteGlobalPointEvent(final Instruction instruction) throws QuestException {
-        final VariableIdentifier category = instruction.get(VariableIdentifier::new);
+        final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         return new NullableEventAdapter(new DeleteGlobalPointEvent(globalData, category));
     }
 }

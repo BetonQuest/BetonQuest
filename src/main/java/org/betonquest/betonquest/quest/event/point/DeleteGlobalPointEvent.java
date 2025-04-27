@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.GlobalData;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,7 +14,7 @@ public class DeleteGlobalPointEvent implements NullableEvent {
     /**
      * The category to delete.
      */
-    private final VariableIdentifier category;
+    private final Variable<String> category;
 
     /**
      * The global data.
@@ -27,7 +27,7 @@ public class DeleteGlobalPointEvent implements NullableEvent {
      * @param globalData the global data
      * @param category   the category to delete
      */
-    public DeleteGlobalPointEvent(final GlobalData globalData, final VariableIdentifier category) {
+    public DeleteGlobalPointEvent(final GlobalData globalData, final Variable<String> category) {
         this.category = category;
         this.globalData = globalData;
     }

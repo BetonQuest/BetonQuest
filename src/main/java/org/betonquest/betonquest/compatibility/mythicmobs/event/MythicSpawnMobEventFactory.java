@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
@@ -64,7 +64,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         }
         final boolean targetPlayer = instruction.hasArgument("target");
         final String markedString = instruction.getOptional("marked");
-        final VariableIdentifier marked = instruction.get(markedString, VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, privateMob, targetPlayer, marked), data);
     }
 
@@ -79,7 +79,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Variable<Number> level = instruction.getVariable(mobParts[1], Argument.NUMBER);
         final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         final String markedString = instruction.getOptional("marked");
-        final VariableIdentifier marked = instruction.get(markedString, VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);
     }
 }

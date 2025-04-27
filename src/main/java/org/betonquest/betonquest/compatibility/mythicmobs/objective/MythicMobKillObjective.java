@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -60,7 +59,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * The text with which the mob must have been marked to count.
      */
     @Nullable
-    private final VariableIdentifier marked;
+    private final Variable<String> marked;
 
     /**
      * Creates a new MythicMobKillObjective.
@@ -79,7 +78,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                                   final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
                                   final Variable<Number> deathRadiusAllPlayers,
                                   final Variable<Number> neutralDeathRadiusAllPlayers,
-                                  @Nullable final VariableIdentifier marked)
+                                  @Nullable final Variable<String> marked)
             throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.names = names;

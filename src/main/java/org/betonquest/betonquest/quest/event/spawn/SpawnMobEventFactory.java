@@ -9,9 +9,9 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.types.EnumParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -64,7 +64,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final String nameString = instruction.getOptional("name");
         final Variable<String> name = nameString == null ? null : instruction.getVariable(Utils.format(
                 nameString, true, false), Argument.STRING);
-        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
         final Item helmet = getItem(instruction, "h");
         final Item chestplate = getItem(instruction, "c");
         final Item leggings = getItem(instruction, "l");

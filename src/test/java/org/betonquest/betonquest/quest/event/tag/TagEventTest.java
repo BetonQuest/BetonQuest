@@ -14,7 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link TagEvent}
+ * Test {@link TagEvent}.
  */
 @ExtendWith(MockitoExtension.class)
 class TagEventTest {
