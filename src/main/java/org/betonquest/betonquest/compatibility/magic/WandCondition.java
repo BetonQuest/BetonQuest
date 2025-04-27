@@ -58,7 +58,7 @@ public class WandCondition implements OnlineCondition {
      * @param spells the required spells on the wand
      * @param amount optional required wand amount
      */
-    public WandCondition(final MagicAPI api, final CheckType type, @Nullable final Variable<String> name,
+    public WandCondition(final MagicAPI api, final Variable<CheckType> type, @Nullable final Variable<String> name,
                          final Map<String, Variable<Number>> spells, @Nullable final Variable<Number> amount) {
         this.api = api;
         this.name = name;
@@ -68,8 +68,8 @@ public class WandCondition implements OnlineCondition {
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.SwitchDensity"})
-    private QuestBiPredicate<Player, Profile> getCheck(final CheckType checkType) {
-        return (player, profile) -> switch (checkType) {
+    private QuestBiPredicate<Player, Profile> getCheck(final Variable<CheckType> checkType) {
+        return (player, profile) -> switch (checkType.getValue(profile)) {
             case LOST -> {
                 for (final LostWand lost : api.getLostWands()) {
                     final Player owner = Bukkit.getPlayer(UUID.fromString(lost.getOwnerId()));

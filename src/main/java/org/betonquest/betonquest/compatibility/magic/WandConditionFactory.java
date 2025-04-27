@@ -58,7 +58,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final CheckType type = instruction.getEnum(CheckType.class);
+        final Variable<CheckType> type = instruction.getVariable(Argument.ENUM(CheckType.class));
         final Map<String, Variable<Number>> spells = parseSpells(instruction.getList(instruction.getOptional("spells")), instruction.getPackage());
         final Variable<String> name = instruction.getVariable(instruction.getOptional("name"), Argument.STRING);
         final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);

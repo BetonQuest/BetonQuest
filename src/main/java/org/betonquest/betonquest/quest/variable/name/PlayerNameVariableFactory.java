@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create {@link PlayerNameVariable}s from {@link Instruction}s.
@@ -19,11 +21,11 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final PlayerNameType type;
+        final Variable<PlayerNameType> type;
         if (instruction.hasNext()) {
-            type = instruction.getEnum(PlayerNameType.class);
+            type = instruction.getVariable(Argument.ENUM(PlayerNameType.class));
         } else {
-            type = PlayerNameType.NAME;
+            type = new Variable<>(PlayerNameType.NAME);
         }
         return new PlayerNameVariable(type);
     }

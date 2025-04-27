@@ -26,7 +26,7 @@ public class SpawnMobEvent implements NullableEvent {
     /**
      * The type of mob to spawn.
      */
-    private final EntityType type;
+    private final Variable<EntityType> type;
 
     /**
      * The equipment and drops of the mob.
@@ -61,11 +61,8 @@ public class SpawnMobEvent implements NullableEvent {
      * @param marked           the marked variable
      * @throws QuestException if the entity type is not a mob
      */
-    public SpawnMobEvent(final Variable<Location> variableLocation, final EntityType type, final Equipment equipment,
+    public SpawnMobEvent(final Variable<Location> variableLocation, final Variable<EntityType> type, final Equipment equipment,
                          final Variable<Number> amount, @Nullable final Variable<String> name, @Nullable final VariableIdentifier marked) throws QuestException {
-        if (type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass())) {
-            throw new QuestException("The entity type must be a mob");
-        }
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;
@@ -79,7 +76,7 @@ public class SpawnMobEvent implements NullableEvent {
         final Location location = variableLocation.getValue(profile);
         final int numberOfMob = amount.getValue(profile).intValue();
         for (int i = 0; i < numberOfMob; i++) {
-            final Mob mob = (Mob) location.getWorld().spawnEntity(location, type);
+            final Mob mob = (Mob) location.getWorld().spawnEntity(location, type.getValue(profile));
             this.equipment.addEquipment(mob);
             this.equipment.addDrops(mob, profile);
             if (this.name != null) {

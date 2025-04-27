@@ -56,7 +56,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final HeroesClassType classType = instruction.getEnum(HeroesClassType.class);
+        final Variable<HeroesClassType> classType = instruction.getVariable(Argument.ENUM(HeroesClassType.class));
         final Variable<String> heroClass = instruction.getVariable(Argument.STRING);
         final Variable<Number> level = instruction.getVariable(instruction.getOptional("level"), Argument.NUMBER);
 

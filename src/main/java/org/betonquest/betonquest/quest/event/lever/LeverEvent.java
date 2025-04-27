@@ -21,7 +21,7 @@ public class LeverEvent implements NullableEvent {
     /**
      * The type of state to set the lever to.
      */
-    private final StateType stateType;
+    private final Variable<StateType> stateType;
 
     /**
      * The location of the lever.
@@ -34,7 +34,7 @@ public class LeverEvent implements NullableEvent {
      * @param stateType the type of state to set the lever to
      * @param location  the location of the lever
      */
-    public LeverEvent(final StateType stateType, final Variable<Location> location) {
+    public LeverEvent(final Variable<StateType> stateType, final Variable<Location> location) {
         this.stateType = stateType;
         this.location = location;
     }
@@ -49,7 +49,7 @@ public class LeverEvent implements NullableEvent {
         }
 
         final Switch lever = (Switch) block.getBlockData();
-        lever.setPowered(stateType.apply(lever.isPowered()));
+        lever.setPowered(stateType.getValue(profile).apply(lever.isPowered()));
         block.setBlockData(lever);
         updateBlocksAround(block, lever);
     }

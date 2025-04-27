@@ -26,12 +26,12 @@ public class ItemDurabilityEvent implements OnlineEvent {
     /**
      * The slot to target.
      */
-    private final EquipmentSlot slot;
+    private final Variable<EquipmentSlot> slot;
 
     /**
      * The point type, how the durability should be modified.
      */
-    private final Point modification;
+    private final Variable<Point> modification;
 
     /**
      * The amount of the modification.
@@ -63,7 +63,9 @@ public class ItemDurabilityEvent implements OnlineEvent {
      * @param ignoreEvents      whether the bukkit events should be ignored or called
      * @param random            to use for the durability calculation
      */
-    public ItemDurabilityEvent(final EquipmentSlot slot, final Point modification, final Variable<Number> amount, final boolean ignoreUnbreakable, final boolean ignoreEvents, final Random random) {
+    public ItemDurabilityEvent(final Variable<EquipmentSlot> slot, final Variable<Point> modification,
+                               final Variable<Number> amount, final boolean ignoreUnbreakable,
+                               final boolean ignoreEvents, final Random random) {
         this.slot = slot;
         this.modification = modification;
         this.amount = amount;
@@ -76,29 +78,31 @@ public class ItemDurabilityEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final EntityEquipment equipment = player.getEquipment();
-        final ItemStack itemStack = equipment.getItem(slot);
+        final ItemStack itemStack = equipment.getItem(slot.getValue(profile));
         if (itemStack.getType().isAir() || !(itemStack.getItemMeta() instanceof final Damageable damageable)) {
             return;
         }
         if (damageable.isUnbreakable() && !ignoreUnbreakable) {
             return;
         }
+        final Point resolvedModification = modification.getValue(profile);
         final double value = amount.getValue(profile).doubleValue();
         if (value == 0) {
-            if (modification == Point.SET || modification == Point.MULTIPLY) {
+            if (resolvedModification == Point.SET || resolvedModification == Point.MULTIPLY) {
                 processBreak(player, itemStack, damageable);
             }
             return;
         }
-        processDamage(player, itemStack, damageable, value);
+        processDamage(player, itemStack, damageable, value, resolvedModification);
     }
 
-    private void processDamage(final Player player, final ItemStack itemStack, final Damageable damageable, final double value) {
+    private void processDamage(final Player player, final ItemStack itemStack, final Damageable damageable,
+                               final double value, final Point resolvedModification) {
         final int maxDurability = itemStack.getType().getMaxDurability();
         final int oldDamage = damageable.getDamage();
         final int actualDurability = maxDurability - oldDamage;
 
-        final int newDurability = modification.modify(actualDurability, value);
+        final int newDurability = resolvedModification.modify(actualDurability, value);
         final int newDamage = maxDurability - newDurability;
         final int damageDifference = newDamage - oldDamage;
 

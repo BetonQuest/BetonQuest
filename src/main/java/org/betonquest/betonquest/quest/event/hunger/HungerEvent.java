@@ -13,7 +13,7 @@ public class HungerEvent implements OnlineEvent {
     /**
      * The hunger type, how the amount will be applied to the players hunger.
      */
-    private final Hunger hunger;
+    private final Variable<Hunger> hunger;
 
     /**
      * The amount of hunger to apply.
@@ -26,7 +26,7 @@ public class HungerEvent implements OnlineEvent {
      * @param hunger the hunger type
      * @param amount the amount of hunger to apply
      */
-    public HungerEvent(final Hunger hunger, final Variable<Number> amount) {
+    public HungerEvent(final Variable<Hunger> hunger, final Variable<Number> amount) {
         this.hunger = hunger;
         this.amount = amount;
     }
@@ -34,6 +34,6 @@ public class HungerEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
-        player.setFoodLevel(hunger.calculate(player, amount.getValue(profile).intValue()));
+        player.setFoodLevel(hunger.getValue(profile).calculate(player, amount.getValue(profile).intValue()));
     }
 }
