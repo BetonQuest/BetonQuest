@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,10 +17,6 @@ import org.bukkit.event.Listener;
  * Objective that tracks the leave of a player from a specific job.
  */
 public class LeaveJobObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Job to leave.
@@ -32,13 +27,11 @@ public class LeaveJobObjective extends Objective implements Listener {
      * Constructor for the LeaveJobObjective.
      *
      * @param instruction the instruction of the objective
-     * @param log         the logger for this objective
      * @param job         the job to leave
      * @throws QuestException if the instruction is invalid
      */
-    public LeaveJobObjective(final Instruction instruction, final BetonQuestLogger log, final VariableJob job) throws QuestException {
+    public LeaveJobObjective(final Instruction instruction, final VariableJob job) throws QuestException {
         super(instruction);
-        this.log = log;
         this.job = job;
     }
 
@@ -50,13 +43,11 @@ public class LeaveJobObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsLeaveEvent(final JobsLeaveEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer().getPlayer());
-        try {
+        qeHandler.handle(() -> {
             if (event.getJob().isSame(this.job.getValue(onlineProfile)) && containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Exception while processing jobs LeaveJob Objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     @Override
