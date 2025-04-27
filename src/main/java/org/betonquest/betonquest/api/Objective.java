@@ -15,6 +15,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.IDArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Server;
@@ -122,7 +123,7 @@ public abstract class Objective {
         persistent = instruction.hasArgument("persistent");
         events = instruction.get(instruction.getOptional("events", ""), IDArgument.ofList(EventID::new));
         conditions = instruction.get(instruction.getOptional("consitions", ""), IDArgument.ofList(ConditionID::new));
-        final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
+        final int customNotifyInterval = instruction.getVariable(instruction.getOptional("notify"), Argument.NUMBER, 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
     }
