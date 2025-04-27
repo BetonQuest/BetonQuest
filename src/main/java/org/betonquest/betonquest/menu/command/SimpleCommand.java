@@ -23,9 +23,11 @@ import java.util.List;
 /**
  * Abstract class to simplify creation of commands and implementation of tab complete.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
 
+    /**
+     * Amount of minimal arguments.
+     */
     public final int minimalArgs;
 
     /**
@@ -33,14 +35,30 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     protected final BetonQuestLogger log;
 
+    /**
+     * Required permission to use the command.
+     */
     @Nullable
     private final Permission permission;
 
+    /**
+     * Command map to un-/register command in.
+     */
     @Nullable
     private CommandMap commandMap;
 
+    /**
+     * Potential help display string.
+     */
     private String usage = "null";
 
+    /**
+     * Create a new simple command.
+     *
+     * @param log         the custom logger instance for this class
+     * @param name        the command name
+     * @param minimalArgs the minimum amount of required arguments
+     */
     public SimpleCommand(final BetonQuestLogger log, final String name, final int minimalArgs) {
         super(name);
         this.log = log;
@@ -48,7 +66,17 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         this.permission = null;
     }
 
-    public SimpleCommand(final BetonQuestLogger log, final String name, final Permission reqPermission, final int minimalArgs, final String... alises) {
+    /**
+     * Create a new simple command.
+     *
+     * @param log           the custom logger instance for this class
+     * @param name          the command name
+     * @param reqPermission the required permission to use the command
+     * @param minimalArgs   the minimum amount of required arguments
+     * @param alises        the aliases for the command
+     */
+    public SimpleCommand(final BetonQuestLogger log, final String name, final Permission reqPermission,
+                         final int minimalArgs, final String... alises) {
         super(name, "", "", Arrays.asList(alises));
         this.log = log;
         this.minimalArgs = minimalArgs;
@@ -158,10 +186,25 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         return BetonQuest.getInstance();
     }
 
+    /**
+     * Sends the resolved message from plugin message string.
+     *
+     * @param sender       the sender to get resolve the message and send it to
+     * @param message      the message string to resolve
+     * @param replacements the message replacements
+     */
     protected void sendMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
         sender.sendMessage(getMessage(sender, message, replacements));
     }
 
+    /**
+     * Get the resolved message from plugin message string.
+     *
+     * @param sender       the sender to get resolve the message
+     * @param message      the message string to resolve
+     * @param replacements the message replacements
+     * @return the resolved message component
+     */
     protected Component getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
         final PluginMessage pluginMessage = getPlugin().getPluginMessage();
         final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getProfileProvider().getProfile(player) : null;

@@ -26,7 +26,6 @@ import java.util.UUID;
 /**
  * Class representing a menu which is currently displayed to a player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class OpenedMenu implements Listener {
     /**
      * Hashmap containing all currently opened menus.
@@ -38,14 +37,34 @@ public class OpenedMenu implements Listener {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Online Profile the menu is opened for.
+     */
     private final OnlineProfile onlineProfile;
 
+    /**
+     * Menu which is opened.
+     */
     private final Menu data;
 
+    /**
+     * Actual displayed Menu Items.
+     */
     private MenuItem[] items;
 
+    /**
+     * If the menu is closed.
+     */
     private boolean closed;
 
+    /**
+     * Create a new Opened Menu and opens it for the profile.
+     *
+     * @param log           the custom {@link BetonQuestLogger} instance for this class
+     * @param onlineProfile the online profile to open the menu
+     * @param menu          the menu to open
+     * @throws QuestException when the menu values cannot be resolved
+     */
     public OpenedMenu(final BetonQuestLogger log, final OnlineProfile onlineProfile, final Menu menu) throws QuestException {
         this.log = log;
         // If player already has an open menu we close it first
