@@ -19,21 +19,6 @@ public interface NumberParser extends Parser {
     Number parseNumber(String string, Argument<Number> argument) throws QuestException;
 
     /**
-     * Parses the string as int.
-     *
-     * @param string the string to parse as int
-     * @param def    the fallback to use when the string is null
-     * @return parsed int or fallback
-     * @throws QuestException when the string can't be parsed as int
-     */
-    default int getInt(@Nullable final String string, final int def) throws QuestException {
-        if (string == null) {
-            return def;
-        }
-        return parseNumber(string, Integer::parseInt).intValue();
-    }
-
-    /**
      * Parses {@link #next()} as double value.
      *
      * @return the parsed double
