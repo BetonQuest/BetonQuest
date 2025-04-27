@@ -39,7 +39,9 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @param predicate    the predicate to test if the NPC is the right one
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final Instruction instruction, final Variable<Number> targetAmount, final BetonQuestLogger log, final QuestBiPredicate<NPC, Profile> predicate) throws QuestException {
+    public NPCKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
+                            final BetonQuestLogger log, final QuestBiPredicate<NPC, Profile> predicate)
+            throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.log = log;
         this.predicate = predicate;
