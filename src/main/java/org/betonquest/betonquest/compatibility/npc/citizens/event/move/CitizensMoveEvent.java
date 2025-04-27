@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
@@ -21,7 +22,7 @@ public class CitizensMoveEvent implements PlayerEvent {
     /**
      * ID of the NPC to move.
      */
-    private final NpcID npcId;
+    private final Variable<NpcID> npcId;
 
     /**
      * Move Instance which handles the NPC movement.
@@ -41,7 +42,7 @@ public class CitizensMoveEvent implements PlayerEvent {
      * @param citizensMoveController the move instance which handles the NPC movement
      * @param moveData               the parsed data for the NPC movement
      */
-    public CitizensMoveEvent(final FeatureAPI featureAPI, final NpcID npcId, final CitizensMoveController citizensMoveController,
+    public CitizensMoveEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController,
                              final CitizensMoveController.MoveData moveData) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
@@ -51,7 +52,7 @@ public class CitizensMoveEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId, profile);
+        final Npc<?> bqNpc = featureAPI.getNpc(npcId.getValue(profile), profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use Citizens MoveEvent for non Citizens NPC");
         }

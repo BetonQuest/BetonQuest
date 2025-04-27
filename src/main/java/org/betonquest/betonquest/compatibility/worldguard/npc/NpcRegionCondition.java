@@ -22,7 +22,7 @@ public class NpcRegionCondition implements NullableCondition {
     /**
      * The Npc id.
      */
-    private final NpcID npcId;
+    private final Variable<NpcID> npcId;
 
     /**
      * The region name where the Npc should be.
@@ -36,7 +36,7 @@ public class NpcRegionCondition implements NullableCondition {
      * @param npcId      the npc id, null or positive
      * @param region     the name of the region where the NPC should be
      */
-    public NpcRegionCondition(final FeatureAPI featureAPI, final NpcID npcId, final Variable<String> region) {
+    public NpcRegionCondition(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final Variable<String> region) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.region = region;
@@ -44,6 +44,6 @@ public class NpcRegionCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return WorldGuardIntegrator.isInsideRegion(featureAPI.getNpc(npcId, profile).getLocation(), region.getValue(profile));
+        return WorldGuardIntegrator.isInsideRegion(featureAPI.getNpc(npcId.getValue(profile), profile).getLocation(), region.getValue(profile));
     }
 }

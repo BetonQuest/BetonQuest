@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,17 +16,17 @@ public class IfElseEvent implements NullableEvent {
     /**
      * The condition to check.
      */
-    private final ConditionID condition;
+    private final Variable<ConditionID> condition;
 
     /**
      * The event to run if the condition is true.
      */
-    private final EventID event;
+    private final Variable<EventID> event;
 
     /**
      * The event to run if the condition is false.
      */
-    private final EventID elseEvent;
+    private final Variable<EventID> elseEvent;
 
     /**
      * Quest Type API.
@@ -40,7 +41,7 @@ public class IfElseEvent implements NullableEvent {
      * @param elseEvent    the event to run if the condition is false
      * @param questTypeAPI the Quest Type API
      */
-    public IfElseEvent(final ConditionID condition, final EventID event, final EventID elseEvent, final QuestTypeAPI questTypeAPI) {
+    public IfElseEvent(final Variable<ConditionID> condition, final Variable<EventID> event, final Variable<EventID> elseEvent, final QuestTypeAPI questTypeAPI) {
         this.condition = condition;
         this.event = event;
         this.elseEvent = elseEvent;
@@ -49,10 +50,10 @@ public class IfElseEvent implements NullableEvent {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        if (questTypeAPI.condition(profile, condition)) {
-            questTypeAPI.event(profile, event);
+        if (questTypeAPI.condition(profile, condition.getValue(profile))) {
+            questTypeAPI.event(profile, event.getValue(profile));
         } else {
-            questTypeAPI.event(profile, elseEvent);
+            questTypeAPI.event(profile, elseEvent.getValue(profile));
         }
     }
 }

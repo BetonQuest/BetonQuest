@@ -49,7 +49,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final NpcID npcId = instruction.getID(NpcID::new);
+        final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Number> distance = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new NpcDistanceCondition(featureAPI, npcId, distance),

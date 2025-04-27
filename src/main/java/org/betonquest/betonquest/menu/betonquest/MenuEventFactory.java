@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -46,7 +47,7 @@ public class MenuEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.getEnum(Operation.class);
-        final MenuID menuID = operation == Operation.OPEN ? instruction.getID(MenuID::new) : null;
+        final Variable<MenuID> menuID = operation == Operation.OPEN ? instruction.get(MenuID::new) : null;
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuEvent(rpgMenu, menuID),
                 loggerFactory.create(MenuEvent.class), instruction.getPackage()), data);
     }

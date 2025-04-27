@@ -432,7 +432,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", new LogoutObjectiveFactory());
         objectiveTypes.register("mobkill", new MobKillObjectiveFactory(loggerFactory));
-        objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory());
+        objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory(loggerFactory));
         objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
         objectiveTypes.register("password", new PasswordObjectiveFactory(loggerFactory));
         objectiveTypes.register("pickup", new PickupObjectiveFactory(loggerFactory));

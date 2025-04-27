@@ -30,7 +30,7 @@ public class VariableEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final ObjectiveID objectiveID = instruction.getID(ObjectiveID::new);
+        final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
         final Variable<String> key = instruction.getVariable(Argument.STRING);
         final Variable<String> value = instruction.getVariable(Argument.STRING);
         return new VariableEvent(questTypeAPI, objectiveID, key, value);

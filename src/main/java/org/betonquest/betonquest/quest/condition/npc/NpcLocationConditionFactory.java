@@ -53,7 +53,7 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     }
 
     private NullableConditionAdapter parseNpcLocationCondition(final Instruction instruction) throws QuestException {
-        final NpcID npcId = instruction.getID(NpcID::new);
+        final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
         final Variable<Number> radius = instruction.getVariable(Argument.NUMBER);
         return new NullableConditionAdapter(new NpcLocationCondition(featureAPI, npcId, location, radius));

@@ -1,30 +1,30 @@
 package org.betonquest.betonquest.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Interface for parsing {@link ID}s.
+ * Interface for parsing {@link PackageArgument}s.
  */
-public interface IDParser extends Parser {
+public interface PackageParser extends Parser {
 
     /**
-     * Parses {@link #getID(String, IDArgument)} with {@link #next()}.
+     * Parses {@link #get(String, PackageArgument)} with {@link #next()}.
      *
      * @param argument the argument to parse the ID
      * @param <T>      the specific ID
      * @return the parsed ID
      * @throws QuestException when there is no part left or no such id
      */
-    default <T extends ID> T getID(final IDArgument<T> argument) throws QuestException {
-        return getID(next(), argument);
+    default <T> Variable<T> get(final PackageArgument<T> argument) throws QuestException {
+        return get(next(), argument);
     }
 
     /**
-     * Parses the string as ID.
+     * Parses the string as {@link T}.
      *
      * @param string   the string to parse as ID
      * @param argument the argument to parse the ID
@@ -34,5 +34,5 @@ public interface IDParser extends Parser {
      */
     @Contract("!null, _ -> !null")
     @Nullable
-    <T extends ID> T getID(@Nullable String string, IDArgument<T> argument) throws QuestException;
+    <T> Variable<T> get(@Nullable String string, PackageArgument<T> argument) throws QuestException;
 }

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -49,13 +50,8 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    @SuppressWarnings("PMD.PrematureDeclaration")
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final NpcID npcId = instruction.getID(NpcID::new);
-        final Instruction npcInstruction = npcId.getInstruction();
-        if (!"citizens".equals(npcInstruction.getPart(0))) {
-            throw new QuestException("Cannot use non-Citizens NPC ID!");
-        }
+        final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
         final VariableList<Location> locations = instruction.get(Argument.ofList(Argument.LOCATION, VariableList.notEmptyChecker()));
         final Variable<Number> waitTicks = instruction.getVariable(instruction.getOptional("wait"), Argument.NUMBER, 0);
         final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), IDArgument.ofList(EventID::new));

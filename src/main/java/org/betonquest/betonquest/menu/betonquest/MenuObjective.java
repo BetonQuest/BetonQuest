@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -39,7 +40,7 @@ public class MenuObjective extends Objective implements Listener {
     /**
      * The menu to open.
      */
-    private final MenuID menuID;
+    private final Variable<MenuID> menuID;
 
     /**
      * Construct a new Menu Objective from Instruction.
@@ -50,7 +51,7 @@ public class MenuObjective extends Objective implements Listener {
      * @param menuID      the menu id to open
      * @throws QuestException if the menu id does not exist
      */
-    public MenuObjective(final Instruction instruction, final BetonQuestLogger log, final RPGMenu rpgMenu, final MenuID menuID) throws QuestException {
+    public MenuObjective(final Instruction instruction, final BetonQuestLogger log, final RPGMenu rpgMenu, final Variable<MenuID> menuID) throws QuestException {
         super(instruction);
         this.log = log;
         this.rpgMenu = rpgMenu;
@@ -68,7 +69,13 @@ public class MenuObjective extends Objective implements Listener {
         if (!containsPlayer(profile)) {
             return;
         }
-        if (!event.getMenu().equals(menuID)) {
+        try {
+            if (!event.getMenu().equals(menuID.getValue(profile))) {
+                return;
+            }
+        } catch (final QuestException e) {
+            log.debug(instruction.getPackage(), "Could not get menu variable value in '" + instruction.getID() + "' objective:"
+                    + e.getMessage(), e);
             return;
         }
         if (!checkConditions(profile)) {
@@ -95,7 +102,14 @@ public class MenuObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final Profile profile) {
         if (MENU_PROPERTY.equalsIgnoreCase(name)) {
-            final Menu menuData = rpgMenu.getMenu(menuID);
+            final Menu menuData;
+            try {
+                menuData = rpgMenu.getMenu(menuID.getValue(profile));
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
+                        + e.getMessage(), e);
+                return "";
+            }
             if (menuData == null) {
                 log.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
                         + "menu with id " + menuID + " isn't loaded");

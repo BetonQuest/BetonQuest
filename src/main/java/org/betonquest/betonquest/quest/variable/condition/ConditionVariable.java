@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Get the "fulfillment" status of a quest condition.
@@ -20,7 +21,7 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * Condition to check.
      */
-    private final ConditionID conditionId;
+    private final Variable<ConditionID> conditionId;
 
     /**
      * If variable should be in PAPI style.
@@ -40,7 +41,7 @@ public class ConditionVariable implements PlayerVariable {
      * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
      * @param questTypeAPI  the Quest Type API
      */
-    public ConditionVariable(final PluginMessage pluginMessage, final ConditionID conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI) {
+    public ConditionVariable(final PluginMessage pluginMessage, final Variable<ConditionID> conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;
@@ -49,7 +50,7 @@ public class ConditionVariable implements PlayerVariable {
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        if (questTypeAPI.condition(profile, conditionId)) {
+        if (questTypeAPI.condition(profile, conditionId.getValue(profile))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_met").asComponent(profile)) : "true";
         }
         return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_not_met").asComponent(profile)) : "false";

@@ -23,7 +23,7 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * The npc id.
      */
-    private final NpcID npcId;
+    private final Variable<NpcID> npcId;
 
     /**
      * The location to teleport the Npc to.
@@ -43,7 +43,7 @@ public class NpcTeleportEvent implements NullableEvent {
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportEvent(final FeatureAPI featureAPI, final NpcID npcId, final Variable<Location> location, final boolean spawn) {
+    public NpcTeleportEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final Variable<Location> location, final boolean spawn) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.location = location;
@@ -53,7 +53,7 @@ public class NpcTeleportEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
-        final Npc<?> npc = featureAPI.getNpc(npcId, profile);
+        final Npc<?> npc = featureAPI.getNpc(npcId.getValue(profile), profile);
         if (npc.isSpawned()) {
             npc.teleport(loc);
         } else if (spawn) {

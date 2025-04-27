@@ -17,7 +17,7 @@ public class StageCondition implements PlayerCondition {
     /**
      * The stage objective.
      */
-    private final ObjectiveID objectiveID;
+    private final Variable<ObjectiveID> objectiveID;
 
     /**
      * The target stage.
@@ -27,7 +27,7 @@ public class StageCondition implements PlayerCondition {
     /**
      * The compare operand between the numbers used for comparing.
      */
-    private final Operation operation;
+    private final Variable<Operation> operation;
 
     /**
      * Quest Type API.
@@ -42,8 +42,8 @@ public class StageCondition implements PlayerCondition {
      * @param targetStage  the target stage
      * @param operation    the operation
      */
-    public StageCondition(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final Variable<String> targetStage,
-                          final Operation operation) {
+    public StageCondition(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> targetStage,
+                          final Variable<Operation> operation) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.targetStage = targetStage;
@@ -52,11 +52,11 @@ public class StageCondition implements PlayerCondition {
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return operation.check(getFirst(profile), getSecond(profile));
+        return operation.getValue(profile).check(getFirst(profile), getSecond(profile));
     }
 
     private Double getFirst(final Profile profile) throws QuestException {
-        final StageObjective stage = getStageObjective();
+        final StageObjective stage = getStageObjective(objectiveID.getValue(profile));
         if (stage.getData(profile) == null) {
             return -1.0;
         }
@@ -68,7 +68,7 @@ public class StageCondition implements PlayerCondition {
     }
 
     private Double getSecond(final Profile profile) throws QuestException {
-        final StageObjective stage = getStageObjective();
+        final StageObjective stage = getStageObjective(objectiveID.getValue(profile));
         final String targetState = targetStage.getValue(profile);
         try {
             return (double) stage.getStageIndex(targetState);
@@ -77,7 +77,7 @@ public class StageCondition implements PlayerCondition {
         }
     }
 
-    private StageObjective getStageObjective() throws QuestException {
+    private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestException {
         if (questTypeAPI.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
