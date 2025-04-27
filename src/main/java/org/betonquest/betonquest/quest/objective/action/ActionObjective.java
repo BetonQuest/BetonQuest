@@ -34,7 +34,7 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * The action to check for.
      */
-    private final Click action;
+    private final Variable<Click> action;
 
     /**
      * The selector to check for the block.
@@ -82,7 +82,7 @@ public class ActionObjective extends Objective implements Listener {
      * @param slot        the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final Instruction instruction, final Click action,
+    public ActionObjective(final Instruction instruction, final Variable<Click> action,
                            @Nullable final Variable<BlockSelector> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
@@ -104,13 +104,13 @@ public class ActionObjective extends Objective implements Listener {
     @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (!containsPlayer(onlineProfile) || !action.match(event.getAction()) || slot != null && slot != event.getHand()) {
-            return;
-        }
-
-        final Block clickedBlock = event.getClickedBlock();
         qeHandler.handle(() -> {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            if (!containsPlayer(onlineProfile) || !action.getValue(onlineProfile).match(event.getAction()) || slot != null && slot != event.getHand()) {
+                return;
+            }
+
+            final Block clickedBlock = event.getClickedBlock();
             if (loc != null) {
                 final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
                 final Location location = loc.getValue(onlineProfile);

@@ -25,7 +25,7 @@ public class ShearObjective extends CountingObjective implements Listener {
      * The color of the sheep to shear.
      */
     @Nullable
-    private final DyeColor color;
+    private final Variable<DyeColor> color;
 
     /**
      * The name of the sheep to shear.
@@ -43,7 +43,7 @@ public class ShearObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public ShearObjective(final Instruction instruction, final Variable<Number> targetAmount, @Nullable final String name,
-                          @Nullable final DyeColor color) throws QuestException {
+                          @Nullable final Variable<DyeColor> color) throws QuestException {
         super(instruction, targetAmount, "sheep_to_shear");
         this.name = name;
         this.color = color;
@@ -60,13 +60,15 @@ public class ShearObjective extends CountingObjective implements Listener {
             return;
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (containsPlayer(onlineProfile)
-                && (name == null || name.equals(event.getEntity().getCustomName()))
-                && (color == null || color.equals(((Sheep) event.getEntity()).getColor()))
-                && checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
-        }
+        qeHandler.handle(() -> {
+            if (containsPlayer(onlineProfile)
+                    && (name == null || name.equals(event.getEntity().getCustomName()))
+                    && (color == null || color.getValue(onlineProfile).equals(((Sheep) event.getEntity()).getColor()))
+                    && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        });
     }
 
     @Override

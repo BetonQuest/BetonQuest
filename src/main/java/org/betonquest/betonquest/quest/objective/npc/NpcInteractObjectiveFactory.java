@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 
@@ -25,7 +26,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Interaction interactionType = instruction.getEnum(instruction.getOptional("interaction"), Interaction.class, RIGHT);
+        final Variable<Interaction> interactionType = instruction.getVariable(instruction.getOptional("interaction"), Argument.ENUM(Interaction.class), RIGHT);
         return new NpcInteractObjective(instruction, npcId, cancel, interactionType);
     }
 }

@@ -48,11 +48,10 @@ public class HeroesExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final HeroesClassType classType = instruction.getEnum(HeroesClassType.class);
+        final Variable<HeroesClassType> classType = instruction.getVariable(Argument.ENUM(HeroesClassType.class));
         final Variable<Number> amountVar = instruction.getVariable(Argument.NUMBER);
-        final boolean isPrimary = classType.equals(HeroesClassType.PRIMARY);
 
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, isPrimary, amountVar),
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, classType, amountVar),
                 loggerFactory.create(HeroesExperienceEvent.class), instruction.getPackage()), data);
     }
 }

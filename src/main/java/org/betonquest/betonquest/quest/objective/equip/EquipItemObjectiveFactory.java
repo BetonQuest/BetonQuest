@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for creating {@link EquipItemObjective} instances from {@link Instruction}s.
@@ -20,7 +22,7 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final PlayerArmorChangeEvent.SlotType slotType = instruction.getEnum(PlayerArmorChangeEvent.SlotType.class);
+        final Variable<PlayerArmorChangeEvent.SlotType> slotType = instruction.getVariable(Argument.ENUM(PlayerArmorChangeEvent.SlotType.class));
         final Item item = instruction.getItem();
         return new EquipItemObjective(instruction, item, slotType);
     }

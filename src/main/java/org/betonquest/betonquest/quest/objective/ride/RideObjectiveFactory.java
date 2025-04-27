@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -24,11 +26,11 @@ public class RideObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final String name = instruction.next();
-        final EntityType vehicle;
+        final Variable<EntityType> vehicle;
         if (ANY_PROPERTY.equalsIgnoreCase(name)) {
             vehicle = null;
         } else {
-            vehicle = instruction.getEnum(name, EntityType.class);
+            vehicle = instruction.getVariable(name, Argument.ENUM(EntityType.class));
         }
         return new RideObjective(instruction, vehicle);
     }

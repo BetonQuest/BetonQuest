@@ -35,7 +35,7 @@ public class NpcInteractObjective extends Objective implements Listener {
     /**
      * The type of interaction with the NPC.
      */
-    private final Interaction interactionType;
+    private final Variable<Interaction> interactionType;
 
     /**
      * Creates a new NPCInteractObjective from the given instruction.
@@ -47,7 +47,7 @@ public class NpcInteractObjective extends Objective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public NpcInteractObjective(final Instruction instruction, final Variable<NpcID> npcId,
-                                final boolean cancel, final Interaction interactionType) throws QuestException {
+                                final boolean cancel, final Variable<Interaction> interactionType) throws QuestException {
         super(instruction);
         this.npcId = npcId;
         this.cancel = cancel;
@@ -61,12 +61,12 @@ public class NpcInteractObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCLeftClick(final NpcInteractEvent event) {
-        if (event.getInteraction() != ANY && event.getInteraction() != interactionType) {
-            return;
-        }
-
-        final Profile profile = event.getProfile();
         qeHandler.handle(() -> {
+            final Profile profile = event.getProfile();
+            if (event.getInteraction() != ANY && event.getInteraction() != interactionType.getValue(profile)) {
+                return;
+            }
+
             if (event.getNpcIdentifier().contains(npcId.getValue(profile))
                     && containsPlayer(profile) && checkConditions(profile)) {
                 if (cancel) {

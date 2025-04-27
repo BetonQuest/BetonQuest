@@ -29,8 +29,8 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Interaction interaction = instruction.getEnum(Interaction.class);
-        final EntityType mobType = instruction.getEnum(EntityType.class);
+        final Variable<Interaction> interaction = instruction.getVariable(Argument.ENUM(Interaction.class));
+        final Variable<EntityType> mobType = instruction.getVariable(Argument.ENUM(EntityType.class));
         final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final String customName = instruction.getOptional("name");
         final String realName = instruction.getOptional("realname");

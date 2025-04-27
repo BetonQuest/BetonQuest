@@ -6,6 +6,7 @@ import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
+import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
@@ -18,9 +19,9 @@ public class HeroesExperienceEvent implements OnlineEvent {
     private final CharacterManager characterManager;
 
     /**
-     * If the type is the primary class or the secondary class.
+     * The {@link HeroesClassType} of the class to add experience to.
      */
-    private final boolean isPrimary;
+    private final Variable<HeroesClassType> classType;
 
     /**
      * The amount of experience to add.
@@ -31,12 +32,13 @@ public class HeroesExperienceEvent implements OnlineEvent {
      * Create a new Heroes Experience Event.
      *
      * @param characterManager The {@link CharacterManager} of the Heroes plugin.
-     * @param isPrimary        If the type is the primary class or the secondary class.
+     * @param classType        The {@link HeroesClassType} of the class to add experience to.
      * @param amountVar        The amount of experience to add.
      */
-    public HeroesExperienceEvent(final CharacterManager characterManager, final boolean isPrimary, final Variable<Number> amountVar) {
+    public HeroesExperienceEvent(final CharacterManager characterManager,
+                                 final Variable<HeroesClassType> classType, final Variable<Number> amountVar) {
         this.characterManager = characterManager;
-        this.isPrimary = isPrimary;
+        this.classType = classType;
         this.amountVar = amountVar;
     }
 
@@ -47,6 +49,7 @@ public class HeroesExperienceEvent implements OnlineEvent {
             return;
         }
 
+        final boolean isPrimary = classType.getValue(profile).equals(HeroesClassType.PRIMARY);
         final HeroClass heroClass;
         if (isPrimary) {
             heroClass = hero.getHeroClass();

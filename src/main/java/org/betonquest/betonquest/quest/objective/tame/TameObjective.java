@@ -21,7 +21,7 @@ public class TameObjective extends CountingObjective implements Listener {
     /**
      * The entity type to be tamed.
      */
-    private final EntityType type;
+    private final Variable<EntityType> type;
 
     /**
      * Constructor for the TameObjective.
@@ -31,7 +31,8 @@ public class TameObjective extends CountingObjective implements Listener {
      * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction
      */
-    public TameObjective(final Instruction instruction, final Variable<Number> targetAmount, final EntityType type) throws QuestException {
+    public TameObjective(final Instruction instruction, final Variable<Number> targetAmount,
+                         final Variable<EntityType> type) throws QuestException {
         super(instruction, targetAmount, "animals_to_tame");
         this.type = type;
     }
@@ -43,13 +44,15 @@ public class TameObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onTaming(final EntityTameEvent event) {
-        if (event.getOwner() instanceof Player) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getOwner());
-            if (containsPlayer(onlineProfile) && type.equals(event.getEntity().getType()) && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
+        qeHandler.handle(() -> {
+            if (event.getOwner() instanceof final Player player) {
+                final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+                if (containsPlayer(onlineProfile) && type.getValue(onlineProfile).equals(event.getEntity().getType()) && checkConditions(onlineProfile)) {
+                    getCountingData(onlineProfile).progress();
+                    completeIfDoneOrNotify(onlineProfile);
+                }
             }
-        }
+        });
     }
 
     @Override

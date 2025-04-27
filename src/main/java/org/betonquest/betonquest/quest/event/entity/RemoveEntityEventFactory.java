@@ -48,7 +48,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
-        final VariableList<EntityType> types = instruction.get(Argument.ofList(value -> instruction.getEnum(value, EntityType.class)));
+        final VariableList<EntityType> types = instruction.get(Argument.ofList(Argument.ENUM(EntityType.class)));
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
         final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         final boolean kill = instruction.hasArgument("kill");

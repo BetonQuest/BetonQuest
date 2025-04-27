@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.npc;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiPredicate;
 
 /**
  * The player has to reach certain radius around a specified Npc.
@@ -38,7 +38,7 @@ public class NpcRangeObjective extends Objective {
     /**
      * Checks if the condition based on the {@link Trigger} is not met.
      */
-    private final BiPredicate<UUID, Boolean> checkStuff;
+    private final QuestBiPredicate<Profile, Boolean> checkStuff;
 
     /**
      * Stores the state of player to ensure correct completion based on the {@link Trigger}.
@@ -60,7 +60,7 @@ public class NpcRangeObjective extends Objective {
      * @throws QuestException if the instruction is invalid
      */
     public NpcRangeObjective(final Instruction instruction, final VariableList<NpcID> npcIds, final Variable<Number> radius,
-                             final Trigger trigger) throws QuestException {
+                             final Variable<Trigger> trigger) throws QuestException {
         super(instruction);
         this.npcIds = npcIds;
         this.radius = radius;
@@ -68,34 +68,37 @@ public class NpcRangeObjective extends Objective {
         this.playersInRange = new HashMap<>();
     }
 
-    private BiPredicate<UUID, Boolean> getStuff(final Trigger trigger) {
-        return (uuid, inside) -> switch (trigger) {
-            case INSIDE -> !inside;
-            case OUTSIDE -> inside;
-            case ENTER -> {
-                if (playersInRange.containsKey(uuid)) {
-                    if (playersInRange.get(uuid) || !inside) {
+    private QuestBiPredicate<Profile, Boolean> getStuff(final Variable<Trigger> trigger) {
+        return (profile, inside) -> {
+            final UUID uuid = profile.getPlayerUUID();
+            return switch (trigger.getValue(profile)) {
+                case INSIDE -> !inside;
+                case OUTSIDE -> inside;
+                case ENTER -> {
+                    if (playersInRange.containsKey(uuid)) {
+                        if (playersInRange.get(uuid) || !inside) {
+                            playersInRange.put(uuid, inside);
+                            yield true;
+                        }
+                    } else {
                         playersInRange.put(uuid, inside);
                         yield true;
                     }
-                } else {
-                    playersInRange.put(uuid, inside);
-                    yield true;
+                    yield false;
                 }
-                yield false;
-            }
-            case LEAVE -> {
-                if (playersInRange.containsKey(uuid)) {
-                    if (!playersInRange.get(uuid) || inside) {
+                case LEAVE -> {
+                    if (playersInRange.containsKey(uuid)) {
+                        if (!playersInRange.get(uuid) || inside) {
+                            playersInRange.put(uuid, inside);
+                            yield true;
+                        }
+                    } else {
                         playersInRange.put(uuid, inside);
                         yield true;
                     }
-                } else {
-                    playersInRange.put(uuid, inside);
-                    yield true;
+                    yield false;
                 }
-                yield false;
-            }
+            };
         };
     }
 
@@ -127,7 +130,7 @@ public class NpcRangeObjective extends Objective {
             }
         }
         for (final OnlineProfile onlineProfile : allOnlineProfiles) {
-            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
+            checkPlayer(onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
         questListException.throwIfNotEmpty();
     }
@@ -143,13 +146,13 @@ public class NpcRangeObjective extends Objective {
         return distanceSquared <= radiusSquared;
     }
 
-    private void checkPlayer(final UUID uuid, final Profile profile, final boolean inside) {
-        if (checkStuff.test(uuid, inside)) {
+    private void checkPlayer(final Profile profile, final boolean inside) throws QuestException {
+        if (checkStuff.test(profile, inside)) {
             return;
         }
 
         if (checkConditions(profile)) {
-            playersInRange.remove(uuid);
+            playersInRange.remove(profile.getPlayerUUID());
             completeObjective(profile);
         }
     }
