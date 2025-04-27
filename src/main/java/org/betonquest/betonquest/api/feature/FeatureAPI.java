@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.feature;
 
+import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -18,7 +19,6 @@ import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
-import org.betonquest.betonquest.message.ParsedSectionMessage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -101,7 +101,7 @@ public final class FeatureAPI {
      * @return the loaded Message
      * @throws QuestException if no Message is loaded for the ID
      */
-    public ParsedSectionMessage getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
+    public Message getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
         return questRegistry.journalEntries().get(journalEntryID);
     }
 

@@ -62,6 +62,7 @@ import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.message.DecidingMessageParser;
+import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.message.TagMessageParserDecider;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
@@ -374,8 +375,10 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             return;
         }
 
+        final ParsedSectionMessageCreator messageCreator = new ParsedSectionMessageCreator(messageParser, playerDataStorage,
+                this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, messageParser, profileProvider, this);
+                coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
 
         registerListener(coreQuestRegistry);
