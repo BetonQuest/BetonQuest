@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -33,10 +32,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * to check the player's location.
  */
 public abstract class AbstractLocationObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    protected final BetonQuestLogger log;
 
     /**
      * Should entry be checked instead of being inside the location of not.
@@ -57,13 +52,11 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      * It initializes the entry and exit booleans and the playersInsideRegion map.
      *
-     * @param log         the BetonQuestLogger object to be used in the constructor
      * @param instruction the Instruction object to be used in the constructor
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final BetonQuestLogger log, final Instruction instruction) throws QuestException {
+    public AbstractLocationObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        this.log = log;
         entry = instruction.hasArgument("entry");
         exit = instruction.hasArgument("exit");
         playersInsideRegion = new HashMap<>();

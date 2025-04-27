@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -31,11 +30,6 @@ public class ActionObjective extends Objective implements Listener {
      * The key for the location property.
      */
     public static final String PROPERTY_LOCATION = "location";
-
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The action to check for.
@@ -79,7 +73,6 @@ public class ActionObjective extends Objective implements Listener {
      * Creates a new instance of the ActionObjective.
      *
      * @param instruction the instruction
-     * @param log         the logger
      * @param action      the action to check for
      * @param selector    the selector to check for the block
      * @param exactMatch  if the block should be checked for exact match
@@ -89,12 +82,11 @@ public class ActionObjective extends Objective implements Listener {
      * @param slot        the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final Instruction instruction, final BetonQuestLogger log, final Click action,
+    public ActionObjective(final Instruction instruction, final Click action,
                            @Nullable final Variable<BlockSelector> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
-        this.log = log;
         this.action = action;
         this.selector = selector;
         this.exactMatch = exactMatch;
@@ -109,7 +101,7 @@ public class ActionObjective extends Objective implements Listener {
      *
      * @param event the event
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
@@ -118,7 +110,7 @@ public class ActionObjective extends Objective implements Listener {
         }
 
         final Block clickedBlock = event.getClickedBlock();
-        try {
+        qeHandler.handle(() -> {
             if (loc != null) {
                 final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
                 final Location location = loc.getValue(onlineProfile);
@@ -134,9 +126,7 @@ public class ActionObjective extends Objective implements Listener {
                 }
                 completeObjective(onlineProfile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     private boolean checkBlock(final Profile profile, @Nullable final Block clickedBlock, final BlockFace blockFace) throws QuestException {
@@ -177,8 +167,9 @@ public class ActionObjective extends Objective implements Listener {
             try {
                 location = loc.getValue(profile);
             } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage(), e);
+                qeHandler.handle(() -> {
+                    throw new QuestException("Error while getting location property: " + e.getMessage(), e);
+                });
                 return "";
             }
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();

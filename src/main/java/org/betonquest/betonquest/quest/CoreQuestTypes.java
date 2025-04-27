@@ -412,17 +412,17 @@ public class CoreQuestTypes {
     }
 
     private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
-        objectiveTypes.register("action", new ActionObjectiveFactory(loggerFactory));
-        objectiveTypes.register("arrow", new ArrowShootObjectiveFactory(loggerFactory));
+        objectiveTypes.register("action", new ActionObjectiveFactory());
+        objectiveTypes.register("arrow", new ArrowShootObjectiveFactory());
         objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("breed", new BreedObjectiveFactory());
         objectiveTypes.register("brew", new BrewObjectiveFactory(profileProvider));
         objectiveTypes.register("chestput", new ChestPutObjectiveFactory(loggerFactory, pluginMessage));
-        objectiveTypes.register("command", new CommandObjectiveFactory(loggerFactory));
+        objectiveTypes.register("command", new CommandObjectiveFactory());
         objectiveTypes.register("consume", new ConsumeObjectiveFactory());
         objectiveTypes.register("craft", new CraftingObjectiveFactory());
         objectiveTypes.register("delay", new DelayObjectiveFactory(loggerFactory));
-        objectiveTypes.register("die", new DieObjectiveFactory(loggerFactory));
+        objectiveTypes.register("die", new DieObjectiveFactory());
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
         objectiveTypes.register("experience", new ExperienceObjectiveFactory(loggerFactory, pluginMessage));
         objectiveTypes.register("fish", new FishObjectiveFactory());
@@ -431,21 +431,21 @@ public class CoreQuestTypes {
         objectiveTypes.register("location", new LocationObjectiveFactory());
         objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", new LogoutObjectiveFactory());
-        objectiveTypes.register("mobkill", new MobKillObjectiveFactory(loggerFactory));
-        objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory(loggerFactory));
+        objectiveTypes.register("mobkill", new MobKillObjectiveFactory());
+        objectiveTypes.register("npcinteract", new NpcInteractObjectiveFactory());
         objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
-        objectiveTypes.register("password", new PasswordObjectiveFactory(loggerFactory));
+        objectiveTypes.register("password", new PasswordObjectiveFactory());
         objectiveTypes.register("pickup", new PickupObjectiveFactory());
         objectiveTypes.register("ride", new RideObjectiveFactory());
         objectiveTypes.register("shear", new ShearObjectiveFactory());
         objectiveTypes.register("smelt", new SmeltingObjectiveFactory());
         objectiveTypes.register("stage", new StageObjectiveFactory(loggerFactory));
-        objectiveTypes.register("step", new StepObjectiveFactory(loggerFactory));
+        objectiveTypes.register("step", new StepObjectiveFactory());
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("variable", new VariableObjectiveFactory());
-        objectiveTypes.register("equip", new EquipItemObjectiveFactory(loggerFactory));
+        objectiveTypes.register("equip", new EquipItemObjectiveFactory());
         objectiveTypes.register("jump", new JumpObjectiveFactory());
-        objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory(loggerFactory));
+        objectiveTypes.register("resourcepack", new ResourcepackObjectiveFactory());
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {

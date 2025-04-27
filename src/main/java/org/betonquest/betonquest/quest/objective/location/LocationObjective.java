@@ -38,7 +38,7 @@ public class LocationObjective extends AbstractLocationObjective {
      * @throws QuestException if there is an error while parsing the instruction
      */
     public LocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
-        super(BetonQuest.getInstance().getLoggerFactory().create(LocationObjective.class), instruction);
+        super(instruction);
         this.loc = loc;
         this.range = range;
     }
@@ -75,8 +75,9 @@ public class LocationObjective extends AbstractLocationObjective {
             try {
                 location = loc.getValue(profile);
             } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage(), e);
+                qeHandler.handle(() -> {
+                    throw new QuestException("Error while getting location property: " + e.getMessage(), e);
+                });
                 return "";
             }
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();

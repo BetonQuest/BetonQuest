@@ -52,7 +52,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                 instruction.getID().getFullID(), NotificationLevel.INFO, "chest_occupied");
-        return new ChestPutObjective(instruction, log, chestItemCondition, chestTakeEvent, loc, occupiedSender,
+        return new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent, loc, occupiedSender,
                 multipleAccess);
     }
 }

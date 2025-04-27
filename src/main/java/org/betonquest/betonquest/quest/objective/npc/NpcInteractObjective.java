@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.npc;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.NpcID;
@@ -22,10 +21,6 @@ import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY
  * An objective that requires the player to interact with a specific NPC.
  */
 public class NpcInteractObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The ID of the NPC to interact with.
@@ -46,16 +41,14 @@ public class NpcInteractObjective extends Objective implements Listener {
      * Creates a new NPCInteractObjective from the given instruction.
      *
      * @param instruction     the user-provided instruction
-     * @param log             the logger for this objective
      * @param npcId           the ID of the NPC to interact with
      * @param cancel          whether to cancel the interaction with the NPC
      * @param interactionType the type of interaction with the NPC
      * @throws QuestException if the instruction is invalid
      */
-    public NpcInteractObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<NpcID> npcId,
+    public NpcInteractObjective(final Instruction instruction, final Variable<NpcID> npcId,
                                 final boolean cancel, final Interaction interactionType) throws QuestException {
         super(instruction);
-        this.log = log;
         this.npcId = npcId;
         this.cancel = cancel;
         this.interactionType = interactionType;
@@ -73,20 +66,15 @@ public class NpcInteractObjective extends Objective implements Listener {
         }
 
         final Profile profile = event.getProfile();
-        try {
-            if (!event.getNpcIdentifier().contains(npcId.getValue(profile))) {
-                return;
+        qeHandler.handle(() -> {
+            if (event.getNpcIdentifier().contains(npcId.getValue(profile))
+                    && containsPlayer(profile) && checkConditions(profile)) {
+                if (cancel) {
+                    event.setCancelled(true);
+                }
+                completeObjective(profile);
             }
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Could not resolve npc id in '" + instruction.getID() + "' in NpcInteract Objective: "
-                    + e.getMessage(), e);
-        }
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            if (cancel) {
-                event.setCancelled(true);
-            }
-            completeObjective(profile);
-        }
+        });
     }
 
     @Override

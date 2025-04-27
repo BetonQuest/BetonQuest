@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.command;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -22,10 +21,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
  * Requires the player to execute a specific command.
  */
 public class CommandObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Command that the player has to execute.
@@ -56,7 +51,6 @@ public class CommandObjective extends Objective implements Listener {
      * Creates a new instance of the CommandObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param command     the command that the player has to execute
      * @param ignoreCase  whether the command should ignore the capitalization
      * @param exact       whether the command should be matched exactly or just the start
@@ -64,11 +58,10 @@ public class CommandObjective extends Objective implements Listener {
      * @param failEvents  events to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<String> command,
+    public CommandObjective(final Instruction instruction, final Variable<String> command,
                             final boolean ignoreCase, final boolean exact, final boolean cancel,
                             final VariableList<EventID> failEvents) throws QuestException {
         super(instruction);
-        this.log = log;
         this.command = command;
         this.ignoreCase = ignoreCase;
         this.exact = exact;
@@ -85,7 +78,7 @@ public class CommandObjective extends Objective implements Listener {
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            try {
+            qeHandler.handle(() -> {
                 final String replaceCommand = command.getValue(onlineProfile);
                 if (foundMatch(event.getMessage(), replaceCommand)) {
                     if (cancel) {
@@ -97,9 +90,7 @@ public class CommandObjective extends Objective implements Listener {
                         BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, failEvent);
                     }
                 }
-            } catch (final QuestException e) {
-                log.warn(instruction.getPackage(), "Failed to resolve command objective: " + e.getMessage(), e);
-            }
+            });
         }
     }
 

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.experience;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -27,10 +26,6 @@ import java.util.Locale;
  * Player needs to get specified experience level or more.
  */
 public class ExperienceObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The experience level the player needs to get.
@@ -47,14 +42,12 @@ public class ExperienceObjective extends Objective implements Listener {
      * Constructor for the ExperienceObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param amount      the experience level the player needs to get
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+    public ExperienceObjective(final Instruction instruction, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
         super(instruction);
-        this.log = log;
         this.amount = amount;
         this.levelSender = levelSender;
     }
@@ -67,7 +60,9 @@ public class ExperienceObjective extends Objective implements Listener {
         try {
             amount = this.amount.getValue(onlineProfile).doubleValue();
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            qeHandler.handle(() -> {
+                throw e;
+            });
             return;
         }
         if (newAmount >= amount) {
@@ -130,7 +125,9 @@ public class ExperienceObjective extends Objective implements Listener {
                 default -> "";
             };
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            qeHandler.handle(() -> {
+                throw e;
+            });
             return "";
         }
     }

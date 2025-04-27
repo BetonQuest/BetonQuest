@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.arrow;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -23,10 +22,6 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Requires the player to shoot a target with a bow.
  */
 public class ArrowShootObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Location where the arrow should hit.
@@ -42,14 +37,12 @@ public class ArrowShootObjective extends Objective implements Listener {
      * Constructor for the ArrowShootObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param location    the location where the arrow should hit
      * @param range       the range around the location where the arrow should hit
      * @throws QuestException if there is an error in the instruction
      */
-    public ArrowShootObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Location> location, final Variable<Number> range) throws QuestException {
+    public ArrowShootObjective(final Instruction instruction, final Variable<Location> location, final Variable<Number> range) throws QuestException {
         super(instruction);
-        this.log = log;
         this.location = location;
         this.range = range;
     }
@@ -61,7 +54,6 @@ public class ArrowShootObjective extends Objective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onArrowHit(final ProjectileHitEvent event) {
-        // check if it's the arrow shot by the player with active objectve
         final Projectile arrow = event.getEntity();
         if (arrow.getType() != EntityType.ARROW) {
             return;
@@ -73,7 +65,7 @@ public class ArrowShootObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        try {
+        qeHandler.handle(() -> {
             final Location location = this.location.getValue(onlineProfile);
             final double pRange = range.getValue(onlineProfile).doubleValue();
             // check if the arrow is in the right place in the next tick
@@ -89,9 +81,7 @@ public class ArrowShootObjective extends Objective implements Listener {
                     }
                 }
             }.runTask(BetonQuest.getInstance());
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-        }
+        });
     }
 
     @Override

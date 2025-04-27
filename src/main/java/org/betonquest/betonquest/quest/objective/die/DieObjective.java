@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.objective.die;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -29,10 +28,6 @@ import java.util.Optional;
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
 public class DieObjective extends Objective implements Listener {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * Whether the death should be canceled.
@@ -49,14 +44,12 @@ public class DieObjective extends Objective implements Listener {
      * Constructor for the DieObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param cancel      whether the death should be canceled
      * @param location    the location where the player should respawn
      * @throws QuestException if there is an error in the instruction
      */
-    public DieObjective(final Instruction instruction, final BetonQuestLogger log, final boolean cancel, @Nullable final Variable<Location> location) throws QuestException {
+    public DieObjective(final Instruction instruction, final boolean cancel, @Nullable final Variable<Location> location) throws QuestException {
         super(instruction);
-        this.log = log;
         this.cancel = cancel;
         this.location = location;
     }
@@ -91,8 +84,10 @@ public class DieObjective extends Objective implements Listener {
         }
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
-            getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
-            completeObjective(onlineProfile);
+            qeHandler.handle(() -> {
+                getLocation(onlineProfile).ifPresent(event::setRespawnLocation);
+                completeObjective(onlineProfile);
+            });
         }
     }
 
@@ -117,28 +112,22 @@ public class DieObjective extends Objective implements Listener {
             for (final PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());
             }
-            final Optional<Location> targetLocation = getLocation(onlineProfile);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    targetLocation.ifPresent(player::teleport);
-                    player.setFireTicks(0);
-                }
-            }.runTaskLater(BetonQuest.getInstance(), 1);
-            completeObjective(onlineProfile);
+            qeHandler.handle(() -> {
+                final Optional<Location> targetLocation = getLocation(onlineProfile);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        targetLocation.ifPresent(player::teleport);
+                        player.setFireTicks(0);
+                    }
+                }.runTaskLater(BetonQuest.getInstance(), 1);
+                completeObjective(onlineProfile);
+            });
         }
     }
 
-    private Optional<Location> getLocation(final OnlineProfile onlineProfile) {
-        if (location == null) {
-            return Optional.empty();
-        }
-        try {
-            return Optional.of(location.getValue(onlineProfile));
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return Optional.empty();
-        }
+    private Optional<Location> getLocation(final OnlineProfile onlineProfile) throws QuestException {
+        return location == null ? Optional.empty() : Optional.of(location.getValue(onlineProfile));
     }
 
     @Override
