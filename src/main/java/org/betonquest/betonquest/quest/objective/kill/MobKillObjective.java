@@ -66,40 +66,30 @@ public class MobKillObjective extends CountingObjective implements Listener {
      *
      * @param event the event containing the mob kill information
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
         final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
-        try {
+        qeHandler.handle(() -> {
             if (!containsPlayer(onlineProfile)
                     || !entities.getValue(onlineProfile).contains(event.getEntity().getType())
                     || name != null && (event.getEntity().getCustomName() == null
                     || !event.getEntity().getCustomName().equals(name))) {
                 return;
             }
-        } catch (final QuestException e) {
-            qeHandler.handle(() -> {
-                throw new QuestException("Failed to resolve entities for kill objective: " + e.getMessage(), e);
-            });
-            return;
-        }
-        if (marked != null) {
-            try {
+            if (marked != null) {
                 final String value = marked.getValue(onlineProfile);
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
                 final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
                 if (dataContainerValue == null || !dataContainerValue.equals(value)) {
                     return;
                 }
-            } catch (final QuestException ignored) {
-                // Empty
             }
-        }
 
-        if (checkConditions(onlineProfile)) {
-            getCountingData(onlineProfile).progress();
-            completeIfDoneOrNotify(onlineProfile);
-        }
+            if (checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
+            }
+        });
     }
 
     @Override

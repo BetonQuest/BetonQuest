@@ -158,20 +158,12 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
+    public String getProperty(final String name, final Profile profile) throws QuestException {
         if (PROPERTY_LOCATION.equalsIgnoreCase(name)) {
             if (loc == null) {
                 return "";
             }
-            final Location location;
-            try {
-                location = loc.getValue(profile);
-            } catch (final QuestException e) {
-                qeHandler.handle(() -> {
-                    throw new QuestException("Error while getting location property: " + e.getMessage(), e);
-                });
-                return "";
-            }
+            final Location location = loc.getValue(profile);
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();
         }
         return "";

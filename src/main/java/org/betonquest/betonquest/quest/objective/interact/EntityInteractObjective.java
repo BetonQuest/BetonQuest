@@ -153,7 +153,7 @@ public class EntityInteractObjective extends CountingObjective {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    private boolean onInteract(final Player player, final Entity entity) {
+    private boolean onInteract(final Player player, final Entity entity) throws QuestException {
         // check if it's the right entity type
         if (!entity.getType().equals(mobType)) {
             return false;
@@ -167,15 +167,11 @@ public class EntityInteractObjective extends CountingObjective {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         // check if the entity is correctly marked
         if (marked != null) {
-            try {
-                final String value = marked.getValue(onlineProfile);
-                final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                if (dataContainerValue == null || !dataContainerValue.equals(value)) {
-                    return false;
-                }
-            } catch (final QuestException ignored) {
-                // Empty
+            final String value = marked.getValue(onlineProfile);
+            final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
+            final String dataContainerValue = entity.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+                return false;
             }
         }
         // check if the profile has this objective
@@ -184,17 +180,11 @@ public class EntityInteractObjective extends CountingObjective {
         }
         // Check location matches
         if (loc != null) {
-            try {
-                final Location location = loc.getValue(onlineProfile);
-                final double pRange = range.getValue(onlineProfile).doubleValue();
-                if (!entity.getWorld().equals(location.getWorld())
-                        || entity.getLocation().distance(location) > pRange) {
-                    return false;
-                }
-            } catch (final QuestException e) {
-                qeHandler.handle(() -> {
-                    throw e;
-                });
+            final Location location = loc.getValue(onlineProfile);
+            final double pRange = range.getValue(onlineProfile).doubleValue();
+            if (!entity.getWorld().equals(location.getWorld())
+                    || entity.getLocation().distance(location) > pRange) {
+                return false;
             }
         }
 
@@ -290,10 +280,12 @@ public class EntityInteractObjective extends CountingObjective {
             if (slot != null && slot != EquipmentSlot.HAND) {
                 return;
             }
-            final boolean success = onInteract(player, event.getEntity());
-            if (success && cancel) {
-                event.setCancelled(true);
-            }
+            qeHandler.handle(() -> {
+                final boolean success = onInteract(player, event.getEntity());
+                if (success && cancel) {
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 
@@ -318,10 +310,12 @@ public class EntityInteractObjective extends CountingObjective {
             if (slot != null && slot != event.getHand()) {
                 return;
             }
-            final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
-            if (success && cancel) {
-                event.setCancelled(true);
-            }
+            qeHandler.handle(() -> {
+                final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
+                if (success && cancel) {
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 }

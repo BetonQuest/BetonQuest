@@ -103,17 +103,9 @@ public class StepObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
+    public String getProperty(final String name, final Profile profile) throws QuestException {
         if (LOCATION_KEY.equalsIgnoreCase(name)) {
-            final Block block;
-            try {
-                block = loc.getValue(profile).getBlock();
-            } catch (final QuestException e) {
-                qeHandler.handle(() -> {
-                    throw new QuestException("Error while getting location property: " + e.getMessage(), e);
-                });
-                return "";
-            }
+            final Block block = loc.getValue(profile).getBlock();
             return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();
         }
         return "";

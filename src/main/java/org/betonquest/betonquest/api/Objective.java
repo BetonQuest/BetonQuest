@@ -193,8 +193,9 @@ public abstract class Objective {
      *                to extract additional information
      * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
+     * @throws QuestException when the property cannot e resolved
      */
-    public abstract String getProperty(String name, Profile profile);
+    public abstract String getProperty(String name, Profile profile) throws QuestException;
 
     /**
      * This method fires events for the objective and removes it from the profile's
