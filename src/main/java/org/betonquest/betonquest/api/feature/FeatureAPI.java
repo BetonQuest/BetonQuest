@@ -83,17 +83,6 @@ public final class FeatureAPI {
     }
 
     /**
-     * Get the full path of the tag to indicate a quest compass should be shown.
-     *
-     * @param compassID the compass id for the tag
-     * @return the compass tag
-     * @throws QuestException if the compass tag could not be created
-     */
-    public String getCompassTag(final CompassID compassID) throws QuestException {
-        return questRegistry.compasses().getCompassTag(compassID);
-    }
-
-    /**
      * Gets stored Journal Entry.
      *
      * @param journalEntryID the journal entry id

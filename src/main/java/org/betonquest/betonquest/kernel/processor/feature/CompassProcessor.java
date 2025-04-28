@@ -63,14 +63,4 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     protected CompassID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new CompassID(pack, identifier);
     }
-
-    /**
-     * Get the full path of the tag to indicate a quest compass should be shown.
-     *
-     * @param compassID the compass id for the tag
-     * @return the compass tag
-     */
-    public String getCompassTag(final CompassID compassID) {
-        return compassID.getPackage() + ".compass-" + compassID.getBaseID();
-    }
 }

@@ -68,9 +68,8 @@ public class CompassEvent implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         final CompassID compassId = this.compassId.getValue(profile);
         switch (action.getValue(profile)) {
-            case ADD -> changeTag(new AddTagChanger(new VariableList<>(featureAPI.getCompassTag(compassId))), profile);
-            case DEL ->
-                    changeTag(new DeleteTagChanger(new VariableList<>(featureAPI.getCompassTag(compassId))), profile);
+            case ADD -> changeTag(new AddTagChanger(new VariableList<>(compassId.getTag())), profile);
+            case DEL -> changeTag(new DeleteTagChanger(new VariableList<>(compassId.getTag())), profile);
             case SET -> {
                 final QuestCompass compass = featureAPI.getCompasses().get(compassId);
                 if (compass == null) {
