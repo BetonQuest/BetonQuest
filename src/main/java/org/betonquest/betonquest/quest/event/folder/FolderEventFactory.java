@@ -13,7 +13,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.plugin.PluginManager;
@@ -72,13 +72,13 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final VariableList<EventID> events = instruction.get(IDArgument.ofList(EventID::new));
+        final VariableList<EventID> events = instruction.get(PackageArgument.ofList(EventID::new));
         final Variable<Number> delay = instruction.getVariable(instruction.getOptional("delay"), Argument.NUMBER);
         final Variable<Number> period = instruction.getVariable(instruction.getOptional("period"), Argument.NUMBER);
         final Variable<Number> random = instruction.getVariable(instruction.getOptional("random"), Argument.NUMBER);
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        final VariableList<ConditionID> cancelConditions = instruction.get(instruction.getOptional("cancelConditions", ""), IDArgument.ofList(ConditionID::new));
+        final VariableList<ConditionID> cancelConditions = instruction.get(instruction.getOptional("cancelConditions", ""), PackageArgument.ofList(ConditionID::new));
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events,
                 questTypeAPI, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));

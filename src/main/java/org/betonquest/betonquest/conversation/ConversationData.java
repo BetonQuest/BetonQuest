@@ -14,7 +14,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
@@ -605,13 +605,13 @@ public class ConversationData {
             return GlobalVariableResolver.resolve(pack, conv.getString(identifier, "")).split(",");
         }
 
-        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String identifier, final IDArgument<T> argument) throws QuestException {
+        private <T extends ID> List<T> parseID(final ConfigurationSection conv, final String identifier, final PackageArgument<T> argument) throws QuestException {
             try {
                 final String[] split = resolveAndSplit(conv, identifier);
                 final List<T> list = new ArrayList<>(split.length);
                 for (final String raw : split) {
                     if (!raw.isEmpty()) {
-                        list.add(argument.convert(pack, raw.trim()));
+                        list.add(argument.apply(pack, raw.trim()));
                     }
                 }
                 return list;

@@ -16,7 +16,7 @@ import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -121,16 +121,16 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
 
         @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
         @Nullable
-        private <T extends ID> T[] parseID(final String path, final IDArgument<T> argument) throws QuestException {
+        private <T extends ID> T[] parseID(final String path, final PackageArgument<T> argument) throws QuestException {
             final String[] rawObjectives = split(path);
             if (rawObjectives == null || rawObjectives.length == 0) {
                 return null;
             }
-            final T first = argument.convert(pack, rawObjectives[0]);
+            final T first = argument.apply(pack, rawObjectives[0]);
             @SuppressWarnings("unchecked") final T[] converted = (T[]) Array.newInstance(first.getClass(), rawObjectives.length);
             converted[0] = first;
             for (int i = 1; i < rawObjectives.length; i++) {
-                converted[i] = argument.convert(pack, rawObjectives[i]);
+                converted[i] = argument.apply(pack, rawObjectives[i]);
             }
             return converted;
         }

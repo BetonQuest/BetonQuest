@@ -9,7 +9,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -54,8 +54,8 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
         final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
         final VariableList<Location> locations = instruction.get(Argument.ofList(Argument.LOCATION, VariableList.notEmptyChecker()));
         final Variable<Number> waitTicks = instruction.getVariable(instruction.getOptional("wait"), Argument.NUMBER, 0);
-        final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), IDArgument.ofList(EventID::new));
-        final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), IDArgument.ofList(EventID::new));
+        final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), PackageArgument.ofList(EventID::new));
+        final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), PackageArgument.ofList(EventID::new));
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);

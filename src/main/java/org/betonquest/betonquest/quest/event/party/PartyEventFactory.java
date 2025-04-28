@@ -11,7 +11,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 
@@ -51,8 +51,8 @@ public class PartyEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
         final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
-        final VariableList<ConditionID> conditions = instruction.get(IDArgument.ofList(ConditionID::new));
-        final VariableList<EventID> events = instruction.get(IDArgument.ofList(EventID::new));
+        final VariableList<ConditionID> conditions = instruction.get(PackageArgument.ofList(ConditionID::new));
+        final VariableList<EventID> events = instruction.get(PackageArgument.ofList(EventID::new));
         return new OnlineEventAdapter(
                 new PartyEvent(questTypeAPI, profileProvider, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),
