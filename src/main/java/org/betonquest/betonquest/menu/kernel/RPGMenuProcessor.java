@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -122,13 +122,13 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
          * @return requested ids or empty list when not present
          * @throws QuestException if one of the ids can't be found
          */
-        protected <U extends ID> VariableList<U> getID(final String path, final IDArgument<U> argument)
+        protected <U extends ID> VariableList<U> getID(final String path, final PackageArgument<U> argument)
                 throws QuestException {
             final String rawString = GlobalVariableResolver.resolve(pack, section.getString(path));
             if (rawString == null) {
                 return new VariableList<>(List.of());
             }
-            return new VariableList<>(variableProcessor, pack, rawString, value -> argument.convert(pack, value));
+            return new VariableList<>(variableProcessor, pack, rawString, value -> argument.apply(pack, value));
         }
     }
 }

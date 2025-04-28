@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 
 /**
  * Factory for the {@link ConjunctionCondition} class.
@@ -41,6 +41,6 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     }
 
     private ConjunctionCondition parse(final Instruction instruction) throws QuestException {
-        return new ConjunctionCondition(instruction.get(IDArgument.ofList(ConditionID::new)), questTypeAPI);
+        return new ConjunctionCondition(instruction.get(PackageArgument.ofList(ConditionID::new)), questTypeAPI);
     }
 }

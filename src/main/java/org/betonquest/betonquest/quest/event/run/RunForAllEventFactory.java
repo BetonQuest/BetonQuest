@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 
 /**
@@ -39,8 +39,8 @@ public class RunForAllEventFactory implements PlayerlessEventFactory {
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final VariableList<EventID> events = instruction.get(instruction.getOptional("events", ""), IDArgument.ofList(EventID::new));
-        final VariableList<ConditionID> conditions = instruction.get(instruction.getOptional("where", ""), IDArgument.ofList(ConditionID::new));
+        final VariableList<EventID> events = instruction.get(instruction.getOptional("events", ""), PackageArgument.ofList(EventID::new));
+        final VariableList<ConditionID> conditions = instruction.get(instruction.getOptional("where", ""), PackageArgument.ofList(ConditionID::new));
         return new RunForAllEvent(profileProvider::getOnlineProfiles, questTypeAPI, events, conditions);
     }
 }

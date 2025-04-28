@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
@@ -61,9 +61,9 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     private PartyCondition parse(final Instruction instruction, final Variable<Location> location) throws QuestException {
         final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
-        final VariableList<ConditionID> conditions = instruction.get(IDArgument.ofList(ConditionID::new));
-        final VariableList<ConditionID> everyone = instruction.get(instruction.getOptional("every", ""), IDArgument.ofList(ConditionID::new));
-        final VariableList<ConditionID> anyone = instruction.get(instruction.getOptional("any", ""), IDArgument.ofList(ConditionID::new));
+        final VariableList<ConditionID> conditions = instruction.get(PackageArgument.ofList(ConditionID::new));
+        final VariableList<ConditionID> everyone = instruction.get(instruction.getOptional("every", ""), PackageArgument.ofList(ConditionID::new));
+        final VariableList<ConditionID> anyone = instruction.get(instruction.getOptional("any", ""), PackageArgument.ofList(ConditionID::new));
         final Variable<Number> count = instruction.getVariable(instruction.getOptional("count"), Argument.NUMBER);
 
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.IDArgument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +53,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.instruction = instruction;
-        conditions = instruction.get(instruction.getOptional("conditions", ""), IDArgument.ofList(ConditionID::new));
+        conditions = instruction.get(instruction.getOptional("conditions", ""), PackageArgument.ofList(ConditionID::new));
     }
 
     /**
