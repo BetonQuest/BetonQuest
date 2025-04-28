@@ -30,7 +30,7 @@ public class LocationVariableFactory implements PlayerVariableFactory {
 
         final Variable<Number> decimalPlaces;
         if (instruction.hasNext()) {
-            decimalPlaces = instruction.getVariable(Argument.NUMBER);
+            decimalPlaces = instruction.get(Argument.NUMBER);
         } else {
             decimalPlaces = new Variable<>(0);
         }

@@ -25,7 +25,7 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final String skillId = instruction.next();
-        final List<TriggerType> triggerTypes = parseTriggerTypes(instruction.getOptional("trigger"));
+        final List<TriggerType> triggerTypes = parseTriggerTypes(instruction.getValue("trigger"));
         return new MythicLibSkillObjective(instruction, skillId, triggerTypes);
     }
 

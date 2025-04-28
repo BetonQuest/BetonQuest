@@ -31,7 +31,7 @@ public class MythicLibStatConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String statName = instruction.next();
-        final Variable<Number> targetLevel = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> targetLevel = instruction.get(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(new MythicLibStatCondition(statName, targetLevel, equal), data);
     }

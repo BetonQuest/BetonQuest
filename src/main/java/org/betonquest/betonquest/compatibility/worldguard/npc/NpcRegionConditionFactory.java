@@ -52,7 +52,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
 
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
-        final Variable<String> region = instruction.getVariable(Argument.STRING);
+        final Variable<String> region = instruction.get(Argument.STRING);
         return new NullableConditionAdapter(new NpcRegionCondition(featureAPI, npcId, region));
     }
 }

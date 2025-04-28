@@ -11,11 +11,12 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Factory to create chest events from {@link Instruction}s.
@@ -46,8 +47,8 @@ public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     private NullableEventAdapter createChestTakeEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> variableLocation = instruction.getVariable(Argument.LOCATION);
-        final VariableList<Item> item = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
+        final Variable<Location> variableLocation = instruction.get(Argument.LOCATION);
+        final Variable<List<Item>> item = instruction.getList(PackageArgument.ITEM);
         return new NullableEventAdapter(new ChestTakeEvent(variableLocation, item));
     }
 }

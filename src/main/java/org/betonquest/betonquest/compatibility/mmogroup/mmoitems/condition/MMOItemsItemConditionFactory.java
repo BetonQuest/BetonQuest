@@ -52,7 +52,7 @@ public class MMOItemsItemConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
-        final Variable<Number> amount = instruction.hasNext() ? instruction.getVariable(Argument.NUMBER) : new Variable<>(1);
+        final Variable<Number> amount = instruction.hasNext() ? instruction.get(Argument.NUMBER) : new Variable<>(1);
 
         final BetonQuestLogger log = loggerFactory.create(MMOItemsItemCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

@@ -47,7 +47,7 @@ public class MenuEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Operation operation = instruction.getVariable(Argument.ENUM(Operation.class)).getValue(null);
+        final Operation operation = instruction.get(Argument.ENUM(Operation.class)).getValue(null);
         final Variable<MenuID> menuID = operation == Operation.OPEN ? instruction.get(MenuID::new) : null;
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuEvent(rpgMenu, menuID),
                 loggerFactory.create(MenuEvent.class), instruction.getPackage()), data);

@@ -29,23 +29,23 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Interaction> interaction = instruction.getVariable(Argument.ENUM(Interaction.class));
-        final Variable<EntityType> mobType = instruction.getVariable(Argument.ENUM(EntityType.class));
-        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final String customName = instruction.getOptional("name");
-        final String realName = instruction.getOptional("realname");
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
+        final Variable<Interaction> interaction = instruction.get(Argument.ENUM(Interaction.class));
+        final Variable<EntityType> mobType = instruction.get(Argument.ENUM(EntityType.class));
+        final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final String customName = instruction.getValue("name");
+        final String realName = instruction.getValue("realname");
+        final Variable<String> marked = instruction.get(instruction.getValue("marked"), PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
-        final String stringRange = instruction.getOptional("range");
-        final Variable<Number> range = stringRange == null ? new Variable<>(1) : instruction.getVariable(stringRange, Argument.NUMBER);
+        final Variable<Location> loc = instruction.get(instruction.getValue("loc"), Argument.LOCATION);
+        final String stringRange = instruction.getValue("range");
+        final Variable<Number> range = stringRange == null ? new Variable<>(1) : instruction.get(stringRange, Argument.NUMBER);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }
 
     @Nullable
     private EquipmentSlot getEquipmentSlot(final Instruction instruction) throws QuestException {
-        final String handString = instruction.getOptional("hand");
+        final String handString = instruction.getValue("hand");
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             return EquipmentSlot.HAND;
         }

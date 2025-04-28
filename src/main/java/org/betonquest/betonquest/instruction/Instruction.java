@@ -7,25 +7,23 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.argument.VariableArgument;
-import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
-import org.betonquest.betonquest.instruction.argument.parser.PackageParser;
+import org.betonquest.betonquest.instruction.argument.parser.ArgumentConverter;
+import org.betonquest.betonquest.instruction.argument.parser.PackageArgumentConverter;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.jetbrains.annotations.Contract;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, PackageParser {
+public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -180,11 +178,12 @@ public class Instruction implements InstructionParts, ArgumentParser, PackagePar
     }
 
     @Override
-    public Optional<String> getOptionalArgument(final String prefix) {
+    @Nullable
+    public String getValue(final String prefix, @Nullable final String defaultValue) {
         return getParts().stream()
                 .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":"))
                 .findFirst()
-                .map(part -> part.substring(prefix.length() + 1));
+                .map(part -> part.substring(prefix.length() + 1)).orElse(defaultValue);
     }
 
     /**
@@ -197,20 +196,9 @@ public class Instruction implements InstructionParts, ArgumentParser, PackagePar
         return getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
     }
 
-    @Override
-    @Contract("!null, _ -> !null")
     @Nullable
-    public <T> T get(@Nullable final String string, final VariableArgument<T> argument) throws QuestException {
-        if (string == null) {
-            return null;
-        }
-        return argument.convert(BetonQuest.getInstance().getVariableProcessor(), pack, string);
-    }
-
     @Override
-    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
-    @Nullable
-    public <T> Variable<T> getVariable(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
+    public <T> Variable<T> get(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
                 return new Variable<>(defaultValue);
@@ -221,12 +209,30 @@ public class Instruction implements InstructionParts, ArgumentParser, PackagePar
     }
 
     @Override
-    @Contract("!null, _ -> !null")
-    @Nullable
-    public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument) throws QuestException {
+    public <T> Variable<List<T>> getList(@Nullable final String string, final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         if (string == null) {
+            return new VariableList<>();
+        }
+        return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, argument, valueChecker);
+    }
+
+    @Nullable
+    @Override
+    public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
+        if (string == null) {
+            if (defaultValue != null) {
+                return new Variable<>(defaultValue);
+            }
             return null;
         }
         return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value));
+    }
+
+    @Override
+    public <T> Variable<List<T>> getList(@Nullable final String string, final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        if (string == null) {
+            return new VariableList<>();
+        }
+        return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value), valueChecker);
     }
 }

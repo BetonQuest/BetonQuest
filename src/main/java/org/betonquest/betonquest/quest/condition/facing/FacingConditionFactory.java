@@ -40,7 +40,7 @@ public class FacingConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Direction> direction = instruction.getVariable(Argument.ENUM(Direction.class));
+        final Variable<Direction> direction = instruction.get(Argument.ENUM(Direction.class));
         final BetonQuestLogger log = loggerFactory.create(FacingCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new FacingCondition(direction), log, instruction.getPackage()), data);

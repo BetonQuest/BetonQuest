@@ -11,12 +11,13 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.condition.chest.ChestItemCondition;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Factory for creating {@link ChestPutObjective} instances from {@link Instruction}s.
@@ -45,9 +46,9 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableList<Item> items = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
-        final boolean multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<List<Item>> items = instruction.getList(PackageArgument.ITEM);
+        final boolean multipleAccess = Boolean.parseBoolean(instruction.getValue("multipleaccess"));
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);
         final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);

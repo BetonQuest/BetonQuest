@@ -19,7 +19,7 @@ public class InConversationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String rawConversationID = instruction.getOptional("conversation");
+        final String rawConversationID = instruction.getValue("conversation");
         final ConversationID conversationID;
         if (rawConversationID == null) {
             conversationID = null;

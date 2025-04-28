@@ -118,7 +118,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String message = languageMatcher.group("message")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, instruction.getVariable(message, Argument.STRING));
+            translations.put(lang, instruction.get(message, Argument.STRING));
         }
 
         final String defaultLanguageKey = languageProvider.getDefaultLanguage();
@@ -126,7 +126,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String message = messages
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, instruction.getVariable(message, Argument.STRING));
+            translations.put(defaultLanguageKey, instruction.get(message, Argument.STRING));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");

@@ -5,10 +5,11 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Event that drops items at a location.
@@ -17,7 +18,7 @@ public class DropEvent implements NullableEvent {
     /**
      * Items to be dropped.
      */
-    private final VariableList<Item> items;
+    private final Variable<List<Item>> items;
 
     /**
      * Location to drop the items at.
@@ -30,7 +31,7 @@ public class DropEvent implements NullableEvent {
      * @param items    items to be dropped
      * @param location the location to drop the items at
      */
-    public DropEvent(final VariableList<Item> items, final Variable<Location> location) {
+    public DropEvent(final Variable<List<Item>> items, final Variable<Location> location) {
         this.items = items;
         this.location = location;
     }

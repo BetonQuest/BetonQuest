@@ -20,8 +20,8 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final Variable<Number> range = instruction.getVariable(instruction.getOptional("range", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new TrainCartsLocationObjective(instruction, loc, range);
     }
 }

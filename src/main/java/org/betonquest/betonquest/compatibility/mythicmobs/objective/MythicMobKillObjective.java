@@ -33,7 +33,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * The names of all mobs that this objective should count.
      */
-    private final List<String> names;
+    private final Variable<List<String>> names;
 
     /**
      * The minimal level the killed mob must have to count.
@@ -74,12 +74,11 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @param marked                       the text with which the mob must have been marked to count
      * @throws QuestException if the instruction is invalid
      */
-    public MythicMobKillObjective(final Instruction instruction, final Variable<Number> targetAmount, final List<String> names,
-                                  final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
-                                  final Variable<Number> deathRadiusAllPlayers,
-                                  final Variable<Number> neutralDeathRadiusAllPlayers,
-                                  @Nullable final Variable<String> marked)
-            throws QuestException {
+    public MythicMobKillObjective(
+            final Instruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> names,
+            final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
+            final Variable<Number> deathRadiusAllPlayers, final Variable<Number> neutralDeathRadiusAllPlayers,
+            @Nullable final Variable<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.names = names;
         this.minMobLevel = minMobLevel;
@@ -97,7 +96,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) throws QuestException {
-        if (!names.contains(event.getMobType().getInternalName())
+        if (!names.getValue(null).contains(event.getMobType().getInternalName())
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;
         }

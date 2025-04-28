@@ -41,8 +41,8 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.getVariable(Argument.ENUM(EquipmentSlot.class));
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean relative = instruction.hasArgument("relative");
         final BetonQuestLogger log = loggerFactory.create(ItemDurabilityCondition.class);
         return new PrimaryServerThreadPlayerCondition(

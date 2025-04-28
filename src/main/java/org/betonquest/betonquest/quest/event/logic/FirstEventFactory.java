@@ -9,8 +9,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
+
+import java.util.List;
 
 /**
  * Factory to create FirstEvents from events from {@link Instruction}s.
@@ -42,7 +43,7 @@ public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
-        final VariableList<EventID> list = instruction.get(PackageArgument.ofList(EventID::new));
+        final Variable<List<EventID>> list = instruction.getList(EventID::new);
         return new NullableEventAdapter(new FirstEvent(list, questTypeAPI));
     }
 }

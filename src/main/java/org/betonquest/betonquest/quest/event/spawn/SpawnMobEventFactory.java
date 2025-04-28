@@ -10,9 +10,8 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.types.EnumParser;
+import org.betonquest.betonquest.instruction.argument.types.EnumParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
@@ -20,6 +19,8 @@ import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
+
+import java.util.List;
 
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
@@ -57,20 +58,20 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @throws QuestException if the instruction could not be parsed
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final Variable<EntityType> type = instruction.getVariable(new EntityTypeParser());
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
-        final String nameString = instruction.getOptional("name");
-        final Variable<String> name = nameString == null ? null : instruction.getVariable(Utils.format(
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<EntityType> type = instruction.get(new EntityTypeParser());
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final String nameString = instruction.getValue("name");
+        final Variable<String> name = nameString == null ? null : instruction.get(Utils.format(
                 nameString, true, false), Argument.STRING);
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
-        final Variable<Item> helmet = instruction.get(instruction.getOptional("h"), PackageArgument.ITEM);
-        final Variable<Item> chestplate = instruction.get(instruction.getOptional("c"), PackageArgument.ITEM);
-        final Variable<Item> leggings = instruction.get(instruction.getOptional("l"), PackageArgument.ITEM);
-        final Variable<Item> boots = instruction.get(instruction.getOptional("b"), PackageArgument.ITEM);
-        final Variable<Item> mainHand = instruction.get(instruction.getOptional("m"), PackageArgument.ITEM);
-        final Variable<Item> offHand = instruction.get(instruction.getOptional("o"), PackageArgument.ITEM);
-        final VariableList<Item> drops = instruction.get(instruction.getOptional("drops", ""), PackageArgument.ofList(PackageArgument.ITEM));
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
+        final Variable<Item> helmet = instruction.getValue("h", PackageArgument.ITEM);
+        final Variable<Item> chestplate = instruction.getValue("c", PackageArgument.ITEM);
+        final Variable<Item> leggings = instruction.getValue("l", PackageArgument.ITEM);
+        final Variable<Item> boots = instruction.getValue("b", PackageArgument.ITEM);
+        final Variable<Item> mainHand = instruction.getValue("m", PackageArgument.ITEM);
+        final Variable<Item> offHand = instruction.getValue("o", PackageArgument.ITEM);
+        final Variable<List<Item>> drops = instruction.getValueList("drops", PackageArgument.ITEM);
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

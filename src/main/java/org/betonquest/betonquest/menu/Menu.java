@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -106,7 +106,7 @@ public class Menu {
         executeEvents(data.closeEvents, profile, "close");
     }
 
-    private void executeEvents(final VariableList<EventID> events, final OnlineProfile profile, final String type) {
+    private void executeEvents(final Variable<List<EventID>> events, final OnlineProfile profile, final String type) {
         log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " events");
         final List<EventID> resolved;
         try {
@@ -208,8 +208,8 @@ public class Menu {
      * @param closeEvents    Events which are fired when the menu is closed.
      */
     public record MenuData(Message title, int height, List<Slots> slots,
-                           VariableList<ConditionID> openConditions,
-                           VariableList<EventID> openEvents, VariableList<EventID> closeEvents) {
+                           Variable<List<ConditionID>> openConditions,
+                           Variable<List<EventID>> openEvents, Variable<List<EventID>> closeEvents) {
 
     }
 }

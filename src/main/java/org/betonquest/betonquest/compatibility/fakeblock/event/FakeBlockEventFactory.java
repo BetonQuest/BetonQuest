@@ -6,6 +6,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.ValueChecker;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -55,8 +58,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final List<String> groupNames = instruction.getList();
-        checkForNotExistingGroups(groupNames);
+        final Variable<List<String>> groupNames = instruction.getList(Argument.STRING, checkForNotExistingGroups());
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupEvent(groupNames, playerGroupService);
@@ -64,16 +66,18 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
         };
     }
 
-    private void checkForNotExistingGroups(final List<String> groupNames) throws QuestException {
-        final List<String> notExistingGroups = new ArrayList<>();
-        for (final String groupName : groupNames) {
-            if (!groupService.getProvider().hasGroup(groupName)) {
-                notExistingGroups.add(groupName);
+    private ValueChecker<List<String>> checkForNotExistingGroups() {
+        return (value -> {
+            final List<String> notExistingGroups = new ArrayList<>();
+            for (final String groupName : value) {
+                if (!groupService.getProvider().hasGroup(groupName)) {
+                    notExistingGroups.add(groupName);
+                }
             }
-        }
-        if (notExistingGroups.isEmpty()) {
-            return;
-        }
-        throw new QuestException("The following groups do not exist: " + notExistingGroups);
+            if (notExistingGroups.isEmpty()) {
+                return;
+            }
+            throw new QuestException("The following groups do not exist: " + notExistingGroups);
+        });
     }
 }

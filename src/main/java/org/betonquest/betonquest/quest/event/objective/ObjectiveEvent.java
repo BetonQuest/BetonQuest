@@ -13,11 +13,12 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -43,7 +44,7 @@ public class ObjectiveEvent implements NullableEvent {
     /**
      * All objectives affected by this event.
      */
-    private final VariableList<ObjectiveID> objectives;
+    private final Variable<List<ObjectiveID>> objectives;
 
     /**
      * API for starting objectives.
@@ -67,7 +68,7 @@ public class ObjectiveEvent implements NullableEvent {
      * @throws QuestException if the action is invalid
      */
     public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
-                          final QuestPackage questPackage, final VariableList<ObjectiveID> objectives, final String action) throws QuestException {
+                          final QuestPackage questPackage, final Variable<List<ObjectiveID>> objectives, final String action) throws QuestException {
         this.log = log;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;

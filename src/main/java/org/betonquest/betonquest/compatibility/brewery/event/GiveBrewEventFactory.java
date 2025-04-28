@@ -39,9 +39,9 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amountVar = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<Number> qualityVar = instruction.getVariable(Argument.NUMBER);
-        final Variable<String> nameVar = instruction.getVariable(Argument.STRING);
+        final Variable<Number> amountVar = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> qualityVar = instruction.get(Argument.NUMBER);
+        final Variable<String> nameVar = instruction.get(Argument.STRING);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar), logger, instruction.getPackage()), data);

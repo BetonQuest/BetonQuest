@@ -30,7 +30,7 @@ public class RideObjectiveFactory implements ObjectiveFactory {
         if (ANY_PROPERTY.equalsIgnoreCase(name)) {
             vehicle = null;
         } else {
-            vehicle = instruction.getVariable(name, Argument.ENUM(EntityType.class));
+            vehicle = instruction.get(name, Argument.ENUM(EntityType.class));
         }
         return new RideObjective(instruction, vehicle);
     }

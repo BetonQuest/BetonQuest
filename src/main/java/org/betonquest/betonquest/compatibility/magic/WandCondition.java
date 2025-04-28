@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class WandCondition implements OnlineCondition {
     /**
      * Required spells on the wand.
      */
-    private final Map<String, Variable<Number>> spells;
+    private final Variable<List<Map.Entry<String, Integer>>> spells;
 
     /**
      * Wand name.
@@ -59,7 +60,7 @@ public class WandCondition implements OnlineCondition {
      * @param amount optional required wand amount
      */
     public WandCondition(final MagicAPI api, final Variable<CheckType> type, @Nullable final Variable<String> name,
-                         final Map<String, Variable<Number>> spells, @Nullable final Variable<Number> amount) {
+                         final Variable<List<Map.Entry<String, Integer>>> spells, @Nullable final Variable<Number> amount) {
         this.api = api;
         this.name = name;
         this.spells = spells;
@@ -126,10 +127,11 @@ public class WandCondition implements OnlineCondition {
         if (name != null && !name.getValue(profile).equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }
+        final List<Map.Entry<String, Integer>> spells = this.spells.getValue(profile);
         if (!spells.isEmpty()) {
             spell:
-            for (final Map.Entry<String, Variable<Number>> entry : spells.entrySet()) {
-                final int level = entry.getValue().getValue(profile).intValue();
+            for (final Map.Entry<String, Integer> entry : spells) {
+                final int level = entry.getValue();
                 for (final String wandSpell : wand.getSpells()) {
                     if (wandSpell.toLowerCase(Locale.ROOT).startsWith(entry.getKey().toLowerCase(Locale.ROOT)) && wand.getSpellLevel(entry.getKey()) >= level) {
                         continue spell;

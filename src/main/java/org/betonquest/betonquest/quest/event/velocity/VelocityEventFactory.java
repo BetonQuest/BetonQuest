@@ -40,13 +40,13 @@ public class VelocityEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String rawVector = instruction.getOptional("vector");
+        final String rawVector = instruction.getValue("vector");
         if (rawVector == null) {
             throw new QuestException("A 'vector' is required");
         }
         final Variable<Vector> vector = new Variable<>(BetonQuest.getInstance().getVariableProcessor(), instruction.getPackage(), rawVector, Argument.VECTOR);
-        final Variable<VectorDirection> direction = instruction.getVariable(instruction.getOptional("direction"), Argument.ENUM(VectorDirection.class), VectorDirection.ABSOLUTE);
-        final Variable<VectorModification> modification = instruction.getVariable(instruction.getOptional("modification"), Argument.ENUM(VectorModification.class), VectorModification.SET);
+        final Variable<VectorDirection> direction = instruction.get(instruction.getValue("direction"), Argument.ENUM(VectorDirection.class), VectorDirection.ABSOLUTE);
+        final Variable<VectorModification> modification = instruction.get(instruction.getValue("modification"), Argument.ENUM(VectorModification.class), VectorModification.SET);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new VelocityEvent(vector, direction, modification),
                 loggerFactory.create(VelocityEvent.class),

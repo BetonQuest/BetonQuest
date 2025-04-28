@@ -40,7 +40,7 @@ public class ScoreboardTagEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ScoreboardTagAction> action = instruction.getVariable(Argument.ENUM(ScoreboardTagAction.class));
+        final Variable<ScoreboardTagAction> action = instruction.get(Argument.ENUM(ScoreboardTagAction.class));
         final String tag = instruction.next();
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(

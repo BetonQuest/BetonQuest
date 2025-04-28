@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.effect;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -17,14 +17,14 @@ public class DeleteEffectEvent implements OnlineEvent {
     /**
      * The effects to delete.
      */
-    private final VariableList<PotionEffectType> effects;
+    private final Variable<List<PotionEffectType>> effects;
 
     /**
      * Creates a new DeleteEffect event.
      *
      * @param effects the effects to delete or an empty list to delete all effects
      */
-    public DeleteEffectEvent(final VariableList<PotionEffectType> effects) {
+    public DeleteEffectEvent(final Variable<List<PotionEffectType>> effects) {
         this.effects = effects;
     }
 

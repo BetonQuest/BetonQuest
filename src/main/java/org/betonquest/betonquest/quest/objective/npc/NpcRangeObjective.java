@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestListException;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -28,7 +27,7 @@ public class NpcRangeObjective extends Objective {
     /**
      * Stores the relevant Npc Ids to get their locations.
      */
-    private final VariableList<NpcID> npcIds;
+    private final Variable<List<NpcID>> npcIds;
 
     /**
      * Maximal distance between player and NPC.
@@ -59,7 +58,7 @@ public class NpcRangeObjective extends Objective {
      * @param trigger     the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction, final VariableList<NpcID> npcIds, final Variable<Number> radius,
+    public NpcRangeObjective(final Instruction instruction, final Variable<List<NpcID>> npcIds, final Variable<Number> radius,
                              final Variable<Trigger> trigger) throws QuestException {
         super(instruction);
         this.npcIds = npcIds;

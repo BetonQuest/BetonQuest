@@ -12,7 +12,7 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.types.NumberParser;
+import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;

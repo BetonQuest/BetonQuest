@@ -42,9 +42,9 @@ public class ExperienceEventFactory implements PlayerEventFactory {
     @Override
     @SuppressWarnings("PMD.PrematureDeclaration")
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
-        String action = instruction.getOptional("action");
+        String action = instruction.getValue("action");
         if (instruction.hasArgument("level")) {
             experienceType = ExperienceModification.ADD_LEVEL;
         } else if (action != null) {

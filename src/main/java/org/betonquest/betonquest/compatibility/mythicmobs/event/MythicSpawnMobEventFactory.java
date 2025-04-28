@@ -48,14 +48,14 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final String[] mobParts = instruction.next().split(":");
         if (mobParts.length != MOB_FORMAT_LENGTH) {
             throw new QuestException("Wrong mob format");
         }
         final String mob = mobParts[0];
-        final Variable<Number> level = instruction.getVariable(mobParts[1], Argument.NUMBER);
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean privateMob;
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             privateMob = instruction.hasArgument("private");
@@ -63,22 +63,22 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
             privateMob = false;
         }
         final boolean targetPlayer = instruction.hasArgument("target");
-        final String markedString = instruction.getOptional("marked");
+        final String markedString = instruction.getValue("marked");
         final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, privateMob, targetPlayer, marked), data);
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final String[] mobParts = instruction.next().split(":");
         if (mobParts.length != MOB_FORMAT_LENGTH) {
             throw new QuestException("Wrong mob format");
         }
         final String mob = mobParts[0];
-        final Variable<Number> level = instruction.getVariable(mobParts[1], Argument.NUMBER);
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
-        final String markedString = instruction.getOptional("marked");
+        final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final String markedString = instruction.getValue("marked");
         final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);
     }

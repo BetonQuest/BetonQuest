@@ -21,7 +21,7 @@ public class EntityCondition implements NullableCondition {
     /**
      * The amount per entity.
      */
-    private final Map<EntityType, Variable<Number>> entityAmounts;
+    private final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts;
 
     /**
      * The location of the entity's.
@@ -54,7 +54,7 @@ public class EntityCondition implements NullableCondition {
      * @param name          the name of the entity to check for
      * @param marked        the marked entity to check for
      */
-    public EntityCondition(final Map<EntityType, Variable<Number>> entityAmounts, final Variable<Location> loc,
+    public EntityCondition(final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts, final Variable<Location> loc,
                            final Variable<Number> range, @Nullable final Variable<String> name, @Nullable final Variable<String> marked) {
         this.entityAmounts = entityAmounts;
         this.loc = loc;
@@ -70,9 +70,9 @@ public class EntityCondition implements NullableCondition {
         final String resolvedName = name == null ? null : name.getValue(profile);
         final String resolvedMarked = marked == null ? null : marked.getValue(profile);
         final List<Entity> selectedEntity = EntityUtils.getSelectedEntity(location, resolvedName, resolvedMarked, resolvedRange);
-        for (final Map.Entry<EntityType, Variable<Number>> entry : entityAmounts.entrySet()) {
+        for (final Map.Entry<EntityType, Integer> entry : entityAmounts.getValue(profile)) {
             final long count = selectedEntity.stream().filter(entity -> entity.getType() == entry.getKey()).count();
-            if (count < entry.getValue().getValue(profile).intValue()) {
+            if (count < entry.getValue()) {
                 return false;
             }
         }

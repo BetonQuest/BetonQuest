@@ -4,12 +4,13 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Removes items from a chest.
@@ -19,7 +20,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
     /**
      * The items to take from the chest.
      */
-    private final VariableList<Item> items;
+    private final Variable<List<Item>> items;
 
     /**
      * Creates a new ChestTakeEvent.
@@ -27,7 +28,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
      * @param variableLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final Variable<Location> variableLocation, final VariableList<Item> items) {
+    public ChestTakeEvent(final Variable<Location> variableLocation, final Variable<List<Item>> items) {
         super(variableLocation);
         this.items = items;
     }

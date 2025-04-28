@@ -71,7 +71,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
      */
     @Nullable
     private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws QuestException {
-        final String targetOptionName = instruction.getOptional("option");
+        final String targetOptionName = instruction.getValue("option");
         if (targetOptionName == null) {
             return null;
         }

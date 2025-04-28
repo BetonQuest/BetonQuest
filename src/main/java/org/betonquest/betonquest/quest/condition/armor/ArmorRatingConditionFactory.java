@@ -40,7 +40,7 @@ public class ArmorRatingConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> required = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> required = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(ArmorRatingCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new ArmorRatingCondition(required), log, instruction.getPackage()), data);

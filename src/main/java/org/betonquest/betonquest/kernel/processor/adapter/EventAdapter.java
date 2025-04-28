@@ -8,9 +8,10 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Wrapper for player and playerless events.
@@ -35,7 +36,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     /**
      * Conditions that must be met to execute.
      */
-    private final VariableList<ConditionID> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * Create a new Wrapper for variables with instruction.
@@ -53,7 +54,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.instruction = instruction;
-        conditions = instruction.get(instruction.getOptional("conditions", ""), PackageArgument.ofList(ConditionID::new));
+        conditions = instruction.getValueList("conditions", ConditionID::new);
     }
 
     /**

@@ -40,7 +40,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFullID(),

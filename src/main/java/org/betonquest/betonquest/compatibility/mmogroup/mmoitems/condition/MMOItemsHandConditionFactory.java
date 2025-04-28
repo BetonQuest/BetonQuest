@@ -58,7 +58,7 @@ public class MMOItemsHandConditionFactory implements PlayerConditionFactory {
             if (OFFHAND_KEY.equals(next)) {
                 offhand = true;
             } else {
-                amount = instruction.getVariable(next, Argument.NUMBER);
+                amount = instruction.get(next, Argument.NUMBER);
             }
         }
         final BetonQuestLogger log = loggerFactory.create(MMOItemsHandCondition.class);

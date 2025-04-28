@@ -45,7 +45,7 @@ class VariableListTest {
         this.questPackage = pack;
     }
 
-    private VariableList<EventID> getVariableList(final String input) throws QuestException {
+    private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
         return new VariableList<>(variableProcessor, questPackage, input, value -> new EventID(questPackage, value));
     }
 
@@ -63,7 +63,7 @@ class VariableListTest {
 
     @Test
     void constructEmptyList() {
-        final VariableList<EventID> list = assertDoesNotThrow(() -> getVariableList(",,"),
+        final Variable<List<EventID>> list = assertDoesNotThrow(() -> getVariableList(",,"),
                 "Parsing an empty list should not fail");
         assertDoesNotThrow(() -> list.getValue(null),
                 "Empty list should not fail getting values");
@@ -86,7 +86,7 @@ class VariableListTest {
         final VariableAdapter variable = mock(VariableAdapter.class);
         when(variable.getValue(any())).thenReturn("b");
         when(variableProcessor.create(questPackage, "%bVar%")).thenReturn(variable);
-        final VariableList<EventID> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
+        final Variable<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
                 "Validating existing variables should not fail");
         assertDoesNotThrow(() -> list.getValue(null), "Getting existing variable should not fail");
     }

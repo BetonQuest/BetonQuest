@@ -44,8 +44,8 @@ public class EffectEventFactory implements PlayerEventFactory {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final Variable<Number> duration = instruction.getVariable(Argument.NUMBER);
-            final Variable<Number> level = instruction.getVariable(Argument.NUMBER);
+            final Variable<Number> duration = instruction.get(Argument.NUMBER);
+            final Variable<Number> level = instruction.get(Argument.NUMBER);
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

@@ -30,7 +30,7 @@ public class HavingShopConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new HavingShopCondition(amount), data);
     }
 }

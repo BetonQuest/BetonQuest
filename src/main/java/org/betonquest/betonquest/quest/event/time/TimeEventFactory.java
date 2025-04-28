@@ -53,7 +53,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        if (instruction.copy().getOptional("world") == null) {
+        if (instruction.copy().getValue("world") == null) {
             return new DoNothingPlayerlessEvent();
         } else {
             return new PrimaryServerThreadPlayerlessEvent(createTimeEvent(instruction), data);
@@ -64,7 +64,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         final String timeString = instruction.next();
         final Time time = parseTimeType(timeString);
         final Variable<Number> rawTime = parseTime(instruction, timeString, time != Time.SET);
-        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
+        final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
         final boolean hourFormat = !instruction.hasArgument("ticks");
         return new NullableEventAdapter(new TimeEvent(time, rawTime, worldSelector, hourFormat));
     }
@@ -82,7 +82,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private Variable<Number> parseTime(final Instruction instruction, final String timeString, final boolean cutFirst) throws QuestException {
         final String rawTime = cutFirst ? timeString.substring(1) : timeString;
-        return instruction.getVariable(rawTime, Argument.NUMBER);
+        return instruction.get(rawTime, Argument.NUMBER);
     }
 
     private Selector<World> parseWorld(@Nullable final String worldName) {

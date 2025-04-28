@@ -10,8 +10,9 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
+
+import java.util.List;
 
 /**
  * Factory for {@link AlternativeCondition}s.
@@ -44,7 +45,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
 
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(AlternativeCondition.class);
-        final VariableList<ConditionID> conditionIDs = instruction.get(PackageArgument.ofList(ConditionID::new));
+        final Variable<List<ConditionID>> conditionIDs = instruction.getList(ConditionID::new);
         return new AlternativeCondition(log, conditionIDs, instruction.getPackage());
     }
 }

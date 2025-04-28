@@ -22,15 +22,15 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final List<String> names = instruction.getList();
-        final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<List<String>> names = instruction.getList(Argument.STRING);
+        final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
 
-        final Variable<Number> deathRadiusAllPlayers = instruction.getVariable(instruction.getOptional("deathRadiusAllPlayers"), Argument.NUMBER, 0);
-        final Variable<Number> neutralDeathRadiusAllPlayers = instruction.getVariable(instruction.getOptional("neutralDeathRadiusAllPlayers"), Argument.NUMBER, 0);
+        final Variable<Number> deathRadiusAllPlayers = instruction.getValue("deathRadiusAllPlayers", Argument.NUMBER, 0);
+        final Variable<Number> neutralDeathRadiusAllPlayers = instruction.getValue("neutralDeathRadiusAllPlayers", Argument.NUMBER, 0);
 
-        final Variable<Number> minMobLevel = instruction.getVariable(instruction.getOptional("minLevel", String.valueOf(Double.NEGATIVE_INFINITY)), Argument.NUMBER);
-        final Variable<Number> maxMobLevel = instruction.getVariable(instruction.getOptional("maxLevel", String.valueOf(Double.POSITIVE_INFINITY)), Argument.NUMBER);
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
+        final Variable<Number> minMobLevel = instruction.getValue("minLevel", Argument.NUMBER, Double.NEGATIVE_INFINITY);
+        final Variable<Number> maxMobLevel = instruction.getValue("maxLevel", Argument.NUMBER, Double.POSITIVE_INFINITY);
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new MythicMobKillObjective(instruction, targetAmount, names, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
     }
 }

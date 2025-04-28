@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+
+import java.util.List;
 
 /**
  * Factory for creating {@link KillPlayerObjective} instances from {@link Instruction}s.
@@ -23,9 +23,9 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final String name = instruction.getOptional("name");
-        final VariableList<ConditionID> required = instruction.get(instruction.getOptional("required", ""), PackageArgument.ofList(ConditionID::new));
+        final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final String name = instruction.getValue("name");
+        final Variable<List<ConditionID>> required = instruction.getValueList("required", ConditionID::new);
         return new KillPlayerObjective(instruction, targetAmount, name, required);
     }
 }

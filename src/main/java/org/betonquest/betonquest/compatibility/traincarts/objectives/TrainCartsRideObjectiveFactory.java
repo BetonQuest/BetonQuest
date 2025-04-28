@@ -20,8 +20,8 @@ public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.getVariable(instruction.getOptional("name", ""), Argument.STRING);
-        final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<String> name = instruction.getValue("name", Argument.STRING, "");
+        final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new TrainCartsRideObjective(instruction, targetAmount, name);
     }
 }

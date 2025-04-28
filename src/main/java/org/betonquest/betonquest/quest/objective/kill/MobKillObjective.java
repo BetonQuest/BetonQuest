@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -16,6 +15,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Player has to kill specified amount of specified mobs. It can also require
@@ -27,7 +28,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     /**
      * The entity types that should be killed.
      */
-    private final VariableList<EntityType> entities;
+    private final Variable<List<EntityType>> entities;
 
     /**
      * The optional name of the mob.
@@ -52,7 +53,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public MobKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final VariableList<EntityType> entities, @Nullable final String name,
+                            final Variable<List<EntityType>> entities, @Nullable final String name,
                             @Nullable final Variable<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.entities = entities;

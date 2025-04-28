@@ -40,7 +40,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> height = instruction.getVariable(value -> {
+        final Variable<Number> height = instruction.get(value -> {
             try {
                 if (value.matches("-?\\d+\\.?\\d*")) {
                     return Double.parseDouble(value);

@@ -39,8 +39,8 @@ public class HasBrewConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> countVar = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<String> nameVar = instruction.getVariable(Argument.STRING);
+        final Variable<Number> countVar = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<String> nameVar = instruction.get(Argument.STRING);
         final BetonQuestLogger logger = loggerFactory.create(HasBrewCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new HasBrewCondition(countVar, nameVar), logger, instruction.getPackage()), data);

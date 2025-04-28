@@ -53,7 +53,7 @@ public class PointEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.getOptional("action");
+        final String action = instruction.getValue("action");
         Point type = Point.ADD;
         if (action != null) {
             try {
@@ -81,7 +81,7 @@ public class PointEventFactory implements PlayerEventFactory {
             pointSender = new NoNotificationSender();
         }
 
-        final Variable<Number> amount = instruction.getVariable(number, Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(number, Argument.NUMBER);
         return new PointEvent(pointSender, category, amount, type, dataStorage);
     }
 }

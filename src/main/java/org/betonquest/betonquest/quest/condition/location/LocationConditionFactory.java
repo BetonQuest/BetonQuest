@@ -41,8 +41,8 @@ public class LocationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Number> range = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(LocationCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new LocationCondition(loc, range), log, instruction.getPackage()), data);

@@ -23,7 +23,7 @@ public class MMOItemsCraftObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemId = instruction.next();
-        final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new MMOItemsCraftObjective(instruction, targetAmount, itemType, itemId);
     }
 }

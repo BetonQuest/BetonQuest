@@ -27,7 +27,7 @@ public class ConsumeObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Item> item = instruction.get(PackageArgument.ITEM);
-        final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional(AMOUNT_ARGUMENT, "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.get(instruction.getValue(AMOUNT_ARGUMENT, "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
         return new ConsumeObjective(instruction, targetAmount, item);
     }
 }

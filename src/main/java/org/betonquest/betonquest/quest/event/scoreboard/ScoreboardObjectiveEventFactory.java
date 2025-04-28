@@ -32,12 +32,12 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String objective = instruction.next();
         final String number = instruction.next();
-        final String action = instruction.getOptional("action");
+        final String action = instruction.getValue("action");
         if (action != null) {
             try {
                 final ScoreModification type = ScoreModification.valueOf(action.toUpperCase(Locale.ROOT));
                 return new PrimaryServerThreadEvent(
-                        new ScoreboardObjectiveEvent(objective, instruction.getVariable(number, Argument.NUMBER), type),
+                        new ScoreboardObjectiveEvent(objective, instruction.get(number, Argument.NUMBER), type),
                         data);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + instruction.current(), e);
@@ -45,11 +45,11 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
             return new PrimaryServerThreadEvent(
-                    new ScoreboardObjectiveEvent(objective, instruction.getVariable(number.replace("*", ""), Argument.NUMBER), ScoreModification.MULTIPLY),
+                    new ScoreboardObjectiveEvent(objective, instruction.get(number.replace("*", ""), Argument.NUMBER), ScoreModification.MULTIPLY),
                     data);
         }
         return new PrimaryServerThreadEvent(
-                new ScoreboardObjectiveEvent(objective, instruction.getVariable(number, Argument.NUMBER), ScoreModification.ADD),
+                new ScoreboardObjectiveEvent(objective, instruction.get(number, Argument.NUMBER), ScoreModification.ADD),
                 data);
     }
 }

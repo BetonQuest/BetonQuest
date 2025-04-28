@@ -31,8 +31,8 @@ public class DelLevelEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Job> job = instruction.get(JobParser.JOB);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new DelLevelEvent(job, amount), data);
     }
 }

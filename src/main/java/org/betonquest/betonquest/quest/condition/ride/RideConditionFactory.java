@@ -51,7 +51,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
         if (ANY_ENTITY.equalsIgnoreCase(name)) {
             vehicle = null;
         } else {
-            vehicle = instruction.getVariable(name, Argument.ENUM(EntityType.class));
+            vehicle = instruction.get(name, Argument.ENUM(EntityType.class));
         }
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
         return new PrimaryServerThreadPlayerCondition(

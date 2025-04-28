@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -76,7 +75,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * The events to run.
      */
-    private final VariableList<EventID> events;
+    private final Variable<List<EventID>> events;
 
     /**
      * The time unit to use for the delay and period.
@@ -91,7 +90,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Conditions to check if the event should be canceled.
      */
-    private final VariableList<ConditionID> cancelConditions;
+    private final Variable<List<ConditionID>> cancelConditions;
 
     /**
      * Create a folder event with the given parameters.
@@ -111,10 +110,10 @@ public class FolderEvent implements NullableEvent {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final VariableList<EventID> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
+                       final Variable<List<EventID>> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
                        @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
                        @Nullable final Variable<Number> random, final TimeUnit timeUnit, final boolean cancelOnLogout,
-                       final VariableList<ConditionID> cancelConditions) {
+                       final Variable<List<ConditionID>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
@@ -162,7 +161,7 @@ public class FolderEvent implements NullableEvent {
         }
     }
 
-    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) throws QuestException {
+    private void handleDelayPeriod(@Nullable final Profile profile, final long delayTicks, final Deque<EventID> chosenList, final long periodTicks) {
         if (delayTicks == 0 && !chosenList.isEmpty()) {
             final EventID event = chosenList.removeFirst();
             if (checkCancelConditions(profile)) {

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Variable that resolves into a list of {@link T}.
@@ -31,6 +32,7 @@ public class VariableList<T> extends Variable<List<T>> {
      *
      * @param values the list of values
      */
+    @SafeVarargs
     public VariableList(final T... values) {
         super(List.of(values));
     }
@@ -96,6 +98,11 @@ public class VariableList<T> extends Variable<List<T>> {
                 throw new QuestException("List must not be empty");
             }
         };
+    }
+
+    public static <T, U> ValueChecker<List<Map.Entry<T, U>>> joaNotDoubleChecker() {
+        // TODO write a checker that checks if the list contains double T
+
     }
 
     /**

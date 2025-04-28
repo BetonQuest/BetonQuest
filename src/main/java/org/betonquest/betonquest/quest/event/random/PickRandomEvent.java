@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -18,7 +17,7 @@ public class PickRandomEvent implements NullableEvent {
     /**
      * The events with there weight.
      */
-    private final VariableList<RandomEvent> events;
+    private final Variable<List<RandomEvent>> events;
 
     /**
      * The amount of events to fire.
@@ -38,7 +37,7 @@ public class PickRandomEvent implements NullableEvent {
      * @param amount       the amount of events to fire
      * @param questTypeAPI the Quest Type API
      */
-    public PickRandomEvent(final VariableList<RandomEvent> events, @Nullable final Variable<Number> amount, final QuestTypeAPI questTypeAPI) {
+    public PickRandomEvent(final Variable<List<RandomEvent>> events, @Nullable final Variable<Number> amount, final QuestTypeAPI questTypeAPI) {
         this.events = events;
         this.amount = amount;
         this.questTypeAPI = questTypeAPI;

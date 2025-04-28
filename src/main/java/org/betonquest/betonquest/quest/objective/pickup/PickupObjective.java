@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +14,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Represents an objective that is completed when a player picks up a specific item.
@@ -24,7 +25,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     /**
      * The target amount of items to be picked up.
      */
-    private final VariableList<Item> pickupItems;
+    private final Variable<List<Item>> pickupItems;
 
     /**
      * Constructor for the PickupObjective.
@@ -35,7 +36,7 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public PickupObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                           final VariableList<Item> pickupItems) throws QuestException {
+                           final Variable<List<Item>> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;
     }

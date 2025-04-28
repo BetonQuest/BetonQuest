@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.types.location.LocationParser;
+import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;

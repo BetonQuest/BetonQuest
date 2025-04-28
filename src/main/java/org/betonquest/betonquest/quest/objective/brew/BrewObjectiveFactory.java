@@ -32,7 +32,7 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Item> potion = instruction.get(PackageArgument.ITEM);
-        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
+        final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
         return new BrewObjective(instruction, targetAmount, profileProvider, potion);
     }
 }

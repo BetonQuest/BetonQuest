@@ -37,8 +37,8 @@ public class AuraSkillsStatsConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> nameVar = instruction.getVariable(Argument.STRING);
-        final Variable<Number> targetLevelVar = instruction.getVariable(Argument.NUMBER);
+        final Variable<String> nameVar = instruction.get(Argument.STRING);
+        final Variable<Number> targetLevelVar = instruction.get(Argument.NUMBER);
         final boolean mustBeEqual = instruction.hasArgument("equal");
 
         final AuraSkillsStatsCondition stats = new AuraSkillsStatsCondition(auraSkillsApi, targetLevelVar, nameVar, mustBeEqual);
