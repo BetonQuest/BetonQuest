@@ -482,16 +482,9 @@ public class Backpack implements Listener {
             int counter = 0;
             final FeatureAPI featureAPI = BetonQuest.getInstance().getFeatureAPI();
             for (final Map.Entry<CompassID, QuestCompass> entry : featureAPI.getCompasses().entrySet()) {
-                final CompassID compassId = entry.getKey();
-                try {
-                    if (playerData.hasTag(featureAPI.getCompassTag(compassId).getValue(onlineProfile))) {
-                        compasses.put(counter, entry.getValue());
-                        counter++;
-                    }
-                } catch (final QuestException e) {
-                    log.warn("Could not get compass tag for '" + compassId + "': " + e.getMessage(), e);
-                    onlineProfile.getPlayer().closeInventory();
-                    return;
+                if (playerData.hasTag(entry.getKey().getTag())) {
+                    compasses.put(counter, entry.getValue());
+                    counter++;
                 }
             }
 

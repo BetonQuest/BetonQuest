@@ -96,8 +96,8 @@ public interface Argument<T> extends QuestFunction<String, T> {
      * @return the list of {@link T}s
      */
     static <T> VariableArgument<VariableList<T>> ofList(final Argument<T> argument) {
-        return (variableProcessor, pack, string)
-                -> new VariableList<>(variableProcessor, pack, string, argument);
+        return ofList(argument, list -> {
+        });
     }
 
     /**

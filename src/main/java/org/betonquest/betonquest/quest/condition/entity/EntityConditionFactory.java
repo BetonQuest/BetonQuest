@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
@@ -57,7 +57,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final String nameString = instruction.getOptional("name");
         final Variable<String> name = nameString == null ? null : instruction.getVariable(
                 Utils.format(nameString, true, false), Argument.STRING);
-        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 

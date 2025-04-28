@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
 
         final Variable<Number> minMobLevel = instruction.getVariable(instruction.getOptional("minLevel", String.valueOf(Double.NEGATIVE_INFINITY)), Argument.NUMBER);
         final Variable<Number> maxMobLevel = instruction.getVariable(instruction.getOptional("maxLevel", String.valueOf(Double.POSITIVE_INFINITY)), Argument.NUMBER);
-        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
         return new MythicMobKillObjective(instruction, targetAmount, names, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
     }
 }

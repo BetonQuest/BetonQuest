@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -77,7 +76,7 @@ public class EntityInteractObjective extends CountingObjective {
      * The variable identifier for the marked entities.
      */
     @Nullable
-    protected VariableIdentifier marked;
+    protected Variable<String> marked;
 
     /**
      * The interaction type (right, left, any).
@@ -122,7 +121,7 @@ public class EntityInteractObjective extends CountingObjective {
                                    @Nullable final Variable<Location> loc,
                                    final Variable<Number> range, @Nullable final String customName,
                                    @Nullable final String realName, @Nullable final EquipmentSlot slot,
-                                   final Variable<EntityType> mobType, @Nullable final VariableIdentifier marked,
+                                   final Variable<EntityType> mobType, @Nullable final Variable<String> marked,
                                    final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
         super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
         this.loc = loc;

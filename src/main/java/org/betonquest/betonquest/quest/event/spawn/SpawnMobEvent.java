@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -48,7 +47,7 @@ public class SpawnMobEvent implements NullableEvent {
      * The marked variable.
      */
     @Nullable
-    private final VariableIdentifier marked;
+    private final Variable<String> marked;
 
     /**
      * Creates a new spawn mob event.
@@ -62,7 +61,7 @@ public class SpawnMobEvent implements NullableEvent {
      * @throws QuestException if the entity type is not a mob
      */
     public SpawnMobEvent(final Variable<Location> variableLocation, final Variable<EntityType> type, final Equipment equipment,
-                         final Variable<Number> amount, @Nullable final Variable<String> name, @Nullable final VariableIdentifier marked) throws QuestException {
+                         final Variable<Number> amount, @Nullable final Variable<String> name, @Nullable final Variable<String> marked) throws QuestException {
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;

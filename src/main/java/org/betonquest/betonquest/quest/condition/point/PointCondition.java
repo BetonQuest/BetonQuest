@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 
 import java.util.Optional;
 
@@ -22,7 +21,7 @@ public class PointCondition implements PlayerCondition {
     /**
      * The category of the points.
      */
-    private final VariableIdentifier category;
+    private final Variable<String> category;
 
     /**
      * The amount of points.
@@ -42,7 +41,7 @@ public class PointCondition implements PlayerCondition {
      * @param count       the amount of points
      * @param equal       whether the points should be equal to the specified amount
      */
-    public PointCondition(final PlayerDataStorage dataStorage, final VariableIdentifier category, final Variable<Number> count, final boolean equal) {
+    public PointCondition(final PlayerDataStorage dataStorage, final Variable<String> category, final Variable<Number> count, final boolean equal) {
         this.dataStorage = dataStorage;
         this.category = category;
         this.count = count;

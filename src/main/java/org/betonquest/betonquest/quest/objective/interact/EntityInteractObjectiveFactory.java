@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
@@ -34,7 +34,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final String customName = instruction.getOptional("name");
         final String realName = instruction.getOptional("realname");
-        final VariableIdentifier marked = instruction.get(instruction.getOptional("marked"), VariableIdentifier::new);
+        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");
         final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
         final String stringRange = instruction.getOptional("range");

@@ -5,7 +5,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create global tag conditions from {@link Instruction}s.
@@ -28,7 +29,7 @@ public class GlobalTagConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final VariableIdentifier tag = instruction.get(VariableIdentifier::new);
+        final Variable<String> tag = instruction.get(PackageArgument.IDENTIFIER);
         return new GlobalTagCondition(globalData, tag);
     }
 }

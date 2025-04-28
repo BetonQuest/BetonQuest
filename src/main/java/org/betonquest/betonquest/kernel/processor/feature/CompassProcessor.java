@@ -9,7 +9,6 @@ import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
@@ -63,16 +62,5 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     @Override
     protected CompassID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new CompassID(pack, identifier);
-    }
-
-    /**
-     * Get the full path of the tag to indicate a quest compass should be shown.
-     *
-     * @param compassID the compass id for the tag
-     * @return the compass tag
-     * @throws QuestException if the compass tag could not be created
-     */
-    public VariableIdentifier getCompassTag(final CompassID compassID) throws QuestException {
-        return new VariableIdentifier(variableProcessor, compassID.getPackage(), "compass-" + compassID.getBaseID());
     }
 }

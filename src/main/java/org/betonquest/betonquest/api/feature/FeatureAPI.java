@@ -16,7 +16,6 @@ import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -81,17 +80,6 @@ public final class FeatureAPI {
      */
     public Map<CompassID, QuestCompass> getCompasses() {
         return new HashMap<>(questRegistry.compasses().getValues());
-    }
-
-    /**
-     * Get the full path of the tag to indicate a quest compass should be shown.
-     *
-     * @param compassID the compass id for the tag
-     * @return the compass tag
-     * @throws QuestException if the compass tag could not be created
-     */
-    public VariableIdentifier getCompassTag(final CompassID compassID) throws QuestException {
-        return questRegistry.compasses().getCompassTag(compassID);
     }
 
     /**

@@ -20,4 +20,13 @@ public class CompassID extends ID {
     public CompassID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         super(pack, identifier, "compass", "Compass");
     }
+
+    /**
+     * Get the full path of the tag to indicate a quest compass should be shown.
+     *
+     * @return the compass tag
+     */
+    public String getTag() {
+        return getPackage() + ".compass-" + getBaseID();
+    }
 }

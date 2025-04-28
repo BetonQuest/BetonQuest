@@ -5,7 +5,8 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create tag conditions from {@link Instruction}s.
@@ -28,7 +29,7 @@ public class TagConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableIdentifier tag = instruction.get(VariableIdentifier::new);
+        final Variable<String> tag = instruction.get(PackageArgument.IDENTIFIER);
         return new TagCondition(tag, dataStorage);
     }
 }

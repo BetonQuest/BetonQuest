@@ -7,9 +7,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.instruction.variable.VariableIdentifier;
-
-import java.util.List;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 
 /**
  * Event to delete tags from all players.
@@ -33,7 +31,7 @@ public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
     /**
      * The list of tags to delete.
      */
-    private final List<VariableIdentifier> tags;
+    private final VariableList<String> tags;
 
     /**
      * Create a new delete tag playerless event.
@@ -43,7 +41,7 @@ public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
      * @param profileProvider the profile provider instance
      * @param tags            the list of tags to delete
      */
-    public DeleteTagPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final List<VariableIdentifier> tags) {
+    public DeleteTagPlayerlessEvent(final PlayerDataStorage dataStorage, final Saver saver, final ProfileProvider profileProvider, final VariableList<String> tags) {
         this.dataStorage = dataStorage;
         this.saver = saver;
         this.profileProvider = profileProvider;
@@ -52,12 +50,11 @@ public class DeleteTagPlayerlessEvent implements PlayerlessEvent {
 
     @Override
     public void execute() throws QuestException {
-        for (final VariableIdentifier tag : tags) {
-            final String tagName = tag.getValue(null);
+        for (final String tag : tags.getValue(null)) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                dataStorage.get(onlineProfile).removeTag(tagName);
+                dataStorage.get(onlineProfile).removeTag(tag);
             }
-            saver.add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tagName));
+            saver.add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
         }
     }
 }
