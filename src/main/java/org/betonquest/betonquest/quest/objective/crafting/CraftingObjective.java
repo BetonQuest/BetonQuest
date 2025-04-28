@@ -26,7 +26,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
     /**
      * The item to be crafted.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * Constructor for the CraftingObjective.
@@ -37,7 +37,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public CraftingObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                             final Item item) throws QuestException {
+                             final Variable<Item> item) throws QuestException {
         super(instruction, targetAmount, "items_to_craft");
         this.item = item;
     }
@@ -68,7 +68,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
         if (event.getWhoClicked() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && item.matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).getItem().matches(event.getInventory().getResult()) && checkConditions(onlineProfile)) {
                     getCountingData(onlineProfile).progress(calculateCraftAmount(event));
                     completeIfDoneOrNotify(onlineProfile);
                 }

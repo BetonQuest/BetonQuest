@@ -38,7 +38,7 @@ public class BrewObjective extends CountingObjective implements Listener {
     /**
      * The potion item to brew.
      */
-    private final Item potion;
+    private final Variable<Item> potion;
 
     /**
      * A cache of brewing stands and their owners.
@@ -55,7 +55,7 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                         final ProfileProvider profileProvider, final Item potion) throws QuestException {
+                         final ProfileProvider profileProvider, final Variable<Item> potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);
@@ -116,7 +116,7 @@ public class BrewObjective extends CountingObjective implements Listener {
             return;
         }
         qeHandler.handle(() -> {
-            final QuestItem potion = this.potion.getItem();
+            final QuestItem potion = this.potion.getValue(profile).getItem();
             final boolean[] alreadyDone = getMatchingPotions(potion, event.getContents());
 
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {

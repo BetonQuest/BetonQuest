@@ -26,7 +26,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     /**
      * The item to be smelted.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * Constructor for the SmeltingObjective.
@@ -36,7 +36,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
      * @param item         the item to be smelted
      * @throws QuestException if there is an error in the instruction
      */
-    public SmeltingObjective(final Instruction instruction, final Variable<Number> targetAmount, final Item item)
+    public SmeltingObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<Item> item)
             throws QuestException {
         super(instruction, targetAmount, "items_to_smelt");
         this.item = item;
@@ -53,7 +53,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
         if (isSmeltingResultExtraction(event, inventoryType)) {
             final OnlineProfile onlineProfile = profileProvider.getProfile((Player) event.getWhoClicked());
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && item.matches(event.getCurrentItem()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).matches(event.getCurrentItem()) && checkConditions(onlineProfile)) {
                     final int taken = calculateTakeAmount(event);
                     getCountingData(onlineProfile).progress(taken);
                     completeIfDoneOrNotify(onlineProfile);

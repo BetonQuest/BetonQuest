@@ -28,7 +28,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
     /**
      * The item to enchant.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * The desired enchantments.
@@ -50,7 +50,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
      * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
      * @throws QuestException if there is an error in the instruction
      */
-    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Item item,
+    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<Item> item,
                             final VariableList<EnchantmentData> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, targetAmount, "items_to_enchant");
         this.item = item;
@@ -70,7 +70,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
             return;
         }
         qeHandler.handle(() -> {
-            if (!item.matches(event.getItem())) {
+            if (!item.getValue(onlineProfile).matches(event.getItem())) {
                 return;
             }
             if (matchesDesiredEnchants(onlineProfile, event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {

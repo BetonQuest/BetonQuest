@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class ItemVariable implements NullableVariable {
     /**
      * The Item.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * The type how the item should be displayed.
@@ -48,7 +49,7 @@ public class ItemVariable implements NullableVariable {
      * @param raw    if the output should be raw
      * @param amount the amount of the item
      */
-    public ItemVariable(final Item item, final ItemDisplayType type, final boolean raw, final int amount) {
+    public ItemVariable(final Variable<Item> item, final ItemDisplayType type, final boolean raw, final int amount) {
         this.item = item;
         this.type = type;
         this.raw = raw;
@@ -61,7 +62,7 @@ public class ItemVariable implements NullableVariable {
         if (profile == null && (type == ItemDisplayType.AMOUNT || type == ItemDisplayType.LEFT)) {
             throw new QuestException("ItemVariable with type " + type + " can't be used without a profile.");
         }
-        final QuestItem questItem = this.item.getItem();
+        final QuestItem questItem = this.item.getValue(profile).getItem();
         return switch (type) {
             case AMOUNT -> Integer.toString(itemAmount(questItem, profile));
             case LEFT -> Integer.toString(amount - itemAmount(questItem, profile));

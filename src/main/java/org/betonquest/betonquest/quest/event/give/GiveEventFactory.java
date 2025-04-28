@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
@@ -71,7 +72,7 @@ public class GiveEventFactory implements PlayerEventFactory {
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(
-                        instruction.getItemList(),
+                        instruction.get(PackageArgument.ofList(PackageArgument.ITEM)),
                         itemsGivenSender,
                         itemsInBackpackSender,
                         itemsDroppedSender,

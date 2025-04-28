@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.Locale;
 
@@ -45,12 +47,12 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         }
         final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
         final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
-        final Item questItem;
+        final Variable<Item> questItem;
         if (pos == 3) {
             final String path = instruction.getPart(1) + "." + instruction.getPart(2);
-            questItem = instruction.getItem(path);
+            questItem = instruction.get(path, PackageArgument.ITEM);
         } else {
-            questItem = instruction.getItem();
+            questItem = instruction.get(PackageArgument.ITEM);
         }
         return new ItemVariable(questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
     }

@@ -22,7 +22,7 @@ public class EquipItemObjective extends Objective implements Listener {
     /**
      * The item that needs to be equipped.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * The slot type where the item needs to be equipped.
@@ -37,7 +37,7 @@ public class EquipItemObjective extends Objective implements Listener {
      * @param slotType    the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final Instruction instruction, final Item item,
+    public EquipItemObjective(final Instruction instruction, final Variable<Item> item,
                               final Variable<PlayerArmorChangeEvent.SlotType> slotType) throws QuestException {
         super(instruction);
         this.item = item;
@@ -60,7 +60,7 @@ public class EquipItemObjective extends Objective implements Listener {
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
                     && event.getSlotType() == slotType.getValue(onlineProfile)
-                    && item.matches(event.getNewItem())
+                    && item.getValue(onlineProfile).matches(event.getNewItem())
                     && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }

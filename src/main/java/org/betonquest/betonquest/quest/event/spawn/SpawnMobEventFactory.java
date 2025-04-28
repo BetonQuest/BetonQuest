@@ -20,7 +20,6 @@ import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Factory to create spawn mob events from {@link Instruction}s.
@@ -65,21 +64,16 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Variable<String> name = nameString == null ? null : instruction.getVariable(Utils.format(
                 nameString, true, false), Argument.STRING);
         final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
-        final Item helmet = getItem(instruction, "h");
-        final Item chestplate = getItem(instruction, "c");
-        final Item leggings = getItem(instruction, "l");
-        final Item boots = getItem(instruction, "b");
-        final Item mainHand = getItem(instruction, "m");
-        final Item offHand = getItem(instruction, "o");
-        final VariableList<Item> drops = instruction.getItemList(instruction.getOptional("drops"));
+        final Variable<Item> helmet = instruction.get(instruction.getOptional("h"), PackageArgument.ITEM);
+        final Variable<Item> chestplate = instruction.get(instruction.getOptional("c"), PackageArgument.ITEM);
+        final Variable<Item> leggings = instruction.get(instruction.getOptional("l"), PackageArgument.ITEM);
+        final Variable<Item> boots = instruction.get(instruction.getOptional("b"), PackageArgument.ITEM);
+        final Variable<Item> mainHand = instruction.get(instruction.getOptional("m"), PackageArgument.ITEM);
+        final Variable<Item> offHand = instruction.get(instruction.getOptional("o"), PackageArgument.ITEM);
+        final VariableList<Item> drops = instruction.get(instruction.getOptional("drops", ""), PackageArgument.ofList(PackageArgument.ITEM));
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);
-    }
-
-    @Nullable
-    private Item getItem(final Instruction instruction, final String key) throws QuestException {
-        return instruction.getItem(instruction.getOptional(key));
     }
 
     /**

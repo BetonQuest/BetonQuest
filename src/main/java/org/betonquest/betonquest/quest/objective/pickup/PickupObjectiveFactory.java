@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 
@@ -23,7 +24,7 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
     @SuppressWarnings("NullAway")
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableList<Item> pickupItems = instruction.getItemList();
+        final VariableList<Item> pickupItems = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
         final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
         return new PickupObjective(instruction, targetAmount, pickupItems);
     }
