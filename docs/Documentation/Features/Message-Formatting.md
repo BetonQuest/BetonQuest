@@ -90,10 +90,9 @@ minedown
 
 This formatter is a perfect alternative to MiniMessage.
 Mainly, it still supports the old legacy format, but also the new RGB format, as well as some more simple formatting.
-You don't need to write these tags like in MiniMessage, instead you write more advanced formats like this `[Text]
-(format)`.
+You don't need to write these tags like in MiniMessage, instead you write more advanced formats like this `[Text](format)`.
 
-You can read everything about this format [here](https://github.com/Phoenix616/MineDown).
+You can read everything about this format [here](https://wiki.phoenix616.dev/library/minedown/syntax).
 
 !!! example
     ```yaml
