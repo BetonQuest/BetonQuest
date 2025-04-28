@@ -5,7 +5,7 @@ import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Condition to check if a player has the max slots in a job reached.
@@ -15,14 +15,14 @@ public class JobFullCondition implements PlayerCondition {
     /**
      * Job to check.
      */
-    private final VariableJob job;
+    private final Variable<Job> job;
 
     /**
      * Create a new job full condition.
      *
      * @param job the job to check
      */
-    public JobFullCondition(final VariableJob job) {
+    public JobFullCondition(final Variable<Job> job) {
         this.job = job;
     }
 

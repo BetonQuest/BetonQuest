@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
@@ -16,7 +16,7 @@ public class JobLevelCondition implements PlayerCondition {
     /**
      * Job to check.
      */
-    private final VariableJob job;
+    private final Variable<Job> job;
 
     /**
      * Minimum level in job.
@@ -35,7 +35,7 @@ public class JobLevelCondition implements PlayerCondition {
      * @param nMinLevel the minimum required level in the job
      * @param nMaxLevel the maximum required level in the job
      */
-    public JobLevelCondition(final VariableJob job, final Variable<Number> nMinLevel, final Variable<Number> nMaxLevel) {
+    public JobLevelCondition(final Variable<Job> job, final Variable<Number> nMinLevel, final Variable<Number> nMaxLevel) {
         this.job = job;
         this.nMinLevel = nMinLevel;
         this.nMaxLevel = nMaxLevel;

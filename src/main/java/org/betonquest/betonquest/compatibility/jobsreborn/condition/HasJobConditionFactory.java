@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
+import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
+import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -28,7 +30,7 @@ public class HasJobConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableJob job = instruction.get(VariableJob::new);
+        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
         return new PrimaryServerThreadPlayerCondition(new HasJobCondition(job), data);
     }
 }

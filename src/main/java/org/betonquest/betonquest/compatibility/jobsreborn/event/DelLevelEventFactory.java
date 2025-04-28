@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.event;
 
+import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
+import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -30,7 +31,7 @@ public class DelLevelEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableJob job = instruction.get(VariableJob::new);
+        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
         final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new DelLevelEvent(job, amount), data);
     }
