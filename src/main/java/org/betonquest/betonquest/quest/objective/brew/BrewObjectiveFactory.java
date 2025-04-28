@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
@@ -30,7 +31,7 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Item potion = instruction.getItem();
+        final Variable<Item> potion = instruction.get(PackageArgument.ITEM);
         final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
         return new BrewObjective(instruction, targetAmount, profileProvider, potion);
     }

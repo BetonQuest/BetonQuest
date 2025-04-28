@@ -28,7 +28,7 @@ public class FishObjective extends CountingObjective implements Listener {
     /**
      * Item to catch.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * Location where the fish should be caught.
@@ -53,7 +53,7 @@ public class FishObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public FishObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                         final Item item, @Nullable final Variable<Location> hookTargetLocation,
+                         final Variable<Item> item, @Nullable final Variable<Location> hookTargetLocation,
                          @Nullable final Variable<Number> rangeVar) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");
         this.item = item;
@@ -80,7 +80,7 @@ public class FishObjective extends CountingObjective implements Listener {
                 return;
             }
             final ItemStack item = ((org.bukkit.entity.Item) event.getCaught()).getItemStack();
-            if (this.item.getItem().matches(item) && checkConditions(onlineProfile)) {
+            if (this.item.getValue(onlineProfile).getItem().matches(item) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress(item.getAmount());
                 completeIfDoneOrNotify(onlineProfile);
             }

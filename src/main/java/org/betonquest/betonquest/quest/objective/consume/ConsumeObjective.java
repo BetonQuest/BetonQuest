@@ -21,7 +21,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     /**
      * The item to consume.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
@@ -32,7 +32,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public ConsumeObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final Item item) throws QuestException {
+                            final Variable<Item> item) throws QuestException {
         super(instruction, targetAmount, null);
         this.item = item;
     }
@@ -46,7 +46,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     public void onConsume(final PlayerItemConsumeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile) && item.matches(event.getItem()) && checkConditions(onlineProfile)) {
+            if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).matches(event.getItem()) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);
             }

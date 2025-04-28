@@ -4,19 +4,16 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.VariableArgument;
 import org.betonquest.betonquest.instruction.argument.parser.ArgumentParser;
-import org.betonquest.betonquest.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.instruction.argument.parser.PackageParser;
 import org.betonquest.betonquest.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +25,7 @@ import java.util.Optional;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentParser, PackageParser, ItemParser {
+public class Instruction implements InstructionParts, ArgumentParser, PackageParser {
     /**
      * The quest package that this instruction belongs to.
      */
@@ -231,38 +228,5 @@ public class Instruction implements InstructionParts, ArgumentParser, PackagePar
             return null;
         }
         return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value));
-    }
-
-    @Override
-    @Contract("null -> null; !null -> !null")
-    @Nullable
-    public Item getItem(@Nullable final String string) throws QuestException {
-        if (string == null) {
-            return null;
-        }
-        try {
-            final ItemID item;
-            final Variable<Number> number;
-            if (string.contains(":")) {
-                final String[] parts = string.split(":", 2);
-                item = new ItemID(pack, parts[0]);
-                number = getVariable(parts[1], Argument.NUMBER);
-            } else {
-                item = new ItemID(pack, string);
-                number = new Variable<>(1);
-            }
-            return new Item(BetonQuest.getInstance().getFeatureAPI(), item, number);
-        } catch (final QuestException | NumberFormatException e) {
-            throw new QuestException("Error while parsing '" + string + "' item: " + e.getMessage(), e);
-        }
-    }
-
-    @SuppressWarnings("NullAway")
-    @Override
-    public VariableList<Item> getItemList(@Nullable final String string) throws QuestException {
-        if (string == null) {
-            return new VariableList<>(List.of()); //TODO: If this line gets deleted, also delete the constructors.
-        }
-        return get(string, Argument.ofList(this::getItem));
     }
 }

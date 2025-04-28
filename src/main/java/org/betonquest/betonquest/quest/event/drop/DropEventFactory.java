@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -67,8 +68,7 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
         return new NullableEventAdapter(new DropEvent(items, location));
     }
 
-    @SuppressWarnings("NullAway")
     private VariableList<Item> parseItemList(final Instruction instruction) throws QuestException {
-        return instruction.get(instruction.getOptional("items", ""), Argument.ofList(instruction::getItem, VariableList.notEmptyChecker()));
+        return instruction.get(instruction.getOptional("items", ""), PackageArgument.ofList(PackageArgument.ITEM, VariableList.notEmptyChecker()));
     }
 }

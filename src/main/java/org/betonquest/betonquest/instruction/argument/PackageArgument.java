@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;
 import org.betonquest.betonquest.instruction.types.IdentifierParser;
+import org.betonquest.betonquest.instruction.types.ItemParser;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 
 import java.util.List;
@@ -19,6 +20,11 @@ public interface PackageArgument<T> {
      * The default instance of {@link IdentifierParser}.
      */
     IdentifierParser IDENTIFIER = new IdentifierParser();
+
+    /**
+     * The default instance of {@link ItemParser}.
+     */
+    ItemParser ITEM = new ItemParser();
 
     /**
      * Gets a list of {@link T}s from string.

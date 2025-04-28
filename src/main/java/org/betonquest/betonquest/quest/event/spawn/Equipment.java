@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
@@ -23,9 +24,9 @@ import org.jetbrains.annotations.Nullable;
  * @param offHand    the off-hand item to equip the mob with
  * @param drops      the items to drop when the mob dies
  */
-public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
-                        @Nullable Item leggings, @Nullable Item boots, @Nullable Item mainHand,
-                        @Nullable Item offHand, VariableList<Item> drops) {
+public record Equipment(@Nullable Variable<Item> helmet, @Nullable Variable<Item> chestplate,
+                        @Nullable Variable<Item> leggings, @Nullable Variable<Item> boots,
+                        @Nullable Variable<Item> mainHand, @Nullable Variable<Item> offHand, VariableList<Item> drops) {
 
     /**
      * Adds the drops to the mob.
@@ -47,17 +48,18 @@ public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
     /**
      * Adds the equipment to the mob and sets the drop chances to 0 for the equipment.
      *
-     * @param mob the mob to add the equipment to
+     * @param profile the profile to get the equipment from
+     * @param mob     the mob to add the equipment to
      * @throws QuestException if a QuestItem does not exist
      */
-    public void addEquipment(final Mob mob) throws QuestException {
+    public void addEquipment(@Nullable final Profile profile, final Mob mob) throws QuestException {
         final EntityEquipment equipment = mob.getEquipment();
-        equipment.setHelmet(generate(helmet));
-        equipment.setChestplate(generate(chestplate));
-        equipment.setLeggings(generate(leggings));
-        equipment.setBoots(generate(boots));
-        equipment.setItemInMainHand(generate(mainHand));
-        equipment.setItemInOffHand(generate(offHand));
+        equipment.setHelmet(generate(profile, helmet));
+        equipment.setChestplate(generate(profile, chestplate));
+        equipment.setLeggings(generate(profile, leggings));
+        equipment.setBoots(generate(profile, boots));
+        equipment.setItemInMainHand(generate(profile, mainHand));
+        equipment.setItemInOffHand(generate(profile, offHand));
         equipment.setHelmetDropChance(0);
         equipment.setChestplateDropChance(0);
         equipment.setLeggingsDropChance(0);
@@ -67,7 +69,7 @@ public record Equipment(@Nullable Item helmet, @Nullable Item chestplate,
     }
 
     @Nullable
-    private ItemStack generate(@Nullable final Item item) throws QuestException {
-        return item == null ? null : item.getItem().generate(1);
+    private ItemStack generate(@Nullable final Profile profile, @Nullable final Variable<Item> item) throws QuestException {
+        return item == null ? null : item.getValue(profile).getItem().generate(1);
     }
 }

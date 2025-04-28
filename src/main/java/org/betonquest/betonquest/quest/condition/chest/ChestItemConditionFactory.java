@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -47,7 +48,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableList<Item> items = instruction.getItemList();
+        final VariableList<Item> items = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
         return new ChestItemCondition(loc, items);
     }
 }
