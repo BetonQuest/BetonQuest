@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.event;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
@@ -15,7 +15,7 @@ public class AddExpEvent implements PlayerEvent {
     /**
      * Job to add experience to.
      */
-    private final VariableJob job;
+    private final Variable<Job> job;
 
     /**
      * Amount to add.
@@ -28,7 +28,7 @@ public class AddExpEvent implements PlayerEvent {
      * @param job    the job to add experience to
      * @param amount the experience amount
      */
-    public AddExpEvent(final VariableJob job, final Variable<Number> amount) {
+    public AddExpEvent(final Variable<Job> job, final Variable<Number> amount) {
         this.job = job;
         this.nAddExperience = amount;
     }

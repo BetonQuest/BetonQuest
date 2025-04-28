@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
+import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.compatibility.jobsreborn.VariableJob;
+import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -30,7 +31,7 @@ public class JobLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final VariableJob job = instruction.get(VariableJob::new);
+        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
         final Variable<Number> minimum = instruction.getVariable(Argument.NUMBER);
         final Variable<Number> maximum = instruction.getVariable(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new JobLevelCondition(job, minimum, maximum), data);
