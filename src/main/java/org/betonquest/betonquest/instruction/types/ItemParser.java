@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.instruction.types;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
@@ -14,9 +14,17 @@ import org.betonquest.betonquest.instruction.variable.Variable;
  */
 public class ItemParser implements PackageArgument<Item> {
     /**
-     * Creates a new parser for items.
+     * The feature API to use for parsing.
      */
-    public ItemParser() {
+    private final FeatureAPI featureAPI;
+
+    /**
+     * Creates a new parser for items.
+     *
+     * @param featureAPI the feature API to use for parsing
+     */
+    public ItemParser(final FeatureAPI featureAPI) {
+        this.featureAPI = featureAPI;
     }
 
     @Override
@@ -31,6 +39,6 @@ public class ItemParser implements PackageArgument<Item> {
             item = new ItemID(pack, string);
             number = new Variable<>(1);
         }
-        return new Item(BetonQuest.getInstance().getFeatureAPI(), item, number);
+        return new Item(featureAPI, item, number);
     }
 }
