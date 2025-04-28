@@ -313,7 +313,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     ```
     
     ```YAML title="New Syntax"
-    items:
+    objectives:
       action: action LEFT ANY global persistent events:notify conditions:sneak
     ```
 
