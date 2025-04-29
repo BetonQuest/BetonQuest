@@ -65,12 +65,8 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<Item>> items = parseItemList(instruction);
+        final Variable<List<Item>> items = instruction.getValueList("items", PackageArgument.ITEM, VariableList.notEmptyChecker());
         final Variable<Location> location = instruction.get(instruction.getValue("location", "%location%"), Argument.LOCATION);
         return new NullableEventAdapter(new DropEvent(items, location));
-    }
-
-    private Variable<List<Item>> parseItemList(final Instruction instruction) throws QuestException {
-        return instruction.getValueList("items", PackageArgument.ITEM, VariableList.notEmptyChecker());
     }
 }

@@ -77,8 +77,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final String mob = mobParts[0];
         final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
-        final String markedString = instruction.getValue("marked");
-        final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, false, false, marked), data);
     }
 }

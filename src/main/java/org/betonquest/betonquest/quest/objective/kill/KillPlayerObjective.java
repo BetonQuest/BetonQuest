@@ -25,7 +25,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
      * The name of the victim to kill.
      */
     @Nullable
-    private final String name;
+    private final Variable<String> name;
 
     /**
      * The conditions of the victim that must be met for the objective to count.
@@ -42,7 +42,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public KillPlayerObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                               @Nullable final String name, final Variable<List<ConditionID>> required) throws QuestException {
+                               @Nullable final Variable<String> name, final Variable<List<ConditionID>> required) throws QuestException {
         super(instruction, targetAmount, "players_to_kill");
         this.name = name;
         this.required = required;
@@ -60,7 +60,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
             final OnlineProfile killer = profileProvider.getProfile(event.getEntity().getKiller());
             qeHandler.handle(() -> {
                 if (containsPlayer(killer)
-                        && (name == null || event.getEntity().getName().equalsIgnoreCase(name))
+                        && (name == null || event.getEntity().getName().equalsIgnoreCase(name.getValue(killer)))
                         && BetonQuest.getInstance().getQuestTypeAPI().conditions(victim, required.getValue(victim))
                         && checkConditions(killer)) {
 

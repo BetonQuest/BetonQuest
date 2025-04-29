@@ -31,7 +31,7 @@ public class ShearObjective extends CountingObjective implements Listener {
      * The name of the sheep to shear.
      */
     @Nullable
-    private final String name;
+    private final Variable<String> name;
 
     /**
      * Constructor for the ShearObjective.
@@ -42,7 +42,7 @@ public class ShearObjective extends CountingObjective implements Listener {
      * @param color        the color of the sheep to shear
      * @throws QuestException if there is an error in the instruction
      */
-    public ShearObjective(final Instruction instruction, final Variable<Number> targetAmount, @Nullable final String name,
+    public ShearObjective(final Instruction instruction, final Variable<Number> targetAmount, @Nullable final Variable<String> name,
                           @Nullable final Variable<DyeColor> color) throws QuestException {
         super(instruction, targetAmount, "sheep_to_shear");
         this.name = name;
@@ -62,7 +62,7 @@ public class ShearObjective extends CountingObjective implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
-                    && (name == null || name.equals(event.getEntity().getCustomName()))
+                    && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
                     && (color == null || color.getValue(onlineProfile).equals(((Sheep) event.getEntity()).getColor()))
                     && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress();

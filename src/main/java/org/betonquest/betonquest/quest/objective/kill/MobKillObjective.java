@@ -34,7 +34,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * The optional name of the mob.
      */
     @Nullable
-    protected String name;
+    protected Variable<String> name;
 
     /**
      * The optional marker for the mobs to identify them.
@@ -53,7 +53,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public MobKillObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final Variable<List<EntityType>> entities, @Nullable final String name,
+                            final Variable<List<EntityType>> entities, @Nullable final Variable<String> name,
                             @Nullable final Variable<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.entities = entities;
@@ -73,7 +73,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
             if (!containsPlayer(onlineProfile)
                     || !entities.getValue(onlineProfile).contains(event.getEntity().getType())
                     || name != null && (event.getEntity().getCustomName() == null
-                    || !event.getEntity().getCustomName().equals(name))) {
+                    || !event.getEntity().getCustomName().equals(name.getValue(onlineProfile)))) {
                 return;
             }
             if (marked != null) {
