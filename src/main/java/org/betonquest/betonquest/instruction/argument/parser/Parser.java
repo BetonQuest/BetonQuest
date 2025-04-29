@@ -39,5 +39,5 @@ public interface Parser {
      */
     @Contract("_, !null -> !null")
     @Nullable
-    String getValue(final String prefix, @Nullable final String defaultString);
+    String getValue(String prefix, @Nullable String defaultString);
 }

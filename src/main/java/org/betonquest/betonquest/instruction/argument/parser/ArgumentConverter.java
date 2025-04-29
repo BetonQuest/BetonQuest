@@ -133,7 +133,7 @@ public interface ArgumentConverter extends Parser {
      * @return the created value or null if no string was provided
      * @throws QuestException when the value can't be created
      */
-    <T> Variable<List<T>> getList(@Nullable final String string, final Argument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
+    <T> Variable<List<T>> getList(@Nullable String string, Argument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter to a list.

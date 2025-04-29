@@ -133,7 +133,7 @@ public interface PackageArgumentConverter extends Parser {
      * @return the created value or null if no string was provided
      * @throws QuestException when the value can't be created
      */
-    <T> Variable<List<T>> getList(@Nullable final String string, final PackageArgument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
+    <T> Variable<List<T>> getList(@Nullable String string, PackageArgument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter to a list.

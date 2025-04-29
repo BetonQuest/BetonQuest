@@ -108,7 +108,7 @@ public class VariableList<T> extends Variable<List<T>> {
      * @return the value checker
      */
     public static <T, U> ValueChecker<List<Map.Entry<T, U>>> notDuplicateKeyChecker() {
-        return (value -> {
+        return value -> {
             final List<T> keys = new ArrayList<>();
             for (final Map.Entry<T, U> entry : value) {
                 if (keys.contains(entry.getKey())) {
@@ -116,7 +116,7 @@ public class VariableList<T> extends Variable<List<T>> {
                 }
                 keys.add(entry.getKey());
             }
-        });
+        };
     }
 
     /**

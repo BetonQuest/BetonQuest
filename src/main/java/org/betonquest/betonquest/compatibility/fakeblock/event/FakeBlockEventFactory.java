@@ -67,7 +67,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     private ValueChecker<List<String>> checkForNotExistingGroups() {
-        return (value -> {
+        return value -> {
             final List<String> notExistingGroups = new ArrayList<>();
             for (final String groupName : value) {
                 if (!groupService.getProvider().hasGroup(groupName)) {
@@ -78,6 +78,6 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
                 return;
             }
             throw new QuestException("The following groups do not exist: " + notExistingGroups);
-        });
+        };
     }
 }
