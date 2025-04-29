@@ -2302,13 +2302,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#moon-cycle-mooncycle">
+  <a class="md-nav__link" href="#moon-phase-moonphase">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Moon Cycle: <code>mooncycle</code>
+          Moon Phase: <code>moonphase</code>
         </span>
 
       
@@ -6222,13 +6222,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#moon-cycle-mooncycle">
+  <a class="md-nav__link" href="#moon-phase-moonphase">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Moon Cycle: <code>mooncycle</code>
+          Moon Phase: <code>moonphase</code>
         </span>
 
       
@@ -7103,11 +7103,9 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">looking loc:12.0;14.0;-15.0;world type:STONE</span>
 </code></pre></div>
 </div>
-<h2 id="moon-cycle-mooncycle">Moon Cycle: <code>mooncycle</code><a class="headerlink" href="#moon-cycle-mooncycle" title="Permanent link">🔗</a></h2>
+<h2 id="moon-phase-moonphase">Moon Phase: <code>moonphase</code><a class="headerlink" href="#moon-phase-moonphase" title="Permanent link">🔗</a></h2>
 <p><strong>static</strong></p>
-<p>This condition checks the moon cycle (1 is full moon, 8 is Waxing Gibbous) in the given world or the players world. A list of phases can be 
-found 
-<a href="https://minecraft.wiki/w/Moon">here</a>.</p>
+<p>This condition checks the moon phase in the given world or the player's world.</p>
 <table>
 <thead>
 <tr>
@@ -7120,9 +7118,9 @@ found
 <tbody>
 <tr>
 <td><em>MoonPhase</em></td>
-<td>Number</td>
+<td><a href="https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary">Keyword</a></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The MoonPhase to check for. Can be a variable.</td>
+<td>The moon phase to check for. Can be a list and variables.</td>
 </tr>
 <tr>
 <td><em>world</em></td>
@@ -7132,8 +7130,9 @@ found
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">fullMoon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mooncycle</span><span class="nv"> </span><span class="s">1&quot;</span>
-<span class="nt">newMoonHub</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mooncycle</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">world:hub&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">fullMoon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;moonphase</span><span class="nv"> </span><span class="s">FULL_MOON&quot;</span>
+<span class="nt">darkInHub</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;moonphase</span><span class="nv"> </span><span class="s">WANING_CRESCENT,NEW_MOON,WAXING_CRESCENT</span><span class="nv"> </span><span class="s">world:hub&quot;</span>
+<span class="nt">playersFirstJoinMoon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;moonphase</span><span class="nv"> </span><span class="s">%ph.player_first_join_moon%&quot;</span>
 </code></pre></div>
 <h2 id="npc-distance-npcdistance">NPC distance: <code>npcdistance</code><a class="headerlink" href="#npc-distance-npcdistance" title="Permanent link">🔗</a></h2>
 <p>This condition will check if a Npc is close to the player.</p>

@@ -3218,6 +3218,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-267-moonphase-rename">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-267 - MoonPhase rename <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4842,6 +4865,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-267-moonphase-rename">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-267 - MoonPhase rename <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4982,6 +5028,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-232-singular-to-plural">3.0.0-DEV-232 - Singular to Plural</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#300-dev-233-pickrandom-event">3.0.0-DEV-233 - <code>pickrandom</code> event</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 <li><a href="#300-dev-244-menu-item-move">3.0.0-DEV-244 - Menu Item move</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
+<li><a href="#300-dev-267-moonphase-rename">3.0.0-DEV-267 - MoonPhases rename</a> <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="❗" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2757.svg" title=":exclamation:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -5318,6 +5365,22 @@ instead the tilde <code>~</code> is used to separate the chance from the event.<
 <span class="w">  </span><span class="nt">filler</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&amp;a</span><span class="nv"> </span><span class="s">&quot;</span>
 <span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;filler&quot;</span>
+</code></pre></div>
+</details>
+<h3 id="300-dev-267-moonphase-rename">3.0.0-DEV-267 - MoonPhase rename <img alt="⚙" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2699.svg" title=":gear:" /><a class="headerlink" href="#300-dev-267-moonphase-rename" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The <code>mooncycle</code> condition was renamed to <code>moonphase</code> and instead of numbers, which stood for the mood phases, 
+the names of the moon phases are now used directly.</p>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mooncycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mooncycle 1</span>
+<span class="w">  </span><span class="nt">otherMooncycle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mooncycle 2 world:world</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">moonphase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">moonphase NEW_MOON</span>
+<span class="w">  </span><span class="nt">otherMoonphase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">moonphase FULL_MOON world:world</span>
 </code></pre></div>
 </div>
 </details>
