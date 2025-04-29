@@ -198,9 +198,9 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
         return getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
     }
 
-    @Nullable
-    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Override
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
+    @Nullable
     public <T> Variable<T> get(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
@@ -219,9 +219,9 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
         return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, argument, valueChecker);
     }
 
-    @Nullable
-    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Override
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
+    @Nullable
     public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {

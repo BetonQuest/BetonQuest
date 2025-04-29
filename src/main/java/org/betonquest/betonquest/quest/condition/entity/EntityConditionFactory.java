@@ -55,7 +55,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
         final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
-        final Variable<String> marked = instruction.get(instruction.getValue("marked"), PackageArgument.IDENTIFIER);
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 

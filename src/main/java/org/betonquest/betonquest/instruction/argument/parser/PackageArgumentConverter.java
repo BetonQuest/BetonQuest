@@ -57,10 +57,10 @@ public interface PackageArgumentConverter extends Parser {
     /**
      * Parses the string provided by a key with a converter.
      *
-     * @param key      the key to convert
+     * @param key      the key of the value to convert
      * @param argument the converter creating the value
      * @param <T>      the value to create
-     * @return the created value or null if no string was provided
+     * @return the created value or null if there is no value for the key
      * @throws QuestException when the value can't be created
      */
     @Nullable
@@ -71,11 +71,11 @@ public interface PackageArgumentConverter extends Parser {
     /**
      * Parses the string provided by a key with a converter and use a default value otherwise.
      *
-     * @param key          the key to convert
+     * @param key          the key of the value to convert
      * @param argument     the converter creating the value
-     * @param defaultValue the default value to use when the string is null
+     * @param defaultValue the default value to use when there is no value for the key
      * @param <T>          the value to create
-     * @return the created value or null if no string was provided
+     * @return the created value or null if there is no value for the key
      * @throws QuestException when the value can't be created
      */
     @Contract("_, _, !null -> !null")
@@ -89,7 +89,7 @@ public interface PackageArgumentConverter extends Parser {
      *
      * @param argument the converter creating the value
      * @param <T>      the value to create
-     * @return the created value
+     * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
     default <T> Variable<List<T>> getList(final PackageArgument<T> argument) throws QuestException {
@@ -102,7 +102,7 @@ public interface PackageArgumentConverter extends Parser {
      * @param argument     the converter creating the value
      * @param valueChecker the checker to verify valid lists
      * @param <T>          the value to create
-     * @return the created value
+     * @return the list of values created or an empty list if the value for the key was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
     default <T> Variable<List<T>> getList(final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
@@ -115,7 +115,7 @@ public interface PackageArgumentConverter extends Parser {
      * @param string   the string to convert
      * @param argument the converter creating the value
      * @param <T>      the value to create
-     * @return the created value or null if no string was provided
+     * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
     default <T> Variable<List<T>> getList(@Nullable final String string, final PackageArgument<T> argument) throws QuestException {
@@ -130,7 +130,7 @@ public interface PackageArgumentConverter extends Parser {
      * @param argument     the converter creating the value
      * @param valueChecker the checker to verify valid lists
      * @param <T>          the value to create
-     * @return the created value or null if no string was provided
+     * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
     <T> Variable<List<T>> getList(@Nullable String string, PackageArgument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
@@ -138,10 +138,10 @@ public interface PackageArgumentConverter extends Parser {
     /**
      * Parses the string provided by a key with a converter to a list.
      *
-     * @param key      the string to convert
+     * @param key      the key of the value to convert
      * @param argument the converter creating the value
      * @param <T>      the value to create
-     * @return the created value or null if no string was provided
+     * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
     default <T> Variable<List<T>> getValueList(final String key, final PackageArgument<T> argument) throws QuestException {
@@ -151,11 +151,11 @@ public interface PackageArgumentConverter extends Parser {
     /**
      * Parses the string provided by a key with a converter to a list.
      *
-     * @param key          the string to convert
+     * @param key          the key of the value to convert
      * @param argument     the converter creating the value
      * @param valueChecker the checker to verify valid lists
      * @param <T>          the value to create
-     * @return the created value or null if no string was provided
+     * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
     default <T> Variable<List<T>> getValueList(final String key, final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
