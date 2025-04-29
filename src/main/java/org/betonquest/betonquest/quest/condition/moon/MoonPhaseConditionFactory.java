@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition.moon;
 
+import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -9,17 +10,18 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.bukkit.World;
 
+import java.util.List;
+
 /**
- * Factory to create moon cycle conditions from {@link Instruction}s.
+ * Factory to create moon phase conditions from {@link Instruction}s.
  */
-public class MoonCycleConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+public class MoonPhaseConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
      * Data used for condition check on the primary server thread.
@@ -27,39 +29,31 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
     private final PrimaryServerThreadData data;
 
     /**
-     * The variable processor used to process variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
-     * Create the weather condition factory.
+     * Create the moon phase condition factory.
      *
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the variable processor used to process variables
+     * @param data the data used for checking the condition on the main thread
      */
-    public MoonCycleConditionFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public MoonPhaseConditionFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> moonCycle = instruction.get(Argument.NUMBER);
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(Argument.ENUM(MoonPhase.class));
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
                 Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
-                new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
+                new NullableConditionAdapter(new MoonPhasesCondition(world, moonPhases)), data);
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String worldString = instruction.getValue("world");
-        if (worldString == null) {
+        final Variable<World> world = instruction.getValue("world", Argument.WORLD);
+        if (world == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Variable<Number> moonCycle = instruction.get(Argument.NUMBER);
-        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(Argument.ENUM(MoonPhase.class));
         return new PrimaryServerThreadPlayerlessCondition(
-                new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
+                new NullableConditionAdapter(new MoonPhasesCondition(world, moonPhases)), data);
     }
 }
