@@ -100,9 +100,23 @@ public class VariableList<T> extends Variable<List<T>> {
         };
     }
 
-    public static <T, U> ValueChecker<List<Map.Entry<T, U>>> joaNotDoubleChecker() {
-        // TODO write a checker that checks if the list contains double T
-
+    /**
+     * Checks if the resulting list does not have a duplicate key.
+     *
+     * @param <T> the key type to check for duplicates
+     * @param <U> the value type
+     * @return the value checker
+     */
+    public static <T, U> ValueChecker<List<Map.Entry<T, U>>> notDuplicateKeyChecker() {
+        return (value -> {
+            final List<T> keys = new ArrayList<>();
+            for (final Map.Entry<T, U> entry : value) {
+                if (keys.contains(entry.getKey())) {
+                    throw new QuestException("List does not allow duplicate keys: " + entry.getKey());
+                }
+                keys.add(entry.getKey());
+            }
+        });
     }
 
     /**

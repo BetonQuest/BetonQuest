@@ -14,6 +14,7 @@ import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -178,6 +179,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     }
 
     @Override
+    @Contract("_, !null -> !null")
     @Nullable
     public String getValue(final String prefix, @Nullable final String defaultValue) {
         return getParts().stream()
@@ -197,6 +199,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     }
 
     @Nullable
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Override
     public <T> Variable<T> get(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
@@ -217,6 +220,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     }
 
     @Nullable
+    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Override
     public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {

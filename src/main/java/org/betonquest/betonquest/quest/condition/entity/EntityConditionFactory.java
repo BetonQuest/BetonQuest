@@ -51,7 +51,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
-        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.joaNotDoubleChecker());
+        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
         final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));

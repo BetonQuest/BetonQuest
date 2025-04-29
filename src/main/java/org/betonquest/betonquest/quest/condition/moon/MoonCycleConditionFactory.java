@@ -45,7 +45,7 @@ public class MoonCycleConditionFactory implements PlayerConditionFactory, Player
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> moonCycle = instruction.get(Argument.NUMBER);
-        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getValue("world", "%location.world%"),
+        final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
                 Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new MoonCycleCondition(world, moonCycle)), data);
