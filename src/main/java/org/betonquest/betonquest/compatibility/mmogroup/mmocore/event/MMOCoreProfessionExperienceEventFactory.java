@@ -40,7 +40,7 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
             throw new QuestException("The profession could not be found!");
         }
 
-        final Variable<Number> amount = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean isLevel = instruction.hasArgument("level");
         return new PrimaryServerThreadEvent(new MMOCoreProfessionExperienceEvent(profession, amount, isLevel), data);
     }

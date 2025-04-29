@@ -2,19 +2,15 @@ package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.ValueChecker;
-import org.betonquest.betonquest.instruction.types.BlockSelectorParser;
-import org.betonquest.betonquest.instruction.types.BooleanParser;
-import org.betonquest.betonquest.instruction.types.EnumParser;
-import org.betonquest.betonquest.instruction.types.NumberParser;
-import org.betonquest.betonquest.instruction.types.StringParser;
-import org.betonquest.betonquest.instruction.types.location.LocationParser;
-import org.betonquest.betonquest.instruction.types.location.VectorParser;
-import org.betonquest.betonquest.instruction.types.location.WorldParser;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.argument.types.BlockSelectorParser;
+import org.betonquest.betonquest.instruction.argument.types.BooleanParser;
+import org.betonquest.betonquest.instruction.argument.types.EnumParser;
+import org.betonquest.betonquest.instruction.argument.types.NumberParser;
+import org.betonquest.betonquest.instruction.argument.types.StringParser;
+import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
+import org.betonquest.betonquest.instruction.argument.types.location.VectorParser;
+import org.betonquest.betonquest.instruction.argument.types.location.WorldParser;
 import org.bukkit.Bukkit;
-
-import java.util.List;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from string.
@@ -86,31 +82,6 @@ public interface Argument<T> extends QuestFunction<String, T> {
     @SuppressWarnings("PMD.MethodNamingConventions")
     static <E extends Enum<E>> Argument<E> ENUM(final Class<E> enumType) {
         return new EnumParser<>(enumType);
-    }
-
-    /**
-     * Gets a list of {@link T}s from string.
-     *
-     * @param argument the argument to parse
-     * @param <T>      what the argument returns
-     * @return the list of {@link T}s
-     */
-    static <T> VariableArgument<VariableList<T>> ofList(final Argument<T> argument) {
-        return ofList(argument, list -> {
-        });
-    }
-
-    /**
-     * Gets a list of {@link T}s from string.
-     *
-     * @param argument the argument to parse
-     * @param checker  the checker to validate the list
-     * @param <T>      what the argument returns
-     * @return the list of {@link T}s
-     */
-    static <T> VariableArgument<VariableList<T>> ofList(final Argument<T> argument, final ValueChecker<List<T>> checker) {
-        return (variableProcessor, pack, string)
-                -> new VariableList<>(variableProcessor, pack, string, argument, checker);
     }
 
     /**

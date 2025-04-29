@@ -21,7 +21,7 @@ public class LeaveJobObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
+        final Variable<Job> job = instruction.get(JobParser.JOB);
         return new LeaveJobObjective(instruction, job);
     }
 }

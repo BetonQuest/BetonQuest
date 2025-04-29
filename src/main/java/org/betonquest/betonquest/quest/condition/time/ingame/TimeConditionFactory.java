@@ -46,14 +46,15 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final TimeFrame timeFrame = TimeFrame.parse(instruction.next());
-        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.getOptional("world", "%location.world%"), Argument.WORLD);
+        final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
+                Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String worldString = instruction.getOptional("world");
+        final String worldString = instruction.getValue("world");
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }

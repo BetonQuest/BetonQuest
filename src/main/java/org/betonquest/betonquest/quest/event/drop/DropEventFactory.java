@@ -19,6 +19,8 @@ import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
 
+import java.util.List;
+
 /**
  * Factory to create {@link DropEvent}s for items from {@link Instruction}s.
  */
@@ -63,12 +65,8 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createDropEvent(final Instruction instruction) throws QuestException {
-        final VariableList<Item> items = parseItemList(instruction);
-        final Variable<Location> location = instruction.getVariable(instruction.getOptional("location", "%location%"), Argument.LOCATION);
+        final Variable<List<Item>> items = instruction.getValueList("items", PackageArgument.ITEM, VariableList.notEmptyChecker());
+        final Variable<Location> location = instruction.get(instruction.getValue("location", "%location%"), Argument.LOCATION);
         return new NullableEventAdapter(new DropEvent(items, location));
-    }
-
-    private VariableList<Item> parseItemList(final Instruction instruction) throws QuestException {
-        return instruction.get(instruction.getOptional("items", ""), PackageArgument.ofList(PackageArgument.ITEM, VariableList.notEmptyChecker()));
     }
 }

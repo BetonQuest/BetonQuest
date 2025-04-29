@@ -27,18 +27,18 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Click> action = instruction.getVariable(Argument.ENUM(Click.class));
+        final Variable<Click> action = instruction.get(Argument.ENUM(Click.class));
         final Variable<BlockSelector> selector;
         if (ANY.equalsIgnoreCase(instruction.next())) {
             selector = null;
         } else {
-            selector = instruction.getVariable(instruction.current(), Argument.BLOCK_SELECTOR);
+            selector = instruction.get(instruction.current(), Argument.BLOCK_SELECTOR);
         }
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
-        final Variable<Number> range = instruction.getVariable(instruction.getOptional("range", "0"), Argument.NUMBER);
+        final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 0);
         final boolean cancel = instruction.hasArgument("cancel");
-        final String handString = instruction.getOptional("hand");
+        final String handString = instruction.getValue("hand");
         final EquipmentSlot slot;
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             slot = EquipmentSlot.HAND;

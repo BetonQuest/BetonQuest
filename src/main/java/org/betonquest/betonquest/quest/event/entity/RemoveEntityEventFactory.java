@@ -10,13 +10,14 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+
+import java.util.List;
 
 /**
  * Factory for {@link RemoveEntityEvent} to create from {@link Instruction}.
@@ -48,14 +49,12 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
-        final VariableList<EntityType> types = instruction.get(Argument.ofList(Argument.ENUM(EntityType.class)));
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
+        final Variable<List<EntityType>> types = instruction.getList(Argument.ENUM(EntityType.class));
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Number> range = instruction.get(Argument.NUMBER);
         final boolean kill = instruction.hasArgument("kill");
-        final String nameString = instruction.getOptional("name");
-        final Variable<String> name = nameString == null ? null : instruction.getVariable(
-                Utils.format(nameString, true, false), Argument.STRING);
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
+        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }
 }

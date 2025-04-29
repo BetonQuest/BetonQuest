@@ -79,7 +79,7 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
                 case "notify" ->
                         notificationSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
                                 instruction.getID().getFullID(), NotificationLevel.INFO, "items_given");
-                default -> amount = instruction.getVariable(next, Argument.NUMBER);
+                default -> amount = instruction.get(next, Argument.NUMBER);
             }
         }
 

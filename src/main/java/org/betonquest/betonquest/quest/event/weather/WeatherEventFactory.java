@@ -73,13 +73,13 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     private boolean requiresPlayer(final Instruction instruction) {
-        return instruction.copy().getOptional("world") == null;
+        return instruction.copy().getValue("world") == null;
     }
 
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Weather weather = Weather.parseWeather(instruction.next());
-        final Selector<World> worldSelector = parseWorld(instruction.getOptional("world"));
-        final Variable<Number> duration = instruction.getVariable(instruction.getOptional("duration", "0"), Argument.NUMBER);
+        final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
+        final Variable<Number> duration = instruction.getValue("duration", Argument.NUMBER, 0);
         return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 

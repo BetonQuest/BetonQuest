@@ -8,8 +8,9 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -33,7 +34,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final VariableList<String> tags = instruction.get(PackageArgument.ofList(PackageArgument.IDENTIFIER));
+        final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
             case "delete", "del" -> createDeleteTagEvent(tags);
@@ -44,7 +45,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.next();
-        final VariableList<String> tags = instruction.get(PackageArgument.ofList(PackageArgument.IDENTIFIER));
+        final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createStaticAddTagEvent(tags);
             case "delete", "del" -> createStaticDeleteTagEvent(tags);
@@ -52,22 +53,22 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
         };
     }
 
-    private PlayerlessEvent createStaticAddTagEvent(final VariableList<String> tags) {
+    private PlayerlessEvent createStaticAddTagEvent(final Variable<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new PlayerlessTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerlessEvent createStaticDeleteTagEvent(final VariableList<String> tags) {
+    private PlayerlessEvent createStaticDeleteTagEvent(final Variable<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new PlayerlessTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerEvent createAddTagEvent(final VariableList<String> tags) {
+    private PlayerEvent createAddTagEvent(final Variable<List<String>> tags) {
         final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
-    private PlayerEvent createDeleteTagEvent(final VariableList<String> tags) {
+    private PlayerEvent createDeleteTagEvent(final Variable<List<String>> tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }

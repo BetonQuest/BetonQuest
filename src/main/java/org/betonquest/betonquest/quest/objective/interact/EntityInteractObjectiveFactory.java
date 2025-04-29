@@ -7,6 +7,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,23 +30,22 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Interaction> interaction = instruction.getVariable(Argument.ENUM(Interaction.class));
-        final Variable<EntityType> mobType = instruction.getVariable(Argument.ENUM(EntityType.class));
-        final Variable<Number> targetAmount = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final String customName = instruction.getOptional("name");
-        final String realName = instruction.getOptional("realname");
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
+        final Variable<Interaction> interaction = instruction.get(Argument.ENUM(Interaction.class));
+        final Variable<EntityType> mobType = instruction.get(Argument.ENUM(EntityType.class));
+        final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<String> customName = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<String> realName = instruction.getValue("realname", Argument.STRING);
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Location> loc = instruction.getVariable(instruction.getOptional("loc"), Argument.LOCATION);
-        final String stringRange = instruction.getOptional("range");
-        final Variable<Number> range = stringRange == null ? new Variable<>(1) : instruction.getVariable(stringRange, Argument.NUMBER);
+        final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }
 
     @Nullable
     private EquipmentSlot getEquipmentSlot(final Instruction instruction) throws QuestException {
-        final String handString = instruction.getOptional("hand");
+        final String handString = instruction.getValue("hand");
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             return EquipmentSlot.HAND;
         }

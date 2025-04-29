@@ -20,7 +20,7 @@ public class TrainCartsExitObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.getVariable(instruction.getOptional("name", ""), Argument.STRING);
+        final Variable<String> name = instruction.getValue("name", Argument.STRING, "");
         return new TrainCartsExitObjective(instruction, name);
     }
 }

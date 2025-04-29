@@ -8,10 +8,10 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,12 +45,12 @@ public class PartyEvent implements OnlineEvent {
     /**
      * The conditions that must be met by the party members.
      */
-    private final VariableList<ConditionID> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * The events to fire.
      */
-    private final VariableList<EventID> events;
+    private final Variable<List<EventID>> events;
 
     /**
      * Creates a new PartyEvent instance.
@@ -64,7 +64,7 @@ public class PartyEvent implements OnlineEvent {
      * @param events          the events to fire
      */
     public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final Variable<Number> range,
-                      @Nullable final Variable<Number> amount, final VariableList<ConditionID> conditions, final VariableList<EventID> events) {
+                      @Nullable final Variable<Number> amount, final Variable<List<ConditionID>> conditions, final Variable<List<EventID>> events) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.range = range;

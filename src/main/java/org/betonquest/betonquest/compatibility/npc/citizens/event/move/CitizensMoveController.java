@@ -15,7 +15,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -168,8 +167,8 @@ public class CitizensMoveController implements Listener {
      * @param failEvents         the events to execute when the NPC can't reach the last destination
      * @param blockConversations if the NPC will block conversation interaction while moving (includes wait time)
      */
-    public record MoveData(VariableList<Location> locations, Variable<Number> waitTicks,
-                           VariableList<EventID> doneEvents, VariableList<EventID> failEvents,
+    public record MoveData(Variable<List<Location>> locations, Variable<Number> waitTicks,
+                           Variable<List<EventID>> doneEvents, Variable<List<EventID>> failEvents,
                            boolean blockConversations) {
         /**
          * Creates a new MoveData instance.

@@ -40,8 +40,8 @@ public class McMMOAddExpEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> skillType = instruction.getVariable(Argument.STRING);
-        final Variable<Number> exp = instruction.getVariable(Argument.NUMBER);
+        final Variable<String> skillType = instruction.get(Argument.STRING);
+        final Variable<Number> exp = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(McMMOAddExpEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new McMMOAddExpEvent(skillType, exp),

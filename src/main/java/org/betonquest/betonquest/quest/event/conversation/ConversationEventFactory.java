@@ -47,12 +47,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final ConversationID conversationID;
-        try {
-            conversationID = new ConversationID(instruction.getPackage(), instruction.next());
-        } catch (final QuestException e) {
-            throw new QuestException(e.getMessage(), e);
-        }
+        final ConversationID conversationID = new ConversationID(instruction.getPackage(), instruction.next());
         final String startingOption = getStartOption(instruction, conversationID);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new ConversationEvent(loggerFactory, pluginMessage, conversationID, startingOption),
@@ -71,7 +66,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
      */
     @Nullable
     private String getStartOption(final Instruction instruction, final ConversationID conversationID) throws QuestException {
-        final String targetOptionName = instruction.getOptional("option");
+        final String targetOptionName = instruction.getValue("option");
         if (targetOptionName == null) {
             return null;
         }

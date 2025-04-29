@@ -1,12 +1,8 @@
 package org.betonquest.betonquest.instruction.argument.parser;
 
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Interface for the instruction to split method definitions.
@@ -30,8 +26,8 @@ public interface Parser {
      * @return the value or null
      */
     @Nullable
-    default String getOptional(final String prefix) {
-        return getOptional(prefix, null);
+    default String getValue(final String prefix) {
+        return getValue(prefix, null);
     }
 
     /**
@@ -43,40 +39,5 @@ public interface Parser {
      */
     @Contract("_, !null -> !null")
     @Nullable
-    default String getOptional(final String prefix, @Nullable final String defaultString) {
-        return getOptionalArgument(prefix).orElse(defaultString);
-    }
-
-    /**
-     * Gets an optional value with the given prefix.
-     *
-     * @param prefix the prefix of the optional value
-     * @return an {@link Optional} containing the value or an empty {@link Optional} if the value is not present
-     */
-    Optional<String> getOptionalArgument(String prefix);
-
-    /**
-     * Gets {@link #getList(String)} with {@link #next()}.
-     *
-     * @return the split string
-     * @throws QuestException when there is no part left
-     */
-    default List<String> getList() throws QuestException {
-        return getList(next());
-    }
-
-    /**
-     * Splits the string by {@code ,}.
-     * <p>
-     * Passing null results in an empty list.
-     *
-     * @param string the string to split
-     * @return the split string
-     */
-    default List<String> getList(@Nullable final String string) {
-        if (string == null) {
-            return List.of();
-        }
-        return List.of(StringUtils.split(string, ","));
-    }
+    String getValue(String prefix, @Nullable String defaultString);
 }

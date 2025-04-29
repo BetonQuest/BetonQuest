@@ -42,7 +42,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
             throw new QuestException("MythicMob with internal name '" + internalName + "' does not exist");
         }
 
-        final Variable<Number> distance = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> distance = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new MythicMobDistanceCondition(apiHelper, internalName, distance), data);
     }
 }

@@ -5,13 +5,14 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * A wrapper for the equipment and drops of a mob.
@@ -26,7 +27,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public record Equipment(@Nullable Variable<Item> helmet, @Nullable Variable<Item> chestplate,
                         @Nullable Variable<Item> leggings, @Nullable Variable<Item> boots,
-                        @Nullable Variable<Item> mainHand, @Nullable Variable<Item> offHand, VariableList<Item> drops) {
+                        @Nullable Variable<Item> mainHand, @Nullable Variable<Item> offHand,
+                        Variable<List<Item>> drops) {
 
     /**
      * Adds the drops to the mob.

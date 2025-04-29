@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,12 +33,12 @@ public class RunForAllEvent implements PlayerlessEvent {
     /**
      * List of Events to run.
      */
-    private final VariableList<EventID> events;
+    private final Variable<List<EventID>> events;
 
     /**
      * List of conditions each profile must meet to run the events.
      */
-    private final VariableList<ConditionID> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * Create a new RunForAllEvent instance.
@@ -49,8 +49,8 @@ public class RunForAllEvent implements PlayerlessEvent {
      * @param conditions                the conditions each profile must meet to run the events
      */
     public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,
-                          final QuestTypeAPI questTypeAPI, final VariableList<EventID> events,
-                          final VariableList<ConditionID> conditions) {
+                          final QuestTypeAPI questTypeAPI, final Variable<List<EventID>> events,
+                          final Variable<List<ConditionID>> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
         this.questTypeAPI = questTypeAPI;
         this.events = events;

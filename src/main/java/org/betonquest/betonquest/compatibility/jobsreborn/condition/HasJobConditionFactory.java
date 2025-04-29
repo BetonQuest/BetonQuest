@@ -30,7 +30,7 @@ public class HasJobConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
+        final Variable<Job> job = instruction.get(JobParser.JOB);
         return new PrimaryServerThreadPlayerCondition(new HasJobCondition(job), data);
     }
 }

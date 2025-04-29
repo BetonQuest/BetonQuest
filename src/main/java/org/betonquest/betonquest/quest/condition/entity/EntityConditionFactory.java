@@ -10,6 +10,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
@@ -17,8 +18,7 @@ import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import java.util.EnumMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,30 +51,37 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
-        final Map<EntityType, Variable<Number>> entityAmounts = getEntityAmounts(instruction);
-        final Variable<Location> location = instruction.getVariable(Argument.LOCATION);
-        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
-        final String nameString = instruction.getOptional("name");
-        final Variable<String> name = nameString == null ? null : instruction.getVariable(
-                Utils.format(nameString, true, false), Argument.STRING);
-        final Variable<String> marked = instruction.get(instruction.getOptional("marked"), PackageArgument.IDENTIFIER);
+        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
+        final Variable<Location> location = instruction.get(Argument.LOCATION);
+        final Variable<Number> range = instruction.get(Argument.NUMBER);
+        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
 
-    private Map<EntityType, Variable<Number>> getEntityAmounts(final Instruction instruction) throws QuestException {
-        final Map<EntityType, Variable<Number>> entityAmounts = new EnumMap<>(EntityType.class);
-        for (final String rawType : instruction.getList()) {
-            final String[] typeParts = rawType.split(":");
-            try {
-                final EntityType type = EntityType.valueOf(typeParts[0].toUpperCase(Locale.ROOT));
-                final Variable<Number> amount = typeParts.length == 2 ? instruction.getVariable(typeParts[1], Argument.NUMBER) : new Variable<>(1);
-                entityAmounts.put(type, amount);
-            } catch (final IllegalArgumentException e) {
-                throw new QuestException("Invalid entity type: " + typeParts[0], e);
-            } catch (final QuestException e) {
-                throw new QuestException("Could not parse entity amount: " + typeParts[1], e);
+    /**
+     * Parses a string to a Spell with level.
+     */
+    private static final class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
+        /**
+         * The default instance of {@link EntityAmount}.
+         */
+        public static final EntityAmount ENTITY_AMOUNT = new EntityAmount();
+
+        /**
+         * Expected length of value.
+         */
+        private static final int FORMAT_LENGTH = 2;
+
+        @Override
+        public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
+            final String[] parts = string.split(":");
+            if (parts.length != FORMAT_LENGTH) {
+                throw new QuestException("Invalid entity amount format: " + string);
             }
+            final EntityType type = Argument.ENUM(EntityType.class).apply(parts[0]);
+            final int amount = NUMBER.apply(parts[1]).intValue();
+            return Map.entry(type, amount);
         }
-        return entityAmounts;
     }
 }

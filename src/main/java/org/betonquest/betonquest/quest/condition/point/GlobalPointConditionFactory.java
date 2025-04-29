@@ -43,7 +43,7 @@ public class GlobalPointConditionFactory implements PlayerConditionFactory, Play
 
     private GlobalPointCondition parse(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        final Variable<Number> count = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> count = instruction.get(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");
         return new GlobalPointCondition(globalData, category, count, equal);
     }

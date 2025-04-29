@@ -40,7 +40,7 @@ public class HealthConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> health = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> health = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(HealthCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new HealthCondition(health), log, instruction.getPackage()), data);

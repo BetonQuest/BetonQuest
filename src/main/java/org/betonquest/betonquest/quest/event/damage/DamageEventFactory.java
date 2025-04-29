@@ -38,7 +38,7 @@ public class DamageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> damage = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> damage = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new DamageEvent(damage),
                 loggerFactory.create(DamageEvent.class),

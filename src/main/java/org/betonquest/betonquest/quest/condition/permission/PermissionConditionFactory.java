@@ -40,7 +40,7 @@ public class PermissionConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> permission = instruction.getVariable(Argument.STRING);
+        final Variable<String> permission = instruction.get(Argument.STRING);
         final BetonQuestLogger log = loggerFactory.create(PermissionCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new PermissionCondition(permission), log, instruction.getPackage()), data

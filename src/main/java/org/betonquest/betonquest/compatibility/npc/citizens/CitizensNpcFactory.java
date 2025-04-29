@@ -23,7 +23,7 @@ public class CitizensNpcFactory implements NpcFactory {
         if (instruction.hasArgument("byName")) {
             return new CitizensNameWrapper(instruction.next());
         }
-        final Variable<Number> npcId = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
+        final Variable<Number> npcId = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
         return new CitizensWrapper(npcId);
     }
 }

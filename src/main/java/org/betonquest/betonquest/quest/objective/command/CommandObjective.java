@@ -9,13 +9,14 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+import java.util.List;
 
 /**
  * Requires the player to execute a specific command.
@@ -45,7 +46,7 @@ public class CommandObjective extends Objective implements Listener {
     /**
      * Events to trigger if the command is not matched.
      */
-    private final VariableList<EventID> failEvents;
+    private final Variable<List<EventID>> failEvents;
 
     /**
      * Creates a new instance of the CommandObjective.
@@ -60,7 +61,7 @@ public class CommandObjective extends Objective implements Listener {
      */
     public CommandObjective(final Instruction instruction, final Variable<String> command,
                             final boolean ignoreCase, final boolean exact, final boolean cancel,
-                            final VariableList<EventID> failEvents) throws QuestException {
+                            final Variable<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.command = command;
         this.ignoreCase = ignoreCase;

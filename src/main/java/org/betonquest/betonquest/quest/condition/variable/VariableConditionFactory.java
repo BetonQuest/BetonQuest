@@ -60,8 +60,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<String> variable = instruction.getVariable(Argument.STRING);
-        final Variable<String> regex = instruction.getVariable(Argument.STRING);
+        final Variable<String> variable = instruction.get(Argument.STRING);
+        final Variable<String> regex = instruction.get(Argument.STRING);
         final String variableAddress = instruction.getID().toString();
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
         return new VariableCondition(log, variable, regex, variableAddress);

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +25,7 @@ public class ItemCondition implements OnlineCondition {
     /**
      * The items to check for.
      */
-    private final VariableList<Item> items;
+    private final Variable<List<Item>> items;
 
     /**
      * Create a new item condition.
@@ -33,7 +33,7 @@ public class ItemCondition implements OnlineCondition {
      * @param items       the items to check for
      * @param dataStorage the storage providing player data
      */
-    public ItemCondition(final VariableList<Item> items, final PlayerDataStorage dataStorage) {
+    public ItemCondition(final Variable<List<Item>> items, final PlayerDataStorage dataStorage) {
         this.items = items;
         this.dataStorage = dataStorage;
     }

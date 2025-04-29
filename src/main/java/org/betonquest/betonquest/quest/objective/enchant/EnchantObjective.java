@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
@@ -33,7 +32,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
     /**
      * The desired enchantments.
      */
-    private final VariableList<EnchantmentData> desiredEnchantments;
+    private final Variable<List<EnchantmentData>> desiredEnchantments;
 
     /**
      * True if at least one enchantment is required, false if all enchantments are required.
@@ -51,7 +50,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<Item> item,
-                            final VariableList<EnchantmentData> desiredEnchantments, final boolean requireOne) throws QuestException {
+                            final Variable<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, targetAmount, "items_to_enchant");
         this.item = item;
         this.desiredEnchantments = desiredEnchantments;

@@ -17,7 +17,7 @@ public class MMOCoreChangeClassObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String targetClassName = instruction.getOptional("class");
+        final String targetClassName = instruction.getValue("class");
         return new MMOCoreChangeClassObjective(instruction, targetClassName);
     }
 }

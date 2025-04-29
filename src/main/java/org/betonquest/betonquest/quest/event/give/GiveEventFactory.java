@@ -72,7 +72,7 @@ public class GiveEventFactory implements PlayerEventFactory {
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(
-                        instruction.get(PackageArgument.ofList(PackageArgument.ITEM)),
+                        instruction.getList(PackageArgument.ITEM),
                         itemsGivenSender,
                         itemsInBackpackSender,
                         itemsDroppedSender,

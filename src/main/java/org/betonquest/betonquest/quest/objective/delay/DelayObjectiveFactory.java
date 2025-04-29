@@ -30,8 +30,8 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> delay = instruction.getVariable(Argument.NUMBER_NOT_LESS_THAN_ZERO);
-        final Variable<Number> interval = instruction.getVariable(instruction.getOptional("interval"), Argument.NUMBER_NOT_LESS_THAN_ONE, 20 * 10);
+        final Variable<Number> delay = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
+        final Variable<Number> interval = instruction.getValue("interval", Argument.NUMBER_NOT_LESS_THAN_ONE, 20 * 10);
         final BetonQuestLogger log = loggerFactory.create(DelayObjective.class);
         return new DelayObjective(instruction, log, interval, delay);
     }

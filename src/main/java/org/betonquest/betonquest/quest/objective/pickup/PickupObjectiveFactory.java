@@ -8,7 +8,8 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+
+import java.util.List;
 
 /**
  * Factory for creating {@link PickupObjective} instances from {@link Instruction}s.
@@ -21,11 +22,10 @@ public class PickupObjectiveFactory implements ObjectiveFactory {
     public PickupObjectiveFactory() {
     }
 
-    @SuppressWarnings("NullAway")
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final VariableList<Item> pickupItems = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
-        final Variable<Number> targetAmount = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<List<Item>> pickupItems = instruction.getList(PackageArgument.ITEM);
+        final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new PickupObjective(instruction, targetAmount, pickupItems);
     }
 }

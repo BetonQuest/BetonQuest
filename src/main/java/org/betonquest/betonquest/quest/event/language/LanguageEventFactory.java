@@ -29,7 +29,7 @@ public class LanguageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> language = instruction.getVariable(Argument.STRING);
+        final Variable<String> language = instruction.get(Argument.STRING);
         return new LanguageEvent(language, dataStorage);
     }
 }

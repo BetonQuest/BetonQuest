@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction.types.location;
+package org.betonquest.betonquest.instruction.argument.types.location;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.Argument;
@@ -9,7 +9,7 @@ import org.bukkit.util.Vector;
 
 import java.util.regex.Pattern;
 
-import static org.betonquest.betonquest.instruction.types.location.VectorParser.REGEX_DATA;
+import static org.betonquest.betonquest.instruction.argument.types.location.VectorParser.REGEX_DATA;
 
 /**
  * Parses a string to a location.

@@ -35,7 +35,7 @@ public class MMOCoreClassConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String className = instruction.next();
-        final Variable<Number> classLevel = instruction.hasNext() ? instruction.getVariable(Argument.NUMBER) : null;
+        final Variable<Number> classLevel = instruction.hasNext() ? instruction.get(Argument.NUMBER) : null;
         final boolean equal = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(
                 new MMOCoreClassCondition(CURRENT_CLASS.equals(className) ? null : className, classLevel, equal),

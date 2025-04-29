@@ -29,7 +29,7 @@ public class BQEventSkriptFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> identifier = instruction.getVariable(Argument.STRING);
+        final Variable<String> identifier = instruction.get(Argument.STRING);
         return new PrimaryServerThreadEvent(new BQEventSkript(identifier), data);
     }
 }

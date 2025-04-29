@@ -46,7 +46,7 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createSetEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
-        final Variable<String> variableString = instruction.getVariable(Argument.STRING);
+        final Variable<String> variableString = instruction.get(Argument.STRING);
         return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, variableString.getValue(profile)));
     }
 
@@ -65,7 +65,7 @@ public class StageEventFactory implements PlayerEventFactory {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.next();
             if (!stringAmount.matches("condition(s)?:.+")) {
-                return instruction.getVariable(stringAmount, Argument.NUMBER);
+                return instruction.get(stringAmount, Argument.NUMBER);
             }
         }
         return null;

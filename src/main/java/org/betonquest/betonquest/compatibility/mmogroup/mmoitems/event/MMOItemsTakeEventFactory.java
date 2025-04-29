@@ -39,7 +39,7 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
         final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
         final String itemID = instruction.next();
         MMOItemsUtils.getMMOItemStack(itemType, itemID);
-        final Variable<Number> deleteAmountVar = instruction.getVariable(instruction.getOptional("amount", "1"), Argument.NUMBER);
+        final Variable<Number> deleteAmountVar = instruction.getValue("amount", Argument.NUMBER, 1);
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
         return new OnlineEventAdapter(new MMOItemsTakeEvent(itemType, itemID, deleteAmountVar, checkOrder, notificationSender), log, instruction.getPackage());
     }

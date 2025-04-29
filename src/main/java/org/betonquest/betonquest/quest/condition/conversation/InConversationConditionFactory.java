@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory for {@link InConversationCondition}s.
@@ -19,17 +20,7 @@ public class InConversationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String rawConversationID = instruction.getOptional("conversation");
-        final ConversationID conversationID;
-        if (rawConversationID == null) {
-            conversationID = null;
-        } else {
-            try {
-                conversationID = new ConversationID(instruction.getPackage(), rawConversationID);
-            } catch (final QuestException e) {
-                throw new QuestException(e.getMessage(), e);
-            }
-        }
+        final Variable<ConversationID> conversationID = instruction.getValue("conversation", ConversationID::new);
         return new InConversationCondition(conversationID);
     }
 }

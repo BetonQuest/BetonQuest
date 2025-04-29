@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -59,7 +59,7 @@ public class MenuItem {
     /**
      * Conditions that have to be matched to view the item.
      */
-    private final VariableList<ConditionID> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * If the menu should be closed when the item is clicked.
@@ -80,7 +80,7 @@ public class MenuItem {
      */
     public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Item item, final MenuItemID itemId,
                     @Nullable final Message descriptions, final ClickEvents clickEvents,
-                    final VariableList<ConditionID> conditions, final boolean close) {
+                    final Variable<List<ConditionID>> conditions, final boolean close) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.item = item;
@@ -109,7 +109,7 @@ public class MenuItem {
         };
     }
 
-    private boolean executeEvents(final VariableList<EventID> events, final OnlineProfile profile) {
+    private boolean executeEvents(final Variable<List<EventID>> events, final OnlineProfile profile) {
         final List<EventID> resolved;
         try {
             resolved = events.getValue(profile);
@@ -196,16 +196,16 @@ public class MenuItem {
     /**
      * Contains the ids of events that should be run on a click.
      */
-    public record ClickEvents(VariableList<EventID> leftClick, VariableList<EventID> shiftLeftClick,
-                              VariableList<EventID> rightClick, VariableList<EventID> shiftRightClick,
-                              VariableList<EventID> middleMouseClick) {
+    public record ClickEvents(Variable<List<EventID>> leftClick, Variable<List<EventID>> shiftLeftClick,
+                              Variable<List<EventID>> rightClick, Variable<List<EventID>> shiftRightClick,
+                              Variable<List<EventID>> middleMouseClick) {
 
         /**
          * Fills all click types with the same list.
          *
          * @param click the events to execute on any click
          */
-        public ClickEvents(final VariableList<EventID> click) {
+        public ClickEvents(final Variable<List<EventID>> click) {
             this(click, click, click, click, click);
         }
     }

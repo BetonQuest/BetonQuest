@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +19,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -41,7 +42,7 @@ public class PasswordObjective extends Objective implements Listener {
     /**
      * Events to be triggered on failure.
      */
-    private final VariableList<EventID> failEvents;
+    private final Variable<List<EventID>> failEvents;
 
     /**
      * Constructor for the PasswordObjective.
@@ -53,7 +54,7 @@ public class PasswordObjective extends Objective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public PasswordObjective(final Instruction instruction, final Pattern regex,
-                             @Nullable final String passwordPrefix, final VariableList<EventID> failEvents) throws QuestException {
+                             @Nullable final String passwordPrefix, final Variable<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.regex = regex;
         this.passwordPrefix = passwordPrefix;

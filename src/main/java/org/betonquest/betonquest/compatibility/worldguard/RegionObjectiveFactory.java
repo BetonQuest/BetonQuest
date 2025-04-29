@@ -19,7 +19,7 @@ public class RegionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.getVariable(Argument.STRING);
+        final Variable<String> name = instruction.get(Argument.STRING);
         return new RegionObjective(instruction, name);
     }
 }

@@ -41,6 +41,6 @@ public class RegionConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(RegionCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new RegionCondition(instruction.getVariable(Argument.STRING)), log, instruction.getPackage()), data);
+                new RegionCondition(instruction.get(Argument.STRING)), log, instruction.getPackage()), data);
     }
 }

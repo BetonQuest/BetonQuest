@@ -38,7 +38,7 @@ public class QuestsConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.getVariable(Argument.STRING);
+        final Variable<String> name = instruction.get(Argument.STRING);
         return new PrimaryServerThreadPlayerCondition(new QuestsCondition(quests, name), data);
     }
 }

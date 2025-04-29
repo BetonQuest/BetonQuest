@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.instruction.types;
+package org.betonquest.betonquest.instruction.argument.types;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;

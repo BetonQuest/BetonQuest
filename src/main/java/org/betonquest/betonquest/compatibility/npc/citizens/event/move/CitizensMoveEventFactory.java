@@ -9,12 +9,13 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Factory for {@link CitizensMoveEvent} from the {@link Instruction}.
@@ -52,10 +53,10 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
-        final VariableList<Location> locations = instruction.get(Argument.ofList(Argument.LOCATION, VariableList.notEmptyChecker()));
-        final Variable<Number> waitTicks = instruction.getVariable(instruction.getOptional("wait"), Argument.NUMBER, 0);
-        final VariableList<EventID> doneEvents = instruction.get(instruction.getOptional("done", ""), PackageArgument.ofList(EventID::new));
-        final VariableList<EventID> failEvents = instruction.get(instruction.getOptional("fail", ""), PackageArgument.ofList(EventID::new));
+        final Variable<List<Location>> locations = instruction.getList(Argument.LOCATION, VariableList.notEmptyChecker());
+        final Variable<Number> waitTicks = instruction.getValue("wait", Argument.NUMBER, 0);
+        final Variable<List<EventID>> doneEvents = instruction.getValueList("done", EventID::new);
+        final Variable<List<EventID>> failEvents = instruction.getValueList("fail", EventID::new);
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);

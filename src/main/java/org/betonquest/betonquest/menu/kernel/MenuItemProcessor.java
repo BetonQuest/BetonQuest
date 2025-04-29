@@ -14,13 +14,14 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.MenuItem;
 import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.List;
 
 /**
  * Processor to create and store {@link MenuItem}s.
@@ -69,7 +70,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
             descriptions = null;
         }
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
-        final VariableList<ConditionID> conditions = helper.getID("conditions", ConditionID::new);
+        final Variable<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
         final String rawClose = section.getString("close", config.getString("default_close", ""));
         final boolean close = Argument.BOOLEAN.apply(GlobalVariableResolver.resolve(pack, rawClose));
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
@@ -110,7 +111,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
             }
         }
 
-        private VariableList<EventID> getEvents(final String key) throws QuestException {
+        private Variable<List<EventID>> getEvents(final String key) throws QuestException {
             return getID(key, EventID::new);
         }
     }

@@ -84,10 +84,10 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
-                return instruction.getVariable(start.substring(0, start.indexOf('~')), Argument.NUMBER);
+                return instruction.get(start.substring(0, start.indexOf('~')), Argument.NUMBER);
             } else {
                 final String next = instruction.next();
-                return instruction.getVariable(start + '.' + next.substring(0, next.indexOf('~')), Argument.NUMBER);
+                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), Argument.NUMBER);
             }
         }
     }
@@ -97,7 +97,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return instruction.getVariable(instruction.hasNext() ? start + '.' + instruction.next() : start, Argument.NUMBER);
+            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, Argument.NUMBER);
         }
     }
 
@@ -116,7 +116,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             final String current = instruction.next();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return instruction.getVariable(builder.toString(), Argument.NUMBER);
+                return instruction.get(builder.toString(), Argument.NUMBER);
             } else {
                 builder.append(current).append('.');
             }

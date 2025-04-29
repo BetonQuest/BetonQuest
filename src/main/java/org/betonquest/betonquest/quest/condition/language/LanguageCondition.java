@@ -5,8 +5,9 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * A condition that checks if the player has selected a specific language.
@@ -26,7 +27,7 @@ public class LanguageCondition implements PlayerCondition {
     /**
      * Set of languages that the player must have selected for the condition to be true.
      */
-    private final Set<String> expectedLanguages;
+    private final Variable<List<String>> expectedLanguages;
 
     /**
      * Create a language condition.
@@ -36,7 +37,7 @@ public class LanguageCondition implements PlayerCondition {
      * @param expectedLanguages the languages that the player must have selected
      */
     public LanguageCondition(final PlayerDataStorage dataStorage, final LanguageProvider languageProvider,
-                             final Set<String> expectedLanguages) {
+                             final Variable<List<String>> expectedLanguages) {
         this.dataStorage = dataStorage;
         this.languageProvider = languageProvider;
         this.expectedLanguages = expectedLanguages;
@@ -45,6 +46,6 @@ public class LanguageCondition implements PlayerCondition {
     @Override
     public boolean check(final Profile profile) throws QuestException {
         final String playerLanguage = dataStorage.getOffline(profile).getLanguage().orElseGet(languageProvider::getDefaultLanguage);
-        return expectedLanguages.contains(playerLanguage);
+        return expectedLanguages.getValue(profile).contains(playerLanguage);
     }
 }

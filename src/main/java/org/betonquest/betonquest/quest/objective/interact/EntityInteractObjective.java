@@ -53,13 +53,13 @@ public class EntityInteractObjective extends CountingObjective {
      * The custom name of the entity to interact with.
      */
     @Nullable
-    private final String customName;
+    private final Variable<String> customName;
 
     /**
      * The real name of the entity to interact with.
      */
     @Nullable
-    private final String realName;
+    private final Variable<String> realName;
 
     /**
      * The equipment slot to interact with.
@@ -119,8 +119,8 @@ public class EntityInteractObjective extends CountingObjective {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
                                    @Nullable final Variable<Location> loc,
-                                   final Variable<Number> range, @Nullable final String customName,
-                                   @Nullable final String realName, @Nullable final EquipmentSlot slot,
+                                   final Variable<Number> range, @Nullable final Variable<String> customName,
+                                   @Nullable final Variable<String> realName, @Nullable final EquipmentSlot slot,
                                    final Variable<EntityType> mobType, @Nullable final Variable<String> marked,
                                    final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
         super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
@@ -159,10 +159,10 @@ public class EntityInteractObjective extends CountingObjective {
         if (!entity.getType().equals(mobType.getValue(onlineProfile))) {
             return false;
         }
-        if (customName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(customName))) {
+        if (customName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(customName.getValue(onlineProfile)))) {
             return false;
         }
-        if (realName != null && !realName.equals(entity.getName())) {
+        if (realName != null && !realName.getValue(onlineProfile).equals(entity.getName())) {
             return false;
         }
         // check if the entity is correctly marked

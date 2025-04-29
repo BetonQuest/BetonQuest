@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Variable that resolves into a list of {@link T}.
@@ -31,6 +32,7 @@ public class VariableList<T> extends Variable<List<T>> {
      *
      * @param values the list of values
      */
+    @SafeVarargs
     public VariableList(final T... values) {
         super(List.of(values));
     }
@@ -94,6 +96,25 @@ public class VariableList<T> extends Variable<List<T>> {
         return (value) -> {
             if (value.isEmpty()) {
                 throw new QuestException("List must not be empty");
+            }
+        };
+    }
+
+    /**
+     * Checks if the resulting list does not have a duplicate key.
+     *
+     * @param <T> the key type to check for duplicates
+     * @param <U> the value type
+     * @return the value checker
+     */
+    public static <T, U> ValueChecker<List<Map.Entry<T, U>>> notDuplicateKeyChecker() {
+        return value -> {
+            final List<T> keys = new ArrayList<>();
+            for (final Map.Entry<T, U> entry : value) {
+                if (keys.contains(entry.getKey())) {
+                    throw new QuestException("List does not allow duplicate keys: " + entry.getKey());
+                }
+                keys.add(entry.getKey());
             }
         };
     }

@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Factory for {@link LanguageCondition}s.
@@ -48,13 +48,13 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final List<String> languages = instruction.getList();
-        for (final String language : languages) {
-            if (!pluginMessage.getLanguages().contains(language)) {
-                throw new QuestException("Language " + language + " does not exist.");
+        final Variable<List<String>> languages = instruction.getList(Argument.STRING, list -> {
+            for (final String language : list) {
+                if (!pluginMessage.getLanguages().contains(language)) {
+                    throw new QuestException("Language " + language + " does not exist.");
+                }
             }
-        }
-        final Set<String> expectedLanguages = new HashSet<>(languages);
-        return new LanguageCondition(dataStorage, languageProvider, expectedLanguages);
+        });
+        return new LanguageCondition(dataStorage, languageProvider, languages);
     }
 }

@@ -23,7 +23,7 @@ public class EquipItemObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<PlayerArmorChangeEvent.SlotType> slotType = instruction.getVariable(Argument.ENUM(PlayerArmorChangeEvent.SlotType.class));
+        final Variable<PlayerArmorChangeEvent.SlotType> slotType = instruction.get(Argument.ENUM(PlayerArmorChangeEvent.SlotType.class));
         final Variable<Item> item = instruction.get(PackageArgument.ITEM);
         return new EquipItemObjective(instruction, item, slotType);
     }

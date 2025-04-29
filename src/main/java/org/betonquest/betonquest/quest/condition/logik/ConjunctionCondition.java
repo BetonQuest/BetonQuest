@@ -5,8 +5,10 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * All of specified conditions have to be true.
@@ -16,7 +18,7 @@ public class ConjunctionCondition implements NullableCondition {
     /**
      * All of specified conditions have to be true.
      */
-    private final VariableList<ConditionID> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * Quest Type API.
@@ -29,7 +31,7 @@ public class ConjunctionCondition implements NullableCondition {
      * @param conditions   All of specified conditions have to be true.
      * @param questTypeAPI the Quest Type API
      */
-    public ConjunctionCondition(final VariableList<ConditionID> conditions, final QuestTypeAPI questTypeAPI) {
+    public ConjunctionCondition(final Variable<List<ConditionID>> conditions, final QuestTypeAPI questTypeAPI) {
         this.conditions = conditions;
         this.questTypeAPI = questTypeAPI;
     }

@@ -49,18 +49,18 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final String number = instruction.next();
-        final String action = instruction.getOptional("action");
+        final String action = instruction.getValue("action");
         if (action != null) {
             try {
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
-                return new GlobalPointEvent(globalData, category, instruction.getVariable(number, Argument.NUMBER), type);
+                return new GlobalPointEvent(globalData, category, instruction.get(number, Argument.NUMBER), type);
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + instruction.current(), e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
-            return new GlobalPointEvent(globalData, category, instruction.getVariable(number.replace("*", ""), Argument.NUMBER), Point.MULTIPLY);
+            return new GlobalPointEvent(globalData, category, instruction.get(number.replace("*", ""), Argument.NUMBER), Point.MULTIPLY);
         }
-        return new GlobalPointEvent(globalData, category, instruction.getVariable(number, Argument.NUMBER), Point.ADD);
+        return new GlobalPointEvent(globalData, category, instruction.get(number, Argument.NUMBER), Point.ADD);
     }
 }

@@ -22,7 +22,7 @@ public class DieObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Location> location = instruction.getVariable(instruction.getOptional("respawn"), Argument.LOCATION);
+        final Variable<Location> location = instruction.getValue("respawn", Argument.LOCATION);
         return new DieObjective(instruction, cancel, location);
     }
 }

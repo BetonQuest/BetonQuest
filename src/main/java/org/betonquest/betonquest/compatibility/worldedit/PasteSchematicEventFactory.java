@@ -53,8 +53,8 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final Variable<Number> rotation = instruction.getVariable(instruction.getOptional("rotation", "0"), Argument.NUMBER);
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Number> rotation = instruction.getValue("rotation", Argument.NUMBER, 0);
 
         if (!folder.exists() || !folder.isDirectory()) {
             throw new QuestException("Schematic folder does not exist");

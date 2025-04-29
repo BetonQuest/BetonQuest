@@ -36,7 +36,7 @@ public class MMOCoreAttributeConditionFactory implements PlayerConditionFactory 
         final String attributeName = instruction.next();
         final PlayerAttribute attribute = Utils.getNN(MMOCore.plugin.attributeManager.get(attributeName),
                 "Attribute does not exist: " + attributeName);
-        final Variable<Number> targetLevelVar = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> targetLevelVar = instruction.get(Argument.NUMBER);
         final boolean mustBeEqual = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(new MMOCoreAttributeCondition(attribute, targetLevelVar, mustBeEqual), data);
     }

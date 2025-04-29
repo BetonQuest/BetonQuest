@@ -4,6 +4,7 @@ import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class HideGroupEvent implements PlayerEvent {
     /**
      * The names of the groups that should be hidden for the player.
      */
-    private final List<String> groupNames;
+    private final Variable<List<String>> groupNames;
 
     /**
      * PlayerGroupService to change group states for the player.
@@ -28,14 +29,14 @@ public class HideGroupEvent implements PlayerEvent {
      * @param groupNames         is a string list with group names that should be hidden for the player
      * @param playerGroupService the FakeBlock PlayerGroupService
      */
-    public HideGroupEvent(final List<String> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
+    public HideGroupEvent(final Variable<List<String>> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
         this.groupNames = groupNames;
         this.playerGroupService = playerGroupService;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        for (final String groupName : groupNames) {
+        for (final String groupName : groupNames.getValue(profile)) {
             playerGroupService.getProvider().hideGroup(groupName, profile.getPlayer());
         }
     }

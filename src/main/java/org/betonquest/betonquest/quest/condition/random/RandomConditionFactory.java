@@ -42,8 +42,8 @@ public class RandomConditionFactory implements PlayerConditionFactory, Playerles
         final Variable<Number> valueMax;
         final Variable<Number> rangeOfRandom;
         try {
-            valueMax = instruction.getVariable(values[0], Argument.NUMBER);
-            rangeOfRandom = instruction.getVariable(values[1], Argument.NUMBER);
+            valueMax = instruction.get(values[0], Argument.NUMBER);
+            rangeOfRandom = instruction.get(values[1], Argument.NUMBER);
         } catch (final QuestException e) {
             throw new QuestException("Cannot parse randomness values: " + e.getMessage(), e);
         }

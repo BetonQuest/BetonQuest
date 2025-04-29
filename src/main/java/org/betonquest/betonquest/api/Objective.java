@@ -16,12 +16,12 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -72,12 +72,12 @@ public abstract class Objective {
     /**
      * Conditions to count progress.
      */
-    protected VariableList<ConditionID> conditions;
+    protected Variable<List<ConditionID>> conditions;
 
     /**
      * Events to fire on completion.
      */
-    protected VariableList<EventID> events;
+    protected Variable<List<EventID>> events;
 
     /**
      * If the objective should start again on completion.
@@ -122,9 +122,9 @@ public abstract class Objective {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.hasArgument("persistent");
-        events = instruction.get(instruction.getOptional("events", ""), PackageArgument.ofList(EventID::new));
-        conditions = instruction.get(instruction.getOptional("conditions", ""), PackageArgument.ofList(ConditionID::new));
-        final int customNotifyInterval = instruction.getVariable(instruction.getOptional("notify"), Argument.NUMBER, 0).getValue(null).intValue();
+        events = instruction.getValueList("events", EventID::new);
+        conditions = instruction.getValueList("conditions", ConditionID::new);
+        final int customNotifyInterval = instruction.getValue("notify", Argument.NUMBER, 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
     }

@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -48,29 +48,11 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
-        final String unparsedPermissions = instruction.getOptional("permission", "");
-        if (unparsedPermissions.isEmpty()) {
-            throw new QuestException("Missing permissions argument. Expected permissions:permission1,"
-                    + "permission2,permission3,...");
-        }
-        final List<Variable<String>> permissions = parseList(instruction, unparsedPermissions);
-        final List<Variable<String>> contexts = parseList(instruction, instruction.getOptional("context", ""));
-        final Variable<String> value = instruction.getVariable(instruction.getOptional("value", ""), Argument.STRING);
-        final Variable<Number> expiry = instruction.getVariable(instruction.getOptional("expiry", "0"),
-                Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<String> timeUnit = instruction.getVariable(instruction.getOptional("unit", TimeUnit.DAYS.name()), Argument.STRING);
-
+        final Variable<List<String>> permissions = instruction.getValueList("permission", Argument.STRING, VariableList.notEmptyChecker());
+        final Variable<List<String>> contexts = instruction.getValueList("context", Argument.STRING);
+        final Variable<String> value = instruction.getValue("value", Argument.STRING, "");
+        final Variable<Number> expiry = instruction.getValue("expiry", Argument.NUMBER_NOT_LESS_THAN_ONE, 0);
+        final Variable<TimeUnit> timeUnit = instruction.getValue("unit", Argument.ENUM(TimeUnit.class), TimeUnit.DAYS);
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
-    }
-
-    private List<Variable<String>> parseList(final Instruction instruction, final String unparsed) throws QuestException {
-        if (unparsed.isEmpty()) {
-            return List.of();
-        }
-        final List<Variable<String>> list = new ArrayList<>();
-        for (final String input : unparsed.split(",")) {
-            list.add(instruction.getVariable(input, Argument.STRING));
-        }
-        return list;
     }
 }

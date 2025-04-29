@@ -15,7 +15,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
@@ -136,9 +135,9 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
                 throw new QuestException("height is invalid!");
             }
             final Message title = messageCreator.parseFromSection(pack, section, "title");
-            final VariableList<ConditionID> openConditions = getID("open_conditions", ConditionID::new);
-            final VariableList<EventID> openEvents = getID("open_events", EventID::new);
-            final VariableList<EventID> closeEvents = getID("close_events", EventID::new);
+            final Variable<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
+            final Variable<List<EventID>> openEvents = getID("open_events", EventID::new);
+            final Variable<List<EventID>> closeEvents = getID("close_events", EventID::new);
 
             final List<Slots> slots = loadSlots(height);
             return new Menu.MenuData(title, height, slots, openConditions, openEvents, closeEvents);

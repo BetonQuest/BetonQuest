@@ -31,7 +31,7 @@ public class ScoreboardObjectiveConditionFactory implements PlayerConditionFacto
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String objective = instruction.next();
-        final Variable<Number> count = instruction.getVariable(Argument.NUMBER);
+        final Variable<Number> count = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new ScoreboardObjectiveCondition(objective, count), data);
     }
 }

@@ -31,9 +31,9 @@ public class JobLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Job> job = instruction.getVariable(JobParser.JOB);
-        final Variable<Number> minimum = instruction.getVariable(Argument.NUMBER);
-        final Variable<Number> maximum = instruction.getVariable(Argument.NUMBER);
+        final Variable<Job> job = instruction.get(JobParser.JOB);
+        final Variable<Number> minimum = instruction.get(Argument.NUMBER);
+        final Variable<Number> maximum = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new JobLevelCondition(job, minimum, maximum), data);
     }
 }

@@ -11,11 +11,12 @@ import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Factory to create chest item conditions from {@link Instruction}s.
@@ -47,8 +48,8 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getVariable(Argument.LOCATION);
-        final VariableList<Item> items = instruction.get(PackageArgument.ofList(PackageArgument.ITEM));
+        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<List<Item>> items = instruction.getList(PackageArgument.ITEM);
         return new ChestItemCondition(loc, items);
     }
 }

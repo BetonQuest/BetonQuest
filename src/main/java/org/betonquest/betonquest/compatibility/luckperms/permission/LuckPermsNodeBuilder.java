@@ -5,11 +5,9 @@ import net.luckperms.api.node.Node;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,9 +21,9 @@ import java.util.concurrent.TimeUnit;
  * @param expiry      The expiry time for the permission.
  * @param timeUnit    The {@link TimeUnit} for the expiry time.
  */
-public record LuckPermsNodeBuilder(List<Variable<String>> permissions, Variable<String> value,
-                                   List<Variable<String>> contexts,
-                                   Variable<Number> expiry, Variable<String> timeUnit) {
+public record LuckPermsNodeBuilder(Variable<List<String>> permissions, Variable<String> value,
+                                   Variable<List<String>> contexts,
+                                   Variable<Number> expiry, Variable<TimeUnit> timeUnit) {
 
     /**
      * Builds a list of {@link Node}s.
@@ -39,9 +37,9 @@ public record LuckPermsNodeBuilder(List<Variable<String>> permissions, Variable<
         final String resolvedValue = value.getValue(profile);
         final MutableContextSet contextSet = parseContextSet(contexts, profile);
         final long resolvedExpiry = expiry.getValue(profile).longValue();
-        final TimeUnit resolvedTimeUnit = getTimeUnit(timeUnit, profile);
-        for (final Variable<String> permission : permissions) {
-            Node node = getNode(permission.getValue(profile));
+        final TimeUnit resolvedTimeUnit = timeUnit.getValue(profile);
+        for (final String permission : permissions.getValue(profile)) {
+            Node node = getNode(permission);
             if (!resolvedValue.isEmpty()) {
                 node = addValue(node, Boolean.parseBoolean(resolvedValue));
             }
@@ -57,19 +55,6 @@ public record LuckPermsNodeBuilder(List<Variable<String>> permissions, Variable<
         return buildNodes;
     }
 
-    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
-    private @NotNull TimeUnit getTimeUnit(final Variable<String> data, final Profile profile) throws QuestException {
-        final String time = data.getValue(profile);
-        TimeUnit unit;
-        try {
-            unit = TimeUnit.valueOf(time.toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException e) {
-            unit = TimeUnit.DAYS;
-            throw new QuestException("Invalid time unit: " + time + ". Setting default to + '" + unit.name() + "'.", e);
-        }
-        return unit;
-    }
-
     private Node getNode(final String permission) {
         return Node.builder(permission).build();
     }
@@ -83,10 +68,10 @@ public record LuckPermsNodeBuilder(List<Variable<String>> permissions, Variable<
         return builder.toBuilder().context(contextSet).build();
     }
 
-    private MutableContextSet parseContextSet(final List<Variable<String>> contexts, final Profile profile) throws QuestException {
+    private MutableContextSet parseContextSet(final Variable<List<String>> contexts, final Profile profile) throws QuestException {
         final MutableContextSet contextSet = MutableContextSet.create();
-        for (final Variable<String> context : contexts) {
-            final String[] split = context.getValue(profile).split(";");
+        for (final String context : contexts.getValue(profile)) {
+            final String[] split = context.split(";");
             contextSet.add(split[0], split[1]);
         }
         return contextSet;

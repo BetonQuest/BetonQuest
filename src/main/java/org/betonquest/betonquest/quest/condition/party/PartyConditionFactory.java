@@ -11,11 +11,11 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Factory to create party conditions from {@link Instruction}s.
@@ -45,14 +45,14 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.getVariable(instruction.getOptional("location", "%location%"),
+        final Variable<Location> location = instruction.get(instruction.getValue("location", "%location%"),
                 Argument.LOCATION);
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.getVariable(instruction.getOptional("location"), Argument.LOCATION);
+        final Variable<Location> location = instruction.getValue("location", Argument.LOCATION);
         if (location == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
@@ -60,11 +60,11 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private PartyCondition parse(final Instruction instruction, final Variable<Location> location) throws QuestException {
-        final Variable<Number> range = instruction.getVariable(Argument.NUMBER);
-        final VariableList<ConditionID> conditions = instruction.get(PackageArgument.ofList(ConditionID::new));
-        final VariableList<ConditionID> everyone = instruction.get(instruction.getOptional("every", ""), PackageArgument.ofList(ConditionID::new));
-        final VariableList<ConditionID> anyone = instruction.get(instruction.getOptional("any", ""), PackageArgument.ofList(ConditionID::new));
-        final Variable<Number> count = instruction.getVariable(instruction.getOptional("count"), Argument.NUMBER);
+        final Variable<Number> range = instruction.get(Argument.NUMBER);
+        final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
+        final Variable<List<ConditionID>> everyone = instruction.getValueList("every", ConditionID::new);
+        final Variable<List<ConditionID>> anyone = instruction.getValueList("any", ConditionID::new);
+        final Variable<Number> count = instruction.getValue("count", Argument.NUMBER);
 
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);
     }

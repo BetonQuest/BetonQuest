@@ -11,8 +11,8 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,9 +49,8 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
         return createPickRandomEvent(instruction);
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
-        final VariableList<RandomEvent> events = instruction.get(Argument.ofList(string -> {
+        final Variable<List<RandomEvent>> events = instruction.getList(string -> {
             final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {
                 throw new QuestException("Weight must be specified correctly: " + string);
@@ -59,16 +58,11 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final double weight;
-            try {
-                weight = Double.parseDouble(weightString);
-            } catch (final NumberFormatException e) {
-                throw new QuestException("Weight must be a number: " + weightString, e);
-            }
             final EventID eventID = new EventID(instruction.getPackage(), eventString);
+            final double weight = Argument.NUMBER.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
-        }));
-        final Variable<Number> amount = instruction.getVariable(instruction.getOptional("amount"), Argument.NUMBER);
+        });
+        final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
     }
 }

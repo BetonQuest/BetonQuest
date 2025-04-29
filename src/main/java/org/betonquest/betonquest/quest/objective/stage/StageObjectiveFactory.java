@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class StageObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final List<String> stages = instruction.get(Argument.ofList(entry -> entry)).getValue(null);
+        final List<String> stages = instruction.getList(entry -> entry).getValue(null);
         final StageObjective.StageMap stageMap = new StageObjective.StageMap(stages, (ObjectiveID) instruction.getID());
         final boolean preventCompletion = instruction.hasArgument("preventCompletion");
         final BetonQuestLogger log = loggerFactory.create(StageObjective.class);
