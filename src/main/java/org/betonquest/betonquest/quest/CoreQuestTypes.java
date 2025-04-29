@@ -42,7 +42,7 @@ import org.betonquest.betonquest.quest.condition.location.LocationConditionFacto
 import org.betonquest.betonquest.quest.condition.logik.AlternativeConditionFactory;
 import org.betonquest.betonquest.quest.condition.logik.ConjunctionConditionFactory;
 import org.betonquest.betonquest.quest.condition.looking.LookingAtConditionFactory;
-import org.betonquest.betonquest.quest.condition.moon.MoonCycleConditionFactory;
+import org.betonquest.betonquest.quest.condition.moon.MoonPhaseConditionFactory;
 import org.betonquest.betonquest.quest.condition.npc.NpcDistanceConditionFactory;
 import org.betonquest.betonquest.quest.condition.npc.NpcLocationConditionFactory;
 import org.betonquest.betonquest.quest.condition.number.NumberCompareConditionFactory;
@@ -320,7 +320,7 @@ public class CoreQuestTypes {
         conditionTypes.register("language", new LanguageConditionFactory(dataStorage, languageProvider, pluginMessage));
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("mooncycle", new MoonCycleConditionFactory(data, variableProcessor));
+        conditionTypes.registerCombined("moonphase", new MoonPhaseConditionFactory(data));
         conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(betonQuest.getFeatureAPI(), data, loggerFactory));
         conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getFeatureAPI(), data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());

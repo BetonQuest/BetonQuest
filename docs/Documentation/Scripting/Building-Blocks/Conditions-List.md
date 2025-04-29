@@ -302,23 +302,22 @@ Checks if the player is looking at a block with the given location or material. 
     looking loc:12.0;14.0;-15.0;world type:STONE
     ```
 
-## Moon Cycle: `mooncycle`
+## Moon Phase: `moonphase`
 
 **static**
 
-This condition checks the moon cycle (1 is full moon, 8 is Waxing Gibbous) in the given world or the players world. A list of phases can be 
-found 
-[here](https://minecraft.wiki/w/Moon).
+This condition checks the moon phase in the given world or the player's world.
     
-| Parameter   | Syntax     | Default Value          | Explanation                                               |
-|-------------|------------|------------------------|-----------------------------------------------------------|
-| _MoonPhase_ | Number     | :octicons-x-circle-16: | The MoonPhase to check for. Can be a variable.            |
-| _world_     | world:name | player location        | The world to check for the moon phase. Can be a variable. |
+| Parameter   | Syntax                                                                                                    | Default Value          | Explanation                                               |
+|-------------|-----------------------------------------------------------------------------------------------------------|------------------------|-----------------------------------------------------------|
+| _MoonPhase_ | [Keyword](https://jd.papermc.io/paper/1.21.5/io/papermc/paper/world/MoonPhase.html#enum-constant-summary) | :octicons-x-circle-16: | The moon phase to check for. Can be a list and variables. |
+| _world_     | world:name                                                                                                | player location        | The world to check for the moon phase. Can be a variable. |
 
 
 ```YAML title="Example"
-fullMoon: "mooncycle 1"
-newMoonHub: "mooncycle 5 world:hub"
+fullMoon: "moonphase FULL_MOON"
+darkInHub: "moonphase WANING_CRESCENT,NEW_MOON,WAXING_CRESCENT world:hub"
+playersFirstJoinMoon: "moonphase %ph.player_first_join_moon%"
 ```
 
 ## NPC distance: `npcdistance`

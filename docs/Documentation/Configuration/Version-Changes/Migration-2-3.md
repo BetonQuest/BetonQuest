@@ -30,6 +30,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-232 - Singular to Plural](#300-dev-232-singular-to-plural) :gear:
 - [3.0.0-DEV-233 - `pickrandom` event](#300-dev-233-pickrandom-event) :gear:
 - [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :gear:
+- [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -399,5 +400,26 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
         text: "&a "
         item: "filler"
     ```
+### 3.0.0-DEV-267 - MoonPhase rename :gear:
 
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    The `mooncycle` condition was renamed to `moonphase` and instead of numbers, which stood for the mood phases, 
+    the names of the moon phases are now used directly.
+    
+    ```YAML title="Old Syntax"
+    conditions:
+      mooncycle: mooncycle 1
+      otherMooncycle: mooncycle 2 world:world
+    ```
+    
+    ```YAML title="New Syntax"
+    conditions:
+      moonphase: moonphase NEW_MOON
+      otherMoonphase: moonphase FULL_MOON world:world
+    ```
+    
     </div>
