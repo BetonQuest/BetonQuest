@@ -72,9 +72,9 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
-        final Variable<Number> delay = instruction.get(instruction.getValue("delay"), Argument.NUMBER);
-        final Variable<Number> period = instruction.get(instruction.getValue("period"), Argument.NUMBER);
-        final Variable<Number> random = instruction.get(instruction.getValue("random"), Argument.NUMBER);
+        final Variable<Number> delay = instruction.getValue("delay", Argument.NUMBER);
+        final Variable<Number> period = instruction.getValue("period", Argument.NUMBER);
+        final Variable<Number> random = instruction.getValue("random", Argument.NUMBER);
         final TimeUnit timeUnit = getTimeUnit(instruction);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
         final Variable<List<ConditionID>> cancelConditions = instruction.getValueList("cancelConditions", ConditionID::new);

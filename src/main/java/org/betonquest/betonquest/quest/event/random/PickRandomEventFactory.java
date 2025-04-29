@@ -62,7 +62,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             final double weight = Argument.NUMBER.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         });
-        final Variable<Number> amount = instruction.get(instruction.getValue("amount"), Argument.NUMBER);
+        final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
     }
 }

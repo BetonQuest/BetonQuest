@@ -50,7 +50,7 @@ public class PartyEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> range = instruction.get(Argument.NUMBER);
-        final Variable<Number> amount = instruction.get(instruction.getValue("amount"), Argument.NUMBER);
+        final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
         final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
         return new OnlineEventAdapter(

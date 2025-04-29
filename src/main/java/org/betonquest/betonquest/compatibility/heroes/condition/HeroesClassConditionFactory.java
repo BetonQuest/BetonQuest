@@ -58,7 +58,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<HeroesClassType> classType = instruction.get(Argument.ENUM(HeroesClassType.class));
         final Variable<String> heroClass = instruction.get(Argument.STRING);
-        final Variable<Number> level = instruction.get(instruction.getValue("level"), Argument.NUMBER);
+        final Variable<Number> level = instruction.getValue("level", Argument.NUMBER);
 
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new HeroesClassCondition(characterManager, classManager, classType, heroClass, level),

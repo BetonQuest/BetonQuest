@@ -61,9 +61,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<EntityType> type = instruction.get(new EntityTypeParser());
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
-        final String nameString = instruction.getValue("name");
-        final Variable<String> name = nameString == null ? null : instruction.get(Utils.format(
-                nameString, true, false), Argument.STRING);
+        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         final Variable<Item> helmet = instruction.getValue("h", PackageArgument.ITEM);
         final Variable<Item> chestplate = instruction.getValue("c", PackageArgument.ITEM);

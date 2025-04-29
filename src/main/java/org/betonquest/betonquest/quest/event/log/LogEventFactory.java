@@ -54,7 +54,7 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
     }
 
     private NullableEventAdapter createLogEvent(final Instruction instruction) throws QuestException {
-        final Variable<LogEventLevel> level = instruction.get(instruction.getValue("level"), Argument.ENUM(LogEventLevel.class), LogEventLevel.INFO);
+        final Variable<LogEventLevel> level = instruction.getValue("level", Argument.ENUM(LogEventLevel.class), LogEventLevel.INFO);
         final String raw = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(raw);
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);

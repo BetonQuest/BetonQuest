@@ -35,8 +35,8 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
             selector = instruction.get(instruction.current(), Argument.BLOCK_SELECTOR);
         }
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Location> loc = instruction.get(instruction.getValue("loc"), Argument.LOCATION);
-        final Variable<Number> range = instruction.get(instruction.getValue("range", "0"), Argument.NUMBER);
+        final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 0);
         final boolean cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getValue("hand");
         final EquipmentSlot slot;

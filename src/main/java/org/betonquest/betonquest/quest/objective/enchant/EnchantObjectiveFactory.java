@@ -29,9 +29,10 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.get(instruction.getValue("amount", "1"), Argument.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         final Variable<Item> item = instruction.get(PackageArgument.ITEM);
-        final Variable<List<EnchantObjective.EnchantmentData>> desiredEnchantments = instruction.getList(EnchantObjective.EnchantmentData::convert, VariableList.notEmptyChecker());
+        final Variable<List<EnchantObjective.EnchantmentData>> desiredEnchantments =
+                instruction.getList(EnchantObjective.EnchantmentData::convert, VariableList.notEmptyChecker());
         final boolean requireOne = JUST_ONE_ENCHANT.equalsIgnoreCase(instruction.getValue("requirementMode"));
         return new EnchantObjective(instruction, targetAmount, item, desiredEnchantments, requireOne);
     }

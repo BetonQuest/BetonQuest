@@ -46,8 +46,8 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER);
         final boolean noSafety = instruction.hasArgument("noSafety");
-        final Variable<Location> location = instruction.get(instruction.getValue("loc"), Argument.LOCATION);
-        final Variable<Location> region = instruction.get(instruction.getValue("region"), Argument.LOCATION);
+        final Variable<Location> location = instruction.getValue("loc", Argument.LOCATION);
+        final Variable<Location> region = instruction.getValue("region", Argument.LOCATION);
         final boolean ignoreCancel = instruction.hasArgument("ignorecancel");
         final BetonQuestLogger log = loggerFactory.create(BlockObjective.class);
         final IngameNotificationSender blockBreakSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),

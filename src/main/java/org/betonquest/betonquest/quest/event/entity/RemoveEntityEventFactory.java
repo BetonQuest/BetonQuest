@@ -53,9 +53,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
         final boolean kill = instruction.hasArgument("kill");
-        final String nameString = instruction.getValue("name");
-        final Variable<String> name = nameString == null ? null : instruction.get(
-                Utils.format(nameString, true, false), Argument.STRING);
+        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
         final Variable<String> marked = instruction.get(instruction.getValue("marked"), PackageArgument.IDENTIFIER);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }

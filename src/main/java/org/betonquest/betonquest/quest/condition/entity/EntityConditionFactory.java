@@ -54,9 +54,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.joaNotDoubleChecker());
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
-        final String nameString = instruction.getValue("name");
-        final Variable<String> name = nameString == null ? null : instruction.get(
-                Utils.format(nameString, true, false), Argument.STRING);
+        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
         final Variable<String> marked = instruction.get(instruction.getValue("marked"), PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
@@ -64,20 +62,25 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     /**
      * Parses a string to a Spell with level.
      */
-    private static class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
+    private static final class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
         /**
          * The default instance of {@link EntityAmount}.
          */
         public static final EntityAmount ENTITY_AMOUNT = new EntityAmount();
 
+        /**
+         * Expected length of value.
+         */
+        private static final int FORMAT_LENGTH = 2;
+
         @Override
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
             final String[] parts = string.split(":");
-            if (parts.length != 2) {
+            if (parts.length != FORMAT_LENGTH) {
                 throw new QuestException("Invalid entity amount format: " + string);
             }
             final EntityType type = Argument.ENUM(EntityType.class).apply(parts[0]);
-            final int amount = Argument.NUMBER.apply(parts[1]).intValue();
+            final int amount = NUMBER.apply(parts[1]).intValue();
             return Map.entry(type, amount);
         }
     }

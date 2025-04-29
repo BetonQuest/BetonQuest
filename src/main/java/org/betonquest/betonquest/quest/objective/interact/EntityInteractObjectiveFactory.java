@@ -36,9 +36,8 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final String realName = instruction.getValue("realname");
         final Variable<String> marked = instruction.get(instruction.getValue("marked"), PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Location> loc = instruction.get(instruction.getValue("loc"), Argument.LOCATION);
-        final String stringRange = instruction.getValue("range");
-        final Variable<Number> range = stringRange == null ? new Variable<>(1) : instruction.get(stringRange, Argument.NUMBER);
+        final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }

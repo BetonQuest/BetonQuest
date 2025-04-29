@@ -52,7 +52,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(instruction.getValue("location"), Argument.LOCATION);
+        final Variable<Location> location = instruction.getValue("location", Argument.LOCATION);
         if (location == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
@@ -64,7 +64,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
         final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
         final Variable<List<ConditionID>> everyone = instruction.getValueList("every", ConditionID::new);
         final Variable<List<ConditionID>> anyone = instruction.getValueList("any", ConditionID::new);
-        final Variable<Number> count = instruction.get(instruction.getValue("count"), Argument.NUMBER);
+        final Variable<Number> count = instruction.getValue("count", Argument.NUMBER);
 
         return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);
     }

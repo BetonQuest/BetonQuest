@@ -63,8 +63,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
             privateMob = false;
         }
         final boolean targetPlayer = instruction.hasArgument("target");
-        final String markedString = instruction.getValue("marked");
-        final Variable<String> marked = instruction.get(markedString, PackageArgument.IDENTIFIER);
+        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, loc, mob, level, amount, privateMob, targetPlayer, marked), data);
     }
 
