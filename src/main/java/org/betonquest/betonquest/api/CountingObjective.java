@@ -90,7 +90,7 @@ public abstract class CountingObjective extends Objective {
     }
 
     @Override
-    public String getProperty(final String name, final Profile profile) {
+    public String getProperty(final String name, final Profile profile) throws QuestException {
         final Integer data = switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> getCountingData(profile).getCompletedAmount();
             case "left" -> getCountingData(profile).getAmountLeft();
