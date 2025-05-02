@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.spawn;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -41,7 +42,7 @@ public class SpawnMobEvent implements NullableEvent {
      * The name of the mob.
      */
     @Nullable
-    private final Variable<String> name;
+    private final Variable<Component> name;
 
     /**
      * The marked variable.
@@ -61,7 +62,7 @@ public class SpawnMobEvent implements NullableEvent {
      * @throws QuestException if the entity type is not a mob
      */
     public SpawnMobEvent(final Variable<Location> variableLocation, final Variable<EntityType> type, final Equipment equipment,
-                         final Variable<Number> amount, @Nullable final Variable<String> name, @Nullable final Variable<String> marked) throws QuestException {
+                         final Variable<Number> amount, @Nullable final Variable<Component> name, @Nullable final Variable<String> marked) throws QuestException {
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;
@@ -79,7 +80,7 @@ public class SpawnMobEvent implements NullableEvent {
             this.equipment.addEquipment(profile, mob);
             this.equipment.addDrops(mob, profile);
             if (this.name != null) {
-                mob.setCustomName(this.name.getValue(profile));
+                mob.customName(this.name.getValue(profile));
             }
             if (this.marked != null) {
                 final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");

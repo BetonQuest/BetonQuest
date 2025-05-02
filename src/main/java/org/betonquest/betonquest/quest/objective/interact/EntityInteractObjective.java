@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -53,7 +54,7 @@ public class EntityInteractObjective extends CountingObjective {
      * The custom name of the entity to interact with.
      */
     @Nullable
-    private final Variable<String> customName;
+    private final Variable<Component> customName;
 
     /**
      * The real name of the entity to interact with.
@@ -119,7 +120,7 @@ public class EntityInteractObjective extends CountingObjective {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
                                    @Nullable final Variable<Location> loc,
-                                   final Variable<Number> range, @Nullable final Variable<String> customName,
+                                   final Variable<Number> range, @Nullable final Variable<Component> customName,
                                    @Nullable final Variable<String> realName, @Nullable final EquipmentSlot slot,
                                    final Variable<EntityType> mobType, @Nullable final Variable<String> marked,
                                    final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
@@ -159,7 +160,7 @@ public class EntityInteractObjective extends CountingObjective {
         if (!entity.getType().equals(mobType.getValue(onlineProfile))) {
             return false;
         }
-        if (customName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(customName.getValue(onlineProfile)))) {
+        if (customName != null && (entity.customName() == null || !entity.customName().equals(customName.getValue(onlineProfile)))) {
             return false;
         }
         if (realName != null && !realName.getValue(onlineProfile).equals(entity.getName())) {

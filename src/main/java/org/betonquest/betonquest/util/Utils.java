@@ -315,33 +315,15 @@ public final class Utils {
 
     /**
      * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}.
-     * <p>
-     * {@code format(string, false, false)} will return the string with no formatting done.
-     *
-     * @param string     the input string
-     * @param colorCodes if alternate color codes should be resolved
-     * @param lineBreaks if {@code \\n} should be replaced with {@code \n}
-     * @return a formatted version of the input string
-     */
-    public static String format(final String string, final boolean colorCodes, final boolean lineBreaks) {
-        String input = string;
-        if (colorCodes) {
-            input = ChatColor.translateAlternateColorCodes('&', input);
-        }
-        if (lineBreaks) {
-            input = input.replaceAll("(?<!\\\\)\\\\n", "\n");
-        }
-        return input;
-    }
-
-    /**
-     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}.
      *
      * @param string the input string
      * @return a formatted version of the input string
      */
     public static String format(final String string) {
-        return format(string, true, true);
+        String input = string;
+        input = ChatColor.translateAlternateColorCodes('&', input);
+        input = input.replaceAll("(?<!\\\\)\\\\n", "\n");
+        return input;
     }
 
     /**

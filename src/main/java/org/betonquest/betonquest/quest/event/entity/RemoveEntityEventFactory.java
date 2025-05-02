@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.entity;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -13,7 +14,6 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadPlayerlessEvent;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
@@ -53,7 +53,7 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
         final boolean kill = instruction.hasArgument("kill");
-        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<Component> name = instruction.getValue("name", Argument.MESSAGE);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }

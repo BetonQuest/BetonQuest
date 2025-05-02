@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.condition.entity;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
@@ -54,7 +54,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
-        final Variable<String> name = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<Component> name = instruction.getValue("name", Argument.MESSAGE);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
