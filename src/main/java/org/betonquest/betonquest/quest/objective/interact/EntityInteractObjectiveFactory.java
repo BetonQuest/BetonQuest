@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -7,7 +8,6 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
@@ -33,7 +33,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
         final Variable<Interaction> interaction = instruction.get(Argument.ENUM(Interaction.class));
         final Variable<EntityType> mobType = instruction.get(Argument.ENUM(EntityType.class));
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<String> customName = instruction.getValue("name", value -> Utils.format(value, true, false));
+        final Variable<Component> customName = instruction.getValue("name", Argument.MESSAGE);
         final Variable<String> realName = instruction.getValue("realname", Argument.STRING);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");

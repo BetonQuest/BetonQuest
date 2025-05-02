@@ -20,6 +20,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Conversation
     - Plugin Messages / Translations
     - Menu Items & Title
+    - Mob Names for `interact` objective, `spawn` event, `removeentity` event and `entiry` condition
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`

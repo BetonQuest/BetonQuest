@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.entity;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -37,7 +38,7 @@ public class RemoveEntityEvent implements NullableEvent {
      * The name of the mob.
      */
     @Nullable
-    private final Variable<String> name;
+    private final Variable<Component> name;
 
     /**
      * The mark of the mob.
@@ -61,7 +62,7 @@ public class RemoveEntityEvent implements NullableEvent {
      * @param kill     whether to kill the entities
      */
     public RemoveEntityEvent(final Variable<List<EntityType>> types, final Variable<Location> location, final Variable<Number> radius,
-                             @Nullable final Variable<String> name, @Nullable final Variable<String> marked, final boolean kill) {
+                             @Nullable final Variable<Component> name, @Nullable final Variable<String> marked, final boolean kill) {
         this.types = types;
         this.loc = location;
         this.range = radius;
@@ -73,10 +74,10 @@ public class RemoveEntityEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = loc.getValue(profile);
-        final String resolvedName = name == null ? null : name.getValue(profile);
+        final Component name = this.name == null ? null : this.name.getValue(profile);
         final String resolvedMarked = marked == null ? null : marked.getValue(profile);
         final double resolvedRange = range.getValue(profile).doubleValue();
-        final List<Entity> entities = EntityUtils.getSelectedEntity(location, resolvedName, resolvedMarked, resolvedRange);
+        final List<Entity> entities = EntityUtils.getSelectedEntity(location, name, resolvedMarked, resolvedRange);
         for (final EntityType type : types.getValue(profile)) {
             entities.stream()
                     .filter(entity -> entity.getType() == type)

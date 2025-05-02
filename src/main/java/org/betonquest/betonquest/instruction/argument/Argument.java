@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.instruction.argument;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.types.BlockSelectorParser;
 import org.betonquest.betonquest.instruction.argument.types.BooleanParser;
 import org.betonquest.betonquest.instruction.argument.types.EnumParser;
+import org.betonquest.betonquest.instruction.argument.types.MessageParserToComponentParser;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.argument.types.StringParser;
 import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
@@ -71,6 +73,11 @@ public interface Argument<T> extends QuestFunction<String, T> {
      * The default instance of {@link BlockSelectorParser}.
      */
     BlockSelectorParser BLOCK_SELECTOR = new BlockSelectorParser();
+
+    /**
+     * The default instance of {@link MessageParserToComponentParser}.
+     */
+    MessageParserToComponentParser MESSAGE = new MessageParserToComponentParser(BetonQuest.getInstance().getMessageParser());
 
     /**
      * The default instance of {@link EnumParser}.
