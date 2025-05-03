@@ -21,7 +21,7 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q journal <playerName> <list/add/del> <package.pointer/filter> <date>` 
 * `/q event <playerName> <package.eventID>` - Fires an event for the player
 * `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
-* `/q item <package.itemID>` - Creates an item based on what you're holding in hand
+* `/q item <package.itemID> <serializer>` - Creates an item based on what you're holding in hand
 * `/q variable <playerName> <package.objectiveID> <list/set/del> [key/filter] [value]` - Manage variables stored in
 [`variable`](../Scripting/Building-Blocks/Objectives-List.md#variable-variable) objectives
 * `/q give <package.itemID>` - Gives you an item defined in the configuration
@@ -122,8 +122,9 @@ of entry when adding it, by appending date written like this: `23.04.2014_16:52`
 Note that there is `_` character instead of space!
 
 #### Manage items: `give` and `item`
-If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '`/q item nettlebane`'.
+If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '`/q item nettlebane <serializer>`'.
 It will copy the item you're holding into the _items.yml_ file and save it there with the name you specified (in this case "nettlebane").
+The _serializer_ defines the format in which the item is saved (and loaded).
 You can skip the package name here as well.
 
 The '`/q give package.item`' command will simply give you specified item.
