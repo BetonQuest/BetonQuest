@@ -261,7 +261,7 @@ If you have this plugin you can use its Npcs.
 It is more lightweight than [Citizens](#citizens) but lack some of its features.
 
 !!! info
-    In addition FancyNpcs integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
+    FancyNpcs integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
 
 
 ## FakeBlock[](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
@@ -1190,7 +1190,7 @@ If you have this plugin you can use its Npcs.
 It is a lightweight packet based plugin.
 
 !!! info
-    In addition ZNPCsPlus integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
+    ZNPCsPlus integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
 
 
 
