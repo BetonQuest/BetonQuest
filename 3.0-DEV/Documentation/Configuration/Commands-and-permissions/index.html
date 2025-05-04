@@ -5493,7 +5493,7 @@ Optional arguments are displayed as such: <code>[argument]</code>.</p>
 <li><code>/q journal &lt;playerName&gt; &lt;list/add/del&gt; &lt;package.pointer/filter&gt; &lt;date&gt;</code> </li>
 <li><code>/q event &lt;playerName&gt; &lt;package.eventID&gt;</code> - Fires an event for the player</li>
 <li><code>/q condition &lt;playerName&gt; &lt;package.conditionID&gt;</code> - Shows if the player meet specified condition or not</li>
-<li><code>/q item &lt;package.itemID&gt;</code> - Creates an item based on what you're holding in hand</li>
+<li><code>/q item &lt;package.itemID&gt; &lt;serializer&gt;</code> - Creates an item based on what you're holding in hand</li>
 <li><code>/q variable &lt;playerName&gt; &lt;package.objectiveID&gt; &lt;list/set/del&gt; [key/filter] [value]</code> - Manage variables stored in
 <a href="../../Scripting/Building-Blocks/Objectives-List/#variable-variable"><code>variable</code></a> objectives</li>
 <li><code>/q give &lt;package.itemID&gt;</code> - Gives you an item defined in the configuration</li>
@@ -5583,8 +5583,9 @@ Adding and removing looks like <code>/q journal Beton add quest.wood_started</co
 of entry when adding it, by appending date written like this: <code>23.04.2014_16:52</code> at the end of the command.
 Note that there is <code>_</code> character instead of space!</p>
 <h4 id="manage-items-give-and-item">Manage items: <code>give</code> and <code>item</code><a class="headerlink" href="#manage-items-give-and-item" title="Permanent link">🔗</a></h4>
-<p>If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '<code>/q item nettlebane</code>'.
+<p>If you need to create for example "Nettlebane" quest item, just hold it in your hand and type '<code>/q item nettlebane &lt;serializer&gt;</code>'.
 It will copy the item you're holding into the <em>items.yml</em> file and save it there with the name you specified (in this case "nettlebane").
+The <em>serializer</em> defines the format in which the item is saved (and loaded).
 You can skip the package name here as well.</p>
 <p>The '<code>/q give package.item</code>' command will simply give you specified item.</p>
 <h4 id="manage-variables-variable">Manage variables: <code>variable</code><a class="headerlink" href="#manage-variables-variable" title="Permanent link">🔗</a></h4>
