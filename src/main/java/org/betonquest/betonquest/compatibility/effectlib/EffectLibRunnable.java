@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -99,8 +98,13 @@ public class EffectLibRunnable extends BukkitRunnable {
     private List<OnlineProfile> checkActiveEffects() {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            if (questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions())) {
-                activePlayerEffects.add(onlineProfile);
+            try {
+                if (questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions().getValue(onlineProfile))) {
+                    activePlayerEffects.add(onlineProfile);
+                }
+            } catch (final QuestException e) {
+                log.warn("Could not check conditions for effectlib effect '" + effectConfiguration.effectClass()
+                        + "' for profile '" + onlineProfile + "': " + e.getMessage(), e);
             }
         }
         return activePlayerEffects;
@@ -108,44 +112,42 @@ public class EffectLibRunnable extends BukkitRunnable {
 
     private void activateEffects(final List<OnlineProfile> activePlayers) {
         for (final OnlineProfile currentPlayer : activePlayers) {
-            if (!effectConfiguration.npcs().isEmpty()) {
-                runNPCEffects(effectConfiguration, currentPlayer);
-            }
-            if (!effectConfiguration.locations().isEmpty()) {
-                runLocationEffects(currentPlayer, effectConfiguration);
-            }
+            runNPCEffects(effectConfiguration, currentPlayer);
+            runLocationEffects(currentPlayer, effectConfiguration);
         }
     }
 
     private void runNPCEffects(final EffectConfiguration effect, final OnlineProfile profile) {
-        for (final NpcID npcId : effect.npcs()) {
-            final Npc<?> npc;
-            try {
-                npc = featureAPI.getNpc(npcId, profile);
-            } catch (final QuestException exception) {
-                log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
-                continue;
-            }
-            final Player player = profile.getPlayer();
+        try {
+            for (final NpcID npcId : effect.npcs().getValue(profile)) {
+                final Npc<?> npc;
+                try {
+                    npc = featureAPI.getNpc(npcId, profile);
+                } catch (final QuestException exception) {
+                    log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
+                    continue;
+                }
+                final Player player = profile.getPlayer();
 
-            if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureAPI.getNpcHider().isHidden(npcId, profile)) {
-                continue;
-            }
+                if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureAPI.getNpcHider().isHidden(npcId, profile)) {
+                    continue;
+                }
 
-            manager.start(effect.effectClass(), effect.settings(), new NpcDynamicLocation(npc),
-                    new DynamicLocation(null, null), (ConfigurationSection) null, player);
+                manager.start(effect.effectClass(), effect.settings(), new NpcDynamicLocation(npc),
+                        new DynamicLocation(null, null), (ConfigurationSection) null, player);
+            }
+        } catch (final QuestException e) {
+            log.warn("Could not resolve npcs for effectlib effect '" + effect.effectClass() + "': " + e.getMessage(), e);
         }
     }
 
     private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
-        for (final Variable<Location> variableLocation : effect.locations()) {
-            final Location location;
-            try {
-                location = variableLocation.getValue(profile);
+        try {
+            for (final Location location : effect.locations().getValue(profile)) {
                 manager.start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
-            } catch (final QuestException exception) {
-                log.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
             }
+        } catch (final QuestException e) {
+            log.warn("Could not resolve locations for effectlib effect '" + effect.effectClass() + "': " + e.getMessage(), e);
         }
     }
 

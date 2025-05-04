@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * All relevant data for displaying effects to player.
@@ -19,7 +18,7 @@ import java.util.Set;
  * @param settings               the whole configuration settings
  * @param conditionCheckInterval the interval when the conditions should be checked
  */
-public record EffectConfiguration(String effectClass, List<Variable<Location>> locations, Set<NpcID> npcs,
-                                  List<ConditionID> conditions, ConfigurationSection settings,
+public record EffectConfiguration(String effectClass, Variable<List<Location>> locations, Variable<List<NpcID>> npcs,
+                                  Variable<List<ConditionID>> conditions, ConfigurationSection settings,
                                   Integer conditionCheckInterval) {
 }
