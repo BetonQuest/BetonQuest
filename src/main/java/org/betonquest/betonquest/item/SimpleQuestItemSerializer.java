@@ -19,22 +19,32 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 /**
- * Converts {@link ItemStack}s into the simple BQ format.
+ * Converts {@link ItemStack}s into the simple BQ format, parsable by a {@link SimpleQuestItemFactory}.
  */
 public class SimpleQuestItemSerializer implements QuestItemSerializer {
     /**
      * Handlers for the {@link #serialize(ItemStack)} method.
      */
-    private static final List<ItemMetaHandler<? extends ItemMeta>> STATIC_HANDLERS = List.of(
-            new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
-            new BookHandler(), new PotionHandler(), new ColorHandler(), new HeadHandler(),
-            new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
-    );
+    private final List<ItemMetaHandler<? extends ItemMeta>> handlers;
 
     /**
-     * The empty default constructor.
+     * Constructs a new Simple Serializer with standard {@link ItemMetaHandler}s.
      */
     public SimpleQuestItemSerializer() {
+        this(List.of(
+                new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
+                new BookHandler(), new PotionHandler(), new ColorHandler(), new HeadHandler(),
+                new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
+        ));
+    }
+
+    /**
+     * Constructs a new Simple Serializer with {@link ItemMetaHandler}s.
+     *
+     * @param handlers the handler to use for serialization
+     */
+    public SimpleQuestItemSerializer(final List<ItemMetaHandler<? extends ItemMeta>> handlers) {
+        this.handlers = handlers;
     }
 
     @Override
@@ -44,7 +54,7 @@ public class SimpleQuestItemSerializer implements QuestItemSerializer {
         }
         final ItemMeta meta = item.getItemMeta();
         final StringBuilder builder = new StringBuilder();
-        for (final ItemMetaHandler<? extends ItemMeta> staticHandler : STATIC_HANDLERS) {
+        for (final ItemMetaHandler<? extends ItemMeta> staticHandler : handlers) {
             final String serialize = staticHandler.rawSerializeToString(meta);
             if (serialize != null) {
                 builder.append(' ').append(serialize);
