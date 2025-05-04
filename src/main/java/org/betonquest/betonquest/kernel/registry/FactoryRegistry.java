@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.kernel.registry;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.jetbrains.annotations.Nullable;
+import org.betonquest.betonquest.api.quest.QuestException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -52,14 +53,37 @@ public class FactoryRegistry<F> {
     }
 
     /**
-     * Fetches the factory to create the type registered with the given name.
+     * Fetches the first registered factory from the given names.
+     *
+     * @param names the names of the type
+     * @return factory to create the first found type
+     * @throws QuestException when there is none factory registered
+     */
+    public F getFactory(final List<String> names) throws QuestException {
+        for (final String name : names) {
+            final F factory = types.get(name);
+            if (factory != null) {
+                return factory;
+            }
+            log.debug(typeName + " '" + name + "' not found. Trying next one...");
+        }
+        throw new QuestException("No registered " + typeName + " found for: " + names);
+    }
+
+    /**
+     * Fetches the stored {@link F} with the given name.
      *
      * @param name the name of the type
      * @return a factory to create the type
+     * @throws QuestException when there is no stored type
      */
-    @Nullable
-    public F getFactory(final String name) {
-        return types.get(name);
+    public F getFactory(final String name) throws QuestException {
+        final F type = types.get(name);
+        if (type == null) {
+            throw new QuestException("'" + name + "' is not loaded for type '" + typeName
+                    + "'! Check if it is spelled correctly!");
+        }
+        return type;
     }
 
     /**

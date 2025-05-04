@@ -65,8 +65,7 @@ public class EventScheduling {
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new QuestException("Missing type instruction"));
-                    final ScheduleType<?, ?> scheduleType = Optional.ofNullable(scheduleTypes.getFactory(type))
-                            .orElseThrow(() -> new QuestException("The schedule type '" + type + "' is not defined"));
+                    final ScheduleType<?, ?> scheduleType = scheduleTypes.getFactory(type);
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
                     log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final QuestException e) {

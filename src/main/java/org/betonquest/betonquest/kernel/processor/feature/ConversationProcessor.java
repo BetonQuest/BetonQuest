@@ -153,15 +153,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             final String rawConvIOs = defaulting("conversationIO", "default_conversation_IO", "menu,tellraw");
             return new Variable<>(plugin.getVariableProcessor(), pack, rawConvIOs, value -> {
                 final List<String> ios = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
-
-                for (final String io : ios) {
-                    final ConversationIOFactory ioFactory = convIORegistry.getFactory(io);
-                    if (ioFactory != null) {
-                        return ioFactory;
-                    }
-                    log.debug(pack, "Conversation IO '" + io + "' not found. Trying next one...");
-                }
-                throw new QuestException("No registered conversation IO found for: " + ios);
+                return convIORegistry.getFactory(ios);
             });
         }
 
@@ -169,14 +161,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             final String rawInterceptor = defaulting("interceptor", "default_interceptor", "simple");
             return new Variable<>(plugin.getVariableProcessor(), pack, rawInterceptor, value -> {
                 final List<String> interceptors = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
-                for (final String interceptor : interceptors) {
-                    final InterceptorFactory factory = interceptorRegistry.getFactory(interceptor);
-                    if (factory != null) {
-                        return factory;
-                    }
-                    log.debug(pack, "Interceptor '" + interceptor + "' not found. Trying next one...");
-                }
-                throw new QuestException("No registered interceptor found for: " + interceptors);
+                return interceptorRegistry.getFactory(interceptors);
             });
         }
     }

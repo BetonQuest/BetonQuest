@@ -3,8 +3,8 @@ package org.betonquest.betonquest.kernel.registry.feature;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A registry for message parsers.
@@ -20,8 +20,7 @@ public class MessageParserRegistryImpl extends FactoryRegistry<MessageParser> im
     }
 
     @Override
-    @Nullable
-    public MessageParser get(final String name) {
+    public MessageParser get(final String name) throws QuestException {
         return getFactory(name);
     }
 }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.message;
 
-import org.jetbrains.annotations.Nullable;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * A registry for message parsers.
@@ -19,7 +19,7 @@ public interface MessageParserRegistry {
      *
      * @param name the name of the parser
      * @return the parser, or null if no parser with the given name is registered
+     * @throws QuestException when there is no Message Parser registered under that name
      */
-    @Nullable
-    MessageParser get(String name);
+    MessageParser get(String name) throws QuestException;
 }
