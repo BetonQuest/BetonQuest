@@ -1,12 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective;
 
 import io.lumine.mythic.lib.api.crafting.event.MythicCraftItemEvent;
-import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
 import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
-import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -106,10 +104,10 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         if (containsPlayer(onlineProfile)
                 && action != StationAction.INTERACT_WITH_RECIPE
                 && action != StationAction.CANCEL_QUEUE
-                && usedRecipe instanceof final CraftingRecipe craftingRecipe
+                && usedRecipe instanceof CraftingRecipe
                 && checkConditions(onlineProfile)) {
 
-            final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
+            final ItemStack craftedItem = event.getResult();
             if (isValidItem(craftedItem)) {
                 progressCraftObjective(onlineProfile, craftedItem.getAmount());
             }
