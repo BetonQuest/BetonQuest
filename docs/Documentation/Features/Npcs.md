@@ -82,7 +82,7 @@ You can start [Conversations](Conversations.md) with Npc interaction by assignin
 [`npc_conversations` section](Conversations.md#binding-conversations-to-npcs) of a quest package.
 
 ### Npc Hiding: `hide_npcs`
-[You can find information about it here](../Visual-Effects/NPC-Effects/NPC-Hiding.md)
+[You can find information about it here](../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
 @snippet:integrations:protocollib@
 
 ## Events
