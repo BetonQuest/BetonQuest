@@ -16,9 +16,7 @@ npc_holograms: #(7)!
     follow: true #(3)!
     conditions: has_some_quest,!finished_some_quest #(4)!
     check_interval: 20 #(5)!
-    npcs: #(6)!
-      - Mayor
-      - Guard
+    npcs: Mayor,Guard #(6)!
     max_range: 40 #(9)!
 ```
 

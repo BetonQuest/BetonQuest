@@ -17,6 +17,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.Moon
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MoveMenuItems;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.PickRandomPercentage;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.RemoveStringList;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -109,6 +110,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 5), new PickRandomPercentage());
         migrations.put(questVersion("3.0.0", 6), new MoveMenuItems());
         migrations.put(questVersion("3.0.0", 7), new MoonPhaseRename());
+        migrations.put(questVersion("3.0.0", 8), new RemoveStringList());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

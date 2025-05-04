@@ -31,6 +31,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-233 - `pickrandom` event](#300-dev-233-pickrandom-event) :gear:
 - [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :gear:
 - [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :gear:
+- [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -400,6 +401,9 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
         text: "&a "
         item: "filler"
     ```
+    
+    </div>
+
 ### 3.0.0-DEV-267 - MoonPhase rename :gear:
 
 ??? info "Automated Migration"
@@ -409,6 +413,8 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     The `mooncycle` condition was renamed to `moonphase` and instead of numbers, which stood for the mood phases, 
     the names of the moon phases are now used directly.
+    
+    <div class="grid" markdown>
     
     ```YAML title="Old Syntax"
     conditions:
@@ -420,6 +426,40 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     conditions:
       moonphase: moonphase NEW_MOON
       otherMoonphase: moonphase FULL_MOON world:world
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-274 - String List remove :gear:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    All string lists (lists that are new lines with dashes) at unusual places are now replaced with a comma separated list.
+    This includes:
+    
+    - `npcs` in the `npc_holograms` section
+    - `npcs`, `conditions` and `locations` in the `effectlib` section
+
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    effectlib:
+      effect1:
+        class: VortexEffect
+        npcs:
+          - NPC1
+          - NPC2
+          - NPC3
+    ```
+    
+    ```YAML title="New Syntax"
+    effectlib:
+      effect1:
+        class: VortexEffect
+        npcs: NPC1,NPC2,NPC3
     ```
     
     </div>
