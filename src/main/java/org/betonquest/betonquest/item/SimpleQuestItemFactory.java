@@ -18,8 +18,6 @@ import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.betonquest.betonquest.util.Utils;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,42 +28,11 @@ import java.util.Map;
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
-    /**
-     * Static Handlers for the {@link #itemToString(ItemStack)} method.
-     */
-    private static final List<ItemMetaHandler<? extends ItemMeta>> STATIC_HANDLERS = List.of(
-            new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
-            new BookHandler(), new PotionHandler(), new ColorHandler(), new HeadHandler(),
-            new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
-    );
 
     /**
      * Creates a new simple Quest Item Factory.
      */
     public SimpleQuestItemFactory() {
-    }
-
-    /**
-     * Converts ItemStack to string, which can be later parsed by QuestItem.
-     *
-     * @param item ItemStack to convert
-     * @return converted string
-     */
-    public static String itemToString(final ItemStack item) {
-        final ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return item.getType().toString();
-        }
-
-        final StringBuilder builder = new StringBuilder();
-        for (final ItemMetaHandler<? extends ItemMeta> staticHandler : STATIC_HANDLERS) {
-            final String serialize = staticHandler.rawSerializeToString(meta);
-            if (serialize != null) {
-                builder.append(' ').append(serialize);
-            }
-        }
-
-        return item.getType() + builder.toString();
     }
 
     /**

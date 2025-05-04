@@ -38,7 +38,6 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
-import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.logger.format.ChatFormatter;
@@ -756,6 +755,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_item");
             return;
         }
+        if (args.length < 3) {
+            log.debug("Cannot continue, item's serializer must be supplied");
+            sendMessage(sender, "specify_key");
+            return;
+        }
 
         final String itemID = args[1];
         final String pack;
@@ -776,12 +780,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final ItemStack item = player.getInventory().getItemInMainHand();
-        final String instructions = SimpleQuestItemFactory.itemToString(item);
+        final String instructions;
+        try {
+            instructions = instance.getFeatureRegistries().item().getSerializer(args[2]).serialize(item);
+        } catch (final QuestException e) {
+            sendMessage(sender, "error",
+                    new PluginMessage.Replacement("error", Component.text(e.getMessage())));
+            log.warn("Could not serialize item: " + e.getMessage(), e);
+            return;
+        }
         // save it in items.yml
-        log.debug("Saving item to configuration as " + args[1]);
+        log.debug("Saving item to configuration as " + args[1] + " (" + args[2] + ")");
         final String path = "items." + name;
         final boolean exists = configPack.getConfig().isSet(path);
-        configPack.getConfig().set(path, "simple " + instructions.trim());
+        configPack.getConfig().set(path, args[2] + " " + instructions);
         try {
             if (!exists) {
                 final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("items.yml");
@@ -804,6 +816,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private Optional<List<String>> completeItems(final String... args) {
         if (args.length == 2) {
             return completeId(args, AccessorType.ITEMS);
+        }
+        if (args.length == 3) {
+            return Optional.of(List.copyOf(instance.getFeatureRegistries().item().serializerKeySet()));
         }
         return Optional.of(new ArrayList<>());
     }

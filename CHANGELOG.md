@@ -61,6 +61,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Menu Items` name and lore are no longer italic by default, name can be overridden while keeping original lore
 - events, objectives and conditions do not replace underscores anymore, quoting syntax needs to be used now
 - `mooncycle` condition is now `moonphase` and uses a variable list of the phases instead of numbers
+- `item` command now requires the specification of serializer
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
