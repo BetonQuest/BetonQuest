@@ -33,6 +33,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Variable support for all lists in events objectives and conditions for things like events conditions items and co.
 - `Menu Item` are now in the `menu_items` section, allowing references from multiple Menus
 - `Menu` title allows defining different messages
+- `eval` event and condition to resolve a string and interpret it again as event/condition
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

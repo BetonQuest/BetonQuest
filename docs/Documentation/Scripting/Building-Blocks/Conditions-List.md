@@ -127,6 +127,19 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
     entities ZOMBIE:2 100;200;300;world 10 name:Deamon
     ```
 
+## Eval Condition: `eval`
+
+This condition allows you to resolve an expression containing variables, and the result will then be interpreted again as an condition.
+
+```YAML title="Example"
+events:
+  simpleEval: eval chestitem -288;64;357;World emerald:5
+  complexEval: eval point ranking 5 %objective.settings.equal% #(1)!
+```
+
+1. This could evaluate to `point ranking 5 equal` and will be true if the player has 5 points in the ranking category.
+   But the variable could also be empty, and it could be higher or equal to 5. This is not possible in a normal condition.
+
 ## Experience: `experience`
 
 This condition is met when the player has the specified amount of experience levels.
