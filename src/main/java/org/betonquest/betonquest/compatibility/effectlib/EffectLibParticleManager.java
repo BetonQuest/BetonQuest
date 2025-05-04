@@ -13,28 +13,23 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Displays a particle above NPCs with conversations.
+ * Displays a particle effect at the location of an NPC or a list of locations.
  */
 public class EffectLibParticleManager {
     /**
      * The config section for the location and npc settings.
      */
     private static final String EFFECTLIB_CONFIG_SECTION = "effectlib";
-
-    /**
-     * The config section for the npcs.
-     */
-    private static final String NPCS_CONFIG_SECTION = "npcs";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -62,6 +57,11 @@ public class EffectLibParticleManager {
     private final ProfileProvider profileProvider;
 
     /**
+     * The variable processor to create new variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Effect Manager starting and controlling particles.
      */
     private final EffectManager manager;
@@ -74,20 +74,24 @@ public class EffectLibParticleManager {
     /**
      * Loads the particle configuration and starts the effects.
      *
-     * @param log             the custom logger for this class
-     * @param loggerFactory   the logger factory to create new custom loggers
-     * @param questTypeAPI    the Quest Type API
-     * @param featureAPI      the Feature API
-     * @param profileProvider the profile provider instance
-     * @param manager         the effect manager starting and controlling particles
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the logger factory to create new custom loggers
+     * @param questTypeAPI      the Quest Type API
+     * @param featureAPI        the Feature API
+     * @param profileProvider   the profile provider instance
+     * @param variableProcessor the variable processor to create new variables
+     * @param manager           the effect manager starting and controlling particles
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                    final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI, final ProfileProvider profileProvider, final EffectManager manager) {
+                                    final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+                                    final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
+                                    final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.featureAPI = featureAPI;
         this.profileProvider = profileProvider;
+        this.variableProcessor = variableProcessor;
         this.manager = manager;
         loadParticleConfiguration();
     }
@@ -127,9 +131,9 @@ public class EffectLibParticleManager {
                     continue;
                 }
 
-                final Set<NpcID> npcs = loadNpcs(settings, pack);
-                final List<Variable<Location>> locations = loadLocations(pack, settings, key);
-                final List<ConditionID> conditions = loadConditions(pack, key, settings);
+                final Variable<List<Location>> locations = load(pack, settings, key, "locations", Argument.LOCATION);
+                final Variable<List<NpcID>> npcs = load(pack, settings, key, "npcs", value -> new NpcID(pack, value));
+                final Variable<List<ConditionID>> conditions = load(pack, settings, key, "conditions", value -> new ConditionID(pack, value));
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
                 final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
@@ -152,49 +156,16 @@ public class EffectLibParticleManager {
         loadParticleConfiguration();
     }
 
-    private List<Variable<Location>> loadLocations(final QuestPackage pack, final ConfigurationSection settings, final String key) {
-        final List<Variable<Location>> locations = new ArrayList<>();
-        if (settings.isList("locations")) {
-            for (final String rawLocation : settings.getStringList("locations")) {
-                if (rawLocation == null) {
-                    continue;
-                }
-                try {
-                    final String rawLoc = GlobalVariableResolver.resolve(pack, rawLocation);
-                    locations.add(new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, rawLoc, Argument.LOCATION));
-                } catch (final QuestException exception) {
-                    log.warn(pack, "Could not load npc effect '" + key + "' in package " + pack.getQuestPath() + ": "
-                            + "Location is invalid:" + exception.getMessage());
-                }
-            }
+    private <T> Variable<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
+                                       final String effectKey, final String entryName,
+                                       final Argument<T> argument) {
+        try {
+            final String raw = GlobalVariableResolver.resolve(pack, settings.getString(entryName, ""));
+            return new VariableList<>(variableProcessor, pack, raw, argument);
+        } catch (final QuestException exception) {
+            log.warn(pack, "Could not load effectlib effect '" + effectKey + "' in package " + pack.getQuestPath() + ": "
+                    + entryName + " are invalid: " + exception.getMessage());
         }
-        return locations;
-    }
-
-    private List<ConditionID> loadConditions(final QuestPackage pack, final String key, final ConfigurationSection settings) {
-        final List<ConditionID> conditions = new ArrayList<>();
-        for (final String rawConditionID : settings.getStringList("conditions")) {
-            try {
-                conditions.add(new ConditionID(pack, GlobalVariableResolver.resolve(pack, rawConditionID)));
-            } catch (final QuestException exception) {
-                log.warn(pack, "Error while loading npc_effects '" + key + "': " + exception.getMessage(), exception);
-            }
-        }
-        return conditions;
-    }
-
-    private Set<NpcID> loadNpcs(final ConfigurationSection settings, final QuestPackage pack) {
-        final Set<NpcID> npcs = new HashSet<>();
-        if (settings.isList(NPCS_CONFIG_SECTION)) {
-            final List<String> rawIds = settings.getStringList(NPCS_CONFIG_SECTION);
-            for (final String rawId : rawIds) {
-                try {
-                    npcs.add(new NpcID(pack, GlobalVariableResolver.resolve(pack, rawId)));
-                } catch (final QuestException exception) {
-                    log.warn(pack, "Error while loading npc id '" + rawId + "': " + exception.getMessage(), exception);
-                }
-            }
-        }
-        return npcs;
+        return new VariableList<>();
     }
 }

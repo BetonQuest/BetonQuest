@@ -153,13 +153,9 @@ effectlib: #(1)!
       yaw: 90 #(10)!
       interval: 30 #(8)!
       checkinterval: 80 #(11)!
-      npcs: #(5)!
-         - 1 
-      locations: #(6)!
-         - 171;72;-127;world
-      conditions: #(7)!
-         - '!con_tag_started'
-         - '!con_tag_finished'
+      npcs: NPC1,NPC2 #(5)!
+      locations: 171;72;-127;world #(6)!
+      conditions: '!con_tag_started,!con_tag_finished' #(7)!
 ```
 
 1. All effects need to be defined in this section.

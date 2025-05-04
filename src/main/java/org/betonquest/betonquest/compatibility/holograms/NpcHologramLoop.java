@@ -11,6 +11,8 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
@@ -49,6 +51,11 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     private final List<HologramWrapper> holograms;
 
     /**
+     * Variable processor to create new variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Feature API.
      */
     private final FeatureAPI featureAPI;
@@ -66,14 +73,17 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory   logger factory to use
-     * @param log             the logger that will be used for logging
-     * @param featureAPI      the Quest Type API
-     * @param npcTypeRegistry the registry to create identifier strings from Npcs
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the variable processor to use
+     * @param featureAPI        the Quest Type API
+     * @param npcTypeRegistry   the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final FeatureAPI featureAPI, final NpcTypeRegistry npcTypeRegistry) {
+                           final VariableProcessor variableProcessor, final FeatureAPI featureAPI,
+                           final NpcTypeRegistry npcTypeRegistry) {
         super(loggerFactory, log);
+        this.variableProcessor = variableProcessor;
         this.featureAPI = featureAPI;
         this.npcTypeRegistry = npcTypeRegistry;
         identifierToId = new HashMap<>();
@@ -126,16 +136,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final List<NpcID> npcIDs = new ArrayList<>();
-        for (final String stringID : section.getStringList("npcs")) {
-            final String subst = GlobalVariableResolver.resolve(pack, stringID);
-            try {
-                npcIDs.add(new NpcID(pack, subst));
-            } catch (final QuestException e) {
-                throw new QuestException("Could not parse NPC ID '" + subst + "': " + e.getMessage(), e);
-            }
-        }
-        return npcIDs;
+        final String npcs = GlobalVariableResolver.resolve(pack, section.getString("npcs", ""));
+        return new VariableList<>(variableProcessor, pack, npcs, value -> new NpcID(pack, value)).getValue(null);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
