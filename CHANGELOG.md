@@ -62,6 +62,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - events, objectives and conditions do not replace underscores anymore, quoting syntax needs to be used now
 - `mooncycle` condition is now `moonphase` and uses a variable list of the phases instead of numbers
 - `item` command now requires the specification of serializer
+- `npcs` in the `npc_holograms` and `npcs`, `conditions` and `locations` in the `effectlib` section now use comma separated lists
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
