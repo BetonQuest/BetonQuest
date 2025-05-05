@@ -19,9 +19,6 @@ BetonQuest provides Integrations for the following Npc plugins:
 - [FancyNpcs](../Scripting/Building-Blocks/Integration-List.md#fancynpcs)
 - [ZNPCsPlus](../Scripting/Building-Blocks/Integration-List.md#znpcsplus)
 
-!!! warning
-    Citizens needs [ProtocolLib plugin](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar) for all functions to work correctly!!!
-
 ## Referring an Npc
 
 Npcs are defined in the `npcs` section.
@@ -80,4 +77,3 @@ You can start [Conversations](Conversations.md) with Npc interaction by assignin
 ## Npc Hiding: `hide_npcs`
 You can hide NPCs for certain players using conditions.
 [You can find information about it here](../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
-
