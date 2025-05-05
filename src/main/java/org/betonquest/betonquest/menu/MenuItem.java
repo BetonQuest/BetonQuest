@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * An Item which Is displayed as option in a menu and has some events that are fired when item is clicked.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class MenuItem {
 
     /**
@@ -64,7 +65,7 @@ public class MenuItem {
     /**
      * If the menu should be closed when the item is clicked.
      */
-    private final boolean close;
+    private final Variable<Boolean> close;
 
     /**
      * Creates a new Menu Item.
@@ -80,7 +81,7 @@ public class MenuItem {
      */
     public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Item item, final MenuItemID itemId,
                     @Nullable final Message descriptions, final ClickEvents clickEvents,
-                    final Variable<List<ConditionID>> conditions, final boolean close) {
+                    final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.item = item;
@@ -121,7 +122,12 @@ public class MenuItem {
             log.debug(itemId.getPackage(), "Item " + itemId + ": Run event " + eventID);
             questTypeAPI.event(profile, eventID);
         }
-        return this.close;
+        try {
+            return this.close.getValue(profile);
+        } catch (final QuestException e) {
+            log.warn(itemId.getPackage(), "Error resolving close for '" + itemId + "': " + e.getMessage(), e);
+            return true;
+        }
     }
 
     /**

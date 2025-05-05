@@ -12,9 +12,11 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +29,7 @@ import java.util.regex.Pattern;
 /**
  * Hides and shows holograms to players, based on conditions.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public abstract class HologramLoop {
     /**
      * The regex for one color.
@@ -54,6 +57,11 @@ public abstract class HologramLoop {
     protected final BetonQuestLogger log;
 
     /**
+     * The {@link VariableProcessor} to use.
+     */
+    protected final VariableProcessor variableProcessor;
+
+    /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -61,12 +69,14 @@ public abstract class HologramLoop {
     /**
      * Creates a new instance of the loop.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
+    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
         this.loggerFactory = loggerFactory;
         this.log = log;
+        this.variableProcessor = variableProcessor;
     }
 
     /**
@@ -99,20 +109,18 @@ public abstract class HologramLoop {
         return holograms;
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
-        final int checkInterval;
-        try {
-            checkInterval = checkIntervalString != null ? Integer.parseInt(checkIntervalString) : defaultInterval;
-        } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse check interval", e);
+        final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
+        final Variable<Number> checkInterval = new Variable<>(variableProcessor, pack, checkIntervalString, Argument.NUMBER);
+        final Variable<Number> maxRange = new Variable<>(variableProcessor, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
+
+        final List<String> lines = new ArrayList<>();
+        for (final String line : section.getStringList("lines")) {
+            lines.add(new Variable<>(variableProcessor, pack, line, Argument.STRING).getValue(null));
         }
-        final Variable<Number> maxRange = new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, section.getString("max_range", "0"), NumberParser.NUMBER);
 
-        final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
-        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
-
-        final ConditionID[] conditions = parseConditions(pack, rawConditions);
+        final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""), value -> new ConditionID(pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
@@ -130,7 +138,7 @@ public abstract class HologramLoop {
         }
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 loggerFactory.create(HologramWrapper.class),
-                checkInterval,
+                checkInterval.getValue(null).intValue(),
                 holograms,
                 isStaticHologram(cleanedLines),
                 conditions,
@@ -150,22 +158,6 @@ public abstract class HologramLoop {
      * @throws QuestException if there is an error while parsing the holograms
      */
     protected abstract List<BetonHologram> getHologramsFor(QuestPackage pack, ConfigurationSection section) throws QuestException;
-
-    private ConditionID[] parseConditions(final QuestPackage pack, @Nullable final String rawConditions) throws QuestException {
-        ConditionID[] conditions = {};
-        if (rawConditions != null) {
-            final String[] parts = rawConditions.split(",");
-            conditions = new ConditionID[parts.length];
-            for (int i = 0; i < conditions.length; i++) {
-                try {
-                    conditions[i] = new ConditionID(pack, parts[i]);
-                } catch (final QuestException e) {
-                    throw new QuestException("Error while loading condition '" + parts[i] + "': " + e.getMessage(), e);
-                }
-            }
-        }
-        return conditions;
-    }
 
     private boolean isStaticHologram(final List<AbstractLine> lines) {
         return lines.stream().noneMatch(AbstractLine::isNotStaticText);

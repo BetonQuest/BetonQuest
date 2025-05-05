@@ -18,6 +18,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -247,11 +248,12 @@ public class Journal {
         final QuestTypeAPI questTypeAPI = betonQuest.getQuestTypeAPI();
         for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureAPI.getJournalMainPages().entrySet()) {
             final JournalMainPageEntry mainPageEntry = entry.getValue();
-            if (!mainPageEntry.conditions().isEmpty() && !questTypeAPI.conditions(profile, mainPageEntry.conditions())) {
-                continue;
-            }
             String text;
             try {
+                final List<ConditionID> conditions = mainPageEntry.conditions().getValue(profile);
+                if (!conditions.isEmpty() && !questTypeAPI.conditions(profile, conditions)) {
+                    continue;
+                }
                 text = LegacyComponentSerializer.legacySection().serialize(mainPageEntry.entry().asComponent(profile));
             } catch (final QuestException e) {
                 LOG.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "

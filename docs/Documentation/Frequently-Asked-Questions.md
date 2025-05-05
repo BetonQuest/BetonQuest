@@ -203,11 +203,11 @@ reached a certain value.
 
 === "events"
     ```YAML
-    # 1. increase the global variable 2. wait one tick for the change to process 3. attempt to run the completion events
+    # 1. increase the global points 2. wait one tick for the change to process 3. attempt to run the completion events
     gQuestProgress: folder gQuestIncrementCounter,gQuestCheckCompletion period:1 ticks
-    # Adds 1 to the global variable
+    # Adds 1 to the global points
     gQuestIncrementCounter: globalpoint gQuest 1
-    # Runs completion events only when the condition is met (= the global variable reached X points)
+    # Runs completion events only when the condition is met (= the global points reached X points)
     gQuestCheckCompletion: folder gQuestNotify,gQuestOnCompletion,gDeleteObjective conditions:gQuestComplete
     # Deletes the objective from everyone that fished a salmon after the goal was met
     qDeleteObjective: "objective delete gQuest"

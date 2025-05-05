@@ -32,6 +32,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
 - [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :gear:
 - [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :gear:
 - [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :gear:
+- [3.0.0-DEV-277 - Rename Constants](#300-dev-300-rename-constants) :gear:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
 
@@ -460,6 +461,35 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
       effect1:
         class: VortexEffect
         npcs: NPC1,NPC2,NPC3
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-277 - Rename Constants :gear:
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    "Global Variables" have been replaced by "Constants" to better reflect their purpose
+    and also to integrate them into the existing variable system.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    variables:
+      MyVariable: Hello
+      MyCustomVariable: $MyVariable$ World
+    events:
+      sendNotify: notify $MyCustomVariable$
+    ```
+    
+    ```YAML title="New Syntax"
+    constants:
+      MyVariable: Hello
+      MyCustomVariable: %constant.MyVariable% World
+    events:
+      sendNotify: notify %constant.MyCustomVariable%
     ```
     
     </div>

@@ -151,7 +151,7 @@ public final class HologramProvider implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class));
+            this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class), plugin.getVariableProcessor());
             this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
                     plugin.getVariableProcessor(), plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc());
         }, 1);
@@ -172,7 +172,8 @@ public final class HologramProvider implements Integrator {
             final BetonQuest plugin = BetonQuest.getInstance();
             final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
-                    locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class)), 1);
+                    locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
+                            plugin.getVariableProcessor()), 1);
             if (npcHologramLoop != null) {
                 npcHologramLoop.close();
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->

@@ -7,15 +7,14 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.List;
 
 /**
  * Does the load logic around {@link T} from a configuration section.
@@ -110,7 +109,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
             if (string == null) {
                 throw new QuestException(path + " is missing!");
             }
-            return GlobalVariableResolver.resolve(pack, string);
+            return new Variable<>(variableProcessor, pack, string, Argument.STRING).getValue(null);
         }
 
         /**
@@ -124,11 +123,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
          */
         protected <U extends ID> VariableList<U> getID(final String path, final PackageArgument<U> argument)
                 throws QuestException {
-            final String rawString = GlobalVariableResolver.resolve(pack, section.getString(path));
-            if (rawString == null) {
-                return new VariableList<>(List.of());
-            }
-            return new VariableList<>(variableProcessor, pack, rawString, value -> argument.apply(pack, value));
+            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(pack, value));
         }
     }
 }

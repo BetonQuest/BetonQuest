@@ -15,7 +15,6 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -160,8 +159,7 @@ public class EffectLibParticleManager {
                                        final String effectKey, final String entryName,
                                        final Argument<T> argument) {
         try {
-            final String raw = GlobalVariableResolver.resolve(pack, settings.getString(entryName, ""));
-            return new VariableList<>(variableProcessor, pack, raw, argument);
+            return new VariableList<>(variableProcessor, pack, settings.getString(entryName, ""), argument);
         } catch (final QuestException exception) {
             log.warn(pack, "Could not load effectlib effect '" + effectKey + "' in package " + pack.getQuestPath() + ": "
                     + entryName + " are invalid: " + exception.getMessage());

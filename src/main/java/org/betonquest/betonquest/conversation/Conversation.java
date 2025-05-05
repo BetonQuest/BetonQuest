@@ -19,7 +19,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
-import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.id.ConditionID;
@@ -27,7 +26,6 @@ import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -427,8 +425,12 @@ public class Conversation implements Listener {
             log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + FOR + onlineProfile + "'.");
             inOut.end();
             // fire final events
-            for (final EventID event : data.getPublicData().finalEvents()) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+            try {
+                for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
+                    BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                }
+            } catch (final QuestException e) {
+                log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
             }
             endSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
@@ -516,7 +518,12 @@ public class Conversation implements Listener {
      * @return true if the movement should be blocked, false otherwise
      */
     public boolean isMovementBlock() {
-        return data.getPublicData().blockMovement();
+        try {
+            return data.getPublicData().blockMovement().getValue(onlineProfile);
+        } catch (final QuestException e) {
+            log.warn(pack, "Error resolving if movement should be blocked: " + e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
@@ -741,11 +748,7 @@ public class Conversation implements Listener {
                 // would leave it active while the conversation is not
                 // started, causing it to display "null" all the time
                 try {
-                    final String name = data.getPublicData().convIO();
-                    final ConversationIOFactory factory = Utils.getNN(
-                            plugin.getFeatureRegistries().conversationIO().getFactory(name),
-                            "No '" + name + "' registered!");
-                    conv.inOut = factory.parse(conv, onlineProfile);
+                    conv.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(conv, onlineProfile);
                 } catch (final QuestException e) {
                     log.warn(pack, "Error when loading conversation IO: " + e.getMessage(), e);
                     return;
@@ -757,11 +760,7 @@ public class Conversation implements Listener {
                 // start interceptor if needed
                 if (messagesDelaying) {
                     try {
-                        final String name = data.getPublicData().interceptor();
-                        final InterceptorFactory factory = Utils.getNN(
-                                plugin.getFeatureRegistries().interceptor().getFactory(name),
-                                "No '" + name + "' registered!");
-                        conv.interceptor = factory.create(onlineProfile);
+                        conv.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
                     } catch (final QuestException e) {
                         log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;
