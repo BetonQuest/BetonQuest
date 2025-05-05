@@ -207,7 +207,20 @@ Adds a specified potion effect to player. First argument is potion type. You can
     ```YAML
     effect BLINDNESS 30 1 ambient icon
     ```
-    
+
+## Eval Event: `eval`
+
+This event allows you to resolve an expression containing variables, and the result will then be interpreted again as an event.
+
+```YAML title="Example"
+events:
+  simpleEval: eval notify "This is actually an eval event evaluating to a notify event."
+  complexEval: eval point ranking 5 action:add %objective.settings.notify% #(1)!
+```
+
+1. This could evaluate to `point ranking 5 action:add notify` and will add 5 points to the ranking category and notify the player.
+   But the variable could also be empty and add 5 points without notifying the player. This is not possible in a normal event.
+
 ## Give experience: `experience`
 
 This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
