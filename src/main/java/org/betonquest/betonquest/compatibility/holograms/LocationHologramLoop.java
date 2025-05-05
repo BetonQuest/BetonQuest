@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -21,11 +20,12 @@ public class LocationHologramLoop extends HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory logger factory to use
-     * @param log           the logger that will be used for logging
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param variableProcessor the {@link VariableProcessor} to use
      */
-    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log) {
-        super(loggerFactory, log);
+    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+        super(loggerFactory, log, variableProcessor);
         initialize("holograms");
     }
 
@@ -42,8 +42,7 @@ public class LocationHologramLoop extends HologramLoop {
         if (rawLocation == null) {
             throw new QuestException("Location is not specified");
         } else {
-            final String rawLoc = GlobalVariableResolver.resolve(pack, rawLocation);
-            return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, rawLoc, Argument.LOCATION).getValue(null);
+            return new Variable<>(variableProcessor, pack, rawLocation, Argument.LOCATION).getValue(null);
         }
     }
 }

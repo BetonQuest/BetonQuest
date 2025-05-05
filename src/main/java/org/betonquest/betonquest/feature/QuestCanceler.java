@@ -26,6 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -105,86 +106,51 @@ public class QuestCanceler {
     }
 
     /**
-     * Checks conditions of this canceler to decide if it should be shown to the
-     * player or not.
+     * Checks conditions of this canceler to decide if it is cancelable.
      *
      * @param profile the {@link Profile} of the player
      * @return true if all conditions are met, false otherwise
+     * @throws QuestException if the conditions cannot be checked
      */
-    public boolean show(final Profile profile) {
-        return data.conditions == null || BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, data.conditions);
+    public boolean isCancelable(final Profile profile) throws QuestException {
+        return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, data.conditions.getValue(profile));
     }
 
     /**
      * Cancels the quest for specified player.
-     * The conditions need to be checked with {@link #show(Profile)}.
+     * The conditions need to be checked with {@link #isCancelable(Profile)}.
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param bypass        whether the defined conditions should be ignored
      */
     public void cancel(final OnlineProfile onlineProfile, final boolean bypass) {
-        if (!bypass && !show(onlineProfile)) {
-            log.debug(pack, "Attempted to cancel the quest " + cancelerID + " for " + onlineProfile
-                    + ", but the conditions are note met");
+        try {
+            if (!bypass && !isCancelable(onlineProfile)) {
+                log.debug(pack, "Attempted to cancel the quest " + cancelerID + " for " + onlineProfile
+                        + ", but the conditions are note met");
+                return;
+            }
+        } catch (final QuestException e) {
+            log.warn(pack, "Could not check conditions for canceling the quest " + cancelerID + " for " + onlineProfile, e);
             return;
         }
         log.debug(pack, "Canceling the quest " + cancelerID + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
-        // remove tags, points, objectives and journals
-        removeSimple(data.tags, "tag", playerData::removeTag);
-        removeSimple(data.points, "point", playerData::removePointsCategory);
+        removeSimple(onlineProfile, data.tags, "tag", playerData::removeTag);
+        removeSimple(onlineProfile, data.points, "point", playerData::removePointsCategory);
         cancelObjectives(onlineProfile, playerData);
-        removeEntries(playerData);
-        // teleport player to the location
-        if (data.location != null) {
-            try {
-                log.debug(pack, "  Teleporting to new location");
-                onlineProfile.getPlayer().teleport(data.location.getValue(onlineProfile));
-            } catch (final QuestException e) {
-                log.warn(pack, "Could not teleport to " + data.location, e);
-            }
-        }
-        // fire all events
-        if (data.events != null) {
-            for (final EventID event : data.events) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
-            }
-        }
-        // done
+        removeEntries(onlineProfile, playerData);
+        executeEvents(onlineProfile);
+        teleport(onlineProfile);
         log.debug("Quest removed!");
         final Component questName = getName(onlineProfile);
         notificationSender.sendNotification(onlineProfile, new PluginMessage.Replacement("name", questName));
     }
 
-    private void cancelObjectives(final OnlineProfile onlineProfile, final PlayerData playerData) {
-        if (data.objectives != null) {
-            for (final ObjectiveID objectiveID : data.objectives) {
-                log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                try {
-                    final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
-                    objective.cancelObjectiveForPlayer(onlineProfile);
-                } catch (final QuestException e) {
-                    log.warn(pack, "Cannot cancel objective in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
-                }
-                playerData.removeRawObjective(objectiveID);
-            }
-        }
-    }
-
-    private void removeEntries(final PlayerData playerData) {
-        if (data.journal != null) {
-            final Journal journal = playerData.getJournal(pluginMessage);
-            for (final JournalEntryID entry : data.journal) {
-                log.debug(pack, "  Removing journal entry " + entry);
-                journal.removePointer(entry);
-            }
-            journal.update();
-        }
-    }
-
-    private void removeSimple(@Nullable final String[] toRemove, final String logIdentifier, final Consumer<String> action) {
-        if (toRemove != null) {
-            for (final String entry : toRemove) {
+    private void removeSimple(final Profile profile, final Variable<List<String>> toRemove, final String logIdentifier,
+                              final Consumer<String> action) {
+        try {
+            for (final String entry : toRemove.getValue(profile)) {
                 log.debug(pack, "  Removing " + logIdentifier + " " + entry);
                 if (entry.contains(".")) {
                     action.accept(entry);
@@ -192,6 +158,56 @@ public class QuestCanceler {
                     action.accept(pack.getQuestPath() + "." + entry);
                 }
             }
+        } catch (final QuestException e) {
+            log.warn(pack, "Cannot remove " + logIdentifier + " in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+        }
+    }
+
+    private void cancelObjectives(final Profile profile, final PlayerData playerData) {
+        try {
+            for (final ObjectiveID objectiveID : data.objectives.getValue(profile)) {
+                log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
+                final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
+                objective.cancelObjectiveForPlayer(profile);
+                playerData.removeRawObjective(objectiveID);
+            }
+        } catch (final QuestException e) {
+            log.warn(pack, "Cannot cancel objectives in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+        }
+    }
+
+    private void removeEntries(final Profile profile, final PlayerData playerData) {
+        try {
+            final Journal journal = playerData.getJournal(pluginMessage);
+            for (final JournalEntryID entry : data.journal.getValue(profile)) {
+                log.debug(pack, "  Removing journal entry " + entry);
+                journal.removePointer(entry);
+            }
+            journal.update();
+        } catch (final QuestException e) {
+            log.warn(pack, "Cannot remove journal entries in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+        }
+    }
+
+    private void executeEvents(final OnlineProfile onlineProfile) {
+        try {
+            for (final EventID event : data.events.getValue(onlineProfile)) {
+                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+            }
+        } catch (final QuestException e) {
+            log.warn(pack, "Cannot execute events in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+        }
+    }
+
+    private void teleport(final OnlineProfile onlineProfile) {
+        if (data.location == null) {
+            return;
+        }
+        try {
+            log.debug(pack, "  Teleporting to new location");
+            onlineProfile.getPlayer().teleport(data.location.getValue(onlineProfile));
+        } catch (final QuestException e) {
+            log.warn(pack, "Could not teleport to " + data.location, e);
         }
     }
 
@@ -236,15 +252,16 @@ public class QuestCanceler {
      * Relevant data for the cancel process.
      *
      * @param conditions the conditions which need to be fulfilled to use the canceler
-     * @param location   the location to teleport the player to
      * @param events     the events to fire when the canceler is used
      * @param objectives the objectives to stop
      * @param tags       the tags  to remove
      * @param points     the points to remove
      * @param journal    the journal entries to remove
+     * @param location   the location to teleport the player to
      */
-    public record CancelData(@Nullable ConditionID[] conditions, @Nullable Variable<Location> location,
-                             @Nullable EventID[] events, @Nullable ObjectiveID[] objectives, @Nullable String[] tags,
-                             @Nullable String[] points, @Nullable JournalEntryID[] journal) {
+    public record CancelData(Variable<List<ConditionID>> conditions, Variable<List<EventID>> events,
+                             Variable<List<ObjectiveID>> objectives, Variable<List<String>> tags,
+                             Variable<List<String>> points, Variable<List<JournalEntryID>> journal,
+                             @Nullable Variable<Location> location) {
     }
 }

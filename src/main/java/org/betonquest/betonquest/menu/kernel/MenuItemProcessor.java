@@ -18,7 +18,6 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.MenuItem;
 import org.betonquest.betonquest.menu.MenuItemID;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
@@ -59,8 +58,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item");
-        final String amountString = GlobalVariableResolver.resolve(pack, section.getString("amount"));
-        final Variable<Number> amount = amountString == null ? new Variable<>(1) : new Variable<>(variableProcessor, pack, amountString, Argument.NUMBER);
+        final Variable<Number> amount = new Variable<>(variableProcessor, pack, section.getString("amount", "1"), Argument.NUMBER);
         final Item item = new Item(featureAPI, new ItemID(pack, itemString), amount);
         final Message descriptions;
         if (section.contains(CONFIG_TEXT)) {
@@ -71,8 +69,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         }
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
         final Variable<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
-        final String rawClose = section.getString("close", config.getString("default_close", ""));
-        final boolean close = Argument.BOOLEAN.apply(GlobalVariableResolver.resolve(pack, rawClose));
+        final String rawClose = section.getString("close", config.getString("default_close", "false"));
+        final Variable<Boolean> close = new Variable<>(variableProcessor, pack, rawClose, Argument.BOOLEAN);
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
         return new MenuItem(log, questTypeAPI, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
     }
