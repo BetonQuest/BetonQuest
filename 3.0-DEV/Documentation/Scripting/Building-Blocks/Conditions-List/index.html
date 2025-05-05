@@ -1911,6 +1911,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-condition-eval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Condition: <code>eval</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#experience-experience">
     <span class="md-ellipsis">
 
@@ -5831,6 +5854,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-condition-eval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Condition: <code>eval</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#experience-experience">
     <span class="md-ellipsis">
 
@@ -6953,6 +6999,16 @@ with the name of the required entity. Replace all spaces with <code>_</code> her
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">entities ZOMBIE:2 100;200;300;world 10 name:Deamon</span>
 </code></pre></div>
 </div>
+<h2 id="eval-condition-eval">Eval Condition: <code>eval</code><a class="headerlink" href="#eval-condition-eval" title="Permanent link">🔗</a></h2>
+<p>This condition allows you to resolve an expression containing variables, and the result will then be interpreted again as an condition.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">simpleEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval chestitem -288;64;357;World emerald:5</span>
+<span class="w">  </span><span class="nt">complexEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval point ranking 5 %objective.settings.equal%</span><span class="w"> </span><span class="c1">#(1)!</span>
+</code></pre></div>
+<ol>
+<li>This could evaluate to <code>point ranking 5 equal</code> and will be true if the player has 5 points in the ranking category.
+   But the variable could also be empty, and it could be higher or equal to 5. This is not possible in a normal condition.</li>
+</ol>
 <h2 id="experience-experience">Experience: <code>experience</code><a class="headerlink" href="#experience-experience" title="Permanent link">🔗</a></h2>
 <p>This condition is met when the player has the specified amount of experience levels.
 You can also define decimal numbers, for example <code>experience 1.5</code> will be met when the player has 1.5 or more experience levels.

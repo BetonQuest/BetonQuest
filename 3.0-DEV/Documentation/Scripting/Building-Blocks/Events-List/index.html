@@ -2003,6 +2003,31 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-event-eval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Event: <code>eval</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#give-experience-experience">
     <span class="md-ellipsis">
 
@@ -6231,6 +6256,31 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#eval-event-eval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Eval Event: <code>eval</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#give-experience-experience">
     <span class="md-ellipsis">
 
@@ -7549,6 +7599,16 @@ Alternatively to <code>any</code>, you just can leave it blank.</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">effect BLINDNESS 30 1 ambient icon</span>
 </code></pre></div>
 </div>
+<h2 id="eval-event-eval">Eval Event: <code>eval</code><a class="headerlink" href="#eval-event-eval" title="Permanent link">🔗</a></h2>
+<p>This event allows you to resolve an expression containing variables, and the result will then be interpreted again as an event.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">simpleEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval notify &quot;This is actually an eval event evaluating to a notify event.&quot;</span>
+<span class="w">  </span><span class="nt">complexEval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eval point ranking 5 action:add %objective.settings.notify%</span><span class="w"> </span><span class="c1">#(1)!</span>
+</code></pre></div>
+<ol>
+<li>This could evaluate to <code>point ranking 5 action:add notify</code> and will add 5 points to the ranking category and notify the player.
+   But the variable could also be empty and add 5 points without notifying the player. This is not possible in a normal event.</li>
+</ol>
 <h2 id="give-experience-experience">Give experience: <code>experience</code><a class="headerlink" href="#give-experience-experience" title="Permanent link">🔗</a></h2>
 <p>This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
 You can use <code>action:addExperience</code>, <code>action:addLevel</code>, <code>action:setExperienceBar</code> and <code>action:setLevel</code> as modification types.</p>
