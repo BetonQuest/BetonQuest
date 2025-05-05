@@ -80,4 +80,4 @@ You can start [Conversations](Conversations.md) with Npc interaction by assignin
 ## Npc Hiding: `hide_npcs`
 You can hide NPCs for certain players using conditions.
 [You can find information about it here](../../Visual-Effects/NPC-Effects/NPC-Hiding.md)
-@snippet:integrations:protocollib@
+
