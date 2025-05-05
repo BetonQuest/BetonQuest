@@ -18,7 +18,10 @@ specify_key: '@[legacy]&cSpecify valid key'
 package_created: '@[legacy]&2Package created'
 package_exists: '@[legacy]&cPackage already exists'
 config_set_error: '@[legacy]&cCould not set specified path.'
-item_created: '@[legacy]&2Item saved to configuration as {item}.'
+item_created: >-
+  @[minimessage]<dark_green>Item saved to configuration as {item}.</dark_green>
+  <yellow><click:suggest_command:'/bq reload'><hover:show_text:'<yellow>A <green>reload</green> is required to apply the change.</yellow> 
+  <newline>Click to suggest the <yellow>/bq reload</yellow> command.'>Reload BetonQuest
 value_set: '@[legacy]&aValue {value} set for key {key}.'
 key_remove: '@[legacy]&aRemoved key {key}.'
 player_variables: '@[legacy]&aPlayer''s variables in &b{objective}&a:'
