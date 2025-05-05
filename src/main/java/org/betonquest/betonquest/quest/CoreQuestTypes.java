@@ -26,6 +26,7 @@ import org.betonquest.betonquest.quest.condition.conversation.ConversationCondit
 import org.betonquest.betonquest.quest.condition.conversation.InConversationConditionFactory;
 import org.betonquest.betonquest.quest.condition.effect.EffectConditionFactory;
 import org.betonquest.betonquest.quest.condition.entity.EntityConditionFactory;
+import org.betonquest.betonquest.quest.condition.eval.EvalConditionFactory;
 import org.betonquest.betonquest.quest.condition.experience.ExperienceConditionFactory;
 import org.betonquest.betonquest.quest.condition.facing.FacingConditionFactory;
 import org.betonquest.betonquest.quest.condition.flying.FlyingConditionFactory;
@@ -85,6 +86,7 @@ import org.betonquest.betonquest.quest.event.drop.DropEventFactory;
 import org.betonquest.betonquest.quest.event.effect.DeleteEffectEventFactory;
 import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
 import org.betonquest.betonquest.quest.event.entity.RemoveEntityEventFactory;
+import org.betonquest.betonquest.quest.event.eval.EvalEventFactory;
 import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
 import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.folder.FolderEventFactory;
@@ -303,6 +305,7 @@ public class CoreQuestTypes {
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data));
+        conditionTypes.registerCombined("eval", new EvalConditionFactory(conditionTypes));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
@@ -364,6 +367,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("door", new DoorEventFactory(data));
         eventTypes.registerCombined("drop", new DropEventFactory(profileProvider, data));
         eventTypes.register("effect", new EffectEventFactory(loggerFactory, data));
+        eventTypes.registerCombined("eval", new EvalEventFactory(eventTypes));
         eventTypes.register("experience", new ExperienceEventFactory(loggerFactory, data));
         eventTypes.registerCombined("explosion", new ExplosionEventFactory(data));
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeAPI));

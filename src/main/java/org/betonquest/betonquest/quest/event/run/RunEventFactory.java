@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -9,9 +8,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
+import org.betonquest.betonquest.quest.event.eval.EvalEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,7 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
-                    events.add(createEvent(builder.toString().trim(), instruction.getPackage()));
+                    events.add(EvalEvent.createEvent(BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
                     builder = new StringBuilder();
                 }
                 builder.append(part.substring(1)).append(' ');
@@ -53,22 +51,8 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
             }
         }
         if (!builder.isEmpty()) {
-            events.add(createEvent(builder.toString().trim(), instruction.getPackage()));
+            events.add(EvalEvent.createEvent(BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
         }
         return new NullableEventAdapter(new RunEvent(events));
-    }
-
-    /**
-     * Constructs an event with given instruction and returns it.
-     */
-    private EventAdapter createEvent(final String instruction, final QuestPackage questPackage) throws QuestException {
-        final String[] parts = HandlerUtil.getNNSplit(instruction, "Not enough arguments in internal event", " ");
-        final TypeFactory<EventAdapter> eventFactory = BetonQuest.getInstance().getQuestRegistries().event().getFactory(parts[0]);
-        if (eventFactory == null) {
-            throw new QuestException("Event type " + parts[0] + " is not registered, check if it's"
-                    + " spelled correctly in internal event");
-        }
-        final Instruction eventInstruction = new Instruction(questPackage, null, instruction);
-        return eventFactory.parseInstruction(eventInstruction);
     }
 }
