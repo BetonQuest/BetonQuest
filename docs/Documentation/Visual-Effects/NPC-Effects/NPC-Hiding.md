@@ -50,6 +50,6 @@ Where NpcID is declared when you register the NPC which is described [here](../.
         ```
 The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).
 
-### Force Visibility Update
+## Force Visibility Update
 You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
 if used with the [npc hider interval](../../Configuration/Configuration.md#npc-hider-interval) set to high values.
