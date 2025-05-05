@@ -1759,6 +1759,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#constant-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Constant Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -1906,29 +1929,6 @@
       
     </ul>
   </nav>
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#global-variables">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Global variables
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
   
 </li>
     
@@ -4936,6 +4936,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#constant-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Constant Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5083,29 +5106,6 @@
       
     </ul>
   </nav>
-  
-</li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#global-variables">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Global variables
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
   
 </li>
     
@@ -5509,6 +5509,13 @@ the <em>messages.yml</em> config.</p>
 <div class="highlight"><pre><span></span><code>%condition.myCondition%
 %condition.myCondition.papiMode%
 </code></pre></div>
+<h3 id="constant-variable">Constant Variable<a class="headerlink" href="#constant-variable" title="Permanent link">🔗</a></h3>
+<p>Constants are a bit different from other variables, as you can freely define the values of them.
+They are defined in the <em>constants</em> section.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">village_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
+<span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
+</code></pre></div>
 <h2 id="betonquest-data-types">BetonQuest Data Types<a class="headerlink" href="#betonquest-data-types" title="Permanent link">🔗</a></h2>
 <h3 id="point-variable">Point Variable<a class="headerlink" href="#point-variable" title="Permanent link">🔗</a></h3>
 <p>This variable displays the amount of points you have in some category or amount of points you need to have to reach a
@@ -5543,20 +5550,6 @@ in the messages.yml config.</p>
 <h3 id="custom-text-variable">Custom Text Variable<a class="headerlink" href="#custom-text-variable" title="Permanent link">🔗</a></h3>
 <p>It is possible to save text per player. This works by using the <a href="../Objectives-List/#variable-variable"><code>variable</code></a>
  objective and the <a href="../Events-List/#variable-variable"><code>variable</code></a> event. </p>
-<h2 id="global-variables">Global variables<a class="headerlink" href="#global-variables" title="Permanent link">🔗</a></h2>
-<p>You can insert a global variable in any instruction text. It looks like this: <code>$beton$</code> (and this one would be
-called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to
-them in the <code>variables:</code> section <strong>before</strong> all instructions are parsed. This is useful for example when installing a
-package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those
-locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the
-package used those variables properly in his code).</p>
-<p>Note that these variables are something entirely different from other variables. Global ones use <code>$</code> characters
-and conversation ones use <code>%</code> characters. The former is resolved before the instruction text is parsed while the
-latter is resolved when the quests are running, usually on a per-player basis.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">variables</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">village_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
-<span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
-</code></pre></div>
 <h2 id="other-variables">Other Variables<a class="headerlink" href="#other-variables" title="Permanent link">🔗</a></h2>
 <h3 id="eval-variable">Eval Variable<a class="headerlink" href="#eval-variable" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>

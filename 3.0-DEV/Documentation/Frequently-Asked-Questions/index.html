@@ -5790,11 +5790,11 @@ reached a certain value.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">events</label><label for="__tabbed_1_2">conditions</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. increase the global variable 2. wait one tick for the change to process 3. attempt to run the completion events</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. increase the global points 2. wait one tick for the change to process 3. attempt to run the completion events</span>
 <span class="nt">gQuestProgress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder gQuestIncrementCounter,gQuestCheckCompletion period:1 ticks</span>
-<span class="c1"># Adds 1 to the global variable</span>
+<span class="c1"># Adds 1 to the global points</span>
 <span class="nt">gQuestIncrementCounter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">globalpoint gQuest 1</span>
-<span class="c1"># Runs completion events only when the condition is met (= the global variable reached X points)</span>
+<span class="c1"># Runs completion events only when the condition is met (= the global points reached X points)</span>
 <span class="nt">gQuestCheckCompletion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder gQuestNotify,gQuestOnCompletion,gDeleteObjective conditions:gQuestComplete</span>
 <span class="c1"># Deletes the objective from everyone that fished a salmon after the goal was met</span>
 <span class="nt">qDeleteObjective</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">delete</span><span class="nv"> </span><span class="s">gQuest&quot;</span>

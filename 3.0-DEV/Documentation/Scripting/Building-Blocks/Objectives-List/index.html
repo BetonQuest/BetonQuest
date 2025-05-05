@@ -7131,7 +7131,7 @@ Available slot types: <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, 
 <p>This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.
 While this objective is active though, everything the player types in chat (and matches a special pattern) will become a variable.
 The pattern is <code>key: value</code>. So if the player types <code>MyFirstVariable: Hello!</code>, it will create a variable called <code>MyFirstVariable</code>, which will resolve as a <code>Hello!</code> string.
-These are not global variables, you can access them as objective properties. Let's say you defined this objective as <code>CustomVariable</code> in your <em>objectives.yml</em> file.
+You can access them as objective properties. Let's say you defined this objective as <code>CustomVariable</code> in your <em>objectives.yml</em> file.
 You can access the variable in any conversation, event or condition with <code>%objective.CustomVariable.MyFirstVariable%</code> - and in the case of this example, it will resolve to <code>Hello!</code>.
 The player can type something else and the variable will change its value. Variables are per-player, so the value of one player's <code>MyFirstVariable</code>
 will be different from other players' <code>MyFirstVariable</code> values, depending on what they typed in chat. There is no limit to the amount of variables that can be created and assigned to players.

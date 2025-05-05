@@ -3001,13 +3001,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-276-2025-05-05">
+  <a class="md-nav__link" href="#300-dev-277-2025-05-05">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-276] - 2025-05-05
+          [3.0.0-DEV-277] - 2025-05-05
         </span>
 
       
@@ -3017,7 +3017,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-276] - 2025-05-05" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-277] - 2025-05-05" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -9987,13 +9987,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-276-2025-05-05">
+  <a class="md-nav__link" href="#300-dev-277-2025-05-05">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-276] - 2025-05-05
+          [3.0.0-DEV-277] - 2025-05-05
         </span>
 
       
@@ -10003,7 +10003,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-276] - 2025-05-05" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-277] - 2025-05-05" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -15743,7 +15743,7 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="300-dev-276-2025-05-05">[3.0.0-DEV-276] - 2025-05-05<a class="headerlink" href="#300-dev-276-2025-05-05" title="Permanent link">🔗</a></h2>
+<h2 id="300-dev-277-2025-05-05">[3.0.0-DEV-277] - 2025-05-05<a class="headerlink" href="#300-dev-277-2025-05-05" title="Permanent link">🔗</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>quest compass</code> location now allows variables</li>
@@ -15778,6 +15778,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>Menu Item</code> are now in the <code>menu_items</code> section, allowing references from multiple Menus</li>
 <li><code>Menu</code> title allows defining different messages</li>
 <li><code>eval</code> event and condition to resolve a string and interpret it again as event/condition</li>
+<li><code>constants</code> to replace the <code>variables</code> section including new addressing of them with the new constant variable</li>
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">🔗</a></h3>
 <ul>
@@ -15814,6 +15815,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>mooncycle</code> condition is now <code>moonphase</code> and uses a variable list of the phases instead of numbers</li>
 <li><code>item</code> command now requires the specification of serializer</li>
 <li><code>npcs</code> in the <code>npc_holograms</code> and <code>npcs</code>, <code>conditions</code> and <code>locations</code> in the <code>effectlib</code> section now use comma separated lists</li>
+<li>in quest cancelers the events are now executed before the teleport </li>
 </ul>
 <h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
 <h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">🔗</a></h3>
@@ -15822,6 +15824,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>citizens_npcs_by_name</code> config option, which is now part of the id</li>
 <li>start and stop sound in the configuration for conversations were removed in favor of the notification system that now also has the two new build in categories <code>conversation_start</code> and <code>conversation_end</code></li>
 <li><code>menu reload</code> command which did not work</li>
+<li><code>variables</code> section in favor for <code>constants</code></li>
 </ul>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">🔗</a></h3>
 <ul>
