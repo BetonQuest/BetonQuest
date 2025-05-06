@@ -7,18 +7,23 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.JournalMainPageID;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Loads and stores Journal Main Pages.
  */
 public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID, JournalMainPageEntry> {
+    /**
+     * Variable to resolve conditions.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * Message creator to parse messages.
@@ -28,11 +33,14 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log            the custom logger for this class
-     * @param messageCreator the message creator to parse messages
+     * @param log               the custom logger for this class
+     * @param variableProcessor the variable resolver to resolve conditions
+     * @param messageCreator    the message creator to parse messages
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final ParsedSectionMessageCreator messageCreator) {
+    public JournalMainPageProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+                                    final ParsedSectionMessageCreator messageCreator) {
         super(log, "Journal Main Page", "journal_main_page");
+        this.variableProcessor = variableProcessor;
         this.messageCreator = messageCreator;
     }
 
@@ -42,21 +50,11 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         if (priority < 0) {
             throw new QuestException("Priority of journal main page needs to be at least 0!");
         }
-        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
-        final List<ConditionID> conditions;
-        if (rawConditions == null || rawConditions.isEmpty()) {
-            conditions = List.of();
-        } else {
-            final String[] split = rawConditions.split(",");
-            conditions = new ArrayList<>(split.length);
-            for (final String conditionString : split) {
-                if (!conditionString.isEmpty()) {
-                    conditions.add(new ConditionID(pack, conditionString));
-                }
-            }
-        }
+        final Variable<List<ConditionID>> conditions = new VariableList<>(variableProcessor, pack,
+                section.getString("conditions", ""),
+                value -> new ConditionID(pack, value));
         final Message text = messageCreator.parseFromSection(pack, section, "text");
-        return new JournalMainPageEntry(priority, List.copyOf(conditions), text);
+        return new JournalMainPageEntry(priority, conditions, text);
     }
 
     @Override

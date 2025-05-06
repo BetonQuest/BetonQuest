@@ -7,23 +7,27 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.ConversationData;
+import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
+import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Stores Conversation Data and validates it.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> {
     /**
      * Factory to create class specific logger.
@@ -78,14 +82,14 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final Message quester = messageCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final boolean blockMovement = Boolean.parseBoolean(helper.opt("stop"));
-        final String convIO = helper.parseConvIO();
-        final String interceptor = helper.parseInterceptor();
-        final List<EventID> finalEvents = helper.parseFinalEvents();
+        final Variable<Boolean> blockMovement = new Variable<>(plugin.getVariableProcessor(), pack, section.getString("stop", "false"), Argument.BOOLEAN);
+        final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
+        final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
+        final Variable<List<EventID>> finalEvents = new VariableList<>(plugin.getVariableProcessor(), pack, section.getString("final_events", ""), value -> new EventID(pack, value));
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor);
 
-        return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestTypeAPI(), plugin.getFeatureAPI(),
-                messageCreator, pack, section, publicData);
+        return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getVariableProcessor(),
+                plugin.getQuestTypeAPI(), plugin.getFeatureAPI(), messageCreator, pack, section, publicData);
     }
 
     @Override
@@ -135,7 +139,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         @Nullable
         private String opt(final String path) {
-            return GlobalVariableResolver.resolve(pack, section.getString(path));
+            return section.getString(path);
         }
 
         private String defaulting(final String path, final String configPath, final String defaultConfig) {
@@ -145,45 +149,35 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             return plugin.getPluginConfig().getString(configPath, defaultConfig);
         }
 
-        private String parseConvIO() throws QuestException {
+        private Variable<ConversationIOFactory> parseConvIO() throws QuestException {
             final String rawConvIOs = defaulting("conversationIO", "default_conversation_IO", "menu,tellraw");
-            for (final String rawConvIOPart : rawConvIOs.split(",")) {
-                final String rawConvIO = rawConvIOPart.trim();
-                if (convIORegistry.getFactory(rawConvIO) != null) {
-                    return rawConvIO;
-                } else {
-                    log.debug(pack, "Conversation IO '" + rawConvIO + "' not found. Trying next one...");
+            return new Variable<>(plugin.getVariableProcessor(), pack, rawConvIOs, value -> {
+                final List<String> ios = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
+
+                for (final String io : ios) {
+                    final ConversationIOFactory ioFactory = convIORegistry.getFactory(io);
+                    if (ioFactory != null) {
+                        return ioFactory;
+                    }
+                    log.debug(pack, "Conversation IO '" + io + "' not found. Trying next one...");
                 }
-            }
-            throw new QuestException("No registered conversation IO found: " + rawConvIOs);
+                throw new QuestException("No registered conversation IO found for: " + ios);
+            });
         }
 
-        private String parseInterceptor() throws QuestException {
+        private Variable<InterceptorFactory> parseInterceptor() throws QuestException {
             final String rawInterceptor = defaulting("interceptor", "default_interceptor", "simple");
-            for (final String s : rawInterceptor.split(",")) {
-                final String trimmed = s.trim();
-                if (interceptorRegistry.getFactory(trimmed) != null) {
-                    return trimmed;
+            return new Variable<>(plugin.getVariableProcessor(), pack, rawInterceptor, value -> {
+                final List<String> interceptors = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
+                for (final String interceptor : interceptors) {
+                    final InterceptorFactory factory = interceptorRegistry.getFactory(interceptor);
+                    if (factory != null) {
+                        return factory;
+                    }
+                    log.debug(pack, "Interceptor '" + interceptor + "' not found. Trying next one...");
                 }
-            }
-            throw new QuestException("No registered interceptor found: " + rawInterceptor);
-        }
-
-        private List<EventID> parseFinalEvents() throws QuestException {
-            final String rawFinalEvents = opt("final_events");
-            if (rawFinalEvents == null || rawFinalEvents.isEmpty()) {
-                return new ArrayList<>(0);
-            }
-            final String[] array = rawFinalEvents.split(",");
-            final List<EventID> finalEvents = new ArrayList<>(array.length);
-            for (final String identifier : array) {
-                try {
-                    finalEvents.add(new EventID(pack, identifier));
-                } catch (final QuestException e) {
-                    throw new QuestException("Error while loading final events: " + e.getMessage(), e);
-                }
-            }
-            return finalEvents;
+                throw new QuestException("No registered interceptor found for: " + interceptors);
+            });
         }
     }
 }

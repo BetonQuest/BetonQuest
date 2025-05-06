@@ -164,6 +164,7 @@ import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
+import org.betonquest.betonquest.quest.variable.constant.ConstantVariableFactory;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemDurabilityVariableFactory;
 import org.betonquest.betonquest.quest.variable.item.ItemVariableFactory;
@@ -454,6 +455,7 @@ public class CoreQuestTypes {
 
     private void registerVariables(final VariableTypeRegistry variables) {
         variables.register("condition", new ConditionVariableFactory(questTypeAPI, pluginMessage));
+        variables.registerCombined("constant", new ConstantVariableFactory());
         variables.registerCombined("eval", new EvalVariableFactory());
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));

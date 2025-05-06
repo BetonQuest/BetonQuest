@@ -34,6 +34,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Menu Item` are now in the `menu_items` section, allowing references from multiple Menus
 - `Menu` title allows defining different messages
 - `eval` event and condition to resolve a string and interpret it again as event/condition
+- `constants` to replace the `variables` section including new addressing of them with the new constant variable
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
@@ -64,12 +65,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mooncycle` condition is now `moonphase` and uses a variable list of the phases instead of numbers
 - `item` command now requires the specification of serializer
 - `npcs` in the `npc_holograms` and `npcs`, `conditions` and `locations` in the `effectlib` section now use comma separated lists
+- in quest cancelers the events are now executed before the teleport 
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
 - `citizens_npcs_by_name` config option, which is now part of the id
 - start and stop sound in the configuration for conversations were removed in favor of the notification system that now also has the two new build in categories `conversation_start` and `conversation_end`
 - `menu reload` command which did not work
+- `variables` section in favor for `constants`
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1
