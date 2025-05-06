@@ -110,7 +110,7 @@ it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill
 in addition to the normal Npc functionality.
 
 !!! info
-    In addition Citizens integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
+    In addition Citizens integration supports all [BetonQuest Npc](../../Features/NPCS.md) features.
 
 ### Events
 
@@ -261,7 +261,7 @@ If you have this plugin you can use its Npcs.
 It is more lightweight than [Citizens](#citizens) but lack some of its features.
 
 !!! info
-    FancyNpcs integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
+    FancyNpcs integration supports all [BetonQuest Npc](../../Features/NPCS.md) features.
 
 
 ## FakeBlock[](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
@@ -1190,7 +1190,7 @@ If you have this plugin you can use its Npcs.
 It is a lightweight packet based plugin.
 
 !!! info
-    ZNPCsPlus integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
+    ZNPCsPlus integration supports all [BetonQuest Npc](../../Features/NPCS.md) features.
 
 
 
