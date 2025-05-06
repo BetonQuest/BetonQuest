@@ -50,8 +50,8 @@ public class MMOItemsItemConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
-        final String itemID = instruction.next();
+        final Variable<Type> itemType = instruction.get(MMOItemsUtils::getMMOItemType);
+        final Variable<String> itemID = instruction.get(Argument.STRING);
         final Variable<Number> amount = instruction.hasNext() ? instruction.get(Argument.NUMBER) : new Variable<>(1);
 
         final BetonQuestLogger log = loggerFactory.create(MMOItemsItemCondition.class);
