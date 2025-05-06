@@ -18,23 +18,32 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 
 ## Changes
 
-Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
+!!! Note
+    - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
+      You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
+      events or math variables) may not migrate correctly if they deviate from the common structure.
+    - :white_sun_cloud: **Automated migration with known limitations** – These steps are generally migrated automatically,
+      especially for straightforward cases. However, there are known edge cases that cannot be detected or handled 
+      automatically. You should review these steps and be prepared to make manual adjustments where needed.
+    - :thunder_cloud_rain: **Manual migration required** – These steps are not migrated at all.
+      Either the structure is too complex to detect automatically, or the new format requires additional information.
+      You will need to fully rewrite or convert these steps yourself.
 
-- [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :exclamation:
-- [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :exclamation:
-- [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :gear:
-- [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :exclamation:
-- [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :exclamation:
-- [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :exclamation:
-- [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :gear:
-- [3.0.0-DEV-232 - Singular to Plural](#300-dev-232-singular-to-plural) :gear:
-- [3.0.0-DEV-233 - `pickrandom` event](#300-dev-233-pickrandom-event) :gear:
-- [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :gear:
-- [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :gear:
-- [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :gear:
-- [3.0.0-DEV-277 - Rename Constants](#300-dev-300-rename-constants) :gear:
+- [3.0.0-DEV-58 - Delete messages.yml](#300-dev-58-delete-messagesyml) :thunder_cloud_rain:
+- [3.0.0-DEV-65 - Delete menuConfig.yml](#300-dev-65-delete-menuconfigyml) :thunder_cloud_rain:
+- [3.0.0-DEV-71 - Renamed Translation Keys](#300-dev-71-renamed-translation-keys) :sun:
+- [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) :thunder_cloud_rain:
+- [3.0.0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid) :thunder_cloud_rain:
+- [3.0.0-DEV-142 - Conversation Sounds](#300-dev-142-conversation-sounds) :thunder_cloud_rain:
+- [3.0.0-DEV-217 - Item Type](#300-dev-217-item-type) :sun:
+- [3.0.0-DEV-232 - Singular to Plural](#300-dev-232-singular-to-plural) :sun:
+- [3.0.0-DEV-233 - `pickrandom` event](#300-dev-233-pickrandom-event) :sun:
+- [3.0.0-DEV-244 - Menu Item move](#300-dev-244-menu-item-move) :sun:
+- [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :sun:
+- [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :sun:
+- [3.0.0-DEV-277 - Rename Constants](#300-dev-277-rename-constants) :white_sun_cloud:
 
-### 3.0.0-DEV-58 - Delete messages.yml :exclamation:
+### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
 The `messages.yml` file has been removed.
 All messages are now stored in the `lang` folder, you can also customize them there and add new languages.
@@ -42,14 +51,14 @@ If you still have the old messages.yml file, you get a warning in the console.
 If you don't have any custom messages,
 you can delete the file safely otherwise you should move the messages to the new location.
 
-### 3.0.0-DEV-65 - Delete menuConfig.yml :exclamation:
+### 3.0.0-DEV-65 - Delete menuConfig.yml :thunder_cloud_rain:
 
 The `menuConfig.yml` file has been removed.
 If you had the option `default_close` configured, you can now find this option in the `config.yml` file.
 All translations in the config where also moved to the `lang` folder,
 so also here you need to move your custom translations.
 
-### 3.0.0-DEV-71 - Renamed Translation Keys :gear:
+### 3.0.0-DEV-71 - Renamed Translation Keys :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -121,7 +130,7 @@ so also here you need to move your custom translations.
     - `journal_main_page.*.text`
     - `menus.*.items.*.text`
 
-### 3.0.0-DEV-114 - Npc Rework :exclamation:
+### 3.0.0-DEV-114 - Npc Rework :thunder_cloud_rain:
 
 To support more Npc plugins than just Citizens the system got a rework.
 
@@ -193,7 +202,7 @@ Citizens integration.
 5. The Npcs that start this conversation.
 </div>
 
-### 3.0.0-DEV-135 - Citizens Adaption to NpcID :exclamation:
+### 3.0.0-DEV-135 - Citizens Adaption to NpcID :thunder_cloud_rain:
 
 To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
 Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`.
@@ -229,7 +238,7 @@ Citizens integration.
 2. The `0` is here the BetonQuest NpcID but stays the same.
 </div>
 
-### 3.0.0-DEV-142 - Conversation Sounds :exclamation:
+### 3.0.0-DEV-142 - Conversation Sounds :thunder_cloud_rain:
 
 The start and stop sound in the configuration for conversations were removed in favor of the notification system,
 that now also has the two new build in categories `conversation_start` and `conversation_end`.
@@ -267,7 +276,7 @@ notifications:
 
 and if you only want sounds and no message, you use `sound` instead of `suppress` as io.
 
-### 3.0.0-DEV-217 - Item Type :gear:
+### 3.0.0-DEV-217 - Item Type :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -290,7 +299,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
 
     </div>
 
-### 3.0.0-DEV-232 - Singular to Plural :gear:
+### 3.0.0-DEV-232 - Singular to Plural :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -322,7 +331,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
 
     </div>
 
-### 3.0.0-DEV-233 - `pickrandom` event :gear:
+### 3.0.0-DEV-233 - `pickrandom` event :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -346,7 +355,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
 
     </div>
 
-### 3.0.0-DEV-244 - Menu Item move :gear:
+### 3.0.0-DEV-244 - Menu Item move :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -405,7 +414,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     </div>
 
-### 3.0.0-DEV-267 - MoonPhase rename :gear:
+### 3.0.0-DEV-267 - MoonPhase rename :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -431,7 +440,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     </div>
 
-### 3.0.0-DEV-274 - String List remove :gear:
+### 3.0.0-DEV-274 - String List remove :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -465,7 +474,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     </div>
 
-### 3.0.0-DEV-277 - Rename Constants :gear:
+### 3.0.0-DEV-277 - Rename Constants :white_sun_cloud:
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
