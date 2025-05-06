@@ -4978,7 +4978,7 @@ Basic syntax is very simple:</p>
 <p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> is a type of the item. It doesn't have to be all in uppercase.
 Other arguments specify data like name of the item, lore, enchantments or potion effects.
 There are two categories of these arguments: the ones you can apply to every item and type specific arguments.
-Examples would be name (for every item type) and text (only in books).</p>
+Examples would be <code>name</code> (for every item type) and <code>text</code> (only in books).</p>
 <p>Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction.
 The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that.
 Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether.
@@ -5118,7 +5118,7 @@ Now if you want to make sure the potion doesn't contain a specific effect, prefi
 <ul>
 <li><code>owner</code> - this is the name of the head owner. It will <strong>not</strong> use color codes nor replace underscores with spaces.
     If you want to check for heads without any owner, use <code>none</code> keyword.</li>
-<li>Use <code>%player%</code> to get the current players head.</li>
+<li>Use <code>owner:</code> to get the current players head. You need to quote the whole instruction when using that.</li>
 </ul>
 <div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">owner:Co0sh</span>
 <span class="l l-Scalar l-Scalar-Plain">owner:none</span>

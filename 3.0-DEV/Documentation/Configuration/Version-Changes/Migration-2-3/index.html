@@ -3287,6 +3287,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-284-change-head-owner">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-284 - Change Head Owner <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -4980,6 +5003,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-284-change-head-owner">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-284 - Change Head Owner <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5136,6 +5182,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-267-moonphase-rename">3.0.0-DEV-267 - MoonPhases rename</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-274-string-list-remove">3.0.0-DEV-274 - String List remove</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-277-rename-constants">3.0.0-DEV-277 - Rename Constants</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
+<li><a href="#300-dev-284-change-head-owner">3.0.0-DEV-284 - Rename Constants</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -5539,6 +5586,21 @@ and also to integrate them into the existing variable system.</p>
 <span class="w">  </span><span class="nt">MyCustomVariable</span><span class="p">:</span><span class="w"> </span><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">constant.MyVariable% World</span>
 <span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sendNotify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify %constant.MyCustomVariable%</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="300-dev-284-change-head-owner">3.0.0-DEV-284 - Change Head Owner <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#300-dev-284-change-head-owner" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>To allow pre-parsing of <code>constant</code> variables in <code>simple</code> Quest Items the <code>owner:%player%</code> has been replaced with <code>owner:</code>.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">head</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple PLAYER_HEAD owner:%player%</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">head</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;simple</span><span class="nv"> </span><span class="s">PLAYER_HEAD</span><span class="nv"> </span><span class="s">owner:&#39;</span>
 </code></pre></div>
 </div>
 </details>
