@@ -73,8 +73,8 @@ public class VariablesRename implements QuestMigration {
 
     private String replaceGlobalVariables(final String input) {
         final String notEscapedDollar = "(?<!\\\\)\\$";
-        final String regexWithPackage = notEscapedDollar + "(.*)\\.(.*)" + notEscapedDollar;
-        final String regexWithoutPackage = notEscapedDollar + "(.*)" + notEscapedDollar;
+        final String regexWithPackage = notEscapedDollar + "(.*?)\\.(.*?)" + notEscapedDollar;
+        final String regexWithoutPackage = notEscapedDollar + "(.*?)" + notEscapedDollar;
         final String replacementWithPackage = "%$1.constant.$2%";
         final String replacementWithoutPackage = "%constant.$1%";
         final String result = input.replaceAll(regexWithPackage, replacementWithPackage).replaceAll(regexWithoutPackage, replacementWithoutPackage);
