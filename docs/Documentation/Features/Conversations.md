@@ -79,7 +79,7 @@ understand in the future. Don't worry though, if you make some mistake in config
 
 ## Binding Conversations to NPCs
 
-Conversations can be assigned to [Npcs](Npcs.md). This is done in the `npc_conversations` section:
+Conversations can be assigned to [NPCs](NPCs.md). This is done in the `npc_conversations` section:
 
 ```YAML title="Example"
 npc_conversations:
@@ -88,11 +88,11 @@ npc_conversations:
 
 1. The key is the NpcID, the value a ConversationID.
 
-A Npc will only react to right clicks by default. 
+A NPC will only react to right clicks by default. 
 This can be changed by setting `npcs.accept_left_click` in the config.yml to `true`.
 
 You can assign the same conversation to multiple NPCs.
-It is not possible to assign multiple conversations to one npc. For this
+It is not possible to assign multiple conversations to one NPC. For this
 purpose, have a look at 
 [cross-conversation-pointers](#cross-conversation-pointers) though.
 
@@ -216,7 +216,7 @@ In both cases, you can choose from the following conversation styles:
 ## Cross-Conversation Pointers
 
 If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, 
-more focused files, you can point to both npc and player options in other conversations. Use the 
+more focused files, you can point to both NPC and player options in other conversations. Use the 
 [cross-package syntax](../Scripting/Packages-&-Templates.md#working-across-packages) to do so.
 
 There is one special case when you want to refer to the starting options of another conversation. In this case you do not specify

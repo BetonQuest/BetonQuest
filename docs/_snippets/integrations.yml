@@ -22,4 +22,4 @@ npcs: |-
 
 protocollib: |-
   !!! info "Required Dependency: ProtocolLib"
-      This feature can be activated by installing the [ProtocolLib plugin](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar).
+      This feature can be activated by installing the [ProtocolLib plugin](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar).
