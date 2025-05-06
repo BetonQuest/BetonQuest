@@ -46,11 +46,11 @@ Npcs are defined in the `npcs` section.
           guard: FancyNpcs Guard byName
         ```
         
-        You simply use the FancyNpcs Npc id as argument.
-        To acquire the Npcs ID use the `/npc nearby` command and copy the `UUID` from the Npc info.
+        You simply use the FancyNpcs NPC id as argument.
+        To acquire the NPCs ID use the `/npc nearby` command and copy the `UUID` from the NPC info.
         
-        You can also get a Npc by its name with the `byName` argument.
-        That is useful when you have many Npcs with the same name which should all start the same conversation
+        You can also get a NPC by its name with the `byName` argument.
+        That is useful when you have many NPCs with the same name which should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "ZNPCsPlus"
