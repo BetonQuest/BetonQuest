@@ -38,7 +38,7 @@ It allows you to assign conditions to specific BQ NpcIDs like so:
       innkeeper: hidden
     ```
     
-Where NpcID is declared when you register the NPC which is described [here](../../Features/NPCS.md#provided-integrations).
+Where NpcID is declared when you register the NPC which is described [here](../../Features/NPCs.md#provided-integrations).
 
 The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).
 
