@@ -19,26 +19,32 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
 
 ## Changes
 
-Steps marked with :gear: are migrated automatically. Steps marked with :exclamation: must be done manually.
+!!! Note
+    - :sun: **Fully automated migration** – These steps are reliably migrated without issues in most cases.
+      You usually don’t need to take any action. However, certain rarely used or non-standard formats (e.g., run 
+      events or math variables) may not migrate correctly if they deviate from the common structure.
+    - :thunder_cloud_rain: **Manual migration required** – These steps are not migrated at all.
+      Either the structure is too complex to detect automatically, or the new format requires additional information.
+      You will need to fully rewrite or convert these steps yourself.
 
-- [2.0.0-DEV-87 - Rename to `ride`](#200-dev-87-rename-to-ride) :gear:
-- [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98-rpgmenu-merge) :gear:
-- [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework) :gear:
-- [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework) :gear:
-- [2.0.0-DEV-450 - Package section](#200-dev-450-package-section) :gear:
-- [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes) :exclamation:
-- [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective) :exclamation:
-- [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-and-non-npc-holograms) :exclamation:
-- [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles) :gear:
-- [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib) :gear:
-- [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :gear:
-- [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :gear:
-- [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :gear:
-- [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :exclamation:
-- [2.1.1-DEV-2 - Rename AuraSkills](#211-dev-2-rename-auraskills) :gear:
-- [2.2.0-DEV-89 - Rename Fabled](#220-dev-90-rename-fabled) :gear:
+- [2.0.0-DEV-87 - Rename to `ride`](#200-dev-87-rename-to-ride) :sun:
+- [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98-rpgmenu-merge) :sun:
+- [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework) :sun:
+- [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework) :sun:
+- [2.0.0-DEV-450 - Package section](#200-dev-450-package-section) :sun:
+- [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes) :thunder_cloud_rain:
+- [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective) :thunder_cloud_rain:
+- [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-and-non-npc-holograms) :thunder_cloud_rain:
+- [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles) :sun:
+- [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib) :sun:
+- [2.0.0-DEV-674 - MMO Updates](#200-dev-674-mmo-updates) :sun:
+- [2.0.0-DEV-749 - Static Event Rework](#200-dev-749-static-event-rework) :sun:
+- [2.0.0-DEV-769 - RemoveEntity-Event](#200-dev-769-removeentity-event) :sun:
+- [2.1.0-DEV-1 - Instruction Quoting](#210-dev-1-instruction-quoting) :thunder_cloud_rain:
+- [2.1.1-DEV-2 - Rename AuraSkills](#211-dev-2-rename-auraskills) :sun:
+- [2.2.0-DEV-89 - Rename Fabled](#220-dev-90-rename-fabled) :sun:
 
-### 2.0.0-DEV-87 - Rename to `ride` :gear:
+### 2.0.0-DEV-87 - Rename to `ride` :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -72,7 +78,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     
     </div>
 
-### 2.0.0-DEV-98 - RPGMenu Merge :gear:
+### 2.0.0-DEV-98 - RPGMenu Merge :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -82,7 +88,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
     All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to
     `menuConfig.yml`.
 
-### 2.0.0-DEV-238 - Package Structure Rework :gear:
+### 2.0.0-DEV-238 - Package Structure Rework :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -181,7 +187,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
         
         </div>
 
-### 2.0.0-DEV-337 - Event Scheduling Rework :gear:
+### 2.0.0-DEV-337 - Event Scheduling Rework :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -224,7 +230,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
       
       </div>
 
-### 2.0.0-DEV-450 - Package Section :gear:
+### 2.0.0-DEV-450 - Package Section :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -248,7 +254,7 @@ Steps marked with :gear: are migrated automatically. Steps marked with :exclamat
       
       </div>
     
-### 2.0.0-DEV-485 - Experience changes :exclamation:
+### 2.0.0-DEV-485 - Experience changes :thunder_cloud_rain:
 
 Due to a misuse of the Server API, all code regarding player experience (`experience` event, condition and objective) had to be changed.
 It is not possible to obtain the amount of experience points a player has, only their level can be obtained.
@@ -260,7 +266,7 @@ If you used any of these elements you might have to adjust the configured values
   For example, you can use `experience 1.5` to check for one and a half level.  
   You can convert raw experience points to levels, using such decimal numbers.
 
-### 2.0.0-DEV-538 - Smelt Objective :exclamation:
+### 2.0.0-DEV-538 - Smelt Objective :thunder_cloud_rain:
 
 The `smelt` objective now requires a [quest item](../../Features/Items.md) instead of a BlockSelector.
 Therefore, you now need to define the item you want to smelt in the items section.
@@ -268,7 +274,7 @@ It is recommended to use the `/q item packageName.ItemName` command to save the 
 item you currently hold in your hand to the given package with the given name.
 After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
 
-### 2.0.0-DEV-539 - NPC and Non-NPC Holograms :exclamation:
+### 2.0.0-DEV-539 - NPC and Non-NPC Holograms :thunder_cloud_rain:
 
 !!! warning "Potentially Faulty Automatic Migration"
     In some cases this migration will not be run although the configuration is in the 1.12 format. 
@@ -322,7 +328,7 @@ npc_holograms:
 3. You can delete this if you had the default value of `false`.
 </div>
 
-### 2.0.0-DEV-644 - Database migration for profiles :gear:
+### 2.0.0-DEV-644 - Database migration for profiles :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -340,7 +346,7 @@ npc_holograms:
     
     1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".
 
-### 2.0.0-DEV-647 - EffectLib :gear:
+### 2.0.0-DEV-647 - EffectLib :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -412,7 +418,7 @@ npc_holograms:
     4. In case you never had the `pitch` field, you need to use the default value of `-90`.
     </div>
 
-### 2.0.0-DEV-674 - MMO Updates :gear:
+### 2.0.0-DEV-674 - MMO Updates :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -439,7 +445,7 @@ npc_holograms:
     
     </div>
 
-### 2.0.0-DEV-749 - Static Event Rework :gear:
+### 2.0.0-DEV-749 - Static Event Rework :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -508,7 +514,7 @@ npc_holograms:
         ```
         The `-` is important, it means run independent :wink:.
 
-### 2.0.0-DEV-769 - RemoveEntity-Event :gear:
+### 2.0.0-DEV-769 - RemoveEntity-Event :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -535,7 +541,7 @@ npc_holograms:
     
     </div>
 
-### 2.1.0-DEV-1 - Instruction Quoting :exclamation:
+### 2.1.0-DEV-1 - Instruction Quoting :thunder_cloud_rain:
 
 BetonQuest had quoting support since November 2018, but unfortunately it was broken from the very start and also never properly documented.
 
@@ -573,7 +579,7 @@ conditions:
 
 </div>
 
-### 2.1.1-DEV-2 - Rename AuraSkills :gear:
+### 2.1.1-DEV-2 - Rename AuraSkills :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
@@ -602,7 +608,7 @@ conditions:
     
     </div>
 
-### 2.2.0-DEV-90 - Rename Fabled :gear:
+### 2.2.0-DEV-90 - Rename Fabled :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*

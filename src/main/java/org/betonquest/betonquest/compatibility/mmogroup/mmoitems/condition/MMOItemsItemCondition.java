@@ -23,12 +23,12 @@ public class MMOItemsItemCondition implements OnlineCondition {
     /**
      * The type of the item to check for.
      */
-    private final Type itemType;
+    private final Variable<Type> itemType;
 
     /**
      * The ID of the item to check for.
      */
-    private final String itemID;
+    private final Variable<String> itemID;
 
     /**
      * The amount of the item to check for.
@@ -43,7 +43,8 @@ public class MMOItemsItemCondition implements OnlineCondition {
      * @param itemID            the ID of the item
      * @param amount            the amount of the item
      */
-    public MMOItemsItemCondition(final PlayerDataStorage playerDataStorage, final Type itemType, final String itemID, final Variable<Number> amount) {
+    public MMOItemsItemCondition(final PlayerDataStorage playerDataStorage, final Variable<Type> itemType,
+                                 final Variable<String> itemID, final Variable<Number> amount) {
         this.playerDataStorage = playerDataStorage;
         this.itemType = itemType;
         this.itemID = itemID;
@@ -55,6 +56,8 @@ public class MMOItemsItemCondition implements OnlineCondition {
         int counter = 0;
 
         final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
+        final Type itemType = this.itemType.getValue(profile);
+        final String itemID = this.itemID.getValue(profile);
         for (final ItemStack item : inventoryItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter += item.getAmount();
