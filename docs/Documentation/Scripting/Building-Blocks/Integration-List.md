@@ -112,9 +112,9 @@ in addition to the normal Npc functionality.
 !!! info
     In addition Citizens integration supports all [BetonQuest Npc](../../Features/Npcs.md) features.
 
-## Events
+### Events
 
-### Move Npc: `npcmove`
+#### Move Npc: `npcmove`
 
 This event will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with _/npc path_ command - it will then return to that point every time.
@@ -136,7 +136,7 @@ Move event can fail if the NPC is already moving for another player.
 movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
 ```
 
-### Stop moving Npc: `npcstop`
+#### Stop moving Npc: `npcstop`
 
 This will stop all current move tasks for the Npc.
 
@@ -148,9 +148,9 @@ This will stop all current move tasks for the Npc.
 stopnpc guard
 ```
 
-## Objectives
+### Objectives
 
-### Npc Kill: `npckill`
+#### Npc Kill: `npckill`
 
 The Npc Kill objective requires the player to kill a Npc. 
 
