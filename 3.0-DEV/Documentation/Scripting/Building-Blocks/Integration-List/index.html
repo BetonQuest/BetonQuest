@@ -1827,14 +1827,6 @@
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
     </ul>
   </nav>
   
@@ -1934,17 +1926,6 @@
   </a>
 
   
-  
-  <nav aria-label="FancyNpcs" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-      
-      
-    </ul>
-  </nav>
   
 </li>
     
@@ -2739,17 +2720,6 @@
 
   
   
-  <nav aria-label="ZNPCsPlus" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-      
-      
-    </ul>
-  </nav>
-  
 </li>
     
     
@@ -3092,7 +3062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../Features/Npcs/" class="md-nav__link">
+      <a href="../../../Features/NPCs/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2M6 9h12v2H6m8 3H6v-2h8m4-4H6V6h12"/></svg>
@@ -3100,7 +3070,7 @@
   <span class="md-ellipsis">
     
   
-    Npcs
+    NPCs
   
 
     
@@ -5593,14 +5563,6 @@
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
     </ul>
   </nav>
   
@@ -5700,17 +5662,6 @@
   </a>
 
   
-  
-  <nav aria-label="FancyNpcs" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-      
-      
-    </ul>
-  </nav>
   
 </li>
     
@@ -6505,17 +6456,6 @@
 
   
   
-  <nav aria-label="ZNPCsPlus" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-      
-      
-    </ul>
-  </nav>
-  
 </li>
     
     
@@ -6681,34 +6621,13 @@ The <code>level</code> argument is optional and would convert the amount to leve
 <h2 id="citizens">Citizens<a href="https://www.spigotmc.org/resources/13811/"></a><a class="headerlink" href="#citizens" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin you can use it's NPCs. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's
-in addition to the normal Npc functionality.</p>
-<h3 id="npc-integration">Npc Integration<a class="headerlink" href="#npc-integration" title="Permanent link">🔗</a></h3>
-<p>Citizens supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
-<p>Also, the below listed Citizens specific additions are also used with the NpcId from the <code>npcs</code> section.</p>
-<h4 id="npcs-section-npcs">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs" title="Permanent link">🔗</a></h4>
-<p>You simply use the Citizens NPC id as argument.
-To acquire the NPCs ID select the NPC using <code>/npc select</code>, then run <code>/npc id</code>.</p>
-<p>You can also get a NPC by its name with the <code>byName</code> argument.
-That is useful when you have many NPCs with the same name which should all start the same conversation
-or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>When more than one npc with that name exists, it will give an exception when used in like <code>npcteleport</code> events
-or <code>npcrange</code> objective.</p>
-</div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 0</span>
-<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 4</span>
-<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens Guard byName</span>
-</code></pre></div>
-<h3 id="npc-hiding-hide_npcs">Npc Hiding: <code>hide_npcs</code><a class="headerlink" href="#npc-hiding-hide_npcs" title="Permanent link">🔗</a></h3>
-<p><a href="../../../Visual-Effects/NPC-Effects/NPC-Hiding/">You can find information about it here</a></p>
+in addition to the normal NPC functionality.</p>
 <div class="admonition info">
-<p class="admonition-title">Required Dependency: ProtocolLib</p>
-<p>This feature can be activated by installing the <a href="https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar">ProtocolLib plugin</a>.</p>
+<p class="admonition-title">Info</p>
+<p>In addition Citizens integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
 </div>
 <h3 id="events_2">Events<a class="headerlink" href="#events_2" title="Permanent link">🔗</a></h3>
-<h4 id="move-npc-npcmove">Move Npc: <code>npcmove</code><a class="headerlink" href="#move-npc-npcmove" title="Permanent link">🔗</a></h4>
+<h4 id="move-npc-npcmove">Move NPC: <code>npcmove</code><a class="headerlink" href="#move-npc-npcmove" title="Permanent link">🔗</a></h4>
 <p>This event will make the NPC move to a specified location. It will not return on its own,
 so you have to set a single path point with <em>/npc path</em> command - it will then return to that point every time.
 If you make it move too far away, it will teleport or break, so beware.
@@ -6728,25 +6647,25 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 <td><em>NpcID</em></td>
 <td>npcId</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The NpcId.</td>
+<td>The NPCId.</td>
 </tr>
 <tr>
 <td><em>Locations</em></td>
 <td><a href="../../Data-Formats/#unified-location-formating">Locations</a></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The locations where the Npc will move to.</td>
+<td>The locations where the NPC will move to.</td>
 </tr>
 <tr>
 <td><em>block</em></td>
 <td>Keyword (<code>block</code>)</td>
 <td>Disabled</td>
-<td>Blocks the Npc so interaction won't start a conversation while it is moving.</td>
+<td>Blocks the NPC so interaction won't start a conversation while it is moving.</td>
 </tr>
 <tr>
 <td><em>wait</em></td>
 <td>wait:number</td>
 <td>0</td>
-<td>Number of ticks the Npc will wait at its destination before firing events.</td>
+<td>Number of ticks the NPC will wait at its destination before firing events.</td>
 </tr>
 <tr>
 <td><em>done</em></td>
@@ -6764,8 +6683,8 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 </table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward</span>
 </code></pre></div>
-<h4 id="stop-moving-npc-npcstop">Stop moving Npc: <code>npcstop</code><a class="headerlink" href="#stop-moving-npc-npcstop" title="Permanent link">🔗</a></h4>
-<p>This will stop all current move tasks for the Npc.</p>
+<h4 id="stop-moving-npc-npcstop">Stop moving NPC: <code>npcstop</code><a class="headerlink" href="#stop-moving-npc-npcstop" title="Permanent link">🔗</a></h4>
+<p>This will stop all current move tasks for the NPC.</p>
 <table>
 <thead>
 <tr>
@@ -6787,8 +6706,8 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">stopnpc guard</span>
 </code></pre></div>
 <h3 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h3>
-<h4 id="npc-kill-npckill">Npc Kill: <code>npckill</code><a class="headerlink" href="#npc-kill-npckill" title="Permanent link">🔗</a></h4>
-<p>The Npc Kill objective requires the player to kill a Npc. </p>
+<h4 id="npc-kill-npckill">NPC Kill: <code>npckill</code><a class="headerlink" href="#npc-kill-npckill" title="Permanent link">🔗</a></h4>
+<p>The NPC Kill objective requires the player to kill a NPC. </p>
 <table>
 <thead>
 <tr>
@@ -6809,13 +6728,13 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 <td><em>amount</em></td>
 <td>amount:number</td>
 <td>1</td>
-<td>The time the Npc needs to be killed.</td>
+<td>The time the NPC needs to be killed.</td>
 </tr>
 <tr>
 <td><em>notify</em></td>
 <td>notify</td>
 <td>Disabled</td>
-<td>Display a message to the player each time they kill a npc. Optionally with the notification interval after colon.</td>
+<td>Display a message to the player each time they kill a NPC. Optionally with the notification interval after colon.</td>
 </tr>
 </tbody>
 </table>
@@ -6833,17 +6752,17 @@ You can change maximum pathfinding range in Citizens configuration files.</p>
 <tr>
 <td><em>amount</em></td>
 <td>6</td>
-<td>Shows the amount of times already killed the npc.</td>
+<td>Shows the amount of times already killed the NPC.</td>
 </tr>
 <tr>
 <td><em>left</em></td>
 <td>4</td>
-<td>Shows the amount of times still needed to kill the Npc for the objective to be completed.</td>
+<td>Shows the amount of times still needed to kill the NPC for the objective to be completed.</td>
 </tr>
 <tr>
 <td><em>total</em></td>
 <td>10</td>
-<td>Shows the initial amount of times that the Npc needed to be killed.</td>
+<td>Shows the initial amount of times that the NPC needed to be killed.</td>
 </tr>
 </tbody>
 </table>
@@ -6918,26 +6837,12 @@ be displayed to the player for which you ran the event.</p>
 <span class="w">  </span><span class="nt">playEffect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">particle beton loc:100;200;300;world;180;-90 private</span>
 </code></pre></div>
 <h2 id="fancynpcs">FancyNpcs<a href="https://modrinth.com/plugin/fancynpcs"></a><a class="headerlink" href="#fancynpcs" title="Permanent link">🔗</a></h2>
-<p>If you have this plugin you can use its Npcs.
+<p>If you have this plugin you can use its NPCs.
 It is more lightweight than <a href="#citizens">Citizens</a> but lack some of its features.</p>
-<h3 id="npc-integration_1">Npc Integration<a class="headerlink" href="#npc-integration_1" title="Permanent link">🔗</a></h3>
-<p>FancyNpcs supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
-<h4 id="npcs-section-npcs_1">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs_1" title="Permanent link">🔗</a></h4>
-<p>You simply use the FancyNpcs Npc id as argument.
-To acquire the Npcs ID use the <code>/npc nearby</code> command and copy the <code>UUID</code> from the Npc info.</p>
-<p>You can also get a Npc by its name with the <code>byName</code> argument.
-That is useful when you have many Npcs with the same name which should all start the same conversation
-or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>When more than one Npc with that name exists, it will give an exception when used in like <code>npcteleport</code> events
-or <code>npcrange</code> objective.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>FancyNpcs integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
 </div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs dc8f2889-ed79-455e-944b-115dae978737</span>
-<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0</span>
-<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs Guard byName</span>
-</code></pre></div>
 <h2 id="fakeblock">FakeBlock<a href="https://github.com/toddharrison/BriarCode/tree/main/fake-block"></a><a class="headerlink" href="#fakeblock" title="Permanent link">🔗</a></h2>
 <p>If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
 created in FakeBlock on a player-specific basis.</p>
@@ -7773,7 +7678,7 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 <h3 id="conditions_13">Conditions<a class="headerlink" href="#conditions_13" title="Permanent link">🔗</a></h3>
 <h4 id="npc-region-npcregion">NPC region: <code>npcregion</code><a class="headerlink" href="#npc-region-npcregion" title="Permanent link">🔗</a></h4>
 <p><strong>persistent</strong>, <strong>static</strong></p>
-<p>This condition is met a npc is inside a region.</p>
+<p>This condition is met a NPC is inside a region.</p>
 <table>
 <thead>
 <tr>
@@ -7788,13 +7693,13 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 <td><em>Npc</em></td>
 <td>Npc</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The ID of the Npc</td>
+<td>The ID of the NPC</td>
 </tr>
 <tr>
 <td><em>Region</em></td>
 <td>Region Name</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
-<td>The region where the npc needs to be</td>
+<td>The region where the NPC needs to be</td>
 </tr>
 </tbody>
 </table>
@@ -7864,17 +7769,12 @@ You can also rotate the schematic by adding <code>rotation:90</code> where <code
 <div class="admonition info">
 <p><strong>Required ZNPCsPlus version: <em>2.1.0-SNAPSHOT</em> or above</strong></p>
 </div>
-<p>If you have this plugin you can use its Npcs.
+<p>If you have this plugin you can use its NPCs.
 It is a lightweight packet based plugin.</p>
-<h3 id="npc-integration_2">Npc Integration<a class="headerlink" href="#npc-integration_2" title="Permanent link">🔗</a></h3>
-<p>ZNPCsPlus supports all <a href="../../../Features/Npcs/">BetonQuest Npc</a> Features.</p>
-<h4 id="npcs-section-npcs_2">Npcs section: <code>npcs</code><a class="headerlink" href="#npcs-section-npcs_2" title="Permanent link">🔗</a></h4>
-<p>You simply use the ZNPCsPlus Npc id as argument.
-To acquire the Npcs ID use the <code>/npc near 5</code> command and copy the <code>ID</code> from the Npc info.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">bernhard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus bernhard</span>
-<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus Guard10</span>
-</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>ZNPCsPlus integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
+</div>
 
 
 

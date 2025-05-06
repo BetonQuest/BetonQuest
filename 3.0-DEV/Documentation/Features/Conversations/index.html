@@ -2178,7 +2178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Npcs/" class="md-nav__link">
+      <a href="../NPCs/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2M6 9h12v2H6m8 3H6v-2h8m4-4H6V6h12"/></svg>
@@ -2186,7 +2186,7 @@
   <span class="md-ellipsis">
     
   
-    Npcs
+    NPCs
   
 
     
@@ -4849,17 +4849,17 @@ conversations ends. If the conversation ends unexpectedly, check the console - i
 <p>This can and will be a little confusing, so you should name your options, conditions and events in a way which you will
 understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this when running <code>/q reload</code>.</p>
 <h2 id="binding-conversations-to-npcs">Binding Conversations to NPCs<a class="headerlink" href="#binding-conversations-to-npcs" title="Permanent link">🔗</a></h2>
-<p>Conversations can be assigned to <a href="../Npcs/">Npcs</a>. This is done in the <code>npc_conversations</code> section:</p>
+<p>Conversations can be assigned to <a href="../NPCs/">NPCs</a>. This is done in the <code>npc_conversations</code> section:</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npc_conversations</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">Hans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mayorHans</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
 <ol>
 <li>The key is the NpcID, the value a ConversationID.</li>
 </ol>
-<p>A Npc will only react to right clicks by default. 
+<p>A NPC will only react to right clicks by default. 
 This can be changed by setting <code>npcs.accept_left_click</code> in the config.yml to <code>true</code>.</p>
 <p>You can assign the same conversation to multiple NPCs.
-It is not possible to assign multiple conversations to one npc. For this
+It is not possible to assign multiple conversations to one NPC. For this
 purpose, have a look at 
 <a href="#cross-conversation-pointers">cross-conversation-pointers</a> though.</p>
 <h2 id="conversation-displaying">Conversation displaying<a class="headerlink" href="#conversation-displaying" title="Permanent link">🔗</a></h2>
@@ -5005,7 +5005,7 @@ Example of such option text: <code>{diamond_sword}I want to start a quest!</code
 </div>
 <h2 id="cross-conversation-pointers">Cross-Conversation Pointers<a class="headerlink" href="#cross-conversation-pointers" title="Permanent link">🔗</a></h2>
 <p>If you want to create a conversation with multiple NPCs at once or split a huge conversation into smaller, 
-more focused files, you can point to both npc and player options in other conversations. Use the 
+more focused files, you can point to both NPC and player options in other conversations. Use the 
 <a href="../../Scripting/Packages-%26-Templates/#working-across-packages">cross-package syntax</a> to do so.</p>
 <p>There is one special case when you want to refer to the starting options of another conversation. In this case you do not specify
 an option name after the second point (<code>package.conversation.</code>).</p>

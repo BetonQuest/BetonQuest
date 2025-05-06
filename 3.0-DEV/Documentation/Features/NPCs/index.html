@@ -10,7 +10,7 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Features/Npcs/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Features/NPCs/">
       
       
         <link rel="prev" href="../Message-Formatting/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Npcs - BetonQuest</title>
+        <title>NPCs - BetonQuest</title>
       
     
     
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Npcs
+              NPCs
             
           </span>
         </div>
@@ -1960,7 +1960,7 @@
   <span class="md-ellipsis">
     
   
-    Npcs
+    NPCs
   
 
     
@@ -1979,7 +1979,7 @@
   <span class="md-ellipsis">
     
   
-    Npcs
+    NPCs
   
 
     
@@ -2040,7 +2040,7 @@
       
       
         <span class="md-typeset">
-          Referring an Npc
+          Referring an NPC
         </span>
 
       
@@ -2064,6 +2064,29 @@
       
         <span class="md-typeset">
           Conversations
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#npc-hiding-hide_npcs">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          NPC Hiding: <code>hide_npcs</code>
         </span>
 
       
@@ -4428,7 +4451,7 @@
       
       
         <span class="md-typeset">
-          Referring an Npc
+          Referring an NPC
         </span>
 
       
@@ -4452,6 +4475,29 @@
       
         <span class="md-typeset">
           Conversations
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#npc-hiding-hide_npcs">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          NPC Hiding: <code>hide_npcs</code>
         </span>
 
       
@@ -4544,7 +4590,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Features/Npcs.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Features/NPCs.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -4552,14 +4598,14 @@
   
 
 
-  <h1>Npcs</h1>
+  <h1>NPCs</h1>
 
-<p>Npcs are an essential part of every RPG for player ingame interaction.
-In BetonQuest Npcs can be used to start conversations or interact with them otherwise,
+<p>NPCs are an essential part of every RPG for player ingame interaction.
+In BetonQuest NPCs can be used to start conversations or interact with them otherwise,
 as shown in the <code>Scripting</code> and <code>Visual Effects</code> section of the documentation.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>This Npc is not related to the NPC/Quester in <a href="../Conversations/">Conversations</a></p>
+<p>This NPC is not related to the NPC/Quester in <a href="../Conversations/">Conversations</a></p>
 </div>
 <h2 id="provided-integrations">Provided Integrations<a class="headerlink" href="#provided-integrations" title="Permanent link">🔗</a></h2>
 <p>BetonQuest provides Integrations for the following Npc plugins:</p>
@@ -4568,12 +4614,57 @@ as shown in the <code>Scripting</code> and <code>Visual Effects</code> section o
 <li><a href="../../Scripting/Building-Blocks/Integration-List/#fancynpcs">FancyNpcs</a></li>
 <li><a href="../../Scripting/Building-Blocks/Integration-List/#znpcsplus">ZNPCsPlus</a></li>
 </ul>
-<h2 id="referring-an-npc">Referring an Npc<a class="headerlink" href="#referring-an-npc" title="Permanent link">🔗</a></h2>
-<p>Npcs are defined in the <code>npcs</code> section.
-For exact instruction definition see the respective integration.</p>
+<h2 id="referring-an-npc">Referring an NPC<a class="headerlink" href="#referring-an-npc" title="Permanent link">🔗</a></h2>
+<p>Npcs are defined in the <code>npcs</code> section.</p>
+<div class="admonition note">
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Citizens</label><label for="__tabbed_1_2">FancyNpcs</label><label for="__tabbed_1_3">ZNPCsPlus</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 0</span>
+<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 4</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens Guard byName</span>
+</code></pre></div>
+<p>You simply use the Citizens NPC id as argument.
+To acquire the NPCs ID select the NPC using <code>/npc select</code>, then run <code>/npc id</code>.</p>
+<p>You can also get a NPC by its name with the <code>byName</code> argument.
+That is useful when you have many NPCs with the same name which should all start the same conversation
+or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs dc8f2889-ed79-455e-944b-115dae978737</span>
+<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs Guard byName</span>
+</code></pre></div>
+<p>You simply use the FancyNpcs NPC id as argument.
+To acquire the NPCs ID use the <code>/npc nearby</code> command and copy the <code>UUID</code> from the NPC info.</p>
+<p>You can also get a NPC by its name with the <code>byName</code> argument.
+That is useful when you have many NPCs with the same name which should all start the same conversation
+or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">bernhard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus bernhard</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus Guard10</span>
+</code></pre></div>
+<p>You simply use the ZNPCsPlus NPC ID as argument.
+To acquire the NPCs ID use the <code>/npc near 5</code> command and copy the <code>ID</code> from the NPC info.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If there are more NPCs than one NPC with the same name, and you select multiple NPCs by name (like by using 
+Citizens <code>byName</code> option) certain events like <code>npcteleport</code> or objectives like <code>npcrange</code> might throw an exception.</p>
+</div>
 <h2 id="conversations">Conversations<a class="headerlink" href="#conversations" title="Permanent link">🔗</a></h2>
-<p>You can start <a href="../Conversations/">Conversations</a> with Npc interaction by assigning them in the
+<p>You can start <a href="../Conversations/">Conversations</a> with NPC interaction by assigning them in the
 <a href="../Conversations/#binding-conversations-to-npcs"><code>npc_conversations</code> section</a> of a quest package.</p>
+<h2 id="npc-hiding-hide_npcs">NPC Hiding: <code>hide_npcs</code><a class="headerlink" href="#npc-hiding-hide_npcs" title="Permanent link">🔗</a></h2>
+<p>You can hide NPCs for certain players using conditions.
+<a href="../../Visual-Effects/NPC-Effects/NPC-Hiding/">You can find information about it here.</a></p>
 
 
 
