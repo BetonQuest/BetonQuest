@@ -24,45 +24,48 @@ BetonQuest provides Integrations for the following Npc plugins:
 Npcs are defined in the `npcs` section.
 
 === "Citizens"
-    ```YAML title="Example"
-    npcs:
-      innkeeper: citizens 0
-      mayorHans: citizens 4
-      guard: citizens Guard byName
-    ```
-   
-   
-    You simply use the Citizens NPC id as argument.
-    To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
- 
-    You can also get a NPC by its name with the `byName` argument.
-    That is useful when you have many NPCs with the same name which should all start the same conversation
-    or count together in the `npcinteract` and `npckill` objectives.
-        
+    !!! note ""
+        ```YAML title="Example"
+        npcs:
+          innkeeper: citizens 0
+          mayorHans: citizens 4
+          guard: citizens Guard byName
+        ```
+       
+       
+        You simply use the Citizens NPC id as argument.
+        To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
+     
+        You can also get a NPC by its name with the `byName` argument.
+        That is useful when you have many NPCs with the same name which should all start the same conversation
+        or count together in the `npcinteract` and `npckill` objectives.
+            
 === "FancyNpcs"
-    ```YAML title="Example"
-    npcs:
-      innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
-      mayorHans: FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0
-      guard: FancyNpcs Guard byName
-    ```
-    
-    You simply use the FancyNpcs Npc id as argument.
-    To acquire the Npcs ID use the `/npc nearby` command and copy the `UUID` from the Npc info.
-    
-    You can also get a Npc by its name with the `byName` argument.
-    That is useful when you have many Npcs with the same name which should all start the same conversation
-    or count together in the `npcinteract` and `npckill` objectives.
+    !!! note ""
+        ```YAML title="Example"
+        npcs:
+          innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
+          mayorHans: FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0
+          guard: FancyNpcs Guard byName
+        ```
         
+        You simply use the FancyNpcs Npc id as argument.
+        To acquire the Npcs ID use the `/npc nearby` command and copy the `UUID` from the Npc info.
+        
+        You can also get a Npc by its name with the `byName` argument.
+        That is useful when you have many Npcs with the same name which should all start the same conversation
+        or count together in the `npcinteract` and `npckill` objectives.
+            
 === "ZNPCsPlus"
-    ```YAML title="Example"
-    npcs:
-      bernhard: ZNPCsPlus bernhard
-      guard: ZNPCsPlus Guard10
-    ```
-    
-    You simply use the ZNPCsPlus NPC ID as argument.
-    To acquire the NPCs ID use the `/npc near 5` command and copy the `ID` from the NPC info.
+    !!! note ""
+        ```YAML title="Example"
+        npcs:
+          bernhard: ZNPCsPlus bernhard
+          guard: ZNPCsPlus Guard10
+        ```
+        
+        You simply use the ZNPCsPlus NPC ID as argument.
+        To acquire the NPCs ID use the `/npc near 5` command and copy the `ID` from the NPC info.
 
 !!! warning
     If there are more NPCs than one NPC with the same name, and you select multiple NPCs by name (like by using 
