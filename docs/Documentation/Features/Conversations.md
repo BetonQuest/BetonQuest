@@ -314,6 +314,3 @@ NPC_options:
     pointers: i_have_questions, bye
 ```
 In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.
-
-## More possibilities 
-For full list of [events](../Scripting/Building-Blocks/Events-List.md), [objectives](../Scripting/Building-Blocks/Objectives-List.md), [variables](../Scripting/Building-Blocks/Variables-List.md), and [conditions](../Scripting/Building-Blocks/Conditions-List.md), visit their pages.
