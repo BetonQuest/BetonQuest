@@ -31,7 +31,6 @@ Npcs are defined in the `npcs` section.
           guard: citizens Guard byName
         ```
        
-       
         You simply use the Citizens NPC id as argument.
         To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
      
