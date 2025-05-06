@@ -14,7 +14,7 @@ item: simple BLOCK_SELECTOR other arguments...
 [BLOCK_SELECTOR](../Scripting/Data-Formats.md#block-selectors) is a type of the item. It doesn't have to be all in uppercase.
 Other arguments specify data like name of the item, lore, enchantments or potion effects.
 There are two categories of these arguments: the ones you can apply to every item and type specific arguments.
-Examples would be name (for every item type) and text (only in books).
+Examples would be `name` (for every item type) and `text` (only in books).
 
 Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction.
 The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that.
@@ -152,7 +152,7 @@ effects:none-weakness,invisibility:?:? effects-containing
 
 - `owner` - this is the name of the head owner. It will **not** use color codes nor replace underscores with spaces.
     If you want to check for heads without any owner, use `none` keyword.
-  - Use `%player%` to get the current players head.
+  - Use `owner:` to get the current players head. You need to quote the whole instruction when using that.
 
 ```YAML title="Examples"
 owner:Co0sh

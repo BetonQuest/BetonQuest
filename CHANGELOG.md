@@ -65,7 +65,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mooncycle` condition is now `moonphase` and uses a variable list of the phases instead of numbers
 - `item` command now requires the specification of serializer
 - `npcs` in the `npc_holograms` and `npcs`, `conditions` and `locations` in the `effectlib` section now use comma separated lists
-- in quest cancelers the events are now executed before the teleport 
+- in quest cancelers the events are now executed before the teleport
+- `simple` quest items now resolve variables one time on reload to support `constant` variables
+    - `owner:%player%` was changed to `owner:` to allow constant pre-parsing
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

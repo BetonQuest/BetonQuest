@@ -42,6 +42,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :sun:
 - [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :sun:
 - [3.0.0-DEV-277 - Rename Constants](#300-dev-277-rename-constants) :white_sun_cloud:
+- [3.0.0-DEV-284 - Rename Constants](#300-dev-284-change-head-owner) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -499,6 +500,28 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
       MyCustomVariable: %constant.MyVariable% World
     events:
       sendNotify: notify %constant.MyCustomVariable%
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-284 - Change Head Owner :sun:
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    To allow pre-parsing of `constant` variables in `simple` Quest Items the `owner:%player%` has been replaced with `owner:`.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    items:
+      head: simple PLAYER_HEAD owner:%player%
+    ```
+    
+    ```YAML title="New Syntax"
+    items:
+      head: 'simple PLAYER_HEAD owner:'
     ```
     
     </div>
