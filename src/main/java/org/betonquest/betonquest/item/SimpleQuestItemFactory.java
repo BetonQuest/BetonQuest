@@ -43,7 +43,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
      * @throws QuestException when an error occurs while parsing
      */
     public QuestItem parseInstruction(final String string) throws QuestException {
-        final String[] split = string.split(",");
+        final String[] split = string.split(" ");
         final String material = split[0];
         final List<String> arguments = split.length > 1 ? List.of(split).subList(1, split.length) : List.of();
         return parseInstruction(material, arguments);
