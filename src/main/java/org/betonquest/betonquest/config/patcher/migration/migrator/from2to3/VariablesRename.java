@@ -7,6 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Handles the variables rename migration.
@@ -72,12 +74,25 @@ public class VariablesRename implements QuestMigration {
     }
 
     private String replaceGlobalVariables(final String input) {
-        final String notEscapedDollar = "(?<!\\\\)\\$";
-        final String regexWithPackage = notEscapedDollar + "(.*)\\.(.*)" + notEscapedDollar;
-        final String regexWithoutPackage = notEscapedDollar + "(.*)" + notEscapedDollar;
-        final String replacementWithPackage = "%$1.constant.$2%";
-        final String replacementWithoutPackage = "%constant.$1%";
-        final String result = input.replaceAll(regexWithPackage, replacementWithPackage).replaceAll(regexWithoutPackage, replacementWithoutPackage);
-        return result.replaceAll("\\\\\\$", "\\$");
+        final Pattern pattern = Pattern.compile("(?<!\\\\)\\$(.*?)(?<!\\\\)\\$");
+        final Matcher matcher = pattern.matcher(input);
+
+        final StringBuilder result = new StringBuilder();
+        while (matcher.find()) {
+            final String variable = matcher.group(1);
+            final String replacement;
+            if (variable.contains(".")) {
+                final int index = variable.indexOf('.');
+                final String pkg = variable.substring(0, index);
+                final String name = variable.substring(index + 1);
+                replacement = "%" + pkg + ".constant." + name + "%";
+            } else {
+                replacement = "%constant." + variable + "%";
+            }
+            matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
+        }
+        matcher.appendTail(result);
+
+        return result.toString().replaceAll("\\\\\\$", "\\$");
     }
 }
