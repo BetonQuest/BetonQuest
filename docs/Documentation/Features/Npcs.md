@@ -22,9 +22,8 @@ BetonQuest provides Integrations for the following Npc plugins:
 ## Referring an NPC
 
 Npcs are defined in the `npcs` section.
-
-=== "Citizens"
-    !!! note ""
+!!! note ""
+    === "Citizens"
         ```YAML title="Example"
         npcs:
           innkeeper: citizens 0
@@ -40,8 +39,7 @@ Npcs are defined in the `npcs` section.
         That is useful when you have many NPCs with the same name which should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
-=== "FancyNpcs"
-    !!! note ""
+    === "FancyNpcs"
         ```YAML title="Example"
         npcs:
           innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
@@ -56,8 +54,7 @@ Npcs are defined in the `npcs` section.
         That is useful when you have many Npcs with the same name which should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
-=== "ZNPCsPlus"
-    !!! note ""
+    === "ZNPCsPlus"
         ```YAML title="Example"
         npcs:
           bernhard: ZNPCsPlus bernhard
