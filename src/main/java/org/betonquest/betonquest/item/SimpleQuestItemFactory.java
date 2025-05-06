@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -19,6 +20,7 @@ import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.betonquest.betonquest.util.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +45,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
      * @throws QuestException when an error occurs while parsing
      */
     public QuestItem parseInstruction(final String string) throws QuestException {
-        final String[] split = string.split(",");
+        final String[] split = string.split(" ");
         final String material = split[0];
         final List<String> arguments = split.length > 1 ? List.of(split).subList(1, split.length) : List.of();
         return parseInstruction(material, arguments);
@@ -78,13 +80,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
 
     @Override
     public QuestItem parseInstruction(final Instruction instruction) throws QuestException {
-        final String material = instruction.next();
-        final List<String> arguments;
-        if (instruction.hasNext()) {
-            final List<String> valueParts = instruction.getValueParts();
-            arguments = valueParts.subList(1, valueParts.size());
-        } else {
-            arguments = List.of();
+        final String material = instruction.get(Argument.STRING).getValue(null);
+        final List<String> arguments = new ArrayList<>(instruction.size() - 1);
+        while (instruction.hasNext()) {
+            arguments.add(instruction.get(Argument.STRING).getValue(null));
         }
         return parseInstruction(material, arguments);
     }

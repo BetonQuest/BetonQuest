@@ -38,11 +38,6 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     public static final String META_TEXTURE = "texture";
 
     /**
-     * Variable placeholder literal for player name.
-     */
-    private static final String VARIABLE_PLAYER_NAME = "%player%";
-
-    /**
      * Existence of the player UUID.
      */
     private Existence playerIdE = Existence.WHATEVER;
@@ -202,7 +197,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
      */
     @Nullable
     public Profile getOwner(@Nullable final Profile profile) {
-        if (profile != null && VARIABLE_PLAYER_NAME.equals(owner)) {
+        if (profile != null && owner != null && owner.isEmpty()) {
             return profile;
         }
         if (owner != null) {
