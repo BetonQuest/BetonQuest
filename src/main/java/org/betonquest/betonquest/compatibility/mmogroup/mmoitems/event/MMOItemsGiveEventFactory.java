@@ -59,8 +59,8 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
-        final String itemID = instruction.next();
+        final Variable<Type> itemType = instruction.get(MMOItemsUtils::getMMOItemType);
+        final Variable<String> itemID = instruction.get(Argument.STRING);
 
         final BetonQuestLogger log = loggerFactory.create(MMOItemsGiveEvent.class);
 
@@ -82,8 +82,6 @@ public class MMOItemsGiveEventFactory implements PlayerEventFactory {
                 default -> amount = instruction.get(next, Argument.NUMBER);
             }
         }
-
-        MMOItemsUtils.getMMOItemStack(itemType, itemID);
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new MMOItemsGiveEvent(MMO_PLUGIN, itemType, itemID, scale, notificationSender, singleStack, amount),
