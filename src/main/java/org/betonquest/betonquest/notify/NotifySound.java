@@ -19,27 +19,62 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Plays a sound to a player.
+ */
 class NotifySound {
+    /**
+     * Key of sound to play.
+     */
     private static final String KEY_SOUND = "sound";
 
+    /**
+     * Location to play the sound at.
+     */
     private static final String KEY_SOUND_LOCATION = "soundlocation";
 
+    /**
+     * Offset vector to apply to the source location.
+     */
     private static final String KEY_SOUND_PLAYER_OFFSET = "soundplayeroffset";
 
+    /**
+     * Category to play at.
+     */
     private static final String KEY_SOUND_CATEGORY = "soundcategory";
 
+    /**
+     * Volume.
+     */
     private static final String KEY_SOUND_VOLUME = "soundvolume";
 
+    /**
+     * Pitch.
+     */
     private static final String KEY_SOUND_PITCH = "soundpitch";
 
+    /**
+     * All sound options keys.
+     */
     private static final String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
+    /**
+     * Source of player to play the sound for.
+     */
     private final QuestConsumer<OnlineProfile> soundPlayer;
 
+    /**
+     * Source pack to use for variable resolving.
+     */
     @Nullable
     private final QuestPackage pack;
 
+    /**
+     * Creates a new Notify sound from existent NotifyIO.
+     *
+     * @param notify the notify IO supplying the data
+     * @throws QuestException when the data could not be parsed
+     */
     protected NotifySound(final NotifyIO notify) throws QuestException {
         this.pack = notify.pack;
         final Map<String, String> data = notify.data;
@@ -183,6 +218,12 @@ class NotifySound {
         }
     }
 
+    /**
+     * Sends the sound to the profile.
+     *
+     * @param onlineProfile the profile to send the sound to
+     * @throws QuestException when variables could not be resolved
+     */
     protected void sendSound(final OnlineProfile onlineProfile) throws QuestException {
         soundPlayer.accept(onlineProfile);
     }

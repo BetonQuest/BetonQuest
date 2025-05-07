@@ -22,13 +22,29 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+/**
+ * Displays the message as advancement.
+ */
+@SuppressWarnings("PMD.TooManyMethods")
 public class AdvancementNotifyIO extends NotifyIO {
 
+    /**
+     * Advancement frame.
+     */
     private final String frame;
 
+    /**
+     * Advancement icon.
+     */
     private final String icon;
 
+    /**
+     * Create a new Advancement Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the customization data for notifications
+     * @throws QuestException when data could not be parsed
+     */
     public AdvancementNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);

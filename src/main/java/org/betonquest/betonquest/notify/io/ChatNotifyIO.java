@@ -10,9 +10,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Displays the message in the chat.
+ */
 public class ChatNotifyIO extends NotifyIO {
 
+    /**
+     * Create a new Chat Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the customization data for notifications
+     * @throws QuestException when data could not be parsed
+     */
     public ChatNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
     }

@@ -12,15 +12,33 @@ import org.jetbrains.annotations.Nullable;
 import java.time.Duration;
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Displays the message as subtitle.
+ */
 public class SubTitleNotifyIO extends NotifyIO {
 
+    /**
+     * Time in ticks the title fades in.
+     */
     private final Variable<Number> variableFadeIn;
 
+    /**
+     * Time in ticks the title stays.
+     */
     private final Variable<Number> variableStay;
 
+    /**
+     * Time in ticks the title fades out.
+     */
     private final Variable<Number> variableFadeOut;
 
+    /**
+     * Create a new Sub Title Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the customization data for notifications
+     * @throws QuestException when the data could not be parsed
+     */
     public SubTitleNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
 

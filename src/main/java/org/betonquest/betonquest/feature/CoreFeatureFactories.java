@@ -107,7 +107,7 @@ public class CoreFeatureFactories {
         notifyIOTypes.register("chat", new ChatNotifyIOFactory());
         notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory());
         notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
-        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(loggerFactory));
+        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory());
         notifyIOTypes.register("title", new TitleNotifyIOFactory());
         notifyIOTypes.register("totem", new TotemNotifyIOFactory());
         notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory());

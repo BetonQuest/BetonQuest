@@ -9,9 +9,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Displays the message in the action bar.
+ */
 public class ActionBarNotifyIO extends NotifyIO {
 
+    /**
+     * Create a new Action Bar Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the customization data for notifications
+     * @throws QuestException when data could not be parsed
+     */
     public ActionBarNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
     }

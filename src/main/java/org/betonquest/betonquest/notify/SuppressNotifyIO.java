@@ -9,9 +9,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Notify IO which clears all current notifications.
+ */
 public class SuppressNotifyIO extends NotifyIO {
 
+    /**
+     * Create a new Suppress Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the data to clear
+     * @throws QuestException when data could not be parsed
+     */
     public SuppressNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, new HashMap<>());
         data.clear();
