@@ -3,7 +3,6 @@ package org.betonquest.betonquest.notify;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -22,10 +21,6 @@ import java.util.TreeSet;
  * Handles and stores notification settings.
  */
 public final class Notify {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Notify.class);
 
     /**
      * Loaded custom settings for different notification categories.
@@ -59,8 +54,9 @@ public final class Notify {
      * @param pack     the pack to get from
      * @param category the custom category
      * @return the parsed NNotify IO
+     * @throws QuestException when the notify IO could not be created
      */
-    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category) {
+    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category) throws QuestException {
         return get(pack, category, null);
     }
 
@@ -71,8 +67,10 @@ public final class Notify {
      * @param category the custom category
      * @param data     the custom data to use for notification
      * @return the parsed Notify IO
+     * @throws QuestException when the Notify IO could not be created with the data
      */
-    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
+    public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category,
+                               @Nullable final Map<String, String> data) throws QuestException {
         final SortedSet<String> categories = getCategories(category);
 
         final Map<String, String> categoryData = getCategorySettings(categories);
@@ -88,18 +86,7 @@ public final class Notify {
         }
         ios.add("chat");
 
-        try {
-            return getNotifyIO(pack, ios, categoryData);
-        } catch (final QuestException exception) {
-            LOG.warn(exception.getMessage(), exception);
-        }
-
-        try {
-            return new SuppressNotifyIO(pack, categoryData);
-        } catch (final QuestException e) {
-            LOG.reportException(e);
-            throw new UnsupportedOperationException(e);
-        }
+        return getNotifyIO(pack, ios, categoryData);
     }
 
     private static SortedSet<String> getCategories(@Nullable final String category) {

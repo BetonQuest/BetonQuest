@@ -218,6 +218,12 @@ class NotifySound {
         }
     }
 
+    /**
+     * Sends the sound to the profile.
+     *
+     * @param onlineProfile the profile to send the sound to
+     * @throws QuestException when variables could not be resolved
+     */
     protected void sendSound(final OnlineProfile onlineProfile) throws QuestException {
         soundPlayer.accept(onlineProfile);
     }

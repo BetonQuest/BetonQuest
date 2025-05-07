@@ -103,7 +103,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
         return getLanguages(instruction, langMessages);
     }
 
-    private NotifyIO processInstruction(final Instruction instruction, final Matcher keyValueMatcher) {
+    private NotifyIO processInstruction(final Instruction instruction, final Matcher keyValueMatcher) throws QuestException {
         final Map<String, String> data = getData(keyValueMatcher);
         final String category = data.remove("category");
         return Notify.get(instruction.getPackage(), category, data);
