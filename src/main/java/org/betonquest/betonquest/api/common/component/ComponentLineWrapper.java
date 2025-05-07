@@ -24,22 +24,22 @@ public final class ComponentLineWrapper {
     /**
      * Splits a Component into multiple lines based on new line characters.
      *
-     * @param self the Component to split
+     * @param component the Component to split
      * @return a list of Components, each representing a line
      */
     @SuppressWarnings("PMD.LooseCoupling")
-    public static List<Component> splitNewLine(final Component self) {
-        final LinkedList<Component> lines = splitNewLineTextComponent(self);
-        if (self.children().isEmpty()) {
+    public static List<Component> splitNewLine(final Component component) {
+        final LinkedList<Component> lines = splitNewLineTextComponent(component);
+        if (component.children().isEmpty()) {
             return lines;
         }
         Component last = lines.removeLast();
-        for (final Component child : self.children()) {
+        for (final Component child : component.children()) {
             final LinkedList<Component> childSegments = (LinkedList<Component>) splitNewLine(child);
             last = last.append(childSegments.removeFirst());
-            for (final Component component : childSegments) {
+            for (final Component childSegment : childSegments) {
                 lines.add(last.compact());
-                last = Component.empty().style(last.style()).append(component);
+                last = Component.empty().style(last.style()).append(childSegment);
             }
         }
         lines.add(last.compact());

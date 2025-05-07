@@ -2,6 +2,8 @@ package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -86,6 +88,20 @@ class ComponentLineWrapperTest {
             assertEquals(Component.text("World!"), lines.get(1), "Expected second line to be 'World!'");
             assertEquals(Component.text("Child 1"), lines.get(2), "Expected third line to be 'Child 1'");
             assertEquals(Component.text("Child 2"), lines.get(3), "Expected fourth line to be 'Child 2'");
+        }
+
+        @Test
+        void new_line_with_colour_from_minimessage() {
+            final String inputString = "<red>This is only a long <yellow>enougth text<br> so it gets</yellow> wrapped";
+            final Component input = MiniMessage.miniMessage().deserialize(inputString);
+            final List<Component> lines = ComponentLineWrapper.splitNewLine(input);
+            assertEquals(2, lines.size(), "Expected two lines for minimessage component");
+            assertEquals(Component.text("This is only a long ").color(NamedTextColor.RED)
+                            .append(Component.text("enougth text").color(NamedTextColor.YELLOW)), lines.get(0),
+                    "Expected first line to be 'This is only a long enougth text'");
+            assertEquals(Component.empty().color(NamedTextColor.RED).append(Component.text(" so it gets")
+                            .color(NamedTextColor.YELLOW)).append(Component.text(" wrapped")), lines.get(1),
+                    "Expected second line to be 'so it gets wrapped'");
         }
     }
 }
