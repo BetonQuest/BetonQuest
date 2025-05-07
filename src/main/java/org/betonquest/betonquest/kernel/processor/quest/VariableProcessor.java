@@ -61,10 +61,6 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         }
         final Instruction instructionVar = variableID.getInstruction();
         final TypeFactory<VariableAdapter> variableFactory = types.getFactory(instructionVar.current());
-        if (variableFactory == null) {
-            throw new QuestException("Variable type " + instructionVar.current() + " is not registered");
-        }
-
         final VariableAdapter variable = variableFactory.parseInstruction(instructionVar);
         values.put(variableID, variable);
         log.debug(pack, "Variable " + variableID + " loaded");

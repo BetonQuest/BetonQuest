@@ -71,11 +71,6 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
             throw new QuestException("Not enough arguments in internal condition");
         }
         final TypeFactory<ConditionAdapter> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
-        if (conditionFactory == null) {
-            // if it's null then there is no such type registered, log an error
-            throw new QuestException("Condition type " + parts[0] + " is not registered, check if it's"
-                    + " spelled correctly in internal condition");
-        }
         try {
             final Instruction innerInstruction = new Instruction(questPackage, new NoID(questPackage), instruction);
             return conditionFactory.parseInstruction(innerInstruction);

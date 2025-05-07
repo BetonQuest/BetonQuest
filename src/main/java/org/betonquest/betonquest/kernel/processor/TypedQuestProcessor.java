@@ -58,40 +58,26 @@ public abstract class TypedQuestProcessor<I extends ID, T> extends QuestProcesso
             if (key.contains(" ")) {
                 log.warn(pack, readable + " name cannot contain spaces: '" + key + "' (in " + packName + " package)");
             } else {
-                loadKey(key, pack, packName);
+                try {
+                    loadKey(key, pack);
+                } catch (final QuestException e) {
+                    log.warn(pack, "Error while loading " + readable + " '" + packName + "." + key + "': " + e.getMessage(), e);
+                }
             }
         }
     }
 
-    private void loadKey(final String key, final QuestPackage pack, final String packName) {
-        final I identifier;
-        try {
-            identifier = getIdentifier(pack, key);
-        } catch (final QuestException e) {
-            log.warn(pack, "Error while loading " + readable + " '" + packName + "." + key + "': " + e.getMessage(), e);
-            return;
-        }
-        final String type;
-        try {
-            type = identifier.getInstruction().getPart(0);
-        } catch (final QuestException e) {
-            log.warn(pack, readable + " type not defined in '" + packName + "." + key + "'", e);
-            return;
-        }
+    private void loadKey(final String key, final QuestPackage pack) throws QuestException {
+        final I identifier = getIdentifier(pack, key);
+        final String type = identifier.getInstruction().getPart(0);
         final TypeFactory<T> factory = types.getFactory(type);
-        if (factory == null) {
-            log.warn(pack, readable + " type " + type + " is not registered, check if it's"
-                    + " spelled correctly in '" + identifier + "' " + readable + ".");
-            return;
-        }
-
         try {
             final T parsed = factory.parseInstruction(identifier.getInstruction());
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
         } catch (final QuestException e) {
-            log.warn(pack, "Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
+            throw new QuestException("Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
         }
     }
 

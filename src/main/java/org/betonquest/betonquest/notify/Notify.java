@@ -71,9 +71,7 @@ public final class Notify {
      */
     public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category,
                                @Nullable final Map<String, String> data) throws QuestException {
-        final SortedSet<String> categories = getCategories(category);
-
-        final Map<String, String> categoryData = getCategorySettings(categories);
+        final Map<String, String> categoryData = getCategorySettings(getCategories(category));
         if (data != null) {
             for (final Map.Entry<String, String> entry : data.entrySet()) {
                 categoryData.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
@@ -86,7 +84,7 @@ public final class Notify {
         }
         ios.add("chat");
 
-        return getNotifyIO(pack, ios, categoryData);
+        return BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(ios).create(pack, categoryData);
     }
 
     private static SortedSet<String> getCategories(@Nullable final String category) {
@@ -116,16 +114,6 @@ public final class Notify {
             }
         }
         return ios;
-    }
-
-    private static NotifyIO getNotifyIO(@Nullable final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws QuestException {
-        for (final String name : ios) {
-            final NotifyIOFactory factory = BetonQuest.getInstance().getFeatureRegistries().notifyIO().getFactory(name);
-            if (factory != null) {
-                return factory.create(pack, categoryData);
-            }
-        }
-        throw new QuestException("No Notify IO could be found, searched for '" + ios + "'!");
     }
 
     /**

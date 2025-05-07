@@ -55,10 +55,6 @@ public class EvalCondition implements NullableCondition {
     public static ConditionAdapter createCondition(final ConditionTypeRegistry conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
         final Instruction conditionInstruction = new Instruction(pack, null, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
-        if (conditionFactory == null) {
-            throw new QuestException("Condition type " + conditionInstruction.getPart(0) + " is not registered, check if it's"
-                    + " spelled correctly in internal condition");
-        }
         return conditionFactory.parseInstruction(conditionInstruction);
     }
 

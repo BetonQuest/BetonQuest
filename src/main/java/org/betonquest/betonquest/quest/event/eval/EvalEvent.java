@@ -55,10 +55,6 @@ public class EvalEvent implements NullableEvent {
     public static EventAdapter createEvent(final EventTypeRegistry eventTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
         final Instruction eventInstruction = new Instruction(pack, null, instruction);
         final TypeFactory<EventAdapter> eventFactory = eventTypeRegistry.getFactory(eventInstruction.getPart(0));
-        if (eventFactory == null) {
-            throw new QuestException("Event type " + eventInstruction.getPart(0) + " is not registered, check if it's"
-                    + " spelled correctly in internal event");
-        }
         return eventFactory.parseInstruction(eventInstruction);
     }
 

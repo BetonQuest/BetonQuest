@@ -105,13 +105,25 @@ public abstract class ID {
         return null;
     }
 
+    /**
+     * Checks if there is a pack with that name.
+     *
+     * @param packName the potential pack name
+     * @return the pack with that name, if present
+     * @throws QuestException when this is a variable id and the pack has the same name as a variable type
+     */
     @Nullable
     private QuestPackage packFromName(final String packName) throws QuestException {
         final QuestPackage potentialPack = BetonQuest.getInstance().getPackages().get(packName);
         if (potentialPack == null) {
             return null;
         }
-        if (this instanceof VariableID && BetonQuest.getInstance().getQuestRegistries().variable().getFactory(packName) != null) {
+        if (this instanceof VariableID) {
+            try {
+                BetonQuest.getInstance().getQuestRegistries().variable().getFactory(packName);
+            } catch (final QuestException ignored) {
+                return potentialPack;
+            }
             throw new QuestException("You can't have a package with the name of a variable!");
         }
         return potentialPack;
