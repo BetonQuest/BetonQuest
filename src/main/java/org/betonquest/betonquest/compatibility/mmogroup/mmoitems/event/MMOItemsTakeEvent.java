@@ -27,12 +27,12 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
     /**
      * The type of the MMO item to be removed.
      */
-    private final Type itemType;
+    private final Variable<Type> itemType;
 
     /**
      * The ID of the MMO item to be removed.
      */
-    private final String itemID;
+    private final Variable<String> itemID;
 
     /**
      * The variable number representing the amount of items to delete.
@@ -53,7 +53,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public MMOItemsTakeEvent(final Type itemType, final String itemID, final Variable<Number> deleteAmountVar, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public MMOItemsTakeEvent(final Variable<Type> itemType, final Variable<String> itemID, final Variable<Number> deleteAmountVar, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
         this.itemType = itemType;
         this.itemID = itemID;
@@ -73,7 +73,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
         checkSelectedTypes(profile);
 
-        final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
+        final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType.getValue(profile), itemID.getValue(profile));
         final String itemName = item.getItemMeta().getDisplayName();
         notificationSender.sendNotification(profile,
                 new PluginMessage.Replacement("item", Component.text(itemName)),
@@ -88,12 +88,12 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
      * @return the remaining items after taking the desired amount
      */
     @Override
-    protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {
+    protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) throws QuestException {
         int desiredDeletions = Objects.requireNonNull(neededDeletions.get(profile.getProfileUUID()));
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
-            if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
+            if (MMOItemsUtils.equalsMMOItem(item, itemType.getValue(profile), itemID.getValue(profile))) {
                 if (item.getAmount() <= desiredDeletions) {
                     items[i] = null;
                     desiredDeletions = desiredDeletions - item.getAmount();

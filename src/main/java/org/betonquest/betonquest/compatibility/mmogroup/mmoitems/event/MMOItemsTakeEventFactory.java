@@ -36,9 +36,8 @@ public class MMOItemsTakeEventFactory extends AbstractTakeEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(MMOItemsTakeEvent.class);
         final List<CheckType> checkOrder = getCheckOrder(instruction);
-        final Type itemType = MMOItemsUtils.getMMOItemType(instruction.next());
-        final String itemID = instruction.next();
-        MMOItemsUtils.getMMOItemStack(itemType, itemID);
+        final Variable<Type> itemType = instruction.get(MMOItemsUtils::getMMOItemType);
+        final Variable<String> itemID = instruction.get(Argument.STRING);
         final Variable<Number> deleteAmountVar = instruction.getValue("amount", Argument.NUMBER, 1);
         final NotificationSender notificationSender = getNotificationSender(instruction, log);
         return new OnlineEventAdapter(new MMOItemsTakeEvent(itemType, itemID, deleteAmountVar, checkOrder, notificationSender), log, instruction.getPackage());

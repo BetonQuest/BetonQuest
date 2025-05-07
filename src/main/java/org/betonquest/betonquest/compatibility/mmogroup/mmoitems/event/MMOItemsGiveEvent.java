@@ -27,12 +27,12 @@ public class MMOItemsGiveEvent implements OnlineEvent {
     /**
      * Type of the item to be given.
      */
-    private final Type itemType;
+    private final Variable<Type> itemType;
 
     /**
      * ID of the item to be given.
      */
-    private final String itemID;
+    private final Variable<String> itemID;
 
     /**
      * Whether to scale the item.
@@ -65,7 +65,7 @@ public class MMOItemsGiveEvent implements OnlineEvent {
      * @param singleStack whether to give the item in a single stack
      * @param amountVar   the variable number representing the amount of items to be given
      */
-    public MMOItemsGiveEvent(final MMOItems mmoPlugin, final Type itemType, final String itemID, final boolean scale, final NotificationSender notify, final boolean singleStack, final Variable<Number> amountVar) {
+    public MMOItemsGiveEvent(final MMOItems mmoPlugin, final Variable<Type> itemType, final Variable<String> itemID, final boolean scale, final NotificationSender notify, final boolean singleStack, final Variable<Number> amountVar) {
         this.mmoPlugin = mmoPlugin;
         this.itemType = itemType;
         this.itemID = itemID;
@@ -78,6 +78,8 @@ public class MMOItemsGiveEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final ItemStack mmoItem;
+        final Type itemType = this.itemType.getValue(profile);
+        final String itemID = this.itemID.getValue(profile);
         if (scale) {
             mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
         } else {
