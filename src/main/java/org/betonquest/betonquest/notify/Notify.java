@@ -18,15 +18,24 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Handles and stores notification settings.
+ */
 public final class Notify {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Notify.class);
 
+    /**
+     * Loaded custom settings for different notification categories.
+     */
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
 
+    /**
+     * Default custom notification io to use as fallback.
+     * If not set the "chat" io is used.
+     */
     @Nullable
     private static String defaultNotifyIO;
 
@@ -44,10 +53,25 @@ public final class Notify {
         defaultNotifyIO = config.getString("default_notify_IO");
     }
 
+    /**
+     * Gets the configured notify IO.
+     *
+     * @param pack     the pack to get from
+     * @param category the custom category
+     * @return the parsed NNotify IO
+     */
     public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category) {
         return get(pack, category, null);
     }
 
+    /**
+     * Gets the configured notify IO.
+     *
+     * @param pack     the pack to get from
+     * @param category the custom category
+     * @param data     the custom data to use for notification
+     * @return the parsed Notify IO
+     */
     public static NotifyIO get(@Nullable final QuestPackage pack, @Nullable final String category, @Nullable final Map<String, String> data) {
         final SortedSet<String> categories = getCategories(category);
 

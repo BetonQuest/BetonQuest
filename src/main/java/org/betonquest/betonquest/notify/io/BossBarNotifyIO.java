@@ -4,7 +4,6 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -17,12 +16,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Displays the message as boss bar.
+ */
 @SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     private final List<BossBar.Flag> flags;
 
@@ -36,10 +34,16 @@ public class BossBarNotifyIO extends NotifyIO {
 
     private final Variable<Number> variableCountdown;
 
+    /**
+     * Create a new Boss Bar Notify IO.
+     *
+     * @param pack the source pack to resolve variables
+     * @param data the customization data for notifications
+     * @throws QuestException when data could not be parsed
+     */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(final BetonQuestLogger log, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public BossBarNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(pack, data);
-        this.log = log;
 
         flags = new ArrayList<>();
         if (data.containsKey("barflags")) {
