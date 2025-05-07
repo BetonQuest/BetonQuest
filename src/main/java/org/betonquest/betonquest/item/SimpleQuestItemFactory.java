@@ -20,7 +20,6 @@ import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.betonquest.betonquest.util.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,11 +78,16 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItem> {
     }
 
     @Override
-    public QuestItem parseInstruction(final Instruction instruction) throws QuestException {
-        final String material = instruction.get(Argument.STRING).getValue(null);
-        final List<String> arguments = new ArrayList<>(instruction.size() - 1);
-        while (instruction.hasNext()) {
-            arguments.add(instruction.get(Argument.STRING).getValue(null));
+    public QuestItem parseInstruction(final Instruction rawInstruction) throws QuestException {
+        final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
+        final Instruction instruction = new Instruction(rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final String material = instruction.next();
+        final List<String> arguments;
+        if (instruction.hasNext()) {
+            final List<String> valueParts = instruction.getValueParts();
+            arguments = valueParts.subList(1, valueParts.size());
+        } else {
+            arguments = List.of();
         }
         return parseInstruction(material, arguments);
     }
