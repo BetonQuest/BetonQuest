@@ -127,7 +127,6 @@ public final class ComponentLineWrapper {
     List<String> wrapText(final Font font, final String content, final Offset offset) {
         final List<String> lines = new ArrayList<>();
         final StringBuilder currentLine = new StringBuilder();
-        boolean currentLineDirty = false;
 
         final String[] words = content.split(" ", -1);
         boolean firstWord = true;
@@ -138,7 +137,6 @@ public final class ComponentLineWrapper {
             final int wordWithSpaceWidth = getTextWidth(font, wordWithSpace);
             if (offset.getOffset() + wordWithSpaceWidth <= maxLineWidth) {
                 currentLine.append(wordWithSpace);
-                currentLineDirty = true;
                 offset.addOffset(wordWithSpaceWidth);
                 continue;
             }
@@ -146,7 +144,6 @@ public final class ComponentLineWrapper {
             final int wordWidth = getTextWidth(font, word);
             if (wordWidth > maxLineWidth) {
                 wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace);
-                currentLineDirty = true;
                 continue;
             }
 
@@ -155,10 +152,9 @@ public final class ComponentLineWrapper {
             currentLine.append(word);
             offset.reset();
             offset.addOffset(wordWidth);
-            currentLineDirty = true;
         }
 
-        if (currentLineDirty) {
+        if (!firstWord) {
             lines.add(currentLine.toString());
         }
         if (lines.isEmpty()) {
