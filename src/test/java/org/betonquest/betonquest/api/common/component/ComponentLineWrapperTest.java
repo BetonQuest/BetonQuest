@@ -103,10 +103,10 @@ class ComponentLineWrapperTest {
                             List.of("   [Ich denke ich lese mir die", "Regeln noch mal durch.]"),
                             150),
                     Arguments.of("This should really break.",
-                            List.of("This", "shoul", "d", "really", "break", "."),
+                            List.of("This s", "hould", "really", "break", "."),
                             30),
                     Arguments.of("This should so break.",
-                            List.of("This", "shoul", "d so", "break", "."),
+                            List.of("This s", "hould", "so br", "eak."),
                             30),
                     Arguments.of(String.valueOf(ChatColor.COLOR_CHAR),
                             List.of(String.valueOf(ChatColor.COLOR_CHAR)),
@@ -133,7 +133,7 @@ class ComponentLineWrapperTest {
                             List.of("fun with", "spaces"),
                             42),
                     Arguments.of("fun              with            spaces",
-                            List.of("fun   ", "       ", "  with ", "       ", " ", "space", "s"),
+                            List.of("fun   ", "       ", "  with ", "       ", "  spa", "ces"),
                             30)
             );
         }

@@ -143,21 +143,18 @@ public final class ComponentLineWrapper {
                 continue;
             }
 
-            if (currentLineDirty || offset.getOffset() > 0) {
-                lines.add(currentLine.toString());
-                currentLine.setLength(0);
-                offset.reset();
-            }
-
             final int wordWidth = getTextWidth(font, word);
-            if (wordWidth <= maxLineWidth) {
-                currentLine.append(word);
+            if (wordWidth > maxLineWidth) {
+                wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace);
                 currentLineDirty = true;
-                offset.setOffset(wordWidth);
                 continue;
             }
 
-            wrapWordExceedingLineLength(lines, currentLine, offset, font, word);
+            lines.add(currentLine.toString());
+            currentLine.setLength(0);
+            currentLine.append(word);
+            offset.reset();
+            offset.addOffset(wordWidth);
             currentLineDirty = true;
         }
 
@@ -179,6 +176,9 @@ public final class ComponentLineWrapper {
                 lines.add(currentLine.toString());
                 currentLine.setLength(0);
                 offset.reset();
+            }
+            if (currentLine.isEmpty() && character == ' ') {
+                continue;
             }
             currentLine.append(character);
             offset.addOffset(charWidth);
@@ -217,15 +217,6 @@ public final class ComponentLineWrapper {
          */
         public int getOffset() {
             return value;
-        }
-
-        /**
-         * Sets the offset to the specified value.
-         *
-         * @param offset
-         */
-        public void setOffset(final int offset) {
-            this.value = offset;
         }
 
         /**
