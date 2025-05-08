@@ -146,7 +146,7 @@ class ComponentLineWrapperTest {
             final DefaultFont defaultFont = new DefaultFont();
             fontRegistry.registerFont(defaultKey, defaultFont);
             final ComponentLineWrapper wrapper = new ComponentLineWrapper(fontRegistry, lineLength);
-            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset());
+            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset(() -> 0));
             assertEquals(expected, result, "The arrays should equal each other");
         }
     }

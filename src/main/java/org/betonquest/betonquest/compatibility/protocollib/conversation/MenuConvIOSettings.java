@@ -1,5 +1,9 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
+import org.betonquest.betonquest.api.message.MessageParser;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -8,17 +12,19 @@ import org.bukkit.configuration.ConfigurationSection;
 public record MenuConvIOSettings(int selectionCooldown, int refreshDelay, int lineLength, int startNewLines,
                                  boolean npcNameNewlineSeparator, boolean npcTextFillNewLines, String controlSelect,
                                  String controlCancel, String controlMove, String npcNameAlign, String npcNameType,
-                                 String npcWrap, String npcText, String npcTextReset, String optionWrap,
-                                 String optionText, String textReset, String optionSelected, String optionSelectedReset,
-                                 String optionSelectedWrap, String npcNameFormat) {
+                                 Component npcWrap, VariableComponent npcText, Component optionWrap,
+                                 VariableComponent optionText, VariableComponent optionSelected,
+                                 Component optionSelectedWrap, VariableComponent npcNameFormat) {
 
     /**
      * Creates a new instance of MenuConvIOSettings from a configuration section.
      *
+     * @param messageParser the message parser to use to parse components
      * @param config the configuration section to read settings from
      * @return a new instance of MenuConvIOSettings
+     * @throws QuestException if the message parser could not parse a message
      */
-    public static MenuConvIOSettings fromConfigurationSection(final ConfigurationSection config) {
+    public static MenuConvIOSettings fromConfigurationSection(final MessageParser messageParser, final ConfigurationSection config) throws QuestException {
         final int selectionCooldown = config.getInt("selection_cooldown");
         final int refreshDelay = config.getInt("refresh_delay");
         final int lineLength = config.getInt("line_length");
@@ -33,18 +39,20 @@ public record MenuConvIOSettings(int selectionCooldown, int refreshDelay, int li
 
         final String npcWrap = config.getString("npc_wrap", "").replace('&', '§');
         final String npcText = config.getString("npc_text", "").replace('&', '§');
-        final String npcTextReset = config.getString("npc_text_reset", "").replace('&', '§');
         final String optionWrap = config.getString("option_wrap", "").replace('&', '§');
         final String optionText = config.getString("option_text", "").replace('&', '§');
-        final String optionTextReset = config.getString("option_text_reset", "").replace('&', '§');
         final String optionSelected = config.getString("option_selected", "").replace('&', '§');
-        final String optionSelectedReset = config.getString("option_selected_reset", "").replace('&', '§');
         final String optionSelectedWrap = config.getString("option_selected_wrap", "").replace('&', '§');
         final String npcNameFormat = config.getString("npc_name_format", "").replace('&', '§');
 
-        return new MenuConvIOSettings(selectionCooldown, refreshDelay, lineLength, startNewLines,
-                npcNameNewlineSeparator, npcTextFillNewLines, controlSelect, controlCancel, controlMove, npcNameAlign,
-                npcNameType, npcWrap, npcText, npcTextReset, optionWrap, optionText, optionTextReset, optionSelected,
-                optionSelectedReset, optionSelectedWrap, npcNameFormat);
+        return new MenuConvIOSettings(selectionCooldown, refreshDelay, lineLength, startNewLines, npcNameNewlineSeparator,
+                npcTextFillNewLines, controlSelect, controlCancel, controlMove, npcNameAlign, npcNameType,
+                messageParser.parse(npcWrap),
+                new VariableComponent(messageParser.parse(npcText)),
+                messageParser.parse(optionWrap),
+                new VariableComponent(messageParser.parse(optionText)),
+                new VariableComponent(messageParser.parse(optionSelected)),
+                messageParser.parse(optionSelectedWrap),
+                new VariableComponent(messageParser.parse(npcNameFormat)));
     }
 }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation.io;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 
@@ -11,13 +12,21 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
  */
 public class SimpleConvIOFactory implements ConversationIOFactory {
     /**
-     * Create a new Simple conversation IO factory.
+     * The colors used for the conversation.
      */
-    public SimpleConvIOFactory() {
+    private final ConversationColors colors;
+
+    /**
+     * Create a new Simple conversation IO factory.
+     *
+     * @param colors the colors used for the conversation
+     */
+    public SimpleConvIOFactory(final ConversationColors colors) {
+        this.colors = colors;
     }
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-        return new SimpleConvIO(conversation, onlineProfile);
+        return new SimpleConvIO(conversation, onlineProfile, colors);
     }
 }

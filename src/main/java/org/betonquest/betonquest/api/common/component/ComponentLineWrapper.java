@@ -11,13 +11,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * The ComponentLineWrapper class is responsible for splitting a Component into multiple lines.
  */
-@SuppressWarnings("PMD.LooseCoupling")
+@SuppressWarnings({"PMD.LooseCoupling", "PMD.TooManyMethods"})
 public final class ComponentLineWrapper {
     /**
      * The newline string to separate title and subtitle.
@@ -87,10 +88,42 @@ public final class ComponentLineWrapper {
      * @return a list of Components, each representing a line
      */
     public List<Component> splitWidth(final Component component) {
+        return splitWidth(component, Component::empty);
+    }
+
+    /**
+     * Wraps a Component into multiple lines based on the specified line width.
+     *
+     * @param component  the Component to wrap
+     * @param linePrefix a Supplier for the prefix of each line
+     * @return a list of Components, each representing a line
+     */
+    public List<Component> splitWidth(final Component component, final Supplier<Component> linePrefix) {
         final List<Component> newLineWrapped = splitNewLine(component);
-        return newLineWrapped.stream().map(line -> wrap(line, new Offset()))
+
+        final List<Component> resolvedLinePrefix = new ArrayList<>();
+        final OffsetProvider offsetProvider = () -> {
+            final Component prefix = linePrefix.get();
+            resolvedLinePrefix.add(prefix);
+            return width(prefix);
+        };
+
+        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider)))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+
+        return appendPrefixes(resolvedLinePrefix, lines);
+    }
+
+    private List<Component> appendPrefixes(final List<Component> prefixes, final List<Component> lines) {
+        if (prefixes.size() != lines.size()) {
+            throw new IllegalStateException("Prefixes and lines must have the same size.");
+        }
+        final List<Component> result = new ArrayList<>(lines.size());
+        for (int i = 0; i < lines.size(); i++) {
+            result.add(prefixes.get(i).append(lines.get(i)).compact());
+        }
+        return result;
     }
 
     private LinkedList<Component> wrap(final Component component, final Offset offset) {
@@ -181,6 +214,21 @@ public final class ComponentLineWrapper {
         }
     }
 
+    /**
+     * Calculates the width of a Component in pixels.
+     *
+     * @param component the Component to calculate the width for
+     * @return the width of the Component in pixels
+     */
+    public int width(final Component component) {
+        int width = 0;
+        if (component instanceof final TextComponent text) {
+            final Font font = fontRegistry.getFont(text.font());
+            width = getTextWidth(font, text.content());
+        }
+        return width + component.children().stream().mapToInt(this::width).sum();
+    }
+
     private int getTextWidth(final Font font, final String text) {
         int width = 0;
         for (final char c : text.toCharArray()) {
@@ -190,10 +238,28 @@ public final class ComponentLineWrapper {
     }
 
     /**
+     * The OffsetProvider interface is used to provide the offset in pixels for a new line.
+     */
+    @FunctionalInterface
+    public interface OffsetProvider {
+        /**
+         * Gets the offset in pixels for a new line.
+         *
+         * @return the offset in pixels
+         */
+        int getOffset();
+    }
+
+    /**
      * The Offset class is used to store the offset of a line in pixels.
      */
     @VisibleForTesting
     static class Offset {
+        /**
+         * The offset to use even if {@link #reset()} is called.
+         */
+        private final OffsetProvider provider;
+
         /**
          * The offset of the line in pixels.
          */
@@ -202,8 +268,9 @@ public final class ComponentLineWrapper {
         /**
          * Creates a new Offset instance with the default value of 0.
          */
-        public Offset() {
-            this.value = 0;
+        public Offset(final OffsetProvider provider) {
+            this.provider = provider;
+            this.value = provider.getOffset();
         }
 
         /**
@@ -228,7 +295,7 @@ public final class ComponentLineWrapper {
          * Resets the offset to 0.
          */
         public void reset() {
-            this.value = 0;
+            this.value = provider.getOffset();
         }
     }
 }

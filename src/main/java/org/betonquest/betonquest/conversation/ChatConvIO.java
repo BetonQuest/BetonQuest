@@ -1,14 +1,11 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -34,9 +31,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected final OnlineProfile onlineProfile;
 
-    protected final ConversationColors.Colors colors;
-
-    private final String npcTextColor;
+    protected final ConversationColors colors;
 
     private final double maxNpcDistance;
 
@@ -44,47 +39,21 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected int optionsCount;
 
-    protected Map<Integer, String> options;
+    protected Map<Integer, Component> options;
 
     @Nullable
     protected Component npcText;
 
     protected Component npcName;
 
-    protected String answerFormat;
-
-    protected String textFormat;
-
     @SuppressWarnings("NullAway.Init")
-    public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+    public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(ChatConvIO.class);
         this.options = new HashMap<>();
         this.conv = conv;
         this.onlineProfile = onlineProfile;
-        this.colors = ConversationColors.getColors();
-        StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.npc()) {
-            string.append(color);
-        }
-        string.append("%quester%").append(ChatColor.RESET).append(": ");
+        this.colors = colors;
 
-        final StringBuilder textColorBuilder = new StringBuilder();
-        for (final ChatColor color : colors.text()) {
-            textColorBuilder.append(color);
-        }
-        npcTextColor = textColorBuilder.toString();
-
-        string.append(npcTextColor);
-        textFormat = string.toString();
-        string = new StringBuilder();
-        for (final ChatColor color : colors.player()) {
-            string.append(color);
-        }
-        string.append(onlineProfile.getPlayer().getName()).append(ChatColor.RESET).append(": ");
-        for (final ChatColor color : colors.answer()) {
-            string.append(color);
-        }
-        answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         maxNpcDistance = BetonQuest.getInstance().getPluginConfig().getDouble("conversation.stop.distance");
     }
@@ -141,10 +110,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         final String message = event.getMessage().trim();
-        for (final Map.Entry<Integer, String> entry : options.entrySet()) {
+        for (final Map.Entry<Integer, Component> entry : options.entrySet()) {
             final int index = entry.getKey();
             if (message.equals(Integer.toString(index))) {
-                conv.sendMessage(answerFormat + entry.getValue());
+                conv.sendMessage(colors.getAnswer().append(colors.getPlayer().append(Component.text(onlineProfile.getPlayer().getName())))
+                        .append(Component.text(": ")).append(entry.getValue()));
                 conv.passPlayerAnswer(index);
                 event.setCancelled(true);
                 return;
@@ -165,7 +135,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void addPlayerOption(final String option, final ConfigurationSection properties) {
+    public void addPlayerOption(final Component option, final ConfigurationSection properties) {
         optionsCount++;
         options.put(optionsCount, option);
     }
@@ -177,8 +147,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         Objects.requireNonNull(npcText);
-        conv.sendMessage(Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName))
-                + LegacyComponentSerializer.legacySection().serialize(npcText), npcTextColor));
+
+        conv.sendMessage(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")));
     }
 
     @Override
@@ -194,8 +164,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void print(@Nullable final String message) {
-        if (message != null && !message.isEmpty()) {
+    public void print(@Nullable final Component message) {
+        if (message != null && !Component.empty().equals(message)) {
             conv.sendMessage(message);
         }
     }

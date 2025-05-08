@@ -1,27 +1,21 @@
 package org.betonquest.betonquest.conversation.io;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang3.StringUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -37,48 +31,12 @@ public class TellrawConvIO extends ChatConvIO {
 
     protected Map<Integer, String> hashes;
 
-    protected ChatColor color;
-
-    protected boolean italic;
-
-    protected boolean bold;
-
-    protected boolean underline;
-
-    protected boolean strikethrough;
-
-    protected boolean magic;
-
-    protected String number;
-
     private int count;
 
     @SuppressWarnings("NullAway.Init")
-    @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
-    public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
-        super(conv, onlineProfile);
+    public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
+        super(conv, onlineProfile, colors);
         hashes = new HashMap<>();
-        for (final ChatColor color : colors.option()) {
-            if (color == ChatColor.STRIKETHROUGH) {
-                strikethrough = true;
-            } else if (color == ChatColor.MAGIC) {
-                magic = true;
-            } else if (color == ChatColor.ITALIC) {
-                italic = true;
-            } else if (color == ChatColor.BOLD) {
-                bold = true;
-            } else if (color == ChatColor.UNDERLINE) {
-                underline = true;
-            } else {
-                this.color = color;
-            }
-        }
-        final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.number()) {
-            string.append(color);
-        }
-        string.append("%number%. ");
-        number = string.toString();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -97,7 +55,8 @@ public class TellrawConvIO extends ChatConvIO {
         final String hash = parts[1];
         for (int j = 1; j <= hashes.size(); j++) {
             if (hash.equals(hashes.get(j))) {
-                conv.sendMessage(answerFormat + options.get(j));
+                conv.sendMessage(colors.getAnswer().append(colors.getPlayer().append(Component.text(onlineProfile.getPlayer().getName())))
+                        .append(Component.text(": ")).append(options.get(j)));
                 conv.passPlayerAnswer(j);
                 return;
             }
@@ -112,27 +71,16 @@ public class TellrawConvIO extends ChatConvIO {
 
     protected void displayText() {
         for (int j = 1; j <= options.size(); j++) {
-            // Build ColorString
-            final TextComponent colorComponent = new TextComponent();
-            colorComponent.setBold(bold);
-            colorComponent.setStrikethrough(strikethrough);
-            colorComponent.setObfuscated(magic);
-            colorComponent.setColor(color.asBungee());
-            final String colorString = colorComponent.toLegacyText();
+            final TextComponent message = Component.empty().clickEvent(ClickEvent.runCommand("/betonquestanswer " + hashes.get(j)))
+                    .append(colors.getOption().append(colors.getNumber().append(Component.text(j)).append(Component.text(". ")))
+                            .append(options.get(j)));
 
-            // We avoid ComponentBuilder as it's not available pre 1.9
-            final List<BaseComponent> parts = new ArrayList<>(Arrays.asList(TextComponent.fromLegacyText(number.replace("%number%", Integer.toString(j)))));
-            parts.addAll(Arrays.asList(TextComponent.fromLegacyText(colorString + Utils.replaceReset(StringUtils.stripEnd(options.get(j), "\n"), colorString))));
-            for (final BaseComponent component : parts) {
-                component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/betonquestanswer " + hashes.get(j)));
-            }
-
-            conv.sendMessage(parts.toArray(new BaseComponent[0]));
+            conv.sendMessage(message);
         }
     }
 
     @Override
-    public void addPlayerOption(final String option, final ConfigurationSection properties) {
+    public void addPlayerOption(final Component option, final ConfigurationSection properties) {
         super.addPlayerOption(option, properties);
         count++;
         hashes.put(count, UUID.randomUUID().toString());

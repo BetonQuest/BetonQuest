@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -375,9 +374,8 @@ public class Conversation implements Listener {
             optionsCount++;
             availablePlayerOptions.put(optionsCount, option);
 
-            final Component text = data.getText(onlineProfile, option);
             try {
-                inOut.addPlayerOption(LegacyComponentSerializer.legacySection().serialize(text), data.getProperties(onlineProfile, option));
+                inOut.addPlayerOption(data.getText(onlineProfile, option), data.getProperties(onlineProfile, option));
             } catch (final QuestException e) {
                 log.warn(pack, "Error while adding option '" + option.name() + "': " + e.getMessage(), e);
             }
