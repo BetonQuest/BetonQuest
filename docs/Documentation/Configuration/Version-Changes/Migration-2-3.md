@@ -47,6 +47,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-306 - MMOItems Item Type](#300-dev-306-mmoitems-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
 - [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
+- [3.0.0-DEV-317 - Menu Conversation IO line wrapping](#300-dev-317-menu-conversation-io-line-wrapping) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -634,3 +635,28 @@ items:
   diamond: "DIAMOND"
 ```
 </div>
+
+### 3.0.0-DEV-317 - Menu Conversation IO line wrapping :sun:
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    As components are now used in converstions, also the wrapping of the text in the menu conversation IO was reworked.
+    As a result the `line_length` unit is now in pixels instead of characters.
+    This means that the old value is multiplied by 6.
+    As a result the default value is now 320 pixels instead of 50 characters what is more precise and allows more text.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    menu_conv_io:
+      line_length: 50
+    ```
+    
+    ```YAML title="New Syntax"
+    menu_conv_io:
+      line_length: 320
+    ```
+    
+    </div>

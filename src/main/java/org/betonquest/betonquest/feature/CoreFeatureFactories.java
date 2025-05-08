@@ -3,10 +3,12 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
 import org.betonquest.betonquest.conversation.io.InventoryConvIOFactory;
@@ -65,19 +67,34 @@ public class CoreFeatureFactories {
     private final ConfigAccessor config;
 
     /**
+     * The colors to use for the conversation.
+     */
+    private final ConversationColors colors;
+
+    /**
+     * The font registry to use for the conversation.
+     */
+    private final FontRegistry fontRegistry;
+
+    /**
      * Create a new Core Other Factories class for registering.
      *
      * @param loggerFactory      the factory to create new class specific loggers
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeAPI       the class for executing events
      * @param config             the config
+     * @param colors             the colors to use for the conversation
+     * @param fontRegistry       the font registry to use for the conversation
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
-                                final QuestTypeAPI questTypeAPI, final ConfigAccessor config) {
+                                final QuestTypeAPI questTypeAPI, final ConfigAccessor config, final ConversationColors colors,
+                                final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeAPI = questTypeAPI;
         this.config = config;
+        this.colors = colors;
+        this.fontRegistry = fontRegistry;
     }
 
     /**
@@ -88,11 +105,11 @@ public class CoreFeatureFactories {
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void register(final FeatureRegistries registries) {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
-        conversationIOTypes.register("simple", new SimpleConvIOFactory());
-        conversationIOTypes.register("tellraw", new TellrawConvIOFactory());
-        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, config, false));
-        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, config, true));
-        conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory());
+        conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
+        conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, config, fontRegistry, colors, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, config, fontRegistry, colors, true));
+        conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
         interceptorTypes.register("simple", new SimpleInterceptorFactory());
