@@ -27,8 +27,8 @@ class TransformerIntegrationTest extends TransformersFixture {
 
     @AfterEach
     void assertAfterPatch(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
-        final FileConfigAccessor actualConfig = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/modules.config/config.yml");
-        final FileConfigAccessor resource = createConfigAccessorFromResources(tempDir, "resource.yml", "src/test/resources/modules.config/resource.yml");
+        final FileConfigAccessor actualConfig = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/config/config.yml");
+        final FileConfigAccessor resource = createConfigAccessorFromResources(tempDir, "resource.yml", "src/test/resources/config/resource.yml");
 
         final FileConfigAccessor patchConfig = createConfigAccessorFromString(tempDir, "config.patch.yml", patch);
         final Patcher patcher = new Patcher(mock(BetonQuestLogger.class), resource, new DefaultPatchTransformerRegistry(), patchConfig);

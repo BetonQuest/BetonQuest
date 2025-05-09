@@ -24,7 +24,7 @@ public class TransformersFixture {
 
     @BeforeEach
     void setupConfig(@TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
-        config = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/modules.config/config.yml");
+        config = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/config/config.yml");
     }
 
     /**

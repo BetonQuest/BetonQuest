@@ -23,8 +23,8 @@ class NexusReleaseAndDevelopmentSourceTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_release_versions_with_url() throws IOException {
-        final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageRelease1.json");
-        final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageRelease2.json");
+        final Path filePathShadedPage1 = Path.of("src/test/resources/web/updater/nexusShadedPageRelease1.json");
+        final Path filePathShadedPage2 = Path.of("src/test/resources/web/updater/nexusShadedPageRelease2.json");
         final String searchUrl = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=false";
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl;
         final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
@@ -51,14 +51,14 @@ class NexusReleaseAndDevelopmentSourceTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_development_versions_with_url() throws IOException {
-        final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageDevelopment1.json");
-        final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPageDevelopment2.json");
+        final Path filePathShadedPage1 = Path.of("src/test/resources/web/updater/nexusShadedPageDevelopment1.json");
+        final Path filePathShadedPage2 = Path.of("src/test/resources/web/updater/nexusShadedPageDevelopment2.json");
         final String searchUrl = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=true";
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl;
         final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + searchUrl + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
 
-        final Path filePathPom1 = Path.of("src/test/resources/modules/web/updater/nexusPom1.xml");
-        final Path filePathPom2 = Path.of("src/test/resources/modules/web/updater/nexusPom2.xml");
+        final Path filePathPom1 = Path.of("src/test/resources/web/updater/nexusPom1.xml");
+        final Path filePathPom2 = Path.of("src/test/resources/web/updater/nexusPom2.xml");
         final String apiUrlPom1 = API_URL + "/repository/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/betonquest-2.0.0-20221230.085132-398.pom";
         final String apiUrlPom2 = API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379.pom";
 
