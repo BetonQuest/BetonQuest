@@ -51,7 +51,8 @@ public class PickupObjective extends CountingObjective implements Listener {
         if (event.getEntity() instanceof final Player player) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
             qeHandler.handle(() -> {
-                if (containsPlayer(onlineProfile) && isValidItem(onlineProfile, event.getItem().getItemStack())
+                if (containsPlayer(onlineProfile)
+                        && isValidItem(onlineProfile, event.getItem().getItemStack())
                         && checkConditions(onlineProfile)) {
                     final ItemStack pickupItem = event.getItem().getItemStack();
                     getCountingData(onlineProfile).progress(pickupItem.getAmount());
@@ -63,7 +64,7 @@ public class PickupObjective extends CountingObjective implements Listener {
 
     private boolean isValidItem(final OnlineProfile onlineProfile, final ItemStack itemStack) throws QuestException {
         for (final Item item : pickupItems.getValue(onlineProfile)) {
-            if (item.matches(itemStack)) {
+            if (item.matches(itemStack, onlineProfile)) {
                 return true;
             }
         }

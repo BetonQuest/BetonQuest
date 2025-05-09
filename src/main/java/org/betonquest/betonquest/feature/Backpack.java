@@ -310,7 +310,7 @@ public class Backpack implements Listener {
                 if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
                     try {
                         final ItemID itemId = new ItemID(null, buttonString);
-                        stack = BetonQuest.getInstance().getFeatureAPI().getItem(itemId).generate(1);
+                        stack = BetonQuest.getInstance().getFeatureAPI().getItem(itemId, onlineProfile).generate(1);
                     } catch (final QuestException e) {
                         log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                     }
@@ -534,7 +534,7 @@ public class Backpack implements Listener {
                 }
                 ItemStack compass;
                 try {
-                    compass = BetonQuest.getInstance().getFeatureAPI().getItem(item).generate(1);
+                    compass = BetonQuest.getInstance().getFeatureAPI().getItem(item, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);

@@ -38,7 +38,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
         try {
             final Inventory inventory = getChest(profile).getInventory();
             for (final Item item : items.getValue(profile)) {
-                final QuestItem questItem = item.getItem();
+                final QuestItem questItem = item.getItem(profile);
                 final int amount = item.getAmount().getValue(profile).intValue();
                 final ItemStack[] newItems = removeItems(inventory.getContents(), questItem, amount);
                 inventory.setContents(newItems);

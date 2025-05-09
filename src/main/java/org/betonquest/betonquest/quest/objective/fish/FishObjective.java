@@ -80,7 +80,7 @@ public class FishObjective extends CountingObjective implements Listener {
                 return;
             }
             final ItemStack item = ((org.bukkit.entity.Item) event.getCaught()).getItemStack();
-            if (this.item.getValue(onlineProfile).getItem().matches(item) && checkConditions(onlineProfile)) {
+            if (this.item.getValue(onlineProfile).matches(item, onlineProfile) && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress(item.getAmount());
                 completeIfDoneOrNotify(onlineProfile);
             }
