@@ -1,4 +1,17 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.5:
+  - type: REMOVE
+    key: sounds.journal
+  - type: REMOVE
+    key: sounds.full
+  - type: REMOVE
+    key: sounds.update
+  - type: KEY_RENAME
+    oldKey: npc.accept_left_click
+    newKey: npcs.accept_left_click
+  - type: KEY_RENAME
+    oldKey: npc.interaction_limit
+    newKey: npcs.interaction_limit
 3.0.0.4:
   - type: REMOVE
     key: sounds.start
