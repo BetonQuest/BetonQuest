@@ -48,10 +48,10 @@ class PatcherTest {
 
     @BeforeEach
     void setupConfig(@TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
-        config = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/modules.config/config.yml");
-        resource = createConfigAccessorFromResources(tempDir, "resource.yml", "src/test/resources/modules.config/resource.yml");
-        patch = createConfigAccessorFromResources(tempDir, "config.patch.yml", "src/test/resources/modules.config/config.patch.yml");
-        result = createConfigAccessorFromResources(tempDir, "resultingConfig.yml", "src/test/resources/modules.config/resultingConfig.yml");
+        config = createConfigAccessorFromResources(tempDir, "config.yml", "src/test/resources/config/config.yml");
+        resource = createConfigAccessorFromResources(tempDir, "resource.yml", "src/test/resources/config/resource.yml");
+        patch = createConfigAccessorFromResources(tempDir, "config.patch.yml", "src/test/resources/config/config.patch.yml");
+        result = createConfigAccessorFromResources(tempDir, "resultingConfig.yml", "src/test/resources/config/resultingConfig.yml");
     }
 
     @Test

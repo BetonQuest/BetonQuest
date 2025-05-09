@@ -22,7 +22,7 @@ class GitHubReleaseSourceTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void returns_correct_release_versions_with_url() throws IOException {
-        final Path filePath = Path.of("src/test/resources/modules/web/updater/github.json");
+        final Path filePath = Path.of("src/test/resources/web/updater/github.json");
         final String apiUrl = "https://github.com/BetonQuest/BetonQuest";
         final String apiUrlReleases = "https://github.com/BetonQuest/BetonQuest" + GitHubReleaseSource.RELEASES_URL;
 

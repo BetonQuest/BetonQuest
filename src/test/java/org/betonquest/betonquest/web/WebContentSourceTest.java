@@ -25,7 +25,7 @@ class WebContentSourceTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testGet() throws IOException {
-        final Path filePath = Path.of("src/test/resources/modules/web/updater/latest.json");
+        final Path filePath = Path.of("src/test/resources/web/updater/latest.json");
 
         final WebContentSource.HTTPCodeHandler handler = spy(new WebContentSource.HTTPCodeHandler() {
             @Override
