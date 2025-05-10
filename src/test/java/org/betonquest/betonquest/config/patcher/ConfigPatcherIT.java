@@ -9,8 +9,10 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,18 +20,32 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ConfigPatcherIT {
-    @Test
-    void patch_old_config_to_new_config(@TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
-        final File config = new File("src/main/resources/config.yml");
-        final File configPatch = new File("src/main/resources/config.patch.yml");
-        final File oldConfig = new File("src/test/resources/config/oldConfigToUpdate.yml");
+    private static Stream<Arguments> configsToCheck() {
+        return Stream.of(
+                Arguments.of("config.yml", (Consumer<ConfigurationSection>) section -> {
+                    assertEquals(section.get("default_conversation_IO"), "menu,chest");
+                    section.set("default_conversation_IO", "menu,tellraw");
+                }));
+    }
 
-        final File pluginConfig = new File(tempDir.toFile(), "config.yml");
+    @ParameterizedTest
+    @MethodSource("configsToCheck")
+    void patch_old_config_to_new_config(final String mainResource, final Consumer<ConfigurationSection> exceptionsPatcher,
+                                        @TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
+        final String mainResourcePatch = mainResource.replace(".yml", ".patch.yml");
+
+        final File config = new File("src/main/resources/" + mainResource);
+        final File configPatch = new File("src/main/resources/" + mainResourcePatch);
+        final File oldConfig = new File("src/test/resources/config/" + mainResource.replace(".yml", "Old.yml"));
+
+        final File pluginConfig = new File(tempDir.toFile(), mainResource);
         Files.copy(oldConfig.toPath(), pluginConfig.toPath());
 
         final BetonQuestLoggerFactory loggerFactory = mock(BetonQuestLoggerFactory.class);
@@ -37,26 +53,25 @@ public class ConfigPatcherIT {
         when(loggerFactory.create(any(Class.class), anyString())).thenReturn(mock(BetonQuestLogger.class));
 
         final Plugin plugin = mock(Plugin.class);
-        when(plugin.getResource("config.yml")).thenReturn(new FileInputStream(config));
-        when(plugin.getResource("config.patch.yml")).thenReturn(new FileInputStream(configPatch));
+        when(plugin.getResource(mainResource)).thenReturn(new FileInputStream(config));
+        when(plugin.getResource(mainResourcePatch)).thenReturn(new FileInputStream(configPatch));
 
         final DefaultConfigAccessorFactory configAccessorFactory = new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class));
-        configAccessorFactory.createPatching(pluginConfig, plugin, "config.yml");
+        configAccessorFactory.createPatching(pluginConfig, plugin, mainResource);
 
         final YamlConfiguration yamlPluginConfig = new YamlConfiguration();
         final YamlConfiguration yamlPatchedConfig = new YamlConfiguration();
         yamlPluginConfig.load(new FileReader(config));
         yamlPatchedConfig.load(new FileReader(pluginConfig));
 
-        manualPatchesForExceptions(yamlPatchedConfig);
+        applyException(yamlPatchedConfig, exceptionsPatcher);
         assertConfigContains(null, yamlPluginConfig, yamlPatchedConfig);
         assertConfigContains(null, yamlPatchedConfig, yamlPluginConfig);
     }
 
-    private void manualPatchesForExceptions(final YamlConfiguration yamlPatchedConfig) {
+    private void applyException(final ConfigurationSection yamlPatchedConfig, final Consumer<ConfigurationSection> exceptionsPatcher) {
         yamlPatchedConfig.set("configVersion", "");
-        assertEquals(yamlPatchedConfig.get("default_conversation_IO"), "menu,chest");
-        yamlPatchedConfig.set("default_conversation_IO", "menu,tellraw");
+        exceptionsPatcher.accept(yamlPatchedConfig);
     }
 
     private void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual, final ConfigurationSection contains) {
