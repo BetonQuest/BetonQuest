@@ -1,22 +1,7 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
-3.0.0.5:
+3.0.0.6:
   - type: REMOVE
-    key: sounds.journal
-  - type: REMOVE
-    key: sounds.full
-  - type: REMOVE
-    key: sounds.update
-  - type: KEY_RENAME
-    oldKey: npc.accept_left_click
-    newKey: npcs.accept_left_click
-  - type: KEY_RENAME
-    oldKey: npc.interaction_limit
-    newKey: npcs.interaction_limit
-3.0.0.4:
-  - type: REMOVE
-    key: sounds.start
-  - type: REMOVE
-    key: sounds.end
+    key: sounds
 3.0.0.3:
   - type: REMOVE
     key: citizens_npcs_by_name
@@ -25,10 +10,10 @@
     newKey: max_conversation_distance
   - type: KEY_RENAME
     oldKey: acceptNPCLeftClick
-    newKey: npc.accept_left_click
+    newKey: npcs.accept_left_click
   - type: KEY_RENAME
     oldKey: npcInteractionLimit
-    newKey: npc.interaction_limit
+    newKey: npcs.interaction_limit
 3.0.0.2:
   - type: VALUE_RENAME
     key: language
@@ -88,16 +73,8 @@
     newKey: hook.fabled
 2.1.0.1:
   - type: KEY_RENAME
-    oldKey: hooks.aureliumskills
-    newKey: hooks.auraskills
-2.0.2.2:
-  - type: REMOVE
-    key: sound.journal
-  - type: REMOVE
-    key: sound.full
-2.0.2.1:
-  - type: REMOVE
-    key: sound.update
+    oldKey: hook.aureliumskills
+    newKey: hook.auraskills
 2.0.0.6:
   - type: VALUE_RENAME
     key: default_interceptor
@@ -139,12 +116,6 @@
     newType: boolean
   - type: TYPE_TRANSFORM
     key: quest_items_unbreakable
-    newType: boolean
-  - type: TYPE_TRANSFORM
-    key: sounds.update
-    newType: boolean
-  - type: TYPE_TRANSFORM
-    key: sounds.full
     newType: boolean
   - type: TYPE_TRANSFORM
     key: hook.citizens

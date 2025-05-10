@@ -1,0 +1,114 @@
+configVersion: "2.0.0-CONFIG-6"
+mysql:
+  enabled: false
+  host: ''
+  port: ''
+  user: ''
+  pass: ''
+  base: ''
+  prefix: betonquest_
+  reconnect_interval: 1000
+language: en
+update:
+  enabled: true
+  strategy: MINOR
+  automatic: true
+  ingameNotification: true
+default_journal_slot: -1
+max_npc_distance: 5.3
+citizens_npcs_by_name: false
+acceptNPCLeftClick: false
+npcInteractionLimit: 500
+default_conversation_IO: menu,chest
+conversation_colors:
+  npc: dark_red
+  player: dark_green
+  text: green,italic
+  answer: gray
+  number: yellow
+  option: aqua
+conversation_IO_config:
+  chest:
+    show_number: true
+    show_npc_text: true
+default_interceptor: redischat,packet,simple
+default_hologram: DecentHolograms,HolographicDisplays
+display_chat_after_conversation: true
+combat_delay: 10
+notify_pullback: true
+remove_items_after_respawn: true
+quest_items_unbreakable: true
+player_hider_check_interval: 20
+npc_hider_check_interval: 100
+hologram_update_interval: 200
+sounds:
+  start: ENTITY_VILLAGER_AMBIENT
+  end: ENTITY_VILLAGER_YES
+  journal: ENTITY_BAT_TAKEOFF
+  update: false
+  full: false
+cmd_blacklist:
+  - spawn
+hook:
+  citizens: true
+  mythicmobs: true
+  vault: true
+  worldguard: true
+  skript: true
+  mcmmo: true
+  effectlib: true
+  playerpoints: true
+  heroes: true
+  magic: true
+  denizen: true
+  proskillapi: true
+  quests: true
+  shopkeepers: true
+  placeholderapi: true
+  holographicdisplays: true
+  decentholograms: true
+  worldedit: true
+  fastasyncworldedit: true
+  protocollib: true
+  brewery: true
+  jobs: true
+  mythiclib: true
+  mmocore: true
+  mmoitems: true
+  luckperms: true
+  aureliumskills: true
+  fake-block: true
+  redischat: true
+journal:
+  chars_per_line: 19
+  lines_per_page: 13
+  one_entry_per_page: false
+  reversed_order: true
+  hide_date: false
+  full_main_page: false
+  show_in_backpack: true
+  lock_default_journal_slot: false
+  give_on_respawn: false
+  custom_model_data: -1
+journal_colors:
+  date:
+    day: 9
+    hour: 6
+  line: 4
+  text: 0
+date_format: dd.MM.yyyy HH:mm
+debug:
+  enabled: false
+  history_in_minutes: 10
+download:
+  pull_requests: false
+  repo_whitelist:
+    - BetonQuest/Quest-Tutorials
+items:
+  backpack:
+    previous_button: ''
+    next_button: ''
+    cancel_button: "DEFAULT"
+    compass_button: "DEFAULT"
+profiles:
+  initial_name: 'default'

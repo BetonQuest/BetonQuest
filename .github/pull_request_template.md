@@ -20,7 +20,7 @@ Did the contributor...
 - [ ]  ... increment the [Version](https://betonquest.org/DEV/Participate/Misc/Versioning-and-Releasing/#versioning)?
 - [ ]  ... update the [Changelog](https://betonquest.org/DEV/Participate/Process/Maintaining-the-Changelog/)?
 - [ ]  ... update the [Documentation](https://betonquest.org/DEV/Participate/Process/Docs/Workflow/)?
-- [ ]  ... adjust the [ConfigPatcher](https://betonquest.org/DEV/API/Configuration-Files/#updating-configurations)?
+- [ ]  ... wrote a Migration?
 - [ ]  ... clean the commit history?
 
 Check if the build pipeline succeeded for this PR!

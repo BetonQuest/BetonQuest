@@ -35,6 +35,10 @@ Here are some things you should check by your own:
 ??? success "... run Maven verify?"
     The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it succeeds!
 
+??? success "... adjust the ConfigPatcher?"
+    For the `config.yml` check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurations).  
+    For quest files, this is currently not relevant. We are working on a new updater.
+
 ??? success "... solve all TODOs?"
     You shouldn't have any TODOs in your code because it indicates that your code is not finished. Unfinished
     code is not added to the plugin.
@@ -74,10 +78,6 @@ The following list is included in the PullRequest template, do not click any of 
     You need to adjust the documentation everytime you changed, added or removed any feature. Remember: Things that 
     aren't documented don't exist to the user. There can also be other reasons why you should update the documentation,
     like writing a new tutorial or adjusting a bad example.
-
-??? success "... adjust the ConfigPatcher?"
-    For the `config.yml` check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurations).  
-    For quest files, this is currently not relevant. We are working on a new updater.
 
 ??? success "... clean the commit history?"
     You did multiple commits, that look like `progress fixing the bug`? Or you did a commit with a wrong description?  
