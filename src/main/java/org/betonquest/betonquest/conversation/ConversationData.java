@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
@@ -20,7 +19,6 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -360,7 +358,7 @@ public class ConversationData {
      * @return the text of the specified option in the specified language
      */
     @Nullable
-    public String getText(@Nullable final Profile profile, final ResolvedOption option) {
+    public Component getText(@Nullable final Profile profile, final ResolvedOption option) {
         final ConversationOption opt;
         if (option.type() == NPC) {
             opt = option.conversationData().npcOptions.get(option.name());
@@ -649,41 +647,41 @@ public class ConversationData {
          * @param profile the profile of the player to get the text for
          * @return the text of this option in the given language
          */
-        public String getText(@Nullable final Profile profile) {
+        public Component getText(@Nullable final Profile profile) {
             return getText(profile, new ArrayList<>());
         }
 
-        private String getText(@Nullable final Profile profile, final List<String> optionPath) {
+        private Component getText(@Nullable final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
-                return "";
+                return Component.empty();
             }
             optionPath.add(getName());
 
-            final StringBuilder text = new StringBuilder(getFormattedText(profile));
+            Component text = getFormattedText(profile);
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
                     if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
-                        text.append(getOption(extend, type).getText(profile, optionPath));
+                        text = text.append(getOption(extend, type).getText(profile, optionPath));
                         break;
                     }
                 }
             }
 
-            return text.toString();
+            return text;
         }
 
-        private String getFormattedText(@Nullable final Profile profile) {
+        private Component getFormattedText(@Nullable final Profile profile) {
             if (text == null) {
                 log.warn(pack, "No text in conversation '" + convName + "'!");
-                return "";
+                return Component.empty();
             }
             try {
-                return Utils.format(LegacyComponentSerializer.legacySection().serialize(text.asComponent(profile)));
+                return text.asComponent(profile);
             } catch (final QuestException e) {
                 log.warn(pack, "Could not resolve message in conversation '" + convName + "': " + e.getMessage(), e);
-                return "";
+                return Component.empty();
             }
         }
 
