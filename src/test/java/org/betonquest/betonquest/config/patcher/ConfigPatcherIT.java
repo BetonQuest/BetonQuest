@@ -14,9 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,11 +23,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ConfigPatcherIT {
+class ConfigPatcherIT {
     private static Stream<Arguments> configsToCheck() {
         return Stream.of(
                 Arguments.of("config.yml", (Consumer<ConfigurationSection>) section -> {
-                    assertEquals(section.get("default_conversation_IO"), "menu,chest");
+                    assertEquals(section.get("default_conversation_IO"), "menu,chest", "For old config, default_conversation_IO should be menu,chest");
                     section.set("default_conversation_IO", "menu,tellraw");
                 }));
     }
@@ -41,28 +38,28 @@ public class ConfigPatcherIT {
                                         @TempDir final Path tempDir) throws IOException, InvalidConfigurationException {
         final String mainResourcePatch = mainResource.replace(".yml", ".patch.yml");
 
-        final File config = new File("src/main/resources/" + mainResource);
-        final File configPatch = new File("src/main/resources/" + mainResourcePatch);
-        final File oldConfig = new File("src/test/resources/config/" + mainResource.replace(".yml", "Old.yml"));
+        final Path config = Path.of("src/main/resources/" + mainResource);
+        final Path configPatch = Path.of("src/main/resources/" + mainResourcePatch);
+        final Path configOld = Path.of("src/test/resources/config/" + mainResource.replace(".yml", "Old.yml"));
 
-        final File pluginConfig = new File(tempDir.toFile(), mainResource);
-        Files.copy(oldConfig.toPath(), pluginConfig.toPath());
+        final Path configOldToPatch = tempDir.resolve(mainResource);
+        Files.copy(configOld, configOldToPatch);
 
         final BetonQuestLoggerFactory loggerFactory = mock(BetonQuestLoggerFactory.class);
         when(loggerFactory.create(any(Class.class))).thenReturn(mock(BetonQuestLogger.class));
         when(loggerFactory.create(any(Class.class), anyString())).thenReturn(mock(BetonQuestLogger.class));
 
         final Plugin plugin = mock(Plugin.class);
-        when(plugin.getResource(mainResource)).thenReturn(new FileInputStream(config));
-        when(plugin.getResource(mainResourcePatch)).thenReturn(new FileInputStream(configPatch));
+        when(plugin.getResource(mainResource)).thenReturn(Files.newInputStream(config));
+        when(plugin.getResource(mainResourcePatch)).thenReturn(Files.newInputStream(configPatch));
 
         final DefaultConfigAccessorFactory configAccessorFactory = new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class));
-        configAccessorFactory.createPatching(pluginConfig, plugin, mainResource);
+        configAccessorFactory.createPatching(configOldToPatch.toFile(), plugin, mainResource);
 
         final YamlConfiguration yamlPluginConfig = new YamlConfiguration();
         final YamlConfiguration yamlPatchedConfig = new YamlConfiguration();
-        yamlPluginConfig.load(new FileReader(config));
-        yamlPatchedConfig.load(new FileReader(pluginConfig));
+        yamlPluginConfig.load(Files.newBufferedReader(config));
+        yamlPatchedConfig.load(Files.newBufferedReader(configOldToPatch));
 
         applyException(yamlPatchedConfig, exceptionsPatcher);
         assertConfigContains(null, yamlPluginConfig, yamlPatchedConfig);
