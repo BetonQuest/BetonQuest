@@ -27,7 +27,6 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -316,18 +315,11 @@ public class Conversation implements Listener {
      * selectOption()
      */
     private void printNPCText() {
-        // if there are no possible options, end conversation
         if (nextNPCOption == null) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
-
-        String text = data.getText(onlineProfile, nextNPCOption);
-        text = ChatColor.translateAlternateColorCodes('&', text);
-
-        // print option to the player
-        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), LegacyComponentSerializer.legacySection().deserialize(text));
-
+        inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), data.getText(onlineProfile, nextNPCOption));
         new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
     }
 
@@ -382,11 +374,8 @@ public class Conversation implements Listener {
             optionsCount++;
             availablePlayerOptions.put(optionsCount, option);
 
-            // replace variables with their values
-            String text = data.getText(onlineProfile, option);
-            text = ChatColor.translateAlternateColorCodes('&', text);
-
-            inOut.addPlayerOption(text);
+            final Component text = data.getText(onlineProfile, option);
+            inOut.addPlayerOption(LegacyComponentSerializer.legacySection().serialize(text));
         }
         new BukkitRunnable() {
             @Override
