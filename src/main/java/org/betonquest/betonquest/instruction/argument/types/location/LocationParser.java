@@ -91,4 +91,9 @@ public class LocationParser implements Argument<Location> {
     public Location apply(final String string) throws QuestException {
         return parse(string, server);
     }
+
+    @Override
+    public Location clone(final Location value) {
+        return value.clone();
+    }
 }

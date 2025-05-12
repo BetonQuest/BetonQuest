@@ -52,11 +52,11 @@ public class Variable<T> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public Variable(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
-                    final QuestFunction<String, T> resolver) throws QuestException {
+                    final VariableResolver<T> resolver) throws QuestException {
         final Map<String, VariableAdapter> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
             final T resolved = resolver.apply(input);
-            value = profile -> resolved;
+            value = profile -> resolver.clone(resolved);
         } else {
             value = profile -> resolver.apply(getString(input, variables, profile));
         }
