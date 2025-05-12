@@ -59,17 +59,19 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
         if (!folder.exists() || !folder.isDirectory()) {
             throw new QuestException("Schematic folder does not exist");
         }
-        final String schematicName = instruction.next();
-        final File schemFile = new File(folder, schematicName);
-        final File file;
-        if (schemFile.exists()) {
-            file = schemFile;
-        } else {
-            file = new File(folder, schematicName + ".schematic");
-            if (!file.exists()) {
-                throw new QuestException("Schematic " + schematicName + " does not exist (" + folder.toPath().resolve(schematicName + ".schematic") + ")");
+        final Variable<File> file = instruction.get((value) -> {
+            final File schematic = new File(folder, value);
+
+            if (schematic.exists()) {
+                return schematic;
             }
-        }
+            final File alternativeSchematic = new File(folder, value + ".schematic");
+            if (alternativeSchematic.exists()) {
+                return alternativeSchematic;
+            }
+            throw new QuestException("Schematic " + value + " does not exist (" + folder.toPath().resolve(value + ".schematic") + ")");
+        });
+
         final boolean noAir = instruction.hasArgument("noair");
         return new PasteSchematicEvent(loc, rotation, noAir, file);
     }
