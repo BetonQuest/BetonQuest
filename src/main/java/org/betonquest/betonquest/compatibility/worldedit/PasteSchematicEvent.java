@@ -46,7 +46,7 @@ public class PasteSchematicEvent implements NullableEvent {
     /**
      * Schematic file.
      */
-    private final File file;
+    private final Variable<File> file;
 
     /**
      * Create a new paste schematic event.
@@ -56,7 +56,7 @@ public class PasteSchematicEvent implements NullableEvent {
      * @param noAir    the 'no air' paste argument
      * @param file     the schematic file
      */
-    public PasteSchematicEvent(final Variable<Location> loc, final Variable<Number> rotation, final boolean noAir, final File file) {
+    public PasteSchematicEvent(final Variable<Location> loc, final Variable<Number> rotation, final boolean noAir, final Variable<File> file) {
         this.loc = loc;
         this.rotation = rotation;
         this.noAir = noAir;
@@ -69,7 +69,7 @@ public class PasteSchematicEvent implements NullableEvent {
             final Location location = loc.getValue(profile);
             final double rot = rotation.getValue(profile).doubleValue();
 
-            final ClipboardHolder clipboard = new ClipboardHolder(getClipboard());
+            final ClipboardHolder clipboard = new ClipboardHolder(getClipboard(profile));
             final AffineTransform transform = new AffineTransform();
             clipboard.setTransform(clipboard.getTransform().combine(transform.rotateY(rot)));
 
@@ -86,7 +86,8 @@ public class PasteSchematicEvent implements NullableEvent {
         }
     }
 
-    private Clipboard getClipboard() throws IOException {
+    private Clipboard getClipboard(@Nullable final Profile profile) throws IOException, QuestException {
+        final File file = this.file.getValue(profile);
         final ClipboardFormat format = ClipboardFormats.findByFile(file);
         if (format == null) {
             throw new IOException("Unknown Schematic Format");
