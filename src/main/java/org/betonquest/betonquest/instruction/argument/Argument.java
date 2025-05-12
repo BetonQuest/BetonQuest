@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.instruction.argument;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.types.BlockSelectorParser;
 import org.betonquest.betonquest.instruction.argument.types.BooleanParser;
@@ -12,6 +11,7 @@ import org.betonquest.betonquest.instruction.argument.types.StringParser;
 import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.argument.types.location.VectorParser;
 import org.betonquest.betonquest.instruction.argument.types.location.WorldParser;
+import org.betonquest.betonquest.instruction.variable.VariableResolver;
 import org.bukkit.Bukkit;
 
 /**
@@ -20,7 +20,7 @@ import org.bukkit.Bukkit;
  * @param <T> what the argument returns
  */
 @FunctionalInterface
-public interface Argument<T> extends QuestFunction<String, T> {
+public interface Argument<T> extends VariableResolver<T> {
     /**
      * The default instance of {@link StringParser}.
      */

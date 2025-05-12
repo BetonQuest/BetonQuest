@@ -75,4 +75,9 @@ public class VectorParser implements Argument<Vector> {
     public Vector apply(final String string) throws QuestException {
         return parse(string);
     }
+
+    @Override
+    public Vector clone(final Vector value) {
+        return value.clone();
+    }
 }

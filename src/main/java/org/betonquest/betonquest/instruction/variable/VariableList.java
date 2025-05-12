@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.instruction.variable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.ValueChecker;
@@ -48,7 +47,7 @@ public class VariableList<T> extends Variable<List<T>> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
-                        final QuestFunction<String, T> resolver) throws QuestException {
+                        final VariableResolver<T> resolver) throws QuestException {
         this(variableProcessor, pack, input, resolver, (value) -> {
         });
     }
@@ -65,14 +64,26 @@ public class VariableList<T> extends Variable<List<T>> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
-                        final QuestFunction<String, T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        this(variableProcessor, pack, input, new MarkedResolver<>(value -> {
-            final List<T> list = new ArrayList<>();
-            for (final String part : StringUtils.split(value, ',')) {
-                list.add(resolver.apply(part));
+                        final VariableResolver<T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        this(variableProcessor, pack, input, new MarkedResolver<>(new VariableResolver<>() {
+            @Override
+            public List<T> apply(final String value) throws QuestException {
+                final List<T> list = new ArrayList<>();
+                for (final String part : StringUtils.split(value, ',')) {
+                    list.add(resolver.apply(part));
+                }
+                valueChecker.check(list);
+                return list;
             }
-            valueChecker.check(list);
-            return list;
+
+            @Override
+            public List<T> clone(final List<T> value) {
+                final List<T> list = new ArrayList<>();
+                for (final T part : value) {
+                    list.add(resolver.clone(part));
+                }
+                return list;
+            }
         }));
     }
 
@@ -124,19 +135,19 @@ public class VariableList<T> extends Variable<List<T>> {
      *
      * @param <T> the type to resolve to
      */
-    private static final class MarkedResolver<T> implements QuestFunction<String, List<T>> {
+    private static final class MarkedResolver<T> implements VariableResolver<List<T>> {
 
         /**
          * The resolver which applying should be marked.
          */
-        private final QuestFunction<String, List<T>> resolver;
+        private final VariableResolver<List<T>> resolver;
 
         /**
          * If the resolver was applied.
          */
         private boolean called;
 
-        private MarkedResolver(final QuestFunction<String, List<T>> resolver) {
+        private MarkedResolver(final VariableResolver<List<T>> resolver) {
             this.resolver = resolver;
             this.called = false;
         }
@@ -145,6 +156,11 @@ public class VariableList<T> extends Variable<List<T>> {
         public List<T> apply(final String arg) throws QuestException {
             called = true;
             return resolver.apply(arg);
+        }
+
+        @Override
+        public List<T> clone(final List<T> value) {
+            return resolver.clone(value);
         }
     }
 }
