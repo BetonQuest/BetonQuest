@@ -3310,6 +3310,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-299-npc-events-rename">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-299 - NPC events rename  <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5026,6 +5049,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-299-npc-events-rename">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-299 - NPC events rename  <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5183,6 +5229,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-274-string-list-remove">3.0.0-DEV-274 - String List remove</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-277-rename-constants">3.0.0-DEV-277 - Rename Constants</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-284-change-head-owner">3.0.0-DEV-284 - Rename Constants</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#300-dev-299-npc-events-rename">3.0.0-DEV-299 - NPC events rename</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -5302,7 +5349,8 @@ Because the keys have been renamed, you need to rename the keys in some parts of
 <p>To support more Npc plugins than just Citizens the system got a rework.</p>
 <p>Npcs are now addressed with IDs and defined in the <code>npcs</code> section.
 Starting conversations with Npc interaction is moved inside the <code>npc_conversations</code> section.</p>
-<p>Also, the <code>teleportnpc</code> event got renamed to <code>npcteleport</code>.</p>
+<p>Also, the <code>teleportnpc</code> event got renamed to <code>npcteleport</code>. That change is automated, when updating to version
+3.0.0-DEV-299 or newer.</p>
 <p>In addition, the <code>npc</code> variable to get the quester name of the current conversation got changed to <code>quester</code>.
 That change is automated.</p>
 <p>You can keep most of the syntax when you use the Citizens Npc id as their BetonQuest identifier,
@@ -5361,8 +5409,9 @@ Citizens integration. </li>
 </ol>
 </div>
 <h3 id="300-dev-135-citizens-adaption-to-npcid">3.0.0-DEV-135 - Citizens Adaption to NpcID <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-135-citizens-adaption-to-npcid" title="Permanent link">🔗</a></h3>
-<p>To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
-Also, the <code>movenpc</code> and <code>stopnpc</code> events are renamed into <code>npcmove</code> and <code>npcstop</code>.</p>
+<p>To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.</p>
+<p>Also, the <code>movenpc</code> and <code>stopnpc</code> events are renamed into <code>npcmove</code> and <code>npcstop</code>. These renames are automated, when 
+updating to version 3.0.0-DEV-299 or newer.</p>
 <p>As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.</p>
 <div class="grid">
 <div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
@@ -5603,6 +5652,14 @@ and also to integrate them into the existing variable system.</p>
 <span class="w">  </span><span class="nt">head</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;simple</span><span class="nv"> </span><span class="s">PLAYER_HEAD</span><span class="nv"> </span><span class="s">owner:&#39;</span>
 </code></pre></div>
 </div>
+</details>
+<h3 id="300-dev-299-npc-events-rename">3.0.0-DEV-299 - NPC events rename  <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#300-dev-299-npc-events-rename" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>Some NPC events were renamed in the versions <a href="#300-dev-114-npc-rework">3.0.0-DEV-114 - Npc Rework</a> and <a href="#300-dev-135-citizens-adaption-to-npcid">3.0.
+0-DEV-135 - Citizens Adaption to NpcID</a>. These renames are automated now.</p>
 </details>
 
 
