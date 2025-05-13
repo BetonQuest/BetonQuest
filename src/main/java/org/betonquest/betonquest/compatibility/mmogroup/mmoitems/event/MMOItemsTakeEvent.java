@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.event;
 
 import net.Indyuce.mmoitems.api.Type;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsUtils;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 import org.betonquest.betonquest.quest.event.take.AbstractTakeEvent;
@@ -76,8 +76,8 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType.getValue(profile), itemID.getValue(profile));
         final String itemName = item.getItemMeta().getDisplayName();
         notificationSender.sendNotification(profile,
-                new PluginMessage.Replacement("item", Component.text(itemName)),
-                new PluginMessage.Replacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()))));
+                new VariableReplacement("item", Component.text(itemName)),
+                new VariableReplacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()))));
     }
 
     /**

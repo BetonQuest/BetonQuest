@@ -287,7 +287,7 @@ public class Backpack implements Listener {
 
             final Inventory inv;
             try {
-                Component backpackTitle = pluginMessage.getMessage("backpack_title").asComponent(onlineProfile);
+                Component backpackTitle = pluginMessage.getMessage(onlineProfile, "backpack_title");
                 backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
                 inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
             } catch (final QuestException e) {
@@ -320,7 +320,7 @@ public class Backpack implements Listener {
                 stack = new ItemStack(fallback);
             }
             try {
-                final Component name = pluginMessage.getMessage(button).asComponent(onlineProfile);
+                final Component name = pluginMessage.getMessage(onlineProfile, button);
                 stack.editMeta(meta -> meta.displayName(name));
             } catch (final QuestException e) {
                 log.warn("Could not set display name for " + button + " button: " + e.getMessage(), e);
@@ -441,7 +441,7 @@ public class Backpack implements Listener {
             }
             final Inventory inv;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage("cancel_page").asComponent(onlineProfile));
+                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "cancel_page"));
             } catch (final QuestException e) {
                 log.warn("Could not create cancel inventory: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();
@@ -503,7 +503,7 @@ public class Backpack implements Listener {
             }
             final Inventory inv;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage("compass_page").asComponent(onlineProfile));
+                inv = Bukkit.createInventory(null, numberOfRows * 9, pluginMessage.getMessage(onlineProfile, "compass_page"));
             } catch (final QuestException e) {
                 log.warn("Could not create compass inventory: " + e.getMessage(), e);
                 onlineProfile.getPlayer().closeInventory();

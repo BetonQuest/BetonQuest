@@ -34,6 +34,6 @@ public class NotifyEvent implements OnlineEvent {
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        notifyIO.sendNotify(messages, profile);
+        notifyIO.sendNotify(messages.asComponent(profile), profile);
     }
 }

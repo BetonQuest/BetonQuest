@@ -153,7 +153,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             if (interceptor != null) {
                 final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
                 try {
-                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage("conversation_spectator").asComponent(profileProvider.getProfile(player)));
+                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(profileProvider.getProfile(player), "conversation_spectator"));
                 } catch (final QuestException e) {
                     log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
                 }

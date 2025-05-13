@@ -2,6 +2,7 @@ package org.betonquest.betonquest.command;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -90,7 +91,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (args.length == 0) {
             try {
-                sender.sendMessage(pluginMessage.getMessage("language_missing").asComponent(onlineProfile));
+                sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_missing"));
             } catch (final QuestException e) {
                 log.warn("Failed to get language missing message: " + e.getMessage(), e);
             }
@@ -106,9 +107,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
             try {
-                sender.sendMessage(pluginMessage.getMessage("language_not_exist",
-                                new PluginMessage.Replacement("languages", Component.text(finalMessage)))
-                        .asComponent(onlineProfile));
+                sender.sendMessage(pluginMessage.getMessage(onlineProfile, "language_not_exist",
+                        new VariableReplacement("languages", Component.text(finalMessage))));
             } catch (final QuestException e) {
                 log.warn("Failed to get language_not_exist: " + e.getMessage(), e);
             }

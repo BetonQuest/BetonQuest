@@ -51,8 +51,8 @@ public class ConditionVariable implements PlayerVariable {
     @Override
     public String getValue(final Profile profile) throws QuestException {
         if (questTypeAPI.condition(profile, conditionId.getValue(profile))) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_met").asComponent(profile)) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_not_met").asComponent(profile)) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_not_met")) : "false";
     }
 }

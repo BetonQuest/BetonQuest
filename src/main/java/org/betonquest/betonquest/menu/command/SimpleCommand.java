@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu.command;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -115,7 +116,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     @Override
     public boolean execute(final CommandSender sender, final String label, final String[] args) {
         if (args.length < minimalArgs) {
-            sendMessage(sender, "command_usage", new PluginMessage.Replacement("usage", Component.text(usage)));
+            sendMessage(sender, "command_usage", new VariableReplacement("usage", Component.text(usage)));
             return false;
         }
         if (permission != null && !sender.hasPermission(permission)) {
@@ -193,7 +194,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @param message      the message string to resolve
      * @param replacements the message replacements
      */
-    protected void sendMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+    protected void sendMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
         sender.sendMessage(getMessage(sender, message, replacements));
     }
 
@@ -205,11 +206,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @param replacements the message replacements
      * @return the resolved message component
      */
-    protected Component getMessage(final CommandSender sender, final String message, final PluginMessage.Replacement... replacements) {
+    protected Component getMessage(final CommandSender sender, final String message, final VariableReplacement... replacements) {
         final PluginMessage pluginMessage = getPlugin().getPluginMessage();
         final OnlineProfile profile = sender instanceof final Player player ? getPlugin().getProfileProvider().getProfile(player) : null;
         try {
-            return pluginMessage.getMessage("menu." + message, replacements).asComponent(profile);
+            return pluginMessage.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
             log.warn("Failed to get message '" + message + "': " + e.getMessage(), e);
             return Component.text("Failed to get message '" + message + "': " + e.getMessage());

@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.event.take;
 
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
@@ -54,8 +54,8 @@ public class TakeEvent extends AbstractTakeEvent {
 
             checkSelectedTypes(profile);
             notificationSender.sendNotification(profile,
-                    new PluginMessage.Replacement("item", Component.text(questItem.getName())),
-                    new PluginMessage.Replacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
+                    new VariableReplacement("item", Component.text(questItem.getName())),
+                    new VariableReplacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
         }
     }
 

@@ -4,10 +4,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.bukkit.Bukkit;
@@ -97,7 +97,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     try {
                         menu = new MenuID(null, args[1]);
                     } catch (final QuestException e) {
-                        sendMessage(sender, "command_invalid_menu", new PluginMessage.Replacement("menu", Component.text(args[1])));
+                        sendMessage(sender, "command_invalid_menu", new VariableReplacement("menu", Component.text(args[1])));
                         return false;
                     }
                 }
@@ -132,7 +132,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 if (args.length >= 3) {
                     player = Bukkit.getPlayer(args[2]);
                     if (player == null) {
-                        sendMessage(sender, "command_invalid_player", new PluginMessage.Replacement("player", Component.text(args[1])));
+                        sendMessage(sender, "command_invalid_player", new VariableReplacement("player", Component.text(args[1])));
                         return false;
                     }
                 }
@@ -153,7 +153,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 //open the menu and send feedback
                 try {
                     this.menu.openMenu(getPlugin().getProfileProvider().getProfile(player), menu);
-                    sendMessage(sender, "command_open_successful", new PluginMessage.Replacement("menu", Component.text(menu.toString())));
+                    sendMessage(sender, "command_open_successful", new VariableReplacement("menu", Component.text(menu.toString())));
                     return true;
                 } catch (final QuestException e) {
                     log.error(menu.getPackage(), "Could not open menu '" + menu + "': " + e.getMessage(), e);

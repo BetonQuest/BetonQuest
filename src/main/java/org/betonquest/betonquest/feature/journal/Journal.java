@@ -105,7 +105,7 @@ public class Journal {
             if (title == null || lore == null) {
                 return false;
             }
-            final Component journalTitle = BetonQuest.getInstance().getPluginMessage().getMessage("journal_title").asComponent(onlineProfile);
+            final Component journalTitle = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title");
             return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE) && Objects.equals(item.getItemMeta().getLore(), getJournalLore(onlineProfile));
         } catch (final QuestException e) {
             LOG.warn("Failed to check if the journal's title is correct: " + e.getMessage(), e);
@@ -115,7 +115,7 @@ public class Journal {
 
     private static List<String> getJournalLore(final Profile profile) throws QuestException {
         return Arrays.asList(Utils.format(LegacyComponentSerializer.legacySection()
-                        .serialize(BetonQuest.getInstance().getPluginMessage().getMessage("journal_lore").asComponent(profile)))
+                        .serialize(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore")))
                 .split("\n"));
     }
 
@@ -353,7 +353,7 @@ public class Journal {
     public ItemStack getAsItem() throws QuestException {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
-        meta.title(pluginMessage.getMessage("journal_title").asComponent(profile));
+        meta.title(pluginMessage.getMessage(profile, "journal_title"));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(profile));

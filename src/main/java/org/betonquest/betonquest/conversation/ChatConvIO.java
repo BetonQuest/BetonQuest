@@ -127,7 +127,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         event.getPlayer().teleport(newLocation);
         if (BetonQuest.getInstance().getPluginConfig().getBoolean("notify_pullback")) {
             try {
-                conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage("pullback").asComponent(onlineProfile));
+                conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
                 log.warn("Failed to get pullback message: " + e.getMessage(), e);
             }

@@ -5,10 +5,10 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -72,7 +72,7 @@ public class PaymentObjective extends Objective implements Listener {
                 completeObjective(profile);
             } else if (notify && ((int) playerData.amount) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
                 paymentSender.sendNotification(profile,
-                        new PluginMessage.Replacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
+                        new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
             }
         }
     }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.config.PluginMessage;
 
 /**
  * Notification sender that suppresses notifications instead of sending them.
@@ -15,7 +15,7 @@ public class NoNotificationSender implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(final Profile profile, final PluginMessage.Replacement... variables) {
+    public void sendNotification(final Profile profile, final VariableReplacement... variables) {
         // null object pattern
     }
 }

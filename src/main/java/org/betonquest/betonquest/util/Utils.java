@@ -205,7 +205,7 @@ public final class Utils {
             return false;
         }
         try {
-            final Component questItemLore = BetonQuest.getInstance().getPluginMessage().getMessage("quest_item").asComponent(null);
+            final Component questItemLore = BetonQuest.getInstance().getPluginMessage().getMessage(null, "quest_item");
             return lore.stream().anyMatch(line -> line.contains(questItemLore, COMPONENT_BI_PREDICATE));
         } catch (final QuestException e) {
             LOG.warn("Failed to get quest item message: " + e.getMessage(), e);
