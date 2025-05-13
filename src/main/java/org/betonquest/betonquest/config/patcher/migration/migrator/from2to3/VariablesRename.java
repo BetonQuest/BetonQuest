@@ -5,7 +5,6 @@ import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.List;
@@ -87,7 +86,6 @@ public class VariablesRename implements QuestMigration {
         return result2.replaceAll("\\\\\\$", "\\$");
     }
 
-    @NotNull
     private static String replaceRegex(final String input, final String regex, final Function<String, String> transformation) {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(input);
@@ -102,7 +100,6 @@ public class VariablesRename implements QuestMigration {
         return result.toString();
     }
 
-    @NotNull
     private static String migrateVariable(final String variable) {
         if (!variable.contains(".")) {
             return "constant." + variable;
