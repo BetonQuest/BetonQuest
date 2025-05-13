@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
@@ -225,47 +227,18 @@ public class PluginMessage {
     /**
      * Retrieves the message from the configuration in the profile's language and replaces the variables.
      *
+     * @param profile   the profile to get the message for
      * @param message   name of the message to retrieve
      * @param variables array of variables to replace
      * @return message with replaced variables in the profile's language or the default language or in english
      * @throws IllegalArgumentException if the message could not be found in the configuration
+     * @throws QuestException           if the message could not be parsed
      */
-    public Message getMessage(final String message, final Replacement... variables) {
+    public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... variables) throws QuestException {
         final Message component = loadedMessages.get(message);
         if (component == null) {
             throw new IllegalArgumentException("Message not found: " + message);
         }
-        return new PluginReplacementMessage(component, variables);
-    }
-
-    /**
-     * Represents a replacement of a variable in a message.
-     *
-     * @param variable    the variable to replace
-     * @param replacement the replacement
-     */
-    public record Replacement(String variable, Component replacement) {
-    }
-
-    /**
-     * Represents a message with variables to replace.
-     *
-     * @param message   The message.
-     * @param variables The variables to replace.
-     */
-    private record PluginReplacementMessage(Message message, Replacement... variables) implements Message {
-        private PluginReplacementMessage(final Message message, final Replacement... variables) {
-            this.message = message;
-            this.variables = variables.clone();
-        }
-
-        @Override
-        public Component asComponent(@Nullable final Profile profile) throws QuestException {
-            Component component = message.asComponent(profile);
-            for (final Replacement variable : variables) {
-                component = component.replaceText(builder -> builder.matchLiteral("{" + variable.variable + "}").replacement(variable.replacement));
-            }
-            return component;
-        }
+        return new VariableComponent(component.asComponent(profile)).resolve(variables);
     }
 }

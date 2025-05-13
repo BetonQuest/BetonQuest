@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -42,7 +42,7 @@ class IngameNotificationSenderTest {
             assertTrue(profile.getOnlineProfile().isPresent(), "Profile should have an online profile.");
             sender.sendNotification(profile);
             final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
-            verify(notifyIO, times(1)).sendNotify(any(Message.class), eq(onlineProfile));
+            verify(notifyIO, times(1)).sendNotify(any(Component.class), eq(onlineProfile));
         }
     }
 
@@ -57,7 +57,7 @@ class IngameNotificationSenderTest {
         try (MockedStatic<Notify> notify = mockStatic(Notify.class)) {
             final NotifyIO notifyIO = mock(NotifyIO.class);
             notify.when(() -> Notify.get(questPackage, "message-name,info")).thenReturn(notifyIO);
-            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(Message.class), any());
+            doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(Component.class), any());
 
             assertDoesNotThrow(() -> sender.sendNotification(profile), "Failing to send a notification should not throw an exception.");
             verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to send the notification message 'message-name' in 'full.id'. Error was: 'Test cause.'"), any(QuestException.class));
@@ -72,10 +72,10 @@ class IngameNotificationSenderTest {
         return profile;
     }
 
-    private PluginMessage getPluginMessage() {
+    private PluginMessage getPluginMessage() throws QuestException {
         final PluginMessage pluginMessage = mock(PluginMessage.class);
-        final Message message = mock(Message.class);
-        when(pluginMessage.getMessage("message-name")).thenReturn(message);
+        final Component message = mock(Component.class);
+        when(pluginMessage.getMessage(any(Profile.class), eq("message-name"))).thenReturn(message);
         return pluginMessage;
     }
 }

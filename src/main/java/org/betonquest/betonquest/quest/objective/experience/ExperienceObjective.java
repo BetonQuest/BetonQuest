@@ -3,10 +3,10 @@ package org.betonquest.betonquest.quest.objective.experience;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -64,7 +64,7 @@ public class ExperienceObjective extends Objective implements Listener {
         } else if (this.notify && notify) {
             final int level = (int) (amount - newAmount);
             if (level % notifyInterval == 0) {
-                levelSender.sendNotification(onlineProfile, new PluginMessage.Replacement("amount", Component.text(level)));
+                levelSender.sendNotification(onlineProfile, new VariableReplacement("amount", Component.text(level)));
             }
         }
     }

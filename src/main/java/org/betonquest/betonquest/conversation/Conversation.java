@@ -9,6 +9,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.ConversationOptionEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -421,7 +422,7 @@ public class Conversation implements Listener {
             } catch (final QuestException e) {
                 log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
             }
-            endSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+            endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
             // End interceptor after a second
             if (interceptor != null) {
@@ -762,7 +763,7 @@ public class Conversation implements Listener {
                     // first select the option before sending message, so it
                     // knows which is used
                     selectOption(resolvedOptions, false);
-                    startSender.sendNotification(onlineProfile, new PluginMessage.Replacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+                    startSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                 } else {
                     final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
                     selectOption(resolvedOptions, true);

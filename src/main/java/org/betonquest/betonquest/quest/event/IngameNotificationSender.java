@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.quest.event;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -71,10 +72,10 @@ public class IngameNotificationSender implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(final Profile profile, final PluginMessage.Replacement... variables) {
+    public void sendNotification(final Profile profile, final VariableReplacement... variables) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                final Message message = pluginMessage.getMessage(messageName, variables);
+                final Component message = pluginMessage.getMessage(profile, messageName, variables);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
                 log.warn(questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);

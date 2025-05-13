@@ -98,7 +98,7 @@ public class PasswordObjective extends Objective implements Listener {
         final String prefix;
         try {
             prefix = passwordPrefix == null
-                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage("password").asComponent(onlineProfile))
+                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "password"))
                     : passwordPrefix;
         } catch (final QuestException e) {
             throw new QuestException("Failed to get password prefix: " + e.getMessage(), e);

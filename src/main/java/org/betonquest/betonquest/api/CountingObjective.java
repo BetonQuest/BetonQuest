@@ -2,11 +2,11 @@ package org.betonquest.betonquest.api;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -142,7 +142,7 @@ public abstract class CountingObjective extends Objective {
             return true;
         }
         if (notify && notificationSender != null && shouldNotify(data) && profile.getOnlineProfile().isPresent()) {
-            notificationSender.sendNotification(profile, new PluginMessage.Replacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
+            notificationSender.sendNotification(profile, new VariableReplacement("amount", Component.text(Math.abs(data.getAmountLeft()))));
         }
         return false;
     }

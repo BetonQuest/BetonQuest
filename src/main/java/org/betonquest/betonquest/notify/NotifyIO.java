@@ -3,7 +3,6 @@ package org.betonquest.betonquest.notify;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.Argument;
@@ -69,8 +68,8 @@ public abstract class NotifyIO {
      * @param onlineProfile the profile to send the notification to
      * @throws QuestException when variables could not be resolved
      */
-    public void sendNotify(final Message message, final OnlineProfile onlineProfile) throws QuestException {
-        notifyPlayer(message.asComponent(onlineProfile), onlineProfile);
+    public void sendNotify(final Component message, final OnlineProfile onlineProfile) throws QuestException {
+        notifyPlayer(message, onlineProfile);
         sound.sendSound(onlineProfile);
     }
 

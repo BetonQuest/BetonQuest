@@ -3,6 +3,7 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -144,7 +145,7 @@ public class QuestCanceler {
         teleport(onlineProfile);
         log.debug("Quest removed!");
         final Component questName = getName(onlineProfile);
-        notificationSender.sendNotification(onlineProfile, new PluginMessage.Replacement("name", questName));
+        notificationSender.sendNotification(onlineProfile, new VariableReplacement("name", questName));
     }
 
     private void removeSimple(final Profile profile, final Variable<List<String>> toRemove, final String logIdentifier,

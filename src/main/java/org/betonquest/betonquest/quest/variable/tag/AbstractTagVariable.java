@@ -69,8 +69,8 @@ public abstract class AbstractTagVariable<T> {
      */
     public String getValueFor(@Nullable final Profile profile, final List<String> tags) throws QuestException {
         if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
-            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_met").asComponent(profile)) : "true";
+            return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }
-        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage("condition_variable_not_met").asComponent(profile)) : "false";
+        return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_not_met")) : "false";
     }
 }

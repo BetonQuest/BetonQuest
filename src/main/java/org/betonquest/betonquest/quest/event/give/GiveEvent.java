@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.give;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -81,8 +81,8 @@ public class GiveEvent implements OnlineEvent {
             final int amount = item.getAmount().getValue(profile).intValue();
             giveItems(profile, player, questItem, amount);
             itemsGivenSender.sendNotification(profile,
-                    new PluginMessage.Replacement("item", Component.text(questItem.getName())),
-                    new PluginMessage.Replacement("amount", Component.text(amount)));
+                    new VariableReplacement("item", Component.text(questItem.getName())),
+                    new VariableReplacement("amount", Component.text(amount)));
         }
     }
 
