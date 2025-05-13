@@ -43,6 +43,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :sun:
 - [3.0.0-DEV-277 - Rename Constants](#300-dev-277-rename-constants) :white_sun_cloud:
 - [3.0.0-DEV-284 - Rename Constants](#300-dev-284-change-head-owner) :sun:
+- [3.0.0-DEV-299 - NPC events rename](#300-dev-299-npc-events-rename) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -138,7 +139,8 @@ To support more Npc plugins than just Citizens the system got a rework.
 Npcs are now addressed with IDs and defined in the `npcs` section.
 Starting conversations with Npc interaction is moved inside the `npc_conversations` section.
 
-Also, the `teleportnpc` event got renamed to `npcteleport`.
+Also, the `teleportnpc` event got renamed to `npcteleport`. That change is automated, when updating to version
+3.0.0-DEV-299 or newer.
 
 In addition, the `npc` variable to get the quester name of the current conversation got changed to `quester`.
 That change is automated.
@@ -206,7 +208,9 @@ Citizens integration.
 ### 3.0.0-DEV-135 - Citizens Adaption to NpcID :thunder_cloud_rain:
 
 To streamline usage of Npcs the Citizens specific events and objective now also use the NpcID introduced in 3.0.0-DEV-114.
-Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`.
+
+Also, the `movenpc` and `stopnpc` events are renamed into `npcmove` and `npcstop`. These renames are automated, when 
+updating to version 3.0.0-DEV-299 or newer.
 
 As in the migration above stated you can either use a descriptive name as the id or use the numeric Citizens id of the Npc.
 
@@ -525,3 +529,12 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     ```
     
     </div>
+
+### 3.0.0-DEV-299 - NPC events rename  :sun:
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    Some NPC events were renamed in the versions [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) and [3.0.
+    0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid). These renames are automated now.
