@@ -68,19 +68,11 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
          */
         public static final EntityAmount ENTITY_AMOUNT = new EntityAmount();
 
-        /**
-         * Expected length of value.
-         */
-        private static final int FORMAT_LENGTH = 2;
-
         @Override
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
             final String[] parts = string.split(":");
-            if (parts.length != FORMAT_LENGTH) {
-                throw new QuestException("Invalid entity amount format: " + string);
-            }
             final EntityType type = Argument.ENUM(EntityType.class).apply(parts[0]);
-            final int amount = NUMBER.apply(parts[1]).intValue();
+            final int amount = parts.length == 2 ? NUMBER.apply(parts[1]).intValue() : 1;
             return Map.entry(type, amount);
         }
     }
