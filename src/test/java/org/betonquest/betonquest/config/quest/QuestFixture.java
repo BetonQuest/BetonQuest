@@ -3,8 +3,10 @@ package org.betonquest.betonquest.config.quest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
@@ -13,10 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,18 +73,27 @@ public class QuestFixture {
     }
 
     protected void checkAssertion(final Quest quest, final String fileName) throws IOException, InvalidConfigurationException {
-        final Set<String> expectedKeys = expected.getKeys(true);
-        final Set<String> actualKeys = quest.getQuestConfig().getKeys(true);
+        final ConfigurationSection questConfig = quest.getQuestConfig();
+        final ConfigurationSection fileConfig = loadFile(fileName);
 
-        tooManyKeys(expectedKeys, actualKeys, "Missing keys in actual");
-        tooManyKeys(actualKeys, expectedKeys, "Too many keys in actual");
-        assertEquals(expectedKeys, actualKeys, "Keys do not match in quest");
-        assertEquals(expectedKeys, loadFile(fileName).getKeys(true), "Keys do not match in file");
+        assertConfigContains(null, expected, questConfig);
+        assertConfigContains(null, questConfig, expected);
+        assertConfigContains(null, expected, fileConfig);
+        assertConfigContains(null, fileConfig, expected);
     }
 
-    private void tooManyKeys(final Set<String> one, final Set<String> another, final String message) {
-        final Set<String> tooManyActualKeys = new HashSet<>(one);
-        tooManyActualKeys.removeAll(another);
-        assertEquals(Collections.emptySet(), tooManyActualKeys, message);
+    protected void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual, final ConfigurationSection contains) {
+        for (final String key : contains.getKeys(true)) {
+            final String actualKey = parentKey == null ? key : parentKey + "." + key;
+            if (contains.isConfigurationSection(key)) {
+                assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the actual config");
+                assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key));
+            } else {
+                assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the actual config");
+                assertEquals(contains.get(key), actual.get(key), "Key '" + actualKey + "' has different value in the actual config");
+                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the actual config");
+                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the actual config");
+            }
+        }
     }
 }

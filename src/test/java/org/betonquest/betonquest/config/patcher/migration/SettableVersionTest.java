@@ -26,6 +26,8 @@ class SettableVersionTest extends QuestFixture {
         version.setVersion(quest, PACKAGE_VERSION);
         quest.saveAll();
         expected.set(PACKAGE_VERSION, version.getVersion());
+        expected.setInlineComments(PACKAGE_VERSION,
+                List.of("Don't change this! The plugin's automatic quest updater handles it."));
         checkAssertion(quest, "package.yml");
     }
 

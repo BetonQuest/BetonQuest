@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 /**
  * Handles the variables rename migration.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class VariablesRename implements QuestMigration {
-
     /**
      * Creates a new variables rename migrator.
      */
@@ -42,6 +42,8 @@ public class VariablesRename implements QuestMigration {
                 throw new InvalidConfigurationException("Cannot migrate variables to constants for key: " + key);
             }
             constants.set(key, variables.get(key));
+            constants.setComments(key, variables.getComments(key));
+            constants.setInlineComments(key, variables.getInlineComments(key));
             config.associateWith("constants." + key, source);
         }
         config.set("variables", null);
@@ -86,7 +88,7 @@ public class VariablesRename implements QuestMigration {
         return result2.replaceAll("\\\\\\$", "\\$");
     }
 
-    private static String replaceRegex(final String input, final String regex, final Function<String, String> transformation) {
+    private String replaceRegex(final String input, final String regex, final Function<String, String> transformation) {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(input);
 
@@ -100,7 +102,7 @@ public class VariablesRename implements QuestMigration {
         return result.toString();
     }
 
-    private static String migrateVariable(final String variable) {
+    private String migrateVariable(final String variable) {
         if (!variable.contains(".")) {
             return "constant." + variable;
         }
