@@ -13,8 +13,8 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,7 +96,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     public Set<String> getKeys(final boolean deep) {
         final ConfigurationSection original = manager.getOriginal();
         final ConfigurationSection fallback = manager.getFallback();
-        final Set<String> keys = new HashSet<>();
+        final Set<String> keys = new LinkedHashSet<>();
         if (fallback != null) {
             keys.addAll(fallback.getKeys(deep));
         }

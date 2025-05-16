@@ -13,7 +13,9 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,7 +62,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         checkSourceConfigs(sourceConfigs);
         ((MultiConfigurationHandler) handler).setConsumer(getSetConsumer());
         this.unsavedConfigs = new CopyOnWriteArraySet<>();
-        this.keyIndex = new ConcurrentHashMap<>();
+        this.keyIndex = Collections.synchronizedMap(new LinkedHashMap<>());
 
         buildKeyIndex(sourceConfigs);
         validateKeyIndex();
@@ -98,8 +100,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
-                    original.setComments(path, comments);
                 }
+                original.setComments(path, comments);
             }
 
             @Override
@@ -110,8 +112,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
                         config.setInlineComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
-                    original.setInlineComments(path, comments);
                 }
+                original.setInlineComments(path, comments);
             }
         };
     }
@@ -282,7 +284,10 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         } else {
             addToList(path, targetConfig);
         }
-        targetConfig.set(getReplacedPath(path, targetConfig), original.get(path));
+        final String replacedPath = getReplacedPath(path, targetConfig);
+        targetConfig.set(replacedPath, original.get(path));
+        targetConfig.setComments(replacedPath, original.getComments(path));
+        targetConfig.setInlineComments(replacedPath, original.getInlineComments(path));
         unsavedConfigs.add(targetConfig);
     }
 

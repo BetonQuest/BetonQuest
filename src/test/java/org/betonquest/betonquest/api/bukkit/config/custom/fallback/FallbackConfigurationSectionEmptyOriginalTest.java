@@ -38,7 +38,7 @@ public class FallbackConfigurationSectionEmptyOriginalTest extends FallbackConfi
         config.set("childSection", configuration);
         final ConfigurationSection childSection = config.getConfigurationSection("childSection");
         assertNotNull(childSection);
-        assertEquals("[test, nestedChildSection, nestedChildSection.key]", childSection.getKeys(true).toString());
+        assertEquals("[nestedChildSection, nestedChildSection.key, test]", childSection.getKeys(true).toString());
     }
 
     @Test

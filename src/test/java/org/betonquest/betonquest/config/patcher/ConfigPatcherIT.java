@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
+import org.betonquest.betonquest.config.quest.QuestFixture;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ConfigPatcherIT {
+class ConfigPatcherIT extends QuestFixture {
     private static Stream<Arguments> configsToCheck() {
         return Stream.of(
                 Arguments.of("config.yml", (Consumer<ConfigurationSection>) section -> {
@@ -83,21 +84,9 @@ class ConfigPatcherIT {
 
     private void applyException(final ConfigurationSection yamlPatchedConfig, @Nullable final Consumer<ConfigurationSection> exceptionsPatcher) {
         yamlPatchedConfig.set("configVersion", "");
+        yamlPatchedConfig.setInlineComments("configVersion", null);
         if (exceptionsPatcher != null) {
             exceptionsPatcher.accept(yamlPatchedConfig);
-        }
-    }
-
-    private void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual, final ConfigurationSection contains) {
-        for (final String key : contains.getKeys(true)) {
-            final String actualKey = parentKey == null ? key : parentKey + "." + key;
-            if (contains.isConfigurationSection(key)) {
-                assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the actual config");
-                assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key));
-            } else {
-                assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the actual config");
-                assertEquals(contains.get(key), actual.get(key), "Key '" + actualKey + "' has different value in the actual config");
-            }
         }
     }
 }
