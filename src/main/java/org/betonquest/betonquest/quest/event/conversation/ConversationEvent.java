@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,13 +27,13 @@ public class ConversationEvent implements OnlineEvent {
     /**
      * The conversation to start.
      */
-    private final ConversationID conversation;
+    private final Variable<ConversationID> conversation;
 
     /**
      * The optional NPC option to start at.
      */
     @Nullable
-    private final String startOption;
+    private final Variable<String> startOption;
 
     /**
      * Creates a new ConversationEvent.
@@ -42,7 +43,8 @@ public class ConversationEvent implements OnlineEvent {
      * @param conversation  the conversation to start
      * @param startOption   name of the option which the conversation should start at
      */
-    public ConversationEvent(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final ConversationID conversation, @Nullable final String startOption) {
+    public ConversationEvent(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage,
+                             final Variable<ConversationID> conversation, @Nullable final Variable<String> startOption) {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.conversation = conversation;
@@ -51,6 +53,7 @@ public class ConversationEvent implements OnlineEvent {
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        new Conversation(loggerFactory.create(Conversation.class), pluginMessage, profile, conversation, profile.getPlayer().getLocation(), startOption);
+        new Conversation(loggerFactory.create(Conversation.class), pluginMessage, profile, conversation.getValue(profile),
+                profile.getPlayer().getLocation(), startOption == null ? null : startOption.getValue(profile));
     }
 }
