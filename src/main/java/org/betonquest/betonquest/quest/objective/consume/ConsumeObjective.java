@@ -46,7 +46,9 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     public void onConsume(final PlayerItemConsumeEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         qeHandler.handle(() -> {
-            if (containsPlayer(onlineProfile) && item.getValue(onlineProfile).matches(event.getItem()) && checkConditions(onlineProfile)) {
+            if (containsPlayer(onlineProfile)
+                    && item.getValue(onlineProfile).matches(event.getItem(), onlineProfile)
+                    && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);
             }

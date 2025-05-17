@@ -40,7 +40,7 @@ public class DropEvent implements NullableEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = this.location.getValue(profile);
         for (final Item itemDefinition : items.getValue(profile)) {
-            final ItemStack item = itemDefinition.getItem().generate(1, profile);
+            final ItemStack item = itemDefinition.generate(profile);
             final int amount = itemDefinition.getAmount().getValue(profile).intValue();
 
             dropAsStacks(location, item, amount);

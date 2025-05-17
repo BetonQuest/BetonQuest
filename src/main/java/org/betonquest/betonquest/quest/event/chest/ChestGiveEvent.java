@@ -66,12 +66,12 @@ public class ChestGiveEvent implements NullableEvent {
     private ItemStack[] getItemStacks(@Nullable final Profile profile) throws QuestException {
         final List<ItemStack> itemStacks = new ArrayList<>();
         for (final Item item : questItems.getValue(profile)) {
-            final QuestItem questItem = item.getItem();
+            final QuestItem questItem = item.getItem(profile);
             int amount = item.getAmount().getValue(profile).intValue();
             while (amount > 0) {
                 final ItemStack itemStackTemplate = questItem.generate(1, profile);
                 final int stackSize = Math.min(amount, itemStackTemplate.getMaxStackSize());
-                final ItemStack itemStack = questItem.generate(stackSize);
+                final ItemStack itemStack = questItem.generate(stackSize, profile);
                 itemStacks.add(itemStack);
                 amount = amount - stackSize;
             }
