@@ -77,7 +77,7 @@ public class GiveEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         for (final Item item : questItems.getValue(profile)) {
-            final QuestItem questItem = item.getItem();
+            final QuestItem questItem = item.getItem(profile);
             final int amount = item.getAmount().getValue(profile).intValue();
             giveItems(profile, player, questItem, amount);
             itemsGivenSender.sendNotification(profile,

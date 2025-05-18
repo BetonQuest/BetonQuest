@@ -60,7 +60,7 @@ public class EquipItemObjective extends Objective implements Listener {
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
                     && event.getSlotType() == slotType.getValue(onlineProfile)
-                    && item.getValue(onlineProfile).matches(event.getNewItem())
+                    && item.getValue(onlineProfile).matches(event.getNewItem(), onlineProfile)
                     && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }

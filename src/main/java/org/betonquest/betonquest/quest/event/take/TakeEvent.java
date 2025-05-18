@@ -48,7 +48,7 @@ public class TakeEvent extends AbstractTakeEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         for (final Item item : questItems.getValue(profile)) {
-            final QuestItem questItem = item.getItem();
+            final QuestItem questItem = item.getItem(profile);
             final int deleteAmount = item.getAmount().getValue(profile).intValue();
             neededDeletions.put(profile.getProfileUUID(), Pair.of(questItem, deleteAmount));
 

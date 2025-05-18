@@ -58,7 +58,7 @@ public class ChestItemCondition implements NullableCondition {
                 if (stack == null) {
                     continue;
                 }
-                if (!item.matches(stack)) {
+                if (!item.matches(stack, profile)) {
                     continue;
                 }
                 amount -= stack.getAmount();

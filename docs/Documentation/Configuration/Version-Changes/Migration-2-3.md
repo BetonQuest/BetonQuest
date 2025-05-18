@@ -44,6 +44,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-277 - Rename Constants](#300-dev-277-rename-constants) :white_sun_cloud:
 - [3.0.0-DEV-284 - Rename Constants](#300-dev-284-change-head-owner) :sun:
 - [3.0.0-DEV-299 - NPC events rename](#300-dev-299-npc-events-rename) :sun:
+- [3.0.0-DEV-306 - MMOItems Item Type](#300-dev-306-mmoitems-item-type) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -538,3 +539,46 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     
     Some NPC events were renamed in the versions [3.0.0-DEV-114 - Npc Rework](#300-dev-114-npc-rework) and [3.0.
     0-DEV-135 - Citizens Adaption to NpcID](#300-dev-135-citizens-adaption-to-npcid). These renames are automated now.
+
+### 3.0.0-DEV-306 - MMOItems Item Type :thunder_cloud_rain:
+
+MMOItems is now integrated into the item system.
+
+Instead of using mmo specific pickup objectives or item conditions and events it now uses the standard implementations.
+The following obsolete implementations were removed:
+
+- `mmoitem` condition
+- `mmohand` condition
+- `mmoitemgive` event
+- `mmoitemtake` event
+- `mmoitemcraft` objective
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+conditions:
+  hand: mmohand ARMOR SKELETON_CROWN
+  inventory: mmoitem ARMOR SKELETON_CROWN
+events:
+  give: mmoitemgive ARMOR SKELETON_CROWN
+  take: mmoitemtake ARMOR SKELETON_CROWN
+objectives:
+  craft: mmoitemcraft ARMOR SKELETON_CROWN
+```
+
+```YAML title="New Syntax"
+items:
+  crown: mmoitem ARMOR SKELETON_CROWN
+conditions:
+  hand: hand crown
+  inventory: item crown
+events:
+  give: give crown
+  take: take crown
+objectives:
+  craft: craft crown
+```
+
+</div>
+
+The `mmoitemupgrade` and `mmoitemapplygem` objectives exist unchanged.

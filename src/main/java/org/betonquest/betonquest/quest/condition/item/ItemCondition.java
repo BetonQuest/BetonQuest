@@ -44,12 +44,12 @@ public class ItemCondition implements OnlineCondition {
         final List<ItemStack> backpackItems = dataStorage.get(profile).getBackpack();
 
         for (final Item item : items.getValue(profile)) {
-            final QuestItem questItem = item.getItem();
+            final QuestItem questItem = item.getItem(profile);
             final long totalAmount = Stream.concat(
                             Stream.of(inventoryItems),
                             backpackItems.stream()
                     )
-                    .filter(itemStack -> itemStack != null && questItem.matches(itemStack))
+                    .filter(questItem::matches)
                     .mapToInt(ItemStack::getAmount)
                     .sum();
             if (totalAmount < item.getAmount().getValue(profile).intValue()) {
