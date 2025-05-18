@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 /**
  * A variable resolver is a function that resolves a variable to a value.
  *
- * @param <T> the type of the value
+ * @param <R> the type of the value
  */
 @FunctionalInterface
-public interface VariableResolver<T> extends QuestFunction<String, T> {
+public interface VariableResolver<R> extends QuestFunction<String, R> {
     /**
      * Clones the value.
      * This is necessary for mutable values.
@@ -16,7 +16,7 @@ public interface VariableResolver<T> extends QuestFunction<String, T> {
      * @param value the value to clone
      * @return the cloned value
      */
-    default T clone(final T value) {
+    default R clone(final R value) {
         return value;
     }
 }
