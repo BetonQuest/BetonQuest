@@ -462,7 +462,7 @@ public class CoreQuestTypes {
         variables.registerCombined("item", new ItemVariableFactory());
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
-        variables.registerCombined("math", new MathVariableFactory(loggerFactory, variableProcessor));
+        variables.registerCombined("math", new MathVariableFactory(variableProcessor));
         variables.registerCombined("npc", new NpcVariableFactory(betonQuest.getFeatureAPI()));
         variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
