@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.notify.io;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
@@ -51,7 +52,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
-    private void notifyPlayerObject(final Object message, final OnlineProfile onlineProfile) {
+    private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
         final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");
         final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-message");
@@ -74,7 +75,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     }
 
     @SuppressWarnings("deprecation")
-    private void loadAdvancement(final Object message, final NamespacedKey rootKey, final NamespacedKey key) {
+    private void loadAdvancement(final JsonElement message, final NamespacedKey rootKey, final NamespacedKey key) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -118,7 +119,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         }
     }
 
-    private String generateJson(@Nullable final Object message, @Nullable final NamespacedKey root) {
+    private String generateJson(@Nullable final JsonElement message, @Nullable final NamespacedKey root) {
         final JsonObject json = new JsonObject();
         json.add("criteria", getCriteria());
         if (root != null) {
@@ -140,14 +141,10 @@ public class AdvancementNotifyIO extends NotifyIO {
         return trigger;
     }
 
-    private JsonObject getDisplay(@Nullable final Object message) {
+    private JsonObject getDisplay(@Nullable final JsonElement message) {
         final JsonObject display = new JsonObject();
         display.add("icon", getIcon());
-        if (message instanceof final String messageString) {
-            display.addProperty("title", messageString);
-        } else if (message instanceof final JsonObject messageObject) {
-            display.add("title", messageObject);
-        }
+        display.add("title", message);
         display.addProperty("description", "");
         display.addProperty("frame", this.frame);
         display.addProperty("announce_to_chat", false);
