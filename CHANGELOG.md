@@ -69,6 +69,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - in quest cancelers the events are now executed before the teleport
 - `simple` quest items now resolve variables one time on reload to support `constant` variables
     - `owner:%player%` was changed to `owner:` to allow constant pre-parsing
+- `math` variable now gives a better exception message and does not return 0 instead
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
