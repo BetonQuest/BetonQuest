@@ -2204,6 +2204,10 @@
       
       
       
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -5940,6 +5944,10 @@
       
       
       
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -7023,6 +7031,35 @@ Instead only use the permission to remove.</p>
 </code></pre></div>
 </div>
 <h2 id="mmocore-mmoitems-mythiclib">MMOCore<a href="https://www.spigotmc.org/resources/70575/"></a> &amp; MMOItems<a href="https://www.spigotmc.org/resources/39267/"></a> &amp; MythicLib<a href="https://www.spigotmc.org/resources/90306/"></a><a class="headerlink" href="#mmocore-mmoitems-mythiclib" title="Permanent link">🔗</a></h2>
+<h3 id="items">Items<a class="headerlink" href="#items" title="Permanent link">🔗</a></h3>
+<p>MMOItems usage is integrated to the [Items] system and thus used for events and conditions.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem ARMOR SKELETON_CROWN</span>
+<span class="w">  </span><span class="nt">gem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem GEMS SPEED_GEM</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hand crown</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveGem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give gem:3</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="craft-item-craft">Craft item: <code>craft</code><a class="headerlink" href="#craft-item-craft" title="Permanent link">🔗</a></h4>
+<p>When MMOItems is installed the <a href="../Objectives-List/#crafting-craft"><code>craft</code></a> objective also processes MMOItems
+"recipe-amounts" crafting and MMOItems station crafting.
+The amount is based on how many items have actually been crafted, not how often a specific recipe has been used!
+Therefore, a recipe that makes four items at once will let the objective progress by four steps.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Crafting Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">potion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmoitem HEALTH_POTION_RECIPE</span>
+<span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">craftPotion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">craft potion 5 notify</span>
+</code></pre></div></td></tr></table></div>
 <h3 id="conditions_6">Conditions<a class="headerlink" href="#conditions_6" title="Permanent link">🔗</a></h3>
 <h4 id="mmocore-class-mmoclass">MMOCore class: <code>mmoclass</code><a class="headerlink" href="#mmocore-class-mmoclass" title="Permanent link">🔗</a></h4>
 <p>Checks if a player has the given MMOCore class. You can check for any class that is not the default class by writing <code>*</code>
@@ -7051,19 +7088,6 @@ You can disable this behaviour by adding the <code>equal</code> argument.
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoprofession mining 2</span><span class="w"> </span>
 <span class="l l-Scalar l-Scalar-Plain">mmoprofession mining 2 equal</span>
-</code></pre></div></td></tr></table></div></p>
-<h4 id="mmoitems-item-mmoitem">MMOItems item: <code>mmoitem</code><a class="headerlink" href="#mmoitems-item-mmoitem" title="Permanent link">🔗</a></h4>
-<p>Checks if a player has the specified amount of MMOItems or more in his inventory. If no amount has been defined the default amount is one.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitem ARMOR SKELETON_CROWN</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitem GEMS SPEED_GEM 3</span>
-</code></pre></div></td></tr></table></div></p>
-<h4 id="mmoitems-hand-mmohand">MMOItems hand: <code>mmohand</code><a class="headerlink" href="#mmoitems-hand-mmohand" title="Permanent link">🔗</a></h4>
-<p>Checks if a player holds the specified MMOItem in his hand. Checks the main hand if not specified otherwise using the <code>offhand</code> argument.
-If no amount has been defined the default amount is one.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmohand ARMOR SKELETON_CROWN</span>
-<span class="l l-Scalar l-Scalar-Plain">mmohand GEMS SPEED_GEM 3 offhand</span>
 </code></pre></div></td></tr></table></div></p>
 <h4 id="mythiclib-stat-mmostat">MythicLib stat: <code>mmostat</code><a class="headerlink" href="#mythiclib-stat-mmostat" title="Permanent link">🔗</a></h4>
 <p>Checks <a href="https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/src/main/java/io/lumine/mythic/lib/api/stat/SharedStat.java">these</a>
@@ -7098,20 +7122,6 @@ the <code>notify</code> keyword optionally with the notification interval after 
 <p>This objective requires the player to level the given profession to the specified level.
 Use <code>main</code> to check for class level ups.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoprofessionlevelup MINING 10</span>
-</code></pre></div></td></tr></table></div>
-<h4 id="craft-item-mmoitemcraft">Craft item: <code>mmoitemcraft</code><a class="headerlink" href="#craft-item-mmoitemcraft" title="Permanent link">🔗</a></h4>
-<p>This objective requires the player to craft the item with the given type and id.
-It supports any MMOItem that was crafted using vanilla crafting methods, MMOItems "recipe-amounts" crafting and MMOItems station crafting.
-An amount can also be set if it shall differ from the default (which is one) by adding the <code>amount:</code> argument.
-The amount is based on how many items have actually been crafted, not how often a specific recipe has been used! Therefore,
-a recipe that makes four items at once will let the objective progress by four steps. You can use the <code>notify</code> keyword
-to display a message each time the player advances the objective, optionally with the notification interval after a
-colon.</p>
-<p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of items already crafted,
-<code>left</code> is the amount of items still needed to craft and <code>total</code> is the amount of items initially required.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitemcraft SWORD STEEL_SWORD</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitemcraft HEALTH_POTION_RECIPE amount:5</span>
 </code></pre></div></td></tr></table></div>
 <h4 id="upgrade-item-mmoitemupgrade">Upgrade Item: <code>mmoitemupgrade</code><a class="headerlink" href="#upgrade-item-mmoitemupgrade" title="Permanent link">🔗</a></h4>
 <p>This objective tracks if a player upgrades the given item with an upgrade consumable.<br />
@@ -7184,31 +7194,6 @@ is optional and would convert the amount to levels instead of XP points.
 <h4 id="give-attribute-reallocation-points-mmocoreattributereallocationpoints">Give attribute reallocation points: <code>mmocoreattributereallocationpoints</code><a class="headerlink" href="#give-attribute-reallocation-points-mmocoreattributereallocationpoints" title="Permanent link">🔗</a></h4>
 <p>Gives the player attribute reallocation points. The amount can be a variable or a number.
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmocoreattributereallocationpoints 1</span>
-</code></pre></div></td></tr></table></div></p>
-<h4 id="give-mmoitem-mmoitemgive">Give MMOItem: <code>mmoitemgive</code><a class="headerlink" href="#give-mmoitem-mmoitemgive" title="Permanent link">🔗</a></h4>
-<p>Gives the player predefined item. Default amount is one and can be set manually to a higher amount or a variable.
-The item can be adjusted to the players level by adding the <code>scale</code> option. If you want all items to be stacked together 
-the <code>singleStack</code> option can be set. If the player doesn't have required space in the inventory, the items will be dropped on the ground.
-You can also specify the <code>notify</code> keyword to display a message to the player about what items have been received.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitemgive CONSUMABLE MANA_POTION</span>
-</code></pre></div></td></tr></table></div></p>
-<h4 id="take-mmoitem-mmoitemtake">Take MMOItem: <code>mmoitemtake</code><a class="headerlink" href="#take-mmoitem-mmoitemtake" title="Permanent link">🔗</a></h4>
-<p>Removes the specified item from the players inventory. Optional arguments are an amount and <code>notify</code> to send a notification
-to the player.</p>
-<p>Which inventory types are checked is defined by the <code>invOrder:</code>
-option. You can use <code>Backpack</code>, <code>Inventory</code> and <code>Armor</code> there. One after another will be checked if multiple types are defined.
-The backpack will not work before 2.0's item rework since the current item system does not safe custom NBT data.</p>
-<p>You can also specify <code>notify</code> keyword to display a simple message to the player about loosing items.</p>
-<p>Amount can be a variable.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmoitemtake SWORD STEEL_SWORD</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitemtake SWORD STEEL_SWORD notify</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitemtake CONSUMABLE HEALTH_POTION amount:5</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitemtake CONSUMABLE BAKED_APPLES amount:2 invOrder:Backpack,Inventory</span>
-<span class="l l-Scalar l-Scalar-Plain">mmoitemtake ARMOR KINGS_CHESTPLATE invOrder:Armor,Backpack</span>
 </code></pre></div></td></tr></table></div></p>
 <h2 id="mythicmobs">MythicMobs<a href="http://dev.bukkit.org/bukkit-plugins/mythicmobs/"></a><a class="headerlink" href="#mythicmobs" title="Permanent link">🔗</a></h2>
 <div class="admonition info">
