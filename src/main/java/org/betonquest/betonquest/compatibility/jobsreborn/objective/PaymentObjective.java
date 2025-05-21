@@ -6,7 +6,6 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -25,11 +24,6 @@ import java.util.Objects;
  */
 public class PaymentObjective extends Objective implements Listener {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The target amount of money to be received.
      */
     private final Variable<Number> targetAmount;
@@ -43,14 +37,12 @@ public class PaymentObjective extends Objective implements Listener {
      * Constructor for the PaymentObjective.
      *
      * @param instruction   the instruction of the objective
-     * @param log           the logger for this objective
      * @param targetAmount  the target amount of money to be received
      * @param paymentSender the {@link IngameNotificationSender} to send notifications
      * @throws QuestException if the instruction is invalid
      */
-    public PaymentObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
+    public PaymentObjective(final Instruction instruction, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
         super(instruction, PaymentData.class);
-        this.log = log;
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
@@ -94,12 +86,7 @@ public class PaymentObjective extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        try {
-            return String.valueOf(targetAmount.getValue(profile).doubleValue());
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return "1";
-        }
+        return qeHandler.handle(() -> String.valueOf(targetAmount.getValue(profile).doubleValue()), "1");
     }
 
     @Override

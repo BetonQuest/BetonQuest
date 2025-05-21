@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.stage;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -17,10 +16,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class StageObjective extends Objective {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The mapping of stages to indices.
@@ -36,14 +31,12 @@ public class StageObjective extends Objective {
      * Creates a new stage objective.
      *
      * @param instruction       the instruction
-     * @param log               the logger for this objective
      * @param stageMap          the mapping of stages to indices
      * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final Instruction instruction, final BetonQuestLogger log, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
+    public StageObjective(final Instruction instruction, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
         super(instruction, StageData.class);
-        this.log = log;
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
     }
@@ -60,17 +53,12 @@ public class StageObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction() {
-        try {
-            return stageMap.getStage(0);
-        } catch (final QuestException e) {
-            log.reportException(instruction.getPackage(), e);
-            return "";
-        }
+        return qeHandler.handle(() -> stageMap.getStage(0), "");
     }
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        try {
+        return qeHandler.handle(() -> {
             return switch (name.toLowerCase(Locale.ROOT)) {
                 case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
                 case "current" -> getStage(profile);
@@ -78,10 +66,7 @@ public class StageObjective extends Objective {
                 case "previous" -> stageMap.previousStage(getStage(profile));
                 default -> "";
             };
-        } catch (final QuestException e) {
-            log.debug(instruction.getPackage(), "Error while getting property '" + name + "' for objective '" + instruction.getID() + "'.", e);
-            return "";
-        }
+        }, "");
     }
 
     /**

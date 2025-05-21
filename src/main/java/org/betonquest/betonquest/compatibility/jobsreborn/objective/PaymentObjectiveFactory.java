@@ -45,6 +45,6 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
         final IngameNotificationSender paymentSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFullID(),
                 NotificationLevel.INFO, "payment_to_receive");
-        return new PaymentObjective(instruction, log, targetAmount, paymentSender);
+        return new PaymentObjective(instruction, targetAmount, paymentSender);
     }
 }

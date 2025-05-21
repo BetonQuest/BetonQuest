@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
+import org.betonquest.betonquest.api.common.function.QuestRunnable;
+import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileKeyMap;
@@ -499,20 +501,6 @@ public abstract class Objective {
     }
 
     /**
-     * A task that may throw a {@link QuestException}.
-     */
-    @FunctionalInterface
-    protected interface QuestExceptionThrowing {
-
-        /**
-         * Executes the iteration.
-         *
-         * @throws QuestException when an error occurs
-         */
-        void run() throws QuestException;
-    }
-
-    /**
      * Stores the profile's data for the objective.
      */
     public static class ObjectiveData {
@@ -612,18 +600,34 @@ public abstract class Objective {
         /**
          * Runs a task and logs occurring quest exceptions with a rate limit.
          *
+         * @param qeThrowing   a task that may throw a quest exception
+         * @param defaultValue the default value to return in case of an exception
+         * @param <T>          the type of the result
+         * @return the result of the task or the default value if an exception occurs
+         */
+        public <T> T handle(final QuestSupplier<T> qeThrowing, final T defaultValue) {
+            try {
+                return qeThrowing.get();
+            } catch (final QuestException e) {
+                if (System.currentTimeMillis() - last >= ERROR_RATE_LIMIT_MILLIS) {
+                    last = System.currentTimeMillis();
+                    log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                }
+                return defaultValue;
+            }
+        }
+
+        /**
+         * Runs a task and logs occurring quest exceptions with a rate limit.
+         *
          * @param qeThrowing a task that may throw a quest exception
          */
-        public void handle(final QuestExceptionThrowing qeThrowing) {
-            try {
+        @SuppressWarnings("NullAway")
+        public void handle(final QuestRunnable qeThrowing) {
+            handle(() -> {
                 qeThrowing.run();
-            } catch (final QuestException e) {
-                if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) {
-                    return;
-                }
-                last = System.currentTimeMillis();
-                log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            }
+                return null;
+            }, null);
         }
     }
 }

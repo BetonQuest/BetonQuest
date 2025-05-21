@@ -23,10 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and a versatile data object to track the progress.
  */
 public abstract class CountingObjective extends Objective {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The message used for notifying the player.
@@ -67,7 +63,6 @@ public abstract class CountingObjective extends Objective {
         super(instruction, template);
         final BetonQuest instance = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
-        log = loggerFactory.create(getClass());
         this.targetAmount = targetAmount;
         countSender = notifyMessageName == null ? null : new IngameNotificationSender(loggerFactory.create(CountingObjective.class),
                 instance.getPluginMessage(), instruction.getPackage(), instruction.getID().getFullID(),
@@ -81,12 +76,7 @@ public abstract class CountingObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        try {
-            return String.valueOf(targetAmount.getValue(profile).intValue());
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return "0";
-        }
+        return qeHandler.handle(() -> String.valueOf(targetAmount.getValue(profile).intValue()), "0");
     }
 
     @Override

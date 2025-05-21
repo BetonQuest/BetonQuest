@@ -426,7 +426,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("command", new CommandObjectiveFactory());
         objectiveTypes.register("consume", new ConsumeObjectiveFactory());
         objectiveTypes.register("craft", new CraftingObjectiveFactory());
-        objectiveTypes.register("delay", new DelayObjectiveFactory(loggerFactory));
+        objectiveTypes.register("delay", new DelayObjectiveFactory());
         objectiveTypes.register("die", new DieObjectiveFactory());
         objectiveTypes.register("enchant", new EnchantObjectiveFactory());
         objectiveTypes.register("experience", new ExperienceObjectiveFactory(loggerFactory, pluginMessage));
@@ -444,7 +444,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("ride", new RideObjectiveFactory());
         objectiveTypes.register("shear", new ShearObjectiveFactory());
         objectiveTypes.register("smelt", new SmeltingObjectiveFactory());
-        objectiveTypes.register("stage", new StageObjectiveFactory(loggerFactory));
+        objectiveTypes.register("stage", new StageObjectiveFactory());
         objectiveTypes.register("step", new StepObjectiveFactory());
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("variable", new VariableObjectiveFactory());

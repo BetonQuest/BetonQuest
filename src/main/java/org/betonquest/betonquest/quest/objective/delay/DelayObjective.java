@@ -5,7 +5,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -33,11 +32,6 @@ import java.util.Objects;
  */
 public class DelayObjective extends Objective {
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The interval in ticks at which the objective checks if the time is up.
      */
     private final Variable<Number> interval;
@@ -57,17 +51,15 @@ public class DelayObjective extends Objective {
      * Constructor for the DelayObjective.
      *
      * @param instruction the instruction that created this objective
-     * @param log         the logger for this objective
      * @param interval    the interval in ticks at which the objective checks if the time is up
      * @param delay       the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final BetonQuestLogger log, final Variable<Number> interval,
+    public DelayObjective(final Instruction instruction, final Variable<Number> interval,
                           final Variable<Number> delay) throws QuestException {
         super(instruction, DelayData.class);
         this.interval = interval;
         this.delay = delay;
-        this.log = log;
     }
 
     private double timeToMilliSeconds(final double time) {
@@ -82,7 +74,7 @@ public class DelayObjective extends Objective {
 
     @Override
     public void start() {
-        try {
+        qeHandler.handle(() -> {
             runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -102,9 +94,7 @@ public class DelayObjective extends Objective {
                     }
                 }
             }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
-        } catch (final QuestException e) {
-            log.warn("Error while starting DelayObjective: " + e.getMessage(), e);
-        }
+        });
     }
 
     @Override
@@ -121,26 +111,17 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        try {
+        return qeHandler.handle(() -> {
             final double millis = timeToMilliSeconds(delay.getValue(profile).doubleValue());
             return Double.toString(new Date().getTime() + millis);
-        } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
-            return "";
-        }
+        }, "");
     }
 
     @Override
     public String getProperty(final String name, final Profile profile) {
         return switch (name.toLowerCase(Locale.ROOT)) {
-            case "left" -> {
-                try {
-                    yield LegacyComponentSerializer.legacySection().serialize(parseVariableLeft(profile));
-                } catch (final QuestException e) {
-                    log.warn("Could not parse left variable: " + e.getMessage(), e);
-                    yield "";
-                }
-            }
+            case "left" ->
+                    qeHandler.handle(() -> LegacyComponentSerializer.legacySection().serialize(parseVariableLeft(profile)), "");
             case "date" -> parseVariableDate(profile);
             case "rawseconds" -> parseVariableRawSeconds(profile);
             default -> "";
