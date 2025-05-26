@@ -5,6 +5,7 @@ import de.oliver.fancynpcs.api.NpcManager;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -20,7 +21,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     /**
      * Npc identifier.
      */
-    private final String npcId;
+    private final Variable<String> npcId;
 
     /**
      * If the identifier should be interpreted as name.
@@ -34,7 +35,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
      * @param npcId      the npc identifier
      * @param byName     whether to use the identifier as name or id
      */
-    public FancyWrapper(final NpcManager npcManager, final String npcId, final boolean byName) {
+    public FancyWrapper(final NpcManager npcManager, final Variable<String> npcId, final boolean byName) {
         this.npcManager = npcManager;
         this.npcId = npcId;
         this.byName = byName;
@@ -43,6 +44,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     @Override
     public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc(@Nullable final Profile profile) throws QuestException {
         Npc npc = null;
+        final String npcId = this.npcId.getValue(profile);
         if (byName) {
             for (final Npc aNpc : npcManager.getAllNpcs()) {
                 if (npcId.equals(aNpc.getData().getName())) {
