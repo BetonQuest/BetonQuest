@@ -80,7 +80,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * The time unit to use for the delay and period.
      */
-    private final TimeUnit timeUnit;
+    private final Variable<TimeUnit> timeUnit;
 
     /**
      * Whether the event should be canceled on logout.
@@ -112,7 +112,7 @@ public class FolderEvent implements NullableEvent {
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
                        final Variable<List<EventID>> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
                        @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
-                       @Nullable final Variable<Number> random, final TimeUnit timeUnit, final boolean cancelOnLogout,
+                       @Nullable final Variable<Number> random, final Variable<TimeUnit> timeUnit, final boolean cancelOnLogout,
                        final Variable<List<ConditionID>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
@@ -150,6 +150,7 @@ public class FolderEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Deque<EventID> chosenList = getEventOrder(profile);
+        final TimeUnit timeUnit = this.timeUnit.getValue(profile);
         final long delayTicks = delay == null ? 0 : timeUnit.getTicks(delay.getValue(profile).longValue());
         final long periodTicks = period == null ? 0 : timeUnit.getTicks(period.getValue(profile).longValue());
         if (delayTicks == 0 && periodTicks == 0) {

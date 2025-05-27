@@ -11,6 +11,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Pack
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RemoveEntity;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RideUpdates;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.AddSimpleTypeToQuestItem;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.FolderTimeUnit;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.HeadOwnerMigrator;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.ListNamesRenameToPlural;
@@ -117,6 +118,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 9), new VariablesRename());
         migrations.put(questVersion("3.0.0", 10), new HeadOwnerMigrator());
         migrations.put(questVersion("3.0.0", 11), new NpcEventsRename());
+        migrations.put(questVersion("3.0.0", 12), new FolderTimeUnit());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

@@ -17,6 +17,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -75,7 +76,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
         final Variable<Number> delay = instruction.getValue("delay", Argument.NUMBER);
         final Variable<Number> period = instruction.getValue("period", Argument.NUMBER);
         final Variable<Number> random = instruction.getValue("random", Argument.NUMBER);
-        final TimeUnit timeUnit = getTimeUnit(instruction);
+        final Variable<TimeUnit> timeUnit = instruction.getValue("unit", this::getTimeUnit, TimeUnit.SECONDS);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
         final Variable<List<ConditionID>> cancelConditions = instruction.getValueList("cancelConditions", ConditionID::new);
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
@@ -83,13 +84,13 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
                 questTypeAPI, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));
     }
 
-    private TimeUnit getTimeUnit(final Instruction instruction) {
-        if (instruction.hasArgument("ticks")) {
-            return TimeUnit.TICKS;
-        } else if (instruction.hasArgument("minutes")) {
-            return TimeUnit.MINUTES;
-        } else {
-            return TimeUnit.SECONDS;
-        }
+    private TimeUnit getTimeUnit(final String input) throws QuestException {
+        return switch (input.toLowerCase(Locale.ROOT)) {
+            case "ticks" -> TimeUnit.TICKS;
+            case "seconds" -> TimeUnit.SECONDS;
+            case "minutes" -> TimeUnit.MINUTES;
+            default ->
+                    throw new QuestException("Invalid time unit: " + input + ". Valid units are: ticks, seconds, minutes.");
+        };
     }
 }
