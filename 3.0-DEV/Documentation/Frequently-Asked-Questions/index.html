@@ -5791,7 +5791,7 @@ reached a certain value.</p>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. increase the global points 2. wait one tick for the change to process 3. attempt to run the completion events</span>
-<span class="nt">gQuestProgress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder gQuestIncrementCounter,gQuestCheckCompletion period:1 ticks</span>
+<span class="nt">gQuestProgress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder gQuestIncrementCounter,gQuestCheckCompletion period:1 unit:ticks</span>
 <span class="c1"># Adds 1 to the global points</span>
 <span class="nt">gQuestIncrementCounter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">globalpoint gQuest 1</span>
 <span class="c1"># Runs completion events only when the condition is met (= the global points reached X points)</span>

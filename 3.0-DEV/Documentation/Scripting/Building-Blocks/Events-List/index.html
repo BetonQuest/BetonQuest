@@ -7675,9 +7675,9 @@ You can use the <code>cancelOnLogout</code> argument to stop the folder executin
 </tr>
 <tr>
 <td><em>time unit</em></td>
-<td>Keyword</td>
+<td>unit:unit</td>
 <td>Seconds</td>
-<td>The unit of time to use for delay and period. Either <code>ticks</code> or <code>minutes</code>. Omit to use seconds.</td>
+<td>The unit of time to use for delay and period. Either <code>ticks</code>, <code>minutes</code> or <code>seconds</code>.</td>
 </tr>
 <tr>
 <td><em>random</em></td>
@@ -7703,7 +7703,7 @@ You can use the <code>cancelOnLogout</code> argument to stop the folder executin
 <span class="w">  </span><span class="nt">simpleFolder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">event1,event2,event3&quot;</span><span class="w"> </span><span class="c1"># (1)!</span>
 <span class="w">  </span><span class="nt">runEvents</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">event1,event2,event3</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">period:1&quot;</span><span class="w"> </span><span class="c1"># (2)!</span>
 <span class="w">  </span><span class="nt">troll</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">killPlayer,banPlayer,kickPlayer</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">random:1&quot;</span><span class="w"> </span><span class="c1"># (3)!</span>
-<span class="w">  </span><span class="nt">wait</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">messagePlayer,giveReward</span><span class="nv"> </span><span class="s">delay:1</span><span class="nv"> </span><span class="s">minutes&quot;</span><span class="w"> </span><span class="c1"># (4)!</span>
+<span class="w">  </span><span class="nt">wait</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;folder</span><span class="nv"> </span><span class="s">messagePlayer,giveReward</span><span class="nv"> </span><span class="s">delay:1</span><span class="nv"> </span><span class="s">unit:minutes&quot;</span><span class="w"> </span><span class="c1"># (4)!</span>
 </code></pre></div>
 <ol>
 <li>Runs all events after one tick with a delay of one tick between each event.</li>
