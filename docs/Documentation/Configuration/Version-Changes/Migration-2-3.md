@@ -42,7 +42,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-267 - MoonPhases rename](#300-dev-267-moonphase-rename) :sun:
 - [3.0.0-DEV-274 - String List remove](#300-dev-274-string-list-remove) :sun:
 - [3.0.0-DEV-277 - Rename Constants](#300-dev-277-rename-constants) :white_sun_cloud:
-- [3.0.0-DEV-284 - Rename Constants](#300-dev-284-change-head-owner) :sun:
+- [3.0.0-DEV-284 - Change Head Owner](#300-dev-284-change-head-owner) :sun:
 - [3.0.0-DEV-299 - NPC events rename](#300-dev-299-npc-events-rename) :sun:
 - [3.0.0-DEV-306 - MMOItems Item Type](#300-dev-306-mmoitems-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
