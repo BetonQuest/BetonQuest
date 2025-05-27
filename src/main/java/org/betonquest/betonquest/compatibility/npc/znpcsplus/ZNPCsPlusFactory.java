@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
 
 /**
  * Factory to get ZNPCsPlus Npcs.
@@ -28,6 +29,6 @@ public class ZNPCsPlusFactory implements NpcFactory {
 
     @Override
     public NpcWrapper<NpcEntry> parseInstruction(final Instruction instruction) throws QuestException {
-        return new ZNPCsPlusWrapper(npcRegistry, instruction.next());
+        return new ZNPCsPlusWrapper(npcRegistry, instruction.get(Argument.STRING));
     }
 }

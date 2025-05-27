@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -21,7 +22,7 @@ public class ZNPCsPlusWrapper implements NpcWrapper<NpcEntry> {
     /**
      * Npc identifier.
      */
-    private final String npcId;
+    private final Variable<String> npcId;
 
     /**
      * Create a new FancyNpcs Npc Wrapper.
@@ -29,13 +30,14 @@ public class ZNPCsPlusWrapper implements NpcWrapper<NpcEntry> {
      * @param npcRegistry the Npc Registry to get Npcs from
      * @param npcId       the npc identifier
      */
-    public ZNPCsPlusWrapper(final NpcRegistry npcRegistry, final String npcId) {
+    public ZNPCsPlusWrapper(final NpcRegistry npcRegistry, final Variable<String> npcId) {
         this.npcRegistry = npcRegistry;
         this.npcId = npcId;
     }
 
     @Override
     public Npc<NpcEntry> getNpc(@Nullable final Profile profile) throws QuestException {
+        final String npcId = this.npcId.getValue(profile);
         final NpcEntry npcEntry = npcRegistry.getById(npcId);
         if (npcEntry == null) {
             throw new QuestException("ZNPCsPlus Npc with ID " + npcId + " not found");
