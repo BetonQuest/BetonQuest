@@ -57,8 +57,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
@@ -73,9 +73,9 @@ public class MenuConvIO extends ChatConvIO {
     protected final AtomicInteger selectedOption;
 
     /**
-     * Thread safety
+     * Thread safety.
      */
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock lock = new ReentrantLock();
 
     /**
      * All players that are currently on cooldown are in this list.
@@ -158,7 +158,7 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        lock.writeLock().lock();
+        lock.lock();
         try {
             if (state.isStarted()) {
                 return;
@@ -195,7 +195,7 @@ public class MenuConvIO extends ChatConvIO {
 
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         } finally {
-            lock.writeLock().unlock();
+            lock.unlock();
         }
     }
 
@@ -502,7 +502,7 @@ public class MenuConvIO extends ChatConvIO {
         if (state.isEnded()) {
             return;
         }
-        lock.writeLock().lock();
+        lock.lock();
         try {
             if (state.isEnded()) {
                 return;
@@ -529,7 +529,7 @@ public class MenuConvIO extends ChatConvIO {
 
             super.end();
         } finally {
-            lock.writeLock().unlock();
+            lock.unlock();
         }
     }
 
@@ -577,8 +577,13 @@ public class MenuConvIO extends ChatConvIO {
                             }
                             break;
                         case SELECT:
-                            if (!isOnCooldown()) {
-                                conv.passPlayerAnswer(selectedOption.get() + 1);
+                            lock.lock();
+                            try {
+                                if (!isOnCooldown()) {
+                                    conv.passPlayerAnswer(selectedOption.get() + 1);
+                                }
+                            } finally {
+                                lock.unlock();
                             }
                             break;
                         case MOVE:
@@ -603,8 +608,13 @@ public class MenuConvIO extends ChatConvIO {
                             }
                             break;
                         case SELECT:
-                            if (!isOnCooldown()) {
-                                conv.passPlayerAnswer(selectedOption.get() + 1);
+                            lock.lock();
+                            try {
+                                if (!isOnCooldown()) {
+                                    conv.passPlayerAnswer(selectedOption.get() + 1);
+                                }
+                            } finally {
+                                lock.unlock();
                             }
                             break;
                         case MOVE:
@@ -623,7 +633,7 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        lock.readLock().lock();
+        lock.lock();
         try {
             if (state.isInactive()) {
                 return;
@@ -642,7 +652,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } finally {
-            lock.readLock().unlock();
+            lock.unlock();
         }
     }
 
@@ -652,7 +662,7 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        lock.readLock().lock();
+        lock.lock();
         try {
             if (state.isInactive()) {
                 return;
@@ -668,7 +678,7 @@ public class MenuConvIO extends ChatConvIO {
                 handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
-            lock.readLock().unlock();
+            lock.unlock();
         }
     }
 
@@ -678,7 +688,7 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        lock.readLock().lock();
+        lock.lock();
         try {
             if (state.isInactive()) {
                 return;
@@ -694,7 +704,7 @@ public class MenuConvIO extends ChatConvIO {
                 handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {
-            lock.readLock().unlock();
+            lock.unlock();
         }
     }
 
@@ -706,10 +716,9 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
             case SELECT -> {
-                if (isOnCooldown()) {
-                    return;
+                if (!isOnCooldown()) {
+                    conv.passPlayerAnswer(selectedOption.get() + 1);
                 }
-                conv.passPlayerAnswer(selectedOption.get() + 1);
             }
             default -> {
             }
@@ -734,7 +743,7 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        lock.readLock().lock();
+        lock.lock();
         try {
             if (state.isInactive()) {
                 return;
@@ -753,16 +762,14 @@ public class MenuConvIO extends ChatConvIO {
             final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
 
             if (scrollDirection == Direction.DOWN && selectedOption.get() < options.size() - 1) {
-                oldSelectedOption.set(selectedOption.get());
-                selectedOption.incrementAndGet();
+                oldSelectedOption.set(selectedOption.getAndIncrement());
                 updateDisplay();
             } else if (scrollDirection == Direction.UP && selectedOption.get() > 0) {
-                oldSelectedOption.set(selectedOption.get());
-                selectedOption.decrementAndGet();
+                oldSelectedOption.set(selectedOption.getAndDecrement());
                 updateDisplay();
             }
         } finally {
-            lock.readLock().unlock();
+            lock.unlock();
         }
     }
 

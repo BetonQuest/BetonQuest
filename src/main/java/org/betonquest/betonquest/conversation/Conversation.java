@@ -330,12 +330,12 @@ public class Conversation implements Listener {
      * @param number the message player has sent on chat
      */
     public void passPlayerAnswer(final int number) {
-
         inOut.clear();
-
-        new PlayerEventRunner(availablePlayerOptions.get(number)).runTask(BetonQuest.getInstance());
-
-        // clear hashmap
+        final ResolvedOption playerOption = availablePlayerOptions.get(number);
+        if (playerOption == null) {
+            throw new IllegalStateException("No selectable player option found in conversation " + identifier.getFullID());
+        }
+        new PlayerEventRunner(playerOption).runTask(BetonQuest.getInstance());
         availablePlayerOptions.clear();
     }
 
