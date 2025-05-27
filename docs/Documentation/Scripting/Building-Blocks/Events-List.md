@@ -286,7 +286,7 @@ events:
   simpleFolder: "folder event1,event2,event3" # (1)!
   runEvents: "folder event1,event2,event3 delay:5 period:1" # (2)!
   troll: "folder killPlayer,banPlayer,kickPlayer delay:5 random:1" # (3)!
-  wait: "folder messagePlayer,giveReward delay:1 minutes" # (4)!
+  wait: "folder messagePlayer,giveReward delay:1 unit:minutes" # (4)!
 ```
 
 1. Runs all events after one tick with a delay of one tick between each event.
