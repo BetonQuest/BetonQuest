@@ -100,6 +100,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Menu`s throwing exception on reload when bound commands are used
 - `mmoitemcraft` objective NoSuchMethodError with MMOItems 6.10+
 - `menu` conversation IO exception in one edge case
+- 1.21.5 ProtocolLib support
 ### Security
 
 ## [2.2.1] - 2025-01-12

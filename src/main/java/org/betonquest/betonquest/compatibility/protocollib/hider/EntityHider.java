@@ -48,7 +48,6 @@ public class EntityHider implements Listener {
                 PacketType.Play.Server.ANIMATION,
                 PacketType.Play.Server.COLLECT,
                 PacketType.Play.Server.SPAWN_ENTITY,
-                PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
                 PacketType.Play.Server.ENTITY_VELOCITY,
                 PacketType.Play.Server.REL_ENTITY_MOVE,
                 PacketType.Play.Server.ENTITY_LOOK,
@@ -70,9 +69,14 @@ public class EntityHider implements Listener {
             entityPackets.add(PacketType.Play.Server.SPAWN_ENTITY_PAINTING);
         }
         // TODO version switch:
-        // Remove this code when only 1.20.2+ is supported
+        //  Remove this code when only 1.20.2+ is supported
         if (!PaperLib.isVersion(20, 2)) {
             entityPackets.add(PacketType.Play.Server.NAMED_ENTITY_SPAWN);
+        }
+        // TODO version switch:
+        //  Remove this code when only 1.21.4+ is supported
+        if (!PaperLib.isVersion(21, 4)) {
+            entityPackets.add(PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB);
         }
 
         ENTITY_PACKETS = entityPackets.toArray(PacketType[]::new);
