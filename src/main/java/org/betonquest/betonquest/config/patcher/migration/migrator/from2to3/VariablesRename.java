@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 /**
  * Handles the variables rename migration.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class VariablesRename implements QuestMigration {
     /**
      * Creates a new variables rename migrator.

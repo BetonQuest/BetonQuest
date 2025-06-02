@@ -40,7 +40,6 @@ public class ExperienceEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    @SuppressWarnings("PMD.PrematureDeclaration")
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;

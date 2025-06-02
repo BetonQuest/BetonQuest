@@ -28,7 +28,7 @@ public class DayOfWeekConditionFactory implements PlayerlessConditionFactory {
         this.log = log;
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.LocalVariableCouldBeFinal"})
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final String dayString = instruction.next();

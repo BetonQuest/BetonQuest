@@ -992,7 +992,6 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefault() {
         config.addDefault("default.add", "value");
         assertEquals("value", config.getString("default.add"));
@@ -1000,7 +999,6 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
 
     @Test
     @Override
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testAddDefaultOnExistingConfigPath() {
         config.addDefault("default.override", "first");
         config.addDefault("default.override", "second");

@@ -154,7 +154,7 @@ public class EntityInteractObjective extends CountingObjective {
         });
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean onInteract(final Player player, final Entity entity) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!entity.getType().equals(mobType.getValue(onlineProfile))) {

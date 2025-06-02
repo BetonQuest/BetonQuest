@@ -42,7 +42,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public boolean checks(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
@@ -86,7 +86,6 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public boolean check(@Nullable final Profile profile, final ConditionID conditionID) {
         final ConditionAdapter condition = values.get(conditionID);
         if (condition == null) {

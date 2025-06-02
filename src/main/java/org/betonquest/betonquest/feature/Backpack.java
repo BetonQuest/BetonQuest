@@ -328,7 +328,7 @@ public class Backpack implements Listener {
             return Pair.of(stack, present);
         }
 
-        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
+        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
@@ -522,7 +522,7 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
-        @SuppressWarnings({"NullAway", "PMD.LocalVariableCouldBeFinal"})
+        @SuppressWarnings("NullAway")
         private ItemStack[] getContent(final int numberOfRows) throws QuestException {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;

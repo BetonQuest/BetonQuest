@@ -87,9 +87,8 @@ import java.util.stream.Stream;
 /**
  * Main admin command for quest editing.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
-        "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals",
+        "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CouplingBetweenObjects"})
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -297,7 +296,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return false;
     }
 
-    @SuppressWarnings("PMD.NcssCount")
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
@@ -1044,7 +1042,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
-    @SuppressWarnings("PMD.NcssCount")
     private void handleObjectives(final CommandSender sender, final String... args) {
         final Profile profile = getTargetProfile(sender, args);
         if (profile == null) {
@@ -1597,7 +1594,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.SwitchStmtsShouldHaveDefault"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private void handleDownload(final CommandSender sender, final String... args) {
         if (args.length < 5) {
             sendMessage(sender, "arguments");
@@ -1696,7 +1693,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Variables stuff.
      */
-    @SuppressWarnings("PMD.NcssCount")
     private void handleVariables(final CommandSender sender, final String... args) {
         final Profile profile = getTargetProfile(sender, args);
         if (profile == null) {

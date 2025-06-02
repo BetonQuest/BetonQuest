@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
  * <p>
  * Useful if you like to have an addon which is reloading whenever BetonQuest is reloading.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class LoadDataEvent extends Event {
     /**
      * A list of all handlers for this event.

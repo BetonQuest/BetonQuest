@@ -82,7 +82,6 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @param blockPlaceSender the notification sender for block place
      * @throws QuestException if there is an error in the instruction
      */
-    @SuppressWarnings("PMD.ExcessiveParameterList")
     public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount,
                           final Variable<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
                           @Nullable final Variable<Location> location, @Nullable final Variable<Location> region,

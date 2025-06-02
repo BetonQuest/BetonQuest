@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for the {@link LocalChatPaginator}
  */
-@SuppressWarnings("PMD.UseVarargs")
 class LocalChatPaginatorTest {
     private static Stream<Arguments> stringsToWrap() {
         final String spaces = "    ";

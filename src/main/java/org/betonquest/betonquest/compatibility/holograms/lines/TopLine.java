@@ -38,7 +38,6 @@ public class TopLine extends AbstractLine {
      * @param limit         maximum number of lines displayed
      * @param colors        color codes for individual parts of display (#, name, dash, and score)
      */
-    @SuppressWarnings("PMD.UseVarargs")
     public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final FormatColors colors) {
         super(false, limit);
         this.category = category;

@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
  */
 @Deprecated
-@SuppressWarnings("PMD.GodClass")
 public class Tokenizer {
 
     /**
@@ -85,7 +84,7 @@ public class Tokenizer {
      * @return parsed token
      * @throws QuestException if the expression is invalid and therefore couldn't be parsed
      */
-    @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
+    @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition",
             "PMD.NcssCount", "PMD.CognitiveComplexity"})
     private Token tokenize(@Nullable final Token val1, @Nullable final Operator operator, final String val2) throws QuestException {
         if (val2.isEmpty()) {

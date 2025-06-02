@@ -52,7 +52,7 @@ import java.util.TreeMap;
 /**
  * Loads compatibility with other plugins.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.AssignmentToNonFinalStatic"})
+@SuppressWarnings("PMD.AssignmentToNonFinalStatic")
 public class Compatibility implements Listener {
     /**
      * An instance of this class.

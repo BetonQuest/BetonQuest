@@ -30,7 +30,6 @@ class SequentialPlayerlessEventTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testExecutesMultipleEvents(@Mock final PlayerlessEvent first, @Mock final PlayerlessEvent second) throws QuestException {
         final PlayerlessEvent event = new SequentialPlayerlessEvent(first, second);
 

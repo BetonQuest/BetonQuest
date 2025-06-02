@@ -73,7 +73,7 @@ class UpdateDownloaderTest {
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     void testConcurrentDownloads(@TempDir final File tempDir) throws IOException, InterruptedException {
-        @SuppressWarnings("PMD.CloseResource") final ExecutorService service = Executors.newFixedThreadPool(1);
+        final ExecutorService service = Executors.newFixedThreadPool(1);
 
         final File file = new File(tempDir, "BetonQuest.jar");
         final URL url = mock(URL.class);

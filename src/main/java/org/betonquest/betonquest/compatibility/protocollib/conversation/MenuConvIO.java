@@ -60,8 +60,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
-        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
+        "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
      * The type of NPC name to display in the conversation.
@@ -107,7 +107,7 @@ public class MenuConvIO extends ChatConvIO {
     @Nullable
     private ArmorStand stand;
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "NullAway.Init"})
+    @SuppressWarnings("NullAway.Init")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final MenuConvIOSettings settings) {
         super(conv, onlineProfile);
         this.settings = settings;
@@ -322,7 +322,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.ConsecutiveLiteralAppends"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;
@@ -533,7 +533,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     private PacketAdapter getPacketAdapter() {
         return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
                 PacketType.Play.Client.STEER_VEHICLE,
@@ -736,7 +736,6 @@ public class MenuConvIO extends ChatConvIO {
         return false;
     }
 
-    @SuppressWarnings("PMD.NPathComplexity")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (state.isInactive()) {

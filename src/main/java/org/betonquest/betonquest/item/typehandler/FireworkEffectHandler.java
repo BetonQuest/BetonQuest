@@ -157,7 +157,7 @@ public class FireworkEffectHandler {
      * @param effect the firework effect to check
      * @return whether the effect is accepted by this handler
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
     public boolean check(@Nullable final FireworkEffect effect) {
         return switch (typeE) {
             case WHATEVER:

@@ -195,7 +195,7 @@ class RealtimeCronSchedulerTest {
     void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        @SuppressWarnings("PMD.CloseResource") final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
+        final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
         when(executorService.schedule(any(Runnable.class), eq(duration.toMillis()), eq(TimeUnit.MILLISECONDS))).then(invocation -> {
             final Runnable runnable = invocation.getArgument(0);
             runnable.run();

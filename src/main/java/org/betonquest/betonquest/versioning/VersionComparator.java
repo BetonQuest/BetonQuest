@@ -77,7 +77,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      * @param other   The other version
      * @return 0 if equal; less than 0 if other is newer; more than 0 if current is newer
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public int compare(@Nullable final Version current, @Nullable final Version other) {
         if (current == null && other == null) {

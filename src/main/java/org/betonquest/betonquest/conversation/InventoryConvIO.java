@@ -140,7 +140,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
+    @SuppressWarnings({"PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
     @Override
     public void display() {
         if (conv.isEnded()) {
@@ -186,7 +186,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         });
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     private void generateRows(final int rows, final ItemStack... buttons) {
         // this is the number of an option
         int next = 0;

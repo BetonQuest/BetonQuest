@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.UnitTestContainsTooManyAsserts",
-        "PMD.TestClassWithoutTestCases"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class MultiSectionConfigurationModificationWithMultiFallbackTest extends MultiSectionConfigurationModificationTest {
 
     @Override

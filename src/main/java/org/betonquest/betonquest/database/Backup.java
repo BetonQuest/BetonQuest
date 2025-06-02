@@ -118,7 +118,7 @@ public final class Backup {
      *
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
     public static void loadDatabaseFromBackup(final ConfigAccessorFactory configAccessorFactory) {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");

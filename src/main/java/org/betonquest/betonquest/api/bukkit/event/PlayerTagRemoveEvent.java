@@ -6,7 +6,6 @@ import org.bukkit.event.HandlerList;
 /**
  * Fired when a tag is removed from a profile.
  */
-@SuppressWarnings("PMD.DataClass")
 public class PlayerTagRemoveEvent extends ProfileEvent {
 
     /**

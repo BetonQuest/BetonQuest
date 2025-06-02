@@ -205,7 +205,6 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
             return Utils.getNN(Enchantment.getByName(name.toUpperCase(Locale.ROOT)), "Unknown enchantment type: " + name);
         }
 
-        @SuppressWarnings("PMD.UnusedPrivateMethod")
         private boolean check(@Nullable final Integer level) {
             if (existence == Existence.WHATEVER) {
                 return true;

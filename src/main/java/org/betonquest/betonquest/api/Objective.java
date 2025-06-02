@@ -38,7 +38,7 @@ import java.util.Optional;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "PMD.GodClass"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
 public abstract class Objective {
 
     /**

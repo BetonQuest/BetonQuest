@@ -332,7 +332,6 @@ public class Journal {
         }
     }
 
-    @SuppressWarnings("PMD.PrematureDeclaration")
     private int getJournalSlot() {
         final int slot = config.getInt("default_journal_slot");
         final boolean forceJournalSlot = config.getBoolean("journal.lock_default_journal_slot");

@@ -238,7 +238,6 @@ public class OpenedMenu implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.PrematureDeclaration")
     private void clickLogic(final InventoryClickEvent event, final MenuItem item) {
         //call event
         final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());

@@ -48,7 +48,6 @@ public class UUIDProfileProvider implements ProfileProvider {
                 return player.getName();
             }
 
-            @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
             @Override
             public Optional<OnlineProfile> getOnlineProfile() {
                 final Player onlinePlayer = player.getPlayer();

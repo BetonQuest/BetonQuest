@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class JournalEventTest {
     @Test
-    @SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestContainsTooManyAsserts"})
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testJournalEventChangesUpdatesAndNotifiesInOrder(
             @Mock final PlayerDataStorage dataStorage, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final PluginMessage pluginMessage, @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {

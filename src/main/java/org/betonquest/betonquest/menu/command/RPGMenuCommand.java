@@ -78,7 +78,7 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 0) {
             //display command help

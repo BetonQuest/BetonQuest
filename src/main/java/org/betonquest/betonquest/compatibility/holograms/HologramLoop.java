@@ -109,7 +109,6 @@ public abstract class HologramLoop {
         return holograms;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
         final Variable<Number> checkInterval = new Variable<>(variableProcessor, pack, checkIntervalString, Argument.NUMBER);
@@ -179,7 +178,6 @@ public abstract class HologramLoop {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private TopLine parseTopLine(final QuestPackage pack, final String line) throws QuestException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
