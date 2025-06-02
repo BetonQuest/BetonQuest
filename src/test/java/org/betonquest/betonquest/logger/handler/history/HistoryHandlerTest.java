@@ -31,7 +31,7 @@ class HistoryHandlerTest {
     private WriteOperation<Boolean> loggingUpdater;
 
     @Test
-    @SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestContainsTooManyAsserts"})
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);
@@ -52,7 +52,6 @@ class HistoryHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testLoggingAfterStart() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);

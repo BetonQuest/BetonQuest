@@ -49,7 +49,6 @@ public abstract class AbstractPointVariable<T> {
      * @param amount the amount to get the value for
      * @return the value for the given amount
      */
-    @SuppressWarnings("PMD.TooFewBranchesForSwitch")
     public String getValueFor(final int amount) {
         return switch (type) {
             case AMOUNT -> String.valueOf(amount);

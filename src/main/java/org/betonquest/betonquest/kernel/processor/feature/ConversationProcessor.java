@@ -27,7 +27,6 @@ import java.util.Objects;
 /**
  * Stores Conversation Data and validates it.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> {
     /**
      * Factory to create class specific logger.

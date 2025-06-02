@@ -79,7 +79,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 "LanguageCommand", NotificationLevel.INFO, "language_changed");
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (!"questlang".equalsIgnoreCase(cmd.getName())) {

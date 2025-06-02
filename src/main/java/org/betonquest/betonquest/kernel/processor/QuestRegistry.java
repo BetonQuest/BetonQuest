@@ -38,7 +38,6 @@ import java.util.Map;
  * @param journalMainPages Journal Main Pages.
  * @param npcs             Npc getting.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public record QuestRegistry(
         BetonQuestLogger log,
         CoreQuestRegistry core,

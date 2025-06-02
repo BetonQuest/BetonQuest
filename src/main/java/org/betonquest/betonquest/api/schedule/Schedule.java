@@ -22,7 +22,7 @@ import java.util.Optional;
  * The actual scheduling logic should be defined by extending {@link Scheduler}
  * </p>
  */
-@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.DataClass"})
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Schedule {
 
     /**

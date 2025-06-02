@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 /**
  * Various utilities.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class Utils {
 
     /**
@@ -253,7 +253,7 @@ public final class Utils {
      * @return the Color (never null)
      * @throws QuestException when something goes wrong
      */
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public static Color getColor(final String string) throws QuestException {
         if (string.isEmpty()) {
             throw new QuestException("Color is not specified");

@@ -132,7 +132,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
         return new VariableList<>(variableProcessor, pack, section.getString("npcs", ""), value -> new NpcID(pack, value)).getValue(null);
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void updateHologram(final NpcHologram npcHologram) {
         npcHologram.npcHolograms().entrySet().forEach(entry -> {
                     final NpcID npcID = entry.getKey();

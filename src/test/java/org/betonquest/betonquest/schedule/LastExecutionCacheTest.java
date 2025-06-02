@@ -68,7 +68,6 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testSaveIOException() throws IOException {
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
@@ -77,7 +76,6 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testReloadIOException() throws IOException {
         when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.reload();

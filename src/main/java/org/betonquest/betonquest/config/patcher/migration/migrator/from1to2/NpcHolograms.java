@@ -91,7 +91,6 @@ public class NpcHolograms implements QuestMigration {
                 .forEach(this::migrateVectorValue);
     }
 
-    @SuppressWarnings("PMD.LocalVariableCouldBeFinal")
     private void migrateVectorValue(final ConfigurationSection subConfig) {
         final String oldVector = "0;3;0";
         final String vector = subConfig.getString(VECTOR, oldVector);

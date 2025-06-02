@@ -35,7 +35,7 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         return new NullableVariableAdapter(parseInstruction(instruction));
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private ItemVariable parseInstruction(final Instruction instruction) throws QuestException {
         final boolean raw;
         int pos = instruction.size() - 1;

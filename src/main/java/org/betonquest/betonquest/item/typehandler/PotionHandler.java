@@ -289,7 +289,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private boolean checkCustom(final List<PotionEffect> custom) {
         if (customE == Existence.WHATEVER) {
             return true;

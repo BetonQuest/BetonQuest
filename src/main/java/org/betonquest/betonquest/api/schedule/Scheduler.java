@@ -27,7 +27,6 @@ import java.util.Map;
  * @param <S> Type of Schedule
  * @param <T> Type of time used by the scheduler
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Scheduler<S extends Schedule, T> {
     /**
      * Map containing all schedules that belong to this scheduler.

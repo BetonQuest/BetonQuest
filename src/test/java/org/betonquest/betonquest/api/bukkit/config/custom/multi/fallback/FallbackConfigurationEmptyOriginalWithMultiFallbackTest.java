@@ -13,8 +13,7 @@ import java.util.List;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate",
-        "PMD.TestClassWithoutTestCases"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class FallbackConfigurationEmptyOriginalWithMultiFallbackTest extends FallbackConfigurationEmptyOriginalTest {
     @Override
     public Configuration getConfig() throws InvalidConfigurationException {

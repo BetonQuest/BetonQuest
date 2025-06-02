@@ -60,7 +60,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
 
     /**
@@ -345,7 +345,6 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final List<ResolvedOption> options) {
         final List<Pair<ResolvedOption, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
         for (final ResolvedOption option : options) {
@@ -670,7 +669,7 @@ public class Conversation implements Listener {
     /**
      * Starts the conversation, should be called asynchronously.
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private class Starter extends BukkitRunnable {
 
         /**
@@ -695,7 +694,6 @@ public class Conversation implements Listener {
             super();
         }
 
-        @SuppressWarnings("PMD.NcssCount")
         @Override
         public void run() {
             if (state.isStarted()) {

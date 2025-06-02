@@ -45,7 +45,6 @@ class UpdateSourceHandlerTest {
         assertEquals("https://betonquest.org/development", latest.getValue(), "Actual URL does not match expected");
     }
 
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void no_development_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true);
@@ -76,7 +75,6 @@ class UpdateSourceHandlerTest {
         assertEquals("https://betonquest.org/release", latest.getValue(), "Actual URL does not match expected");
     }
 
-    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void no_release_update_available() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true);

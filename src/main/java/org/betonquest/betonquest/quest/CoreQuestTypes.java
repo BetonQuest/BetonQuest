@@ -188,7 +188,7 @@ import java.time.InstantSource;
 /**
  * Registers the Conditions, Events, Objectives and Variables that come with BetonQuest.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.NcssCount"})
+@SuppressWarnings("PMD.NcssCount")
 public class CoreQuestTypes {
     /**
      * Logger Factory to create new custom Logger from.

@@ -143,7 +143,6 @@ public class ConversationData {
      *
      * @throws QuestException when a pointer to an external conversation could not be resolved
      */
-    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     public void checkExternalPointers() throws QuestException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 

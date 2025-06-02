@@ -670,7 +670,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          * @param fallback    The fallback {@link ConfigurationSection}
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
-        @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})
+        @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
         protected ConfigManager(@Nullable final String sectionName, final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
             this.sectionName = sectionName;
             this.original = original;

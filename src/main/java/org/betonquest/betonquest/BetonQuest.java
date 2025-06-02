@@ -575,7 +575,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
     }
 
-    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @Override
     public void onDisable() {
         if (questRegistry != null) {

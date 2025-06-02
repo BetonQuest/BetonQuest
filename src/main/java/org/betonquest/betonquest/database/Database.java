@@ -16,7 +16,7 @@ import java.util.SortedMap;
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class Database {
     protected final Plugin plugin;
 
