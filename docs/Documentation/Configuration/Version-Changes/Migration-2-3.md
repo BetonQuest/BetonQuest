@@ -46,6 +46,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-299 - NPC events rename](#300-dev-299-npc-events-rename) :sun:
 - [3.0.0-DEV-306 - MMOItems Item Type](#300-dev-306-mmoitems-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
+- [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -605,3 +606,31 @@ The `mmoitemupgrade` and `mmoitemapplygem` objectives exist unchanged.
     ```
     
     </div>
+
+### 3.0.0-DEV-316 - Chest Conversation IO :thunder_cloud_rain:
+
+To make future changes possible and to improve the possibility to add new features,
+the display `item` is now defined in a new section called `properties`.
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+conversations:
+  #...
+    player_options:
+      exampleOption:
+        text: "{diamond}This is an example option"
+```
+
+```YAML title="New Syntax"
+conversations:
+  #...
+    player_options:
+      exampleOption:
+        text: "This is an example option"
+        properties:
+          item: "diamond"
+items:
+  diamond: "DIAMOND"
+```
+</div>

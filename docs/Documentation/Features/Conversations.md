@@ -186,9 +186,18 @@ In both cases, you can choose from the following conversation styles:
             
             The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](../Configuration/Configuration.md#conversation-settings-chestio-slowtellrawio).
             
-            You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
-            The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
-            Example of such option text: `{diamond_sword}I want to start a quest!`.
+            You can change the option's item to something else than ender pearls by adding adding a new section
+            'properties' to the 'player_options' and reference an item by its ID. This will then look like this:
+            
+            ```YAML
+            player_options:
+              exampleOption:
+                text: "This is an example option"
+                properties:
+                  item: "diamond" #(1)!
+            ```
+            
+            1. The item ID of the item you want to use for the option.
         <video controls loop src="../../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
