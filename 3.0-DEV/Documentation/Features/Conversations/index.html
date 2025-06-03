@@ -4964,9 +4964,17 @@ The blue overlay shows the player's key presses.</p>
 <summary>Customizing the Chest Style</summary>
 <p>The colors of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-colors"><code>conversation_colors</code> config option</a>.</p>
 <p>The formatting of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-settings-chestio-slowtellrawio"><code>conversation_IO_config.chest</code> config option</a>.</p>
-<p>You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
-The prefix is a name of the material (like in the <em>items</em> section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
-Example of such option text: <code>{diamond_sword}I want to start a quest!</code>.</p>
+<p>You can change the option's item to something else than ender pearls by adding adding a new section
+'properties' to the 'player_options' and reference an item by its ID. This will then look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">player_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">exampleOption</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">example</span><span class="nv"> </span><span class="s">option&quot;</span>
+<span class="w">    </span><span class="nt">properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;diamond&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+</code></pre></div>
+<ol>
+<li>The item ID of the item you want to use for the option.</li>
+</ol>
 </details>
 <p><video controls loop src="../../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
