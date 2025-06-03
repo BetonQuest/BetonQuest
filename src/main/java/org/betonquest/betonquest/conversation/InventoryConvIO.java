@@ -3,13 +3,15 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
+import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.util.LocalChatPaginator;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
@@ -17,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -62,7 +65,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Nullable
     protected Component response;
 
-    protected Map<Integer, String> options = new HashMap<>();
+    protected Map<Integer, Pair<String, Variable<ItemID>>> options = new HashMap<>();
 
     protected int playerOptionsCount;
 
@@ -80,7 +83,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected Conversation conv;
 
-    protected Player player;
+    protected OnlineProfile profile;
 
     protected Inventory inv;
 
@@ -96,7 +99,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                            final ConversationColors.Colors colors, final boolean showNumber, final boolean showNPCText, final boolean printMessages) {
         this.log = log;
         this.conv = conv;
-        this.player = onlineProfile.getPlayer();
+        this.profile = onlineProfile;
         this.npcNameColor = collect(colors.npc());
         this.npcTextColor = collect(colors.text());
         this.numberFormat = collect(colors.number()) + "%number%.";
@@ -105,12 +108,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
         for (final ChatColor color : colors.player()) {
             string.append(color);
         }
-        string.append(player.getName()).append(ChatColor.RESET).append(": ");
+        string.append(profile.getPlayer().getName()).append(ChatColor.RESET).append(": ");
         for (final ChatColor color : colors.answer()) {
             string.append(color);
         }
         answerPrefix = string.toString();
-        loc = player.getLocation();
+        loc = profile.getPlayer().getLocation();
 
         this.showNumber = showNumber;
         this.showNPCText = showNPCText;
@@ -135,25 +138,33 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void addPlayerOption(final String option) {
+    public void addPlayerOption(final String option, final ConfigurationSection properties) throws QuestException {
         playerOptionsCount++;
-        options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
+        final String item = properties.getString("item");
+        try {
+            final Variable<ItemID> variableItem = item == null ? null
+                    : new Variable<>(BetonQuest.getInstance().getVariableProcessor(), conv.getPackage(), item,
+                    (value) -> new ItemID(conv.getPackage(), value));
+            options.put(playerOptionsCount, Pair.of(Utils.replaceReset(option, optionColor), variableItem));
+        } catch (final QuestException e) {
+            options.put(playerOptionsCount, Pair.of(Utils.replaceReset(option, optionColor), null));
+            throw e;
+        }
     }
 
-    @SuppressWarnings({"PMD.UnusedAssignment", "PMD.LambdaCanBeMethodReference"})
+    @SuppressWarnings("PMD.UnusedAssignment")
     @Override
     public void display() {
         if (conv.isEnded()) {
             return;
         }
-        if (player.getGameMode() == GameMode.SPECTATOR) {
+        if (profile.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> profile.getPlayer().closeInventory());
             final Interceptor interceptor = conv.getInterceptor();
             if (interceptor != null) {
-                final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
                 try {
-                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(profileProvider.getProfile(player), "conversation_spectator"));
+                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "conversation_spectator"));
                 } catch (final QuestException e) {
                     log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
                 }
@@ -180,7 +191,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
             inv.setContents(buttons);
             switching = true;
-            player.openInventory(inv);
+            profile.getPlayer().openInventory(inv);
             switching = false;
             processingLastClick = false;
         });
@@ -199,40 +210,20 @@ public class InventoryConvIO implements Listener, ConversationIO {
             // count option numbers, starting with 1
             next++;
             // break if all options are set
-            String option = options.get(next);
-            if (option == null) {
+            final Pair<String, Variable<ItemID>> pair = options.get(next);
+            if (pair == null) {
                 break;
             }
-            // generate an itemstack for this option
-            Material material = Material.ENDER_PEARL;
-            short data = 0;
-            // get the custom material
-            if (option.matches("^\\{[a-zA-Z0-9_: ]+}(?s:.*)$")) {
-                final String fullMaterial = option.substring(1, option.indexOf('}'));
-                String materialName = fullMaterial;
-                if (materialName.contains(":")) {
-                    final int colonIndex = materialName.indexOf(':');
-                    try {
-                        data = Short.parseShort(materialName.substring(colonIndex + 1));
-                    } catch (final NumberFormatException e) {
-                        log.warn(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
-                    }
-                    materialName = materialName.substring(0, colonIndex);
-                }
-                Material mat = Material.matchMaterial(materialName);
-                if (mat == null) {
-                    mat = Material.matchMaterial(materialName, true);
-                }
-                option = option.replace('{' + fullMaterial + '}', "");
-                if (mat != null) {
-                    material = mat;
-                }
+            final String option = pair.getKey();
+            final Variable<ItemID> itemID = pair.getValue();
+            ItemStack item;
+            try {
+                item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
+                        : BetonQuest.getInstance().getFeatureAPI().getItem(itemID.getValue(profile), profile).generate(1);
+            } catch (final QuestException e) {
+                log.warn("Failed to generate item: " + e.getMessage(), e);
+                item = new ItemStack(Material.ENDER_PEARL);
             }
-            // remove custom material prefix from the option
-            options.put(next, option);
-            // set the display name and lore of the option
-            final ItemStack item = new ItemStack(material);
-            item.setDurability(data);
             final ItemMeta meta = item.getItemMeta();
 
             final StringBuilder string = new StringBuilder();
@@ -320,7 +311,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
-        if (!event.getWhoClicked().equals(player)) {
+        if (!event.getWhoClicked().equals(profile.getPlayer())) {
             return;
         }
         event.setCancelled(true);
@@ -336,8 +327,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final int col = slot % 9 - 2 + 1;
             // each row can have 7 options, add column number to get an option
             final int choosen = row * 7 + col;
-            final String message = options.get(choosen);
-            if (message != null) {
+            final Pair<String, Variable<ItemID>> pair = options.get(choosen);
+            if (pair != null) {
+                final String message = pair.getKey();
                 processingLastClick = true;
                 if (printMessages) {
                     conv.sendMessage(answerPrefix + message);
@@ -352,7 +344,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        if (!event.getPlayer().equals(player)) {
+        if (!event.getPlayer().equals(profile.getPlayer())) {
             return;
         }
 
@@ -367,8 +359,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (conv.isMovementBlock()) {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                player.teleport(loc);
-                player.openInventory(inv);
+                profile.getPlayer().teleport(loc);
+                profile.getPlayer().openInventory(inv);
             });
         } else {
             conv.endConversation();
@@ -391,12 +383,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         playerOptionsCount = 0;
     }
 
-    @SuppressWarnings("PMD.LambdaCanBeMethodReference")
     @Override
     public void end() {
         allowListenerUnregister = true;
         if (mustBeClosed()) {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.closeInventory());
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> profile.getPlayer().closeInventory());
         }
     }
 

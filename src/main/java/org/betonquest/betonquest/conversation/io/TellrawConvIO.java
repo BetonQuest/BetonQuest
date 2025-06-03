@@ -12,6 +12,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -131,8 +132,8 @@ public class TellrawConvIO extends ChatConvIO {
     }
 
     @Override
-    public void addPlayerOption(final String option) {
-        super.addPlayerOption(option);
+    public void addPlayerOption(final String option, final ConfigurationSection properties) {
+        super.addPlayerOption(option, properties);
         count++;
         hashes.put(count, UUID.randomUUID().toString());
     }

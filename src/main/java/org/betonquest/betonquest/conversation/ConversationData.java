@@ -2,6 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
+import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
+import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -20,6 +22,7 @@ import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.betonquest.betonquest.conversation.ConversationData.OptionType.NPC;
 import static org.betonquest.betonquest.conversation.ConversationData.OptionType.PLAYER;
@@ -371,6 +375,27 @@ public class ConversationData {
     }
 
     /**
+     * Gets the properties of the specified option.
+     * This is a section that can contain any properties defined by the conversation.
+     *
+     * @param profile the profile of the player
+     * @param option  the option
+     * @return the properties of the specified option
+     */
+    public ConfigurationSection getProperties(@Nullable final Profile profile, final ResolvedOption option) {
+        final ConversationOption opt;
+        if (option.type() == NPC) {
+            opt = option.conversationData().npcOptions.get(option.name());
+        } else {
+            opt = option.conversationData().playerOptions.get(option.name());
+        }
+        if (opt == null) {
+            return new UnmodifiableConfigurationSection(new MemoryConfiguration());
+        }
+        return opt.getProperties(profile);
+    }
+
+    /**
      * Gets the package containing this conversation.
      *
      * @return the package containing this conversation
@@ -573,6 +598,12 @@ public class ConversationData {
         private final List<String> extendLinks;
 
         /**
+         * Properties of the option.
+         * This is a section that can contain any properties defined by the conversation.
+         */
+        private final ConfigurationSection properties;
+
+        /**
          * Creates a ConversationOption.
          *
          * @param name        the name of the option, as defined in the config
@@ -591,6 +622,7 @@ public class ConversationData {
                 events = List.of();
                 pointers = List.of();
                 extendLinks = List.of();
+                properties = new UnmodifiableConfigurationSection(new MemoryConfiguration());
                 return;
             }
 
@@ -605,6 +637,9 @@ public class ConversationData {
             extendLinks = resolve(conv, "extends", Argument.STRING).stream()
                     .filter(StringUtils::isNotEmpty)
                     .toList();
+
+            properties = new UnmodifiableConfigurationSection(Objects.requireNonNullElseGet(
+                    conv.getConfigurationSection("properties"), MemoryConfiguration::new));
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
@@ -771,6 +806,29 @@ public class ConversationData {
          */
         public List<String> getExtends() {
             return new ArrayList<>(extendLinks);
+        }
+
+        /**
+         * Returns the properties of this option.
+         *
+         * @return the properties of this option
+         */
+        public ConfigurationSection getProperties(@Nullable final Profile profile) {
+            return getProperties(profile, new ArrayList<>());
+        }
+
+        private ConfigurationSection getProperties(@Nullable final Profile profile, final List<String> optionPath) {
+            if (optionPath.contains(getName())) {
+                return new MemoryConfiguration();
+            }
+            optionPath.add(getName());
+
+            for (final String extend : extendLinks) {
+                if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
+                    return new FallbackConfigurationSection(properties, getOption(extend, type).getProperties(profile, optionPath));
+                }
+            }
+            return properties;
         }
     }
 }

@@ -345,6 +345,7 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final List<ResolvedOption> options) {
         final List<Pair<ResolvedOption, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
         for (final ResolvedOption option : options) {
@@ -375,7 +376,11 @@ public class Conversation implements Listener {
             availablePlayerOptions.put(optionsCount, option);
 
             final Component text = data.getText(onlineProfile, option);
-            inOut.addPlayerOption(LegacyComponentSerializer.legacySection().serialize(text));
+            try {
+                inOut.addPlayerOption(LegacyComponentSerializer.legacySection().serialize(text), data.getProperties(onlineProfile, option));
+            } catch (final QuestException e) {
+                log.warn(pack, "Error while adding option '" + option.name() + "': " + e.getMessage(), e);
+            }
         }
         new BukkitRunnable() {
             @Override
