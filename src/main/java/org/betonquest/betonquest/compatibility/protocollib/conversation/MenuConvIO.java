@@ -454,19 +454,16 @@ public class MenuConvIO extends ChatConvIO {
             // Show up arrow if options exist above our view
             final Component boldSpace = Component.text(" ".repeat(8)).decorate(TextDecoration.BOLD);
             if (topOption > 0) {
-                displayBuilder.append(boldSpace).append(Component.text("↑\n", NamedTextColor.WHITE));
-            } else {
-                displayBuilder.append(Component.newline());
+                displayBuilder.append(boldSpace).append(Component.text("↑", NamedTextColor.WHITE));
             }
+            displayBuilder.append(Component.newline());
 
             // Display Options
             optionsSelected.forEach(line -> displayBuilder.append(line).append(Component.newline()));
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
-                displayBuilder.append(boldSpace).append(Component.text("↓\n", NamedTextColor.WHITE));
-            } else {
-                displayBuilder.append(Component.newline());
+                displayBuilder.append(boldSpace).append(Component.text("↓", NamedTextColor.WHITE));
             }
         }
 
