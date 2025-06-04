@@ -642,7 +642,7 @@ items:
     
     -------------
     
-    As components are now used in converstions, also the wrapping of the text in the menu conversation IO was reworked.
+    As components are now used in conversations, also the menu conversation IO text wrapping was reworked.
     As a result the `line_length` unit is now in pixels instead of characters.
     This means that the old value is multiplied by 6.
     As a result the default value is now 320 pixels instead of 50 characters what is more precise and allows more text.
