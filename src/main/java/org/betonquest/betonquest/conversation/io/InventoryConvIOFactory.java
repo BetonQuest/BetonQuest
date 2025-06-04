@@ -28,7 +28,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     private final ConfigAccessor config;
 
     /**
-     * Font registry to use for the inventory.
+     * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
     private final FontRegistry fontRegistry;
 
@@ -64,7 +64,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final boolean showNumber = config.getBoolean("conversation.io.chest.show_number", true);
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
-        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, 45);
+        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
         return new InventoryConvIO(conversation, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }

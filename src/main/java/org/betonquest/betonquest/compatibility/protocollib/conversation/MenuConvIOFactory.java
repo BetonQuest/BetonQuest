@@ -21,7 +21,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     private final MessageParser messageParser;
 
     /**
-     * The font registry used for the conversation.
+     * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
     private final FontRegistry fontRegistry;
 

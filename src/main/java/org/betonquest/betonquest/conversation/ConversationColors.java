@@ -73,15 +73,15 @@ public class ConversationColors {
      * @throws QuestException if the config is not valid
      */
     public void load() throws QuestException {
-        text = getColour("conversation.color.text");
-        npc = getColour("conversation.color.npc");
-        player = getColour("conversation.color.player");
-        number = getColour("conversation.color.number");
-        answer = getColour("conversation.color.answer");
-        option = getColour("conversation.color.option");
+        text = getColor("conversation.color.text");
+        npc = getColor("conversation.color.npc");
+        player = getColor("conversation.color.player");
+        number = getColor("conversation.color.number");
+        answer = getColor("conversation.color.answer");
+        option = getColor("conversation.color.option");
     }
 
-    private Component getColour(final String name) throws QuestException {
+    private Component getColor(final String name) throws QuestException {
         final String raw = config.getString(name);
         if (raw == null) {
             throw new QuestException("Conversation color '" + name + "' does not exist in the config!");

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
- * Handles the new line wrapping unit for the menu io.
+ * Handles the conversion from characters to pixels as width unit in line wrapping for the menu io.
  */
 public class MenuIOLineWrapping implements QuestMigration {
 

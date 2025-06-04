@@ -148,7 +148,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         Objects.requireNonNull(npcText);
 
-        conv.sendMessage(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")));
+        conv.sendMessage(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")).append(npcText));
     }
 
     @Override
