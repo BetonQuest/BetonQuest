@@ -4617,7 +4617,7 @@ This is usually the case when your plugin's <code>onEnable</code> method is call
 assuming you defined a dependency on BetonQuest.</p>
 <p>BetonQuest always registers its default implementation with the <code>Lowest</code> ServicePriority.
 If you want to override a module you can register your own implementation with a higher priority.
-You also need to register your implementation before the <code>onEnable</code> method of BetonQuset is called,
+You also need to register your implementation before the <code>onEnable</code> method of BetonQuest is called,
 so usually in the <code>onLoad</code> method of your plugin:
 <div class="highlight"><span class="filename">Register a module</span><pre><span></span><code><span class="n">getServer</span><span class="p">().</span><span class="na">getServicesManager</span><span class="p">().</span><span class="na">register</span><span class="p">(</span><span class="n">BetonQuestLoggerFactory</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyLoggerFactory</span><span class="p">(),</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">ServicePriority</span><span class="p">.</span><span class="na">Normal</span><span class="p">);</span>
 </code></pre></div></p>
