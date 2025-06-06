@@ -183,7 +183,7 @@ prevents users from screwing up all your quests or downloading malicious files i
 command by accident. The second argument (`ref`) is either a commit SHA or a git reference to a specific commit that
 should be downloaded. For a branch (e.g. `main`)  `refs/heads/main` works. For a tag it is `refs/tags/tagname`. Pull request references (
 e.g. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
-Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`type`) is
+Keep in mind that anyone can open a pull request so use this very carefully. Third argument (`type`) is
 either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
 you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.
 Optionally you may add a 5th parameter:

@@ -53,7 +53,7 @@ So what do we see here?
 *  The Event Instruction. 
     - `give` The first value in the instruction is always the **event type**.
     - `steak:16` This is an **option** of the give event. It defines which item you want to give and which amount 
-      seperated by a colon.
+      separated by a colon.
 
 Before we can test if the event works ingame we have to create the item `steak` because BetonQuest doesn't know what a `steak` is.
 

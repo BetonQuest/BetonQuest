@@ -262,7 +262,7 @@ If the player is not in a conversation, the variable is empty.
 
 This variable gives a random number from the first value to the second.
 The first argument is `whole` or `decimal`, the second and third arguments are numbers or variables,
-seperated by a `~`.
+separated by a `~`.
 Like the `math` variable you can round the decimal value by using
 instead of `decimal` the argument `decimal~x` where `x` is the maximal amount of decimal places. 
 Variables can be used with `{}` instead of `%%`.

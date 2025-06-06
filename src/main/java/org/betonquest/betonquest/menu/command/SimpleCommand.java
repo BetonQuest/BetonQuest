@@ -74,11 +74,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @param name          the command name
      * @param reqPermission the required permission to use the command
      * @param minimalArgs   the minimum amount of required arguments
-     * @param alises        the aliases for the command
+     * @param aliases       the aliases for the command
      */
     public SimpleCommand(final BetonQuestLogger log, final String name, final Permission reqPermission,
-                         final int minimalArgs, final String... alises) {
-        super(name, "", "", Arrays.asList(alises));
+                         final int minimalArgs, final String... aliases) {
+        super(name, "", "", Arrays.asList(aliases));
         this.log = log;
         this.minimalArgs = minimalArgs;
         this.permission = reqPermission;

@@ -9,8 +9,7 @@ import java.lang.Number;
 /**
  * A token that is a Variable.
  *
- * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
- * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
+ * @deprecated This should be replaced with a real expression parsing lib
  */
 @Deprecated
 public class Variable implements Token {

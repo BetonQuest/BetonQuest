@@ -65,7 +65,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
 
     /**
      * Transforms the conversation state into a string in which the conversation's ID,
-     * the current option and the location are split by a space. The location's coordinates and world are seperated by
+     * the current option and the location are split by a space. The location's coordinates and world are separated by
      * semicolons.
      *
      * @return the string representation of the conversation state

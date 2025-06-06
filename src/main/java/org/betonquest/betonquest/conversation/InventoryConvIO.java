@@ -175,7 +175,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // each row contains 7 options, so get amount of rows
         int rows = options.size() / 7;
         rows++;
-        // this itemstack represents slots in the inventory
         inv = Bukkit.createInventory(null, 9 * rows, Component.text("NPC"));
         inv.setContents(new ItemStack[9 * rows]);
         final ItemStack[] buttons = new ItemStack[9 * rows];
@@ -326,15 +325,15 @@ public class InventoryConvIO implements Listener, ConversationIO {
             // and plus one (because options are indexed starting with 1)
             final int col = slot % 9 - 2 + 1;
             // each row can have 7 options, add column number to get an option
-            final int choosen = row * 7 + col;
-            final Pair<String, Variable<ItemID>> pair = options.get(choosen);
+            final int chosen = row * 7 + col;
+            final Pair<String, Variable<ItemID>> pair = options.get(chosen);
             if (pair != null) {
                 final String message = pair.getKey();
                 processingLastClick = true;
                 if (printMessages) {
                     conv.sendMessage(answerPrefix + message);
                 }
-                conv.passPlayerAnswer(choosen);
+                conv.passPlayerAnswer(chosen);
             }
         }
     }

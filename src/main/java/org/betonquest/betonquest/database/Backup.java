@@ -69,13 +69,13 @@ public final class Backup {
                 LOG.debug("Saving " + entry.getKey() + " to the backup file");
                 // prepare resultset and meta
                 try (ResultSet res = entry.getValue()) {
-                    final ResultSetMetaData rsmd = res.getMetaData();
+                    final ResultSetMetaData result = res.getMetaData();
                     // get the list of column names
                     final List<String> columns = new ArrayList<>();
-                    final int columnCount = rsmd.getColumnCount();
+                    final int columnCount = result.getColumnCount();
                     LOG.debug("  There are " + columnCount + " columns in this ResultSet");
-                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                        final String columnName = rsmd.getColumnName(i);
+                    for (int i = 1; i <= result.getColumnCount(); i++) {
+                        final String columnName = result.getColumnName(i);
                         LOG.debug("    Adding column " + columnName);
                         columns.add(columnName);
                     }

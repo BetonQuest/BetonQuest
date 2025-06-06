@@ -85,7 +85,7 @@ This condition will check if a conversation has an available starting option. If
 
 ## Day of week: `dayofweek`
 
-It must be a specific day of the week that this condition returns true. You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,..).
+It must be a specific day of the week that this condition returns true. You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,...).
 
 !!! example
     ```YAML
@@ -394,7 +394,7 @@ Alternative of specified conditions. This means that only one of conditions has 
 
 ## Partial date: `partialdate`
 
-The current date must match the given pattern. You can specify the day of the month, the month or the year it must be that this condition returns true or combine them. You can also specify multiple days/months/years by just separating them by `,` or a interval by using `-`. If you have trouble understanding how this works have a look at the example.
+The current date must match the given pattern. You can specify the day of the month, the month or the year it must be that this condition returns true or combine them. You can also specify multiple days/months/years by just separating them by `,` or an interval by using `-`. If you have trouble understanding how this works have a look at the example.
 
 The example is true between the 1st and the 5th or on the 20th of each month, but only in the year 2017.
 
@@ -479,7 +479,7 @@ There must a specific (real) time for this condition to return true.
 
 | Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
 |------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
-| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
+| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time separated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
 
 
 ```YAML title="Example"
@@ -569,7 +569,7 @@ There must be specific (Minecraft) time on the world for this condition to retur
 
 | Parameter  | Syntax            | Default Value          | Explanation                                                                                                  |
 |------------|-------------------|------------------------|--------------------------------------------------------------------------------------------------------------|
-| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time seperated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
+| _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time separated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
 | _world_    | world:name        | player location        | The world to check for the time. Can be a variable.                                                          |
 
 

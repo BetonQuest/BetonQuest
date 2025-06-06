@@ -7,8 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Returns the absolute value (see {@link Math#abs(double)}) of a token.
  *
- * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
- * <a href="https://github.com/fasseg/exp4j">fasseg/exp4j</a>
+ * @deprecated This should be replaced with a real expression parsing lib
  */
 @Deprecated
 public class AbsoluteValue implements Token {

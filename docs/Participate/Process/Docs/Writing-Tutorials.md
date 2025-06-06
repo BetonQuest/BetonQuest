@@ -24,7 +24,7 @@ It downloads quest from our [Quest Tutorials repository](https://github.com/Beto
     ![](../../../_media/content/Participate/Process/Docs/Writing-Tutorials/IntroExample.png)
 
 ### Content
-It's recommended to split a tutorial into mulitple logical steps.
+It's recommended to split a tutorial into multiple logical steps.
 Ideally, once a step has been completed by the user, they should be able to try it out ingame. A step consists of:
 
 * Goal / What and why are we going to do?

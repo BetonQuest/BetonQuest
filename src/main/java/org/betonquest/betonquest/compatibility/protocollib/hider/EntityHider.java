@@ -82,10 +82,14 @@ public class EntityHider implements Listener {
         ENTITY_PACKETS = entityPackets.toArray(PacketType[]::new);
     }
 
-    // Current policy
+    /**
+     * Current policy.
+     */
     protected final Policy policy;
 
-    // Listeners
+    /**
+     * Bukkit Listener.
+     */
     private final Listener bukkitListener;
 
     private final PacketAdapter protocolListener;
@@ -195,7 +199,7 @@ public class EntityHider implements Listener {
     /**
      * Invoked when a player logs out.
      *
-     * @param player - the player that jused logged out.
+     * @param player - the player that used logged out.
      */
     protected void removePlayer(final Player player) {
         // Cleanup
@@ -324,7 +328,9 @@ public class EntityHider implements Listener {
         return isVisible(observer, entity.getEntityId());
     }
 
-    // For valdiating the input parameters
+    /**
+     * Validates the input parameters against null.
+     */
     private void validate(final OnlineProfile observer, final Entity entity) {
         Preconditions.checkNotNull(observer, "observer cannot be NULL.");
         Preconditions.checkNotNull(entity, "entity cannot be NULL.");
