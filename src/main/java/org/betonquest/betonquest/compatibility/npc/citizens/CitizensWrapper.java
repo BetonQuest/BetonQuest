@@ -29,7 +29,8 @@ class CitizensWrapper implements NpcWrapper<NPC> {
 
     @Override
     public Npc<NPC> getNpc(@Nullable final Profile profile) throws QuestException {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId.getValue(profile).intValue());
+        final int npcId = this.npcId.getValue(profile).intValue();
+        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestException("NPC with ID " + npcId + " not found");
         }
