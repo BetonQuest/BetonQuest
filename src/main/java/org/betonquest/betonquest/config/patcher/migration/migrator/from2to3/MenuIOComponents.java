@@ -6,14 +6,14 @@ import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
- * Handles the conversion from characters to pixels as width unit in line wrapping for the menu io.
+ * Handles the conversion from string- to component-based text for the menu io.
  */
-public class MenuIOLineWrapping implements QuestMigration {
+public class MenuIOComponents implements QuestMigration {
 
     /**
-     * Creates a new menu io line wrapping migrator.
+     * Creates a new menu IO components migrator.
      */
-    public MenuIOLineWrapping() {
+    public MenuIOComponents() {
     }
 
     @Override
@@ -23,5 +23,8 @@ public class MenuIOLineWrapping implements QuestMigration {
         if (lineLength != 0) {
             config.set("menu_conv_io.line_length", lineLength * 6);
         }
+        config.set("menu_conv_io.option_selected_reset", null);
+        config.set("menu_conv_io.option_text_reset", null);
+        config.set("menu_conv_io.npc_text_reset", null);
     }
 }

@@ -48,7 +48,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
 - [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
 - [3.0.0-DEV-329 - Delete `menu_conv_io` settings](#300-dev-329-delete-menu_conv_io-settings) :thunder_cloud_rain:
-- [3.0.0-DEV-333 - Menu Conversation IO line wrapping](#300-dev-333-menu-conversation-io-line-wrapping) :sun:
+- [3.0.0-DEV-333 - Menu Conversation IO line wrapping](#300-dev-333-menu-conversation-io-components) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -642,13 +642,14 @@ items:
 All options configured in the `menu_conv_io` section in quest packages,
 are now defined in the '_config.yml_' under the path `conversations.io.menu`.
 
-### 3.0.0-DEV-333 - Menu Conversation IO line wrapping :sun:
+### 3.0.0-DEV-333 - Menu Conversation IO components :sun:
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
     -------------
     
-    As components are now used in conversations, also the menu conversation IO text wrapping was reworked.
+    The new used components dont need the settings `menu_conv_io.option_selected_reset`, `menu_conv_io.option_text_reset`
+    and `menu_conv_io.npc_text_reset` anymore and also the menu conversation IO text wrapping was reworked.
     As a result the `line_length` unit is now in pixels instead of characters.
     This means that the old value is multiplied by 6.
     As a result the default value is now 320 pixels instead of 50 characters what is more precise and allows more text.
@@ -658,6 +659,9 @@ are now defined in the '_config.yml_' under the path `conversations.io.menu`.
     ```YAML title="Old Syntax"
     menu_conv_io:
       line_length: 50
+      npc_text_reset: '&f'
+      option_text_reset: '&b'
+      option_selected_reset: '&f'
     ```
     
     ```YAML title="New Syntax"
