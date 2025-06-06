@@ -11,11 +11,13 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +32,7 @@ import java.util.regex.Pattern;
  * Hides and shows holograms to players, based on conditions.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public abstract class HologramLoop {
+public abstract class HologramLoop extends SectionProcessor<HologramLoop.HologramID, HologramWrapper> {
     /**
      * The regex for one color.
      */
@@ -52,14 +54,14 @@ public abstract class HologramLoop {
     private static final String ORDER_ASC = "asc";
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    protected final BetonQuestLogger log;
-
-    /**
      * The {@link VariableProcessor} to use.
      */
     protected final VariableProcessor variableProcessor;
+
+    /**
+     * Hologram provider to create new Holograms.
+     */
+    protected final HologramProvider hologramProvider;
 
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
@@ -67,49 +69,36 @@ public abstract class HologramLoop {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Default refresh Interval for Holograms.
+     */
+    private int defaultInterval = 10 * 20;
+
+    /**
      * Creates a new instance of the loop.
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param variableProcessor the {@link VariableProcessor} to use
+     * @param hologramProvider  the hologram provider to create new holograms
+     * @param readable          the type name used for logging, with the first letter in upper case
+     * @param internal          the section name and/or bstats topic identifier
      */
-    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor,
+                        final HologramProvider hologramProvider, final String readable, final String internal) {
+        super(log, readable, internal);
         this.loggerFactory = loggerFactory;
-        this.log = log;
         this.variableProcessor = variableProcessor;
+        this.hologramProvider = hologramProvider;
     }
 
-    /**
-     * Initializes the holograms.
-     *
-     * @param name the name of the holograms to initialize
-     * @return the list of holograms
-     */
-    protected final List<HologramWrapper> initialize(final String name) {
-        final List<HologramWrapper> holograms = new ArrayList<>();
-        final int defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
-
-        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection(name);
-            if (section == null) {
-                continue;
-            }
-            for (final String key : section.getKeys(false)) {
-                final ConfigurationSection hologramSection = section.getConfigurationSection(key);
-                if (hologramSection == null) {
-                    continue;
-                }
-                try {
-                    holograms.add(initializeHolograms(defaultInterval, pack, hologramSection));
-                } catch (final QuestException e) {
-                    log.warn(pack, "Error while loading hologram '" + key + "' in package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
-                }
-            }
-        }
-        return holograms;
+    @Override
+    public void clear() {
+        super.clear();
+        defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
     }
 
-    private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws QuestException {
+    @Override
+    protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
         final Variable<Number> checkInterval = new Variable<>(variableProcessor, pack, checkIntervalString, Argument.NUMBER);
         final Variable<Number> maxRange = new Variable<>(variableProcessor, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
@@ -228,7 +217,29 @@ public abstract class HologramLoop {
     private TextLine parseTextLine(final QuestPackage pack, final String line) {
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(line);
         return new TextLine(matcher.find()
-                ? HologramProvider.getInstance().parseVariable(pack, line)
+                ? hologramProvider.parseVariable(pack, line)
                 : line);
+    }
+
+    @Override
+    protected HologramID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+        return new HologramID(pack, identifier);
+    }
+
+    /**
+     * Internal identifier/key for a Hologram.
+     */
+    protected static class HologramID extends ID {
+
+        /**
+         * Creates a new ID.
+         *
+         * @param pack       the package the ID is in
+         * @param identifier the id instruction string
+         * @throws QuestException if the ID could not be parsed
+         */
+        protected HologramID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
+            super(pack, identifier);
+        }
     }
 }

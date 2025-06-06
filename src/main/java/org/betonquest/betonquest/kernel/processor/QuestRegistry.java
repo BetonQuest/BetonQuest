@@ -131,6 +131,11 @@ public record QuestRegistry(
                 + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();
+        additional.forEach(questProcessor -> {
+            if (questProcessor instanceof StartTask startTask) {
+                startTask.startAll();
+            }
+        });
     }
 
     /**
