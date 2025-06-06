@@ -680,7 +680,7 @@ mmocoreattributereallocationpoints 1
 #### MobKill: `mmobkill`
 
 You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
-the mob's internal name (the one defined in your MythicMobs configuration). Multiple mob names must be comma seperated.
+the mob's internal name (the one defined in your MythicMobs configuration). Multiple mob names must be comma separated.
 You can optionally add the `amount:` argument to specify how many of these mobs need to be killed. It's also possible
 to add the optional arguments `minLevel` and `maxLevel` to further customize what mobs need to be killed.
 You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player
@@ -721,7 +721,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 | Parameter  | Syntax                                               | Default Value          | Explanation                                                                                                                             |
 |------------|------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
-| _name_     | name:level                                           | :octicons-x-circle-16: | MythicMobs mob name. A level must be specifed after a colon.                                                                            |
+| _name_     | name:level                                           | :octicons-x-circle-16: | MythicMobs mob name. A level must be specified after a colon.                                                                           |
 | _amount_   | Positive Number                                      | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
 | _target_   | Keyword                                              | False                  | Will make the mob target the player.                                                                                                    |
 | _private_  | Keyword                                              | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
@@ -879,7 +879,7 @@ The first argument is class name, the second one is the required level.
 
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
-BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
+BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
 
 You can use cross-package paths using `-` between the packages. Example:
 `player meets condition "default-Forest-Jack.Completed"`

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * This is an abstract representation of a version.
- * A version must contain MAJOR, MINOR and PATCH as integer values, seperated with dots.
+ * A version must contain MAJOR, MINOR and PATCH as integer values, separated with dots.
  * <p>
  * After that an optional dash is allowed. Behind that, you are free to use any format.
  * A typical example is a qualifier like SNAPSHOT which is followed by the build number.

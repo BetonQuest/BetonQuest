@@ -429,7 +429,7 @@ public class Backpack implements Listener {
                         cancelers.add(entry.getValue());
                     }
                 } catch (final QuestException e) {
-                    log.warn(entry.getKey().getPackage(), "Could not check if canceler is cancelable, dont show it in the GUI: " + e.getMessage(), e);
+                    log.warn(entry.getKey().getPackage(), "Could not check if canceler is cancelable, don't show it in the GUI: " + e.getMessage(), e);
                 }
             }
             final int size = cancelers.size();

@@ -110,7 +110,7 @@ objectives:
 ```
 We can see multiple things here:
 
-* `conditions:` - this option works on all objectives. Multiple conditions can be added if seperated by comma 
+* `conditions:` - this option works on all objectives. Multiple conditions can be added if separated by comma 
   (`conditions:con1,con2,con3`). 
 
 * The exclamation mark (`!`) in front of a condition inverts it. That means that a condition that is "true" will be

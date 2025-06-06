@@ -44,7 +44,7 @@ public class MMOItemsCraftObjectiveAdder implements Listener {
     }
 
     /**
-     * This listener handles items that were crafted in a MMOItems Craftingstation GUI.
+     * This listener handles items that were crafted in a MMOItems Crafting Station GUI.
      *
      * @param event the event to process
      */

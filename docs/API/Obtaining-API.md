@@ -23,7 +23,7 @@ assuming you defined a dependency on BetonQuest.
 
 BetonQuest always registers its default implementation with the `Lowest` ServicePriority.
 If you want to override a module you can register your own implementation with a higher priority.
-You also need to register your implementation before the `onEnable` method of BetonQuset is called,
+You also need to register your implementation before the `onEnable` method of BetonQuest is called,
 so usually in the `onLoad` method of your plugin:
 ``` Java title="Register a module"
 getServer().getServicesManager().register(BetonQuestLoggerFactory.class, new MyLoggerFactory(), this, ServicePriority.Normal);

@@ -1433,43 +1433,43 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Specify all commands.
      */
     private Map<String, String> getCommandHelpMap(final CommandSender sender) {
-        final Map<String, String> cmds = new HashMap<>();
-        cmds.put("reload", "reload");
-        cmds.put("objectives", "objective <player> [list/add/del] [objective]");
-        cmds.put("globaltags", "globaltags [list/add/del/purge]");
-        cmds.put("globalpoints", "globalpoints [list/add/del/purge]");
-        cmds.put("tags", "tag <player> [list/add/del] [tag]");
-        cmds.put("points", "point <player> [list/add/del] [category] [amount]");
-        cmds.put("journal", "journal <player> [list/add/del] [entry] [date]");
-        cmds.put("condition", "condition <player> <condition>");
-        cmds.put("event", "event <player> <event>");
-        cmds.put("item", "item <name>");
-        cmds.put("give", "give <name>");
-        cmds.put("variable", "variable <player> <variable> [list/set/del]");
-        cmds.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
-        cmds.put("delete", "delete <tag/point/objective/journal> <name>");
-        cmds.put("version", "version");
-        cmds.put("purge", "purge <player>");
-        cmds.put("debug", "debug [true/false/ingame]");
-        cmds.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
+        final Map<String, String> map = new HashMap<>();
+        map.put("reload", "reload");
+        map.put("objectives", "objective <player> [list/add/del] [objective]");
+        map.put("globaltags", "globaltags [list/add/del/purge]");
+        map.put("globalpoints", "globalpoints [list/add/del/purge]");
+        map.put("tags", "tag <player> [list/add/del] [tag]");
+        map.put("points", "point <player> [list/add/del] [category] [amount]");
+        map.put("journal", "journal <player> [list/add/del] [entry] [date]");
+        map.put("condition", "condition <player> <condition>");
+        map.put("event", "event <player> <event>");
+        map.put("item", "item <name>");
+        map.put("give", "give <name>");
+        map.put("variable", "variable <player> <variable> [list/set/del]");
+        map.put("rename", "rename <tag/point/globalpoint/objective/journal> <old> <new>");
+        map.put("delete", "delete <tag/point/objective/journal> <name>");
+        map.put("version", "version");
+        map.put("purge", "purge <player>");
+        map.put("debug", "debug [true/false/ingame]");
+        map.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
         if (!(sender instanceof Player)) {
-            cmds.put("backup", "backup");
+            map.put("backup", "backup");
         }
-        return cmds;
+        return map;
     }
 
     /**
      * Displays help to the user.
      */
     private void displayHelp(final CommandSender sender, final String alias) throws QuestException {
-        final Map<String, String> cmds = getCommandHelpMap(sender);
+        final Map<String, String> commandMap = getCommandHelpMap(sender);
         final TextComponent.Builder builder = Component.text();
         builder.append(Component.text("----- ").color(NamedTextColor.YELLOW))
                 .append(Component.text("BetonQuest").color(NamedTextColor.GREEN))
                 .append(Component.text(" -----").color(NamedTextColor.YELLOW));
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
 
-        for (final Map.Entry<String, String> entry : cmds.entrySet()) {
+        for (final Map.Entry<String, String> entry : commandMap.entrySet()) {
             final Component command = Component.text("/" + alias + " " + entry.getValue()).color(NamedTextColor.RED);
             final Component hint = pluginMessage.getMessage(profile, "command_" + entry.getKey()).color(NamedTextColor.AQUA);
 
@@ -1588,7 +1588,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
             }
             sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-            log.info("Debuging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+            log.info("Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
             return;
         }
         sendMessage(sender, "unknown_argument");

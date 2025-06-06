@@ -155,7 +155,7 @@ conversations:
         pointers: "cityAnswer" # (5)!
 ```
 
-1. This `NPC_option` points to multiple `player_options`. This allows the player to choose. The names of the `player_options` must be comma seperated.
+1. This `NPC_option` points to multiple `player_options`. This allows the player to choose. The names of the `player_options` must be comma separated.
 2. The `whoAmI` `npc_option` points to me.
 3. Gets pointed on by the `whoAmI` `npc_option`.
 4. Points to the `islandAnswer` `NPC_option`.

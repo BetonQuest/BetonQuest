@@ -143,7 +143,7 @@ public class BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            log.error("Could not place block '" + this + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
+            log.error("Could not place block '" + this + "'! Probably the block has a invalid block-state: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);
