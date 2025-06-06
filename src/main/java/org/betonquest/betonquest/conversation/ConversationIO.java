@@ -26,7 +26,7 @@ public interface ConversationIO {
      * @param properties the property configuration section for the text
      * @throws QuestException if the option cannot be added, e.g., if the properties are invalid
      */
-    void addPlayerOption(String option, ConfigurationSection properties) throws QuestException;
+    void addPlayerOption(Component option, ConfigurationSection properties) throws QuestException;
 
     /**
      * Displays all data to the player. Should be called after setting all
@@ -51,7 +51,7 @@ public interface ConversationIO {
      *
      * @param message The message to send
      */
-    default void print(@Nullable final String message) {
+    default void print(@Nullable final Component message) {
         // Empty
     }
 }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
@@ -37,18 +38,19 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     /**
      * Creates a new {@link CitizensInventoryConvIO} instance.
      *
-     * @param conv          the conversation
-     * @param onlineProfile the online profile
-     * @param log           the custom logger for the conversation
-     * @param colors        the conversation colors
-     * @param showNumber    whether to show the number of the conversation
-     * @param showNPCText   whether to show the NPC text
-     * @param printMessages whether to print messages
+     * @param conv                 the conversation
+     * @param onlineProfile        the online profile
+     * @param log                  the custom logger for the conversation
+     * @param colors               the conversation colors
+     * @param showNumber           whether to show the number of the conversation
+     * @param showNPCText          whether to show the NPC text
+     * @param printMessages        whether to print messages
+     * @param componentLineWrapper the component line wrapper
      */
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                                   final ConversationColors.Colors colors, final boolean showNumber, final boolean showNPCText,
-                                   final boolean printMessages) {
-        super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages);
+                                   final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
+                                   final boolean printMessages, final ComponentLineWrapper componentLineWrapper) {
+        super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 
     @Override

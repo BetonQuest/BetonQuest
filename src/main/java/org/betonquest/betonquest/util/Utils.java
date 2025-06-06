@@ -302,14 +302,7 @@ public final class Utils {
         return result;
     }
 
-    /**
-     * Replace resets with colorcode.
-     *
-     * @param string input string.
-     * @param color  default color.
-     * @return the formatted string.
-     */
-    public static String replaceReset(final String string, final String color) {
+    private static String replaceReset(final String string, final String color) {
         return string.replace(ChatColor.RESET.toString(), ChatColor.RESET + color);
     }
 

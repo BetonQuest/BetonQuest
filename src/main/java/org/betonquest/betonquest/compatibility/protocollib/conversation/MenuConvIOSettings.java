@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
+
 /**
  * Menu conversation settings.
  */
@@ -7,9 +10,8 @@ public record MenuConvIOSettings(int configSelectionCooldown, int configRefreshD
                                  int configStartNewLines, boolean configNpcNameNewlineSeparator,
                                  boolean configNpcTextFillNewLines, String configControlSelect,
                                  String configControlCancel, String configControlMove, String configNpcNameAlign,
-                                 String configNpcNameType, String configNpcWrap, String configNpcText,
-                                 String configNpcTextReset, String configOptionWrap, String configOptionText,
-                                 String configOptionTextReset, String configOptionSelected,
-                                 String configOptionSelectedReset, String configOptionSelectedWrap,
-                                 String configNpcNameFormat) {
+                                 String configNpcNameType, Component configNpcWrap, VariableComponent configNpcText,
+                                 Component configOptionWrap, VariableComponent configOptionText,
+                                 VariableComponent configOptionSelected, Component configOptionSelectedWrap,
+                                 VariableComponent configNpcNameFormat) {
 }
