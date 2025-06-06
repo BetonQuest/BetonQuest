@@ -46,6 +46,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.CoreFeatureFactories;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
+import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
@@ -528,7 +529,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     public void loadData() {
         questRegistry.loadData(getPackages().values());
         playerDataStorage.startObjectives();
-        rpgMenu.reloadData(getPackages().values());
+        rpgMenu.syncCommands();
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }
 
@@ -608,6 +609,15 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         if (rpgMenu != null) {
             rpgMenu.onDisable();
         }
+    }
+
+    /**
+     * Adds a Processor to re-/load data on BetonQuest re-/load.
+     *
+     * @param processor the processor to register
+     */
+    public void addProcessor(final QuestProcessor<?, ?> processor) {
+        questRegistry.additional().add(processor);
     }
 
     /**

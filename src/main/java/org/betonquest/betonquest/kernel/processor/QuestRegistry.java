@@ -20,9 +20,12 @@ import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
 import org.betonquest.betonquest.schedule.EventScheduling;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Stores the active Processors to store and execute type logic.
@@ -48,7 +51,8 @@ public record QuestRegistry(
         ItemProcessor items,
         JournalEntryProcessor journalEntries,
         JournalMainPageProcessor journalMainPages,
-        NpcProcessor npcs
+        NpcProcessor npcs,
+        List<QuestProcessor<?, ?>> additional
 ) {
 
     /**
@@ -79,7 +83,7 @@ public record QuestRegistry(
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), messageCreator);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, messageCreator);
         final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider);
-        return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs);
+        return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
 
     /**
@@ -99,6 +103,7 @@ public record QuestRegistry(
         journalEntries.clear();
         journalMainPages.clear();
         npcs.clear();
+        additional.forEach(QuestProcessor::clear);
 
         for (final QuestPackage pack : packages) {
             final String packName = pack.getQuestPath();
@@ -112,6 +117,7 @@ public record QuestRegistry(
             journalMainPages.load(pack);
             npcs.load(pack);
             eventScheduling.loadData(pack);
+            additional.forEach(questProcessor -> questProcessor.load(pack));
 
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
@@ -121,6 +127,7 @@ public record QuestRegistry(
         log.info("There are " + String.join(", ", core.readableSize(),
                 cancelers.readableSize(), compasses.readableSize(), conversations.readableSize(), items.readableSize(),
                 journalEntries.readableSize(), journalMainPages.readableSize(), npcs.readableSize())
+                + " (Additional: " + additional.stream().map(QuestProcessor::readableSize).collect(Collectors.joining(", ")) + ")"
                 + " loaded from " + packages.size() + " packages.");
 
         eventScheduling.startAll();

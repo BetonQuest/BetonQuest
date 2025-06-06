@@ -2,7 +2,6 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -99,8 +98,10 @@ public class RPGMenu {
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
                 messageCreator, questTypeAPI, pluginConfig, variableProcessor, featureAPI);
+        betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, messageCreator,
                 questTypeAPI, variableProcessor, featureAPI, this, profileProvider);
+        betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);
         server.getPluginManager().registerEvents(menuItemListener, betonQuest);
@@ -173,19 +174,11 @@ public class RPGMenu {
     }
 
     /**
-     * Reload all Menus and Menu Items.
-     *
-     * @param packs the Quest Packages to load
+     * Syncs the command map for (Menu) commands.
      */
-    public void reloadData(final Collection<QuestPackage> packs) {
-        menuProcessor.clear();
-        menuItemProcessor.clear();
-        for (final QuestPackage pack : packs) {
-            menuItemProcessor.load(pack);
-            menuProcessor.load(pack);
-        }
+    public void syncCommands() {
         pluginCommand.syncCraftBukkitCommands();
-        log.info("Reloaded " + menuProcessor.readableSize() + " and " + menuItemProcessor.readableSize());
+        log.info("Synced Command Map for (Menu) Commands…");
     }
 
     /**
