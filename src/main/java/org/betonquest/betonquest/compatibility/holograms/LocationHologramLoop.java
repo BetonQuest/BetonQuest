@@ -23,17 +23,18 @@ public class LocationHologramLoop extends HologramLoop {
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param variableProcessor the {@link VariableProcessor} to use
+     * @param hologramProvider  the hologram provider to create new holograms
      */
-    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor) {
-        super(loggerFactory, log, variableProcessor);
-        initialize("holograms");
+    public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                                final VariableProcessor variableProcessor, final HologramProvider hologramProvider) {
+        super(loggerFactory, log, variableProcessor, hologramProvider, "Hologram", "holograms");
     }
 
     @Override
     protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final Location location = getParsedLocation(pack, section);
         final List<BetonHologram> holograms = new ArrayList<>();
-        holograms.add(HologramProvider.getInstance().createHologram(location));
+        holograms.add(hologramProvider.createHologram(location));
         return holograms;
     }
 
