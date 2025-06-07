@@ -35,7 +35,7 @@ public class DebugHandlerConfig {
     /**
      * The full path to the config setting, that defined the history expiration time in minutes.
      */
-    private static final String CONFIG_HISTORY_PATH = CONFIG_SECTION + ".history_in_minutes";
+    private static final String CONFIG_HISTORY_PATH = CONFIG_SECTION + ".history";
 
     /**
      * The {@link ConfigAccessor} where to configure debugging.

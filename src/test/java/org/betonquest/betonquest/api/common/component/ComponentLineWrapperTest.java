@@ -230,7 +230,7 @@ class ComponentLineWrapperTest {
         }
 
         @Test
-        void new_line_with_colour_from_minimessage() {
+        void new_line_with_color_from_minimessage() {
             final String inputString = "<red>This is only a long <yellow>enough text<br> so it gets</yellow> wrapped";
             final Component input = MiniMessage.miniMessage().deserialize(inputString);
             final List<Component> lines = ComponentLineWrapper.splitNewLine(input);
@@ -244,7 +244,7 @@ class ComponentLineWrapperTest {
         }
 
         @Test
-        void new_line_with_colour_after_br_from_minimessage() {
+        void new_line_with_color_after_br_from_minimessage() {
             final String inputString = "<red>This is only a hopefully long <yellow>enough text so it gets wrapped,<br> some edge cases are tested </yellow>later like links translation keys and key bindings.";
             final Component input = MiniMessage.miniMessage().deserialize(inputString);
             final List<Component> lines = ComponentLineWrapper.splitNewLine(input);

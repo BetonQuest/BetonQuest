@@ -58,11 +58,11 @@ public class BossBarNotifyIO extends NotifyIO {
         }
 
         final String barColorString = data.get("barcolor");
-        final String upperCaseBarColour = barColorString == null ? null : barColorString.toUpperCase(Locale.ROOT);
+        final String upperCaseBarColor = barColorString == null ? null : barColorString.toUpperCase(Locale.ROOT);
         try {
-            color = upperCaseBarColour == null ? BossBar.Color.BLUE : BossBar.Color.valueOf(upperCaseBarColour);
+            color = upperCaseBarColor == null ? BossBar.Color.BLUE : BossBar.Color.valueOf(upperCaseBarColor);
         } catch (final IllegalArgumentException exception) {
-            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarColor", upperCaseBarColour), exception);
+            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarColor", upperCaseBarColor), exception);
         }
 
         final String styleString = data.get("style");

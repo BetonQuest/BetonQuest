@@ -33,7 +33,7 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q version`: Displays the versions of BetonQuest, the server and all hooked plugins
 * `/q debug [true/false/ingame]`: Enable debug mode and write all down in a log file or disable the debug mode
 * `/q download <gitHubNamespace> <ref> <type> <sourcePath> [targetPath] [recursive] [overwrite]`: Download quests and templates from a GitHub repository
-* `/questlang <lang>` - Changes the language for the player. `default` language will use the language defined in _config.yml_.
+* `/questlang <lang>` - Changes the language for the player. `default` language will use the language defined in "_config.yml_".
 * `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
 * `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](../Features/Menus/Menu.md#general-menu-settings) of the menu will be ignored when using this command.
@@ -136,7 +136,7 @@ Further can such a value be set for a key with `set <key> <value>`or an existing
 
 ### Purge player data: `purge`
 You can purge specific player with '`/q purge Beton`' command, where Beton is the name of the player.
-To purge the entire database at once simply change the prefix in _config.yml_ or delete _database.db_ file.
+To purge the entire database at once simply change the prefix in "_config.yml_" or delete "_database.db_" file.
 
 ### Delete data from the database: `delete`
 Delete command ('`/q delete`') allows you to delete from the database every tag, point, objective or journal entry with specified name.
@@ -178,11 +178,11 @@ the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository.
 example `/q download BetonQuest/Quest-Tutorials refs/tags/v2.0.0 QuestPackages /default` will download the `default` tutorial quest and
 place it in the same folder. The first argument (`gitHubNamespace`) is the GitHub repository in the format user/repo or
 organisation/repo. Before you can download from a repo you need to add the namespace to
-the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
+the [`repo_whitelist`](Plugin-Config.md#downloader-the-downloader-settings) in the BetonQuest config. This is a security measure that
 prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
 command by accident. The second argument (`ref`) is either a commit SHA or a git reference to a specific commit that
 should be downloaded. For a branch (e.g. `main`)  `refs/heads/main` works. For a tag it is `refs/tags/tagname`. Pull request references (
-e.g. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
+e.g. `refs/pull/1731/head`) are also possible but must be enabled with [`pull_request`](Plugin-Config.md#downloader-the-downloader-settings).
 Keep in mind that anyone can open a pull request so use this very carefully. Third argument (`type`) is
 either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
 you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.

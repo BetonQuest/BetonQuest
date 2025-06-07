@@ -149,7 +149,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         }
 
         private Variable<ConversationIOFactory> parseConvIO() throws QuestException {
-            final String rawConvIOs = defaulting("conversationIO", "default_conversation_IO", "menu,tellraw");
+            final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
             return new Variable<>(plugin.getVariableProcessor(), pack, rawConvIOs, value -> {
                 final List<String> ios = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
                 return convIORegistry.getFactory(ios);
@@ -157,7 +157,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         }
 
         private Variable<InterceptorFactory> parseInterceptor() throws QuestException {
-            final String rawInterceptor = defaulting("interceptor", "default_interceptor", "simple");
+            final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
             return new Variable<>(plugin.getVariableProcessor(), pack, rawInterceptor, value -> {
                 final List<String> interceptors = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
                 return interceptorRegistry.getFactory(interceptors);

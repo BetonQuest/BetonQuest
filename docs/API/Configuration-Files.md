@@ -16,7 +16,7 @@ Additionally, it takes care of patching the config whenever syntax or content ch
 ## Loading a config
 
 By creating a ConfigAccessor you either load an existing config or create the default one from your plugin's resources.
-Here is an example method that loads a `config.yml` file from your plugin's resources:
+Here is an example method that loads a "_config.yml_" file from your plugin's resources:
 ```java
 public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) { //(1)!
     File targetConfigFile = new File(plugin.getDataFolder(), "config.yml"); //(2)!

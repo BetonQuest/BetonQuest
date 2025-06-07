@@ -94,7 +94,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     @Override
     public void clear() {
         super.clear();
-        defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
+        defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram.update_interval", 10 * 20);
     }
 
     @Override

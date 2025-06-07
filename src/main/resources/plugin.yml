@@ -15,7 +15,6 @@ softdepend:
   - MythicMobs
   - Vault
   - EffectLib
-  - PlayerPoints
   - Heroes
   - Magic
   - Denizen

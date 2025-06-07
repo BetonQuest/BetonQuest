@@ -83,7 +83,7 @@ public class NpcHider {
     }
 
     private void load(final Collection<QuestPackage> packages) {
-        final int updateInterval = plugin.getPluginConfig().getInt("npc_hider_check_interval", 5 * 20);
+        final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
         loadFromConfig(packages);
         task = new BukkitRunnable() {
             @Override

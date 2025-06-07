@@ -58,8 +58,8 @@ you can delete the file safely otherwise you should move the messages to the new
 
 ### 3.0.0-DEV-65 - Delete menuConfig.yml :thunder_cloud_rain:
 
-The `menuConfig.yml` file has been removed.
-If you had the option `default_close` configured, you can now find this option in the `config.yml` file.
+The "_menuConfig.yml_" file has been removed.
+If you had the option `default_close` configured, you can now find this option in the "_config.yml_" file.
 All translations in the config where also moved to the `lang` folder,
 so also here you need to move your custom translations.
 

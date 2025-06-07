@@ -329,7 +329,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
 
 ## JobsReborn[](https://www.spigotmc.org/resources/4216/)
 
-Requires adding the following to _config.yml_:
+Requires adding the following to "_config.yml_":
 ```YAML
 hook:
   jobs: 'true'

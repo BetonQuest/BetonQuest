@@ -69,7 +69,7 @@ public class PlayerHider {
             }
         }
 
-        final long period = betonQuest.getPluginConfig().getLong("player_hider_check_interval", 20);
+        final long period = betonQuest.getPluginConfig().getLong("hider.player_update_interval", 20);
         bukkitTask = Bukkit.getScheduler().runTaskTimer(betonQuest, this::updateVisibility, 1, period);
     }
 

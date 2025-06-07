@@ -20,7 +20,7 @@ td {
 BetonQuest has a comfortable Auto-Updater, that you can use without any problem, but there are some things that you need
 to be aware of. Alternatively you can install updated manual by your self.
 
-Read the [update](../Configuration.md#updating) section to correctly set up the Auto-Updater.
+Read the [updater](../Plugin-Config.md#updater-the-updater-settings) section to correctly set up the Auto-Updater.
 
 For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-automatic-updates)
 and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/q update` for manual updates.

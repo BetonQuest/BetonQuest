@@ -1,4 +1,20 @@
 configVersion: ""
+language: en-US
+message_parser: legacyminimessage
+date_format: dd.MM.yyyy HH:mm
+default_notify_io: chat
+updater:
+  enabled: true
+  strategy: MINOR
+  automatic: true
+  ingame_notification: true
+downloader:
+  pull_request: false
+  repo_whitelist:
+    - BetonQuest/Quest-Tutorials
+debug:
+  enabled: false
+  history: 10
 mysql:
   enabled: false
   host: ''
@@ -8,43 +24,73 @@ mysql:
   base: ''
   prefix: betonquest_
   reconnect_interval: 1000
-language: en-US
-update:
-  enabled: true
-  strategy: MINOR
-  automatic: true
-  ingameNotification: true
-default_journal_slot: -1
-max_conversation_distance: 5.3
-npcs:
+profile:
+  initial_name: 'default'
+conversation:
+  default_io: menu,tellraw
+  interceptor:
+    default: redischat,packet,simple
+    display_missed: true
+  combat_delay: 10
+  stop:
+    distance: 5.3
+    notify: true
+  cmd_blacklist:
+    - spawn
+  color:
+    npc: dark_red
+    player: dark_green
+    text: green,italic
+    answer: gray
+    number: yellow
+    option: aqua
+  io:
+    chest:
+      show_number: true
+      show_npc_text: true
+    slowtellraw:
+      message_delay: 10
+npc:
   accept_left_click: false
   interaction_limit: 500
-default_conversation_IO: menu,tellraw
-conversation_colors:
-  npc: dark_red
-  player: dark_green
-  text: green,italic
-  answer: gray
-  number: yellow
-  option: aqua
-conversation_IO_config:
-  chest:
-    show_number: true
-    show_npc_text: true
-  slowtellraw:
-    message_delay: 10
-default_interceptor: redischat,packet,simple
-default_hologram: DecentHolograms,HolographicDisplays
-display_chat_after_conversation: true
-combat_delay: 10
-notify_pullback: true
-remove_items_after_respawn: true
-quest_items_unbreakable: true
-player_hider_check_interval: 20
-npc_hider_check_interval: 100
-hologram_update_interval: 200
-cmd_blacklist:
-  - spawn
+hologram:
+  default: DecentHolograms,HolographicDisplays
+  update_interval: 200
+hider:
+  player_update_interval: 20
+  npc_update_interval: 100
+item:
+  quest:
+    unbreakable: true
+    remove_after_respawn: true
+  backpack:
+    previous_button: ''
+    next_button: ''
+    cancel_button: ''
+    compass_button: ''
+journal:
+  default_slot: -1
+  lock_default_slot: false
+  show_in_backpack: true
+  give_on_respawn: false
+  custom_model_data: -1
+  format:
+    chars_per_line: 19
+    lines_per_page: 13
+    one_entry_per_page: false
+    reversed_order: true
+    full_main_page: false
+    separator: ---------------
+    show_separator: false
+    hide_date: false
+    color:
+      date:
+        day: 9
+        hour: 6
+      line: 4
+      text: 0
+menu:
+  default_close: true
 hook:
   citizens: true
   mythicmobs: true
@@ -53,7 +99,6 @@ hook:
   skript: true
   mcmmo: true
   effectlib: true
-  playerpoints: true
   heroes: true
   magic: true
   denizen: true
@@ -79,39 +124,3 @@ hook:
   train_carts: true
   fancynpcs: true
   znpcsplus: true
-journal:
-  chars_per_line: 19
-  lines_per_page: 13
-  one_entry_per_page: false
-  reversed_order: true
-  hide_date: false
-  full_main_page: false
-  show_in_backpack: true
-  lock_default_journal_slot: false
-  give_on_respawn: false
-  custom_model_data: -1
-  separator: ---------------
-journal_colors:
-  date:
-    day: 9
-    hour: 6
-  line: 4
-  text: 0
-date_format: dd.MM.yyyy HH:mm
-debug:
-  enabled: false
-  history_in_minutes: 10
-download:
-  pull_requests: false
-  repo_whitelist:
-    - BetonQuest/Quest-Tutorials
-items:
-  backpack:
-    previous_button: ''
-    next_button: ''
-    cancel_button: "DEFAULT"
-    compass_button: "DEFAULT"
-profiles:
-  initial_name: 'default'
-default_close: true
-message_parser: legacyminimessage

@@ -47,8 +47,8 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final ConversationColors.Colors colors = ConversationColors.getColors();
-        final boolean showNumber = config.getBoolean("conversation_IO_config.chest.show_number", true);
-        final boolean showNPCText = config.getBoolean("conversation_IO_config.chest.show_npc_text", true);
+        final boolean showNumber = config.getBoolean("conversation.io.chest.show_number", true);
+        final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
         return new InventoryConvIO(conversation, onlineProfile, log, colors, showNumber, showNPCText, printMessages);
     }

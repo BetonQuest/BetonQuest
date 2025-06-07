@@ -20,8 +20,8 @@ class UtilsTest {
 
     private void prepareConfig() {
         final FileConfigAccessor config = mock(FileConfigAccessor.class);
-        when(config.getInt("journal.lines_per_page")).thenReturn(13);
-        when(config.getInt("journal.chars_per_line")).thenReturn(19);
+        when(config.getInt("journal.format.lines_per_page")).thenReturn(13);
+        when(config.getInt("journal.format.chars_per_line")).thenReturn(19);
         final BetonQuest betonQuest = BetonQuest.getInstance();
         when(betonQuest.getPluginConfig()).thenReturn(config);
     }

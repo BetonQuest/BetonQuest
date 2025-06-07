@@ -94,7 +94,7 @@ _This applies to a written book and a book and quill._
     If you want to specifically say that the book must not have any author, use `none` keyword.
 
 - `text` - the text of the book. All underscores will be replaced with spaces and you can use `&` color codes.
-    The text will wrap to the next page if amount of characters exceeds `journal.chars_per_page` setting in _config.yml_.
+    The text will wrap if amount of characters exceeds `journal.chars_per_line` and `journal.lines_per_page` setting in "_config.yml_".
     If you want to manually wrap the page, use `|` character. To go to new line use `\n`.
     Keep in mind that you can't use any spaces here, you must only use underscores (`_`).
     This needs to be a single argument, even if it's really long. If you don't want the book to have any text, use `none` keyword instead.

@@ -73,6 +73,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `math` variable now gives a better exception message and does not return 0 instead
 - `folder` event now use the `unit` argument to define the time unit for ticks, seconds and minutes
 - custom items in the chest conversation IO are now defined in the `properties` section on an option
+- Reworked the config.yml file to be more clean and structured
+    - `item.backpack.cancel_button` and `item.backpack.compass_button` do not have a `DEFAULT` value anymore, instead you need to specify an item
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -81,6 +83,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu reload` command which did not work
 - `variables` section in favor for `constants`
 - `MMOItems` conditions, events and `mmoitemcraft` objective in favor of the built-in ones
+- `journal.chars_per_page` was deleted from the config.yml 
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

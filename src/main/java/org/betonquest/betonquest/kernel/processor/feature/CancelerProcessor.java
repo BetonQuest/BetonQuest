@@ -78,7 +78,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     protected QuestCanceler loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final Message names = messageCreator.parseFromSection(pack, section, "name");
         final String itemString = section.getString("item");
-        final String rawItem = itemString == null ? pack.getConfig().getString("items.cancel_button") : itemString;
+        final String rawItem = itemString == null ? pack.getConfig().getString("item.cancel_button") : itemString;
         final ItemID item = rawItem == null ? null : new ItemID(pack, rawItem);
         final String rawLoc = section.getString("location");
         final Variable<Location> location = rawLoc == null ? null : new Variable<>(variableProcessor, pack, rawLoc, Argument.LOCATION);

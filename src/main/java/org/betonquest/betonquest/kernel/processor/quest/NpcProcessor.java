@@ -152,8 +152,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     public void clear() {
         super.clear();
         ((NpcTypeRegistry) types).resetIdentifier();
-        interactionLimit = plugin.getPluginConfig().getInt("npcs.interaction_limit", 500);
-        acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npcs.accept_left_click");
+        interactionLimit = plugin.getPluginConfig().getInt("npc.interaction_limit", 500);
+        acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npc.accept_left_click");
         npcHider.reload(plugin.getPackages().values());
     }
 
