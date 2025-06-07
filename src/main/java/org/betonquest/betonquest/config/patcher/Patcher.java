@@ -130,9 +130,6 @@ public class Patcher {
     public void patch(final FileConfigAccessor accessor) throws InvalidConfigurationException {
         final Configuration config = accessor.getConfig();
         final String configVersionString = config.getString(CONFIG_VERSION_PATH);
-        config.setDefaults(resourceAccessor.getConfig());
-        config.options().copyDefaults(true);
-
         final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
         if (patches.isEmpty()) {
             log.debug(logPrefix + "has no patches to apply, setting zero version.");
@@ -150,6 +147,10 @@ public class Patcher {
                 patch(version, config);
             }
         }
+
+        config.setDefaults(resourceAccessor.getConfig());
+        config.options().copyDefaults(true);
+
         try {
             accessor.save();
         } catch (final IOException e) {
