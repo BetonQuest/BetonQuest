@@ -12,6 +12,7 @@ import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
+import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.Bukkit;
@@ -33,7 +34,7 @@ import java.util.Set;
  * Hides and shows holograms to players at a Npcs location. Based on conditions.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class NpcHologramLoop extends HologramLoop implements Listener {
+public class NpcHologramLoop extends HologramLoop implements Listener, StartTask {
     /**
      * The task that lets holograms follow NPCs.
      */
@@ -43,11 +44,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
      * List of all {@link NpcHologram}s.
      */
     private final List<NpcHologram> npcHolograms;
-
-    /**
-     * List of all {@link HologramWrapper}s.
-     */
-    private final List<HologramWrapper> holograms;
 
     /**
      * Feature API.
@@ -70,22 +66,28 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param variableProcessor the variable processor to use
+     * @param hologramProvider  the hologram provider to create new holograms
      * @param featureAPI        the Quest Type API
      * @param npcTypeRegistry   the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final VariableProcessor variableProcessor, final FeatureAPI featureAPI,
+                           final VariableProcessor variableProcessor, final HologramProvider hologramProvider, final FeatureAPI featureAPI,
                            final NpcTypeRegistry npcTypeRegistry) {
-        super(loggerFactory, log, variableProcessor);
+        super(loggerFactory, log, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
         this.featureAPI = featureAPI;
         this.npcTypeRegistry = npcTypeRegistry;
         identifierToId = new HashMap<>();
         npcHolograms = new ArrayList<>();
-        holograms = initialize("npc_holograms");
         followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(),
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
                         .forEach(this::updateHologram), 1L, 1L);
         Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    @Override
+    public void clear() {
+        npcHolograms.clear();
+        super.clear();
     }
 
     /**
@@ -94,6 +96,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     public void close() {
         followTask.cancel();
         HandlerList.unregisterAll(this);
+        clear();
     }
 
     @Override
@@ -101,31 +104,46 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
-            vector.add(new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
+            vector.add(new Variable<>(variableProcessor, pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);
         final Map<NpcID, BetonHologram> npcBetonHolograms = new HashMap<>();
+        npcIDs.forEach(npcID -> npcBetonHolograms.put(npcID, null));
         final List<BetonHologram> holograms = new ArrayList<>();
-        npcIDs.forEach(npcID -> {
-            final Npc<?> npc;
-            try {
-                npc = featureAPI.getNpc(npcID, null);
-            } catch (final QuestException exception) {
-                log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
-                return;
-            }
-            identifierToId.computeIfAbsent(npcID.toString(), k -> new ArrayList<>()).add(npcID);
-            if (!npc.isSpawned()) {
-                npcBetonHolograms.put(npcID, null);
-                return;
-            }
-            final BetonHologram hologram = HologramProvider.getInstance().createHologram(npc.getLocation().add(vector));
-            npcBetonHolograms.put(npcID, hologram);
-            holograms.add(hologram);
-        });
         npcHolograms.add(new NpcHologram(npcBetonHolograms, holograms, vector, follow));
         return holograms;
+    }
+
+    /**
+     * Delays the start task one tick further to allow loading of NPCs on server start.
+     */
+    @Override
+    public void startAll() {
+        log.debug("Delaying NPC Hologram creation…");
+        Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            log.debug("Loading delayed NPC Holograms.");
+            npcHolograms.forEach(holo -> {
+                for (final Map.Entry<NpcID, BetonHologram> entry : holo.npcHolograms.entrySet()) {
+                    final NpcID npcID = entry.getKey();
+                    final Npc<?> npc;
+                    try {
+                        npc = featureAPI.getNpc(npcID, null);
+                    } catch (final QuestException exception) {
+                        log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
+                        return;
+                    }
+                    identifierToId.computeIfAbsent(npcID.toString(), k -> new ArrayList<>()).add(npcID);
+                    if (!npc.isSpawned()) {
+                        return;
+                    }
+                    final BetonHologram hologram = hologramProvider.createHologram(npc.getLocation().add(holo.vector));
+                    entry.setValue(hologram);
+                    holo.holograms.add(hologram);
+                }
+            });
+            log.debug("Loaded NPC Holograms.");
+        });
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
@@ -151,7 +169,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
                     }
                     final Location location = npc.getLocation().add(npcHologram.vector());
                     if (hologram == null) {
-                        final BetonHologram newHologram = HologramProvider.getInstance().createHologram(location);
+                        final BetonHologram newHologram = hologramProvider.createHologram(location);
                         entry.setValue(newHologram);
                         npcHologram.holograms().add(newHologram);
                         updateHologram(newHologram);
@@ -166,7 +184,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener {
     }
 
     private void updateHologram(final BetonHologram hologram) {
-        holograms.stream()
+        values.values().stream()
                 .filter(hologramWrapper -> hologramWrapper.holograms().contains(hologram))
                 .forEach(hologramWrapper -> {
                     hologramWrapper.initialiseContent();
