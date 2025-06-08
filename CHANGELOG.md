@@ -36,6 +36,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `eval` event and condition to resolve a string and interpret it again as event/condition
 - `constants` to replace the `variables` section including new addressing of them with the new constant variable
 - `mmoitem` item type
+- ingame message for plugin updates (removed in 2.1.0)
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
