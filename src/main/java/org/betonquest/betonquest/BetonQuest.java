@@ -361,7 +361,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
-        final String defaultParser = config.getString("messageParser", "legacyminimessage");
+        final String defaultParser = config.getString("message_parser", "legacyminimessage");
         messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
         try {
             pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage,
