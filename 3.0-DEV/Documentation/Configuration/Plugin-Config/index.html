@@ -10,7 +10,7 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Configuration/Configuration/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Configuration/Plugin-Config/">
       
       
         <link rel="prev" href="../../Visual-Effects/Additional-Effects/Player-Hider/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Configuration - BetonQuest</title>
+        <title>Plugin Config - BetonQuest</title>
       
     
     
@@ -98,7 +98,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configuration" class="md-skip">
+        <a href="#language-default-plugin-language" class="md-skip">
           Skip to content
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration
+              Plugin Config
             
           </span>
         </div>
@@ -2740,8 +2740,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -2751,7 +2749,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Plugin Config
   
 
     
@@ -2770,7 +2768,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Plugin Config
   
 
     
@@ -2789,8 +2787,6 @@
 
   
   
-  
-  
 
   
   <label class="md-nav__title" for="__toc">
@@ -2804,61 +2800,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#config-options">
+  <a class="md-nav__link" href="#language-default-plugin-language">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Config Options
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Config Options" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#mysql-database">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          MySQL Database
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="MySQL Database" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#setup">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Setup
+          <code>language</code> - Default plugin language
         </span>
 
       
@@ -2869,19 +2817,181 @@
   
   
 </li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#message_parser-default-message-parser">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>message_parser</code> - Default message parser
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#date_format-the-format-of-dates">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>date_format</code> - The format of dates
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#default_notify_io-the-default-io-for-notifications">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>default_notify_io</code> - The default io for notifications
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#updater-the-updater-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>updater</code> - The updater settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#downloader-the-downloader-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>downloader</code> - The downloader settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#debug-debugging-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>debug</code> - Debugging settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#mysql-setup-mysql-database">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>mysql</code> - Setup MySQL Database
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="mysql - Setup MySQL Database" class="md-nav">
+    <ul class="md-nav__list">
       
       
       
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#migrating-a-database-from-sqlite-to-mysql-and-back">
+  <a class="md-nav__link" href="#migrating-a-database-from-sqlite-to-mysql-or-back">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Migrating a database from SQLite to MySQL and back
+          Migrating a database from SQLite to MySQL or back
         </span>
 
       
@@ -2898,19 +3008,19 @@
   </nav>
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#default-language">
+  <a class="md-nav__link" href="#profile-profile-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Default Language
+          <code>profile</code> - Profile settings
         </span>
 
       
@@ -2921,19 +3031,19 @@
   
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#updating">
+  <a class="md-nav__link" href="#conversation-conversation-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Updating
+          <code>conversation</code> - Conversation settings
         </span>
 
       
@@ -2943,595 +3053,21 @@
 
   
   
-</li>
+  <nav aria-label="conversation - Conversation settings" class="md-nav">
+    <ul class="md-nav__list">
       
       
       
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#journal-slots">
+  <a class="md-nav__link" href="#io-conversation-io-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Journal slots
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-left-click">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Npc left click
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-interact-limit">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Npc interact limit
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-end-distance">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation End Distance
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-conversation-style">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Conversation Style
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-chat-interceptor">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Chat interceptor
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-hologram-plugin">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Hologram Plugin
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-chat-display-options">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Chat Display options
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#combat-delay">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Combat Delay
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-pullback-message">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation pullback message
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#adjusting-the-backpack-to-the-keepinventory-gamerule">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Adjusting the backpack to the KeepInventory gamerule
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-items-break-behaviour">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Quest Items break behaviour
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#player-hider-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Player Hider interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-hider-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          NPC Hider interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#hologram-update-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Hologram update interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#sounds">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Sounds
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-command-banlist">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Command Banlist
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#compatibility-hooks">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Compatibility Hooks
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#journal">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Journal
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#journal-colors">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Journal Colors
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-colors">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Colors
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-settings-chestio-slowtellrawio">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Settings: ChestIO &amp; SlowTellrawIO
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-downloader">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Quest downloader
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#items">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Items
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#menu">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Menu
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#misc-settings">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Misc settings
+          <code>io</code> - Conversation IO settings
         </span>
 
       
@@ -3546,6 +3082,167 @@
       
     </ul>
   </nav>
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#npc-npc-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>npc</code> - NPC settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hologram-hologram-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hologram</code> - Hologram settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hider-entity-hider-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hider</code> - Entity hider settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#item-item-related-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>item</code> - Item related settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#journal-journal-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>journal</code> - Journal settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#menu-menu-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>menu</code> - Menu settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hook-compatibility-hooks">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hook</code> - Compatibility Hooks
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
   
 </li>
     
@@ -5071,8 +4768,6 @@
 
   
   
-  
-  
 
   
   <label class="md-nav__title" for="__toc">
@@ -5086,61 +4781,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#config-options">
+  <a class="md-nav__link" href="#language-default-plugin-language">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Config Options
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="Config Options" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#mysql-database">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          MySQL Database
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-  <nav aria-label="MySQL Database" class="md-nav">
-    <ul class="md-nav__list">
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#setup">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Setup
+          <code>language</code> - Default plugin language
         </span>
 
       
@@ -5151,19 +4798,181 @@
   
   
 </li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#message_parser-default-message-parser">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>message_parser</code> - Default message parser
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#date_format-the-format-of-dates">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>date_format</code> - The format of dates
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#default_notify_io-the-default-io-for-notifications">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>default_notify_io</code> - The default io for notifications
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#updater-the-updater-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>updater</code> - The updater settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#downloader-the-downloader-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>downloader</code> - The downloader settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#debug-debugging-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>debug</code> - Debugging settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#mysql-setup-mysql-database">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>mysql</code> - Setup MySQL Database
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="mysql - Setup MySQL Database" class="md-nav">
+    <ul class="md-nav__list">
       
       
       
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#migrating-a-database-from-sqlite-to-mysql-and-back">
+  <a class="md-nav__link" href="#migrating-a-database-from-sqlite-to-mysql-or-back">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Migrating a database from SQLite to MySQL and back
+          Migrating a database from SQLite to MySQL or back
         </span>
 
       
@@ -5180,19 +4989,19 @@
   </nav>
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#default-language">
+  <a class="md-nav__link" href="#profile-profile-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Default Language
+          <code>profile</code> - Profile settings
         </span>
 
       
@@ -5203,19 +5012,19 @@
   
   
 </li>
-      
-      
-      
-      
+    
+    
+    
+    
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#updating">
+  <a class="md-nav__link" href="#conversation-conversation-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Updating
+          <code>conversation</code> - Conversation settings
         </span>
 
       
@@ -5225,595 +5034,21 @@
 
   
   
-</li>
+  <nav aria-label="conversation - Conversation settings" class="md-nav">
+    <ul class="md-nav__list">
       
       
       
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#journal-slots">
+  <a class="md-nav__link" href="#io-conversation-io-settings">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Journal slots
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-left-click">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Npc left click
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-interact-limit">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Npc interact limit
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-end-distance">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation End Distance
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-conversation-style">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Conversation Style
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-chat-interceptor">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Chat interceptor
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#default-hologram-plugin">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Default Hologram Plugin
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-chat-display-options">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Chat Display options
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#combat-delay">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Combat Delay
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-pullback-message">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation pullback message
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#adjusting-the-backpack-to-the-keepinventory-gamerule">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Adjusting the backpack to the KeepInventory gamerule
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-items-break-behaviour">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Quest Items break behaviour
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#player-hider-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Player Hider interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#npc-hider-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          NPC Hider interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#hologram-update-interval">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Hologram update interval
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#sounds">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Sounds
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-command-banlist">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Command Banlist
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#compatibility-hooks">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Compatibility Hooks
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#journal">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Journal
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#journal-colors">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Journal Colors
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-colors">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Colors
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#conversation-settings-chestio-slowtellrawio">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Conversation Settings: ChestIO &amp; SlowTellrawIO
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#quest-downloader">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Quest downloader
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#items">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Items
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#menu">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Menu
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
-  
-</li>
-      
-      
-      
-      
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#misc-settings">
-    <span class="md-ellipsis">
-
-      
-      
-        <span class="md-typeset">
-          Misc settings
+          <code>io</code> - Conversation IO settings
         </span>
 
       
@@ -5828,6 +5063,167 @@
       
     </ul>
   </nav>
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#npc-npc-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>npc</code> - NPC settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hologram-hologram-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hologram</code> - Hologram settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hider-entity-hider-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hider</code> - Entity hider settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#item-item-related-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>item</code> - Item related settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#journal-journal-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>journal</code> - Journal settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#menu-menu-settings">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>menu</code> - Menu settings
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#hook-compatibility-hooks">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>hook</code> - Compatibility Hooks
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
   
 </li>
     
@@ -5912,7 +5308,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Configuration/Configuration.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Configuration/Plugin-Config.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -5920,19 +5316,68 @@
   
 
 
-<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">🔗</a></h1>
-<p>The configuration of BetonQuest is mainly done in the <code>config.yml</code> file. All of its options are described on this page.
-There is also additional information about backups, updates and database transfers.
-If you fail to understand options just keep their default values. You can always change them when
-you have gained a more complete understanding of this plugin. </p>
-<h2 id="config-options">Config Options<a class="headerlink" href="#config-options" title="Permanent link">🔗</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><strong>Do not touch <code>version:</code> option! It may corrupt your files!</strong></p>
-</div>
-<h3 id="mysql-database">MySQL Database<a class="headerlink" href="#mysql-database" title="Permanent link">🔗</a></h3>
-<h4 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">🔗</a></h4>
-<p>In order to use a MySQL Database for saving all the data you need to fill out the mysql config section.
+  <h1>Plugin Config</h1>
+
+<p>The configuration of BetonQuest is mainly done in the "<em>config.yml</em>" file. All of its options are described on this page.
+There is also additional information about backups, updates, and database transfers. </p>
+<h2 id="language-default-plugin-language"><code>language</code> - Default plugin language<a class="headerlink" href="#language-default-plugin-language" title="Permanent link">🔗</a></h2>
+<p>The language option sets the default language of BetonQuest.<br />
+It is used for all players that do not have a specific language set or as fallback language just in case.<br />
+You can see all available languages in the <code>lang</code> folder, and you can add your own language files there.</p>
+<h2 id="message_parser-default-message-parser"><code>message_parser</code> - Default message parser<a class="headerlink" href="#message_parser-default-message-parser" title="Permanent link">🔗</a></h2>
+<p>Set the default parser used to format all messages in betonquest.
+For more information, see the <a href="../../Features/Message-Formatting/">Message Formatting</a> page.</p>
+<h2 id="date_format-the-format-of-dates"><code>date_format</code> - The format of dates<a class="headerlink" href="#date_format-the-format-of-dates" title="Permanent link">🔗</a></h2>
+<p>The date format is used in the journal and for other date-related features.
+If you want to change the date format,
+you can use the <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a> syntax.
+It needs to have a space between the day and hour.</p>
+<h2 id="default_notify_io-the-default-io-for-notifications"><code>default_notify_io</code> - The default io for notifications<a class="headerlink" href="#default_notify_io-the-default-io-for-notifications" title="Permanent link">🔗</a></h2>
+<p>When notifications are set over the notify command,
+you can set the fallback IO that will be used if no specific IO is set.
+The default is already <code>chat</code>, but you can also choose another one from the ones
+listed on the <a href="../../Visual-Effects/Notifications/Notification-IO%27s-%26-Categories/">IO's &amp; Categories</a> page.</p>
+<h2 id="updater-the-updater-settings"><code>updater</code> - The updater settings<a class="headerlink" href="#updater-the-updater-settings" title="Permanent link">🔗</a></h2>
+<p>The updater section controls the plugin's Auto-Updater.</p>
+<ul>
+<li><code>enabled</code> - If set to <code>false</code>, it is not possible to update with the updater and no version checks are executed.</li>
+<li><code>strategy</code> - The update strategy is the most important feature of the Auto-Updater.
+  An explanation is available <a href="../Version-Changes/Updating/#choose-an-update-strategy">here</a>.</li>
+<li><code>automatic</code> - If true the updater will download new Versions automatically.
+  Otherwise, the updater will only download new versions when the update command is executed.
+  Advice is available <a href="../Version-Changes/Updating/#enable-or-disable-automatic-updates">here</a>.</li>
+<li><code>ingame_notification</code> - If true players with <code>betonquest.admin</code> permission will be notified on join
+  when a new version is available. They will only be notified once a day without a server restart.</li>
+</ul>
+<h2 id="downloader-the-downloader-settings"><code>downloader</code> - The downloader settings<a class="headerlink" href="#downloader-the-downloader-settings" title="Permanent link">🔗</a></h2>
+<p>The command <a href="../Commands-and-permissions/"><code>/q download</code></a> can be used to download quest files from GitHub repositories.
+This is mainly used by betonquest to download tutorial files.</p>
+<ul>
+<li><code>pull_request</code> - Define if pull requests are allowed to be downloaded.<br />
+<strong>Only enable this if you really know what you are doing!</strong>
+  Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
+  will make your server vulnerable to attacks.</li>
+<li><code>repo_whitelist</code> - A list of trusted GitHub repositories from which quests and templates can be downloaded.<br />
+  By default, only our official tutorial repo <a href="https://github.com/BetonQuest/Quest-Tutorials">BetonQuest/Quest-Tutorials</a>
+  is on this list.</li>
+</ul>
+<h2 id="debug-debugging-settings"><code>debug</code> - Debugging settings<a class="headerlink" href="#debug-debugging-settings" title="Permanent link">🔗</a></h2>
+<p>Debugging writes a debug log file to the <code>logs</code> directory of BetonQuest.
+The debug log contains a lot of additional information about the plugin's activity.</p>
+<ul>
+<li><code>enabled</code> - If enabled the debug log is written to the <code>logs/latest.log</code> file. 
+  Turning this on can have an impact on performance, so it is recommended to only enable it temporarily.</li>
+<li><code>history</code> - How many minutes the plugin caches debugging activity to the memory. 
+  Once debugging is enabled, this history is printed to the log file, and no longer stored in memory.
+  This is invaluable for debugging issues that happened in the past without having debug enabled all the time.
+  The downside is that depending on the number of scripts and players, this can be a lot of data occupying your memory.
+  So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.</li>
+</ul>
+<h2 id="mysql-setup-mysql-database"><code>mysql</code> - Setup MySQL Database<a class="headerlink" href="#mysql-setup-mysql-database" title="Permanent link">🔗</a></h2>
+<p>You don't need to configure a mysql database, but it brings some advantages.<br />
+It mainly brings limited support for cross-server support.
+In general, MySQL has a lot of advantages over SQLite, such as better performance.<br />
+To use a MySQL Database for saving all the data, you need to fill out the mysql config section.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -5942,213 +5387,205 @@ you have gained a more complete understanding of this plugin. </p>
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">mysql</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1">#Set this to true.</span>
-<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1">#This is the IP of your MySQL server. If it runs on the same machine as your server use localhost or 127.0.0.1 </span>
-<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1">#This is the port your MySQL server runs on.</span>
-<span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1">#The name of the database user that is used to connect to the database server.</span>
-<span class="w">  </span><span class="nt">pass</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1">#The password of that user.</span>
-<span class="w">  </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1">#The database that BetonQuest will write to. You need to create it in your database server.</span>
-<span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">betonquest_</span><span class="w">  </span><span class="c1">#The table prefix of BetonQuest&#39;s data in the database.</span>
-<span class="w">  </span><span class="nt">reconnect_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"> </span><span class="c1">#The time intervall the database tries to reconnect if the connection gets lost</span>
-</code></pre></div></td></tr></table></div></p>
-<h4 id="migrating-a-database-from-sqlite-to-mysql-and-back">Migrating a database from SQLite to MySQL and back<a class="headerlink" href="#migrating-a-database-from-sqlite-to-mysql-and-back" title="Permanent link">🔗</a></h4>
-<p>Follow these few simple steps to migrate your database easily:</p>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">                   </span><span class="c1">#(2)!</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">                   </span><span class="c1">#(3)!</span>
+<span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">                   </span><span class="c1">#(4)!</span>
+<span class="w">  </span><span class="nt">pass</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">                   </span><span class="c1">#(5)!</span>
+<span class="w">  </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">                   </span><span class="c1">#(6)!</span>
+<span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">betonquest_</span><span class="w">        </span><span class="c1">#(7)!</span>
+<span class="w">  </span><span class="nt">reconnect_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">   </span><span class="c1">#(8)!</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Set this to true.</li>
+<li>This is the IP of your MySQL server. If it runs on the same machine as your server, use localhost or 127.0.0.1</li>
+<li>This is the port your MySQL server runs on.</li>
+<li>The name of the database user that is used to connect to the database server.</li>
+<li>The password of that user.</li>
+<li>The database that BetonQuest will write to. You need to create it in your database server.</li>
+<li>The table prefix of BetonQuest's data in the database.</li>
+<li>The time interval the database tries to reconnect if the connection gets lost</li>
+</ol>
+<h3 id="migrating-a-database-from-sqlite-to-mysql-or-back">Migrating a database from SQLite to MySQL or back<a class="headerlink" href="#migrating-a-database-from-sqlite-to-mysql-or-back" title="Permanent link">🔗</a></h3>
+<p>Follow these few steps to migrate your database easily:</p>
 <ol>
 <li>Create a backup with <strong>/q backup</strong> command.</li>
-<li>Extract database backup from it.</li>
 <li>Turn the server off.</li>
-<li>Place the <em>database-backup.yml</em> file inside the plugin's directory.</li>
+<li>Navigate to <code>BetonQuest/Backups</code> and extract the file <code>database-backup.yml</code> from it.</li>
+<li>Place the <code>database-backup.yml</code> file inside the plugin's directory.</li>
 <li>Edit which database type you want to use by setting the <code>enabled</code> option in the <code>mysql</code> section to true or false.</li>
-<li>Start the server.</li>
-<li>Check for errors.</li>
-<li>If there are no errors, enjoy your migrated database.</li>
+<li>Start the server and check for errors.</li>
 <li>If there are any errors, post them to the developer or try to fix them if you know how.</li>
 </ol>
-<h3 id="default-language">Default Language<a class="headerlink" href="#default-language" title="Permanent link">🔗</a></h3>
-<p><code>language:</code> is the default translation of the plugin for every new player. Currently, there are 9 languages available: 
-English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn), Dutch (nl), Italian (it) and Hungarian (hu).</p>
-<h3 id="updating">Updating<a class="headerlink" href="#updating" title="Permanent link">🔗</a></h3>
-<p>The <code>update</code> section controls the Auto-Updater. It has the following settings:</p>
+<h2 id="profile-profile-settings"><code>profile</code> - Profile settings<a class="headerlink" href="#profile-profile-settings" title="Permanent link">🔗</a></h2>
+<p>Profiles allow players to have different progress/data active.
+Currently, there is no way to switch between profiles, as the feature is still in development.</p>
 <ul>
-<li><code>enabled</code> (default <code>true</code>). Enables or disables the Updater. If set to false, it is not possible to update with the
-  updater and no version checks are executed.</li>
-<li><code>strategy</code> (default <code>MINOR</code>). The update strategy is the most important feature of the Auto-Updater. An explanation is
-  available <a href="../Version-Changes/Updating/#choose-an-update-strategy">here</a>.</li>
-<li><code>automatic</code> (default <code>true</code>). If true the updater will download new Versions automatically. Otherwise, the updater
-  will only download new versions when the update command is executed. Advice is
-  available <a href="../Version-Changes/Updating/#enable-or-disable-automatic-updates">here</a>.</li>
+<li><code>initial_name</code> - The name of the profile that is created when a player joins for the first time.</li>
 </ul>
-<h3 id="journal-slots">Journal slots<a class="headerlink" href="#journal-slots" title="Permanent link">🔗</a></h3>
-<p><code>default_journal_slot</code> is the inventory slot in which the journal will appear after using the <code>/journal</code> command.
-BetonQuest will try to move items out of the way if the slot is occupied. If the inventory is full the journal will not
-be added. You can disable this behaviour by setting the option to <code>-1</code>. BetonQuest will then just use any free slot.</p>
-<h3 id="npc-left-click">Npc left click<a class="headerlink" href="#npc-left-click" title="Permanent link">🔗</a></h3>
-<p><code>npcs.accept_left_click</code> activates that a conversation with an NPC can also be started by left-clicking the NPC and not only
-by right-clicking the NPC.</p>
-<h3 id="npc-interact-limit">Npc interact limit<a class="headerlink" href="#npc-interact-limit" title="Permanent link">🔗</a></h3>
-<p><code>npcs.interaction_limit</code> prevents NPC / BetonQuest conversation click spamming. The time's unit is milliseconds. Default
-value: <code>500</code></p>
-<h3 id="conversation-end-distance">Conversation End Distance<a class="headerlink" href="#conversation-end-distance" title="Permanent link">🔗</a></h3>
-<p><code>max_conversation_distance</code> is the distance you need to walk away from the NPC for the conversation to end (in the case of using
-chat-based conversation interface).</p>
-<h3 id="default-conversation-style">Default Conversation Style<a class="headerlink" href="#default-conversation-style" title="Permanent link">🔗</a></h3>
-<p><code>default_conversation_IO</code> is a comma-separated list of conversation styles. The first one that is loaded
-(depending on the available 3<sup>rd</sup> party plugin integrations) is used.
-See <a href="../../Features/Conversations/#conversation-displaying">conversation styles</a> for supported styles.</p>
-<h3 id="default-chat-interceptor">Default Chat interceptor<a class="headerlink" href="#default-chat-interceptor" title="Permanent link">🔗</a></h3>
-<p><code>default_interceptor</code> is a comma-separated list of chat interceptors. The first one that is loaded
-(depending on the available 3<sup>rd</sup> party plugin integrations) is used.
-See <a href="../../Features/Conversations/#chat-interceptors">chat interceptors</a> for supported chat interceptors.</p>
-<h3 id="default-hologram-plugin">Default Hologram Plugin<a class="headerlink" href="#default-hologram-plugin" title="Permanent link">🔗</a></h3>
-<p>The holograms related features work with multiple plugins.
-You can use the <code>default_hologram</code> option to set which plugin should be used.</p>
-<p><code>default_hologram: DecentHolograms,HolographicDisplays</code> will make DecentHolograms the default hologram plugin. If it is not installed, 
-HolographicDisplays will be used instead. If you want to use HolographicDisplays as the default, you can use <code>default_hologram: HolographicDisplays</code></p>
-<h3 id="conversation-chat-display-options">Conversation Chat Display options<a class="headerlink" href="#conversation-chat-display-options" title="Permanent link">🔗</a></h3>
-<p><code>display_chat_after_conversation</code> this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.</p>
-<h3 id="combat-delay">Combat Delay<a class="headerlink" href="#combat-delay" title="Permanent link">🔗</a></h3>
-<p><code>combat_delay</code> is a delay (in seconds) the player must wait before starting a conversation after combat.</p>
-<h3 id="conversation-pullback-message">Conversation pullback message<a class="headerlink" href="#conversation-pullback-message" title="Permanent link">🔗</a></h3>
-<p><code>notify_pullback</code> will display a message every time the player is pulled back by the <code>stop</code> option in conversations (in the case of chat-based conversations).
-It notifies players that they are in a conversation, and the pullback is not a bug.</p>
-<h3 id="adjusting-the-backpack-to-the-keepinventory-gamerule">Adjusting the backpack to the KeepInventory gamerule<a class="headerlink" href="#adjusting-the-backpack-to-the-keepinventory-gamerule" title="Permanent link">🔗</a></h3>
-<p><code>remove_items_after_respawn</code> option should be turned on if "keepInventory" gamerule is not being used. 
-It prevents other plugins from duplicating quest items after death.</p>
-<p>When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
-restore all items to the player (for example WorldGuard custom flag keep-inventory).
-That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not re-added. 
-The "keepInventory" gamerule, however, works differently - the items are never dropped, so they cannot be added to backpack. 
-Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule checking, so it is up to you to decide.</p>
-<p>Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.</p>
-<h3 id="quest-items-break-behaviour">Quest Items break behaviour<a class="headerlink" href="#quest-items-break-behaviour" title="Permanent link">🔗</a></h3>
-<p><code>quest_items_unbreakable</code> controls whether quest items can be broken by using them.
-This was used in the past when the <code>unbreakable</code> tag couldn't be added to items.
-Turn it off and make your quest items unbreakable by vanilla means.</p>
-<h3 id="player-hider-interval">Player Hider interval<a class="headerlink" href="#player-hider-interval" title="Permanent link">🔗</a></h3>
-<p><code>player_hider_check_interval</code> the interval in which the PlayerHider checks the conditions and updates the player's visibility.
-Cannot be disabled currently. If you want this to be semi-disabled set a very high value. </p>
-<h3 id="npc-hider-interval">NPC Hider interval<a class="headerlink" href="#npc-hider-interval" title="Permanent link">🔗</a></h3>
-<p><code>npc_hider_check_interval</code> is the interval in which the NPCHider checks the conditions and updates the NPC's visibility.
-Cannot be disabled currently. If you want this to be semi-disabled set a very high value.</p>
-<h3 id="hologram-update-interval">Hologram update interval<a class="headerlink" href="#hologram-update-interval" title="Permanent link">🔗</a></h3>
-<p><code>hologram_update_interval</code> is the interval in which the holograms check the conditions and update content and visibility.
-Cannot be disabled currently. If you want this to be semi-disabled set a very high value.</p>
-<h3 id="sounds">Sounds<a class="headerlink" href="#sounds" title="Permanent link">🔗</a></h3>
-<p>This section defines what sounds will be played on these occasions:</p>
+<h2 id="conversation-conversation-settings"><code>conversation</code> - Conversation settings<a class="headerlink" href="#conversation-conversation-settings" title="Permanent link">🔗</a></h2>
+<p>All conversation related settings.</p>
 <ul>
-<li><code>start</code> when a conversation starts</li>
-<li><code>end</code> when a conversation ends</li>
-</ul>
-<p>A list of all possible sounds for the latest Minecraft version can be found <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html">here</a>.
-And sounds can be disabled by setting them to <code>false</code>.</p>
-<h3 id="conversation-command-banlist">Conversation Command Banlist<a class="headerlink" href="#conversation-command-banlist" title="Permanent link">🔗</a></h3>
-<p><code>cmd_blacklist</code> is a list of commands that cannot be used during a conversation. Remember that you can only type single words (command names) here!</p>
-<h3 id="compatibility-hooks">Compatibility Hooks<a class="headerlink" href="#compatibility-hooks" title="Permanent link">🔗</a></h3>
-<p><code>hook</code> controls compatibility with other plugins. You can turn off each hook here.</p>
-<h3 id="journal">Journal<a class="headerlink" href="#journal" title="Permanent link">🔗</a></h3>
-<p><code>journal</code> controls various settings of the journal:</p>
-<ul>
-<li><code>chars_per_page</code> is the number of characters before a page break. If it is set too high, the text on a journal page can overflow and become invisible.
-   <strong>This was replaced by <code>chars_per_line</code> and <code>lines_per_page</code> and is only required if you don't like the new behaviour.</strong></li>
-<li><code>chars_per_line</code> is the number of characters before a line break.
-   If it is set too high, the text on a journal page can overflow and become invisible.
-   If this is not set, BQ will fall back on the old page wrapping behaviour configured through <code>chars_per_page</code>.</li>
-<li><code>lines_per_page</code> is the number of lines before a new page. If it is set too high, the text on a journal page can overflow and become invisible. 
-   This is only required if <code>chars_per_line</code> is set.</li>
-<li><code>one_entry_per_page</code> makes each entry take a single page. Note that it will not expand to other pages even if it overflows, so keep your entries short.</li>
-<li><code>reversed_order</code> controls the chronological order of entries in the journal. By default, the entries are ordered from newest to oldest.
-   It is reversible, but this will force players to click through many pages to get to the most recent entry.</li>
-<li><code>hide_date</code> hides the date of each entry. Set it to true if you don't want this functionality.</li>
-<li><code>full_main_page</code> makes the main page always take a full page. If a lot of information is being displayed, it is advised to make this true.
-   If you use the main page only for small notifications, set it to false, so the entries can follow immediately.</li>
-<li><code>show_separator</code> shows a separator between journal entries (default: true). Customize the separator in <code>config.yml</code> with the key <code>journal.separator</code>.</li>
-<li><code>show_in_backpack</code> whether to display the journal in the backpack when there is no journal in the player's inventory.</li>
-<li><code>lock_default_journal_slot</code> locks the journal to the <code>default_journal_slot</code>.</li>
-<li><code>give_on_respawn</code> adds the journal to the player inventory.</li>
-<li><code>custom_model_data</code> sets the custom model data of the journal item.</li>
-</ul>
-<h3 id="journal-colors">Journal Colors<a class="headerlink" href="#journal-colors" title="Permanent link">🔗</a></h3>
-<p><code>journal_colors</code> controls the colors used in the journal. It takes color codes without the <code>&amp;</code> character.</p>
-<ul>
-<li><code>date.day</code> is the day number</li>
-<li><code>date.hour</code> is the hour number</li>
-<li><code>line</code> is the delimiter between entries</li>
-<li><code>text</code> is the text of the entry</li>
-</ul>
-<h3 id="conversation-colors">Conversation Colors<a class="headerlink" href="#conversation-colors" title="Permanent link">🔗</a></h3>
-<p><code>conversation_colors</code> controls the colors of the conversation. It takes <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html">color names</a>. 
-If you want to add a font style (bold, italic etc.) do so after placing a comma.</p>
-<ul>
-<li><code>npc</code> is the name of the NPC</li>
-<li><code>player</code> is the name of the player</li>
-<li><code>text</code> is the NPC's text</li>
-<li><code>answer</code> is the text of player's answer (after choosing it)</li>
-<li><code>number</code> is the option number</li>
-<li><code>option</code> is the text of an option</li>
-</ul>
-<h3 id="conversation-settings-chestio-slowtellrawio">Conversation Settings: ChestIO &amp; SlowTellrawIO<a class="headerlink" href="#conversation-settings-chestio-slowtellrawio" title="Permanent link">🔗</a></h3>
-<ul>
-<li><code>conversation_IO_config</code> manages settings for individual conversation IO's:</li>
-<li><code>chest</code> manages settings for the chest conversation IO<ul>
-<li><code>show_number</code> will show the player number option if true (default: true)</li>
-<li><code>show_npc_text</code> will show the npc text in every player option if true (default: true)</li>
+<li><code>default_io</code> - A comma-separated list of conversation styles. The first one that is loaded (depending on the 
+  available third party plugin integrations) is used. 
+  See <a href="../../Features/Conversations/#conversation-displaying">conversation styles</a> for supported styles.</li>
+<li><code>interceptor</code><br />
+  Catches chat during a conversation to prevent distraction from the conversation.<ul>
+<li><code>default</code> - A comma-separated list of chat interceptors. The first one that is loaded (depending on the 
+  available third party plugin integrations) is used.
+  See <a href="../../Features/Conversations/#chat-interceptors">chat interceptors</a> for supported chat interceptors.</li>
+<li><code>display_missed</code> - If set to <code>true</code>, the interceptor will display all missed messages in the chat after
+  the conversation ends.</li>
 </ul>
 </li>
-<li><code>slowtellraw</code> manages settings for the slowtellraw conversation IO<ul>
-<li><code>message_delay</code> is the delay ticks between each message (default: 2)</li>
+<li><code>combat_delay</code> - A delay (in seconds) the player must wait before starting a conversation after the last combat.</li>
+<li><code>stop</code><br />
+  Controls the behavior of the <code>stop</code> option in conversations.<ul>
+<li><code>distance</code> - The distance you need to walk away from the NPC for the conversation to end (in the case of using
+               chat-based conversation interface).</li>
+<li><code>notify</code> - Whether to display a message that the player is still in a conversation every time the player is 
+  pulled back in the radius of the distance by the <code>stop</code> option in conversations.</li>
+</ul>
+</li>
+<li><code>cmd_blacklist</code> - A list of commands that cannot be used during a conversation.
+  Remember that you can only type single words (command names) here!</li>
+<li><code>color</code><br />
+  The colors use in conversation in the format of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html">color names</a>.
+  If you want to add a font style (bold, italic, etc.) do so after placing a comma.<ul>
+<li><code>npc</code> - The name of the NPC</li>
+<li><code>player</code> - The name of the player</li>
+<li><code>text</code> - The NPC's text</li>
+<li><code>answer</code> - The text of player's answer (after choosing it)</li>
+<li><code>number</code> - The option number</li>
+<li><code>option</code> - The text of an option</li>
 </ul>
 </li>
 </ul>
-<h3 id="quest-downloader">Quest downloader<a class="headerlink" href="#quest-downloader" title="Permanent link">🔗</a></h3>
-<p><code>download</code> controls security restrictions for the <a href="../Commands-and-permissions/"><code>/q download</code></a> command:</p>
+<h3 id="io-conversation-io-settings"><code>io</code> - Conversation IO settings<a class="headerlink" href="#io-conversation-io-settings" title="Permanent link">🔗</a></h3>
+<p>Every io has its own settings that can be configured in the <code>io</code> section.</p>
 <ul>
-<li><code>pullrequests</code> defines if pull requests may be downloaded. <strong>Only enable this if you really know what you are doing!</strong>
-  Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
-  will make your server vulnerable to attacks.</li>
-<li><code>repo_whitelist</code> is a list of trusted GitHub repositories from which quests and templates can be downloaded.<br />
-  By default only or official tutorial repo <a href="https://github.com/BetonQuest/Quest-Tutorials">BetonQuest/Quest-Tutorials</a>
-  is on this list.</li>
-</ul>
-<h3 id="items">Items<a class="headerlink" href="#items" title="Permanent link">🔗</a></h3>
-<p>The items section allows you to override the default items that are displayed across BetonQuest's GUIs.
-All items you specify here need to be defined in a package. You need to reference the item with a full path.</p>
-<p>The <code>cancel_button</code> and <code>compass_button</code> can be removed from the backpack by setting their values to <code>""</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">backpack</span><span class="p">:</span><span class="w"> </span><span class="c1">#(1)!</span>
-<span class="w">    </span><span class="nt">previous_button</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_package.backpack_previous_button&quot;</span><span class="w"> </span><span class="c1">#(2)!</span>
-<span class="w">    </span><span class="nt">next_button</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_package.backpack_next_button&quot;</span><span class="w"> </span><span class="c1">#(3)!</span>
-<span class="w">    </span><span class="nt">cancel_button</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_package.backpack_cancel_button&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
-<span class="w">    </span><span class="nt">compass_button</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_package.backpack_compass_button&quot;</span><span class="w"> </span><span class="c1">#(5)!</span>
-</code></pre></div>
-<ol>
-<li>All items that are used by the backpack.</li>
-<li>The button to go to the previous backpack page.</li>
-<li>The button to go to the next backpack page.</li>
-<li>The quest cancelers. Can be removed from the backpack by setting the value to <code>""</code>.</li>
-<li>The quest compass. Can be removed from the backpack by setting the value to <code>""</code>.</li>
-</ol>
-<h3 id="menu">Menu<a class="headerlink" href="#menu" title="Permanent link">🔗</a></h3>
-<ul>
-<li><code>default_close</code>:  Sets if menus should close by default when an item is clicked (<code>true</code>) or if they should stay open (<code>false</code>).
-  Each menu can also override this.</li>
-</ul>
-<h3 id="misc-settings">Misc settings<a class="headerlink" href="#misc-settings" title="Permanent link">🔗</a></h3>
-<ul>
-<li><code>date_format</code> is the Java <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">date format</a>
-  used in journal dates. It needs to have a space between the day and hour.</li>
-<li><code>debug</code> control debug log settings. The debug log contains a lot of additional information about the plugin's activity.<ul>
-<li><code>enabled</code> if enabled the debug log is printed to the <em>latest.log</em> file in the <em>BetonQuest/logs</em> directory.
-  Turning this on can slow your server down.</li>
-<li><code>history_in_minutes</code> the plugin always caches debugging activity to the memory.
-   Once <code>debug</code> is enabled this history is printed to the log file and no longer stored in memory.
-   This is invaluable for debugging issues that happened in the past without having debug enabled all the time.
-   The downside is that depending on the amount of scripts and players this can be a lot of data occupying your memory.
-   So if you have memory issues, you can reduce the time the history is stored in memory down to 0 minutes to disable it.</li>
+<li><code>chest</code><br />
+  Settings for the chest conversation IO.<ul>
+<li><code>show_number</code> - If set to <code>true</code>, the player number will be shown in the chest conversation IO.</li>
+<li><code>show_npc_text</code> - If set to <code>true</code>, the NPC text will be shown in every player option.</li>
 </ul>
 </li>
-<li><code>message_parser</code> sets the default message parser.
-  For more information, see the <a href="../../Features/Message-Formatting/">Message Formatting</a> page.</li>
+<li><code>slowtellraw</code>
+  Settings for the slowtellraw conversation IO.<ul>
+<li><code>message_delay</code> - The delay (in ticks) between each message.</li>
 </ul>
+</li>
+</ul>
+<h2 id="npc-npc-settings"><code>npc</code> - NPC settings<a class="headerlink" href="#npc-npc-settings" title="Permanent link">🔗</a></h2>
+<p>All settings related to NPCs.</p>
+<ul>
+<li><code>accept_left_click</code> - If set to <code>true</code>, a conversation with an NPC can be started by left-clicking the NPC.</li>
+<li><code>interaction_limit</code> - The time (in milliseconds) a player must wait before starting a conversation with an NPC again.
+  This is to prevent click spamming.</li>
+</ul>
+<h2 id="hologram-hologram-settings"><code>hologram</code> - Hologram settings<a class="headerlink" href="#hologram-hologram-settings" title="Permanent link">🔗</a></h2>
+<p>All settings related to holograms.</p>
+<ul>
+<li><code>default</code> - The default hologram plugin that is used by BetonQuest.
+  If the plugin is not installed, BetonQuest will use the next one in the list.</li>
+<li><code>update_interval</code>- The interval (in ticks) in which the holograms check the conditions and updates their visibility.
+  This is to prevent performance issues and cannot be disabled.
+  Set a very high value to make it semi-disabled.</li>
+</ul>
+<h2 id="hider-entity-hider-settings"><code>hider</code> - Entity hider settings<a class="headerlink" href="#hider-entity-hider-settings" title="Permanent link">🔗</a></h2>
+<p>All settings related to the entity hider.</p>
+<ul>
+<li><code>player_update_interval</code> - The interval (in ticks) in which the PlayerHider checks the conditions and updates their visibility.
+  This is to prevent performance issues and cannot be disabled.
+  Set a very high value to make it semi-disabled.</li>
+<li><code>npc_update_interval</code> - The interval (in ticks) in which the NPCHider checks the conditions and updates their visibility.
+  This is to prevent performance issues and cannot be disabled.
+  Set a very high value to make it semi-disabled.</li>
+</ul>
+<h2 id="item-item-related-settings"><code>item</code> - Item related settings<a class="headerlink" href="#item-item-related-settings" title="Permanent link">🔗</a></h2>
+<p>Different item settings that are used in BetonQuest.</p>
+<ul>
+<li><code>quest</code><br />
+  Controls the quest item settings.<ul>
+<li><code>unbreakable</code> - If set to <code>true</code>, quest items will be unbreakable. 
+  This was used in the past when the <code>unbreakable</code> tag couldn't be added to items.
+  Turn it off and make your quest items unbreakable by vanilla means.</li>
+<li><code>remove_after_respawn</code> - If set to <code>true</code>, quest items will be removed from the player's inventory after they respawn.
+  This option should be turned on if "keepInventory" gamerule is not being used. 
+  It prevents other plugins from duplicating quest items after death.<br />
+  When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
+  restore all items to the player (for example, WorldGuard custom flag keep-inventory).
+  That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not re-added. 
+  The "keepInventory" gamerule, however, works differently—the items are never dropped, so they cannot be added to the backpack. 
+  Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule 
+  checking, so it is up to you to decide.<br />
+  Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.</li>
+</ul>
+</li>
+<li><code>backpack</code><br />
+  Configuration of items, that are shown in the backpack. You reference them with a full path to an item in a package.
+  For example <code>my_package.my_button</code>.<ul>
+<li><code>previous_button</code> - The item that is used to go to the previous backpack page, let it empty to use the default one.</li>
+<li><code>next_button</code> - The item that is used to go to the next backpack page, let it empty to use the default one.</li>
+<li><code>close_button</code> - The item that is used to close the backpack, let it empty to disable the close button.</li>
+<li><code>compass_button</code> - The item that is used to open the compass menu, let it empty to disable the compass button.</li>
+</ul>
+</li>
+</ul>
+<h2 id="journal-journal-settings"><code>journal</code> - Journal settings<a class="headerlink" href="#journal-journal-settings" title="Permanent link">🔗</a></h2>
+<p>The journal is a special item used to store quest entries and other information.</p>
+<ul>
+<li><code>default_slot</code> - The inventory slot in which the journal will appear after using the <code>/journal</code> command.
+  BetonQuest will try to move items out of the way if the slot is occupied. If the inventory is full, the journal will not
+  be added. You can disable this behavior by setting the option to <code>-1</code>. BetonQuest will then just use any free slot.</li>
+<li><code>lock_default_slot</code> - If set to <code>true</code>, it is not possible to move the journal from the <code>default_slot</code>.</li>
+<li><code>show_in_backpack</code> - If set to <code>true</code>, the journal will be displayed in the backpack when there is no journal in the player's inventory.</li>
+<li><code>give_on_respawn</code> - If set to <code>true</code>, the journal will be added to the player's inventory after they respawn.</li>
+<li><code>custom_model_data</code> - The custom model data of the journal item. This is used to change the appearance of the journal item.</li>
+<li><code>format</code><br />
+  The format setting of the journal.<ul>
+<li><code>chars_per_line</code> - The number of characters before a line break.
+  If it is set too high, the text on a journal page can overflow and become invisible.</li>
+<li><code>lines_per_page</code> - The number of lines before a new page.
+  If it is set too high, the text on a journal page can overflow and become invisible.</li>
+<li><code>one_entry_per_page</code> - If set to <code>true</code>, each journal entry will take a single page.
+  Note that it will not expand to other pages even if it overflows, so keep your entries short.</li>
+<li><code>reversed_order</code> - If set to <code>true</code>, the journal entries will be ordered from oldest to newest.
+  This is reversible, but it will force players to click through many pages to get to the most recent entry.</li>
+<li><code>full_main_page</code> - If set to <code>true</code>, the main page of the journal will always take a full page.
+  If a lot of information is being displayed, it is advised to make this true.
+  If you use the main page only for small notifications, set it to false, so the entries can follow immediately.</li>
+<li><code>separator</code> - The separator between journal entries.
+  It is used to visually separate entries in the journal. </li>
+<li><code>show_separator</code> - If set to <code>true</code>, a separator will be shown between journal entries.
+  You can customize the separator with the <code>separator</code> setting.</li>
+<li><code>hide_date</code> - If set to <code>true</code>, the date of each entry will be hidden.
+  Set it to true if you don't want this functionality.</li>
+<li><code>color</code><br />
+  The colors used in the journal. It takes color codes without the <code>&amp;</code> character.<ul>
+<li><code>date</code><br />
+  The date color settings.<ul>
+<li><code>day</code> - The color of the day number.</li>
+<li><code>hour</code> - The color of the hour number.</li>
+</ul>
+</li>
+<li><code>line</code> - The color of the line delimiter between entries.</li>
+<li><code>text</code> - The color of the entry text.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="menu-menu-settings"><code>menu</code> - Menu settings<a class="headerlink" href="#menu-menu-settings" title="Permanent link">🔗</a></h2>
+<p>BetonQuest menu settings.</p>
+<ul>
+<li><code>default_close</code> - Sets if menus should close by default when an item is clicked (<code>true</code>) or if they should stay 
+  open (<code>false</code>). Each menu can also override this.</li>
+</ul>
+<h2 id="hook-compatibility-hooks"><code>hook</code> - Compatibility Hooks<a class="headerlink" href="#hook-compatibility-hooks" title="Permanent link">🔗</a></h2>
+<p>Controls compatibility with other plugins.
+This is a list of all plugins that BetonQuest does support.
+By default, all of them are set to <code>true</code>, but if you face any issues, you can disable them.</p>
 
 
 

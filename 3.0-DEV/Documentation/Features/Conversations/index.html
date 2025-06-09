@@ -2967,7 +2967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Configuration/Configuration/" class="md-nav__link">
+      <a href="../../Configuration/Plugin-Config/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M352 320c88.4 0 160-71.6 160-160 0-15.3-2.2-30.1-6.2-44.2-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16v-57.4c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0c-88.4 0-160 71.6-160 160 0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1 0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9l181.6-181.6c17 6.2 35.4 9.5 54.5 9.5M80 408a24 24 0 1 1 0 48 24 24 0 1 1 0-48"/></svg>
@@ -2975,7 +2975,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Plugin Config
   
 
     
@@ -4827,10 +4827,10 @@ the NPC.</p>
 <li><code>stop</code> determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
     he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
     joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with <code>max_conversation_distance</code> option in <em>config.yml</em>.</li>
+    the distance at which the conversation is automatically stopped / player is teleported back with <code>max_conversation_distance</code> option in "<em>config.yml</em>".</li>
 <li><code>final_events</code> are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
     the player if he tries to run). You can leave this option out if you don't need any final events.</li>
-<li><code>interceptor</code> optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in <em>config.yml</em>.</li>
+<li><code>interceptor</code> optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in "<em>config.yml</em>".</li>
 <li><code>NPC_options</code> is a branch with texts said by the NPC.</li>
 <li><code>player_options</code> is a branch with options the player can choose from.</li>
 <li><code>text</code> defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only <code>text</code> is always required.</li>
@@ -4857,7 +4857,7 @@ understand in the future. Don't worry though, if you make some mistake in config
 <li>The key is the NpcID, the value a ConversationID.</li>
 </ol>
 <p>A NPC will only react to right clicks by default. 
-This can be changed by setting <code>npcs.accept_left_click</code> in the config.yml to <code>true</code>.</p>
+This can be changed by setting <code>npcs.accept_left_click</code> in the "<em>config.yml</em>" to <code>true</code>.</p>
 <p>You can assign the same conversation to multiple NPCs.
 It is not possible to assign multiple conversations to one NPC. For this
 purpose, have a look at 
@@ -4866,7 +4866,7 @@ purpose, have a look at
 <p>BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.</p>
 <p>BetonQuest uses the <code>menu</code> style by default. If ProtocolLib is not installed, the <code>chest</code> style will be used.
-You can change this setting globally by changing the <a href="../../Configuration/Configuration/#default-conversation-style"><code>default_conversation_IO</code></a> option in the <em>config.yml</em> file.</p>
+You can change this setting globally by changing the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>default_io</code></a> option in the "<em>config.yml</em>" file.</p>
 <p>It is also possible to override this setting per conversation. Add a <code>conversationIO:
 &lt;type&gt;</code> setting to the conversation file at the top of the YAML hierarchy (which is the same level as <code>quester</code> or <code>first</code> options).</p>
 <p>In both cases, you can choose from the following conversation styles:</p>
@@ -4962,8 +4962,8 @@ The blue overlay shows the player's key presses.</p>
 <p>A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.</p>
 <details>
 <summary>Customizing the Chest Style</summary>
-<p>The colors of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-colors"><code>conversation_colors</code> config option</a>.</p>
-<p>The formatting of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-settings-chestio-slowtellrawio"><code>conversation_IO_config.chest</code> config option</a>.</p>
+<p>The colors of this style can be configured with the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>color</code> config option</a>.</p>
+<p>The formatting of this style can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>chest</code> config option</a>.</p>
 <p>You can change the option's item to something else than ender pearls by adding adding a new section
 'properties' to the 'player_options' and reference an item by its ID. This will then look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">player_options</span><span class="p">:</span>
@@ -4987,7 +4987,7 @@ The blue overlay shows the player's key presses.</p>
 <p>A chat output. The user has to write a number into their chat to select an option.</p>
 <details>
 <summary>Customizing the Simple Style</summary>
-<p>The colors of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-colors"><code>conversation_colors</code> config option</a>.</p>
+<p>The colors of this style can be configured with the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>color</code> config option</a>.</p>
 </details>
 <p><img alt="SimpleIO" src="../../../_media/content/Documentation/Conversations/SimpleIO.png" /></p>
 </div>
@@ -4995,7 +4995,7 @@ The blue overlay shows the player's key presses.</p>
 <p>The same as the simple style but the user can also click the numbers instead of writing them in the chat.</p>
 <details>
 <summary>Customizing the Simple Style</summary>
-<p>The colors of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-colors"><code>conversation_colors</code> config option</a>.</p>
+<p>The colors of this style can be configured with the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>color</code> config option</a>.</p>
 </details>
 <p><img alt="SimpleIO" src="../../../_media/content/Documentation/Conversations/SimpleIO.png" /></p>
 </div>
@@ -5003,8 +5003,8 @@ The blue overlay shows the player's key presses.</p>
 <p>The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.</p>
 <details>
 <summary>Customizing the Simple Style</summary>
-<p>The colors of this style can be configured with the <a href="../../Configuration/Configuration/#conversation-colors"><code>conversation_colors</code> config option</a>.</p>
-<p>The delay between lines (in ticks) can be configured with the <a href="../../Configuration/Configuration/#conversation-settings-chestio-slowtellrawio"><code>conversation_IO_config.slowtellraw</code> config option</a>.</p>
+<p>The colors of this style can be configured with the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>color</code> config option</a>.</p>
+<p>The delay between lines (in ticks) can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>slowtellraw</code></a> config option.</p>
 </details>
 <p><img alt="SimpleIO" src="../../../_media/content/Documentation/Conversations/SimpleIO.png" /></p>
 </div>
@@ -5054,12 +5054,12 @@ Check the <a href="../../Scripting/Building-Blocks/Variables-List/">variables li
 <span class="w">      </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">honor,</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">happy</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">here.&quot;</span>
 <span class="w">      </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Danke,</span><span class="nv"> </span><span class="s">Euer</span><span class="nv"> </span><span class="s">Ehren,</span><span class="nv"> </span><span class="s">ich</span><span class="nv"> </span><span class="s">bin</span><span class="nv"> </span><span class="s">froh,</span><span class="nv"> </span><span class="s">hier</span><span class="nv"> </span><span class="s">zu</span><span class="nv"> </span><span class="s">sein.&quot;</span>
 </code></pre></div>
-<code>en</code> and <code>de</code> are identifiers of languages present in the <em>messages.yml</em> config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in <em>config.yml</em>.</p>
+<code>en</code> and <code>de</code> are identifiers of languages present in the "<em>messages.yml</em>" config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "<em>config.yml</em>".</p>
 <p>The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and <code>notify</code> events.</p>
 <h2 id="chat-interceptors">Chat Interceptors<a class="headerlink" href="#chat-interceptors" title="Permanent link">🔗</a></h2>
 <p>While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
 A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.</p>
-<p>You can specify the default chat interceptor by setting <code>default_interceptor</code> inside the <code>config.yml</code>.
+<p>You can specify the default chat interceptor by setting <code>default_interceptor</code> inside the "<em>config.yml</em>".
 Additionally, you can overwrite the default for each conversation by setting the <code>interceptor</code> key inside your conversation file.</p>
 <p>The default configuration of BetonQuest sets the <code>default_interceptor</code> option to <code>packet,simple</code>.
 This means that it first tries to use the <code>packet</code> interceptor. If that fails it falls back to using the <code>simple</code> interceptor.</p>

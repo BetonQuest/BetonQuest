@@ -2734,7 +2734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Configuration/Configuration/" class="md-nav__link">
+      <a href="../Configuration/Plugin-Config/" class="md-nav__link">
         
   
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M352 320c88.4 0 160-71.6 160-160 0-15.3-2.2-30.1-6.2-44.2-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16v-57.4c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0c-88.4 0-160 71.6-160 160 0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1 0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9l181.6-181.6c17 6.2 35.4 9.5 54.5 9.5M80 408a24 24 0 1 1 0 48 24 24 0 1 1 0-48"/></svg>
@@ -2742,7 +2742,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Plugin Config
   
 
     
@@ -3001,13 +3001,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-321-2025-06-09">
+  <a class="md-nav__link" href="#300-dev-323-2025-06-09">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-321] - 2025-06-09
+          [3.0.0-DEV-323] - 2025-06-09
         </span>
 
       
@@ -3017,7 +3017,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-321] - 2025-06-09" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-323] - 2025-06-09" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -9987,13 +9987,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#300-dev-321-2025-06-09">
+  <a class="md-nav__link" href="#300-dev-323-2025-06-09">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.0.0-DEV-321] - 2025-06-09
+          [3.0.0-DEV-323] - 2025-06-09
         </span>
 
       
@@ -10003,7 +10003,7 @@
 
   
   
-  <nav aria-label="[3.0.0-DEV-321] - 2025-06-09" class="md-nav">
+  <nav aria-label="[3.0.0-DEV-323] - 2025-06-09" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -15690,7 +15690,7 @@
     
     
       <li class="md-path__item">
-        <a href="../Configuration/Configuration/" class="md-path__link">
+        <a href="../Configuration/Plugin-Config/" class="md-path__link">
           
   <span class="md-ellipsis">
     Configuration
@@ -15743,7 +15743,7 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="300-dev-321-2025-06-09">[3.0.0-DEV-321] - 2025-06-09<a class="headerlink" href="#300-dev-321-2025-06-09" title="Permanent link">🔗</a></h2>
+<h2 id="300-dev-323-2025-06-09">[3.0.0-DEV-323] - 2025-06-09<a class="headerlink" href="#300-dev-323-2025-06-09" title="Permanent link">🔗</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>quest compass</code> location now allows variables</li>
@@ -15825,6 +15825,10 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>math</code> variable now gives a better exception message and does not return 0 instead</li>
 <li><code>folder</code> event now use the <code>unit</code> argument to define the time unit for ticks, seconds and minutes</li>
 <li>custom items in the chest conversation IO are now defined in the <code>properties</code> section on an option</li>
+<li>Reworked the config.yml file to be more clean and structured<ul>
+<li><code>item.backpack.cancel_button</code> and <code>item.backpack.compass_button</code> do not have a <code>DEFAULT</code> value anymore, instead you need to specify an item</li>
+</ul>
+</li>
 </ul>
 <h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
 <h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">🔗</a></h3>
@@ -15835,6 +15839,7 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>menu reload</code> command which did not work</li>
 <li><code>variables</code> section in favor for <code>constants</code></li>
 <li><code>MMOItems</code> conditions, events and <code>mmoitemcraft</code> objective in favor of the built-in ones</li>
+<li><code>journal.chars_per_page</code> was deleted from the config.yml </li>
 </ul>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">🔗</a></h3>
 <ul>
