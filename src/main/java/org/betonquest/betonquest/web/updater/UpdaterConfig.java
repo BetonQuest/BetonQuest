@@ -15,7 +15,7 @@ public class UpdaterConfig {
     /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}.
      */
-    private static final String UPDATE_SECTION = "update.";
+    private static final String UPDATE_SECTION = "updater.";
 
     /**
      * The separator between the {@link UpdateStrategy} and a given dev indicator.
@@ -87,7 +87,7 @@ public class UpdaterConfig {
      */
     public void reloadFromConfig() {
         enabled = config.getBoolean(UPDATE_SECTION + "enabled", true);
-        ingameNotification = config.getBoolean(UPDATE_SECTION + "ingameNotification", true);
+        ingameNotification = config.getBoolean(UPDATE_SECTION + "ingame_notification", true);
         automatic = config.getBoolean(UPDATE_SECTION + "automatic", false);
 
         String updateStrategyRaw = config.getString(UPDATE_SECTION + "strategy", null);

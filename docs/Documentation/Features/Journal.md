@@ -36,20 +36,19 @@ the text to show in the journal) and `priority`, which controls the order of tex
 You can use conversation variables in the texts, but they will only be updated when the player gets his journal with the **/journal** command.
 Color codes are supported.
 
-If you want your main page take a separate page (so entries will be displayed on next free page), set `full_main_page` in _config.yml_ to "true".
+If you want your main page take a separate page (so entries will be displayed on next free page), set `full_main_page` in "_config.yml_" to "true".
 If you want to manually wrap the page, use the pipe `|` character. Use \n to create a new line.
 
 ## Configuration
-You can control behavior of the journal in _config.yml_ file, in the `journal` section.
-`chars_per_page` specifies how many characters will be placed on a single page.
+You can control behavior of the journal in "_config.yml_" file, in the `journal` section.
+`chars_per_line` and `lines_per_page` specifies how many characters will be placed on a single page.
 If you set it too high, the text will overflow outside the page, too low, there will be too many pages.
 `one_entry_per_page` allows you to place every entry on a single page.
-The `chars_per_page` setting is in this case ignored, BetonQuest will put entire entry on that page.
 `reversed_order` allows you to reverse order of entries and `hide_date` lets you remove the date from journal entries.
 
 The journal by default appears in the last slot of the hotbar.
-If you want to change that use `default_journal_slot` option in _config.yml_, experiment with different settings until you're ok with it.
+If you want to change that use `default_journal_slot` option in "_config.yml_", experiment with different settings until you're ok with it.
 
-You can control colors in the journal in `journal_colors` section in _config.yml_: `date` is a color of date of every
+You can control colors in the journal in `journal_colors` section in "_config.yml_": `date` is a color of date of every
 entry, `line` is a color of lines separating entries and `text` is just a color of a text. You need to use standard
 color codes without `&` (eg. `'4'` for dark red).

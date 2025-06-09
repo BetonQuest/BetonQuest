@@ -32,7 +32,7 @@ public final class ConversationColors {
      */
     public static void loadColors(final BetonQuestLogger log, final FileConfigAccessor config) {
         try {
-            final ConfigurationSection section = config.getConfigurationSection("conversation_colors");
+            final ConfigurationSection section = config.getConfigurationSection("conversation.color");
             if (section == null) {
                 log.warn("Conversation colors do not exist in the config, everything will be white!");
                 return;

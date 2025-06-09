@@ -72,14 +72,13 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     }
 
     /**
-     * Searches the BetonQuest config to get the priority of this HologramIntegrator as specified in the
-     * `default_hologram` config option.
+     * Get the priority of this integrator based on the plugin name.
      *
      * @return The priority of this integrator ranging from 1 to the amount of HologramIntegrators, or 0 if a config option
-     * did not exist or if the plugin was not found in the `default_hologram` config option.
+     * did not exist or if the plugin was not found.
      */
     public int getPriority() {
-        final String defaultHolograms = BetonQuest.getInstance().getPluginConfig().getString("default_hologram");
+        final String defaultHolograms = BetonQuest.getInstance().getPluginConfig().getString("hologram.default");
         if (defaultHolograms != null) {
             final String[] split = defaultHolograms.split(",");
             for (int i = 0; i < split.length; i++) {

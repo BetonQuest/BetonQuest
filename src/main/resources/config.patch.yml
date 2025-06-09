@@ -1,4 +1,111 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.7:
+  - type: KEY_RENAME
+    oldKey: update
+    newKey: updater
+  - type: KEY_RENAME
+    oldKey: updater.ingameNotification
+    newKey: updater.ingame_notification
+  - type: KEY_RENAME
+    oldKey: download
+    newKey: downloader
+  - type: KEY_RENAME
+    oldKey: downloader.pull_requests
+    newKey: downloader.pull_request
+  - type: KEY_RENAME
+    oldKey: npcs
+    newKey: npc
+  - type: KEY_RENAME
+    oldKey: profiles
+    newKey: profile
+  - type: KEY_RENAME
+    oldKey: debug.history_in_minutes
+    newKey: debug.history
+  - type: REMOVE
+    key: hook.playerpoints
+
+  - type: KEY_RENAME
+    oldKey: conversation_IO_config
+    newKey: conversation.io
+  - type: KEY_RENAME
+    oldKey: default_conversation_IO
+    newKey: conversation.default_io
+  - type: KEY_RENAME
+    oldKey: conversation_colors
+    newKey: conversation.color
+  - type: KEY_RENAME
+    oldKey: default_interceptor
+    newKey: conversation.interceptor.default
+  - type: KEY_RENAME
+    oldKey: display_chat_after_conversation
+    newKey: conversation.interceptor.display_missed
+  - type: KEY_RENAME
+    oldKey: combat_delay
+    newKey: conversation.combat_delay
+  - type: KEY_RENAME
+    oldKey: notify_pullback
+    newKey: conversation.stop.notify
+  - type: KEY_RENAME
+    oldKey: cmd_blacklist
+    newKey: conversation.cmd_blacklist
+  - type: KEY_RENAME
+    oldKey: max_conversation_distance
+    newKey: conversation.stop.distance
+
+  - type: KEY_RENAME
+    oldKey: default_hologram
+    newKey: hologram.default
+  - type: KEY_RENAME
+    oldKey: hologram_update_interval
+    newKey: hologram.update_interval
+
+  - type: KEY_RENAME
+    oldKey: items
+    newKey: item
+  - type: KEY_RENAME
+    oldKey: remove_items_after_respawn
+    newKey: item.quest.remove_after_respawn
+  - type: KEY_RENAME
+    oldKey: quest_items_unbreakable
+    newKey: item.quest.unbreakable
+
+  - type: KEY_RENAME
+    oldKey: journal
+    newKey: journal.format
+  - type: KEY_RENAME
+    oldKey: journal_colors
+    newKey: journal.format.color
+  - type: KEY_RENAME
+    oldKey: default_journal_slot
+    newKey: journal.default_slot
+  - type: KEY_RENAME
+    oldKey: journal.format.show_in_backpack
+    newKey: journal.show_in_backpack
+  - type: KEY_RENAME
+    oldKey: journal.format.lock_default_journal_slot
+    newKey: journal.lock_default_slot
+  - type: KEY_RENAME
+    oldKey: journal.format.give_on_respawn
+    newKey: journal.give_on_respawn
+  - type: KEY_RENAME
+    oldKey: journal.format.custom_model_data
+    newKey: journal.custom_model_data
+
+  - type: KEY_RENAME
+    oldKey: player_hider_check_interval
+    newKey: hider.player_update_interval
+  - type: KEY_RENAME
+    oldKey: npc_hider_check_interval
+    newKey: hider.npc_update_interval
+
+  - type: VALUE_REPLACE
+    key: item.backpack.cancel_button
+    oldValue: DEFAULT
+    newValue: ''
+  - type: VALUE_REPLACE
+    key: item.backpack.compass_button
+    oldValue: DEFAULT
+    newValue: ''
 3.0.0.6:
   - type: REMOVE
     key: sounds

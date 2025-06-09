@@ -45,7 +45,7 @@ public final class Notify {
      */
     public static void load(final ConfigAccessor config, final Collection<QuestPackage> packages) {
         loadCategorySettings(packages);
-        defaultNotifyIO = config.getString("default_notify_IO");
+        defaultNotifyIO = config.getString("default_notify_io");
     }
 
     /**

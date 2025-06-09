@@ -1635,7 +1635,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         //check if repo is allowed
-        final List<String> whitelist = instance.getPluginConfig().getStringList("download.repo_whitelist");
+        final List<String> whitelist = instance.getPluginConfig().getStringList("downloader.repo_whitelist");
         if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
             sendMessage(sender, "download_failed_whitelist");
             log.debug(errSummary, new IllegalArgumentException(githubNamespace));
@@ -1643,7 +1643,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         //check if ref is valid
-        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("download.pull_requests", false)) {
+        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("downloader.pull_request", false)) {
             sendMessage(sender, "download_failed_pr");
             log.debug(errSummary, new IllegalArgumentException(ref));
             return;
@@ -1679,7 +1679,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private Optional<List<String>> completeDownload(final String... args) {
         return switch (args.length) {
-            case 2 -> Optional.of(instance.getPluginConfig().getStringList("download.repo_whitelist"));
+            case 2 -> Optional.of(instance.getPluginConfig().getStringList("downloader.repo_whitelist"));
             case 3 -> Optional.of(List.of("refs/heads/", "refs/tags/"));
             case 4 -> Optional.of(Downloader.ALLOWED_OFFSET_PATHS);
             case 5 -> Optional.of(List.of("/"));

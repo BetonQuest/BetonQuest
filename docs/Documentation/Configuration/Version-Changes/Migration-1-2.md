@@ -85,8 +85,8 @@ QuestPackages folder to the new 2.0 syntax. This way the migration works for bot
     
     -------------
 
-    All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to
-    `menuConfig.yml`.
+    All existing RPGMenu users must update their RPGMenu config file. Simply rename it from "_rpgmenu.config.yml_" to
+    "_menuConfig.yml_".
 
 ### 2.0.0-DEV-238 - Package Structure Rework :sun:
 
@@ -336,7 +336,7 @@ npc_holograms:
     -------------
 
     The database migrated to a new format for profiles and every profile will have a name. You can set a initial creation
-    name in your config.yml, so every new generated profile (through migration or joining of a new player) will get this name. 
+    name in your "_config.yml_", so every new generated profile (through migration or joining of a new player) will get this name. 
     If you don't set a initial name, the initial name will be "default".
     
     ```YAML title="config.yml"

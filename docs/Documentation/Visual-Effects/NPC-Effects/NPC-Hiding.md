@@ -40,8 +40,8 @@ It allows you to assign conditions to specific BQ NpcIDs like so:
     
 Where NpcID is declared when you register the NPC which is described [here](../../Features/NPCs.md#provided-integrations).
 
-The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).
+The interval the conditions are checked in can be configured with the [`npc_update_interval`](../../Configuration/Plugin-Config.md#npc-npc-settings) setting.
 
 ### Force Visibility Update
 You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
-if used with the [npc hider interval](../../Configuration/Configuration.md#npc-hider-interval) set to high values.
+if used with the [npc hider interval](../../Configuration/Plugin-Config.md#npc-npc-settings) set to high values.

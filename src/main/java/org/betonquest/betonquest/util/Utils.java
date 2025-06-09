@@ -103,7 +103,7 @@ public final class Utils {
         }
         // zip all the files
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
-                + instance.getPluginConfig().getString("version", null);
+                + instance.getDescription().getVersion();
 
         Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^logs$");
         // delete database backup so it doesn't make a mess later on
@@ -126,61 +126,48 @@ public final class Utils {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
         final ConfigAccessor config = BetonQuest.getInstance().getPluginConfig();
-        final int linesPerPage = config.getInt("journal.lines_per_page");
-        final int charsPerPage = config.getInt("journal.chars_per_page");
-        final int charsPerLine = config.getInt("journal.chars_per_line");
+        final int linesPerPage = config.getInt("journal.format.lines_per_page");
+        final int charsPerLine = config.getInt("journal.format.chars_per_line");
         for (final String bigPage : bigPages) {
-            if (linesPerPage <= 0) {
-                StringBuilder page = new StringBuilder();
-                for (final String word : bigPage.split(" ")) {
-                    if (getStringLength(page.toString()) + getStringLength(word) + 1 > charsPerPage) {
-                        pages.add(page.toString().stripTrailing());
-                        page = new StringBuilder();
-                    }
-                    page.append(word).append(' ');
-                }
-                pages.add(page.toString().stripTrailing().replaceAll("(?<!\\\\)\\\\n", "\n"));
-            } else {
-                StringBuilder page = new StringBuilder();
-                int lines = 0;
-                for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
-                    StringBuilder lineBuilder = new StringBuilder();
-                    if (getStringLength(line) <= charsPerLine) {
-                        lines++;
-                        if (lines > linesPerPage) {
-                            pages.add(page.toString());
-                            lines = 1;
-                            page = new StringBuilder();
-                        }
-                        page.append(line).append('\n');
-                        continue;
-                    }
-                    for (final String word : line.split(" ")) {
-                        final int stringLength = getStringLength(word);
-                        final int lineBuilderLength = getStringLength(lineBuilder.toString());
-                        if (lineBuilderLength + stringLength > charsPerLine) {
-                            lines++;
-                            if (lines > linesPerPage) {
-                                pages.add(page.toString());
-                                lines = 1;
-                                page = new StringBuilder();
-                            }
-                            page.append(lineBuilder.toString().stripTrailing()).append('\n');
-                            lineBuilder = new StringBuilder();
-                        }
-                        lineBuilder.append(word).append(' ');
-                    }
+            StringBuilder page = new StringBuilder();
+            int lines = 0;
+            for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
+                StringBuilder lineBuilder = new StringBuilder();
+                if (getStringLength(line) <= charsPerLine) {
                     lines++;
                     if (lines > linesPerPage) {
                         pages.add(page.toString());
                         lines = 1;
                         page = new StringBuilder();
                     }
-                    page.append(lineBuilder.toString().stripTrailing()).append('\n');
+                    page.append(line).append('\n');
+                    continue;
                 }
-                if (!page.isEmpty()) {
+                for (final String word : line.split(" ")) {
+                    final int stringLength = getStringLength(word);
+                    final int lineBuilderLength = getStringLength(lineBuilder.toString());
+                    if (lineBuilderLength + stringLength > charsPerLine) {
+                        lines++;
+                        if (lines > linesPerPage) {
+                            pages.add(page.toString());
+                            lines = 1;
+                            page = new StringBuilder();
+                        }
+                        page.append(lineBuilder.toString().stripTrailing()).append('\n');
+                        lineBuilder = new StringBuilder();
+                    }
+                    lineBuilder.append(word).append(' ');
+                }
+                lines++;
+                if (lines > linesPerPage) {
                     pages.add(page.toString());
+                    lines = 1;
+                    page = new StringBuilder();
                 }
+                page.append(lineBuilder.toString().stripTrailing()).append('\n');
+            }
+            if (!page.isEmpty()) {
+                pages.add(page.toString());
             }
         }
         return pages;

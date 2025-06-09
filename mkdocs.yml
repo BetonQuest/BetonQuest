@@ -97,7 +97,7 @@ nav:
               - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
 
       - 'Configuration':
-          - 'Configuration': Documentation/Configuration/Configuration.md
+          - 'Plugin Config': Documentation/Configuration/Plugin-Config.md
           - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
           - 'Version Changes':
               - 'Updating': Documentation/Configuration/Version-Changes/Updating.md

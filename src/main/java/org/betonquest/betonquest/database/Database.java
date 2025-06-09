@@ -36,7 +36,7 @@ public abstract class Database {
         this.log = log;
         this.plugin = plugin;
         this.prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
-        this.profileInitialName = plugin.getPluginConfig().getString("profiles.initial_name", "");
+        this.profileInitialName = plugin.getPluginConfig().getString("profile.initial_name", "default");
     }
 
     public Connection getConnection() {

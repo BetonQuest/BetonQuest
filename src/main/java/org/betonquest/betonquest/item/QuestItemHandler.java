@@ -257,7 +257,7 @@ public class QuestItemHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if (config.getBoolean("remove_items_after_respawn")) {
+        if (config.getBoolean("item.quest.remove_after_respawn")) {
             // some plugins block item dropping after death and add those
             // items after respawning, so the player doesn't loose his
             // inventory after death; this aims to force removing quest
@@ -327,7 +327,7 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
-        if (!config.getBoolean("quest_items_unbreakable")) {
+        if (!config.getBoolean("item.quest.unbreakable")) {
             return;
         }
         if (Utils.isQuestItem(event.getBrokenItem())) {

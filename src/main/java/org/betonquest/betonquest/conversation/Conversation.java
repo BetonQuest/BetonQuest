@@ -222,8 +222,8 @@ public class Conversation implements Listener {
         this.identifier = conversationID;
         this.pack = conversationID.getPackage();
         this.center = center;
-        this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = Boolean.parseBoolean(plugin.getPluginConfig().getString("display_chat_after_conversation"));
+        this.blacklist = plugin.getPluginConfig().getStringList("conversation.cmd_blacklist");
+        this.messagesDelaying = plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed");
         this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.ERROR, "command_blocked");
         this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_end");

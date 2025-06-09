@@ -69,7 +69,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         }
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
         final Variable<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
-        final String rawClose = section.getString("close", config.getString("default_close", "false"));
+        final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
         final Variable<Boolean> close = new Variable<>(variableProcessor, pack, rawClose, Argument.BOOLEAN);
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
         return new MenuItem(log, questTypeAPI, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);

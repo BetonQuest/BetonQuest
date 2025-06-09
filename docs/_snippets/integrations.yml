@@ -7,7 +7,7 @@ holograms: |-
       | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
       | Holographic Displays | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. |
   
-      If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](Documentation/Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
+      If you have both plugins installed, you can use the [`hologram.default` option in the "_config.yml_"](Documentation/Configuration/Plugin-Config.md/#hologram-hologram-settings) to set which plugin should be used.
       !!! bug ""
           **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
   

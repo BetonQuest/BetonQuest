@@ -36,7 +36,7 @@ Here are some things you should check by your own:
     The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it succeeds!
 
 ??? success "... adjust the ConfigPatcher?"
-    For the `config.yml` check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurations).  
+    For the "_config.yml_" check out the [ConfigPatcher](../../API/Configuration-Files.md#updating-configurations).  
     For quest files, this is currently not relevant. We are working on a new updater.
 
 ??? success "... solve all TODOs?"

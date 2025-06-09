@@ -172,10 +172,10 @@ final class UpdaterConfigTest {
     @SuppressWarnings("PMD.CommentDefaultAccessModifier")
     static UpdaterConfig getMockedConfig(final BetonQuestLogger logger, final Input input, final Version version) {
         final ConfigAccessor config = mock(ConfigAccessor.class);
-        when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
-        when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
-        when(config.getString("update.strategy", null)).thenReturn(input.strategy);
-        when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
+        when(config.getBoolean("updater.enabled", true)).thenReturn(input.enabled);
+        when(config.getBoolean("updater.ingame_notification", true)).thenReturn(input.ingameNotification);
+        when(config.getString("updater.strategy", null)).thenReturn(input.strategy);
+        when(config.getBoolean("updater.automatic", false)).thenReturn(input.automatic);
         return new UpdaterConfig(logger, config, version, DEV_INDICATOR);
     }
 

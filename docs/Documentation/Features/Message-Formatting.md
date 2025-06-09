@@ -18,7 +18,7 @@ icon: material/message-cog
 Every string in BetonQuest can be formatted with a formatter.
 A formatter is a way to format a string with colors, styles, and more, while each formatter has its own syntax.
 
-In the `config.yml` file, you can set the default formatter with the `message_parser` setting.
+In the "_config.yml_" file, you can set the default formatter with the `message_parser` setting.
 The default formatter is `legacyminimessage`.
 
 Anyway each string can set an individual formatter by prefixing the string with `@[FormatterName]`.

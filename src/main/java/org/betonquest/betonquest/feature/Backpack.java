@@ -173,7 +173,7 @@ public class Backpack implements Listener {
     /**
      * Standard page with quest items.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private class BackpackPage extends Display {
         /**
          * Backpack size.
@@ -265,19 +265,19 @@ public class Backpack implements Listener {
 
             final int pageOne = 1;
             if (page > pageOne) {
-                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST, false).getLeft();
+                content[SLOT_PREVIOUS] = button("previous", Material.GLOWSTONE_DUST).getLeft();
             }
             if (page < pages) {
-                content[SLOT_NEXT] = button("next", Material.REDSTONE, false).getLeft();
+                content[SLOT_NEXT] = button("next", Material.REDSTONE).getLeft();
             }
-            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE, true);
+            final Pair<ItemStack, Boolean> cancel = button("cancel", Material.BONE);
             if (cancel.getRight()) {
                 showCancel = true;
                 content[SLOT_CANCEL] = cancel.getLeft();
             } else {
                 showCancel = false;
             }
-            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS, true);
+            final Pair<ItemStack, Boolean> compass = button("compass", Material.COMPASS);
             if (compass.getRight()) {
                 showCompass = true;
                 content[SLOT_COMPASS] = compass.getLeft();
@@ -301,19 +301,17 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
-        private Pair<ItemStack, Boolean> button(final String button, final Material fallback, final boolean checkDefault) {
+        private Pair<ItemStack, Boolean> button(final String button, final Material fallback) {
             ItemStack stack = null;
             boolean present = false;
-            final String buttonString = config.getString("items.backpack." + button + "_button");
+            final String buttonString = config.getString("item.backpack." + button + "_button");
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
-                if (!checkDefault || !"DEFAULT".equalsIgnoreCase(buttonString)) {
-                    try {
-                        final ItemID itemId = new ItemID(null, buttonString);
-                        stack = BetonQuest.getInstance().getFeatureAPI().getItem(itemId, onlineProfile).generate(1);
-                    } catch (final QuestException e) {
-                        log.warn("Could not load " + button + " button: " + e.getMessage(), e);
-                    }
+                try {
+                    final ItemID itemId = new ItemID(null, buttonString);
+                    stack = BetonQuest.getInstance().getFeatureAPI().getItem(itemId, onlineProfile).generate(1);
+                } catch (final QuestException e) {
+                    log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                 }
             }
             if (stack == null) {

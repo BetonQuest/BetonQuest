@@ -52,10 +52,10 @@ conversations: #(1)!
 5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
     he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
     joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with `max_conversation_distance` option in _config.yml_.
+    the distance at which the conversation is automatically stopped / player is teleported back with `max_conversation_distance` option in "_config.yml_".
 6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
     the player if he tries to run). You can leave this option out if you don't need any final events.
-7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in _config.yml_.
+7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in "_config.yml_".
 8. `NPC_options` is a branch with texts said by the NPC.
 9. `player_options` is a branch with options the player can choose from.
 10. `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only `text` is always required.
@@ -89,7 +89,7 @@ npc_conversations:
 1. The key is the NpcID, the value a ConversationID.
 
 A NPC will only react to right clicks by default. 
-This can be changed by setting `npcs.accept_left_click` in the config.yml to `true`.
+This can be changed by setting `npcs.accept_left_click` in the "_config.yml_" to `true`.
 
 You can assign the same conversation to multiple NPCs.
 It is not possible to assign multiple conversations to one NPC. For this
@@ -102,7 +102,7 @@ BetonQuest provides different conversation styles, so called "conversationIO's".
 and the way the player interacts with them.
 
 BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
-You can change this setting globally by changing the [`default_conversation_IO`](../Configuration/Configuration.md#default-conversation-style) option in the _config.yml_ file.
+You can change this setting globally by changing the [`default_io`](../Configuration/Plugin-Config.md#conversation-conversation-settings) option in the "_config.yml_" file.
 
 It is also possible to override this setting per conversation. Add a `conversationIO:
 <type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
@@ -182,9 +182,9 @@ In both cases, you can choose from the following conversation styles:
     === "`chest`"
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
         ??? "Customizing the Chest Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
+            The colors of this style can be configured with the [`color` config option](../Configuration/Plugin-Config.md/#conversation-conversation-settings).
             
-            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](../Configuration/Configuration.md#conversation-settings-chestio-slowtellrawio).
+            The formatting of this style can be configured with the [`chest` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).
             
             You can change the option's item to something else than ender pearls by adding adding a new section
             'properties' to the 'player_options' and reference an item by its ID. This will then look like this:
@@ -206,19 +206,19 @@ In both cases, you can choose from the following conversation styles:
     === "`simple`"
         A chat output. The user has to write a number into their chat to select an option.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
+            The colors of this style can be configured with the [`color` config option](../Configuration/Plugin-Config.md/#conversation-conversation-settings).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
     === "`tellraw`"
         The same as the simple style but the user can also click the numbers instead of writing them in the chat.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
+            The colors of this style can be configured with the [`color` config option](../Configuration/Plugin-Config.md/#conversation-conversation-settings).
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
     === "`slowtellraw`"
         The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](../Configuration/Configuration.md#conversation-colors).
+            The colors of this style can be configured with the [`color` config option](../Configuration/Plugin-Config.md/#conversation-conversation-settings).
             
-            The delay between lines (in ticks) can be configured with the [`conversation_IO_config.slowtellraw` config option](../Configuration/Configuration.md#conversation-settings-chestio-slowtellrawio).
+            The delay between lines (in ticks) can be configured with the [`slowtellraw`](../Configuration/Plugin-Config.md/#io-conversation-io-settings) config option.
         ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
 
 
@@ -273,7 +273,7 @@ player_options:
       en: "Thank you your honor, I'm happy to be here."
       de: "Danke, Euer Ehren, ich bin froh, hier zu sein."
 ```
-`en` and `de` are identifiers of languages present in the _messages.yml_ config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in _config.yml_.
+`en` and `de` are identifiers of languages present in the "_messages.yml_" config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "_config.yml_".
 
 The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and `notify` events.
 
@@ -281,7 +281,7 @@ The same syntax can be applied in a few other features, e.g. the journal entries
 While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
 A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.
 
-You can specify the default chat interceptor by setting `default_interceptor` inside the `config.yml`.
+You can specify the default chat interceptor by setting `default_interceptor` inside the "_config.yml_".
 Additionally, you can overwrite the default for each conversation by setting the `interceptor` key inside your conversation file.
 
 The default configuration of BetonQuest sets the `default_interceptor` option to `packet,simple`.
