@@ -14,7 +14,9 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.quest.objective.resourcepack.ResourcepackObjective;
+import org.betonquest.betonquest.web.updater.Updater;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -59,6 +61,11 @@ public class JoinQuitListener implements Listener {
     private final ProfileProvider profileProvider;
 
     /**
+     * Updater to notify players.
+     */
+    private final Updater updater;
+
+    /**
      * Creates new listener, which will handle the data loading/saving.
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
@@ -67,16 +74,18 @@ public class JoinQuitListener implements Listener {
      * @param playerDataStorage the storage for un-/loading player data
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
+     * @param updater           the updater to notify players
      */
     public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
                             final ObjectiveProcessor questTypeAPI, final PlayerDataStorage playerDataStorage,
-                            final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+                            final PluginMessage pluginMessage, final ProfileProvider profileProvider, final Updater updater) {
         this.loggerFactory = loggerFactory;
         this.config = config;
         this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
+        this.updater = updater;
     }
 
     /**
@@ -100,22 +109,26 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+        final Player player = event.getPlayer();
+        final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
         questTypeAPI.startAll(onlineProfile, playerDataStorage);
-        checkResourcepack(event, onlineProfile);
+        checkResourcepack(player, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
             playerData.getJournal(pluginMessage).update();
+        }
+        if (player.hasPermission("betonquest.admin")) {
+            updater.sendUpdateNotification(player);
         }
         if (playerData.getActiveConversation() != null) {
             new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
         }
     }
 
-    private void checkResourcepack(final PlayerJoinEvent event, final OnlineProfile onlineProfile) {
-        final PlayerResourcePackStatusEvent.Status resourcePackStatus = event.getPlayer().getResourcePackStatus();
+    private void checkResourcepack(final Player player, final OnlineProfile onlineProfile) {
+        final PlayerResourcePackStatusEvent.Status resourcePackStatus = player.getResourcePackStatus();
         if (resourcePackStatus != null) {
             questTypeAPI.getActive(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcepackObjective)

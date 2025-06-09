@@ -381,6 +381,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider);
         featureAPI = new FeatureAPI(questRegistry);
 
+        setupUpdater();
         registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
@@ -418,8 +419,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
 
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier());
-
-        setupUpdater();
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, coreQuestRegistry.variables(),
                 pluginMessage, messageCreator, questTypeAPI, featureAPI, profileProvider);
@@ -462,7 +461,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureAPI),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
-                        pluginMessage, profileProvider)
+                        pluginMessage, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
