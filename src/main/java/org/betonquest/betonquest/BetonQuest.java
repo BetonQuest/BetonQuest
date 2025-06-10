@@ -526,10 +526,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      * @see QuestRegistry#loadData(Collection)
      */
     public void loadData() {
+        new LoadDataEvent(LoadDataEvent.State.PRE_LOAD).callEvent();
         questRegistry.loadData(getPackages().values());
+        new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
         playerDataStorage.startObjectives();
         rpgMenu.syncCommands();
-        Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }
 
     /**

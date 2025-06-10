@@ -15,10 +15,18 @@ public class LoadDataEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
-     * Create a new Load Data Event.
+     * The state of this event.
      */
-    public LoadDataEvent() {
+    private final State state;
+
+    /**
+     * Create a new Load Data Event.
+     *
+     * @param state the state of this event.
+     */
+    public LoadDataEvent(final State state) {
         super();
+        this.state = state;
     }
 
     /**
@@ -30,8 +38,31 @@ public class LoadDataEvent extends Event {
         return HANDLER_LIST;
     }
 
+    /**
+     * Get the state of this event.
+     *
+     * @return the state of this event.
+     */
+    public State getState() {
+        return state;
+    }
+
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
+    }
+
+    /**
+     * The state of the LoadDataEvent.
+     */
+    public enum State {
+        /**
+         * Event is fired before BetonQuest loads the data.
+         */
+        PRE_LOAD,
+        /**
+         * Event is fired after BetonQuest loaded the data.
+         */
+        POST_LOAD
     }
 }
