@@ -5,6 +5,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.Pack
 import org.betonquest.betonquest.config.patcher.migration.migrator.from1to2.RPGMenuMerge;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMenuConfigYml;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.DeleteMessagesYml;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MenuConversationSettings;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,6 +32,7 @@ public class Migrator {
         migrations.add(new PackageStructure());
         migrations.add(new DeleteMessagesYml(loggerFactory.create(DeleteMessagesYml.class)));
         migrations.add(new DeleteMenuConfigYml(loggerFactory.create(DeleteMenuConfigYml.class)));
+        migrations.add(new MenuConversationSettings(loggerFactory.create(MenuConversationSettings.class)));
     }
 
     /**

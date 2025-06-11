@@ -1,4 +1,68 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.8:
+  - type: SET
+    key: conversation.io.menu.selection_cooldown
+    value: 10
+  - type: SET
+    key: conversation.io.menu.refresh_delay
+    value: 180
+  - type: SET
+    key: conversation.io.menu.line_length
+    value: 50
+  - type: SET
+    key: conversation.io.menu.start_new_lines
+    value: 10
+  - type: SET
+    key: conversation.io.menu.npc_name_newline_separator
+    value: true
+  - type: SET
+    key: conversation.io.menu.npc_text_fill_new_lines
+    value: true
+  - type: SET
+    key: conversation.io.menu.control_select
+    value: jump,left_click
+  - type: SET
+    key: conversation.io.menu.control_cancel
+    value: sneak
+  - type: SET
+    key: conversation.io.menu.control_move
+    value: scroll,move
+  - type: SET
+    key: conversation.io.menu.npc_name_align
+    value: center
+  - type: SET
+    key: conversation.io.menu.npc_name_type
+    value: chat
+  - type: SET
+    key: conversation.io.menu.npc_wrap
+    value: '&l &r'
+  - type: SET
+    key: conversation.io.menu.npc_text
+    value: '&l &r&f{npc_text}'
+  - type: SET
+    key: conversation.io.menu.npc_text_reset
+    value: '&f'
+  - type: SET
+    key: conversation.io.menu.option_wrap
+    value: '&r&l &l &l &l &r'
+  - type: SET
+    key: conversation.io.menu.option_text
+    value: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
+  - type: SET
+    key: conversation.io.menu.option_text_reset
+    value: '&b'
+  - type: SET
+    key: conversation.io.menu.option_selected
+    value: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
+  - type: SET
+    key: conversation.io.menu.option_selected_reset
+    value: '&f'
+  - type: SET
+    key: conversation.io.menu.option_selected_wrap
+    value: '&r&l &l &l &l &r&f&n'
+  - type: SET
+    key: conversation.io.menu.npc_name_format
+    value: '&e{npc_name}&r'
 3.0.0.7:
   - type: KEY_RENAME
     oldKey: update

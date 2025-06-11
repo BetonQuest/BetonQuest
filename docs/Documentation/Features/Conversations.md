@@ -116,65 +116,7 @@ In both cases, you can choose from the following conversation styles:
         **Requires [ProtocolLib](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/)**
             
         ??? "Customizing the Menu Style"
-            Customize the look of the menu style by adding the following lines to any of your quest packages. These
-            are global settings that currently cannot be changed on a NPC level.
-            
-            ```YAML
-            menu_conv_io:
-              start_new_lines: 10 # (1)!
-              line_length: 50 # (2)!
-              refresh_delay: 180 # (3)!
-              selectionCooldown: 10 # (4)!
-            
-              npc_wrap: '&l &r' # (5)!
-              npc_text: '&l &r&f{npc_text}' # (6)!
-              npc_text_reset: '&f' # (7)!
-              option_wrap: '&r&l &l &l &l &r' # (8)!
-              option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (9)!
-              option_text_reset: '&b' # (10)! 
-              option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (11)!
-              option_selected_reset: '&f' # (12)!
-              option_selected_wrap: '&r&l &l &l &l &r&f&n' # (13)!
-            
-              control_select: jump,left_click # (14)!
-              control_cancel: sneak # (15)! 
-              control_move: scroll,move # (16)! 
-            
-              npc_name_type: chat # (17)!
-              npc_name_align: center # (18)!
-              npc_name_format: '&e{npc_name}&r' # (19)!
-              npc_name_newline_separator: true # (20)!
-              npc_text_fill_new_lines: true # (21)!
-            ```
-            
-            1. How many empty lines should be printed before the conversation starts.
-            2. Maximum size of a line till its wrapped.
-            3. Specify how many ticks to auto update display. Default 180.
-            4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
-            5. What text to prefix each new line in the NPC text that wraps.
-            6. How to write the NPC text. Replaces {1} with the npcs text.
-            7. When a color reset is found, what to replace it with.
-            8. What text to prefix each new line in an option that wraps.
-            9. How to write an option. Replaces {1} with the option text.
-            10. When a color reset is found, what to replace it with.
-            11. How to write a selected option. Replaces {1} with the option text.
-            12. When a color reset is found, what to replace it with.
-            13. What text to prefix each new line in a selected option that wraps.
-            14. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-            15. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-            16. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-            17. Type of NPC name display. Can be one of: `none`, `chat`.
-            18. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-            19. How to format the npc name.
-            20. Whether an empty line is inserted after the NPC's name if there is space leftover.
-            21. Weather to fill new lined between the NPC text and the player answer options
-                                    
-            | Text Variable   | Meaning               |
-            |-----------------|-----------------------|
-            | `{npc_text`     | The text the NPC says |
-            | `{option_text}` | The option text       |
-            | `{npc_name}`    | The name of the NPC   |
-            
+            The formatting of this style can be configured with the [`menu` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).
         <video controls loop src="../../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
@@ -187,7 +129,7 @@ In both cases, you can choose from the following conversation styles:
             The formatting of this style can be configured with the [`chest` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).
             
             You can change the option's item to something else than ender pearls by adding adding a new section
-            'properties' to the 'player_options' and reference an item by its ID. This will then look like this:
+            `properties` to the `player_options` and reference an item by its ID. This will then look like this:
             
             ```YAML
             player_options:
