@@ -53,7 +53,7 @@ public class MMOItemsCraftObjectiveAdder implements Listener {
         final PlayerUseCraftingStationEvent.StationAction action = event.getInteraction();
         if (action != PlayerUseCraftingStationEvent.StationAction.INTERACT_WITH_RECIPE
                 && action != PlayerUseCraftingStationEvent.StationAction.CANCEL_QUEUE
-                && event.getRecipe() instanceof CraftingRecipe) {
+                && event.getRecipe() instanceof CraftingRecipe && event.getResult() != null) {
             progressCraftObjective(event.getPlayer(), event.getResult());
         }
     }
