@@ -152,7 +152,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
                 final Variable<List<MenuItemID>> itemsList = new VariableList<>(variableProcessor, pack,
                         slotsSection.getString(key, ""), value -> new MenuItemID(pack, value));
                 try {
-                    slots.add(new Slots(rpgMenu, key, itemsList.getValue(null)));
+                    slots.add(new Slots(rpgMenu, key, itemsList));
                 } catch (final IllegalArgumentException e) {
                     throw new QuestException("slots." + key + " is invalid: " + e.getMessage(), e);
                 }
