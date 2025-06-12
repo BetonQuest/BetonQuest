@@ -110,9 +110,32 @@
   - type: KEY_RENAME
     oldKey: default_close
     newKey: menu.default_close
+
+  - type: SET
+    key: default_notify_io
+    value: 'chat'
+  - type: SET
+    key: journal.format.show_separator
+    value: false
+  - type: TYPE_TRANSFORM
+    key: journal.format.show_separator
+    newType: boolean
 3.0.0.6:
   - type: REMOVE
     key: sounds
+3.0.0.5:
+  - type: SET
+    key: hook.fancynpcs
+    value: true
+  - type: TYPE_TRANSFORM
+    key: hook.fancynpcs
+    newType: boolean
+  - type: SET
+    key: hook.znpcsplus
+    value: true
+  - type: TYPE_TRANSFORM
+    key: hook.znpcsplus
+    newType: boolean
 3.0.0.3:
   - type: REMOVE
     key: citizens_npcs_by_name
@@ -125,6 +148,9 @@
   - type: KEY_RENAME
     oldKey: npcInteractionLimit
     newKey: npcs.interaction_limit
+  - type: SET
+    key: message_parser
+    value: 'legacyminimessage'
 3.0.0.2:
   - type: VALUE_RENAME
     key: language
@@ -178,10 +204,31 @@
     key: language
     oldValueRegex: 'cn'
     newValue: 'zh-CN'
+  - type: SET
+    key: journal.separator
+    value: '---------------'
+  - type: SET
+    key: default_close
+    value: true
+  - type: TYPE_TRANSFORM
+    key: default_close
+    newType: boolean
 3.0.0.1:
   - type: KEY_RENAME
     oldKey: hook.proskillapi
     newKey: hook.fabled
+  - type: SET
+    key: hook.breweryx
+    value: true
+  - type: TYPE_TRANSFORM
+    key: hook.breweryx
+    newType: boolean
+  - type: SET
+    key: hook.train_carts
+    value: true
+  - type: TYPE_TRANSFORM
+    key: hook.train_carts
+    newType: boolean
 2.1.0.1:
   - type: KEY_RENAME
     oldKey: hook.aureliumskills

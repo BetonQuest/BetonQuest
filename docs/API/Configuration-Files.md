@@ -68,16 +68,15 @@ This frees you from the hassle of updating the `configVersion` key in the defaul
 
 ## Updating Configurations
 
-When you just want to add a new option to the config, you can simply add it to your config's resource file. It will 
-automatically be added to the users existing config. However, if you want to edit existing options, you need to use the config patcher.
-
 The config patcher automatically updates all configs loaded using the `ConfigAccessor` APIs `createPatching` methods.
-This is needed when changes are made to the existing config format.
+This is needed when changes are made to the existing config format and can be seen like a log file,
+where every change is logged with a corresponding patch entry.
 This patcher only works on configuration files!
 It's not used for files that contain quests as these should not be loaded with the `createPatching` methods.
 The patching progress is configured in a dedicated patch file per config file.
 
 ### The Patch File
+
 Whenever a resource file is loaded using BetonQuest's `createPatching` method, a "_resourceFileName.patch.yml_" file 
 is searched in the same directory the resource file is located. It contains the configuration for all patches
 that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
@@ -103,6 +102,7 @@ file before it's loaded. Let's take a look at an example:
 All patches that are newer than the configs current version are applied, starting with the oldest one.    
 
 ### Config Versions
+
 The versions in the patch file have four digits (`1.2.3.4`). The first three are the semantic version of the BetonQuest 
 version that this patch updates the config to. The last digit is used to version multiple patches during the
 development phase of a semantic versioning release. 
@@ -293,6 +293,7 @@ Removes both sections and keys (including all nested contents).
 ```
 
 ### Adding additional Transformers
+
 If you want to use your own transformers, you can pass them to the `createPatching` method in the form of a `PatchTransformerRegistry`.
 Using this possibility will override the default transformers. You need to re-add them explicitly.
 Reading them can be simplified by using the class  `DefaultPatchTransformerRegistry`, however,

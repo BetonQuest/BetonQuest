@@ -76,23 +76,24 @@ public class QuestFixture {
         final ConfigurationSection questConfig = quest.getQuestConfig();
         final ConfigurationSection fileConfig = loadFile(fileName);
 
-        assertConfigContains(null, expected, questConfig);
-        assertConfigContains(null, questConfig, expected);
-        assertConfigContains(null, expected, fileConfig);
-        assertConfigContains(null, fileConfig, expected);
+        assertConfigContains(null, expected, questConfig, "Expected");
+        assertConfigContains(null, questConfig, expected, "Quest");
+        assertConfigContains(null, expected, fileConfig, "Expected");
+        assertConfigContains(null, fileConfig, expected, "File");
     }
 
-    protected void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual, final ConfigurationSection contains) {
+    protected void assertConfigContains(@Nullable final String parentKey, final ConfigurationSection actual,
+                                        final ConfigurationSection contains, final String actualName) {
         for (final String key : contains.getKeys(true)) {
             final String actualKey = parentKey == null ? key : parentKey + "." + key;
             if (contains.isConfigurationSection(key)) {
-                assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the actual config");
-                assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key));
+                assertTrue(actual.isConfigurationSection(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
+                assertConfigContains(actualKey, actual.getConfigurationSection(key), contains.getConfigurationSection(key), actualName);
             } else {
-                assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the actual config");
-                assertEquals(contains.get(key), actual.get(key), "Key '" + actualKey + "' has different value in the actual config");
-                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the actual config");
-                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the actual config");
+                assertTrue(actual.contains(key), "Key '" + actualKey + "' is missing in the '" + actualName + "' config");
+                assertEquals(contains.get(key), actual.get(key), "Key '" + actualKey + "' has different value in the '" + actualName + "' config");
+                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + actualKey + "' has different comments in the '" + actualName + "' config");
+                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + actualKey + "' has different inline comments in the '" + actualName + "' config");
             }
         }
     }

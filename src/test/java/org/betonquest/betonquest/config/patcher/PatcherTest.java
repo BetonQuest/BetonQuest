@@ -196,32 +196,6 @@ class PatcherTest {
                 "Config does not match the expected result.");
     }
 
-    @Test
-    void from_resource_update(@TempDir final Path tempDir) throws InvalidConfigurationException, IOException {
-        resource.set("copied", "resource");
-        final FileConfigAccessor config = createConfigAccessorFromString(tempDir, "config.yml", """
-                        configVersion: ""
-                        someKey: someValue
-                """);
-
-        final FileConfigAccessor patch = createConfigAccessorFromString(tempDir, "config.patch.yml", """
-                100.200.300.400:
-                - type: SET
-                  key: newKey
-                  value: newValue
-                """);
-
-        new Patcher(logger, resource, registry, patch).patch(config);
-
-        verify(logger, times(1)).debug("The config file 'config.yml' gets the latest version '100.200.300-CONFIG-400' set.");
-        verifyNoMoreInteractions(logger);
-        assertEquals("""
-                copied: resource
-                configVersion: 100.200.300-CONFIG-400 # Don't change this! The plugin's automatic config updater handles it.
-                someKey: someValue
-                """, getStringFromConfigAccessor(config), "Config does not match the expected result.");
-    }
-
     private String getStringFromConfigAccessor(final ConfigAccessor accessor) {
         return ((YamlConfiguration) accessor.getConfig()).saveToString();
     }

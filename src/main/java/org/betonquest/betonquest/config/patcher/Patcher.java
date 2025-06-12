@@ -131,6 +131,7 @@ public class Patcher {
         final Configuration config = accessor.getConfig();
         final String configVersionString = config.getString(CONFIG_VERSION_PATH);
         final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
+        config.setDefaults(resourceAccessor.getConfig());
         if (patches.isEmpty()) {
             log.debug(logPrefix + "has no patches to apply, setting zero version.");
             setConfigVersion(config, ZERO_VERSION);
@@ -147,10 +148,6 @@ public class Patcher {
                 patch(version, config);
             }
         }
-
-        config.setDefaults(resourceAccessor.getConfig());
-        config.options().copyDefaults(true);
-
         try {
             accessor.save();
         } catch (final IOException e) {

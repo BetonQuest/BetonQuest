@@ -7,6 +7,9 @@
     key: additionalVal
     value: 42
     override: true
+  - type: SET
+    key: copied
+    value: resource
 
 "2.0.0.1":
   - type: SET
