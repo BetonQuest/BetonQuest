@@ -107,6 +107,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmoitemcraft` objective NoSuchMethodError with MMOItems 6.10+
 - `menu` conversation IO exception in one edge case
 - 1.21.5 ProtocolLib support
+- `interact` objective's documentations used hookLocation instead of loc for the location
 ### Security
 
 ## [2.2.1] - 2025-01-12
