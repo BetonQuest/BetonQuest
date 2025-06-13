@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Slots {
     /**
      * Items to set into the form.
      */
-    private final List<MenuItemID> items;
+    private final Variable<List<MenuItemID>> items;
 
     /**
      * The slots form.
@@ -46,7 +47,7 @@ public class Slots {
      * @throws IllegalArgumentException when the slot form is invalid or a number cannot be parsed
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public Slots(final RPGMenu rpgMenu, final String slots, final List<MenuItemID> items) {
+    public Slots(final RPGMenu rpgMenu, final String slots, final Variable<List<MenuItemID>> items) {
         this.rpgMenu = rpgMenu;
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;
@@ -151,23 +152,15 @@ public class Slots {
     }
 
     /**
-     * Get the potential displayed item's ids.
-     *
-     * @return all items assigned to the slots covered by this object
-     */
-    public List<MenuItemID> getItems() {
-        return items;
-    }
-
-    /**
      * Get the actual displayed items.
      *
      * @param profile the player from the {@link Profile} for which these slots should get displayed for
      * @return all items which should be shown to the specified player of the slots covered by this object
+     * @throws QuestException if an error occurs while resolving the items
      */
     public List<MenuItem> getItems(final Profile profile) throws QuestException {
         final List<MenuItem> items = new ArrayList<>();
-        for (final MenuItemID itemID : this.items) {
+        for (final MenuItemID itemID : this.items.getValue(profile)) {
             final MenuItem item = rpgMenu.getMenuItem(itemID);
             if (item.display(profile)) {
                 items.add(item);
