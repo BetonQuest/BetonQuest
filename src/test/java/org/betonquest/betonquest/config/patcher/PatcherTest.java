@@ -75,7 +75,7 @@ class PatcherTest {
                 "2.0.0.1":
                   - type: SET
                     key: journalLock
-                    value: true
+                    value: 'true'
                 """);
         new Patcher(logger, resource, registry, patch).patch(config);
 

@@ -135,7 +135,7 @@ class TransformerIntegrationTest extends TransformersFixture {
                           value: true
                     """;
 
-            config.set("journalLock", "true");
+            config.set("journalLock", true);
         }
     }
 

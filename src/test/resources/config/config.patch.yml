@@ -2,11 +2,9 @@
   - type: SET
     key: journalLock
     value: megaTrue
-    override: true
   - type: SET
     key: additionalVal
-    value: 42
-    override: true
+    value: '42'
   - type: SET
     key: copied
     value: resource
@@ -15,7 +13,6 @@
   - type: SET
     key: journalLock
     value: true
-    override: true
 
   - type: LIST_ENTRY_RENAME
     key: section.myList

@@ -2,10 +2,10 @@ package org.betonquest.betonquest.config.patcher.transformer;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
+import org.betonquest.betonquest.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,10 +22,10 @@ public class ListEntryRenameTransformer implements PatchTransformer {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
-        final String key = options.get("key");
-        final String regex = options.get("oldEntryRegex");
-        final String newEntry = options.get("newEntry");
+    public void transform(final PatcherOptions options, final ConfigurationSection config) throws PatchException {
+        final String key = options.getString("key");
+        final String regex = options.getString("oldEntryRegex");
+        final String newEntry = options.getString("newEntry");
 
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);

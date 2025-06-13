@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.api.config.patcher;
 
+import org.betonquest.betonquest.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Map;
 
 /**
  * Interface for transformers that transform a configuration.
@@ -17,5 +16,5 @@ public interface PatchTransformer {
      * @param config  to transform
      * @throws PatchException if the transformation failed
      */
-    void transform(Map<String, String> options, ConfigurationSection config) throws PatchException;
+    void transform(PatcherOptions options, ConfigurationSection config) throws PatchException;
 }
