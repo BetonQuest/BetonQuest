@@ -2,11 +2,11 @@ package org.betonquest.betonquest.config.patcher.transformer;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
+import org.betonquest.betonquest.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Adds an entry to the given list at the given position.
@@ -20,10 +20,10 @@ public class ListEntryAddTransformer implements PatchTransformer {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
-        final String key = options.get("key");
-        final String entry = options.get("entry");
-        final String position = options.getOrDefault("position", "LAST");
+    public void transform(final PatcherOptions options, final ConfigurationSection config) throws PatchException {
+        final String key = options.getString("key");
+        final String entry = options.getString("entry");
+        final String position = options.getString("position", "LAST");
 
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);

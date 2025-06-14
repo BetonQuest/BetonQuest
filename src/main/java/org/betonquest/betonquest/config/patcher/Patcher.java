@@ -23,7 +23,6 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Patches BetonQuest's configuration file.
@@ -131,6 +130,7 @@ public class Patcher {
         final Configuration config = accessor.getConfig();
         final String configVersionString = config.getString(CONFIG_VERSION_PATH);
         final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
+        config.setDefaults(resourceAccessor.getConfig());
         if (patches.isEmpty()) {
             log.debug(logPrefix + "has no patches to apply, setting zero version.");
             setConfigVersion(config, ZERO_VERSION);
@@ -147,10 +147,6 @@ public class Patcher {
                 patch(version, config);
             }
         }
-
-        config.setDefaults(resourceAccessor.getConfig());
-        config.options().copyDefaults(true);
-
         try {
             accessor.save();
         } catch (final IOException e) {
@@ -188,11 +184,9 @@ public class Patcher {
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
         boolean noErrors = true;
         for (final Map<?, ?> transformationData : patchData) {
-            final Map<String, String> typeSafeTransformationData = transformationData.entrySet().stream()
-                    .map(entry -> Map.entry(String.valueOf(entry.getKey()), String.valueOf(entry.getValue())))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            final PatcherOptions patcherOptions = new PatcherOptions(transformationData);
             try {
-                getPatchTransformer(typeSafeTransformationData.get("type")).transform(typeSafeTransformationData, config);
+                getPatchTransformer(patcherOptions.getString("type")).transform(patcherOptions, config);
             } catch (final PatchException e) {
                 noErrors = false;
                 log.warn("There has been an issue while applying the patches: " + e.getMessage());

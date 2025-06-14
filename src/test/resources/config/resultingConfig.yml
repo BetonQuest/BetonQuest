@@ -1,4 +1,3 @@
-copied: resource
 configVersion: 3.4.5-CONFIG-6 # Don't change this! The plugin's automatic config updater handles it.
 section:
   myList:
@@ -15,3 +14,4 @@ section:
 journalLock: megaTrue
 testNew: someValue
 additionalVal: '42'
+copied: resource

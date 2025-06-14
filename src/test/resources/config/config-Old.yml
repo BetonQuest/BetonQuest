@@ -31,6 +31,8 @@ conversation_IO_config:
   chest:
     show_number: true
     show_npc_text: true
+  slowtellraw:
+    message_delay: 10
 default_interceptor: redischat,packet,simple
 default_hologram: DecentHolograms,HolographicDisplays
 display_chat_after_conversation: true
