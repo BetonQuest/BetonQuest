@@ -2,10 +2,10 @@ package org.betonquest.betonquest.config.patcher.transformer;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
+import org.betonquest.betonquest.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Changes the data type of an existing value.
@@ -19,20 +19,15 @@ public class TypeTransformer implements PatchTransformer {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
-        final String key = options.get("key");
-        if (key == null) {
-            throw new PatchException("Key is not set, skipping transformation.");
-        }
-        final Object value = config.get(key);
+    public void transform(final PatcherOptions options, final ConfigurationSection config) throws PatchException {
+        final String key = options.getString("key");
+        final String type = options.getString("newType");
+
+        final String value = config.getString(key);
         if (value == null) {
             throw new PatchException("Value is not set, skipping transformation.");
         }
-        final String type = options.get("newType");
-        if (type == null) {
-            throw new PatchException("No 'newType', skipping transformation.");
-        }
-        setValue(config, type, key, value.toString());
+        setValue(config, type, key, value);
     }
 
     private void setValue(final ConfigurationSection config, final String type, final String key, final String valueString) throws PatchException {
