@@ -5242,10 +5242,9 @@ Therefore, the best way to work with the <code>ConfigAccessor</code> is to pass 
 While querying the <code>ConfigAccessor</code> you can use child <code>ConfigurationSection</code> as usual, just don't store them.</p>
 </div>
 <h2 id="updating-configurations">Updating Configurations<a class="headerlink" href="#updating-configurations" title="Permanent link">🔗</a></h2>
-<p>When you just want to add a new option to the config, you can simply add it to your config's resource file. It will 
-automatically be added to the users existing config. However, if you want to edit existing options, you need to use the config patcher.</p>
 <p>The config patcher automatically updates all configs loaded using the <code>ConfigAccessor</code> APIs <code>createPatching</code> methods.
-This is needed when changes are made to the existing config format.
+This is needed when changes are made to the existing config format and can be seen like a log file,
+where every change is logged with a corresponding patch entry.
 This patcher only works on configuration files!
 It's not used for files that contain quests as these should not be loaded with the <code>createPatching</code> methods.
 The patching progress is configured in a dedicated patch file per config file.</p>
