@@ -1,4 +1,18 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.9:
+  - type: REMOVE
+    key: conversation.io.menu.option_selected_reset
+  - type: REMOVE
+    key: conversation.io.menu.option_text_reset
+  - type: REMOVE
+    key: conversation.io.menu.npc_text_reset
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.line_length
+    oldValue: 50
+    newValue: 320
+  - type: TYPE_TRANSFORM
+    key: conversation.io.menu.line_length
+    newType: integer
 3.0.0.8:
   - type: SET
     key: conversation.io.menu.selection_cooldown

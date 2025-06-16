@@ -15,7 +15,6 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.Fold
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.HeadOwnerMigrator;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.LanguageRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.ListNamesRenameToPlural;
-import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MenuIOComponents;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MoonPhaseRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.MoveMenuItems;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcEventsRename;
@@ -120,7 +119,6 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 10), new HeadOwnerMigrator());
         migrations.put(questVersion("3.0.0", 11), new NpcEventsRename());
         migrations.put(questVersion("3.0.0", 12), new FolderTimeUnit());
-        migrations.put(questVersion("3.0.0", 13), new MenuIOComponents());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

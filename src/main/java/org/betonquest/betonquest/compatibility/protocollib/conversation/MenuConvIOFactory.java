@@ -40,7 +40,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
      *
      * @param messageParser the message parser to parse the configuration messages
      * @param fontRegistry  the font registry used for the conversation
-     * @param config the config accessor to the plugin's configuration
+     * @param config        the config accessor to the plugin's configuration
      * @param colors        the colors used for the conversation
      */
     public MenuConvIOFactory(final MessageParser messageParser, final FontRegistry fontRegistry, final ConfigAccessor config, final ConversationColors colors) {
@@ -52,8 +52,8 @@ public class MenuConvIOFactory implements ConversationIOFactory {
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-        final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(messageParser, fontRegistry, config.getConfigurationSection("conversation.io.menu"));
-        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, settings.configLineLength());
+        final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(messageParser, config.getConfigurationSection("conversation.io.menu"));
+        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, settings.lineLength());
         return new MenuConvIO(conversation, onlineProfile, colors, settings, componentLineWrapper);
     }
 }

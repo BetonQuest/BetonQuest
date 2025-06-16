@@ -172,7 +172,7 @@ Every io has its own settings that can be configured in the `io` section.
     ```
     
     1. How many empty lines should be printed before the conversation starts.
-    2. Maximum size of a line till its wrapped.
+    2. Maximum size of a line till its wrapped in pixels. Default 320.
     3. Specify how many ticks to auto update display. Default 180.
     4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
     5. What text to prefix each new line in the NPC text that wraps.
