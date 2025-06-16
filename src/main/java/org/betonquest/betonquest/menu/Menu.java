@@ -44,7 +44,7 @@ public class Menu {
      * Item this menu is bound to or is empty if none is bound.
      */
     @Nullable
-    private final Item boundItem;
+    private final Variable<Item> boundItem;
 
     /**
      * Creates a new Menu.
@@ -57,7 +57,7 @@ public class Menu {
      * @throws QuestException if the bound command is invalid
      */
     public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeAPI questTypeAPI,
-                final MenuData menuData, @Nullable final Item boundItem) throws QuestException {
+                final MenuData menuData, @Nullable final Variable<Item> boundItem) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.menuID = menuID;
@@ -171,7 +171,7 @@ public class Menu {
      * @return the bound item, if any
      */
     @Nullable
-    public Item getBoundItem() {
+    public Variable<Item> getBoundItem() {
         return boundItem;
     }
 

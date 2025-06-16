@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -45,9 +46,9 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
     protected final VariableProcessor variableProcessor;
 
     /**
-     * The Feature API.
+     * The Item Parser instance.
      */
-    protected final FeatureAPI featureAPI;
+    protected final ItemParser itemParser;
 
     /**
      * Create a new Processor to create and store Menu Items.
@@ -69,7 +70,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
         this.messageCreator = messageCreator;
         this.questTypeAPI = questTypeAPI;
         this.variableProcessor = variableProcessor;
-        this.featureAPI = featureAPI;
+        this.itemParser = new ItemParser(featureAPI);
     }
 
     /**

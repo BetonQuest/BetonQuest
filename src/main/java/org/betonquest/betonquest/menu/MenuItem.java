@@ -39,7 +39,7 @@ public class MenuItem {
     /**
      * The betonquest quest item this item is based on.
      */
-    private final Item item;
+    private final Variable<Item> item;
 
     /**
      * The ID of this item.
@@ -47,7 +47,7 @@ public class MenuItem {
     private final MenuItemID itemId;
 
     /**
-     * HashMap with a language as key and the corresponding description as value.
+     * Name and lore for displayed item.
      */
     @Nullable
     private final Message descriptions;
@@ -79,7 +79,7 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Item item, final MenuItemID itemId,
+    public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<Item> item, final MenuItemID itemId,
                     @Nullable final Message descriptions, final ClickEvents clickEvents,
                     final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;
@@ -163,7 +163,7 @@ public class MenuItem {
      */
     public ItemStack generateItem(final Profile profile) {
         try {
-            final ItemStack item = this.item.generate(profile);
+            final ItemStack item = this.item.getValue(profile).generate(profile);
             if (descriptions != null) {
                 Component description = descriptions.asComponent(profile);
                 if (description.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
