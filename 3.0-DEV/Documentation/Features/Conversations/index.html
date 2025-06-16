@@ -4879,79 +4879,7 @@ You can change this setting globally by changing the <a href="../../Configuratio
 <p><strong>Requires <a href="https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/">ProtocolLib</a></strong></p>
 <details>
 <summary>Customizing the Menu Style</summary>
-<p>Customize the look of the menu style by adding the following lines to any of your quest packages. These
-are global settings that currently cannot be changed on a NPC level.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">menu_conv_io</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">start_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># (1)!</span>
-<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"> </span><span class="c1"># (2)!</span>
-<span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w"> </span><span class="c1"># (3)!</span>
-<span class="w">  </span><span class="nt">selectionCooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># (4)!</span>
-
-<span class="w">  </span><span class="nt">npc_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;l</span><span class="nv"> </span><span class="s">&amp;r&#39;</span><span class="w"> </span><span class="c1"># (5)!</span>
-<span class="w">  </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;l</span><span class="nv"> </span><span class="s">&amp;r&amp;f{npc_text}&#39;</span><span class="w"> </span><span class="c1"># (6)!</span>
-<span class="w">  </span><span class="nt">npc_text_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;f&#39;</span><span class="w"> </span><span class="c1"># (7)!</span>
-<span class="w">  </span><span class="nt">option_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;r&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;r&#39;</span><span class="w"> </span><span class="c1"># (8)!</span>
-<span class="w">  </span><span class="nt">option_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;r&amp;8[</span><span class="nv"> </span><span class="s">&amp;b{option_text}&amp;8</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w"> </span><span class="c1"># (9)!</span>
-<span class="w">  </span><span class="nt">option_text_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;b&#39;</span><span class="w"> </span><span class="c1"># (10)! </span>
-<span class="w">  </span><span class="nt">option_selected</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;l</span><span class="nv"> </span><span class="s">&amp;r</span><span class="nv"> </span><span class="s">&amp;r&amp;7»&amp;r</span><span class="nv"> </span><span class="s">&amp;8[</span><span class="nv"> </span><span class="s">&amp;f&amp;n{option_text}&amp;8</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w"> </span><span class="c1"># (11)!</span>
-<span class="w">  </span><span class="nt">option_selected_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;f&#39;</span><span class="w"> </span><span class="c1"># (12)!</span>
-<span class="w">  </span><span class="nt">option_selected_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;r&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;l</span><span class="nv"> </span><span class="s">&amp;r&amp;f&amp;n&#39;</span><span class="w"> </span><span class="c1"># (13)!</span>
-
-<span class="w">  </span><span class="nt">control_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump,left_click</span><span class="w"> </span><span class="c1"># (14)!</span>
-<span class="w">  </span><span class="nt">control_cancel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sneak</span><span class="w"> </span><span class="c1"># (15)! </span>
-<span class="w">  </span><span class="nt">control_move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll,move</span><span class="w"> </span><span class="c1"># (16)! </span>
-
-<span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w"> </span><span class="c1"># (17)!</span>
-<span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w"> </span><span class="c1"># (18)!</span>
-<span class="w">  </span><span class="nt">npc_name_format</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;e{npc_name}&amp;r&#39;</span><span class="w"> </span><span class="c1"># (19)!</span>
-<span class="w">  </span><span class="nt">npc_name_newline_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># (20)!</span>
-<span class="w">  </span><span class="nt">npc_text_fill_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># (21)!</span>
-</code></pre></div>
-<ol>
-<li>How many empty lines should be printed before the conversation starts.</li>
-<li>Maximum size of a line till its wrapped.</li>
-<li>Specify how many ticks to auto update display. Default 180.</li>
-<li>The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.</li>
-<li>What text to prefix each new line in the NPC text that wraps.</li>
-<li>How to write the NPC text. Replaces {1} with the npcs text.</li>
-<li>When a color reset is found, what to replace it with.</li>
-<li>What text to prefix each new line in an option that wraps.</li>
-<li>How to write an option. Replaces {1} with the option text.</li>
-<li>When a color reset is found, what to replace it with.</li>
-<li>How to write a selected option. Replaces {1} with the option text.</li>
-<li>When a color reset is found, what to replace it with.</li>
-<li>What text to prefix each new line in a selected option that wraps.</li>
-<li>Comma separated actions to select options. Can be any of <code>jump</code>, <code>left_click</code>, <code>sneak</code>.</li>
-<li>Comma separated actions to cancel the conversation. Can be any of <code>jump</code>, <code>left_click</code>, <code>sneak</code>.</li>
-<li>Comma separated actions to move the selection. Can be any of <code>move</code>, <code>scroll</code>.</li>
-<li>Type of NPC name display. Can be one of: <code>none</code>, <code>chat</code>.</li>
-<li>For npc name type of <code>chat</code>, how to align name. One of: <code>left</code>, <code>right</code>, <code>center</code>.</li>
-<li>How to format the npc name.</li>
-<li>Whether an empty line is inserted after the NPC's name if there is space leftover.</li>
-<li>Weather to fill new lined between the NPC text and the player answer options</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>Text Variable</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>{npc_text</code></td>
-<td>The text the NPC says</td>
-</tr>
-<tr>
-<td><code>{option_text}</code></td>
-<td>The option text</td>
-</tr>
-<tr>
-<td><code>{npc_name}</code></td>
-<td>The name of the NPC</td>
-</tr>
-</tbody>
-</table>
+<p>The formatting of this style can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>menu</code> config option</a>.</p>
 </details>
 <p><video controls loop src="../../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
@@ -4965,7 +4893,7 @@ The blue overlay shows the player's key presses.</p>
 <p>The colors of this style can be configured with the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>color</code> config option</a>.</p>
 <p>The formatting of this style can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>chest</code> config option</a>.</p>
 <p>You can change the option's item to something else than ender pearls by adding adding a new section
-'properties' to the 'player_options' and reference an item by its ID. This will then look like this:</p>
+<code>properties</code> to the <code>player_options</code> and reference an item by its ID. This will then look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">player_options</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">exampleOption</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">example</span><span class="nv"> </span><span class="s">option&quot;</span>
