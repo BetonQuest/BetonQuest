@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -57,9 +56,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     @Override
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
-        final String itemString = helper.getRequired("item");
-        final Variable<Number> amount = new Variable<>(variableProcessor, pack, section.getString("amount", "1"), Argument.NUMBER);
-        final Item item = new Item(featureAPI, new ItemID(pack, itemString), amount);
+        final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
+        final Variable<Item> item = new Variable<>(variableProcessor, pack, itemString, value -> itemParser.apply(pack, value));
         final Message descriptions;
         if (section.contains(CONFIG_TEXT)) {
             descriptions = messageCreator.parseFromSection(pack, section, CONFIG_TEXT);

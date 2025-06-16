@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -85,12 +84,15 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final MenuCreationHelper helper = new MenuCreationHelper(pack, section);
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
-        final Item boundItem = section.isSet("bind") ? new Item(featureAPI, new ItemID(pack, helper.getRequired("bind")),
-                new Variable<>(1)) : null;
+        final Variable<Item> boundItem = section.isSet("bind")
+                ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(pack, value))
+                : null;
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
         final Menu menu = new Menu(log, menuID, questTypeAPI, menuData, boundItem);
         if (section.isSet("command")) {
-            createBoundCommand(menu, helper.getRequired("command").trim());
+            final String string = new Variable<>(variableProcessor, pack, helper.getRequired("command"),
+                    Argument.STRING).getValue(null).trim();
+            createBoundCommand(menu, string);
         }
         return menu;
     }

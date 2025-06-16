@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.instruction.Item;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -75,8 +76,8 @@ public class MenuItemListener implements Listener {
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         for (final Menu menu : menuProcessor.getValues().values()) {
             try {
-                final Item boundItem = menu.getBoundItem();
-                if (boundItem != null && boundItem.matches(event.getItem(), profile)) {
+                final Variable<Item> boundItem = menu.getBoundItem();
+                if (boundItem != null && boundItem.getValue(profile).matches(event.getItem(), profile)) {
                     toOpen = menu;
                     break;
                 }
