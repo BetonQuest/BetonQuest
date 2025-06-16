@@ -7,10 +7,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.types.ItemParser;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
@@ -99,7 +97,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
         }
 
         /**
-         * Parse string from config file.
+         * Unresolved string from config file.
          *
          * @param path where to search
          * @return requested String
@@ -110,7 +108,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
             if (string == null) {
                 throw new QuestException(path + " is missing!");
             }
-            return new Variable<>(variableProcessor, pack, string, Argument.STRING).getValue(null);
+            return string;
         }
 
         /**

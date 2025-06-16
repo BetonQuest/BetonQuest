@@ -90,7 +90,9 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
         final Menu menu = new Menu(log, menuID, questTypeAPI, menuData, boundItem);
         if (section.isSet("command")) {
-            createBoundCommand(menu, helper.getRequired("command").trim());
+            final String string = new Variable<>(variableProcessor, pack, helper.getRequired("command"),
+                    Argument.STRING).getValue(null).trim();
+            createBoundCommand(menu, string);
         }
         return menu;
     }
