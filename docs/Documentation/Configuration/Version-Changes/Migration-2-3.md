@@ -47,6 +47,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-306 - MMOItems Item Type](#300-dev-306-mmoitems-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
 - [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
+- [3.0.0-DEV-329 - Delete `menu_conv_io` settings](#300-dev-329-delete-menu_conv_io-settings) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -634,3 +635,8 @@ items:
   diamond: "DIAMOND"
 ```
 </div>
+
+### 3.0.0-DEV-329 - Delete `menu_conv_io` settings :thunder_cloud_rain:
+
+All options configured in the `menu_conv_io` section in quest packages,
+are now defined in the '_config.yml_' under the path `conversations.io.menu`.

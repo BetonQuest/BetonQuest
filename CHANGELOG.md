@@ -77,6 +77,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Reworked the config.yml file to be more clean and structured
     - `item.backpack.cancel_button` and `item.backpack.compass_button` do not have a `DEFAULT` value anymore, instead you need to specify an item
 - LoadDataEvent is now called before and after the data is loaded with a new enum `LoadDataEvent.State` that indicates the state
+- menu conversation IO settings are now defined the config.yml file in the `conversation.io.menu` section
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
