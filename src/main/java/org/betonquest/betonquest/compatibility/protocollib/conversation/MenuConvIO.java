@@ -117,7 +117,7 @@ public class MenuConvIO extends ChatConvIO {
 
         // Sort out Controls
         try {
-            for (final CONTROL control : Arrays.stream(settings.configControlCancel().split(","))
+            for (final CONTROL control : Arrays.stream(settings.controlCancel().split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf).toList()) {
                 if (!controls.containsKey(control)) {
@@ -125,10 +125,10 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_cancel': " + settings.configControlCancel(), e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_cancel': " + settings.controlCancel(), e);
         }
         try {
-            for (final CONTROL control : Arrays.stream(settings.configControlSelect().split(","))
+            for (final CONTROL control : Arrays.stream(settings.controlSelect().split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf).toList()) {
 
@@ -137,10 +137,10 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_select': " + settings.configControlSelect(), e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_select': " + settings.controlSelect(), e);
         }
         try {
-            for (final CONTROL control : Arrays.stream(settings.configControlMove().split(","))
+            for (final CONTROL control : Arrays.stream(settings.controlMove().split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
                     .map(CONTROL::valueOf).toList()) {
                 if (!controls.containsKey(control)) {
@@ -148,7 +148,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_move': " + settings.configControlMove(), e);
+            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_move': " + settings.controlMove(), e);
         }
     }
 
@@ -274,8 +274,8 @@ public class MenuConvIO extends ChatConvIO {
             start();
         }
 
-        // Update the Display automatically if configRefreshDelay is > 0
-        if (settings.configRefreshDelay() > 0) {
+        // Update the Display automatically if refreshDelay is > 0
+        if (settings.refreshDelay() > 0) {
             displayRunnable = new BukkitRunnable() {
 
                 @Override
@@ -288,7 +288,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             };
 
-            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), settings.configRefreshDelay(), settings.configRefreshDelay());
+            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), settings.refreshDelay(), settings.refreshDelay());
         }
 
         updateDisplay();
@@ -312,7 +312,7 @@ public class MenuConvIO extends ChatConvIO {
     @Override
     public void setNpcResponse(final Component npcName, final Component response) {
         super.setNpcResponse(npcName, response);
-        formattedNpcName = settings.configNpcNameFormat()
+        formattedNpcName = settings.npcNameFormat()
                 .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
     }
 
@@ -330,19 +330,19 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // NPC Text
-        final String msgNpcText = settings.configNpcText()
+        final String msgNpcText = settings.npcText()
                 .replace("{npc_text}", LegacyComponentSerializer.legacySection().serialize(npcText))
                 .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
         final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), settings.configNpcTextReset()), settings.configLineLength(), settings.configNpcWrap()))
+                        Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), settings.npcTextReset()), settings.lineLength(), settings.npcWrap()))
                 .toList();
 
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
         // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
-        if (NPC_NAME_TYPE_CHAT.equals(settings.configNpcNameType())) {
+        if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
             linesAvailable = Math.max(1, linesAvailable - 1);
         }
 
@@ -380,21 +380,21 @@ public class MenuConvIO extends ChatConvIO {
             final List<String> optionLines;
 
             if (i == 0) {
-                final String optionText = settings.configOptionSelected()
+                final String optionText = settings.optionSelected()
                         .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.configOptionSelectedReset()),
-                        settings.configLineLength(), settings.configOptionSelectedWrap())).toList();
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.optionSelectedReset()),
+                        settings.lineLength(), settings.optionSelectedWrap())).toList();
             } else {
-                final String optionText = settings.configOptionText()
+                final String optionText = settings.optionText()
                         .replace("{option_text}", options.get(optionIndex + 1))
                         .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.configOptionTextReset()),
-                        settings.configLineLength(), settings.configOptionWrap())).toList();
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.textReset()),
+                        settings.lineLength(), settings.optionWrap())).toList();
             }
 
             if (linesAvailable < optionLines.size()) {
@@ -415,17 +415,17 @@ public class MenuConvIO extends ChatConvIO {
 
         // Build the displayOutput
         final StringBuilder displayBuilder = new StringBuilder();
-        displayBuilder.append(" \n".repeat(settings.configStartNewLines()));
+        displayBuilder.append(" \n".repeat(settings.startNewLines()));
 
         // If NPC name type is chat_top, show it
-        if (NPC_NAME_TYPE_CHAT.equals(settings.configNpcNameType())) {
-            switch (settings.configNpcNameAlign()) {
+        if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
+            switch (settings.npcNameAlign()) {
                 case "right":
-                    displayBuilder.append(" ".repeat(Math.max(0, settings.configLineLength() - LegacyComponentSerializer.legacySection().serialize(npcName).length())));
+                    displayBuilder.append(" ".repeat(Math.max(0, settings.lineLength() - LegacyComponentSerializer.legacySection().serialize(npcName).length())));
                     break;
                 case "center":
                 case "middle":
-                    displayBuilder.append(" ".repeat(Math.max(0, settings.configLineLength() / 2 - LegacyComponentSerializer.legacySection().serialize(npcName).length() / 2)));
+                    displayBuilder.append(" ".repeat(Math.max(0, settings.lineLength() / 2 - LegacyComponentSerializer.legacySection().serialize(npcName).length() / 2)));
                     break;
                 default:
                     break;
@@ -434,13 +434,13 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // We aim to try have a blank line at the top. It looks better
-        if (settings.configNpcNameNewlineSeparator() && linesAvailable > 0) {
+        if (settings.npcNameNewlineSeparator() && linesAvailable > 0) {
             displayBuilder.append(" \n");
             linesAvailable--;
         }
 
         displayBuilder.append(String.join("\n", npcLines)).append('\n');
-        if (settings.configNpcTextFillNewLines()) {
+        if (settings.npcTextFillNewLines()) {
             displayBuilder.append(" \n".repeat(linesAvailable));
         } else {
             displayBuilder.insert(0, " \n".repeat(linesAvailable));
@@ -731,7 +731,7 @@ public class MenuConvIO extends ChatConvIO {
             return true;
         } else {
             selectionCooldowns.add(player);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), settings.configSelectionCooldown());
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), settings.selectionCooldown());
         }
         return false;
     }
