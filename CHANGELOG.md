@@ -111,6 +111,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - 1.21.5 ProtocolLib support
 - `interact` objective's documentations used hookLocation instead of loc for the location
 - `randomnumber` variable using locale/eventually comma instead of dots breaking further using like math
+- `interact` objective now blocks the interaction with an item frame properly if cancel is set
 ### Security
 
 ## [2.2.1] - 2025-01-12

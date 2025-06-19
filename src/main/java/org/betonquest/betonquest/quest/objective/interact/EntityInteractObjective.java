@@ -18,7 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
@@ -307,7 +307,7 @@ public class EntityInteractObjective extends CountingObjective {
          * @param event the event that triggered this method
          */
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractAtEntityEvent event) {
+        public void onRightClick(final PlayerInteractEntityEvent event) {
             if (slot != null && slot != event.getHand()) {
                 return;
             }
