@@ -12,6 +12,8 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -69,7 +71,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             try {
                 final int amount = Integer.parseInt(type.substring(DECIMAL_LENGTH + 1));
                 if (amount > 0) {
-                    return new DecimalFormat("#." + "#".repeat(amount));
+                    return new DecimalFormat("#." + "#".repeat(amount), DecimalFormatSymbols.getInstance(Locale.ROOT));
                 }
             } catch (final NumberFormatException e) {
                 throw new QuestException("Could not parse round value", e);
