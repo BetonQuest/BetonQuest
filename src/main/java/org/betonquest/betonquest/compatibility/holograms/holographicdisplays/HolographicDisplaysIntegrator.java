@@ -12,8 +12,8 @@ import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
+import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -67,9 +67,9 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableAdapter variable = BetonQuest.getInstance().getVariableProcessor().create(pack, group);
+                final VariableID variable = new VariableID(pack, group);
                 final Instruction instruction = variable.getInstruction();
-                final String prefix = variable.allowsPlayerless() ? "{bqg:" : "{bq:";
+                final String prefix = BetonQuest.getInstance().getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
