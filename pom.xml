@@ -245,7 +245,7 @@
     <dependency>
       <groupId>de.themoep</groupId>
       <artifactId>minedown-adventure</artifactId>
-      <version>1.7.3-SNAPSHOT</version>
+      <version>1.7.4-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
