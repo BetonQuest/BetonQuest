@@ -69,7 +69,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         // NPC Text
         Objects.requireNonNull(npcText);
 
-        final List<Component> lines = componentLineWrapper.splitWidth(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")));
+        final List<Component> lines = componentLineWrapper.splitWidth(colors.getText().append(colors.getNpc().append(npcName))
+                .append(Component.text(": ")).append(npcText));
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {
