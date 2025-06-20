@@ -24,6 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EXCLUDE_PATHS: |
             docs
+          MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
 
   build-code:
     name: Build Code
@@ -43,6 +44,7 @@ jobs:
         with:
           JAVA_CACHE: 'maven'
           MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
           VERSION: ${{ env.VERSION }}
@@ -132,6 +134,7 @@ jobs:
           JAVA_REPOSITORY_USER: MAVEN_SERVER_USERNAME
           JAVA_REPOSITORY_PASS: MAVEN_SERVER_PASSWORD
           MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
