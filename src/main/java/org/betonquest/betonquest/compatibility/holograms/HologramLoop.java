@@ -103,11 +103,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         final Variable<Number> checkInterval = new Variable<>(variableProcessor, pack, checkIntervalString, Argument.NUMBER);
         final Variable<Number> maxRange = new Variable<>(variableProcessor, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
 
-        final List<String> lines = new ArrayList<>();
-        for (final String line : section.getStringList("lines")) {
-            lines.add(new Variable<>(variableProcessor, pack, line, Argument.STRING).getValue(null));
-        }
-
+        final List<String> lines = section.getStringList("lines");
         final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""), value -> new ConditionID(pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
