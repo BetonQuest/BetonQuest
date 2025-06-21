@@ -38,12 +38,12 @@ conversation:
   cmd_blacklist:
     - spawn
   color:
-    npc: dark_red
-    player: dark_green
-    text: green,italic
-    answer: gray
-    number: yellow
-    option: aqua
+    npc: '@[minimessage]<dark_red>'
+    player: '@[minimessage]<dark_green>'
+    text: '@[minimessage]<green><italic>'
+    answer: '@[minimessage]<gray>'
+    number: '@[minimessage]<yellow>'
+    option: '@[minimessage]<aqua>'
   io:
     menu:
       selection_cooldown: 10
@@ -57,13 +57,13 @@ conversation:
       control_move: scroll,move
       npc_name_align: center
       npc_name_type: chat
-      npc_wrap: '&l &r'
-      npc_text: '&l &r&f{npc_text}'
-      option_wrap: '&r&l &l &l &l &r'
-      option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
-      option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
-      option_selected_wrap: '&r&l &l &l &l &r&f&n'
-      npc_name_format: '&e{npc_name}&r'
+      npc_wrap: '@[minimessage] '
+      npc_text: '@[minimessage] <white>{npc_text}'
+      option_wrap: '@[minimessage]    '
+      option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}</aqua> ]'
+      option_selected: '@[minimessage] <gray>» <dark_gray>[ <white><underlined>{option_text}</underlined></white> ]'
+      option_selected_wrap: '@[minimessage]    <white><underlined>'
+      npc_name_format: '@[minimessage]<yellow>{npc_name}'
     chest:
       show_number: true
       show_npc_text: true
