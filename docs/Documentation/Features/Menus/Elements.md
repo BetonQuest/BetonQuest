@@ -3,15 +3,18 @@ icon: material/table-of-contents
 ---
 ## Events
 ### Menu Event: `menu`
-This event can be used to open and close menus.
+This event can be used to open, close or update menus.
 The first argument is the type of action that should be done.
-It is either `open` to open a new menu or `close` to close the currently opened menu of the player.
+It is either `open` to open a new menu, `close` to close the currently opened menu, or `update` to update the 
+content of the currently opened menu.  
 If you want to open a menu you have to add a second argument which should be the id of a menu.
 If you want to open menus from other packages just use `packageName.id` format.
 
 **Example:** `menu open quest_gui`
 
 **Example:** `menu close`
+
+**Example:** `menu update`
 
 ## Conditions
 ### Menu Condition: `menu`

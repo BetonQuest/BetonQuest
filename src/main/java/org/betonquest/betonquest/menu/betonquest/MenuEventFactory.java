@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -9,6 +11,7 @@ import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.MenuID;
+import org.betonquest.betonquest.menu.OpenedMenu;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -48,8 +51,20 @@ public class MenuEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.get(Argument.ENUM(Operation.class)).getValue(null);
-        final Variable<MenuID> menuID = operation == Operation.OPEN ? instruction.get(MenuID::new) : null;
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuEvent(rpgMenu, menuID),
+        final QuestConsumer<OnlineProfile> action = switch (operation) {
+            case OPEN -> {
+                final Variable<MenuID> menuID = instruction.get(MenuID::new);
+                yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));
+            }
+            case CLOSE -> RPGMenu::closeMenu;
+            case UPDATE -> profile -> {
+                final OpenedMenu menu = OpenedMenu.getMenu(profile);
+                if (menu != null) {
+                    menu.update();
+                }
+            };
+        };
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(new MenuEvent(action),
                 loggerFactory.create(MenuEvent.class), instruction.getPackage()), data);
     }
 
@@ -64,6 +79,10 @@ public class MenuEventFactory implements PlayerEventFactory {
         /**
          * Closes any open menu.
          */
-        CLOSE
+        CLOSE,
+        /**
+         * Updates the currently opened menu.
+         */
+        UPDATE
     }
 }
