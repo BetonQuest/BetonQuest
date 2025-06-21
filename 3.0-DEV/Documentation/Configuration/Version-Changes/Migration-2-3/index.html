@@ -3425,6 +3425,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-337-menu-conversation-io-components">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-337 - Menu Conversation IO components <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5256,6 +5279,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-337-menu-conversation-io-components">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-337 - Menu Conversation IO components <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5418,6 +5464,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-313-folder-time-unit">3.0.0-DEV-313 - Folder Time Unit</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-316-chest-conversation-io">3.0.0-DEV-316 - Chest Conversation IO</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-329-delete-menu_conv_io-settings">3.0.0-DEV-329 - Delete <code>menu_conv_io</code> settings</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
+<li><a href="#300-dev-337-menu-conversation-io-components">3.0.0-DEV-337 - Menu Conversation IO line wrapping</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -5922,6 +5969,37 @@ the display <code>item</code> is now defined in a new section called <code>prope
 <h3 id="300-dev-329-delete-menu_conv_io-settings">3.0.0-DEV-329 - Delete <code>menu_conv_io</code> settings <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-329-delete-menu_conv_io-settings" title="Permanent link">🔗</a></h3>
 <p>All options configured in the <code>menu_conv_io</code> section in quest packages,
 are now defined in the '<em>config.yml</em>' under the path <code>conversations.io.menu</code>.</p>
+<h3 id="300-dev-337-menu-conversation-io-components">3.0.0-DEV-337 - Menu Conversation IO components <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /><a class="headerlink" href="#300-dev-337-menu-conversation-io-components" title="Permanent link">🔗</a></h3>
+<p>The new used components don't need the settings <code>conversation.io.menu.option_selected_reset</code>,
+<code>conversation.io.menu.option_text_reset</code> and <code>conversation.io.menu.npc_text_reset</code> anymore and also the menu
+conversation IO text wrapping was reworked.
+As a result the <code>line_length</code> unit is now in pixels instead of characters.
+This means that the old value is multiplied by 6.
+As a result, the default value is now 320 pixels instead of 50 characters what is more precise and allows more text.
+The default value is migrated automatically, but if you have a custom value, you need to change it manually.
+The same applies to all the actual printed texts, all default values are automatically migrated,
+but if you have custom configurations, you need to change them manually to the new message parser format.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">io</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">menu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+<span class="w">      </span><span class="nt">npc_text_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;f&#39;</span>
+<span class="w">      </span><span class="nt">option_text_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;b&#39;</span>
+<span class="w">      </span><span class="nt">option_selected_reset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;f&#39;</span>
+<span class="w">      </span><span class="c1"># More settings...</span>
+<span class="w">      </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;l</span><span class="nv"> </span><span class="s">&amp;r&amp;f{npc_text}&#39;</span>
+<span class="w">      </span><span class="c1"># More settings...</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">io</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">menu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">320</span>
+<span class="w">      </span><span class="c1"># More settings...</span>
+<span class="w">      </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;white&gt;{npc_text}&#39;</span>
+<span class="w">      </span><span class="c1"># More settings...</span>
+</code></pre></div>
+</div>
 
 
 
