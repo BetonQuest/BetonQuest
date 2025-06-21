@@ -4861,13 +4861,15 @@
 
 <h2 id="events">Events<a class="headerlink" href="#events" title="Permanent link">🔗</a></h2>
 <h3 id="menu-event-menu">Menu Event: <code>menu</code><a class="headerlink" href="#menu-event-menu" title="Permanent link">🔗</a></h3>
-<p>This event can be used to open and close menus.
+<p>This event can be used to open, close or update menus.
 The first argument is the type of action that should be done.
-It is either <code>open</code> to open a new menu or <code>close</code> to close the currently opened menu of the player.
+It is either <code>open</code> to open a new menu, <code>close</code> to close the currently opened menu, or <code>update</code> to update the 
+content of the currently opened menu.<br />
 If you want to open a menu you have to add a second argument which should be the id of a menu.
 If you want to open menus from other packages just use <code>packageName.id</code> format.</p>
 <p><strong>Example:</strong> <code>menu open quest_gui</code></p>
 <p><strong>Example:</strong> <code>menu close</code></p>
+<p><strong>Example:</strong> <code>menu update</code></p>
 <h2 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">🔗</a></h2>
 <h3 id="menu-condition-menu">Menu Condition: <code>menu</code><a class="headerlink" href="#menu-condition-menu" title="Permanent link">🔗</a></h3>
 <p>This condition can be used to check if the player has currently opened any menu.
