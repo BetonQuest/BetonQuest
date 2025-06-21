@@ -666,6 +666,8 @@ conversation:
       option_text_reset: '&b'
       option_selected_reset: '&f'
       # More settings...
+      npc_text: '&l &r&f{npc_text}'
+      # More settings...
 ```
 
 ```YAML title="New config.yml"
@@ -673,6 +675,8 @@ conversation:
   io:
     menu:
       line_length: 320
+      # More settings...
+      npc_text: '@[minimessage] <white>{npc_text}'
       # More settings...
 ```
 
