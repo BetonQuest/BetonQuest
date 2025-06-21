@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -12,6 +13,7 @@ import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensM
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
@@ -82,8 +84,10 @@ public class CitizensIntegrator implements Integrator {
         final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
         final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
-        conversationIOTypes.register("chest", new CitizensInventoryConvIOFactory(loggerFactory, pluginConfig, false));
-        conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, pluginConfig, true));
+        final FontRegistry fontRegistry = plugin.getFontRegistry();
+        final ConversationColors colors = plugin.getConversationColors();
+        conversationIOTypes.register("chest", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, false));
+        conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, true));
 
         final NpcTypeRegistry npcTypes = featureRegistries.npc();
         manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, citizensMoveController), plugin);

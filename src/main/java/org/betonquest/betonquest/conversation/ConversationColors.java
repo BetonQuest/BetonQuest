@@ -1,74 +1,115 @@
 package org.betonquest.betonquest.conversation;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Locale;
+import org.betonquest.betonquest.api.message.MessageParser;
+import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Holds the colors of the conversations.
  */
-public final class ConversationColors {
+@SuppressWarnings("PMD.DataClass")
+public class ConversationColors {
     /**
-     * The empty fallback ChatColors.
+     * The message parser used to parse the colors.
      */
-    private static final ChatColor[] EMPTY = {};
+    private final MessageParser messageParser;
 
     /**
-     * Stored Conversation Colors.
+     * The config accessor used to get the colors from the config.
      */
-    private static Colors colors = new Colors(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY);
+    private final FileConfigAccessor config;
 
-    private ConversationColors() {
+    /**
+     * The color of the text in the conversation.
+     */
+    private Component text;
+
+    /**
+     * The color of the NPC name in the conversation.
+     */
+    private Component npc;
+
+    /**
+     * The color of the player name in the conversation.
+     */
+    private Component player;
+
+    /**
+     * The color of the number in the conversation.
+     */
+    private Component number;
+
+    /**
+     * The color of the answer in the conversation.
+     */
+    private Component answer;
+
+    /**
+     * The color of the option in the conversation.
+     */
+    private Component option;
+
+    /**
+     * The constructor of the ConversationColors class.
+     *
+     * @param messageParser the message parser used to parse the colors
+     * @param config        the config accessor used to get the colors from the config
+     */
+    public ConversationColors(final MessageParser messageParser, final FileConfigAccessor config) {
+        this.messageParser = messageParser;
+        this.config = config;
+        this.text = Component.empty();
+        this.npc = Component.empty();
+        this.player = Component.empty();
+        this.number = Component.empty();
+        this.answer = Component.empty();
+        this.option = Component.empty();
     }
 
     /**
-     * Loads the conversation colors.
+     * Loads all the colors from the config.
      *
-     * @param log    the custom logger used when the config contains error
-     * @param config the config to load the colors from
+     * @throws QuestException if the config is not valid
      */
-    public static void loadColors(final BetonQuestLogger log, final FileConfigAccessor config) {
-        try {
-            final ConfigurationSection section = config.getConfigurationSection("conversation.color");
-            if (section == null) {
-                log.warn("Conversation colors do not exist in the config, everything will be white!");
-                return;
-            }
-            final String[] sections = {"text", "npc", "player", "number", "answer", "option"};
-            final ChatColor[][] rawColors = new ChatColor[sections.length][];
-            for (int k = 0; k < sections.length; k++) {
-                final String colorString = section.getString(sections[k]);
-                if (colorString == null) {
-                    log.warn("Conversation color " + sections[k] + " does not exist in the config, it will be white!");
-                    continue;
-                }
-                final String[] text = colorString.split(",");
-                final ChatColor[] textColors = new ChatColor[text.length];
-                for (int i = 0; i < text.length; i++) {
-                    textColors[i] = ChatColor.valueOf(text[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
-                }
-                rawColors[k] = textColors;
-            }
-            colors = new Colors(rawColors[0], rawColors[1], rawColors[2], rawColors[3], rawColors[4], rawColors[5]);
-        } catch (final IllegalArgumentException e) {
-            colors = new Colors(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY);
-            log.warn("Could not parse conversation colors, everything will be white!", e);
+    public void load() throws QuestException {
+        text = getColor("conversation.color.text");
+        npc = getColor("conversation.color.npc");
+        player = getColor("conversation.color.player");
+        number = getColor("conversation.color.number");
+        answer = getColor("conversation.color.answer");
+        option = getColor("conversation.color.option");
+    }
+
+    private Component getColor(final String name) throws QuestException {
+        final String raw = config.getString(name);
+        if (raw == null) {
+            throw new QuestException("Conversation color '" + name + "' does not exist in the config!");
         }
+        return messageParser.parse(raw);
     }
 
-    /**
-     * Gets the conversation colors.
-     *
-     * @return the record with the stored colors
-     */
-    public static Colors getColors() {
-        return colors;
+    public Component getText() {
+        return text;
     }
 
-    public record Colors(ChatColor[] text, ChatColor[] npc, ChatColor[] player, ChatColor[] number, ChatColor[] answer,
-                         ChatColor[] option) {
+    public Component getNpc() {
+        return npc;
+    }
+
+    public Component getPlayer() {
+        return player;
+    }
+
+    public Component getNumber() {
+        return number;
+    }
+
+    public Component getAnswer() {
+        return answer;
+    }
+
+    public Component getOption() {
+        return option;
     }
 }

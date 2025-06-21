@@ -1,4 +1,72 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.11:
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.npc_wrap
+    oldValue: '&l &r'
+    newValue: '@[minimessage] '
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.npc_text
+    oldValue: '&l &r&f{npc_text}'
+    newValue: '@[minimessage] <white>{npc_text}'
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.option_wrap
+    oldValue: '&r&l &l &l &l &r'
+    newValue: '@[minimessage]    '
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.option_text
+    oldValue: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
+    newValue: '@[minimessage]    <dark_gray>[ <aqua>{option_text}</aqua> ]'
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.option_selected
+    oldValue: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
+    newValue: '@[minimessage] <gray>» <dark_gray>[ <white><underlined>{option_text}</underlined></white> ]'
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.option_selected_wrap
+    oldValue: '&r&l &l &l &l &r&f&n'
+    newValue: '@[minimessage]    <white><underlined>'
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.npc_name_format
+    oldValue: '&e{npc_name}&r'
+    newValue: '@[minimessage]<yellow>{npc_name}'
+3.0.0.10:
+  - type: VALUE_REPLACE
+    key: conversation.color.npc
+    oldValue: dark_red
+    newValue: '@[minimessage]<dark_red>'
+  - type: VALUE_REPLACE
+    key: conversation.color.player
+    oldValue: dark_green
+    newValue: '@[minimessage]<dark_green>'
+  - type: VALUE_REPLACE
+    key: conversation.color.text
+    oldValue: green,italic
+    newValue: '@[minimessage]<green><italic>'
+  - type: VALUE_REPLACE
+    key: conversation.color.answer
+    oldValue: gray
+    newValue: '@[minimessage]<gray>'
+  - type: VALUE_REPLACE
+    key: conversation.color.number
+    oldValue: yellow
+    newValue: '@[minimessage]<yellow>'
+  - type: VALUE_REPLACE
+    key: conversation.color.option
+    oldValue: aqua
+    newValue: '@[minimessage]<aqua>'
+3.0.0.9:
+  - type: REMOVE
+    key: conversation.io.menu.option_selected_reset
+  - type: REMOVE
+    key: conversation.io.menu.option_text_reset
+  - type: REMOVE
+    key: conversation.io.menu.npc_text_reset
+  - type: VALUE_REPLACE
+    key: conversation.io.menu.line_length
+    oldValue: 50
+    newValue: 320
+  - type: TYPE_TRANSFORM
+    key: conversation.io.menu.line_length
+    newType: integer
 3.0.0.8:
   - type: SET
     key: conversation.io.menu.selection_cooldown

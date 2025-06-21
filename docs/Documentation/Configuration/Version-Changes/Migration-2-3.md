@@ -48,6 +48,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-313 - Folder Time Unit](#300-dev-313-folder-time-unit) :white_sun_cloud:
 - [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
 - [3.0.0-DEV-329 - Delete `menu_conv_io` settings](#300-dev-329-delete-menu_conv_io-settings) :thunder_cloud_rain:
+- [3.0.0-DEV-337 - Menu Conversation IO line wrapping](#300-dev-337-menu-conversation-io-components) :white_sun_cloud:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -634,9 +635,49 @@ conversations:
 items:
   diamond: "DIAMOND"
 ```
+
 </div>
 
 ### 3.0.0-DEV-329 - Delete `menu_conv_io` settings :thunder_cloud_rain:
 
 All options configured in the `menu_conv_io` section in quest packages,
 are now defined in the '_config.yml_' under the path `conversations.io.menu`.
+
+### 3.0.0-DEV-337 - Menu Conversation IO components :white_sun_cloud:
+
+The new used components don't need the settings `conversation.io.menu.option_selected_reset`,
+`conversation.io.menu.option_text_reset` and `conversation.io.menu.npc_text_reset` anymore and also the menu
+conversation IO text wrapping was reworked.
+As a result the `line_length` unit is now in pixels instead of characters.
+This means that the old value is multiplied by 6.
+As a result, the default value is now 320 pixels instead of 50 characters what is more precise and allows more text.
+The default value is migrated automatically, but if you have a custom value, you need to change it manually.
+The same applies to all the actual printed texts, all default values are automatically migrated,
+but if you have custom configurations, you need to change them manually to the new message parser format.
+
+<div class="grid" markdown>
+
+```YAML title="Old config.yml"
+conversation:
+  io:
+    menu:
+      line_length: 50
+      npc_text_reset: '&f'
+      option_text_reset: '&b'
+      option_selected_reset: '&f'
+      # More settings...
+      npc_text: '&l &r&f{npc_text}'
+      # More settings...
+```
+
+```YAML title="New config.yml"
+conversation:
+  io:
+    menu:
+      line_length: 320
+      # More settings...
+      npc_text: '@[minimessage] <white>{npc_text}'
+      # More settings...
+```
+
+</div>

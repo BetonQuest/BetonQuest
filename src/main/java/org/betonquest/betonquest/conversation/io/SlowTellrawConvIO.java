@@ -1,12 +1,11 @@
 package org.betonquest.betonquest.conversation.io;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.util.LocalChatPaginator;
-import org.betonquest.betonquest.util.Utils;
-import org.bukkit.ChatColor;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -19,25 +18,25 @@ import java.util.Objects;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class SlowTellrawConvIO extends TellrawConvIO {
-    private final String npcTextColor;
-
     private final int messageDelay;
 
+    /**
+     * The component line wrapper used for the conversation.
+     */
+    private final ComponentLineWrapper componentLineWrapper;
+
     @Nullable
-    private List<String> endLines;
+    private List<Component> endLines;
 
     /**
      * Whether the player can reply to the conversation, disabled while the NPC is talking, enabled when options are displayed
      */
     private boolean canReply;
 
-    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
-        super(conv, onlineProfile);
-        final StringBuilder string = new StringBuilder();
-        for (final ChatColor color : colors.text()) {
-            string.append(color);
-        }
-        this.npcTextColor = string.toString();
+    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile,
+                             final ComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
+        super(conv, onlineProfile, colors);
+        this.componentLineWrapper = componentLineWrapper;
         int delay = BetonQuest.getInstance().getPluginConfig().getInt("conversation.io.slowtellraw.message_delay", 10);
         if (delay <= 0) {
             BetonQuest.getInstance().getLogger().warning("Invalid message delay of " + delay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
@@ -69,9 +68,9 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
         // NPC Text
         Objects.requireNonNull(npcText);
-        final String[] lines = LocalChatPaginator.wordWrap(
-                Utils.replaceReset(textFormat.replace("%quester%", LegacyComponentSerializer.legacySection().serialize(npcName))
-                        + LegacyComponentSerializer.legacySection().serialize(npcText), npcTextColor), 50);
+
+        final List<Component> lines = componentLineWrapper.splitWidth(colors.getText().append(colors.getNpc().append(npcName))
+                .append(Component.text(": ")).append(npcText));
         endLines = new ArrayList<>();
 
         new BukkitRunnable() {
@@ -80,11 +79,11 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             @SuppressWarnings("NullAway")
             @Override
             public void run() {
-                if (lineCount == lines.length) {
+                if (lineCount == lines.size()) {
                     displayText();
 
                     // Display endLines
-                    for (final String message : endLines) {
+                    for (final Component message : endLines) {
                         SlowTellrawConvIO.super.print(message);
                     }
 
@@ -94,13 +93,13 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                     this.cancel();
                     return;
                 }
-                conv.sendMessage(lines[lineCount++]);
+                conv.sendMessage(lines.get(lineCount++));
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, messageDelay);
     }
 
     @Override
-    public void print(@Nullable final String message) {
+    public void print(@Nullable final Component message) {
         if (endLines == null) {
             super.print(message);
             return;

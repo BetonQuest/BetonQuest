@@ -1,10 +1,13 @@
 package org.betonquest.betonquest;
 
 import io.papermc.lib.PaperLib;
+import net.kyori.adventure.key.Key;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
+import org.betonquest.betonquest.api.common.component.font.DefaultFont;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
@@ -248,6 +251,16 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private QuestManager questManager;
 
     /**
+     * The registry for fonts to calculate width of text.
+     */
+    private FontRegistry fontRegistry;
+
+    /**
+     * The colors for conversations.
+     */
+    private ConversationColors conversationColors;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -351,8 +364,6 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
-        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
-
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
         questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
@@ -389,7 +400,22 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 profileProvider, this)
                 .register(questTypeRegistries);
 
-        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI, config).register(featureRegistries);
+        conversationColors = new ConversationColors(messageParser, config);
+
+        final Key defaultkey = Key.key("default");
+        fontRegistry = new FontRegistry(defaultkey);
+        fontRegistry.registerFont(defaultkey, new DefaultFont());
+
+        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI, config, conversationColors, fontRegistry)
+                .register(featureRegistries);
+
+        try {
+            conversationColors.load();
+        } catch (final QuestException e) {
+            log.warn("Could not load conversation colors! " + e.getMessage(), e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         new Compatibility(this, loggerFactory.create(Compatibility.class));
 
@@ -560,7 +586,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         // stop current global locations listener
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
-        ConversationColors.loadColors(loggerFactory.create(ConversationColors.class), config);
+        try {
+            conversationColors.load();
+        } catch (final QuestException e) {
+            log.warn("Could not reload conversation colors! " + e.getMessage(), e);
+        }
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
@@ -794,5 +824,23 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
      */
     public Map<String, QuestPackage> getPackages() {
         return questManager.getPackages();
+    }
+
+    /**
+     * Get the colors used in conversations.
+     *
+     * @return the colors used in conversations
+     */
+    public ConversationColors getConversationColors() {
+        return conversationColors;
+    }
+
+    /**
+     * Get the registry for fonts to calculate width of text.
+     *
+     * @return the font registry
+     */
+    public FontRegistry getFontRegistry() {
+        return fontRegistry;
     }
 }

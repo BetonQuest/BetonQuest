@@ -10,22 +10,20 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang3.StringUtils;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicleUpdated;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
+import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationState;
-import org.betonquest.betonquest.util.LocalChatPaginator;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -56,9 +54,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
@@ -88,6 +88,11 @@ public class MenuConvIO extends ChatConvIO {
      */
     private final MenuConvIOSettings settings;
 
+    /**
+     * The component line wrapper to use for the conversation.
+     */
+    private final ComponentLineWrapper componentLineWrapper;
+
     // Actions
     protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
 
@@ -100,17 +105,19 @@ public class MenuConvIO extends ChatConvIO {
     protected BukkitRunnable displayRunnable;
 
     @Nullable
-    protected BaseComponent[] displayOutput;
+    protected Component displayOutput;
 
-    protected String formattedNpcName;
+    protected Component formattedNpcName;
 
     @Nullable
     private ArmorStand stand;
 
     @SuppressWarnings("NullAway.Init")
-    public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final MenuConvIOSettings settings) {
-        super(conv, onlineProfile);
+    public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
+                      final MenuConvIOSettings settings, final ComponentLineWrapper componentLineWrapper) {
+        super(conv, onlineProfile, colors);
         this.settings = settings;
+        this.componentLineWrapper = componentLineWrapper;
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.oldSelectedOption = new AtomicInteger();
         this.selectedOption = new AtomicInteger();
@@ -187,7 +194,7 @@ public class MenuConvIO extends ChatConvIO {
             mount.sendPacket(player);
 
             // Display Actionbar to hide the dismount message
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
+            player.sendActionBar(Component.empty());
 
             // Intercept Packets
             packetAdapter = getPacketAdapter();
@@ -312,8 +319,7 @@ public class MenuConvIO extends ChatConvIO {
     @Override
     public void setNpcResponse(final Component npcName, final Component response) {
         super.setNpcResponse(npcName, response);
-        formattedNpcName = settings.npcNameFormat()
-                .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
+        formattedNpcName = settings.npcNameFormat().resolve(new VariableReplacement("npc_name", npcName));
     }
 
     protected void showDisplay() {
@@ -330,13 +336,10 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // NPC Text
-        final String msgNpcText = settings.npcText()
-                .replace("{npc_text}", LegacyComponentSerializer.legacySection().serialize(npcText))
-                .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
+        final Component msgNpcText = settings.npcText().resolve(new VariableReplacement("npc_text", npcText),
+                new VariableReplacement("npc_name", npcName));
 
-        final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), settings.npcTextReset()), settings.lineLength(), settings.npcWrap()))
-                .toList();
+        final List<Component> npcLines = componentLineWrapper.splitWidth(msgNpcText, getPrefixComponentSupplier(settings.npcWrap()));
 
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
         // own to a minimum of 1.
@@ -353,7 +356,7 @@ public class MenuConvIO extends ChatConvIO {
 
         // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less
         // pace for all options due to npc text
-        final List<String> optionsSelected = new ArrayList<>();
+        final List<Component> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption.get();
         int currentDirection = selectedOption.get() == oldSelectedOption.get() ? 1 : selectedOption.get() - oldSelectedOption.get();
         int topOption = options.size();
@@ -377,24 +380,22 @@ public class MenuConvIO extends ChatConvIO {
                 topOption = optionIndex;
             }
 
-            final List<String> optionLines;
+            final List<Component> optionLines;
 
+            final Component optionReplacementComponent = options.get(optionIndex + 1);
+            final Component optionReplacement = optionReplacementComponent == null ? Component.empty() : optionReplacementComponent;
             if (i == 0) {
-                final String optionText = settings.optionSelected()
-                        .replace("{option_text}", options.get(optionIndex + 1))
-                        .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
+                final Component optionText = settings.optionSelected().resolve(
+                        new VariableReplacement("option_text", optionReplacement),
+                        new VariableReplacement("npc_name", npcName));
 
-                optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.optionSelectedReset()),
-                        settings.lineLength(), settings.optionSelectedWrap())).toList();
+                optionLines = componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionSelectedWrap()));
             } else {
-                final String optionText = settings.optionText()
-                        .replace("{option_text}", options.get(optionIndex + 1))
-                        .replace("{npc_name}", LegacyComponentSerializer.legacySection().serialize(npcName));
+                final Component optionText = settings.optionText().resolve(
+                        new VariableReplacement("option_text", optionReplacement),
+                        new VariableReplacement("npc_name", npcName));
 
-                optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), settings.textReset()),
-                        settings.lineLength(), settings.optionWrap())).toList();
+                optionLines = componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionWrap()));
             }
 
             if (linesAvailable < optionLines.size()) {
@@ -403,10 +404,12 @@ public class MenuConvIO extends ChatConvIO {
 
             linesAvailable -= optionLines.size();
 
+            final Component optionLine = optionLines.stream().reduce((first, second)
+                    -> first.append(Component.newline()).append(second)).orElseGet(Component::empty);
             if (currentDirection > 0) {
-                optionsSelected.add(String.join("\n", optionLines));
+                optionsSelected.add(optionLine);
             } else {
-                optionsSelected.add(0, String.join("\n", optionLines));
+                optionsSelected.add(0, optionLine);
             }
 
             currentOption = optionIndex;
@@ -414,66 +417,74 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // Build the displayOutput
-        final StringBuilder displayBuilder = new StringBuilder();
-        displayBuilder.append(" \n".repeat(settings.startNewLines()));
+        final TextComponent.Builder displayBuilder = Component.text();
+        for (int i = 0; i < settings.startNewLines(); i++) {
+            displayBuilder.append(Component.newline());
+        }
 
         // If NPC name type is chat_top, show it
         if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
             switch (settings.npcNameAlign()) {
-                case "right":
-                    displayBuilder.append(" ".repeat(Math.max(0, settings.lineLength() - LegacyComponentSerializer.legacySection().serialize(npcName).length())));
-                    break;
-                case "center":
-                case "middle":
-                    displayBuilder.append(" ".repeat(Math.max(0, settings.lineLength() / 2 - LegacyComponentSerializer.legacySection().serialize(npcName).length() / 2)));
-                    break;
-                default:
-                    break;
+                case "right" -> {
+                    displayBuilder.append(Component.text(" ".repeat(getSpaceToFillForNpcName())));
+                }
+                case "center", "middle" -> {
+                    displayBuilder.append(Component.text(" ".repeat(getSpaceToFillForNpcName() / 2)));
+                }
+                default -> {
+                }
             }
-            displayBuilder.append(formattedNpcName).append('\n');
+            displayBuilder.append(formattedNpcName).append(Component.newline());
         }
 
         // We aim to try have a blank line at the top. It looks better
         if (settings.npcNameNewlineSeparator() && linesAvailable > 0) {
-            displayBuilder.append(" \n");
+            displayBuilder.append(Component.newline());
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines)).append('\n');
+        npcLines.forEach(line -> displayBuilder.append(line).append(Component.newline()));
         if (settings.npcTextFillNewLines()) {
-            displayBuilder.append(" \n".repeat(linesAvailable));
-        } else {
-            displayBuilder.insert(0, " \n".repeat(linesAvailable));
+            for (int i = 0; i < linesAvailable; i++) {
+                displayBuilder.append(Component.newline());
+            }
         }
 
         if (!options.isEmpty()) {
             // Show up arrow if options exist above our view
+            final Component boldSpace = Component.text(" ".repeat(8)).decorate(TextDecoration.BOLD);
             if (topOption > 0) {
-                for (int i = 0; i < 8; i++) {
-                    displayBuilder.append(ChatColor.BOLD).append(' ');
-                }
-                displayBuilder.append(ChatColor.WHITE).append("↑\n");
-            } else {
-                displayBuilder.append(" \n");
+                displayBuilder.append(boldSpace).append(Component.text("↑", NamedTextColor.WHITE));
             }
+            displayBuilder.append(Component.newline());
 
             // Display Options
-            displayBuilder.append(String.join("\n", optionsSelected)).append('\n');
+            optionsSelected.forEach(line -> displayBuilder.append(line).append(Component.newline()));
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
-                for (int i = 0; i < 8; i++) {
-                    displayBuilder.append(ChatColor.BOLD).append(' ');
-                }
-                displayBuilder.append(ChatColor.WHITE).append("↓\n");
-            } else {
-                displayBuilder.append(" \n");
+                displayBuilder.append(boldSpace).append(Component.text("↓", NamedTextColor.WHITE));
             }
         }
 
-        displayOutput = TextComponent.fromLegacyText(StringUtils.stripEnd(displayBuilder.toString(), "\n"));
+        if (settings.npcTextFillNewLines()) {
+            displayOutput = displayBuilder.asComponent();
+        } else {
+            final TextComponent.Builder prefix = Component.text();
+            for (int i = 0; i < linesAvailable; i++) {
+                displayBuilder.append(Component.newline());
+            }
+            displayOutput = prefix.append(displayBuilder.asComponent()).asComponent();
+        }
 
         showDisplay();
+    }
+
+    private int getSpaceToFillForNpcName() {
+        final int npcNameWidth = componentLineWrapper.width(npcName);
+        final int spaceWidth = componentLineWrapper.width(Component.text(" "));
+        final int remainingSpace = Math.max(0, settings.lineLength() - npcNameWidth);
+        return remainingSpace / spaceWidth;
     }
 
     /**
@@ -779,6 +790,18 @@ public class MenuConvIO extends ChatConvIO {
             }
         }
         return Direction.UP;
+    }
+
+    private Supplier<Component> getPrefixComponentSupplier(final Component component) {
+        final AtomicBoolean first = new AtomicBoolean(true);
+        return () -> {
+            if (first.get()) {
+                first.set(false);
+                return Component.empty();
+            } else {
+                return component;
+            }
+        };
     }
 
     public enum ACTION {
