@@ -146,29 +146,28 @@ Every io has its own settings that can be configured in the `io` section.
     ``` YAML linenums="1"
     menu:
       start_new_lines: 10     #(1)!
-      line_length: 50         #(2)!
+      line_length: 320        #(2)!
       refresh_delay: 180      #(3)!
       selection_cooldown: 10  #(4)!
     
-      npc_wrap: '&l &r'                                           # (5)!
-      npc_text: '&l &r&f{npc_text}'                               # (6)!
-      npc_text_reset: '&f'                                        # (7)!
-      option_wrap: '&r&l &l &l &l &r'                             # (8)!
-      option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'        # (9)!
-      option_text_reset: '&b'                                     # (10)! 
-      option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'  # (11)!
-      option_selected_reset: '&f'                                 # (12)!
-      option_selected_wrap: '&r&l &l &l &l &r&f&n'                # (13)!
+      npc_wrap: '@[minimessage] '                                    #(5)!
+      npc_text: '@[minimessage] <white>{npc_text}'                   #(6)!
+      option_wrap: '@[minimessage]    '                              #(7)!
+      option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}
+        </aqua> ]'                                                   #(8)!
+      option_selected: '@[minimessage] <gray>» <dark_gray>[ <white>
+        <underlined>{option_text}</underlined></white> ]'            #(9)!
+      option_selected_wrap: '@[minimessage]    <white><underlined>'  #(10)!
+      npc_name_format: '@[minimessage]<yellow>{npc_name}'            #(1)!
     
-      control_select: jump,left_click  # (14)!
-      control_cancel: sneak            # (15)! 
-      control_move: scroll,move        # (16)! 
+      control_select: jump,left_click  # (12)!
+      control_cancel: sneak            # (13)! 
+      control_move: scroll,move        # (14)! 
     
-      npc_name_type: chat                # (17)!
-      npc_name_align: center             # (18)!
-      npc_name_format: '&e{npc_name}&r'  # (19)!
-      npc_name_newline_separator: true   # (20)!
-      npc_text_fill_new_lines: true      # (21)!
+      npc_name_type: chat                # (15)!
+      npc_name_align: center             # (16)!
+      npc_name_newline_separator: true   # (17)!
+      npc_text_fill_new_lines: true      # (18)!
     ```
     
     1. How many empty lines should be printed before the conversation starts.
@@ -177,21 +176,18 @@ Every io has its own settings that can be configured in the `io` section.
     4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
     5. What text to prefix each new line in the NPC text that wraps.
     6. How to write the NPC text. Replaces {npc_text} with the npcs text.
-    7. When a color reset is found, what to replace it with.
-    8. What text to prefix each new line in an option that wraps.
-    9. How to write an option. Replaces {option_text} with the option text.
-    10. When a color reset is found, what to replace it with.
-    11. How to write a selected option. Replaces {option_text} with the option text.
-    12. When a color reset is found, what to replace it with.
-    13. What text to prefix each new line in a selected option that wraps.
-    14. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-    15. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-    16. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-    17. Type of NPC name display. Can be one of: `none`, `chat`.
-    18. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-    19. How to format the npc name.
-    20. Whether an empty line is inserted after the NPC's name if there is space leftover.
-    21. Weather to fill new lined between the NPC text and the player answer options
+    7. What text to prefix each new line in an option that wraps.
+    8. How to write an option. Replaces {option_text} with the option text.
+    9. How to write a selected option. Replaces {option_text} with the option text.
+    10. What text to prefix each new line in a selected option that wraps.
+    11. How to format the npc name.
+    11. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
+    12. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
+    13. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
+    14. Type of NPC name display. Can be one of: `none`, `chat`.
+    15. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
+    17. Whether an empty line is inserted after the NPC's name if there is space leftover.
+    18. Weather to fill new lined between the NPC text and the player answer options
 
 * `chest`  
   Settings for the chest conversation IO.
