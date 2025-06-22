@@ -272,7 +272,8 @@ public class MenuConvIO extends ChatConvIO {
     @Override
     public void display() {
         if (npcText == null && options.isEmpty()) {
-            end();
+            end(() -> {
+            });
             return;
         }
 
@@ -509,7 +510,7 @@ public class MenuConvIO extends ChatConvIO {
      * conversation ends.
      */
     @Override
-    public void end() {
+    public void end(final Runnable callback) {
         if (state.isEnded()) {
             return;
         }
@@ -538,7 +539,7 @@ public class MenuConvIO extends ChatConvIO {
                 displayRunnable = null;
             }
 
-            super.end();
+            super.end(callback);
         } finally {
             lock.unlock();
         }

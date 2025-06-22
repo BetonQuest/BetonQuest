@@ -10,14 +10,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * A conversation input/output that displays messages using the tellraw command with a delay between messages.
+ * This allows for a more natural conversation flow, simulating a slower response time.
+ */
 public class SlowTellrawConvIO extends TellrawConvIO {
+    /**
+     * The delay in ticks between messages sent in the conversation.
+     */
     private final int messageDelay;
 
     /**
@@ -25,29 +29,35 @@ public class SlowTellrawConvIO extends TellrawConvIO {
      */
     private final ComponentLineWrapper componentLineWrapper;
 
-    @Nullable
-    private List<Component> endLines;
+    /**
+     * The list of lines to print in the conversation.
+     */
+    private final List<Component> linesToPrint = new ArrayList<>();
 
     /**
-     * Whether the player can reply to the conversation, disabled while the NPC is talking, enabled when options are displayed
+     * Whether the player can reply to the conversation, disabled while the NPC is talking, enabled when options are displayed.
      */
     private boolean canReply;
 
+    /**
+     * Creates a new SlowTellrawConvIO instance.
+     *
+     * @param conv                 the conversation this IO is part of
+     * @param onlineProfile        the online profile of the player participating in the conversation
+     * @param messageDelay         the delay in ticks between messages sent in the conversation
+     * @param componentLineWrapper the component line wrapper used for formatting conversation messages
+     * @param colors               the colors used in the conversation
+     */
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile,
-                             final ComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
+                             final int messageDelay, final ComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
         super(conv, onlineProfile, colors);
         this.componentLineWrapper = componentLineWrapper;
-        int delay = BetonQuest.getInstance().getPluginConfig().getInt("conversation.io.slowtellraw.message_delay", 10);
-        if (delay <= 0) {
-            BetonQuest.getInstance().getLogger().warning("Invalid message delay of " + delay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
-            delay = 10;
-        }
-        this.messageDelay = delay;
+        this.messageDelay = messageDelay;
         this.canReply = false;
     }
 
     /**
-     * if canReply is false, we ignore the event, otherwise handle it as normal
+     * If canReply is false, we ignore the event, otherwise handle it as normal.
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     @Override
@@ -60,52 +70,47 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     @Override
     public void display() {
-        if (npcText == null && options.isEmpty()) {
-            end();
-            return;
+        if (npcText == null) {
+            if (options.isEmpty()) {
+                end(() -> {
+                });
+                return;
+            }
+            throw new IllegalStateException("NPC text must be set before displaying options.");
         }
         canReply = false;
 
-        // NPC Text
-        Objects.requireNonNull(npcText);
-
-        final List<Component> lines = componentLineWrapper.splitWidth(colors.getText().append(colors.getNpc().append(npcName))
-                .append(Component.text(": ")).append(npcText));
-        endLines = new ArrayList<>();
+        linesToPrint.addAll(new ArrayList<>(componentLineWrapper.splitWidth(colors.getText()
+                .append(colors.getNpc().append(npcName)).append(Component.text(": ")).append(npcText))));
 
         new BukkitRunnable() {
-            private int lineCount;
-
-            @SuppressWarnings("NullAway")
             @Override
             public void run() {
-                if (lineCount == lines.size()) {
+                if (linesToPrint.isEmpty()) {
                     displayText();
-
-                    // Display endLines
-                    for (final Component message : endLines) {
-                        SlowTellrawConvIO.super.print(message);
-                    }
-
-                    endLines = null;
                     canReply = true;
-
                     this.cancel();
                     return;
                 }
-                conv.sendMessage(lines.get(lineCount++));
+                conv.sendMessage(linesToPrint.remove(0));
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, messageDelay);
     }
 
     @Override
-    public void print(@Nullable final Component message) {
-        if (endLines == null) {
-            super.print(message);
-            return;
+    public void end(final Runnable callback) {
+        if (canReply) {
+            super.end(callback);
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (canReply) {
+                        SlowTellrawConvIO.super.end(callback);
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(BetonQuest.getInstance(), 1, 1);
         }
-
-        // If endLines is defined, we add to it to be outputted after we have outputted our previous text
-        endLines.add(message);
     }
 }

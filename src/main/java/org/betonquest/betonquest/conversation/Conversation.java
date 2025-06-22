@@ -415,37 +415,39 @@ public class Conversation implements Listener {
             state = ConversationState.ENDED;
 
             log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + FOR + onlineProfile + "'.");
-            inOut.end();
-            // fire final events
-            try {
-                for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
-                    BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
-                }
-            } catch (final QuestException e) {
-                log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
-            }
-            endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+            inOut.end(() -> {
 
-            // End interceptor after a second
-            if (interceptor != null) {
+                // fire final events
+                try {
+                    for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
+                        BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                    }
+                } catch (final QuestException e) {
+                    log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
+                }
+                endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+
+                // End interceptor after a second
+                if (interceptor != null) {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            interceptor.end();
+                        }
+                    }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
+                }
+
+                // delete conversation
+                ACTIVE_CONVERSATIONS.remove(onlineProfile);
+                HandlerList.unregisterAll(this);
+
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        interceptor.end();
+                        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
                     }
-                }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
-            }
-
-            // delete conversation
-            ACTIVE_CONVERSATIONS.remove(onlineProfile);
-            HandlerList.unregisterAll(this);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
-                }
-            }.runTask(BetonQuest.getInstance());
+                }.runTask(BetonQuest.getInstance());
+            });
         } finally {
             lock.writeLock().unlock();
         }
@@ -587,7 +589,8 @@ public class Conversation implements Listener {
                 HandlerList.unregisterAll(this);
                 return;
             }
-            inOut.end();
+            inOut.end(() -> {
+            });
 
             // save the conversation to the database
             final PlayerConversationState state = new PlayerConversationState(identifier, nextNPCOption.name(), center);
