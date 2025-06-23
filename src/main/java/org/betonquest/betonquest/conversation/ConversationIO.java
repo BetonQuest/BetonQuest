@@ -3,10 +3,9 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * Used to display messages in conversation
+ * Used to display messages in conversation.
  */
 public interface ConversationIO {
 
@@ -43,15 +42,8 @@ public interface ConversationIO {
     /**
      * Ends the work of this conversation IO. Should be called when the
      * conversation ends.
-     */
-    void end();
-
-    /**
-     * Send message through ConversationIO
      *
-     * @param message The message to send
+     * @param callback the callback to execute after the conversation has actually ended
      */
-    default void print(@Nullable final Component message) {
-        // Empty
-    }
+    void end(Runnable callback);
 }

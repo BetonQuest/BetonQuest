@@ -110,15 +110,19 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         final String message = event.getMessage().trim();
-        for (final Map.Entry<Integer, Component> entry : options.entrySet()) {
-            final int index = entry.getKey();
-            if (message.equals(Integer.toString(index))) {
+        try {
+            final int answerIndex = Integer.parseInt(message);
+            final Component answer = options.get(answerIndex);
+            if (answer != null) {
                 conv.sendMessage(colors.getAnswer().append(colors.getPlayer().append(Component.text(onlineProfile.getPlayer().getName())))
-                        .append(Component.text(": ")).append(entry.getValue()));
-                conv.passPlayerAnswer(index);
+                        .append(Component.text(": ")).append(answer));
+                conv.passPlayerAnswer(answerIndex);
                 event.setCancelled(true);
                 return;
             }
+            log.debug("Invalid answer from player: " + message);
+        } catch (final NumberFormatException e) {
+            log.debug("Invalid answer from player: " + message, e);
         }
         new BukkitRunnable() {
             @Override
@@ -143,7 +147,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     @Override
     public void display() {
         if (npcText == null && options.isEmpty()) {
-            end();
+            end(() -> {
+            });
             return;
         }
         Objects.requireNonNull(npcText);
@@ -159,14 +164,8 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     }
 
     @Override
-    public void end() {
+    public void end(final Runnable callback) {
         HandlerList.unregisterAll(this);
-    }
-
-    @Override
-    public void print(@Nullable final Component message) {
-        if (message != null && !Component.empty().equals(message)) {
-            conv.sendMessage(message);
-        }
+        callback.run();
     }
 }

@@ -348,10 +348,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @Override
-    public void end() {
+    public void end(final Runnable callback) {
         allowListenerUnregister = true;
         if (mustBeClosed()) {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> profile.getPlayer().closeInventory());
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                profile.getPlayer().closeInventory();
+                callback.run();
+            });
         }
     }
 
