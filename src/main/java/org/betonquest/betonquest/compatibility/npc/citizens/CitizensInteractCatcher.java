@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
@@ -16,6 +17,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 /**
  * Catches Citizens NPC interactions and adapts them into the BetonQuest event.
@@ -40,6 +42,9 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
 
     private void interactLogic(final NPCClickEvent event, final Interaction interaction) {
         final NPC npc = event.getNPC();
+        if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
+            return;
+        }
         if (super.interactLogic(event.getClicker(), new CitizensAdapter(npc), interaction,
                 citizensMoveController.blocksTalking(npc), event.isAsynchronous())) {
             event.setCancelled(true);
@@ -81,7 +86,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      *
      * @param event The event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCSpawn(final NPCSpawnEvent event) {
         updateHologram(event.getNPC());
     }
@@ -91,7 +96,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      *
      * @param event The event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDespawn(final NPCDespawnEvent event) {
         updateHologram(event.getNPC());
     }
@@ -101,12 +106,14 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      *
      * @param event The event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCTeleport(final NPCTeleportEvent event) {
         updateHologram(event.getNPC());
     }
 
     private void updateHologram(final NPC npc) {
-        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
+        if (npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
+            Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
+        }
     }
 }
