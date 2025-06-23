@@ -24,7 +24,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
     /**
      * The ID of the block to be broken.
      */
-    private final String desiredBlockId;
+    private final Variable<String> desiredBlockId;
 
     /**
      * Constructor for the MMOCoreBreakCustomBlockObjective.
@@ -34,7 +34,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
      * @param desiredBlockId the ID of the block to be broken
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final Variable<Number> targetAmount, final String desiredBlockId) throws QuestException {
+    public MMOCoreBreakCustomBlockObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<String> desiredBlockId) throws QuestException {
         super(instruction, targetAmount, "blocks_to_break");
         this.desiredBlockId = desiredBlockId;
     }
@@ -49,10 +49,12 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
-            if (desiredBlockId.equals(blockId)) {
-                getCountingData(onlineProfile).progress();
-                completeIfDoneOrNotify(onlineProfile);
-            }
+            qeHandler.handle(() -> {
+                if (desiredBlockId.getValue(onlineProfile).equals(blockId)) {
+                    getCountingData(onlineProfile).progress();
+                    completeIfDoneOrNotify(onlineProfile);
+                }
+            });
         }
     }
 

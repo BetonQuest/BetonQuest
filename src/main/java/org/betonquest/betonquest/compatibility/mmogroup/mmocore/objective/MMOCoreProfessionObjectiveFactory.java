@@ -20,8 +20,7 @@ public class MMOCoreProfessionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String profession = instruction.next();
-        final String professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
+        final Variable<String> professionName = instruction.get(Argument.STRING);
         final Variable<Number> targetLevel = instruction.get(Argument.NUMBER);
         return new MMOCoreProfessionObjective(instruction, professionName, targetLevel);
     }

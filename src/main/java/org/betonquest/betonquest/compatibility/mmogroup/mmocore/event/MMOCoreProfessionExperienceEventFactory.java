@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 
-import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -32,14 +32,7 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String professionName = instruction.next();
-        final Profession profession;
-        if (MMOCore.plugin.professionManager.has(professionName)) {
-            profession = MMOCore.plugin.professionManager.get(professionName);
-        } else {
-            throw new QuestException("The profession could not be found!");
-        }
-
+        final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean isLevel = instruction.hasArgument("level");
         return new PrimaryServerThreadEvent(new MMOCoreProfessionExperienceEvent(profession, amount, isLevel), data);

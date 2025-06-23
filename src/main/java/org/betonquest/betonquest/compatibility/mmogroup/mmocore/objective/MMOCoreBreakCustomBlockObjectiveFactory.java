@@ -19,7 +19,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String desiredBlockId = instruction.getValue("block");
+        final Variable<String> desiredBlockId = instruction.getValue("block", Argument.STRING);
         if (desiredBlockId == null) {
             throw new QuestException("Missing required argument: block");
         }
