@@ -55,10 +55,10 @@ public class Variable<T> {
                     final VariableResolver<T> resolver) throws QuestException {
         final Map<String, VariableAdapter> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
-            final T resolved = resolver.apply(input);
+            final T resolved = resolver.apply(replaceEscapedPercent(input));
             value = profile -> resolver.clone(resolved);
         } else {
-            value = profile -> resolver.apply(getString(input, variables, profile));
+            value = profile -> resolver.apply(replaceEscapedPercent(getString(input, variables, profile)));
         }
     }
 
@@ -69,8 +69,8 @@ public class Variable<T> {
         final Map<String, VariableAdapter> variables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final VariableAdapter variable1 = variableProcessor.create(pack, replaceEscapedPercent(variable));
-                variables.put(variable, variable1);
+                final VariableAdapter variableAdapter = variableProcessor.create(pack, replaceEscapedPercent(variable));
+                variables.put(variable, variableAdapter);
             } catch (final QuestException exception) {
                 throw new QuestException("Could not create variable '" + variable + "': "
                         + exception.getMessage(), exception);
