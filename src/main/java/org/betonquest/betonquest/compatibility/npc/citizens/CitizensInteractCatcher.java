@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
@@ -9,44 +8,55 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.NPCTeleportEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
+import java.util.function.Predicate;
+
 /**
  * Catches Citizens NPC interactions and adapts them into the BetonQuest event.
  */
 public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     /**
+     * Source Registry of NPCs to consider.
+     */
+    private final NPCRegistry registry;
+
+    /**
      * Move Controller to check if the NPC blocks conversations while moving.
      */
-    private final CitizensMoveController citizensMoveController;
+    private final Predicate<NPC> cancelPredicate;
 
     /**
      * Initializes the catcher for Citizens.
      *
-     * @param profileProvider        the profile provider instance
-     * @param npcTypeRegistry        the registry to identify the clicked Npc
-     * @param citizensMoveController the move controller to check if the NPC currently blocks conversations
+     * @param profileProvider the profile provider instance
+     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param registry        the registry of NPCs to notice interactions
+     * @param cancelPredicate the move predicate to check if the NPC currently blocks conversations
+     *                        if the predicate test yields 'true' the adapted event will be fired cancelled
      */
-    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry, final CitizensMoveController citizensMoveController) {
+    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry,
+                                   final NPCRegistry registry, final Predicate<NPC> cancelPredicate) {
         super(profileProvider, npcTypeRegistry);
-        this.citizensMoveController = citizensMoveController;
+        this.registry = registry;
+        this.cancelPredicate = cancelPredicate;
     }
 
     private void interactLogic(final NPCClickEvent event, final Interaction interaction) {
         final NPC npc = event.getNPC();
-        if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
+        if (!npc.getOwningRegistry().equals(registry)) {
             return;
         }
         if (super.interactLogic(event.getClicker(), new CitizensAdapter(npc), interaction,
-                citizensMoveController.blocksTalking(npc), event.isAsynchronous())) {
+                cancelPredicate.test(npc), event.isAsynchronous())) {
             event.setCancelled(true);
         }
     }
@@ -112,7 +122,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     }
 
     private void updateHologram(final NPC npc) {
-        if (npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
+        if (npc.getOwningRegistry().equals(registry)) {
             Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
         }
     }

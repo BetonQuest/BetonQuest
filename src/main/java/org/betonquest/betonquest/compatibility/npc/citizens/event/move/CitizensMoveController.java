@@ -24,11 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Controls a Citizens-NPC movement.
  */
-public class CitizensMoveController implements Listener {
+public class CitizensMoveController implements Listener, Predicate<NPC> {
     /**
      * Citizens NPC ID and their active move instance.
      */
@@ -156,6 +157,11 @@ public class CitizensMoveController implements Listener {
         if (movingNpcs.containsKey(npcId)) {
             movingNpcs.get(npcId).onContinue(event);
         }
+    }
+
+    @Override
+    public boolean test(final NPC npc) {
+        return blocksTalking(npc);
     }
 
     /**

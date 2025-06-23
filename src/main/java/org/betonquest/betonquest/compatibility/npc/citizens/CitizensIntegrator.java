@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
+import net.citizensnpcs.api.CitizensAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -90,7 +91,8 @@ public class CitizensIntegrator implements Integrator {
         conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, true));
 
         final NpcTypeRegistry npcTypes = featureRegistries.npc();
-        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, citizensMoveController), plugin);
+        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, CitizensAPI.getNPCRegistry(),
+                citizensMoveController), plugin);
         npcTypes.register("citizens", new CitizensNpcFactory());
         npcTypes.registerIdentifier(new CitizensReverseIdentifier());
     }
