@@ -12,10 +12,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MMOCoreClassCondition implements PlayerCondition {
     /**
+     * If the current class should be checked instead a specific one.
+     */
+    private static final String CURRENT_CLASS = "*";
+
+    /**
      * Class to check.
      */
-    @Nullable
-    private final String targetClassName;
+    private final Variable<String> targetClassName;
 
     /**
      * If the actual must be equal to the target level.
@@ -32,11 +36,11 @@ public class MMOCoreClassCondition implements PlayerCondition {
      * Create a new class condition.
      * The class needs to be the active.
      *
-     * @param className  the name of the required class to check or null if to check current class
+     * @param className  the name of the required class to check or '*' if to check current class
      * @param classLevel the required level
      * @param equal      whether the actual must be equal to the target level
      */
-    public MMOCoreClassCondition(@Nullable final String className, @Nullable final Variable<Number> classLevel, final boolean equal) {
+    public MMOCoreClassCondition(final Variable<String> className, @Nullable final Variable<Number> classLevel, final boolean equal) {
         this.targetClassName = className;
         this.targetClassLevel = classLevel;
         this.mustBeEqual = equal;
@@ -49,7 +53,9 @@ public class MMOCoreClassCondition implements PlayerCondition {
         final String actualClassName = data.getProfess().getId();
         final int actualClassLevel = data.getLevel();
 
-        if (actualClassName.equalsIgnoreCase(targetClassName) || targetClassName == null && !"HUMAN".equalsIgnoreCase(actualClassName)) {
+        final String targetClassName = this.targetClassName.getValue(profile);
+        if (actualClassName.equalsIgnoreCase(targetClassName)
+                || CURRENT_CLASS.equals(targetClassName) && !"HUMAN".equalsIgnoreCase(actualClassName)) {
             if (targetClassLevel == null) {
                 return true;
             }

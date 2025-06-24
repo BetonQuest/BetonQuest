@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -22,7 +23,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      * The name of the class that the player needs to change to.
      */
     @Nullable
-    private final String targetClassName;
+    private final Variable<String> targetClassName;
 
     /**
      * Constructor for the MMOCoreChangeClassObjective.
@@ -31,7 +32,7 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
      * @param targetClassName the name of the class to be changed to
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final String targetClassName) throws QuestException {
+    public MMOCoreChangeClassObjective(final Instruction instruction, @Nullable final Variable<String> targetClassName) throws QuestException {
         super(instruction);
         this.targetClassName = targetClassName;
     }
@@ -53,9 +54,11 @@ public class MMOCoreChangeClassObjective extends Objective implements Listener {
             return;
         }
 
-        if (targetClassName.equalsIgnoreCase(event.getNewClass().getName())) {
-            completeObjective(onlineProfile);
-        }
+        qeHandler.handle(() -> {
+            if (targetClassName.getValue(onlineProfile).equalsIgnoreCase(event.getNewClass().getName())) {
+                completeObjective(onlineProfile);
+            }
+        });
     }
 
     @Override

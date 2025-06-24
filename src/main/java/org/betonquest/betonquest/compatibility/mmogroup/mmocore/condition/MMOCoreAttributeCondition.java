@@ -15,7 +15,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     /**
      * Attribute to check.
      */
-    private final PlayerAttribute attribute;
+    private final Variable<PlayerAttribute> attribute;
 
     /**
      * If the actual must be equal to the target level.
@@ -34,7 +34,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the actual must be equal to the target level
      */
-    public MMOCoreAttributeCondition(final PlayerAttribute attribute, final Variable<Number> targetLevel, final boolean equal) {
+    public MMOCoreAttributeCondition(final Variable<PlayerAttribute> attribute, final Variable<Number> targetLevel, final boolean equal) {
         this.attribute = attribute;
         this.targetLevelVar = targetLevel;
         this.mustBeEqual = equal;
@@ -43,7 +43,7 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
     @Override
     public boolean check(final Profile profile) throws QuestException {
         final int targetLevel = targetLevelVar.getValue(profile).intValue();
-        final int actualLevel = PlayerData.get(profile.getPlayerUUID()).getAttributes().getAttribute(attribute);
+        final int actualLevel = PlayerData.get(profile.getPlayerUUID()).getAttributes().getAttribute(attribute.getValue(profile));
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
