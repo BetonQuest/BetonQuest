@@ -145,49 +145,54 @@ Every io has its own settings that can be configured in the `io` section.
   Settings for the menu conversation IO.
     ``` YAML linenums="1"
     menu:
-      start_new_lines: 10     #(1)!
-      line_length: 320        #(2)!
-      refresh_delay: 180      #(3)!
+      line_length: 320        #(1)!
+      refresh_delay: 180      #(2)!
+      start_new_lines: 10     #(3)!
       selection_cooldown: 10  #(4)!
+  
+      npc_name_type: chat                # (5)!
+      npc_name_align: center             # (6)!
+      npc_text_fill_new_lines: true      # (7)!
+      npc_name_newline_separator: true   # (8)!
+  
+      control_select: jump,left_click  # (9)!
+      control_cancel: sneak            # (10)! 
+      control_move: scroll,move        # (11)!  
     
-      npc_wrap: '@[minimessage] '                                    #(5)!
-      npc_text: '@[minimessage] <white>{npc_text}'                   #(6)!
-      option_wrap: '@[minimessage]    '                              #(7)!
+      npc_name_format: '@[minimessage]<yellow>{npc_name}'            #(12)!
+      npc_text: '@[minimessage] <white>{npc_text}'                   #(13)!
+      npc_wrap: '@[minimessage] '                                    #(14)!
       option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}
-        </aqua> ]'                                                   #(8)!
+        </aqua> ]'                                                   #(15)!
+      option_wrap: '@[minimessage]    '                              #(16)!
       option_selected: '@[minimessage] <gray>» <dark_gray>[ <white>
-        <underlined>{option_text}</underlined></white> ]'            #(9)!
-      option_selected_wrap: '@[minimessage]    <white><underlined>'  #(10)!
-      npc_name_format: '@[minimessage]<yellow>{npc_name}'            #(1)!
-    
-      control_select: jump,left_click  # (12)!
-      control_cancel: sneak            # (13)! 
-      control_move: scroll,move        # (14)! 
-    
-      npc_name_type: chat                # (15)!
-      npc_name_align: center             # (16)!
-      npc_name_newline_separator: true   # (17)!
-      npc_text_fill_new_lines: true      # (18)!
+        <underlined>{option_text}</underlined></white> ]'            #(17)!
+      option_selected_wrap: '@[minimessage]    <white><underlined>'  #(18)!
+      scroll_up: '@[minimessage]<white>        ↑</white>'            #(19)!
+      scroll_down: '@[minimessage]<white>        ↓</white>'          #(20)!
     ```
     
-    1. How many empty lines should be printed before the conversation starts.
-    2. Maximum size of a line till its wrapped in pixels. Default 320.
-    3. Specify how many ticks to auto update display. Default 180.
+    1. Maximum size of a line till its wrapped in pixels. Default 320.
+    2. Specify how many ticks to auto update display. Default 180.
+    3. How many empty lines should be printed before the conversation starts.
     4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
-    5. What text to prefix each new line in the NPC text that wraps.
-    6. How to write the NPC text. Replaces {npc_text} with the npcs text.
-    7. What text to prefix each new line in an option that wraps.
-    8. How to write an option. Replaces {option_text} with the option text.
-    9. How to write a selected option. Replaces {option_text} with the option text.
-    10. What text to prefix each new line in a selected option that wraps.
-    11. How to format the npc name.
-    11. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-    12. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-    13. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-    14. Type of NPC name display. Can be one of: `none`, `chat`.
-    15. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-    17. Whether an empty line is inserted after the NPC's name if there is space leftover.
-    18. Weather to fill new lined between the NPC text and the player answer options
+    5. Type of NPC name display. Can be one of: `none`, `chat`.
+    6. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
+    7. Weather to fill new lined between the NPC text and the player answer options
+    8. Whether an empty line is inserted after the NPC's name if there is space leftover.
+    9. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
+    10. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
+    11. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
+    12. How to format the npc name.
+    13. How to write the NPC text. Replaces {npc_text} with the npcs text.
+    14. What text to prefix each new line in the NPC text that wraps.
+    15. How to write an option. Replaces {option_text} with the option text.
+    16. What text to prefix each new line in an option that wraps.
+    17. How to write a selected option. Replaces {option_text} with the option text.
+    18. What text to prefix each new line in a selected option that wraps.
+    19. The arrow format to scroll up in the menu.
+    20. The arrow format to scroll down in the menu.
+  
 
 * `chest`  
   Settings for the chest conversation IO.

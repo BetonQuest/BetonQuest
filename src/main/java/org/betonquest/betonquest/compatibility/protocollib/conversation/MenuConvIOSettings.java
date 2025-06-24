@@ -14,13 +14,14 @@ public record MenuConvIOSettings(int selectionCooldown, int refreshDelay, int li
                                  String controlCancel, String controlMove, String npcNameAlign, String npcNameType,
                                  Component npcWrap, VariableComponent npcText, Component optionWrap,
                                  VariableComponent optionText, VariableComponent optionSelected,
-                                 Component optionSelectedWrap, VariableComponent npcNameFormat) {
+                                 Component optionSelectedWrap, VariableComponent npcNameFormat,
+                                 Component scrollUp, Component scrollDown) {
 
     /**
      * Creates a new instance of MenuConvIOSettings from a configuration section.
      *
      * @param messageParser the message parser to use to parse components
-     * @param config the configuration section to read settings from
+     * @param config        the configuration section to read settings from
      * @return a new instance of MenuConvIOSettings
      * @throws QuestException if the message parser could not parse a message
      */
@@ -37,13 +38,15 @@ public record MenuConvIOSettings(int selectionCooldown, int refreshDelay, int li
         final String npcNameAlign = config.getString("npc_name_align", "");
         final String npcNameType = config.getString("npc_name_type", "");
 
-        final String npcWrap = config.getString("npc_wrap", "").replace('&', '§');
-        final String npcText = config.getString("npc_text", "").replace('&', '§');
-        final String optionWrap = config.getString("option_wrap", "").replace('&', '§');
-        final String optionText = config.getString("option_text", "").replace('&', '§');
-        final String optionSelected = config.getString("option_selected", "").replace('&', '§');
-        final String optionSelectedWrap = config.getString("option_selected_wrap", "").replace('&', '§');
-        final String npcNameFormat = config.getString("npc_name_format", "").replace('&', '§');
+        final String npcWrap = config.getString("npc_wrap", "");
+        final String npcText = config.getString("npc_text", "");
+        final String optionWrap = config.getString("option_wrap", "");
+        final String optionText = config.getString("option_text", "");
+        final String optionSelected = config.getString("option_selected", "");
+        final String optionSelectedWrap = config.getString("option_selected_wrap", "");
+        final String npcNameFormat = config.getString("npc_name_format", "");
+        final String scrollUp = config.getString("scroll_up", "");
+        final String scrollDown = config.getString("scroll_down", "");
 
         return new MenuConvIOSettings(selectionCooldown, refreshDelay, lineLength, startNewLines, npcNameNewlineSeparator,
                 npcTextFillNewLines, controlSelect, controlCancel, controlMove, npcNameAlign, npcNameType,
@@ -53,6 +56,8 @@ public record MenuConvIOSettings(int selectionCooldown, int refreshDelay, int li
                 new VariableComponent(messageParser.parse(optionText)),
                 new VariableComponent(messageParser.parse(optionSelected)),
                 messageParser.parse(optionSelectedWrap),
-                new VariableComponent(messageParser.parse(npcNameFormat)));
+                new VariableComponent(messageParser.parse(npcNameFormat)),
+                messageParser.parse(scrollUp),
+                messageParser.parse(scrollDown));
     }
 }
