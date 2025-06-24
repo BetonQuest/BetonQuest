@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -29,12 +30,12 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Integrator for Citizens.
  */
-@SuppressWarnings("NullAway.Init")
 public class CitizensIntegrator implements Integrator {
 
     /**
      * Handles NPC movement of the {@link CitizensMoveEvent}.
      */
+    @SuppressWarnings("NullAway.Init")
     private static CitizensMoveController citizensMoveController;
 
     /**
@@ -61,7 +62,8 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void hook() {
         final Server server = plugin.getServer();
-        final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener();
+        final NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
+        final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(npcRegistry);
         server.getPluginManager().registerEvents(citizensWalkingListener, plugin);
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
@@ -69,7 +71,7 @@ public class CitizensIntegrator implements Integrator {
                 plugin.getQuestTypeAPI(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory());
+        questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(npcRegistry));
 
         final BukkitScheduler scheduler = server.getScheduler();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);
@@ -91,10 +93,10 @@ public class CitizensIntegrator implements Integrator {
         conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, true));
 
         final NpcTypeRegistry npcTypes = featureRegistries.npc();
-        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, CitizensAPI.getNPCRegistry(),
+        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, npcRegistry,
                 citizensMoveController), plugin);
-        npcTypes.register("citizens", new CitizensNpcFactory());
-        npcTypes.registerIdentifier(new CitizensReverseIdentifier());
+        npcTypes.register("citizens", new CitizensNpcFactory(npcRegistry));
+        npcTypes.registerIdentifier(new CitizensReverseIdentifier(npcRegistry));
     }
 
     @Override
