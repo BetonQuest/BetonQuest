@@ -70,7 +70,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     @Override
     public void display() {
-        if (npcText == null) {
+        if (Component.empty().equals(npcText)) {
             if (options.isEmpty()) {
                 end(() -> {
                 });

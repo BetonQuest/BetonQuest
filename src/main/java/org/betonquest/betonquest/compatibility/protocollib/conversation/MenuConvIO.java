@@ -11,10 +11,9 @@ import com.comphenix.protocol.events.PacketEvent;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -61,7 +60,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.AvoidDuplicateLiterals", "PMD.CouplingBetweenObjects"})
+        "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
      * The type of NPC name to display in the conversation.
@@ -271,7 +270,7 @@ public class MenuConvIO extends ChatConvIO {
      */
     @Override
     public void display() {
-        if (npcText == null && options.isEmpty()) {
+        if (Component.empty().equals(npcText) && options.isEmpty()) {
             end(() -> {
             });
             return;
@@ -331,32 +330,22 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected void updateDisplay() {
-        if (npcText == null) {
+        if (Component.empty().equals(npcText)) {
             displayOutput = null;
             return;
         }
 
-        // NPC Text
-        final Component msgNpcText = settings.npcText().resolve(new VariableReplacement("npc_text", npcText),
-                new VariableReplacement("npc_name", npcName));
+        final List<Component> npcLines = getNpcLines();
 
-        final List<Component> npcLines = componentLineWrapper.splitWidth(msgNpcText, getPrefixComponentSupplier(settings.npcWrap()));
-
-        // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
-        // own to a minimum of 1.
         int linesAvailable = Math.max(1, 10 - npcLines.size());
 
         if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
             linesAvailable = Math.max(1, linesAvailable - 1);
         }
-
-        // Add space for the up/down arrows
         if (!options.isEmpty()) {
             linesAvailable = Math.max(1, linesAvailable - 2);
         }
 
-        // Displaying options is tricky. We need to deal with if the selection has moved, multi-line options and less
-        // pace for all options due to npc text
         final List<Component> optionsSelected = new ArrayList<>();
         int currentOption = selectedOption.get();
         int currentDirection = selectedOption.get() == oldSelectedOption.get() ? 1 : selectedOption.get() - oldSelectedOption.get();
@@ -384,20 +373,7 @@ public class MenuConvIO extends ChatConvIO {
             final List<Component> optionLines;
 
             final Component optionReplacementComponent = options.get(optionIndex + 1);
-            final Component optionReplacement = optionReplacementComponent == null ? Component.empty() : optionReplacementComponent;
-            if (i == 0) {
-                final Component optionText = settings.optionSelected().resolve(
-                        new VariableReplacement("option_text", optionReplacement),
-                        new VariableReplacement("npc_name", npcName));
-
-                optionLines = componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionSelectedWrap()));
-            } else {
-                final Component optionText = settings.optionText().resolve(
-                        new VariableReplacement("option_text", optionReplacement),
-                        new VariableReplacement("npc_name", npcName));
-
-                optionLines = componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionWrap()));
-            }
+            optionLines = getOptionLines(i == 0 ? settings.optionSelected() : settings.optionText(), optionReplacementComponent);
 
             if (linesAvailable < optionLines.size()) {
                 break;
@@ -417,28 +393,15 @@ public class MenuConvIO extends ChatConvIO {
             currentDirection = -currentDirection;
         }
 
-        // Build the displayOutput
         final TextComponent.Builder displayBuilder = Component.text();
         for (int i = 0; i < settings.startNewLines(); i++) {
             displayBuilder.append(Component.newline());
         }
 
-        // If NPC name type is chat_top, show it
         if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
-            switch (settings.npcNameAlign()) {
-                case "right" -> {
-                    displayBuilder.append(Component.text(" ".repeat(getSpaceToFillForNpcName())));
-                }
-                case "center", "middle" -> {
-                    displayBuilder.append(Component.text(" ".repeat(getSpaceToFillForNpcName() / 2)));
-                }
-                default -> {
-                }
-            }
-            displayBuilder.append(formattedNpcName).append(Component.newline());
+            displayBuilder.append(getFormattedNpcName().append(Component.newline()));
         }
 
-        // We aim to try have a blank line at the top. It looks better
         if (settings.npcNameNewlineSeparator() && linesAvailable > 0) {
             displayBuilder.append(Component.newline());
             linesAvailable--;
@@ -452,19 +415,15 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         if (!options.isEmpty()) {
-            // Show up arrow if options exist above our view
-            final Component boldSpace = Component.text(" ".repeat(8)).decorate(TextDecoration.BOLD);
             if (topOption > 0) {
-                displayBuilder.append(boldSpace).append(Component.text("↑", NamedTextColor.WHITE));
+                displayBuilder.append(settings.scrollUp());
             }
             displayBuilder.append(Component.newline());
 
-            // Display Options
             optionsSelected.forEach(line -> displayBuilder.append(line).append(Component.newline()));
 
-            // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
-                displayBuilder.append(boldSpace).append(Component.text("↓", NamedTextColor.WHITE));
+                displayBuilder.append(settings.scrollDown());
             }
         }
 
@@ -479,6 +438,32 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         showDisplay();
+    }
+
+    private Component getFormattedNpcName() {
+        return switch (settings.npcNameAlign()) {
+            case "right" -> Component.text(" ".repeat(getSpaceToFillForNpcName())).append(formattedNpcName);
+            case "center", "middle" ->
+                    Component.text(" ".repeat(getSpaceToFillForNpcName() / 2)).append(formattedNpcName);
+            default -> formattedNpcName;
+        };
+    }
+
+    private List<Component> getNpcLines() {
+        final VariableReplacement replacementNpcText = new VariableReplacement("npc_text", npcText);
+        final VariableReplacement replacementNpcName = new VariableReplacement("npc_name", npcName);
+        final Component resolvedNpcText = settings.npcText().resolve(replacementNpcText, replacementNpcName);
+
+        return componentLineWrapper.splitWidth(resolvedNpcText, getPrefixComponentSupplier(settings.npcWrap()));
+    }
+
+    private List<Component> getOptionLines(final VariableComponent baseComponent, @Nullable final Component optionReplacementComponent) {
+        final Component optionReplacement = optionReplacementComponent == null ? Component.empty() : optionReplacementComponent;
+        final VariableReplacement replacementOptionText = new VariableReplacement("option_text", optionReplacement);
+        final VariableReplacement replacementNpcName = new VariableReplacement("npc_name", npcName);
+        final Component optionText = baseComponent.resolve(replacementOptionText, replacementNpcName);
+
+        return componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionSelectedWrap()));
     }
 
     private int getSpaceToFillForNpcName() {

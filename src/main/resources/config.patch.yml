@@ -1,4 +1,11 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.12:
+  - type: SET
+    key: conversation.io.menu.scroll_up
+    value: '@[minimessage]<white>        ↑</white>'
+  - type: SET
+    key: conversation.io.menu.scroll_down
+    value: '@[minimessage]<white>        ↓</white>'
 3.0.0.11:
   - type: VALUE_REPLACE
     key: conversation.io.menu.npc_wrap

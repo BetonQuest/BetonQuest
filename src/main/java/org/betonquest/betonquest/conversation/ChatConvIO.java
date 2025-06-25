@@ -16,11 +16,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Base of all chat conversation outputs.
@@ -41,7 +39,6 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected Map<Integer, Component> options;
 
-    @Nullable
     protected Component npcText;
 
     protected Component npcName;
@@ -146,12 +143,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     @Override
     public void display() {
-        if (npcText == null && options.isEmpty()) {
+        if (Component.empty().equals(npcText) && options.isEmpty()) {
             end(() -> {
             });
             return;
         }
-        Objects.requireNonNull(npcText);
 
         conv.sendMessage(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")).append(npcText));
     }
@@ -160,7 +156,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     public void clear() {
         optionsCount = 0;
         options.clear();
-        npcText = null;
+        npcText = Component.empty();
     }
 
     @Override

@@ -39,6 +39,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - ingame message for plugin updates (removed in 2.1.0)
 - menu `slots` and bound `item` now support variables, `menu item` now supports variable `item`
 - `menu` event now supports the `update` action to update the currently opened menu
+- `menu` conversation IO settings to configure the scroll down and up buttons
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

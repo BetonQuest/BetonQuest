@@ -46,24 +46,26 @@ conversation:
     option: '@[minimessage]<aqua>'
   io:
     menu:
-      selection_cooldown: 10
-      refresh_delay: 180
       line_length: 320
+      refresh_delay: 180
       start_new_lines: 10
-      npc_name_newline_separator: true
+      selection_cooldown: 10
+      npc_name_type: chat
+      npc_name_align: center
       npc_text_fill_new_lines: true
+      npc_name_newline_separator: true
       control_select: jump,left_click
       control_cancel: sneak
       control_move: scroll,move
-      npc_name_align: center
-      npc_name_type: chat
-      npc_wrap: '@[minimessage] '
+      npc_name_format: '@[minimessage]<yellow>{npc_name}'
       npc_text: '@[minimessage] <white>{npc_text}'
-      option_wrap: '@[minimessage]    '
+      npc_wrap: '@[minimessage] '
       option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}</aqua> ]'
+      option_wrap: '@[minimessage]    '
       option_selected: '@[minimessage] <gray>» <dark_gray>[ <white><underlined>{option_text}</underlined></white> ]'
       option_selected_wrap: '@[minimessage]    <white><underlined>'
-      npc_name_format: '@[minimessage]<yellow>{npc_name}'
+      scroll_up: '@[minimessage]<white>        ↑</white>'
+      scroll_down: '@[minimessage]<white>        ↓</white>'
     chest:
       show_number: true
       show_npc_text: true
