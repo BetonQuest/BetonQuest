@@ -5490,50 +5490,56 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
-<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">start_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">     </span><span class="c1">#(1)!</span>
-<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">320</span><span class="w">        </span><span class="c1">#(2)!</span>
-<span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">      </span><span class="c1">#(3)!</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">menu</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">line_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">320</span><span class="w">        </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">refresh_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w">      </span><span class="c1">#(2)!</span>
+<span class="w">  </span><span class="nt">start_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">     </span><span class="c1">#(3)!</span>
 <span class="w">  </span><span class="nt">selection_cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">  </span><span class="c1">#(4)!</span>
 
-<span class="w">  </span><span class="nt">npc_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span><span class="w">                                    </span><span class="c1">#(5)!</span>
-<span class="w">  </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;white&gt;{npc_text}&#39;</span><span class="w">                   </span><span class="c1">#(6)!</span>
-<span class="w">  </span><span class="nt">option_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span><span class="w">                              </span><span class="c1">#(7)!</span>
+<span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w">                </span><span class="c1"># (5)!</span>
+<span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w">             </span><span class="c1"># (6)!</span>
+<span class="w">  </span><span class="nt">npc_text_fill_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># (7)!</span>
+<span class="w">  </span><span class="nt">npc_name_newline_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># (8)!</span>
+
+<span class="w">  </span><span class="nt">control_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump,left_click</span><span class="w">  </span><span class="c1"># (9)!</span>
+<span class="w">  </span><span class="nt">control_cancel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sneak</span><span class="w">            </span><span class="c1"># (10)! </span>
+<span class="w">  </span><span class="nt">control_move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll,move</span><span class="w">        </span><span class="c1"># (11)!  </span>
+
+<span class="w">  </span><span class="nt">npc_name_format</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span><span class="w">            </span><span class="c1">#(12)!</span>
+<span class="w">  </span><span class="nt">npc_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;white&gt;{npc_text}&#39;</span><span class="w">                   </span><span class="c1">#(13)!</span>
+<span class="w">  </span><span class="nt">npc_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span><span class="w">                                    </span><span class="c1">#(14)!</span>
 <span class="w">  </span><span class="nt">option_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;aqua&gt;{option_text}</span>
-<span class="w">    </span><span class="s">&lt;/aqua&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                                                   </span><span class="c1">#(8)!</span>
+<span class="w">    </span><span class="s">&lt;/aqua&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">                                                   </span><span class="c1">#(15)!</span>
+<span class="w">  </span><span class="nt">option_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span><span class="w">                              </span><span class="c1">#(16)!</span>
 <span class="w">  </span><span class="nt">option_selected</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;gray&gt;»</span><span class="nv"> </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;white&gt;</span>
-<span class="w">    </span><span class="s">&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">            </span><span class="c1">#(9)!</span>
-<span class="w">  </span><span class="nt">option_selected_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span><span class="w">  </span><span class="c1">#(10)!</span>
-<span class="w">  </span><span class="nt">npc_name_format</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span><span class="w">            </span><span class="c1">#(1)!</span>
-
-<span class="w">  </span><span class="nt">control_select</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jump,left_click</span><span class="w">  </span><span class="c1"># (12)!</span>
-<span class="w">  </span><span class="nt">control_cancel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sneak</span><span class="w">            </span><span class="c1"># (13)! </span>
-<span class="w">  </span><span class="nt">control_move</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll,move</span><span class="w">        </span><span class="c1"># (14)! </span>
-
-<span class="w">  </span><span class="nt">npc_name_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span><span class="w">                </span><span class="c1"># (15)!</span>
-<span class="w">  </span><span class="nt">npc_name_align</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">center</span><span class="w">             </span><span class="c1"># (16)!</span>
-<span class="w">  </span><span class="nt">npc_name_newline_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># (17)!</span>
-<span class="w">  </span><span class="nt">npc_text_fill_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># (18)!</span>
+<span class="w">    </span><span class="s">&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span><span class="w">            </span><span class="c1">#(17)!</span>
+<span class="w">  </span><span class="nt">option_selected_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span><span class="w">  </span><span class="c1">#(18)!</span>
+<span class="w">  </span><span class="nt">scroll_up</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↑&lt;/white&gt;&#39;</span><span class="w">            </span><span class="c1">#(19)!</span>
+<span class="w">  </span><span class="nt">scroll_down</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;white&gt;</span><span class="nv">        </span><span class="s">↓&lt;/white&gt;&#39;</span><span class="w">          </span><span class="c1">#(20)!</span>
 </code></pre></div></td></tr></table></div></p>
 <ol>
-<li>How many empty lines should be printed before the conversation starts.</li>
 <li>Maximum size of a line till its wrapped in pixels. Default 320.</li>
 <li>Specify how many ticks to auto update display. Default 180.</li>
+<li>How many empty lines should be printed before the conversation starts.</li>
 <li>The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.</li>
-<li>What text to prefix each new line in the NPC text that wraps.</li>
-<li>How to write the NPC text. Replaces {npc_text} with the npcs text.</li>
-<li>What text to prefix each new line in an option that wraps.</li>
-<li>How to write an option. Replaces {option_text} with the option text.</li>
-<li>How to write a selected option. Replaces {option_text} with the option text.</li>
-<li>What text to prefix each new line in a selected option that wraps.</li>
-<li>How to format the npc name.</li>
+<li>Type of NPC name display. Can be one of: <code>none</code>, <code>chat</code>.</li>
+<li>For npc name type of <code>chat</code>, how to align name. One of: <code>left</code>, <code>right</code>, <code>center</code>.</li>
+<li>Weather to fill new lined between the NPC text and the player answer options</li>
+<li>Whether an empty line is inserted after the NPC's name if there is space leftover.</li>
 <li>Comma separated actions to select options. Can be any of <code>jump</code>, <code>left_click</code>, <code>sneak</code>.</li>
 <li>Comma separated actions to cancel the conversation. Can be any of <code>jump</code>, <code>left_click</code>, <code>sneak</code>.</li>
 <li>Comma separated actions to move the selection. Can be any of <code>move</code>, <code>scroll</code>.</li>
-<li>Type of NPC name display. Can be one of: <code>none</code>, <code>chat</code>.</li>
-<li>For npc name type of <code>chat</code>, how to align name. One of: <code>left</code>, <code>right</code>, <code>center</code>.</li>
-<li>Whether an empty line is inserted after the NPC's name if there is space leftover.</li>
-<li>Weather to fill new lined between the NPC text and the player answer options</li>
+<li>How to format the npc name.</li>
+<li>How to write the NPC text. Replaces {npc_text} with the npcs text.</li>
+<li>What text to prefix each new line in the NPC text that wraps.</li>
+<li>How to write an option. Replaces {option_text} with the option text.</li>
+<li>What text to prefix each new line in an option that wraps.</li>
+<li>How to write a selected option. Replaces {option_text} with the option text.</li>
+<li>What text to prefix each new line in a selected option that wraps.</li>
+<li>The arrow format to scroll up in the menu.</li>
+<li>The arrow format to scroll down in the menu.</li>
 </ol>
 </li>
 <li>
