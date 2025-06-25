@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.conversation.io;
 
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -64,7 +64,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final boolean showNumber = config.getBoolean("conversation.io.chest.show_number", true);
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
-        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, 270);
+        final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
         return new InventoryConvIO(conversation, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }

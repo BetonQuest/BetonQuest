@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation.io;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -27,7 +27,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     /**
      * The component line wrapper used for the conversation.
      */
-    private final ComponentLineWrapper componentLineWrapper;
+    private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
      * The list of lines to print in the conversation.
@@ -49,7 +49,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
      * @param colors               the colors used in the conversation
      */
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile,
-                             final int messageDelay, final ComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
+                             final int messageDelay, final FixedComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
         super(conv, onlineProfile, colors);
         this.componentLineWrapper = componentLineWrapper;
         this.messageDelay = messageDelay;

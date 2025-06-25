@@ -12,7 +12,7 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -90,7 +90,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The component line wrapper to use for the conversation.
      */
-    private final ComponentLineWrapper componentLineWrapper;
+    private final FixedComponentLineWrapper componentLineWrapper;
 
     // Actions
     protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
@@ -113,7 +113,7 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("NullAway.Init")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
-                      final MenuConvIOSettings settings, final ComponentLineWrapper componentLineWrapper) {
+                      final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper) {
         super(conv, onlineProfile, colors);
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;

@@ -5,7 +5,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -59,7 +59,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     protected final boolean printMessages;
 
-    private final ComponentLineWrapper componentLineWrapper;
+    private final FixedComponentLineWrapper componentLineWrapper;
 
     @Nullable
     protected Component response;
@@ -90,7 +90,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                            final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
-                           final boolean printMessages, final ComponentLineWrapper componentLineWrapper) {
+                           final boolean printMessages, final FixedComponentLineWrapper componentLineWrapper) {
         this.log = log;
         this.conv = conv;
         this.profile = onlineProfile;

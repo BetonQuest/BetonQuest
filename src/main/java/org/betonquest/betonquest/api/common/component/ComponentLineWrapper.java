@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * The ComponentLineWrapper class is responsible for splitting a Component into multiple lines.
  */
 @SuppressWarnings({"PMD.LooseCoupling", "PMD.TooManyMethods"})
-public final class ComponentLineWrapper {
+public class ComponentLineWrapper {
     /**
      * The newline string to separate title and subtitle.
      */
@@ -31,19 +31,12 @@ public final class ComponentLineWrapper {
     private final FontRegistry fontRegistry;
 
     /**
-     * The width of the line in characters.
-     */
-    private final int maxLineWidth;
-
-    /**
      * Creates a new ComponentLineWrapper instance.
      *
      * @param fontRegistry the font registry to use
-     * @param lineWidth    the width of the line in pixels
      */
-    public ComponentLineWrapper(final FontRegistry fontRegistry, final int lineWidth) {
+    public ComponentLineWrapper(final FontRegistry fontRegistry) {
         this.fontRegistry = fontRegistry;
-        this.maxLineWidth = lineWidth;
     }
 
     /**
@@ -84,21 +77,23 @@ public final class ComponentLineWrapper {
     /**
      * Wraps a Component into multiple lines based on the specified line width.
      *
-     * @param component the Component to wrap
+     * @param component    the Component to wrap
+     * @param maxLineWidth the maximum width of a line in pixels
      * @return a list of Components, each representing a line
      */
-    public List<Component> splitWidth(final Component component) {
-        return splitWidth(component, Component::empty);
+    public List<Component> splitWidth(final Component component, final int maxLineWidth) {
+        return splitWidth(component, Component::empty, maxLineWidth);
     }
 
     /**
      * Wraps a Component into multiple lines based on the specified line width.
      *
-     * @param component  the Component to wrap
-     * @param linePrefix a Supplier for the prefix of each line
+     * @param component    the Component to wrap
+     * @param linePrefix   a Supplier for the prefix of each line
+     * @param maxLineWidth the maximum width of a line in pixels
      * @return a list of Components, each representing a line
      */
-    public List<Component> splitWidth(final Component component, final Supplier<Component> linePrefix) {
+    public List<Component> splitWidth(final Component component, final Supplier<Component> linePrefix, final int maxLineWidth) {
         final List<Component> newLineWrapped = splitNewLine(component);
 
         final List<Component> resolvedLinePrefix = new ArrayList<>();
@@ -108,7 +103,7 @@ public final class ComponentLineWrapper {
             return width(prefix);
         };
 
-        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider)))
+        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
@@ -126,14 +121,14 @@ public final class ComponentLineWrapper {
         return result;
     }
 
-    private LinkedList<Component> wrap(final Component component, final Offset offset) {
-        final LinkedList<Component> lines = wrapComponent(component, offset);
+    private LinkedList<Component> wrap(final Component component, final Offset offset, final int maxLineWidth) {
+        final LinkedList<Component> lines = wrapComponent(component, offset, maxLineWidth);
         if (component.children().isEmpty()) {
             return lines;
         }
         Component last = lines.removeLast();
         for (final Component child : component.children()) {
-            final LinkedList<Component> childSegments = wrap(child, offset);
+            final LinkedList<Component> childSegments = wrap(child, offset, maxLineWidth);
             last = last.append(childSegments.removeFirst());
             for (final Component childSegment : childSegments) {
                 lines.add(last.compact());
@@ -144,20 +139,20 @@ public final class ComponentLineWrapper {
         return lines;
     }
 
-    private LinkedList<Component> wrapComponent(final Component component, final Offset offset) {
+    private LinkedList<Component> wrapComponent(final Component component, final Offset offset, final int maxLineWidth) {
         if (!(component instanceof final TextComponent text)) {
             return new LinkedList<>(List.of(component));
         }
         final String content = text.content();
         final Font font = fontRegistry.getFont(text.font());
-        final List<String> segments = wrapText(font, content, offset);
+        final List<String> segments = wrapText(font, content, offset, maxLineWidth);
         return segments.stream()
                 .map(segment -> Component.text(segment).style(text.style()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @VisibleForTesting
-    List<String> wrapText(final Font font, final String content, final Offset offset) {
+    List<String> wrapText(final Font font, final String content, final Offset offset, final int maxLineWidth) {
         final List<String> lines = new ArrayList<>();
         final StringBuilder currentLine = new StringBuilder();
 
@@ -176,7 +171,7 @@ public final class ComponentLineWrapper {
 
             final int wordWidth = getTextWidth(font, word);
             if (wordWidth > maxLineWidth) {
-                wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace);
+                wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace, maxLineWidth);
                 continue;
             }
 
@@ -198,7 +193,8 @@ public final class ComponentLineWrapper {
     }
 
     private void wrapWordExceedingLineLength(final List<String> lines, final StringBuilder currentLine,
-                                             final Offset offset, final Font font, final String word) {
+                                             final Offset offset, final Font font, final String word,
+                                             final int maxLineWidth) {
         for (final char character : word.toCharArray()) {
             final int charWidth = font.getWidth(character);
             if (offset.getOffset() + charWidth > maxLineWidth) {
