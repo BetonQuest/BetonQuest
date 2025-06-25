@@ -61,7 +61,7 @@ class ComponentLineWrapperTest {
             final FontRegistry fontRegistry = new FontRegistry(defaultKey);
             final DefaultFont defaultFont = new DefaultFont();
             fontRegistry.registerFont(defaultKey, defaultFont);
-            final ComponentLineWrapper wrapper = new ComponentLineWrapper(fontRegistry, lineLength);
+            final FixedComponentLineWrapper wrapper = new FixedComponentLineWrapper(fontRegistry, lineLength);
             final Component deserialize = MiniMessage.miniMessage().deserialize(input);
             final List<Component> result = wrapper.splitWidth(deserialize);
             assertEquals(expected, result, "The arrays should equal each other");
@@ -145,8 +145,8 @@ class ComponentLineWrapperTest {
             final FontRegistry fontRegistry = new FontRegistry(defaultKey);
             final DefaultFont defaultFont = new DefaultFont();
             fontRegistry.registerFont(defaultKey, defaultFont);
-            final ComponentLineWrapper wrapper = new ComponentLineWrapper(fontRegistry, lineLength);
-            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset(() -> 0));
+            final ComponentLineWrapper wrapper = new ComponentLineWrapper(fontRegistry);
+            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset(() -> 0), lineLength);
             assertEquals(expected, result, "The arrays should equal each other");
         }
     }

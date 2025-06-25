@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
@@ -49,7 +49,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      */
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                                    final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
-                                   final boolean printMessages, final ComponentLineWrapper componentLineWrapper) {
+                                   final boolean printMessages, final FixedComponentLineWrapper componentLineWrapper) {
         super(conv, onlineProfile, log, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 

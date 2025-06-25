@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
-import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.message.MessageParser;
@@ -53,7 +53,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(messageParser, config.getConfigurationSection("conversation.io.menu"));
-        final ComponentLineWrapper componentLineWrapper = new ComponentLineWrapper(fontRegistry, settings.lineLength());
+        final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
         return new MenuConvIO(conversation, onlineProfile, colors, settings, componentLineWrapper);
     }
 }
