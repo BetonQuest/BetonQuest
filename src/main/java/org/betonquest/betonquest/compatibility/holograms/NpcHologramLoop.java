@@ -131,11 +131,11 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                         npc = featureAPI.getNpc(npcID, null);
                     } catch (final QuestException exception) {
                         log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
-                        return;
+                        continue;
                     }
                     identifierToId.computeIfAbsent(npcID.toString(), k -> new ArrayList<>()).add(npcID);
                     if (!npc.isSpawned()) {
-                        return;
+                        continue;
                     }
                     final BetonHologram hologram = hologramProvider.createHologram(npc.getLocation().add(holo.vector));
                     entry.setValue(hologram);
