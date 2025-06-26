@@ -355,6 +355,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 profile.getPlayer().closeInventory();
                 callback.run();
             });
+        } else {
+            callback.run();
         }
     }
 
