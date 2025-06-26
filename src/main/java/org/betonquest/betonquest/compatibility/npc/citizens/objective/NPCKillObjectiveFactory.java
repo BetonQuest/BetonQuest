@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -15,15 +16,23 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 public class NPCKillObjectiveFactory implements ObjectiveFactory {
 
     /**
-     * Creates a new instance of the NPCKillObjectiveFactory.
+     * Source Registry of NPCs to use.
      */
-    public NPCKillObjectiveFactory() {
+    private final NPCRegistry registry;
+
+    /**
+     * Creates a new instance of the NPCKillObjectiveFactory.
+     *
+     * @param registry the registry of NPCs to use
+     */
+    public NPCKillObjectiveFactory(final NPCRegistry registry) {
+        this.registry = registry;
     }
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcID = instruction.get(CitizensArgument.CITIZENS_ID);
         final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
-        return new NPCKillObjective(instruction, targetAmount, npcID);
+        return new NPCKillObjective(instruction, registry, targetAmount, npcID);
     }
 }

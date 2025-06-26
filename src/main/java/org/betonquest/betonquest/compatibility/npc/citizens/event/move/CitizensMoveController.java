@@ -24,11 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Controls a Citizens-NPC movement.
  */
-public class CitizensMoveController implements Listener {
+public class CitizensMoveController implements Listener, Predicate<NPC> {
     /**
      * Citizens NPC ID and their active move instance.
      */
@@ -71,7 +72,7 @@ public class CitizensMoveController implements Listener {
      * standing or moving because other reasons
      */
     public boolean isNPCMoving(final NPC npc) {
-        return movingNpcs.containsKey(npc.getId());
+        return npc.getOwningRegistry().equals(citizensWalkingListener.registry) && movingNpcs.containsKey(npc.getId());
     }
 
     /**
@@ -80,7 +81,9 @@ public class CitizensMoveController implements Listener {
      * @param npc the npc to stop its current move control
      */
     public void stopNPCMoving(final NPC npc) {
-        movingNpcs.remove(npc.getId());
+        if (npc.getOwningRegistry().equals(citizensWalkingListener.registry)) {
+            movingNpcs.remove(npc.getId());
+        }
     }
 
     /**
@@ -90,7 +93,8 @@ public class CitizensMoveController implements Listener {
      * @return false if you can talk to the npc true if not
      */
     public boolean blocksTalking(final NPC npc) {
-        return movingNpcs.containsKey(npc.getId()) && movingNpcs.get(npc.getId()).moveData.blockConversations();
+        return npc.getOwningRegistry().equals(citizensWalkingListener.registry)
+                && movingNpcs.containsKey(npc.getId()) && movingNpcs.get(npc.getId()).moveData.blockConversations();
     }
 
     /**
@@ -105,6 +109,9 @@ public class CitizensMoveController implements Listener {
      * @throws QuestException if there was an error getting the first location
      */
     public void startNew(final NPC npc, final Profile profile, final MoveData moveData) throws QuestException {
+        if (!npc.getOwningRegistry().equals(citizensWalkingListener.registry)) {
+            return;
+        }
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
@@ -152,10 +159,19 @@ public class CitizensMoveController implements Listener {
      * @param event the navigation event to handle
      */
     public void onContinue(final NavigationEvent event) {
-        final int npcId = event.getNPC().getId();
+        final NPC npc = event.getNPC();
+        if (!npc.getOwningRegistry().equals(citizensWalkingListener.registry)) {
+            return;
+        }
+        final int npcId = npc.getId();
         if (movingNpcs.containsKey(npcId)) {
             movingNpcs.get(npcId).onContinue(event);
         }
+    }
+
+    @Override
+    public boolean test(final NPC npc) {
+        return npc.getOwningRegistry().equals(citizensWalkingListener.registry) && blocksTalking(npc);
     }
 
     /**

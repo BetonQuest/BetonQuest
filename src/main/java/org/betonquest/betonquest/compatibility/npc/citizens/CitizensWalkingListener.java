@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
@@ -22,18 +23,27 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
+    /**
+     * Source Registry of NPCs to use.
+     */
+    public final NPCRegistry registry;
+
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around when in conversation.
+     *
+     * @param registry the registry of NPCs to use
      */
-    public CitizensWalkingListener() {
+    public CitizensWalkingListener(final NPCRegistry registry) {
+        this.registry = registry;
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
-                && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
+                && npcConv.getNPC().getOriginal() instanceof final NPC npc
+                && npc.getOwningRegistry().equals(registry)) {
             new BukkitRunnable() {
 
                 @Override
@@ -60,7 +70,8 @@ public class CitizensWalkingListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
-                && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
+                && npcConv.getNPC().getOriginal() instanceof final NPC npc
+                && npc.getOwningRegistry().equals(registry)) {
             new BukkitRunnable() {
 
                 @Override
@@ -93,7 +104,7 @@ public class CitizensWalkingListener implements Listener {
      * @return true if the movement of the npc is paused because of a player talking with the npc
      */
     public boolean isMovementPaused(final NPC npc) {
-        return npcs.containsKey(npc);
+        return npc.getOwningRegistry().equals(registry) && npcs.containsKey(npc);
     }
 
     /**
@@ -105,6 +116,8 @@ public class CitizensWalkingListener implements Listener {
      * @param location the location to which the npc should move
      */
     public void setNewTargetLocation(final NPC npc, final Location location) {
-        npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey(), location));
+        if (npc.getOwningRegistry().equals(registry)) {
+            npcs.computeIfPresent(npc, (k, pair) -> Pair.of(pair.getKey(), location));
+        }
     }
 }

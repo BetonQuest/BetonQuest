@@ -1,18 +1,9 @@
 package org.betonquest.betonquest.compatibility.protocollib.hider;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
-import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.compatibility.npc.citizens.CitizensAdapter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +13,7 @@ import java.util.List;
 /**
  * Hides Citizens NPCs with ProtocolLib.
  */
-public final class CitizensHider implements Listener {
+public final class CitizensHider {
     /**
      * The static instance.
      */
@@ -36,7 +27,6 @@ public final class CitizensHider implements Listener {
 
     private CitizensHider(final Plugin plugin) {
         hider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -66,7 +56,6 @@ public final class CitizensHider implements Listener {
      */
     public void stop() {
         hider.close();
-        HandlerList.unregisterAll(this);
     }
 
     /**
@@ -114,18 +103,5 @@ public final class CitizensHider implements Listener {
      */
     public boolean isInvisible(final OnlineProfile onlineProfile, final NPC npc) {
         return npc.getEntity() != null && !hider.isVisible(onlineProfile, npc.getEntity().getEntityId());
-    }
-
-    /**
-     * Applies the visibility of a new spawned NPC.
-     *
-     * @param event the event to listen
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onNPCSpawn(final NPCSpawnEvent event) {
-        final NPC npc = event.getNPC();
-        if (npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
-            Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
-        }
     }
 }
