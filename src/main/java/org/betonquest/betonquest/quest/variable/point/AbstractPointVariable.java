@@ -52,7 +52,7 @@ public abstract class AbstractPointVariable<T> {
     public String getValueFor(final int amount) {
         return switch (type) {
             case AMOUNT -> String.valueOf(amount);
-            case LEFT -> String.valueOf(amount - this.amount);
+            case LEFT -> String.valueOf(this.amount - amount);
         };
     }
 }
