@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -9,8 +10,10 @@ import org.jetbrains.annotations.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,7 +106,7 @@ public class ComponentLineWrapper {
             return width(prefix);
         };
 
-        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth))
+        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth, new ComponentDecorations(line)))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
@@ -121,14 +124,14 @@ public class ComponentLineWrapper {
         return result;
     }
 
-    private LinkedList<Component> wrap(final Component component, final Offset offset, final int maxLineWidth) {
-        final LinkedList<Component> lines = wrapComponent(component, offset, maxLineWidth);
+    private LinkedList<Component> wrap(final Component component, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
+        final LinkedList<Component> lines = wrapComponent(component, offset, maxLineWidth, decorations);
         if (component.children().isEmpty()) {
             return lines;
         }
         Component last = lines.removeLast();
         for (final Component child : component.children()) {
-            final LinkedList<Component> childSegments = wrap(child, offset, maxLineWidth);
+            final LinkedList<Component> childSegments = wrap(child, offset, maxLineWidth, decorations.getChild(child));
             last = last.append(childSegments.removeFirst());
             for (final Component childSegment : childSegments) {
                 lines.add(last.compact());
@@ -139,20 +142,20 @@ public class ComponentLineWrapper {
         return lines;
     }
 
-    private LinkedList<Component> wrapComponent(final Component component, final Offset offset, final int maxLineWidth) {
+    private LinkedList<Component> wrapComponent(final Component component, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
         if (!(component instanceof final TextComponent text)) {
             return new LinkedList<>(List.of(component));
         }
         final String content = text.content();
         final Font font = fontRegistry.getFont(text.font());
-        final List<String> segments = wrapText(font, content, offset, maxLineWidth);
+        final List<String> segments = wrapText(font, content, offset, maxLineWidth, decorations);
         return segments.stream()
                 .map(segment -> Component.text(segment).style(text.style()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @VisibleForTesting
-    List<String> wrapText(final Font font, final String content, final Offset offset, final int maxLineWidth) {
+    List<String> wrapText(final Font font, final String content, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
         final List<String> lines = new ArrayList<>();
         final StringBuilder currentLine = new StringBuilder();
 
@@ -162,14 +165,14 @@ public class ComponentLineWrapper {
         for (final String word : words) {
             final String wordWithSpace = firstWord ? word : " " + word;
             firstWord = false;
-            final int wordWithSpaceWidth = getTextWidth(font, wordWithSpace);
+            final int wordWithSpaceWidth = getTextWidth(font, wordWithSpace, decorations);
             if (offset.getOffset() + wordWithSpaceWidth <= maxLineWidth) {
                 currentLine.append(wordWithSpace);
                 offset.addOffset(wordWithSpaceWidth);
                 continue;
             }
 
-            final int wordWidth = getTextWidth(font, word);
+            final int wordWidth = getTextWidth(font, word, decorations);
             if (wordWidth > maxLineWidth) {
                 wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace, maxLineWidth);
                 continue;
@@ -217,20 +220,32 @@ public class ComponentLineWrapper {
      * @return the width of the Component in pixels
      */
     public int width(final Component component) {
+        return width(component, new ComponentDecorations(component));
+    }
+
+    private int width(final Component component, final ComponentDecorations decorations) {
         int width = 0;
         if (component instanceof final TextComponent text) {
             final Font font = fontRegistry.getFont(text.font());
-            width = getTextWidth(font, text.content());
+            width = getTextWidth(font, text.content(), decorations);
         }
-        return width + component.children().stream().mapToInt(this::width).sum();
+        return width + component.children().stream().mapToInt(child -> width(child, decorations.getChild(child))).sum();
     }
 
-    private int getTextWidth(final Font font, final String text) {
+    private int getTextWidth(final Font font, final String text, final ComponentDecorations decorations) {
         int width = 0;
+        final int decorationFix = getTextDecorationWidth(decorations);
         for (final char c : text.toCharArray()) {
-            width += font.getWidth(c);
+            width += font.getWidth(c) + decorationFix;
         }
         return width;
+    }
+
+    private int getTextDecorationWidth(final ComponentDecorations decorations) {
+        if (decorations.getDecorations().get(TextDecoration.BOLD) == TextDecoration.State.TRUE) {
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -292,6 +307,56 @@ public class ComponentLineWrapper {
          */
         public void reset() {
             this.value = provider.getOffset();
+        }
+    }
+
+    /**
+     * The ComponentDecorations class is used to store the decorations of a Component.
+     */
+    @VisibleForTesting
+    static class ComponentDecorations {
+        /**
+         * The map of TextDecoration to its state for the Component.
+         */
+        private final Map<TextDecoration, TextDecoration.State> decorations;
+
+        /**
+         * Creates a new ComponentDecorations instance for the given Component.
+         *
+         * @param component the Component to get the decorations for
+         */
+        public ComponentDecorations(final Component component) {
+            this.decorations = component.decorations();
+        }
+
+        private ComponentDecorations(final Map<TextDecoration, TextDecoration.State> parent, final Component child) {
+            this.decorations = parent;
+            for (final Map.Entry<TextDecoration, TextDecoration.State> entry : child.decorations().entrySet()) {
+                final TextDecoration decoration = entry.getKey();
+                final TextDecoration.State state = entry.getValue();
+                if (state != TextDecoration.State.NOT_SET) {
+                    this.decorations.put(decoration, state);
+                }
+            }
+        }
+
+        /**
+         * Creates a new ComponentDecorations instance for a child Component.
+         *
+         * @param component the child Component to get the decorations for
+         * @return a new ComponentDecorations instance containing the decorations of the child Component
+         */
+        public ComponentDecorations getChild(final Component component) {
+            return new ComponentDecorations(new EnumMap<>(decorations), component);
+        }
+
+        /**
+         * Gets the decorations of the Component.
+         *
+         * @return a map of TextDecoration to its state
+         */
+        public Map<TextDecoration, TextDecoration.State> getDecorations() {
+            return decorations;
         }
     }
 }
