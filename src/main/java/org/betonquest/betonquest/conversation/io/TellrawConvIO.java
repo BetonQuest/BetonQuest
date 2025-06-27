@@ -15,46 +15,60 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 /**
- * Adds tellraw command handling to the SimpleConvIO
+ * Adds tellraw command handling to the SimpleConvIO.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class TellrawConvIO extends ChatConvIO {
+
+    /**
+     * The answer command.
+     */
+    private static final String BETONQUESTANSWER = "/betonquestanswer ";
+
     static {
-        new UnknownCommandTellrawListener();
+        Bukkit.getPluginManager().registerEvents(new UnknownCommandTellrawListener(), BetonQuest.getInstance());
     }
 
-    protected Map<Integer, String> hashes;
+    /**
+     * Option number UUID "hashes".
+     */
+    protected List<String> hashes;
 
-    private int count;
-
-    @SuppressWarnings("NullAway.Init")
+    /**
+     * Creates a new TellrawConvIO instance.
+     *
+     * @param conv          the conversation this IO is part of
+     * @param onlineProfile the online profile of the player participating in the conversation
+     * @param colors        the colors used in the conversation
+     */
     public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
         super(conv, onlineProfile, colors);
-        hashes = new HashMap<>();
+        hashes = new ArrayList<>();
     }
 
+    /**
+     * Passes and prints the "clicked" answer to the conversation.
+     *
+     * @param event the preprocess event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onCommandAnswer(final PlayerCommandPreprocessEvent event) {
         if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
-        if (!event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
+        final String message = event.getMessage();
+        if (!message.toLowerCase(Locale.ROOT).startsWith(BETONQUESTANSWER)) {
             return;
         }
         event.setCancelled(true);
-        final String[] parts = event.getMessage().split(" ");
-        if (parts.length != 2) {
-            return;
-        }
-        final String hash = parts[1];
+        final String hash = message.substring(BETONQUESTANSWER.length());
         for (int j = 1; j <= hashes.size(); j++) {
-            if (hash.equals(hashes.get(j))) {
+            if (hash.equals(hashes.get(j - 1))) {
                 conv.sendMessage(colors.getAnswer().append(colors.getPlayer().append(Component.text(onlineProfile.getPlayer().getName())))
                         .append(Component.text(": ")).append(options.get(j)));
                 conv.passPlayerAnswer(j);
@@ -69,9 +83,12 @@ public class TellrawConvIO extends ChatConvIO {
         displayText();
     }
 
+    /**
+     * Displays all player answers.
+     */
     protected void displayText() {
         for (int j = 1; j <= options.size(); j++) {
-            final TextComponent message = Component.empty().clickEvent(ClickEvent.runCommand("/betonquestanswer " + hashes.get(j)))
+            final TextComponent message = Component.empty().clickEvent(ClickEvent.runCommand(BETONQUESTANSWER + hashes.get(j - 1)))
                     .append(colors.getOption().append(colors.getNumber().append(Component.text(j)).append(Component.text(". ")))
                             .append(options.get(j)));
 
@@ -82,26 +99,34 @@ public class TellrawConvIO extends ChatConvIO {
     @Override
     public void addPlayerOption(final Component option, final ConfigurationSection properties) {
         super.addPlayerOption(option, properties);
-        count++;
-        hashes.put(count, UUID.randomUUID().toString());
+        hashes.add(UUID.randomUUID().toString());
     }
 
     @Override
     public void clear() {
         super.clear();
         hashes.clear();
-        count = 0;
     }
 
+    /**
+     * Command Listener to cancel all answer command processing.
+     */
     public static class UnknownCommandTellrawListener implements Listener {
 
+        /**
+         * The empty default constructor.
+         */
         public UnknownCommandTellrawListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
+        /**
+         * Cancels the answer command processing.
+         *
+         * @param event the preprocess event
+         */
         @EventHandler(priority = EventPriority.HIGH)
         public void onCommand(final PlayerCommandPreprocessEvent event) {
-            if (event.getMessage().toLowerCase(Locale.ROOT).startsWith("/betonquestanswer ")) {
+            if (event.getMessage().toLowerCase(Locale.ROOT).startsWith(BETONQUESTANSWER)) {
                 event.setCancelled(true);
             }
         }

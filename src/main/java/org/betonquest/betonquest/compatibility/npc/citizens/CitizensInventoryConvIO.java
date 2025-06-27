@@ -36,12 +36,12 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     private static final Pattern SKIN_JSON_URL_PATTERN = Pattern.compile("\"SKIN\" ?: ?\\{\\n *\"url\" ?: ?\"(?<url>.*)\"");
 
     /**
-     * Creates a new {@link CitizensInventoryConvIO} instance.
+     * Creates a new CitizensInventoryConvIO instance.
      *
-     * @param conv                 the conversation
-     * @param onlineProfile        the online profile
+     * @param conv                 the conversation this IO is part of
+     * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param colors               the conversation colors
+     * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
      * @param printMessages        whether to print messages

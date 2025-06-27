@@ -111,6 +111,13 @@ public class MenuConvIO extends ChatConvIO {
     @Nullable
     private ArmorStand stand;
 
+    /**
+     * Creates a new MenuConvIO instance.
+     *
+     * @param conv          the conversation this IO is part of
+     * @param onlineProfile the online profile of the player participating in the conversation
+     * @param colors        the colors used in the conversation
+     */
     @SuppressWarnings("NullAway.Init")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
                       final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper) {
