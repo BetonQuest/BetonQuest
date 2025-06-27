@@ -4,6 +4,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.common.component.font.DefaultFont;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
@@ -51,7 +52,18 @@ class ComponentLineWrapperTest {
                                             .append(Component.text(" some edge cases are tested ").color(NamedTextColor.YELLOW))
                                             .append(Component.text("later like links translation keys and key bindings."))
                             ),
-                            500));
+                            500),
+                    Arguments.of("How are you? And if I continue writing, it should now break bold text actually correct at the end of the line!",
+                            List.of(Component.text("How are you? And if I continue writing, it should now break bold"),
+                                    Component.text("text actually correct at the end of the line!")
+                            ),
+                            320),
+                    Arguments.of("<bold>How are you? And if I continue writing, it should now break bold text actually correct at the end of the line</bold>!",
+                            List.of(Component.text("How are you? And if I continue writing, it should now").decoration(TextDecoration.BOLD, true),
+                                    Component.text("break bold text actually correct at the end of the").decoration(TextDecoration.BOLD, true),
+                                    Component.empty().append(Component.text("line").decoration(TextDecoration.BOLD, true)).append(Component.text("!"))
+                            ),
+                            320));
         }
 
         @ParameterizedTest
@@ -146,7 +158,8 @@ class ComponentLineWrapperTest {
             final DefaultFont defaultFont = new DefaultFont();
             fontRegistry.registerFont(defaultKey, defaultFont);
             final ComponentLineWrapper wrapper = new ComponentLineWrapper(fontRegistry);
-            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset(() -> 0), lineLength);
+            final List<String> result = wrapper.wrapText(defaultFont, input, new ComponentLineWrapper.Offset(() -> 0),
+                    lineLength, new ComponentLineWrapper.ComponentDecorations(Component.empty()));
             assertEquals(expected, result, "The arrays should equal each other");
         }
     }
