@@ -3,12 +3,12 @@ package org.betonquest.betonquest.api.common.component;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
-import org.jetbrains.annotations.VisibleForTesting;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -19,14 +19,30 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * The ComponentLineWrapper class is responsible for splitting a Component into multiple lines.
+ * The ComponentLineWrapper class is responsible for splitting a Component into multiple lines,
+ * while each line will be compacted in the most minimal style and hierarchy.
  */
-@SuppressWarnings({"PMD.LooseCoupling", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public class ComponentLineWrapper {
     /**
-     * The newline string to separate title and subtitle.
+     * The newline string to split text components by new lines.
      */
     private static final Pattern NEW_LINE = Pattern.compile("\n");
+
+    /**
+     * The leading space pattern to split text components by leading spaces.
+     */
+    private static final Pattern LEADING_SPACE = Pattern.compile("(?= )");
+
+    /**
+     * The space pattern to split text components by spaces.
+     */
+    private static final Pattern SPACE = Pattern.compile(" ");
+
+    /**
+     * The character pattern to split text components by each character.
+     */
+    private static final Pattern CHARACTER = Pattern.compile("(?!^)(?=.)");
 
     /**
      * The font registry used to get the width of the characters.
@@ -48,33 +64,8 @@ public class ComponentLineWrapper {
      * @param component the Component to split
      * @return a list of Components, each representing a line
      */
-    @SuppressWarnings("PMD.LooseCoupling")
     public static List<Component> splitNewLine(final Component component) {
-        final LinkedList<Component> lines = splitNewLineTextComponent(component);
-        if (component.children().isEmpty()) {
-            return lines;
-        }
-        Component last = lines.removeLast();
-        for (final Component child : component.children()) {
-            final LinkedList<Component> childSegments = (LinkedList<Component>) splitNewLine(child);
-            last = last.append(childSegments.removeFirst());
-            for (final Component childSegment : childSegments) {
-                lines.add(last.compact());
-                last = Component.empty().style(last.style()).append(childSegment);
-            }
-        }
-        lines.add(last.compact());
-        return lines;
-    }
-
-    @SuppressWarnings("PMD.LooseCoupling")
-    private static LinkedList<Component> splitNewLineTextComponent(final Component component) {
-        if (!(component instanceof final TextComponent text)) {
-            return new LinkedList<>(List.of(component));
-        }
-        return Arrays.stream(NEW_LINE.split(text.content(), -1))
-                .map(segment -> Component.text(segment).style(text.style()))
-                .collect(Collectors.toCollection(LinkedList::new));
+        return ComponentPatternSplitter.split(component, NEW_LINE, true);
     }
 
     /**
@@ -100,17 +91,21 @@ public class ComponentLineWrapper {
         final List<Component> newLineWrapped = splitNewLine(component);
 
         final List<Component> resolvedLinePrefix = new ArrayList<>();
-        final OffsetProvider offsetProvider = () -> {
+        final Supplier<Integer> offsetProvider = () -> {
             final Component prefix = linePrefix.get();
             resolvedLinePrefix.add(prefix);
             return width(prefix);
         };
 
-        final List<Component> lines = newLineWrapped.stream().map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth, new ComponentDecorations(line)))
+        final List<Component> lines = newLineWrapped.stream()
+                .map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
-        return appendPrefixes(resolvedLinePrefix, lines);
+        return appendPrefixes(resolvedLinePrefix, lines).stream()
+                .map(Component::compact)
+                .map(Component::compact)
+                .toList();
     }
 
     private List<Component> appendPrefixes(final List<Component> prefixes, final List<Component> lines) {
@@ -119,97 +114,60 @@ public class ComponentLineWrapper {
         }
         final List<Component> result = new ArrayList<>(lines.size());
         for (int i = 0; i < lines.size(); i++) {
-            result.add(prefixes.get(i).append(lines.get(i)).compact());
+            result.add(prefixes.get(i).append(lines.get(i)));
         }
         return result;
     }
 
-    private LinkedList<Component> wrap(final Component component, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
-        final LinkedList<Component> lines = wrapComponent(component, offset, maxLineWidth, decorations);
-        if (component.children().isEmpty()) {
-            return lines;
-        }
-        Component last = lines.removeLast();
-        for (final Component child : component.children()) {
-            final LinkedList<Component> childSegments = wrap(child, offset, maxLineWidth, decorations.getChild(child));
-            last = last.append(childSegments.removeFirst());
-            for (final Component childSegment : childSegments) {
-                lines.add(last.compact());
-                last = Component.empty().style(component.style()).append(childSegment);
-            }
-        }
-        lines.add(last.compact());
-        return lines;
-    }
+    private List<Component> wrap(final Component component, final Offset offset, final int maxLineWidth) {
+        final List<Pair<Component, Integer>> wordList = ComponentPatternSplitter.split(component, LEADING_SPACE).stream()
+                .map(word -> Pair.of(word, width(word)))
+                .toList();
 
-    private LinkedList<Component> wrapComponent(final Component component, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
-        if (!(component instanceof final TextComponent text)) {
-            return new LinkedList<>(List.of(component));
-        }
-        final String content = text.content();
-        final Font font = fontRegistry.getFont(text.font());
-        final List<String> segments = wrapText(font, content, offset, maxLineWidth, decorations);
-        return segments.stream()
-                .map(segment -> Component.text(segment).style(text.style()))
-                .collect(Collectors.toCollection(LinkedList::new));
-    }
+        final List<Component> lines = new ArrayList<>();
+        final ComponentBuilder line = new ComponentBuilder();
+        for (final Pair<Component, Integer> entry : wordList) {
+            final Component word = entry.getKey();
+            final int wordWidth = entry.getValue();
 
-    @VisibleForTesting
-    List<String> wrapText(final Font font, final String content, final Offset offset, final int maxLineWidth, final ComponentDecorations decorations) {
-        final List<String> lines = new ArrayList<>();
-        final StringBuilder currentLine = new StringBuilder();
-
-        final String[] words = content.split(" ", -1);
-        boolean firstWord = true;
-
-        for (final String word : words) {
-            final String wordWithSpace = firstWord ? word : " " + word;
-            firstWord = false;
-            final int wordWithSpaceWidth = getTextWidth(font, wordWithSpace, decorations);
-            if (offset.getOffset() + wordWithSpaceWidth <= maxLineWidth) {
-                currentLine.append(wordWithSpace);
-                offset.addOffset(wordWithSpaceWidth);
+            if (offset.getOffset() + wordWidth <= maxLineWidth) {
+                line.append(word);
+                offset.addOffset(wordWidth);
                 continue;
             }
 
-            final int wordWidth = getTextWidth(font, word, decorations);
             if (wordWidth > maxLineWidth) {
-                wrapWordExceedingLineLength(lines, currentLine, offset, font, wordWithSpace, maxLineWidth);
+                wrapWordExceedingLineLength(lines, line, offset, word, maxLineWidth);
                 continue;
             }
 
-            lines.add(currentLine.toString());
-            currentLine.setLength(0);
-            currentLine.append(word);
+            lines.add(line.build());
+            final Component wordWithoutSpace = getComponentWithoutLeadingSpace(word);
+            line.append(wordWithoutSpace);
             offset.reset();
-            offset.addOffset(wordWidth);
+            offset.addOffset(width(wordWithoutSpace));
         }
-
-        if (!firstWord) {
-            lines.add(currentLine.toString());
+        if (!line.isEmpty()) {
+            lines.add(line.build());
         }
-        if (lines.isEmpty()) {
-            lines.add("");
-        }
-
         return lines;
     }
 
-    private void wrapWordExceedingLineLength(final List<String> lines, final StringBuilder currentLine,
-                                             final Offset offset, final Font font, final String word,
-                                             final int maxLineWidth) {
-        for (final char character : word.toCharArray()) {
-            final int charWidth = font.getWidth(character);
-            if (offset.getOffset() + charWidth > maxLineWidth) {
-                lines.add(currentLine.toString());
-                currentLine.setLength(0);
-                offset.reset();
-            }
-            if (currentLine.isEmpty() && character == ' ') {
+    private void wrapWordExceedingLineLength(final List<Component> lines, final ComponentBuilder line, final Offset offset,
+                                             final Component word, final int maxLineWidth) {
+        final List<Component> characters = ComponentPatternSplitter.split(word, CHARACTER);
+        for (final Component character : characters) {
+            final int characterWidth = width(character);
+            if (offset.getOffset() + characterWidth <= maxLineWidth) {
+                line.append(character);
+                offset.addOffset(characterWidth);
                 continue;
             }
-            currentLine.append(character);
-            offset.addOffset(charWidth);
+            lines.add(line.build());
+            final Component characterWithoutSpace = getComponentWithoutLeadingSpace(character);
+            line.append(characterWithoutSpace);
+            offset.reset();
+            offset.addOffset(width(characterWithoutSpace));
         }
     }
 
@@ -248,28 +206,24 @@ public class ComponentLineWrapper {
         return 0;
     }
 
-    /**
-     * The OffsetProvider interface is used to provide the offset in pixels for a new line.
-     */
-    @FunctionalInterface
-    public interface OffsetProvider {
-        /**
-         * Gets the offset in pixels for a new line.
-         *
-         * @return the offset in pixels
-         */
-        int getOffset();
+    @SuppressWarnings("PMD.LooseCoupling")
+    private Component getComponentWithoutLeadingSpace(final Component component) {
+        final LinkedList<Component> split = ComponentPatternSplitter.split(component, SPACE);
+        final Component first = split.removeFirst();
+        if (split.isEmpty()) {
+            return first;
+        }
+        return split.removeFirst();
     }
 
     /**
      * The Offset class is used to store the offset of a line in pixels.
      */
-    @VisibleForTesting
-    static class Offset {
+    private static class Offset {
         /**
          * The offset to use even if {@link #reset()} is called.
          */
-        private final OffsetProvider provider;
+        private final Supplier<Integer> provider;
 
         /**
          * The offset of the line in pixels.
@@ -279,9 +233,9 @@ public class ComponentLineWrapper {
         /**
          * Creates a new Offset instance with the default value of 0.
          */
-        public Offset(final OffsetProvider provider) {
+        public Offset(final Supplier<Integer> provider) {
             this.provider = provider;
-            this.value = provider.getOffset();
+            this.value = provider.get();
         }
 
         /**
@@ -306,15 +260,14 @@ public class ComponentLineWrapper {
          * Resets the offset to 0.
          */
         public void reset() {
-            this.value = provider.getOffset();
+            this.value = provider.get();
         }
     }
 
     /**
      * The ComponentDecorations class is used to store the decorations of a Component.
      */
-    @VisibleForTesting
-    static class ComponentDecorations {
+    private static class ComponentDecorations {
         /**
          * The map of TextDecoration to its state for the Component.
          */
@@ -357,6 +310,59 @@ public class ComponentLineWrapper {
          */
         public Map<TextDecoration, TextDecoration.State> getDecorations() {
             return decorations;
+        }
+    }
+
+    /**
+     * The ComponentBuilder class is used to build a Component of text by appending Components.
+     */
+    private static class ComponentBuilder {
+        /**
+         * The current Component being built.
+         */
+        @Nullable
+        private Component current;
+
+        /**
+         * Creates a new ComponentBuilder instance.
+         */
+        public ComponentBuilder() {
+        }
+
+        /**
+         * Appends a Component to the current component.
+         *
+         * @param component the Component to append
+         */
+        public void append(final Component component) {
+            if (current == null) {
+                current = component;
+            } else {
+                current = current.append(component);
+            }
+        }
+
+        /**
+         * Checks if the current component is empty.
+         *
+         * @return true if the current component is empty, false otherwise
+         */
+        public boolean isEmpty() {
+            return current == null;
+        }
+
+        /**
+         * Builds the current component and resets the builder.
+         *
+         * @return the built Component representing the current builder
+         */
+        public Component build() {
+            if (current == null) {
+                return Component.empty();
+            }
+            final Component component = current;
+            current = null;
+            return component;
         }
     }
 }
