@@ -9,9 +9,15 @@ import org.betonquest.betonquest.conversation.ConversationColors;
 /**
  * Simple chat-based conversation output.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class SimpleConvIO extends ChatConvIO {
 
+    /**
+     * Creates a new SimpleConvIO instance.
+     *
+     * @param conv          the conversation this IO is part of
+     * @param onlineProfile the online profile of the player participating in the conversation
+     * @param colors        the colors used in the conversation
+     */
     public SimpleConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
         super(conv, onlineProfile, colors);
     }

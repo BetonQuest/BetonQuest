@@ -43,6 +43,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
 
     protected Component npcName;
 
+    /**
+     * Creates a new ChatConvIO instance.
+     *
+     * @param conv          the conversation this IO is part of
+     * @param onlineProfile the online profile of the player participating in the conversation
+     * @param colors        the colors used in the conversation
+     */
     @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(ChatConvIO.class);

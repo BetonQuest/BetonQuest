@@ -88,6 +88,18 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     protected Location loc;
 
+    /**
+     * Creates a new InventoryConvIO instance.
+     *
+     * @param conv                 the conversation this IO is part of
+     * @param onlineProfile        the online profile of the player participating in the conversation
+     * @param log                  the custom logger for the conversation
+     * @param colors               the colors used in the conversation
+     * @param showNumber           whether to show the number of the conversation
+     * @param showNPCText          whether to show the NPC text
+     * @param printMessages        whether to print messages
+     * @param componentLineWrapper the component line wrapper
+     */
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
                            final ConversationColors colors, final boolean showNumber, final boolean showNPCText,
                            final boolean printMessages, final FixedComponentLineWrapper componentLineWrapper) {
