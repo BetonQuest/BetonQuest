@@ -14,12 +14,25 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An interceptor which uses the {@link AsyncPlayerChatEvent}.
+ */
 public class SimpleInterceptor implements Interceptor, Listener {
+    /**
+     * Player to 'intercept' messages.
+     */
     protected final Player player;
 
+    /**
+     * Intercepted messages.
+     */
     private final List<String> messages = new ArrayList<>();
 
+    /**
+     * Create a new Simple Interceptor.
+     *
+     * @param onlineProfile the online profile to send the messages
+     */
     public SimpleInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -50,6 +63,11 @@ public class SimpleInterceptor implements Interceptor, Listener {
         }
     }
 
+    /**
+     * Removes the player from the chat recipients, if not the sender.
+     *
+     * @param event the chat event to remove the player from
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         // store all messages so they can be displayed to the player

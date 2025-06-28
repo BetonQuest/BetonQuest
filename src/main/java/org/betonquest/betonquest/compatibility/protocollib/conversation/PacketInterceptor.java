@@ -23,7 +23,6 @@ import java.util.List;
 /**
  * Provides a packet interceptor that catches all chat packets sent to a player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PacketInterceptor implements Interceptor, Listener {
 
     /**
@@ -33,14 +32,31 @@ public class PacketInterceptor implements Interceptor, Listener {
      */
     private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
 
+    /**
+     * Player to send the messages.
+     */
     protected final Player player;
 
+    /**
+     * Intercepted messages.
+     */
     private final List<PacketContainer> messages;
 
+    /**
+     * Adapter to intercept messages.
+     */
     private final PacketAdapter packetAdapter;
 
+    /**
+     * Component index to use in pre 1.19 chat packets.
+     */
     private int baseComponentIndex = -1;
 
+    /**
+     * Create a new Packet Interceptor.
+     *
+     * @param onlineProfile the online profile to send the messages
+     */
     @SuppressWarnings("PMD.CognitiveComplexity")
     public PacketInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
@@ -55,6 +71,8 @@ public class PacketInterceptor implements Interceptor, Listener {
                 }
                 final PacketContainer packet = event.getPacket();
                 final PacketType packetType = packet.getType();
+                // TODO version switch:
+                //  Remove this code when only 1.19+ is supported
                 if (PaperLib.isVersion(19, 0)) {
                     if (packetType.equals(PacketType.Play.Server.SYSTEM_CHAT)) {
                         final String message = PaperLib.isVersion(20, 4)
