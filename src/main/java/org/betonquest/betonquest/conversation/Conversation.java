@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.ConversationOptionEvent;
@@ -464,32 +462,6 @@ public class Conversation implements Listener {
             return state.isEnded();
         } finally {
             lock.readLock().unlock();
-        }
-    }
-
-    /**
-     * Send message to player, bypassing any message delaying if needed.
-     *
-     * @param message The message to send
-     */
-    public void sendMessage(final String message) {
-        if (interceptor == null) {
-            player.spigot().sendMessage(TextComponent.fromLegacyText(message));
-        } else {
-            interceptor.sendMessage(message);
-        }
-    }
-
-    /**
-     * Send message to player, bypassing any message delaying if needed.
-     *
-     * @param message The message to send
-     */
-    public void sendMessage(final BaseComponent... message) {
-        if (interceptor == null) {
-            player.spigot().sendMessage(message);
-        } else {
-            interceptor.sendMessage(message);
         }
     }
 

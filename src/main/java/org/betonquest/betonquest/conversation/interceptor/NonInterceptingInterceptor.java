@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.Player;
 
@@ -13,16 +11,6 @@ public class NonInterceptingInterceptor implements Interceptor {
 
     public NonInterceptingInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
-    }
-
-    @Override
-    public void sendMessage(final String message) {
-        player.spigot().sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(final BaseComponent... message) {
-        player.spigot().sendMessage(message);
     }
 
     @Override

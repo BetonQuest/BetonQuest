@@ -11,7 +11,6 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang3.ArrayUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
@@ -99,17 +98,6 @@ public class PacketInterceptor implements Interceptor, Listener {
             packets.add(PacketType.Play.Server.DISGUISED_CHAT);
         }
         return packets;
-    }
-
-    @Override
-    public void sendMessage(final String message) {
-        sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(final BaseComponent... message) {
-        final BaseComponent[] components = ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
-        player.spigot().sendMessage(components);
     }
 
     @Override
