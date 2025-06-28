@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Bukkit;
@@ -16,25 +14,28 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * An interceptor which uses the {@link AsyncPlayerChatEvent}.
+ */
 public class SimpleInterceptor implements Interceptor, Listener {
+    /**
+     * Player to 'intercept' messages.
+     */
     protected final Player player;
 
+    /**
+     * Intercepted messages.
+     */
     private final List<String> messages = new ArrayList<>();
 
+    /**
+     * Create a new Simple Interceptor.
+     *
+     * @param onlineProfile the online profile to send the messages
+     */
     public SimpleInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void sendMessage(final String message) {
-        player.spigot().sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(final BaseComponent... message) {
-        player.spigot().sendMessage(message);
     }
 
     @Override
@@ -62,6 +63,11 @@ public class SimpleInterceptor implements Interceptor, Listener {
         }
     }
 
+    /**
+     * Removes the player from the chat recipients, if not the sender.
+     *
+     * @param event the chat event to remove the player from
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
         // store all messages so they can be displayed to the player

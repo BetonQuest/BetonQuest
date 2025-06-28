@@ -1,28 +1,26 @@
 package org.betonquest.betonquest.conversation.interceptor;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Interceptor that does not actually intercept.
+ */
 public class NonInterceptingInterceptor implements Interceptor {
 
+    /**
+     * Player to send the messages.
+     */
     protected final Player player;
 
+    /**
+     * Create a new Non Intercepting Interceptor.
+     *
+     * @param onlineProfile the online profile to send the messages
+     */
     public NonInterceptingInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
-    }
-
-    @Override
-    public void sendMessage(final String message) {
-        player.spigot().sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(final BaseComponent... message) {
-        player.spigot().sendMessage(message);
     }
 
     @Override

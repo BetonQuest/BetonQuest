@@ -2,8 +2,6 @@ package org.betonquest.betonquest.compatibility.redischat;
 
 import dev.unnm3d.redischat.api.RedisChatAPI;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
@@ -35,16 +33,6 @@ public class RedisChatInterceptor implements Interceptor {
         this.player = onlineProfile.getPlayer();
         this.api = api;
         api.pauseChat(player);
-    }
-
-    @Override
-    public void sendMessage(final String message) {
-        player.spigot().sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(final BaseComponent... message) {
-        player.spigot().sendMessage(message);
     }
 
     @Override
