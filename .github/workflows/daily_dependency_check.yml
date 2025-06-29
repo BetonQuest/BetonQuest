@@ -15,6 +15,7 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_OVERRIDE_SETTINGS: 'false'
+          MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - name: Build with Maven
         run: |
           ./mvnw -P Test-All -B package -DskipProjectSettings=true
