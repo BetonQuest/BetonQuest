@@ -26,7 +26,7 @@ public final class BreweryUtils {
             return true;
         }
         final Brew brewItem = Brew.get(item);
-        return brewItem == null || !brewItem.getCurrentRecipe().equals(recipe);
+        return brewItem == null || !recipe.equals(brewItem.getCurrentRecipe());
     }
 
     /**
