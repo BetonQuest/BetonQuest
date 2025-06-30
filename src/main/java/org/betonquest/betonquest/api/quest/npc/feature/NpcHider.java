@@ -195,7 +195,7 @@ public class NpcHider {
         try {
             npc = npcProcessor.get(npcId).getNpc(onlineProfile);
         } catch (final QuestException exception) {
-            log.warn("NPCHider could not update visibility for npc " + npcId.getFullID() + ": No npc with this id found!", exception);
+            log.warn("NPCHider could not update visibility for npc '" + npcId + "': " + exception.getMessage(), exception);
             return;
         }
         if (npc.isSpawned()) {
