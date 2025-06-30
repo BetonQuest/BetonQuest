@@ -11,6 +11,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -317,6 +319,18 @@ public class EntityInteractObjective extends CountingObjective {
                     event.setCancelled(true);
                 }
             });
+        }
+
+        /**
+         * The right click event handler specific for armor stands.
+         *
+         * @param event the event that triggered this method
+         */
+        @EventHandler(ignoreCancelled = true)
+        public void onArmorRightClick(final PlayerInteractAtEntityEvent event) {
+            if (event.getRightClicked() instanceof ArmorStand) {
+                onRightClick(event);
+            }
         }
     }
 }
