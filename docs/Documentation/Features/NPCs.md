@@ -42,8 +42,8 @@ Npcs are defined in the `npcs` section.
     === "MythicMobs"
         ```YAML title="Example"
         npcs:
-          innkeeper: mythicmobs MYTHIC_MOB inkeeper
           mayorHans: mythicmobs UUID b18af0c3-5db7-4878-9693-05fe1b2c5a2f
+          innkeeper: mythicmobs MYTHIC_MOB inkeeper
           guard: mythicmobs FACTION guards
         ```
        
