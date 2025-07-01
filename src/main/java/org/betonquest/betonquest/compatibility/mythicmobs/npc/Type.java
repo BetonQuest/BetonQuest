@@ -8,6 +8,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.instruction.argument.Argument;
+import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -15,20 +17,23 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * How the MythicMob NPC is identified.
+ * How the MythicMob Npc is identified.
  */
 public enum Type {
     /**
      * Identifies the Npc by its {@link MythicMob} (type).
      */
-    BY_MYTHIC_MOB {
+    MYTHIC_MOB {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
-            final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(instruction.next());
-            if (mythicMob.isPresent()) {
-                return new TypeWrapper(mythicMob.get(), mobExecutor);
-            }
-            throw new QuestException("There exists no MythicMob type '" + instruction.current() + "'");
+            final Variable<MythicMob> mythicMobVariable = instruction.get(string -> {
+                final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
+                if (mythicMob.isPresent()) {
+                    return mythicMob.get();
+                }
+                throw new QuestException("There exists no MythicMob type '" + string + "'");
+            });
+            return new TypeWrapper(mythicMobVariable, mobExecutor);
         }
 
         @Override
@@ -37,13 +42,13 @@ public enum Type {
         }
     },
     /**
-     * Identifies the Npc by entity {@link UUID}.
+     * Identifies the Npc by entity {@link java.util.UUID}.
      */
-    BY_UUID {
+    UUID {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
             try {
-                return new UUIDWrapper(UUID.fromString(instruction.next()), mobExecutor);
+                return new UUIDWrapper(instruction.get(Argument.UUID), mobExecutor);
             } catch (final IllegalArgumentException exception) {
                 throw new QuestException(exception);
             }
@@ -52,6 +57,20 @@ public enum Type {
         @Override
         protected String toInstructionString(final ActiveMob mob) {
             return name() + " " + mob.getUniqueId().toString();
+        }
+    },
+    /**
+     * Identifies the Npc by its {@link ActiveMob#getFaction()}.
+     */
+    FACTION {
+        @Override
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
+            return new FactionWrapper(instruction.get(Argument.STRING), mobExecutor);
+        }
+
+        @Override
+        protected String toInstructionString(final ActiveMob mob) {
+            return name() + " " + mob.getFaction();
         }
     };
 
@@ -79,9 +98,10 @@ public enum Type {
      * @param uuid        the identifying uuid
      * @param mobExecutor the instance to get the mob from
      */
-    private record UUIDWrapper(UUID uuid, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+    private record UUIDWrapper(Variable<UUID> uuid, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
+            final UUID uuid = this.uuid.getValue(profile);
             final Optional<ActiveMob> activeMob = mobExecutor.getActiveMob(uuid);
             if (activeMob.isPresent()) {
                 return new MythicMobsNpcAdapter(activeMob.get());
@@ -96,17 +116,39 @@ public enum Type {
      * @param type        the identifying type
      * @param mobExecutor the instance to get the mob from
      */
-    private record TypeWrapper(MythicMob type, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+    private record TypeWrapper(Variable<MythicMob> type, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
-            final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(mob -> mob.getType().equals(type));
+            final MythicMob type = this.type.getValue(profile);
+            final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(mob -> type.equals(mob.getType()));
             if (activeMobs.isEmpty()) {
                 return new WrappingMMNpcAdapter(type);
             }
             final int one = 1;
             if (activeMobs.size() != one) {
-                // TODO mode for random choosing? in instruction: random, all nearest (-.,.-) or throw
                 throw new QuestException("There exists multiple MythicMobs with type '" + type + "', can't determine!");
+            }
+            return new MythicMobsNpcAdapter(activeMobs.iterator().next());
+        }
+    }
+
+    /**
+     * Gets the Mob Npc by their {@link ActiveMob#getFaction()}.
+     *
+     * @param faction     the identifying faction
+     * @param mobExecutor the instance to get the mob from
+     */
+    private record FactionWrapper(Variable<String> faction, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+        @Override
+        public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
+            final String faction = this.faction.getValue(profile);
+            final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(mob -> faction.equals(mob.getFaction()));
+            if (activeMobs.isEmpty()) {
+                throw new QuestException("There is no active mob with the faction '" + faction + "'!");
+            }
+            final int one = 1;
+            if (activeMobs.size() != one) {
+                throw new QuestException("There exists multiple MythicMobs with faction '" + faction + "', can't determine!");
             }
             return new MythicMobsNpcAdapter(activeMobs.iterator().next());
         }
