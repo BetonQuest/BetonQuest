@@ -15,6 +15,7 @@ public class MythicMobsReverseIdentifier extends GenericReverseIdentifier<Active
     public MythicMobsReverseIdentifier() {
         super("mythicmobs", ActiveMob.class,
                 Type.MYTHIC_MOB::toInstructionString,
-                Type.UUID::toInstructionString);
+                Type.UUID::toInstructionString,
+                Type.FACTION::toInstructionString);
     }
 }

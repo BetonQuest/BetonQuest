@@ -48,7 +48,8 @@ Npcs are defined in the `npcs` section.
         ```
        
         You simply use the Entity UUID as argument.
-        To acquire the NPCs UUID use the `/mm info` command and copy the `UUID` from the NPC info.
+        To acquire the NPCs UUID use the `/mm listactive` command and copy the `UUID` from the NPC info.
+        As alternative you can look at the NPC and use the `/data get entity ` command to auto complete the UUID.
      
         You can also get a NPC by its `mythic mob` type or `faction`.
         That is useful when you have many NPCs which should all start the same conversation
