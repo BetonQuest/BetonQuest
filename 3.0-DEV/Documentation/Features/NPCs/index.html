@@ -4611,13 +4611,14 @@ as shown in the <code>Scripting</code> and <code>Visual Effects</code> section o
 <p>BetonQuest provides Integrations for the following Npc plugins:</p>
 <ul>
 <li><a href="../../Scripting/Building-Blocks/Integration-List/#citizens">Citizens</a></li>
+<li><a href="../../Scripting/Building-Blocks/Integration-List/#mythicmobs">MythicMobs</a></li>
 <li><a href="../../Scripting/Building-Blocks/Integration-List/#fancynpcs">FancyNpcs</a></li>
 <li><a href="../../Scripting/Building-Blocks/Integration-List/#znpcsplus">ZNPCsPlus</a></li>
 </ul>
 <h2 id="referring-an-npc">Referring an NPC<a class="headerlink" href="#referring-an-npc" title="Permanent link">🔗</a></h2>
 <p>Npcs are defined in the <code>npcs</code> section.</p>
 <div class="admonition note">
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Citizens</label><label for="__tabbed_1_2">FancyNpcs</label><label for="__tabbed_1_3">ZNPCsPlus</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Citizens</label><label for="__tabbed_1_2">MythicMobs</label><label for="__tabbed_1_3">FancyNpcs</label><label for="__tabbed_1_4">ZNPCsPlus</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
@@ -4629,6 +4630,19 @@ as shown in the <code>Scripting</code> and <code>Visual Effects</code> section o
 To acquire the NPCs ID select the NPC using <code>/npc select</code>, then run <code>/npc id</code>.</p>
 <p>You can also get a NPC by its name with the <code>byName</code> argument.
 That is useful when you have many NPCs with the same name which should all start the same conversation
+or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mayorHans</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythicmobs UUID b18af0c3-5db7-4878-9693-05fe1b2c5a2f</span>
+<span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythicmobs MYTHIC_MOB inkeeper</span>
+<span class="w">  </span><span class="nt">guard</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythicmobs FACTION guards</span>
+</code></pre></div>
+<p>You simply use the Entity UUID as argument.
+To acquire the NPCs UUID use the <code>/mm listactive</code> command and copy the <code>UUID</code> from the NPC info.
+As alternative you can look at the NPC and use the <code>/data get entity</code> command to auto complete the UUID.</p>
+<p>You can also get a NPC by its <code>mythic mob</code> type or <code>faction</code>.
+That is useful when you have many NPCs which should all start the same conversation
 or count together in the <code>npcinteract</code> and <code>npckill</code> objectives.</p>
 </div>
 <div class="tabbed-block">
