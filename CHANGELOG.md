@@ -27,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for Npc plugins
     - `FancyNpcs`
     - `ZNPCsPlus`
+    - `MythicMobs`
 - `tag` and `globaltag` events and conditions now support variables
 - `package.version` for QuestPackages and -Templates
 - BlockSelector now supports variables when used in events, conditions, objectives

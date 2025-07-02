@@ -674,6 +674,8 @@ mmocoreattributereallocationpoints 1
 !!! info ""
     **Required MythicMobs version: _5.3.5_ or above** 
 
+!!! info
+    MythicMobs integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
 
 ### Objectives
 

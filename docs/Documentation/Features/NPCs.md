@@ -16,6 +16,7 @@ as shown in the `Scripting` and `Visual Effects` section of the documentation.
 BetonQuest provides Integrations for the following Npc plugins:
 
 - [Citizens](../Scripting/Building-Blocks/Integration-List.md#citizens)
+- [MythicMobs](../Scripting/Building-Blocks/Integration-List.md#mythicmobs)
 - [FancyNpcs](../Scripting/Building-Blocks/Integration-List.md#fancynpcs)
 - [ZNPCsPlus](../Scripting/Building-Blocks/Integration-List.md#znpcsplus)
 
@@ -36,6 +37,22 @@ Npcs are defined in the `npcs` section.
      
         You can also get a NPC by its name with the `byName` argument.
         That is useful when you have many NPCs with the same name which should all start the same conversation
+        or count together in the `npcinteract` and `npckill` objectives.
+            
+    === "MythicMobs"
+        ```YAML title="Example"
+        npcs:
+          mayorHans: mythicmobs UUID b18af0c3-5db7-4878-9693-05fe1b2c5a2f
+          innkeeper: mythicmobs MYTHIC_MOB inkeeper
+          guard: mythicmobs FACTION guards
+        ```
+       
+        You simply use the Entity UUID as argument.
+        To acquire the NPCs UUID use the `/mm listactive` command and copy the `UUID` from the NPC info.
+        As alternative you can look at the NPC and use the `/data get entity ` command to auto complete the UUID.
+     
+        You can also get a NPC by its `mythic mob` type or `faction`.
+        That is useful when you have many NPCs which should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "FancyNpcs"

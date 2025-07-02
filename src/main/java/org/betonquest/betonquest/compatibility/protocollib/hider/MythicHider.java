@@ -21,9 +21,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+/**
+ * Hides MythicMobs from the spawn event and NPCs.
+ */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class MythicHider extends BukkitRunnable implements Listener {
 
+    /**
+     * Active Hider instance.
+     */
     @Nullable
     private static MythicHider instance;
 
@@ -32,8 +38,14 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      */
     private final ProfileProvider profileProvider;
 
+    /**
+     * Protocol level hider for an entity.
+     */
     private final EntityHider hider;
 
+    /**
+     * Mobs with a list of player uuids who are allowed to see them.
+     */
     private final Map<Entity, Set<UUID>> mythicmobs;
 
     private MythicHider() {
@@ -58,6 +70,8 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     }
 
     /**
+     * Gets the active Hider.
+     *
      * @return the currently used NPCHider instance
      */
     @Nullable
@@ -156,6 +170,34 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     }
 
     /**
+     * Hides the mob from the player.
+     *
+     * @param onlineProfile the onlinePlayer of the player
+     * @param mythicMob     the mob to hide
+     */
+    public void hide(final OnlineProfile onlineProfile, final Entity mythicMob) {
+        final Set<UUID> uuids = mythicmobs.get(mythicMob);
+        if (uuids != null) {
+            uuids.remove(onlineProfile.getPlayerUUID());
+        }
+        hider.hideEntity(onlineProfile, mythicMob);
+    }
+
+    /**
+     * Shows the mob again to the player.
+     *
+     * @param onlineProfile the onlinePlayer of the player
+     * @param mythicMob     the mob to show again
+     */
+    public void show(final OnlineProfile onlineProfile, final Entity mythicMob) {
+        final Set<UUID> uuids = mythicmobs.get(mythicMob);
+        if (uuids != null) {
+            uuids.add(onlineProfile.getPlayerUUID());
+        }
+        hider.showEntity(onlineProfile, mythicMob);
+    }
+
+    /**
      * Checks if the player logging in can see any of the mobs in the list of tracked mobs, if not hides the mob.
      *
      * @param event the event of the player joining
@@ -165,11 +207,21 @@ public final class MythicHider extends BukkitRunnable implements Listener {
         applyVisibility(profileProvider.getProfile(event.getPlayer()));
     }
 
+    /**
+     * Removes the mob from the hider.
+     *
+     * @param event The entity death event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onMythicKill(final MythicMobDeathEvent event) {
         mythicmobs.remove(event.getEntity());
     }
 
+    /**
+     * Removes the mob from the hider.
+     *
+     * @param event The mm despawn event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onMythicDespawn(final MythicMobDespawnEvent event) {
         mythicmobs.remove(event.getEntity());

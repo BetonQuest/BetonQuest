@@ -8,6 +8,7 @@ import org.betonquest.betonquest.instruction.argument.types.EnumParser;
 import org.betonquest.betonquest.instruction.argument.types.MessageParserToComponentParser;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.argument.types.StringParser;
+import org.betonquest.betonquest.instruction.argument.types.UUIDParser;
 import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.argument.types.location.VectorParser;
 import org.betonquest.betonquest.instruction.argument.types.location.WorldParser;
@@ -78,6 +79,11 @@ public interface Argument<T> extends VariableResolver<T> {
      * The default instance of {@link MessageParserToComponentParser}.
      */
     MessageParserToComponentParser MESSAGE = new MessageParserToComponentParser(BetonQuest.getInstance().getMessageParser());
+
+    /**
+     * The default instance of {@link UUIDParser}.
+     */
+    UUIDParser UUID = new UUIDParser();
 
     /**
      * The default instance of {@link EnumParser}.

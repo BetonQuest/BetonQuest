@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mythicmobs;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
@@ -8,8 +9,12 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.mythicmobs.condition.MythicMobDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicSpawnMobEventFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteractCatcher;
+import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
+import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
@@ -48,6 +53,10 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(apiHelper, data));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
         questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data));
+        final NpcTypeRegistry npcTypes = plugin.getFeatureRegistries().npc();
+        server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(plugin.getProfileProvider(), npcTypes, apiHelper), plugin);
+        npcTypes.register("mythicmobs", new MythicMobsNpcFactory(MythicBukkit.inst().getMobManager()));
+        npcTypes.registerIdentifier(new MythicMobsReverseIdentifier());
     }
 
     /**
