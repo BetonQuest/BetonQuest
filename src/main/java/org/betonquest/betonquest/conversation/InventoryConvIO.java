@@ -89,6 +89,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected Location loc;
 
     /**
+     * Callback to be executed when the conversation ends.
+     */
+    @Nullable
+    protected Runnable endCallback;
+
+    /**
      * Creates a new InventoryConvIO instance.
      *
      * @param conv                 the conversation this IO is part of
@@ -118,6 +124,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.showNumber = showNumber;
         this.showNPCText = showNPCText;
         this.printMessages = printMessages;
+        this.endCallback = null;
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -331,6 +338,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // allow closing when the conversation has finished
         if (allowListenerUnregister) {
             HandlerList.unregisterAll(this);
+            if (endCallback != null) {
+                endCallback.run();
+                endCallback = null;
+            }
             return;
         }
         if (conv.isMovementBlock()) {
@@ -368,7 +379,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 callback.run();
             });
         } else {
-            callback.run();
+            endCallback = callback;
         }
     }
 
