@@ -119,7 +119,10 @@ All conversation related settings.
       See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
     * `display_missed` - If set to `true`, the interceptor will display all missed messages in the chat after
       the conversation ends.
-* `combat_delay` - A delay (in seconds) the player must wait before starting a conversation after the last combat.
+* `damage`
+  All damage related settings.
+    * `combat_delay` - A delay (in seconds) the player must wait before starting a conversation after the last combat.
+    * `invincible` - If set to `false` players can get damage from entities when in a conversation.
 * `stop`  
   Controls the behavior of the `stop` option in conversations.
     * `distance` - The distance you need to walk away from the NPC for the conversation to end (in the case of using

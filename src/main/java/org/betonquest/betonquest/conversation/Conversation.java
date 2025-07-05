@@ -516,10 +516,13 @@ public class Conversation implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
+        if (!data.getPublicData().invincible()) {
+            return;
+        }
         final ProfileProvider profileProvider = plugin.getProfileProvider();
-        if (event.getEntity() instanceof Player && profileProvider.getProfile((Player) event.getEntity()).equals(onlineProfile)
-                || event.getDamager() instanceof Player
-                && profileProvider.getProfile((Player) event.getDamager()).equals(onlineProfile)) {
+        if (event.getEntity() instanceof final Player playerEntity && profileProvider.getProfile(playerEntity).equals(onlineProfile)
+                || event.getDamager() instanceof final Player playerDamager
+                && profileProvider.getProfile(playerDamager).equals(onlineProfile)) {
             event.setCancelled(true);
         }
     }

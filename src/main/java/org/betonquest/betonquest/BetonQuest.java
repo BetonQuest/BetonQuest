@@ -482,7 +482,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private void registerListener(final CoreQuestRegistry coreQuestRegistry) {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         List.of(
-                new CombatTagger(profileProvider, config.getInt("conversation.combat_delay")),
+                new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureAPI),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
