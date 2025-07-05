@@ -10,13 +10,12 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.common.component.VariableComponent;
-import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.compatibility.protocollib.conversation.display.Display;
+import org.betonquest.betonquest.compatibility.protocollib.conversation.display.Scroll;
 import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicleUpdated;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -53,24 +52,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
-    /**
-     * The type of NPC name to display in the conversation.
-     */
-    private static final String NPC_NAME_TYPE_CHAT = "chat";
-
-    protected final AtomicInteger oldSelectedOption;
-
-    protected final AtomicInteger selectedOption;
-
     /**
      * Thread safety.
      */
@@ -104,9 +91,7 @@ public class MenuConvIO extends ChatConvIO {
     protected BukkitRunnable displayRunnable;
 
     @Nullable
-    protected Component displayOutput;
-
-    protected Component formattedNpcName;
+    protected Display chatDisplay;
 
     @Nullable
     private ArmorStand stand;
@@ -114,9 +99,11 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * Creates a new MenuConvIO instance.
      *
-     * @param conv          the conversation this IO is part of
-     * @param onlineProfile the online profile of the player participating in the conversation
-     * @param colors        the colors used in the conversation
+     * @param conv                 the conversation this IO is part of
+     * @param onlineProfile        the online profile of the player participating in the conversation
+     * @param colors               the colors used in the conversation
+     * @param settings             the settings for the conversation IO
+     * @param componentLineWrapper the component line wrapper to use for the conversation
      */
     @SuppressWarnings("NullAway.Init")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
@@ -125,8 +112,6 @@ public class MenuConvIO extends ChatConvIO {
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;
         final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.oldSelectedOption = new AtomicInteger();
-        this.selectedOption = new AtomicInteger();
 
         // Sort out Controls
         try {
@@ -283,29 +268,25 @@ public class MenuConvIO extends ChatConvIO {
             return;
         }
 
-        // Only want to hook the player when there are player options
         if (!options.isEmpty()) {
             start();
         }
 
-        // Update the Display automatically if refreshDelay is > 0
+        updateDisplay();
         if (settings.refreshDelay() > 0) {
             displayRunnable = new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    showDisplay();
+                    updateDisplay();
 
                     if (state.isEnded()) {
                         this.cancel();
                     }
                 }
             };
-
             displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), settings.refreshDelay(), settings.refreshDelay());
         }
-
-        updateDisplay();
     }
 
     // Override this event from our parent
@@ -314,170 +295,6 @@ public class MenuConvIO extends ChatConvIO {
     @EventHandler(ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
         // Empty
-    }
-
-    /**
-     * Set the text of response chosen by the NPC. Should be called once per
-     * conversation cycle.
-     *
-     * @param npcName  the name of the NPC
-     * @param response the text the NPC chose
-     */
-    @Override
-    public void setNpcResponse(final Component npcName, final Component response) {
-        super.setNpcResponse(npcName, response);
-        formattedNpcName = settings.npcNameFormat().resolve(new VariableReplacement("npc_name", npcName));
-    }
-
-    protected void showDisplay() {
-        if (displayOutput != null) {
-            conv.sendMessage(displayOutput);
-        }
-    }
-
-    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    protected void updateDisplay() {
-        if (Component.empty().equals(npcText)) {
-            displayOutput = null;
-            return;
-        }
-
-        final List<Component> npcLines = getNpcLines();
-
-        int linesAvailable = Math.max(1, 10 - npcLines.size());
-
-        if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
-            linesAvailable = Math.max(1, linesAvailable - 1);
-        }
-        if (!options.isEmpty()) {
-            linesAvailable = Math.max(1, linesAvailable - 2);
-        }
-
-        final List<Component> optionsSelected = new ArrayList<>();
-        int currentOption = selectedOption.get();
-        int currentDirection = selectedOption.get() == oldSelectedOption.get() ? 1 : selectedOption.get() - oldSelectedOption.get();
-        int topOption = options.size();
-        for (int i = 0; i < options.size() && linesAvailable > (i < 2 ? 0 : 1); i++) {
-            int optionIndex = currentOption + (i * currentDirection);
-            if (optionIndex > options.size() - 1) {
-                optionIndex = currentOption - (optionIndex - (options.size() - 1));
-                currentDirection = -currentDirection;
-                if (optionIndex < 0) {
-                    break;
-                }
-            } else if (optionIndex < 0) {
-                optionIndex = currentOption + (-optionIndex);
-                if (optionIndex > options.size() - 1) {
-                    break;
-                }
-                currentDirection = -currentDirection;
-            }
-
-            if (topOption > optionIndex) {
-                topOption = optionIndex;
-            }
-
-            final List<Component> optionLines;
-
-            final Component optionReplacementComponent = options.get(optionIndex + 1);
-            optionLines = getOptionLines(i == 0 ? settings.optionSelected() : settings.optionText(), optionReplacementComponent);
-
-            if (linesAvailable < optionLines.size()) {
-                break;
-            }
-
-            linesAvailable -= optionLines.size();
-
-            final Component optionLine = optionLines.stream().reduce((first, second)
-                    -> first.append(Component.newline()).append(second)).orElseGet(Component::empty);
-            if (currentDirection > 0) {
-                optionsSelected.add(optionLine);
-            } else {
-                optionsSelected.add(0, optionLine);
-            }
-
-            currentOption = optionIndex;
-            currentDirection = -currentDirection;
-        }
-
-        final TextComponent.Builder displayBuilder = Component.text();
-        for (int i = 0; i < settings.startNewLines(); i++) {
-            displayBuilder.append(Component.newline());
-        }
-
-        if (NPC_NAME_TYPE_CHAT.equals(settings.npcNameType())) {
-            displayBuilder.append(getFormattedNpcName().append(Component.newline()));
-        }
-
-        if (settings.npcNameNewlineSeparator() && linesAvailable > 0) {
-            displayBuilder.append(Component.newline());
-            linesAvailable--;
-        }
-
-        npcLines.forEach(line -> displayBuilder.append(line).append(Component.newline()));
-        if (settings.npcTextFillNewLines()) {
-            for (int i = 0; i < linesAvailable; i++) {
-                displayBuilder.append(Component.newline());
-            }
-        }
-
-        if (!options.isEmpty()) {
-            if (topOption > 0) {
-                displayBuilder.append(settings.scrollUp());
-            }
-            displayBuilder.append(Component.newline());
-
-            optionsSelected.forEach(line -> displayBuilder.append(line).append(Component.newline()));
-
-            if (topOption + optionsSelected.size() < options.size()) {
-                displayBuilder.append(settings.scrollDown());
-            }
-        }
-
-        if (settings.npcTextFillNewLines()) {
-            displayOutput = displayBuilder.asComponent();
-        } else {
-            final TextComponent.Builder prefix = Component.text();
-            for (int i = 0; i < linesAvailable; i++) {
-                displayBuilder.append(Component.newline());
-            }
-            displayOutput = prefix.append(displayBuilder.asComponent()).asComponent();
-        }
-
-        showDisplay();
-    }
-
-    private Component getFormattedNpcName() {
-        return switch (settings.npcNameAlign()) {
-            case "right" -> Component.text(" ".repeat(getSpaceToFillForNpcName())).append(formattedNpcName);
-            case "center", "middle" ->
-                    Component.text(" ".repeat(getSpaceToFillForNpcName() / 2)).append(formattedNpcName);
-            default -> formattedNpcName;
-        };
-    }
-
-    private List<Component> getNpcLines() {
-        final VariableReplacement replacementNpcText = new VariableReplacement("npc_text", npcText);
-        final VariableReplacement replacementNpcName = new VariableReplacement("npc_name", npcName);
-        final Component resolvedNpcText = settings.npcText().resolve(replacementNpcText, replacementNpcName);
-
-        return componentLineWrapper.splitWidth(resolvedNpcText, getPrefixComponentSupplier(settings.npcWrap()));
-    }
-
-    private List<Component> getOptionLines(final VariableComponent baseComponent, @Nullable final Component optionReplacementComponent) {
-        final Component optionReplacement = optionReplacementComponent == null ? Component.empty() : optionReplacementComponent;
-        final VariableReplacement replacementOptionText = new VariableReplacement("option_text", optionReplacement);
-        final VariableReplacement replacementNpcName = new VariableReplacement("npc_name", npcName);
-        final Component optionText = baseComponent.resolve(replacementOptionText, replacementNpcName);
-
-        return componentLineWrapper.splitWidth(optionText, getPrefixComponentSupplier(settings.optionSelectedWrap()));
-    }
-
-    private int getSpaceToFillForNpcName() {
-        final int npcNameWidth = componentLineWrapper.width(npcName);
-        final int spaceWidth = componentLineWrapper.width(Component.text(" "));
-        final int remainingSpace = Math.max(0, settings.lineLength() - npcNameWidth);
-        return remainingSpace / spaceWidth;
     }
 
     /**
@@ -491,8 +308,7 @@ public class MenuConvIO extends ChatConvIO {
             displayRunnable = null;
         }
 
-        selectedOption.set(0);
-        oldSelectedOption.set(0);
+        chatDisplay = null;
 
         super.clear();
     }
@@ -537,7 +353,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private PacketAdapter getPacketAdapter() {
         return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
                 PacketType.Play.Client.STEER_VEHICLE,
@@ -583,9 +399,7 @@ public class MenuConvIO extends ChatConvIO {
                         case SELECT:
                             lock.lock();
                             try {
-                                if (!isOnCooldown()) {
-                                    conv.passPlayerAnswer(selectedOption.get() + 1);
-                                }
+                                passPlayerAnswer();
                             } finally {
                                 lock.unlock();
                             }
@@ -593,18 +407,11 @@ public class MenuConvIO extends ChatConvIO {
                         case MOVE:
                             break;
                     }
-                } else if (steerEvent.getForward() < 0 && selectedOption.get() < options.size() - 1 && controls.containsKey(CONTROL.MOVE)) {
-                    // Player moved Backwards
-                    oldSelectedOption.set(selectedOption.get());
-                    selectedOption.incrementAndGet();
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
-                } else if (steerEvent.getForward() > 0 && selectedOption.get() > 0 && controls.containsKey(CONTROL.MOVE)) {
-                    // Player moved Forwards
-                    oldSelectedOption.set(selectedOption.get());
-                    selectedOption.decrementAndGet();
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), MenuConvIO.this::updateDisplay);
+                } else if (steerEvent.getForward() < 0 && controls.containsKey(CONTROL.MOVE)) {
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> MenuConvIO.this.updateDisplay(Scroll.DOWN));
+                } else if (steerEvent.getForward() > 0 && controls.containsKey(CONTROL.MOVE)) {
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> MenuConvIO.this.updateDisplay(Scroll.UP));
                 } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK)) {
-                    // Player Dismounted
                     switch (controls.get(CONTROL.SNEAK)) {
                         case CANCEL:
                             if (!conv.isMovementBlock()) {
@@ -615,7 +422,7 @@ public class MenuConvIO extends ChatConvIO {
                             lock.lock();
                             try {
                                 if (!isOnCooldown()) {
-                                    conv.passPlayerAnswer(selectedOption.get() + 1);
+                                    passPlayerAnswer();
                                 }
                             } finally {
                                 lock.unlock();
@@ -628,6 +435,13 @@ public class MenuConvIO extends ChatConvIO {
                 event.setCancelled(true);
             }
         };
+    }
+
+    private void passPlayerAnswer() {
+        if (chatDisplay == null || isOnCooldown()) {
+            return;
+        }
+        chatDisplay.getSelection().ifPresent(index -> conv.passPlayerAnswer(index + 1));
     }
 
     @SuppressWarnings("PMD.CollapsibleIfStatements")
@@ -721,7 +535,7 @@ public class MenuConvIO extends ChatConvIO {
             }
             case SELECT -> {
                 if (!isOnCooldown()) {
-                    conv.passPlayerAnswer(selectedOption.get() + 1);
+                    passPlayerAnswer();
                 }
             }
             default -> {
@@ -735,7 +549,7 @@ public class MenuConvIO extends ChatConvIO {
             return true;
         } else {
             selectionCooldowns.add(player);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), settings.selectionCooldown());
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), settings.rateLimit());
         }
         return false;
     }
@@ -762,39 +576,30 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            final Direction scrollDirection = getScrollDirection(event.getPreviousSlot(), event.getNewSlot());
-
-            if (scrollDirection == Direction.DOWN && selectedOption.get() < options.size() - 1) {
-                oldSelectedOption.set(selectedOption.getAndIncrement());
-                updateDisplay();
-            } else if (scrollDirection == Direction.UP && selectedOption.get() > 0) {
-                oldSelectedOption.set(selectedOption.getAndDecrement());
-                updateDisplay();
-            }
+            updateDisplay(getScrollDirection(event.getPreviousSlot(), event.getNewSlot()));
         } finally {
             lock.unlock();
         }
     }
 
-    private Direction getScrollDirection(final int start, final int end) {
-        for (int offset = 1; offset <= 4; offset++) {
-            if ((start + offset) % 9 == end) {
-                return Direction.DOWN;
-            }
-        }
-        return Direction.UP;
+    private void updateDisplay() {
+        updateDisplay(Scroll.NONE);
     }
 
-    private Supplier<Component> getPrefixComponentSupplier(final Component component) {
-        final AtomicBoolean first = new AtomicBoolean(true);
-        return () -> {
-            if (first.get()) {
-                first.set(false);
-                return Component.empty();
-            } else {
-                return component;
+    private void updateDisplay(final Scroll scroll) {
+        if (chatDisplay == null) {
+            chatDisplay = new Display(settings, componentLineWrapper, npcName, npcText, new ArrayList<>(options.values()));
+        }
+        conv.sendMessage(chatDisplay.getDisplay(scroll));
+    }
+
+    private Scroll getScrollDirection(final int start, final int end) {
+        for (int offset = 1; offset <= 4; offset++) {
+            if ((start + offset) % 9 == end) {
+                return Scroll.DOWN;
             }
-        };
+        }
+        return Scroll.UP;
     }
 
     public enum ACTION {
@@ -809,11 +614,5 @@ public class MenuConvIO extends ChatConvIO {
         SCROLL,
         MOVE,
         LEFT_CLICK
-    }
-
-    public enum Direction {
-        @SuppressWarnings("PMD.ShortVariable")
-        UP,
-        DOWN
     }
 }
