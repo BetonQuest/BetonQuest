@@ -1,4 +1,11 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.13:
+  - type: KEY_RENAME
+    oldKey: conversation.combat_delay
+    newKey: conversation.damage.combat_delay
+  - type: SET
+    key: conversation.damage.invincible
+    value: true
 3.0.0.12:
   - type: SET
     key: conversation.io.menu.scroll_up

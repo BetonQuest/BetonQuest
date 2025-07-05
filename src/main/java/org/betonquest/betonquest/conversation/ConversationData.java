@@ -534,7 +534,7 @@ public class ConversationData {
      */
     public record PublicData(String convName, Message quester, Variable<Boolean> blockMovement,
                              Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
-                             Variable<InterceptorFactory> interceptor) {
+                             Variable<InterceptorFactory> interceptor, boolean invincible) {
 
         /**
          * Gets the quester's name in the specified language.

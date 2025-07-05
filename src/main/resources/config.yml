@@ -31,7 +31,9 @@ conversation:
   interceptor:
     default: redischat,packet,simple
     display_missed: true
-  combat_delay: 10
+  damage:
+    combat_delay: 10
+    invincible: true
   stop:
     distance: 5.3
     notify: true
