@@ -352,6 +352,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         } else {
             conv.endConversation();
             HandlerList.unregisterAll(this);
+            if (endCallback != null) {
+                endCallback.run();
+                endCallback = null;
+            }
         }
     }
 
