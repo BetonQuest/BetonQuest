@@ -43,6 +43,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` conversation IO settings to configure the scroll down and up buttons
 - `citizens` npcs are now used only from default registry
 - `invincible` config option to disable conversation invincibility
+- `debug dump` command to only dump the history to the log file
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

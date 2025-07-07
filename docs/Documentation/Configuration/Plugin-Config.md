@@ -39,7 +39,7 @@ The updater section controls the plugin's Auto-Updater.
   when a new version is available. They will only be notified once a day without a server restart.
 
 ## `downloader` - The downloader settings
-The command [`/q download`](Commands-and-permissions.md) can be used to download quest files from GitHub repositories.
+The command [`/q download`](Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
 This is mainly used by betonquest to download tutorial files.
 
 * `pull_request` - Define if pull requests are allowed to be downloaded.  

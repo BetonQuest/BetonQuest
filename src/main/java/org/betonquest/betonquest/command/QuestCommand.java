@@ -1450,7 +1450,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         map.put("delete", "delete <tag/point/objective/journal> <name>");
         map.put("version", "version");
         map.put("purge", "purge <player>");
-        map.put("debug", "debug [true/false/ingame]");
+        map.put("debug", "debug [true/false/ingame/dump]");
         map.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
         if (!(sender instanceof Player)) {
             map.put("backup", "backup");
@@ -1566,6 +1566,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 logWatcher.addFilter(uuid, filter, level);
                 sender.sendMessage("§2Filter added!");
             }
+            return;
+        }
+        if ("dump".equalsIgnoreCase(args[1])) {
+            if (debuggingController.isLogging()) {
+                sender.sendMessage("§2Can not dump while debugging is enabled!");
+                return;
+            }
+            debuggingController.dumpLog();
+            sender.sendMessage("§2Dumped debug log to file!");
+            log.info("Dumped debug log to file!");
             return;
         }
         final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
@@ -1830,7 +1840,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private Optional<List<String>> completeDebug(final String... args) {
         if (args.length == 2) {
-            return Optional.of(Arrays.asList("true", "false", "ingame"));
+            return Optional.of(Arrays.asList("true", "false", "ingame", "dump"));
         }
         if (args.length == 3) {
             return completePackage();

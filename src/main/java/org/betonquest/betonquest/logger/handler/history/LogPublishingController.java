@@ -27,4 +27,9 @@ public interface LogPublishingController {
      * @throws IOException If there was an issue stop debugging
      */
     void stopLogging() throws IOException;
+
+    /**
+     * Dumps the debug log.
+     */
+    void dumpLog();
 }
