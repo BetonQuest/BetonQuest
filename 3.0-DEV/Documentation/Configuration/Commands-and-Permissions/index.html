@@ -10,7 +10,7 @@
         <meta name="author" content="BetonQuest Organisation">
       
       
-        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Configuration/Commands-and-permissions/">
+        <link rel="canonical" href="https://betonquest.org/3.0-DEV/Documentation/Configuration/Commands-and-Permissions/">
       
       
         <link rel="prev" href="../Plugin-Config/">
@@ -5466,7 +5466,7 @@
 
 
   
-    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Configuration/Commands-and-permissions.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/BetonQuest/BetonQuest/edit/main/docs/Documentation/Configuration/Commands-and-Permissions.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -5503,7 +5503,7 @@ Optional arguments are displayed as such: <code>[argument]</code>.</p>
 <li><code>/q backup</code> - Creates a backup of configuration files and database</li>
 <li><code>/q update</code> - Updates the plugin to the newest version.</li>
 <li><code>/q version</code>: Displays the versions of BetonQuest, the server and all hooked plugins</li>
-<li><code>/q debug [true/false/ingame]</code>: Enable debug mode and write all down in a log file or disable the debug mode</li>
+<li><code>/q debug [true/false/ingame/dump]</code>: Enable debug mode and write all down in a log file or disable the debug mode</li>
 <li><code>/q download &lt;gitHubNamespace&gt; &lt;ref&gt; &lt;type&gt; &lt;sourcePath&gt; [targetPath] [recursive] [overwrite]</code>: Download quests and templates from a GitHub repository</li>
 <li><code>/questlang &lt;lang&gt;</code> - Changes the language for the player. <code>default</code> language will use the language defined in "<em>config.yml</em>".</li>
 <li><code>/rpgmenu reload &lt;menu&gt;</code> - Allows reloading all configuration files or just reloading the configuration of one specific menu.</li>
@@ -5613,7 +5613,9 @@ you should remove <code>BetonQuest.jar</code> file from the <code>plugins/update
 server startup ('<code>/q debug true</code>'), all log entries from the configured log history time frame are written to the
 <code>/plugins/BetonQuest/logs/latest.log</code> file as history and writing will be continued until the debug mode is disabled
 using ('<code>/q debug false</code>'). The <code>latest.log</code> is renamed to the current date and time on server startup.
-It's useful if you search for more information about an issue and can help developers to fix bugs.</p>
+It's useful if you search for more information about an issue and can help developers to fix bugs.<br />
+With the dump command ('<code>/q debug dump</code>') you can write the history of the debug log to the file, without actually 
+enabling the debug mode. This is useful if you want to share the log with developers without enabling the debug mode.</p>
 <p>The command ('<code>/q debug ingame</code>') allows you to manage your ingame debugging.
 The ingame debugging sends you live information about quests to your chat. Running the command without any argument
 shows your active filters. If you don't have any filters active you will see all console output from <code>/q reload</code>. If you
