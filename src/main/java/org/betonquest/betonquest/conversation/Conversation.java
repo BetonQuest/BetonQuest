@@ -57,7 +57,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
 
     /**
@@ -490,6 +490,15 @@ public class Conversation implements Listener {
             log.warn(pack, "Error resolving if movement should be blocked: " + e.getMessage(), e);
             return false;
         }
+    }
+
+    /**
+     * Checks if the conversation has a next NPC option.
+     *
+     * @return true if there is a next NPC option, false otherwise
+     */
+    public boolean hasNextNPCOption() {
+        return nextNPCOption != null;
     }
 
     /**

@@ -377,26 +377,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end(final Runnable callback) {
         allowListenerUnregister = true;
-        if (mustBeClosed()) {
+        if (conv.hasNextNPCOption()) {
+            endCallback = callback;
+        } else {
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
                 profile.getPlayer().closeInventory();
                 callback.run();
             });
-        } else {
-            endCallback = callback;
         }
-    }
-
-    /**
-     * Checks whether the inventory must be closed when the conversation ends.
-     * <br><br>
-     * If a conversation's next option (this was actually it's previous / last option because this is called at the
-     * conversation's ending) is null, the previous option was a player's response. If the player ended the
-     * conversation we want to close the inventory.
-     *
-     * @return true if the inventory must be closed
-     */
-    private boolean mustBeClosed() {
-        return inv != null && conv.nextNPCOption == null;
     }
 }
