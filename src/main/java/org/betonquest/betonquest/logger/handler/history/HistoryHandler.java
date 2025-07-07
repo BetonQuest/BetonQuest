@@ -146,6 +146,19 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         }
     }
 
+    @Override
+    public void dumpLog() {
+        publishLock.lock();
+        try {
+            if (!isLogging()) {
+                push();
+                target.reset();
+            }
+        } finally {
+            publishLock.unlock();
+        }
+    }
+
     /**
      * Publishes any available history to the target handler.
      */

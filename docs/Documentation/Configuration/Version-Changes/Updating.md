@@ -79,7 +79,7 @@ After a manual or automatic update BetonQuest might update some quest packages o
 file or the database is touched, an automatic backup will be created and is saved as a zip file to `BetonQuest/Backups/`
 to prevent losing your work due to errors.
 
-A backup can also be created manually by running the [backup command](../Commands-and-permissions.md#commands).
+A backup can also be created manually by running the [backup command](../Commands-and-Permissions.md#commands).
 
 ### Restoring Backups
 You find your backups as zip file in the folder `BetonQuest/Backups/` containing every configuration and a dump of you

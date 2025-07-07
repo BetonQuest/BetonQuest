@@ -31,7 +31,7 @@ Optional arguments are displayed as such: `[argument]`.
 * `/q backup` - Creates a backup of configuration files and database
 * `/q update` - Updates the plugin to the newest version.
 * `/q version`: Displays the versions of BetonQuest, the server and all hooked plugins
-* `/q debug [true/false/ingame]`: Enable debug mode and write all down in a log file or disable the debug mode
+* `/q debug [true/false/ingame/dump]`: Enable debug mode and write all down in a log file or disable the debug mode
 * `/q download <gitHubNamespace> <ref> <type> <sourcePath> [targetPath] [recursive] [overwrite]`: Download quests and templates from a GitHub repository
 * `/questlang <lang>` - Changes the language for the player. `default` language will use the language defined in "_config.yml_".
 * `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
@@ -160,7 +160,9 @@ The debug command ('`/q debug`') allows you to enable or disable the debug mode.
 server startup ('`/q debug true`'), all log entries from the configured log history time frame are written to the
 `/plugins/BetonQuest/logs/latest.log` file as history and writing will be continued until the debug mode is disabled
 using ('`/q debug false`'). The `latest.log` is renamed to the current date and time on server startup.
-It's useful if you search for more information about an issue and can help developers to fix bugs.
+It's useful if you search for more information about an issue and can help developers to fix bugs.  
+With the dump command ('`/q debug dump`') you can write the history of the debug log to the file, without actually 
+enabling the debug mode. This is useful if you want to share the log with developers without enabling the debug mode.
 
 The command ('`/q debug ingame`') allows you to manage your ingame debugging.
 The ingame debugging sends you live information about quests to your chat. Running the command without any argument

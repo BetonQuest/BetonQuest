@@ -98,7 +98,7 @@ nav:
 
       - 'Configuration':
           - 'Plugin Config': Documentation/Configuration/Plugin-Config.md
-          - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
+          - 'Permissions & Commands': Documentation/Configuration/Commands-and-Permissions.md
           - 'Version Changes':
               - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
               - 'Migration 1.X to 2.X': Documentation/Configuration/Version-Changes/Migration-1-2.md
