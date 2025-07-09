@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
+import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -25,23 +26,29 @@ public class TakeBrewEvent implements OnlineEvent {
     private final Variable<String> nameVar;
 
     /**
+     * Interpretation mode for brews.
+     */
+    private final Variable<IdentifierType> mode;
+
+    /**
      * Create a new Take Brew Event.
      *
      * @param countVar The amount of brews to take.
      * @param nameVar  The name of the brew to take.
+     * @param mode     the interpretation mode for brews.
      */
-    public TakeBrewEvent(final Variable<Number> countVar, final Variable<String> nameVar) {
+    public TakeBrewEvent(final Variable<Number> countVar, final Variable<String> nameVar, final Variable<IdentifierType> mode) {
         this.countVar = countVar;
         this.nameVar = nameVar;
+        this.mode = mode;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final int count = countVar.getValue(profile).intValue();
-        final String name = nameVar.getValue(profile).replace("_", " ");
-
-        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
+        final String name = nameVar.getValue(profile);
+        final BRecipe recipe = mode.getValue(profile).getRecipeOrThrow(name);
 
         int remaining = count;
         final PlayerInventory inventory = player.getInventory();
