@@ -47,7 +47,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     public void onLeft(final EntityDamageByEntityEvent event) {
         final ActiveMob activeMob = apiHelper.getMythicMobInstance(event.getEntity());
         if (activeMob != null && event.getDamager() instanceof Player player
-                && interactLogic(player, new MythicMobsNpcAdapter(activeMob), Interaction.RIGHT,
+                && interactLogic(player, new MythicMobsNpcAdapter(activeMob), Interaction.LEFT,
                 event.isCancelled(), event.isAsynchronous())) {
             event.setCancelled(true);
         }
