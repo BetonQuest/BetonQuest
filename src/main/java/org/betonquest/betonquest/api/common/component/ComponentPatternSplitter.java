@@ -81,6 +81,6 @@ public final class ComponentPatternSplitter {
 
     private static boolean isEmpty(final Component component) {
         return component instanceof final TextComponent textComponent
-                && textComponent.content().isEmpty();
+                && textComponent.content().isEmpty() && textComponent.children().isEmpty();
     }
 }
