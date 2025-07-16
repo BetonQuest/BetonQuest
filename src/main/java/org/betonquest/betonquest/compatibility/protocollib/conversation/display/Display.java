@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * A display for a conversation in a menu IO.
+ * A display for a conversations displayed with components.
  * It contains the NPC name, NPC text, and options to be displayed.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
@@ -37,7 +37,7 @@ public class Display {
     private final ToggleableCursor select;
 
     /**
-     * A set of identifiers for the last viewable options.
+     * A set of identifiers for the previous viewable options.
      */
     private final Set<Integer> lastViewableOptions;
 
@@ -48,7 +48,7 @@ public class Display {
      * @param wrapper  the wrapper for fixed component lines
      * @param npcName  the name of the NPC to be displayed
      * @param npcText  the text of the NPC to be displayed
-     * @param options  the options to be displayed in the menu
+     * @param options  the options to be displayed to choose from
      */
     public Display(final MenuConvIOSettings settings, final FixedComponentLineWrapper wrapper, final Component npcName,
                    final Component npcText, final List<Component> options) {
@@ -119,9 +119,9 @@ public class Display {
                     getPrefixComponentSupplier(settings.optionSelectedTextWrap()));
 
             for (int i = 0; i < Math.max(optionUnselected.size(), optionSelected.size()); i++) {
-                final Component unselected = i < optionUnselected.size() ? optionUnselected.get(i) : Component.empty();
                 final Component selected = i < optionSelected.size() ? optionSelected.get(i) : Component.empty();
-                optionLines.add(new ToggleableIndexLine(unselected, selected, (index) -> select.isEnabled() && select.get() == index, optionCount));
+                final Component unselected = i < optionUnselected.size() ? optionUnselected.get(i) : Component.empty();
+                optionLines.add(new ToggleableIndexLine(selected, unselected, (index) -> select.isEnabled() && select.get() == index, optionCount));
             }
             optionCount++;
         }
@@ -259,13 +259,13 @@ public class Display {
         /**
          * Creates a new toggleable index line.
          *
-         * @param unselected the Component to be displayed when not selected
          * @param selected   the Component to be displayed when selected
-         * @param selector   a function that returns true if the line is selected for the given identifier, false otherwise
+         * @param unselected the Component to be displayed when not selected
+         * @param selector   a function that determines if the line is selected or not based on the identifier
          * @param identifier the identifier for this toggleable line
          */
-        public ToggleableIndexLine(final Component unselected, final Component selected, final Function<Integer, Boolean> selector, final Integer identifier) {
-            super(unselected, selected, selector, identifier);
+        public ToggleableIndexLine(final Component selected, final Component unselected, final Function<Integer, Boolean> selector, final Integer identifier) {
+            super(selected, unselected, selector, identifier);
         }
     }
 }

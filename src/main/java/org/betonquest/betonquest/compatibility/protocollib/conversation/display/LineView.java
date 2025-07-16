@@ -87,12 +87,17 @@ public interface LineView {
      */
     class Filler implements LineView {
         /**
+         * An empty line that can be used to fill the view.
+         */
+        private static final Line.Fixed EMPTY_LINE = new Line.Fixed(Component.empty());
+
+        /**
          * The line view to fill to a certain height.
          */
         private final LineView lineView;
 
         /**
-         * The height to fill to, i.e., the number of lines.
+         * The height to fill the lines to.
          */
         private final int height;
 
@@ -100,7 +105,7 @@ public interface LineView {
          * Creates a new filler view that fills the given line view to the specified height.
          *
          * @param lineView the line view to fill
-         * @param height   the height to fill to, i.e., the number of lines
+         * @param height   the height to fill the lines to
          */
         public Filler(final LineView lineView, final int height) {
             this.lineView = lineView;
@@ -116,7 +121,7 @@ public interface LineView {
 
             final int fillCount = height - lines.size();
             for (int i = 0; i < fillCount; i++) {
-                lines.add(new Line.Fixed(Component.empty()));
+                lines.add(EMPTY_LINE);
             }
             return lines;
         }
@@ -166,7 +171,7 @@ public interface LineView {
      */
     class Excerpt implements LineView {
         /**
-         * The height of the excerpt, i.e., the number of lines to display.
+         * The max height of lines to display.
          */
         private final int height;
 
@@ -193,7 +198,7 @@ public interface LineView {
         /**
          * Creates a new excerpt view.
          *
-         * @param height     the height of the excerpt
+         * @param height     the max height of lines to display.
          * @param cursor     a supplier for the current cursor position
          * @param lineView   the line view to excerpt from
          * @param scrollUp   the line to display when scrolling up

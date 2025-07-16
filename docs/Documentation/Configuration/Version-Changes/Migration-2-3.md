@@ -693,8 +693,8 @@ conversation:
     
     -------------
     
-    After the previous changes, some edge cases were found, where the text wrapping didn't work well,
-    some of them were already known for a long time, but now they are fixed.
+    The Menu Conversation IO get a rework to improve and fix some line wrapping behaviors.
+    As a result, the following settings were renamed and some new settings were added.
     
     <div class="grid" markdown>
     

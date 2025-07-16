@@ -15,7 +15,7 @@ public interface Line {
     /**
      * Gets the line to be displayed.
      *
-     * @return the Component representing the line
+     * @return the Component represented by this line
      */
     Component getLine();
 
@@ -44,18 +44,18 @@ public interface Line {
     }
 
     /**
-     * A toggleable line that can change based on a condition.
+     * A swappable line that can change the content based on a condition.
      */
-    class Toggleable implements Line {
-        /**
-         * The line to be displayed when the condition is not met.
-         */
-        private final Component unselected;
-
+    class Swappable implements Line {
         /**
          * The line to be displayed when the condition is met.
          */
         private final Component selected;
+
+        /**
+         * The line to be displayed when the condition is not met.
+         */
+        private final Component unselected;
 
         /**
          * A supplier that determines whether the line is selected or not.
@@ -63,15 +63,15 @@ public interface Line {
         private final Supplier<Boolean> selector;
 
         /**
-         * Creates a new toggleable line.
+         * Creates a new swappable line.
          *
-         * @param unselected the Component to be displayed when not selected
          * @param selected   the Component to be displayed when selected
-         * @param selector   a supplier that returns true if the line is selected, false otherwise
+         * @param unselected the Component to be displayed when not selected
+         * @param selector   a supplier that determines if the line is selected (true) or not (false)
          */
-        public Toggleable(final Component unselected, final Component selected, final Supplier<Boolean> selector) {
-            this.unselected = unselected;
+        public Swappable(final Component selected, final Component unselected, final Supplier<Boolean> selector) {
             this.selected = selected;
+            this.unselected = unselected;
             this.selector = selector;
         }
 
@@ -99,7 +99,7 @@ public interface Line {
      *
      * @param <T> the type of the identifier
      */
-    class ToggleableIdentified<T> extends Toggleable {
+    class ToggleableIdentified<T> extends Swappable {
         /**
          * The identifier for this toggleable line.
          */
@@ -108,13 +108,13 @@ public interface Line {
         /**
          * Creates a new toggleable line with an identifier.
          *
-         * @param unselected the Component to be displayed when not selected
          * @param selected   the Component to be displayed when selected
-         * @param selector   a function that returns true if the line is selected for the given identifier, false otherwise
+         * @param unselected the Component to be displayed when not selected
+         * @param selector   a function that determines if the line is selected or not based on the identifier
          * @param identifier the identifier for this toggleable line
          */
-        public ToggleableIdentified(final Component unselected, final Component selected, final Function<T, Boolean> selector, final T identifier) {
-            super(unselected, selected, () -> selector.apply(identifier));
+        public ToggleableIdentified(final Component selected, final Component unselected, final Function<T, Boolean> selector, final T identifier) {
+            super(selected, unselected, () -> selector.apply(identifier));
             this.identifier = identifier;
         }
 
