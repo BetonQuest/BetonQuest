@@ -3448,6 +3448,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-365-menu-conversation-io-line-wrapping-rework">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-365 - Menu Conversation IO line wrapping rework <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5302,6 +5325,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-365-menu-conversation-io-line-wrapping-rework">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-365 - Menu Conversation IO line wrapping rework <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6000,6 +6046,43 @@ but if you have custom configurations, you need to change them manually to the n
 <span class="w">      </span><span class="c1"># More settings...</span>
 </code></pre></div>
 </div>
+<h3 id="300-dev-365-menu-conversation-io-line-wrapping-rework">3.0.0-DEV-365 - Menu Conversation IO line wrapping rework <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /><a class="headerlink" href="#300-dev-365-menu-conversation-io-line-wrapping-rework" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The Menu Conversation IO get a rework to improve and fix some line wrapping behaviors.
+As a result, the following settings were renamed and some new settings were added.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">io</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">menu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">selection_cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">start_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">npc_name_newline_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">npc_text_fill_new_lines</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">npc_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">option_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">option_selected</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;gray&gt;»</span><span class="nv"> </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;white&gt;&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span>
+<span class="w">      </span><span class="nt">option_selected_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span>
+<span class="w">      </span><span class="nt">npc_name_format</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">io</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">menu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rate_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">line_fill_before</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">npc_name_seperator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">options_seperator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">npc_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">option_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">option_selected_text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv"> </span><span class="s">&lt;gray&gt;»</span><span class="nv"> </span><span class="s">&lt;dark_gray&gt;[</span><span class="nv"> </span><span class="s">&lt;white&gt;&lt;underlined&gt;{option_text}&lt;/underlined&gt;&lt;/white&gt;</span><span class="nv"> </span><span class="s">]&#39;</span>
+<span class="w">      </span><span class="nt">option_selected_text_wrap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]</span><span class="nv">    </span><span class="s">&lt;white&gt;&lt;underlined&gt;&#39;</span>
+<span class="w">      </span><span class="nt">npc_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[minimessage]&lt;yellow&gt;{npc_name}&#39;</span>
+<span class="w">      </span><span class="nt">line_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+</div>
+</details>
 
 
 
