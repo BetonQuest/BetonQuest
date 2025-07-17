@@ -485,6 +485,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     </div>
 
 ### 3.0.0-DEV-277 - Rename Constants :white_sun_cloud:
+
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
@@ -514,6 +515,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     </div>
 
 ### 3.0.0-DEV-284 - Change Head Owner :sun:
+
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
@@ -536,6 +538,7 @@ and if you only want sounds and no message, you use `sound` instead of `suppress
     </div>
 
 ### 3.0.0-DEV-299 - NPC events rename  :sun:
+
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
@@ -588,6 +591,7 @@ objectives:
 The `mmoitemupgrade` and `mmoitemapplygem` objectives exist unchanged.
 
 ### 3.0.0-DEV-313 - Folder Time Unit :white_sun_cloud:
+
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*
     
@@ -681,3 +685,48 @@ conversation:
 ```
 
 </div>
+
+### 3.0.0-DEV-365 - Menu Conversation IO line wrapping rework :sun:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    The Menu Conversation IO get a rework to improve and fix some line wrapping behaviors.
+    As a result, the following settings were renamed and some new settings were added.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old config.yml"
+    conversation:
+      io:
+        menu:
+          selection_cooldown: 10
+          start_new_lines: 10
+          npc_name_newline_separator: true
+          npc_text_fill_new_lines: true
+          npc_wrap: '@[minimessage] '
+          option_wrap: '@[minimessage]    '
+          option_selected: '@[minimessage] <gray>» <dark_gray>[ <white><underlined>{option_text}</underlined></white> ]'
+          option_selected_wrap: '@[minimessage]    <white><underlined>'
+          npc_name_format: '@[minimessage]<yellow>{npc_name}'
+    ```
+    
+    ```YAML title="New config.yml"
+    conversation:
+      io:
+        menu:
+          rate_limit: 10
+          line_fill_before: 10
+          npc_name_seperator: true
+          options_seperator: true
+          npc_text_wrap: '@[minimessage] '
+          option_text_wrap: '@[minimessage]    '
+          option_selected_text: '@[minimessage] <gray>» <dark_gray>[ <white><underlined>{option_text}</underlined></white> ]'
+          option_selected_text_wrap: '@[minimessage]    <white><underlined>'
+          npc_name: '@[minimessage]<yellow>{npc_name}'
+          line_count: 10
+    ```
+    
+    </div>

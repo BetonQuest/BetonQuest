@@ -148,53 +148,54 @@ Every io has its own settings that can be configured in the `io` section.
   Settings for the menu conversation IO.
     ``` YAML linenums="1"
     menu:
-      line_length: 320        #(1)!
-      refresh_delay: 180      #(2)!
-      start_new_lines: 10     #(3)!
-      selection_cooldown: 10  #(4)!
+      line_length: 320      #(1)!
+      line_count: 10        #(2)!
+      line_fill_before: 10  #(3)!
+      refresh_delay: 180    #(4)!
+      rate_limit: 10        #(5)!
   
-      npc_name_type: chat                # (5)!
-      npc_name_align: center             # (6)!
-      npc_text_fill_new_lines: true      # (7)!
-      npc_name_newline_separator: true   # (8)!
-  
-      control_select: jump,left_click  # (9)!
-      control_cancel: sneak            # (10)! 
-      control_move: scroll,move        # (11)!  
+      npc_name_type: chat              #(6)!
+      npc_name_align: center           #(7)!
+      npc_name_seperator: true         #(8)!
+      options_seperator: true          #(9)!
+      control_select: jump,left_click  #(10)!
+      control_move: scroll,move        #(11)!
+      control_cancel: sneak            #(12)!
     
-      npc_name_format: '@[minimessage]<yellow>{npc_name}'            #(12)!
-      npc_text: '@[minimessage] <white>{npc_text}'                   #(13)!
-      npc_wrap: '@[minimessage] '                                    #(14)!
+      npc_name: '@[minimessage]<yellow>{npc_name}'                        #(13)!
+      npc_text: '@[minimessage] <white>{npc_text}'                        #(14)!
+      npc_text_wrap: '@[minimessage] '                                    #(15)!
       option_text: '@[minimessage]    <dark_gray>[ <aqua>{option_text}
-        </aqua> ]'                                                   #(15)!
-      option_wrap: '@[minimessage]    '                              #(16)!
-      option_selected: '@[minimessage] <gray>» <dark_gray>[ <white>
-        <underlined>{option_text}</underlined></white> ]'            #(17)!
-      option_selected_wrap: '@[minimessage]    <white><underlined>'  #(18)!
-      scroll_up: '@[minimessage]<white>        ↑</white>'            #(19)!
-      scroll_down: '@[minimessage]<white>        ↓</white>'          #(20)!
+        </aqua> ]'                                                        #(16)!
+      option_text_wrap: '@[minimessage]    '                              #(17)!
+      option_selected_text: '@[minimessage] <gray>» <dark_gray>[ <white>
+        <underlined>{option_text}</underlined></white> ]'                 #(18)!
+      option_selected_text_wrap: '@[minimessage]    <white><underlined>'  #(19)!
+      scroll_up: '@[minimessage]<white>        ↑</white>'                 #(20)!
+      scroll_down: '@[minimessage]<white>        ↓</white>'               #(21)!
     ```
     
-    1. Maximum size of a line till its wrapped in pixels. Default 320.
-    2. Specify how many ticks to auto update display. Default 180.
-    3. How many empty lines should be printed before the conversation starts.
-    4. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
-    5. Type of NPC name display. Can be one of: `none`, `chat`.
-    6. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-    7. Weather to fill new lined between the NPC text and the player answer options
-    8. Whether an empty line is inserted after the NPC's name if there is space leftover.
-    9. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-    10. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-    11. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-    12. How to format the npc name.
-    13. How to write the NPC text. Replaces {npc_text} with the npcs text.
-    14. What text to prefix each new line in the NPC text that wraps.
-    15. How to write an option. Replaces {option_text} with the option text.
-    16. What text to prefix each new line in an option that wraps.
-    17. How to write a selected option. Replaces {option_text} with the option text.
-    18. What text to prefix each new line in a selected option that wraps.
-    19. The arrow format to scroll up in the menu.
-    20. The arrow format to scroll down in the menu.
+    1. Maximum length of a line till its wrapped in pixels.
+    2. Height of a conversation in lines.
+    3. Amount of empty lines before a conversation starts.
+    4. Time interval before printing the conversation again in ticks.
+    5. Time to wait until a new option can be selected in ticks.
+    6. Place to show the NPC name, `chat` or `none`.
+    7. For `npc_name_type` `chat`, the alignment of the name, `left`, `right` or `center`.
+    8. Separate the NPC name with an empty line from the text.
+    9. Separate the NPC text from the player options by filling remaining space with empty lines.
+    10. Comma separated actions to select an option, `jump`, `left_click` or `sneak`.
+    11. Comma separated actions to move the selection, `move` or `scroll`.
+    12. Comma separated actions to cancel the conversation, `jump`, `left_click` or `sneak`.
+    13. The format of the NPC name. Placeholder `{npc_name}`
+    14. The format of the NPC text. Placeholder `{npc_text}`
+    15. A prefix that gets applied to the start of a new line if the actual text is too long.
+    16. The format of the player options. Placeholder `{option_text}`
+    17. A prefix that gets applied to the start of a new line if the actual text is too long.
+    18. The format of the selected player option. Placeholder `{option_text}`
+    19. A prefix that gets applied to the start of a new line if the actual text is too long.
+    20. The arrow format to scroll up.
+    21. The arrow format to scroll down.
   
 
 * `chest`  

@@ -1,4 +1,35 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.14:
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.selection_cooldown
+    newKey: conversation.io.menu.rate_limit
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.start_new_lines
+    newKey: conversation.io.menu.line_fill_before
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.npc_name_newline_separator
+    newKey: conversation.io.menu.npc_name_seperator
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.npc_text_fill_new_lines
+    newKey: conversation.io.menu.options_seperator
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.npc_wrap
+    newKey: conversation.io.menu.npc_text_wrap
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.option_wrap
+    newKey: conversation.io.menu.option_text_wrap
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.option_selected
+    newKey: conversation.io.menu.option_selected_text
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.option_selected_wrap
+    newKey: conversation.io.menu.option_selected_text_wrap
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.npc_name_format
+    newKey: conversation.io.menu.npc_name
+  - type: SET
+    key: conversation.io.menu.line_count
+    value: 10
 3.0.0.13:
   - type: KEY_RENAME
     oldKey: conversation.combat_delay
