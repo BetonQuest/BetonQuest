@@ -66,7 +66,7 @@ public class Display {
         final LineView npcTextView = getFormattedNpcLines(settings, wrapper, npcText, npcNameChat);
         final LineView optionView = getFormattedOptionLines(settings, wrapper, options);
 
-        final LineView npcTextFilledView = new LineView.Filler(npcTextView, settings.optionsSeperator() ? lineCount : 1 - optionView.getSize());
+        final LineView npcTextFilledView = new LineView.Filler(npcTextView, (settings.optionsSeperator() ? lineCount : 1) - optionView.getSize());
         final LineView combined = new LineView.Combiner(npcTextFilledView, optionView);
         this.scroll = new Cursor(0, combined.getSize() - lineCount, 0);
         final LineView excerpt = new LineView.Excerpt(lineCount, scroll::get, combined, scrollUp, scrollDown);
@@ -179,6 +179,7 @@ public class Display {
                 .filter(line -> line instanceof ToggleableIndexLine)
                 .map(line -> (ToggleableIndexLine) line)
                 .toList();
+        options.forEach(option -> lastViewableOptions.add(option.getIdentifier()));
         if (!options.isEmpty() && !this.select.isValid(options.get(options.size() - 1).getIdentifier() + 1)) {
             this.select.setEnabled(true);
         }
