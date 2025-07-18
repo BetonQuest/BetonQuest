@@ -179,6 +179,7 @@ public class Display {
                 .filter(line -> line instanceof ToggleableIndexLine)
                 .map(line -> (ToggleableIndexLine) line)
                 .toList();
+        options.forEach(option -> lastViewableOptions.add(option.getIdentifier()));
         if (!options.isEmpty() && !this.select.isValid(options.get(options.size() - 1).getIdentifier() + 1)) {
             this.select.setEnabled(true);
         }
