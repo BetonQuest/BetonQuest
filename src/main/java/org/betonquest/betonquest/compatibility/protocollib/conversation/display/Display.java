@@ -66,7 +66,7 @@ public class Display {
         final LineView npcTextView = getFormattedNpcLines(settings, wrapper, npcText, npcNameChat);
         final LineView optionView = getFormattedOptionLines(settings, wrapper, options);
 
-        final LineView npcTextFilledView = new LineView.Filler(npcTextView, settings.optionsSeperator() ? lineCount : 1 - optionView.getSize());
+        final LineView npcTextFilledView = new LineView.Filler(npcTextView, (settings.optionsSeperator() ? lineCount : 1) - optionView.getSize());
         final LineView combined = new LineView.Combiner(npcTextFilledView, optionView);
         this.scroll = new Cursor(0, combined.getSize() - lineCount, 0);
         final LineView excerpt = new LineView.Excerpt(lineCount, scroll::get, combined, scrollUp, scrollDown);
