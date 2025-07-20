@@ -130,13 +130,13 @@ you should get a notification.
 | `NAME`                        | A player's name.                                                                                                                                                              |
 | `add`/`complete`/`del`/`list` | Use these arguments to rather add, complete or delete an objective. The list argument does not require any further arguments and lists all objectives of the selected player. |
 | `tutorialQuest`               | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.                                                      |
-| `fishObj`                     | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`.                                                  |
+| `fishingObj`                  | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishingObj`.                                               |
 
 You can also run the `/bq objective NAME` to list all active objectives of a player.
  `/bq objective NAME` to list all active objectives of a player.
 
 To manually complete the objective for a player you need to type
-`/bq objective YOUR_NAME complete tutorialQuest.fishObj`. After you send this command you should also get
+`/bq objective YOUR_NAME complete tutorialQuest.fishingObj`. After you send this command you should also get
 a notification about the completion of this objective.
 
 ## 5. Using events to start objectives
