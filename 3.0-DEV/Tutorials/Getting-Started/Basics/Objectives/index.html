@@ -4870,7 +4870,7 @@ Type <code>/bq reload</code> on your server after saving.</p>
 </div>
 <p>Objectives must be started before they start watching the player's actions.
 The easiest way to do this is by running a command:</p>
-<p>Enter <code>/bq objective YOUR_NAME add tutorialQuest.fishObj</code> on the server.
+<p>Enter <code>/bq objective YOUR_NAME add tutorialQuest.fishingObj</code> on the server.
 This command will start the objective for the player.
 If you want to check if you have done it correctly, go to the defined location and fish 3 cod. After you caught 3 cod
 you should get a notification.</p>
@@ -4907,15 +4907,15 @@ you should get a notification.</p>
 <td>The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.</td>
 </tr>
 <tr>
-<td><code>fishObj</code></td>
-<td>The name of the objective to execute. Don't forget to separate it with a dot from the package <code>tutorialQuest<mark class="critic">.</mark>fishObj</code>.</td>
+<td><code>fishingObj</code></td>
+<td>The name of the objective to execute. Don't forget to separate it with a dot from the package <code>tutorialQuest<mark class="critic">.</mark>fishingObj</code>.</td>
 </tr>
 </tbody>
 </table>
 <p>You can also run the <code>/bq objective NAME</code> to list all active objectives of a player.
  <code>/bq objective NAME</code> to list all active objectives of a player.</p>
 <p>To manually complete the objective for a player you need to type
-<code>/bq objective YOUR_NAME complete tutorialQuest.fishObj</code>. After you send this command you should also get
+<code>/bq objective YOUR_NAME complete tutorialQuest.fishingObj</code>. After you send this command you should also get
 a notification about the completion of this objective.</p>
 <h2 id="5-using-events-to-start-objectives">5. Using events to start objectives<a class="headerlink" href="#5-using-events-to-start-objectives" title="Permanent link">🔗</a></h2>
 <p>Objectives cannot only be started and stopped using commands, but also with events.
@@ -4927,7 +4927,7 @@ Let's add an event to start the fishing objective:</p>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># Other events not shown here</span>
 <span class="w">  </span><span class="nt">tpBlacksmith</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;teleport</span><span class="nv"> </span><span class="s">50;70;50;world&quot;</span>
-<span class="w">  </span><span class="nt">caughtAllFish</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">caught</span><span class="nv"> </span><span class="s">enough</span><span class="nv"> </span><span class="s">fish!\nReturn</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">blacksmith!</span><span class="nv"> </span><span class="s">io:Title</span><span class="nv"> </span><span class="s">sound:firework_rocket&quot;</span>
+<span class="w">  </span><span class="nt">caughtAllFish</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">caught</span><span class="nv"> </span><span class="s">enough</span><span class="nv"> </span><span class="s">fish!\\nReturn</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">blacksmith!</span><span class="nv"> </span><span class="s">io:Title</span><span class="nv"> </span><span class="s">sound:firework_rocket&quot;</span>
 <span class="hll"><span class="w">  </span><span class="nt">startFishingObj</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;objective</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">fishingObj&quot;</span><span class="w"> </span><span class="c1"># (1)!</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
