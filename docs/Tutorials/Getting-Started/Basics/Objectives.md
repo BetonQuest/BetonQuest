@@ -110,7 +110,7 @@ Now, `cod` is a defined item that can be utilized throughout the entire quest.
 Objectives must be started before they start watching the player's actions.
 The easiest way to do this is by running a command:
 
-Enter `/bq objective YOUR_NAME add tutorialQuest.fishObj` on the server.
+Enter `/bq objective YOUR_NAME add tutorialQuest.fishingObj` on the server.
 This command will start the objective for the player.
 If you want to check if you have done it correctly, go to the defined location and fish 3 cod. After you caught 3 cod
 you should get a notification.
@@ -130,13 +130,13 @@ you should get a notification.
 | `NAME`                        | A player's name.                                                                                                                                                              |
 | `add`/`complete`/`del`/`list` | Use these arguments to rather add, complete or delete an objective. The list argument does not require any further arguments and lists all objectives of the selected player. |
 | `tutorialQuest`               | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.                                                      |
-| `fishObj`                     | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`.                                                  |
+| `fishingObj`                  | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishingObj`.                                               |
 
 You can also run the `/bq objective NAME` to list all active objectives of a player.
  `/bq objective NAME` to list all active objectives of a player.
 
 To manually complete the objective for a player you need to type
-`/bq objective YOUR_NAME complete tutorialQuest.fishObj`. After you send this command you should also get
+`/bq objective YOUR_NAME complete tutorialQuest.fishingObj`. After you send this command you should also get
 a notification about the completion of this objective.
 
 ## 5. Using events to start objectives
@@ -148,7 +148,7 @@ Let's add an event to start the fishing objective:
 events:
   # Other events not shown here
   tpBlacksmith: "teleport 50;70;50;world"
-  caughtAllFish: "notify You caught enough fish!\nReturn to the blacksmith! io:Title sound:firework_rocket"
+  caughtAllFish: "notify You caught enough fish!\\nReturn to the blacksmith! io:Title sound:firework_rocket"
   startFishingObj: "objective start fishingObj" # (1)!
 ```
 
