@@ -1,5 +1,5 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -13,15 +13,13 @@
     <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
-    <minecraft.api.version>1.18</minecraft.api.version>
-    <excludedSurefireGroups>ConfigurationSection</excludedSurefireGroups>
-    <excludedFailsafeGroups>ConfigurationSection</excludedFailsafeGroups>
   </properties>
 
   <name>BetonQuest</name>
   <artifactId>betonquest</artifactId>
   <version>${revision}${changelist}</version>
   <description>All Your Adventure Supplies</description>
+  <packaging>pom</packaging>
 
   <licenses>
     <license>
@@ -31,365 +29,11 @@
     </license>
   </licenses>
 
+  <modules>
+    <module>code/core</module>
+  </modules>
+
   <dependencies>
-    <!-- from papermc repository -->
-    <dependency>
-      <groupId>io.papermc.paper</groupId>
-      <artifactId>paper-api</artifactId>
-      <version>1.18.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.papermc</groupId>
-      <artifactId>paperlib</artifactId>
-      <version>1.0.8</version>
-    </dependency>
-
-    <!-- from enginehub repository -->
-    <dependency>
-      <groupId>com.sk89q.worldguard</groupId>
-      <artifactId>worldguard-bukkit</artifactId>
-      <version>7.0.9</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.sk89q.worldguard</groupId>
-      <artifactId>worldguard-core</artifactId>
-      <version>7.0.9</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.sk89q.worldedit</groupId>
-      <artifactId>worldedit-bukkit</artifactId>
-      <version>7.3.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.sk89q.worldedit</groupId>
-      <artifactId>worldedit-core</artifactId>
-      <version>7.3.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from hc repository -->
-    <dependency>
-      <groupId>com.herocraftonline.heroes</groupId>
-      <artifactId>Heroes</artifactId>
-      <version>1.10.7-RELEASE</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from lumine repository -->
-    <dependency>
-      <groupId>io.lumine</groupId>
-      <artifactId>Mythic-Dist</artifactId>
-      <version>5.7.2</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from phoenixdevt repository -->
-    <dependency>
-      <groupId>io.lumine</groupId>
-      <artifactId>MythicLib-dist</artifactId>
-      <version>1.7.1-SNAPSHOT</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>net.Indyuce</groupId>
-      <artifactId>MMOCore-API</artifactId>
-      <version>1.12-SNAPSHOT</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>net.Indyuce</groupId>
-      <artifactId>MMOItems-API</artifactId>
-      <version>6.9.4-SNAPSHOT</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-
-    <!-- from citizensnpcs repository -->
-    <dependency>
-      <groupId>net.citizensnpcs</groupId>
-      <artifactId>citizens-main</artifactId>
-      <version>2.0.33-SNAPSHOT</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.denizenscript</groupId>
-      <artifactId>denizen</artifactId>
-      <version>1.2.5-SNAPSHOT</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from codemc repository -->
-    <dependency>
-      <groupId>me.filoghost.holographicdisplays</groupId>
-      <artifactId>holographicdisplays-api</artifactId>
-      <version>3.0.5</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>me.pikamug.quests</groupId>
-      <artifactId>quests-core</artifactId>
-      <version>5.1.1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from neetgames repository -->
-    <dependency>
-      <groupId>com.gmail.nossr50.mcMMO</groupId>
-      <artifactId>mcMMO</artifactId>
-      <version>2.1.227</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from extendedclip repository -->
-    <dependency>
-      <groupId>me.clip</groupId>
-      <artifactId>placeholderapi</artifactId>
-      <version>2.11.6</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from dmulloy2 repository -->
-    <dependency>
-      <groupId>com.comphenix.protocol</groupId>
-      <artifactId>ProtocolLib</artifactId>
-      <version>5.3.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>net.bytebuddy</groupId>
-          <artifactId>byte-buddy</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.comphenix.packetwrapper</groupId>
-      <artifactId>PacketWrapper</artifactId>
-      <version>1.13-R0.1-SNAPSHOT</version>
-    </dependency>
-
-    <!-- from githubusercontent-Shopkeepers repository -->
-    <dependency>
-      <groupId>com.nisovin.shopkeepers</groupId>
-      <artifactId>ShopkeepersAPI</artifactId>
-      <version>2.22.3</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from mg-dev repository -->
-    <dependency>
-      <groupId>com.bergerkiller.bukkit</groupId>
-      <artifactId>TrainCarts</artifactId>
-      <version>1.20.6-v1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- from minebench repository -->
-    <dependency>
-      <groupId>de.themoep</groupId>
-      <artifactId>minedown-adventure</artifactId>
-      <version>1.7.4-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- from fancyinnovations repository -->
-    <dependency>
-      <groupId>de.oliver</groupId>
-      <artifactId>FancyNpcs</artifactId>
-      <version>2.4.2</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- from pyr repository -->
-    <dependency>
-      <groupId>lol.pyr</groupId>
-      <artifactId>znpcsplus-api</artifactId>
-      <version>2.1.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- from scriptlang repository -->
-    <dependency>
-      <groupId>com.github.SkriptLang</groupId>
-      <artifactId>Skript</artifactId>
-      <version>2.9.1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>com.google.code.findbugs</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <!-- from jitpack repository -->
-    <dependency>
-      <groupId>com.github.toddharrison.BriarCode</groupId>
-      <artifactId>fake-block-api</artifactId>
-      <version>v2.0.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.github.Emibergo02</groupId>
-      <artifactId>RedisChat</artifactId>
-      <version>5.3</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.github.MilkBowl</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7.1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.github.Zrips</groupId>
-      <artifactId>Jobs</artifactId>
-      <version>b537ec4f36</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.github.DieReicheErethons</groupId>
-      <artifactId>Brewery</artifactId>
-      <version>3.1.1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.github.decentsoftware-eu</groupId>
-      <artifactId>decentholograms</artifactId>
-      <version>2.8.11</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- only dependencies from maven central that are MC Plugins -->
-    <dependency>
-      <groupId>org.bstats</groupId>
-      <artifactId>bstats-bukkit</artifactId>
-      <version>3.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.elmakers.mine.bukkit</groupId>
-      <artifactId>EffectLib</artifactId>
-      <version>10.3</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.elmakers.mine.bukkit</groupId>
-      <artifactId>MagicAPI</artifactId>
-      <version>10.2</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>net.luckperms</groupId>
-      <artifactId>api</artifactId>
-      <version>5.4</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>dev.aurelium</groupId>
-      <artifactId>auraskills-api-bukkit</artifactId>
-      <version>2.2.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>studio.magemonkey</groupId>
-      <artifactId>fabled</artifactId>
-      <version>1.0.2-R1</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- only dependencies from maven central that are no MC Plugins -->
-    <dependency>
-      <groupId>com.mojang</groupId>
-      <artifactId>authlib</artifactId>
-      <version>3.13.56</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>3.0.0-beta2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>3.0.0-beta2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-artifact</artifactId>
-      <version>4.0.0-beta-3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-lang3</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -410,86 +54,30 @@
       <artifactId>json</artifactId>
       <version>20240303</version>
     </dependency>
-    <dependency>
-      <groupId>com.cronutils</groupId>
-      <artifactId>cron-utils</artifactId>
-      <version>9.2.1</version>
-    </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.betonquest</groupId>
+        <artifactId>core</artifactId>
+        <version>${betonquest.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.betonquest</groupId>
+        <artifactId>core</artifactId>
+        <version>${betonquest.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <repositories>
     <repository>
       <id>betonquest-repo</id>
       <url>https://nexus.betonquest.org/repository/betonquest/</url>
-    </repository>
-    <repository>
-      <id>betonquest-papermc-repo</id>
-      <url>https://repo.papermc.io/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-enginehub-repo</id>
-      <url>https://maven.enginehub.org/repo/</url>
-    </repository>
-    <repository>
-      <id>betonquest-hc-repo</id>
-      <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
-    </repository>
-    <repository>
-      <id>betonquest-lumine-repo</id>
-      <url>https://mvn.lumine.io/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-phoenixdevt-repo</id>
-      <url>https://nexus.phoenixdevt.fr/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-citizensnpcs-repo</id>
-      <url>https://maven.citizensnpcs.co/repo</url>
-    </repository>
-    <repository>
-      <id>betonquest-codemc-repo</id>
-      <url>https://repo.codemc.io/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-neetgames-repo</id>
-      <url>https://nexus.neetgames.com/repository/maven-releases/</url>
-    </repository>
-    <repository>
-      <id>betonquest-extendedclip-repo</id>
-      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-    </repository>
-    <repository>
-      <id>betonquest-dmulloy2-repo</id>
-      <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-githubusercontent-Shopkeepers-repo</id>
-      <url>https://raw.githubusercontent.com/Shopkeepers/Repository/main/releases/</url>
-    </repository>
-    <repository>
-      <id>betonquest-jitpack-repo</id>
-      <url>https://jitpack.io</url>
-    </repository>
-    <repository>
-      <id>betonquest-mg-dev-repo</id>
-      <name>ci.mg-dev.eu repository</name>
-      <url>https://ci.mg-dev.eu/plugin/repository/everything</url>
-    </repository>
-    <repository>
-      <id>betonquest-minebench-repo</id>
-      <url>https://repo.minebench.de/</url>
-    </repository>
-    <repository>
-      <id>betonquest-fancyinnovations-repo</id>
-      <url>https://repo.fancyinnovations.com/releases</url>
-    </repository>
-    <repository>
-      <id>betonquest-pyr-repo</id>
-      <url>https://repo.pyr.lol/snapshots</url>
-    </repository>
-    <repository>
-      <id>betonquest-scriptlang-repo</id>
-      <url>https://repo.skriptlang.org/releases</url>
     </repository>
     <repository>
       <id>maven_central</id>
@@ -501,37 +89,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>versions-maven-plugin</artifactId>
-        <configuration>
-          <excludeProperties>changelist</excludeProperties>
-          <ruleSet>
-            <rules>
-              <rule>
-                <!-- more recent versions build against Java 21 and break compiling -->
-                <groupId>com.sk89q.worldedit</groupId>
-                <ignoreVersions>
-                  <ignoreVersion>
-                    <type>regex</type>
-                    <version>7.*</version>
-                  </ignoreVersion>
-                </ignoreVersions>
-              </rule>
-              <rule>
-                <!-- more recent versions build against Java 21 and break compiling -->
-                <groupId>com.sk89q.worldguard</groupId>
-                <ignoreVersions>
-                  <ignoreVersion>
-                    <type>regex</type>
-                    <version>7.*</version>
-                  </ignoreVersion>
-                </ignoreVersions>
-              </rule>
-            </rules>
-          </ruleSet>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
@@ -541,74 +98,13 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-banned-dependencies</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <excludes>
-                    <exclude>org.spigotmc</exclude>
-                    <exclude>org.bukkit</exclude>
-                  </excludes>
-                </bannedDependencies>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
+            <phase/>
             <configuration>
-              <artifactSet>
-                <includes>
-                  <include>org.bstats</include>
-                  <include>org.apache.maven</include>
-                  <include>org.apache.commons</include>
-                  <include>com.google.guava</include>
-                  <include>commons-io</include>
-                  <include>org.json</include>
-                  <include>com.comphenix.packetwrapper</include>
-                  <include>io.papermc:paperlib</include>
-                  <include>com.cronutils:cron-utils</include>
-                  <include>de.themoep:minedown-adventure</include>
-                </includes>
-              </artifactSet>
-              <filters>
-                <filter>
-                  <artifact>org.bstats</artifact>
-                  <includes>
-                    <include>org/bstats/**</include>
-                  </includes>
-                </filter>
-                <filter>
-                  <artifact>com.comphenix.packetwrapper</artifact>
-                  <excludes>
-                    <exclude>plugin.yml</exclude>
-                  </excludes>
-                </filter>
-              </filters>
+              <minimizeJar>false</minimizeJar>
               <relocations>
-                <relocation>
-                  <pattern>org.bstats</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.bstats</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.maven</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.maven</shadedPattern>
-                </relocation>
                 <relocation>
                   <pattern>org.apache.commons</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons
@@ -621,23 +117,6 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.comphenix.packetwrapper</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.comphenix.packetwrapper
-                  </shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>io.papermc.lib</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.io.papermc.lib</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.cronutils</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.cronutils</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>de.themoep</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.de.themoep</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
