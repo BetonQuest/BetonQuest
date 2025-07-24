@@ -188,7 +188,11 @@ public class Display {
     private void checkNewScroll(final Scroll scroll) {
         if (select.isEnabled()) {
             final int selectOffset = select.get() + (scroll.getModification() * 2);
-            if (select.isValid(selectOffset) && lastViewableOptions.contains(selectOffset)) {
+            if (select.isValid(selectOffset)) {
+                if (lastViewableOptions.contains(selectOffset)) {
+                    return;
+                }
+            } else if (select.get() != 0) {
                 return;
             }
         }
