@@ -32,7 +32,7 @@ public class MenuItem {
     private final BetonQuestLogger log;
 
     /**
-     * The QuestTypeAPI.
+     * The Quest TypeAPI.
      */
     private final QuestTypeAPI questTypeAPI;
 
@@ -71,7 +71,7 @@ public class MenuItem {
      * Creates a new Menu Item.
      *
      * @param log          the custom logger for this class
-     * @param questTypeAPI the QuestTypeAPI
+     * @param questTypeAPI the Quest Type API
      * @param item         the item to display
      * @param itemId       the id of the item
      * @param descriptions the descriptions overriding name and lore of the Item

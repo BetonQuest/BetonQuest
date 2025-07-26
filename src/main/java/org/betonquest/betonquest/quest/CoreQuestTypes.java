@@ -329,7 +329,7 @@ public class CoreQuestTypes {
         conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getFeatureAPI(), data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeAPI));
-        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory));
+        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory, questTypeAPI));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.registerCombined("party", new PartyConditionFactory(questTypeAPI, profileProvider));
         conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data));

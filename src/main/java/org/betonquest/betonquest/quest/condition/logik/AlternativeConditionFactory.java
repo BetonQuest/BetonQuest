@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.condition.logik;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -25,12 +26,19 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
      * Create the alternative condition factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
+     * @param questTypeAPI  the Quest Type API to check conditions
      */
-    public AlternativeConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
+    public AlternativeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI) {
         this.loggerFactory = loggerFactory;
+        this.questTypeAPI = questTypeAPI;
     }
 
     @Override
@@ -46,6 +54,6 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(AlternativeCondition.class);
         final Variable<List<ConditionID>> conditionIDs = instruction.getList(ConditionID::new);
-        return new AlternativeCondition(log, conditionIDs, instruction.getPackage());
+        return new AlternativeCondition(log, questTypeAPI, conditionIDs, instruction.getPackage());
     }
 }
