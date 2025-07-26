@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
@@ -102,15 +103,16 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param plugin          the plugin to load config
      * @param profileProvider the profile provider instance
+     * @param questTypeAPI    the Quest Type API
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
-                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider) {
+                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider, final QuestTypeAPI questTypeAPI) {
         super(log, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this, plugin, profileProvider, npcTypes);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), this, questTypeAPI, profileProvider, npcTypes);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
@@ -154,7 +156,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         ((NpcTypeRegistry) types).resetIdentifier();
         interactionLimit = plugin.getPluginConfig().getInt("npc.interaction_limit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npc.accept_left_click");
-        npcHider.reload(plugin.getPackages().values());
+        final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
+        npcHider.reload(plugin.getPackages().values(), updateInterval, plugin);
     }
 
     @Override
