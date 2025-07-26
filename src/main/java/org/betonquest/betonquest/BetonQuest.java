@@ -389,7 +389,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         final ParsedSectionMessageCreator messageCreator = new ParsedSectionMessageCreator(messageParser, playerDataStorage,
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider, questTypeAPI);
+                coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider, questTypeAPI, playerDataStorage);
         featureAPI = new FeatureAPI(questRegistry);
 
         setupUpdater();

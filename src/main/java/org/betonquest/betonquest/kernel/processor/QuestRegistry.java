@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
@@ -70,16 +71,17 @@ public record QuestRegistry(
      * @param messageCreator    the message creator to parse messages
      * @param profileProvider   the profile provider instance
      * @param questTypeAPI      the Quest Type API
+     * @param playerDataStorage the storage to get player data
      * @return the newly created QuestRegistry
      */
     public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                        final BetonQuest plugin, final CoreQuestRegistry coreQuestRegistry,
                                        final FeatureRegistries otherRegistries, final PluginMessage pluginMessage,
                                        final ParsedSectionMessageCreator messageCreator, final ProfileProvider profileProvider,
-                                       final QuestTypeAPI questTypeAPI) {
+                                       final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerDataStorage) {
         final VariableProcessor variables = coreQuestRegistry.variables();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
-        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, messageCreator);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, messageCreator, questTypeAPI, playerDataStorage);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, messageCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
                 messageCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables);

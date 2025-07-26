@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.feature;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -11,7 +10,9 @@ import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ConditionID;
@@ -33,11 +34,22 @@ import java.util.function.Consumer;
 /**
  * Represents a quest canceler, which cancels quests for players.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class QuestCanceler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * Quest Type API.
+     */
+    private final QuestTypeAPI questTypeAPI;
+
+    /**
+     * Player Data storage.
+     */
+    private final PlayerDataStorage playerStorage;
 
     /**
      * Identifier of the canceler.
@@ -84,6 +96,8 @@ public class QuestCanceler {
      * Creates a new canceler.
      *
      * @param log           the custom logger for this class
+     * @param questTypeAPI  the Quest Type API
+     * @param playerStorage the player data storage
      * @param cancelerID    the log identifier
      * @param featureAPI    the Feature API
      * @param pluginMessage the {@link PluginMessage} instance
@@ -92,10 +106,13 @@ public class QuestCanceler {
      * @param pack          the {@link QuestPackage} of the canceler
      * @param cancelData    the relevant data to cancel a quest
      */
-    public QuestCanceler(final BetonQuestLogger log, final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
+    public QuestCanceler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerStorage,
+                         final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
                          final Message names, @Nullable final ItemID item,
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
+        this.questTypeAPI = questTypeAPI;
+        this.playerStorage = playerStorage;
         this.cancelerID = cancelerID;
         this.featureAPI = featureAPI;
         this.pluginMessage = pluginMessage;
@@ -114,7 +131,7 @@ public class QuestCanceler {
      * @throws QuestException if the conditions cannot be checked
      */
     public boolean isCancelable(final Profile profile) throws QuestException {
-        return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, data.conditions.getValue(profile));
+        return questTypeAPI.conditions(profile, data.conditions.getValue(profile));
     }
 
     /**
@@ -136,7 +153,7 @@ public class QuestCanceler {
             return;
         }
         log.debug(pack, "Canceling the quest " + cancelerID + " for " + onlineProfile);
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(onlineProfile);
+        final PlayerData playerData = playerStorage.get(onlineProfile);
         removeSimple(onlineProfile, data.tags, "tag", playerData::removeTag);
         removeSimple(onlineProfile, data.points, "point", playerData::removePointsCategory);
         cancelObjectives(onlineProfile, playerData);
@@ -168,7 +185,7 @@ public class QuestCanceler {
         try {
             for (final ObjectiveID objectiveID : data.objectives.getValue(profile)) {
                 log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                final Objective objective = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
+                final Objective objective = questTypeAPI.getObjective(objectiveID);
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
             }
@@ -193,7 +210,7 @@ public class QuestCanceler {
     private void executeEvents(final OnlineProfile onlineProfile) {
         try {
             for (final EventID event : data.events.getValue(onlineProfile)) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                questTypeAPI.event(onlineProfile, event);
             }
         } catch (final QuestException e) {
             log.warn(pack, "Cannot execute events in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
