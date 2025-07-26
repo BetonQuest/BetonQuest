@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.npc.feature;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
@@ -13,6 +13,7 @@ import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +39,9 @@ public class NpcHider {
     private final NpcProcessor npcProcessor;
 
     /**
-     * The BetonQuest plugin instance used for tasks and configs.
+     * The Quest Type API to check hiding conditions.
      */
-    private final BetonQuest plugin;
+    private final QuestTypeAPI questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -68,29 +69,18 @@ public class NpcHider {
      *
      * @param log             the custom logger for this class
      * @param npcProcessor    the processor to get nps
-     * @param plugin          the plugin to get config and start the task
+     * @param questTypeAPI    the Quest Type API to check hiding conditions
      * @param profileProvider the profile provider instance
      * @param npcTypes        the Npc types to get NpcIds
      */
     public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final BetonQuest plugin, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
+                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
         this.log = log;
         this.npcProcessor = npcProcessor;
-        this.plugin = plugin;
+        this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
         this.npcTypes = npcTypes;
         this.npcs = new HashMap<>();
-    }
-
-    private void load(final Collection<QuestPackage> packages) {
-        final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
-        loadFromConfig(packages);
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                applyVisibility();
-            }
-        }.runTaskTimer(plugin, 0, updateInterval);
     }
 
     private void loadFromConfig(final Collection<QuestPackage> packages) {
@@ -136,14 +126,22 @@ public class NpcHider {
     /**
      * Reloads the Npc Hider, restarting runnable etc.
      *
-     * @param packages the quest packages to load
+     * @param packages       the quest packages to load
+     * @param updateInterval the interval in ticks to check refresh hiding
+     * @param plugin         the plugin instance to schedule update
      */
-    public void reload(final Collection<QuestPackage> packages) {
+    public void reload(final Collection<QuestPackage> packages, final int updateInterval, final Plugin plugin) {
         if (task != null) {
             task.cancel();
         }
         npcs.clear();
-        load(packages);
+        loadFromConfig(packages);
+        task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                applyVisibility();
+            }
+        }.runTaskTimer(plugin, 0, updateInterval);
     }
 
     /**
@@ -160,7 +158,7 @@ public class NpcHider {
         if (conditions == null || conditions.isEmpty()) {
             return false;
         }
-        return plugin.getQuestTypeAPI().conditions(profile, conditions);
+        return questTypeAPI.conditions(profile, conditions);
     }
 
     /**
@@ -200,7 +198,7 @@ public class NpcHider {
         }
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcId);
-            if (conditions == null || conditions.isEmpty() || !plugin.getQuestTypeAPI().conditions(onlineProfile, conditions)) {
+            if (conditions == null || conditions.isEmpty() || !questTypeAPI.conditions(onlineProfile, conditions)) {
                 npc.show(onlineProfile);
             } else {
                 npc.hide(onlineProfile);
