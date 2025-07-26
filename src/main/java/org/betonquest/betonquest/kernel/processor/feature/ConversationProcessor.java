@@ -15,6 +15,7 @@ import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
@@ -49,6 +50,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final InterceptorRegistry interceptorRegistry;
 
     /**
+     * Variable processor to create new variables.
+     */
+    private final VariableProcessor variableProcessor;
+
+    /**
      * Message creator to parse messages.
      */
     private final ParsedSectionMessageCreator messageCreator;
@@ -62,16 +68,19 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param messageCreator      the message creator to parse messages
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
+     * @param variableProcessor   the variable processor to create new variables
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionMessageCreator messageCreator,
-                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry) {
+                                 final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
+                                 final VariableProcessor variableProcessor) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
         this.messageCreator = messageCreator;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
+        this.variableProcessor = variableProcessor;
     }
 
     @Override
@@ -81,14 +90,14 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final Message quester = messageCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final Variable<Boolean> blockMovement = new Variable<>(plugin.getVariableProcessor(), pack, section.getString("stop", "false"), Argument.BOOLEAN);
+        final Variable<Boolean> blockMovement = new Variable<>(variableProcessor, pack, section.getString("stop", "false"), Argument.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
         final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
-        final Variable<List<EventID>> finalEvents = new VariableList<>(plugin.getVariableProcessor(), pack, section.getString("final_events", ""), value -> new EventID(pack, value));
+        final Variable<List<EventID>> finalEvents = new VariableList<>(variableProcessor, pack, section.getString("final_events", ""), value -> new EventID(pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 
-        return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getVariableProcessor(),
+        return new ConversationData(loggerFactory.create(ConversationData.class), variableProcessor,
                 plugin.getQuestTypeAPI(), plugin.getFeatureAPI(), messageCreator, pack, section, publicData);
     }
 
@@ -151,16 +160,16 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         private Variable<ConversationIOFactory> parseConvIO() throws QuestException {
             final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
-            return new Variable<>(plugin.getVariableProcessor(), pack, rawConvIOs, value -> {
-                final List<String> ios = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
+            return new Variable<>(variableProcessor, pack, rawConvIOs, value -> {
+                final List<String> ios = new VariableList<>(variableProcessor, pack, value, Argument.STRING).getValue(null);
                 return convIORegistry.getFactory(ios);
             });
         }
 
         private Variable<InterceptorFactory> parseInterceptor() throws QuestException {
             final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
-            return new Variable<>(plugin.getVariableProcessor(), pack, rawInterceptor, value -> {
-                final List<String> interceptors = new VariableList<>(plugin.getVariableProcessor(), pack, value, Argument.STRING).getValue(null);
+            return new Variable<>(variableProcessor, pack, rawInterceptor, value -> {
+                final List<String> interceptors = new VariableList<>(variableProcessor, pack, value, Argument.STRING).getValue(null);
                 return interceptorRegistry.getFactory(interceptors);
             });
         }
