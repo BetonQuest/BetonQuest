@@ -44,9 +44,17 @@ public class CitizensIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     /**
-     * The default Constructor.
+     * The compatibility instance to use for checking other hooks.
      */
-    public CitizensIntegrator() {
+    private final Compatibility compatibility;
+
+    /**
+     * The default Constructor.
+     *
+     * @param compatibility the compatibility instance to use for checking other hooks
+     */
+    public CitizensIntegrator(final Compatibility compatibility) {
+        this.compatibility = compatibility;
         plugin = BetonQuest.getInstance();
     }
 
@@ -101,7 +109,7 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void postHook() {
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
+        if (compatibility.getHooked().contains("ProtocolLib")) {
             CitizensHider.start(plugin);
         } else {
             plugin.getLoggerFactory().create(CitizensIntegrator.class)

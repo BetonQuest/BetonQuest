@@ -35,9 +35,17 @@ public class MythicMobsIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     /**
-     * The default constructor.
+     * The compatibility instance to use for checking other hooks.
      */
-    public MythicMobsIntegrator() {
+    private final Compatibility compatibility;
+
+    /**
+     * The default constructor.
+     *
+     * @param compatibility the compatibility instance to use for checking other hooks
+     */
+    public MythicMobsIntegrator(final Compatibility compatibility) {
+        this.compatibility = compatibility;
         plugin = BetonQuest.getInstance();
     }
 
@@ -52,7 +60,7 @@ public class MythicMobsIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(apiHelper, data));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
-        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data));
+        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(apiHelper, data, compatibility));
         final NpcTypeRegistry npcTypes = plugin.getFeatureRegistries().npc();
         server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(plugin.getProfileProvider(), npcTypes, apiHelper), plugin);
         npcTypes.register("mythicmobs", new MythicMobsNpcFactory(MythicBukkit.inst().getMobManager()));
@@ -77,7 +85,7 @@ public class MythicMobsIntegrator implements Integrator {
 
     @Override
     public void postHook() {
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
+        if (compatibility.getHooked().contains("ProtocolLib")) {
             MythicHider.start();
         }
     }

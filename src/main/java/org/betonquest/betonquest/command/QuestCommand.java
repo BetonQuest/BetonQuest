@@ -126,6 +126,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final ConfigAccessor config;
 
     /**
+     * The compatibility instance to use for compatibility checks.
+     */
+    private final Compatibility compatibility;
+
+    /**
      * Accessor to create config to back up.
      */
     private final ConfigAccessorFactory configAccessorFactory;
@@ -153,12 +158,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param profileProvider       the profile provider
      * @param pluginMessage         the {@link PluginMessage} instance
      * @param config                the plugin configuration accessor
+     * @param compatibility         the compatibility instance to use for compatibility checks
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
                         final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                        final PluginMessage pluginMessage, final ConfigAccessor config) {
+                        final PluginMessage pluginMessage, final ConfigAccessor config, final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
@@ -169,6 +176,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.profileProvider = profileProvider;
         this.pluginMessage = pluginMessage;
         this.config = config;
+        this.compatibility = compatibility;
     }
 
     @SuppressWarnings("PMD.NcssCount")
@@ -1505,7 +1513,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private Component displayVersionInfoHooked() throws QuestException {
         final TextComponent.Builder hookedBuilder = Component.text();
-        for (final String plugin : Compatibility.getHooked()) {
+        for (final String plugin : compatibility.getHooked()) {
             final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
             if (plug == null) {
                 continue;

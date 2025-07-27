@@ -261,6 +261,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private ConversationColors conversationColors;
 
     /**
+     * The Compatibility instance for hooking into other plugins.
+     */
+    private Compatibility compatibility;
+
+    /**
      * The required default constructor without arguments for plugin creation.
      */
     public BetonQuest() {
@@ -417,14 +422,14 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             return;
         }
 
-        new Compatibility(this, loggerFactory.create(Compatibility.class));
+        compatibility = new Compatibility(this, loggerFactory.create(Compatibility.class));
 
         registerCommands(receiverSelector, debugHistoryHandler);
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-            Compatibility.postHook();
+            compatibility.postHook();
             loadData();
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
 
@@ -444,7 +449,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             log.warn("Could not disable /betonquestanswer logging", e);
         }
 
-        new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier());
+        new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility);
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, coreQuestRegistry.variables(),
                 pluginMessage, messageCreator, questTypeAPI, featureAPI, profileProvider);
@@ -494,7 +499,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, profileProvider, pluginMessage, config);
+                this, playerDataStorage, profileProvider, pluginMessage, config, compatibility);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));
@@ -591,7 +596,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         } catch (final QuestException e) {
             log.warn("Could not reload conversation colors! " + e.getMessage(), e);
         }
-        Compatibility.reload();
+        compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
         playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
@@ -625,7 +630,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         if (saver != null) {
             saver.end();
         }
-        Compatibility.disable();
+        compatibility.disable();
         if (database != null) {
             database.closeConnection();
         }
