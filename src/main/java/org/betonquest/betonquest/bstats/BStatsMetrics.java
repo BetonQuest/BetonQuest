@@ -37,14 +37,17 @@ public class BStatsMetrics {
      * @param plugin           plugin to send metrics for
      * @param metrics          metrics instance to use
      * @param metricsSuppliers instruction metrics suppliers to query for metrics
+     * @param compatibility    the compatibility instance to use for hooked plugins
      */
-    public BStatsMetrics(final Plugin plugin, final Metrics metrics, final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers) {
+    public BStatsMetrics(final Plugin plugin, final Metrics metrics,
+                         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers,
+                         final Compatibility compatibility) {
         this.plugin = plugin;
         this.metrics = metrics;
 
         versionMcBq();
         metricsSuppliers.forEach(this::listUsage);
-        hookedPlugins();
+        hookedPlugins(compatibility);
         installedPlugins();
     }
 
@@ -93,10 +96,10 @@ public class BStatsMetrics {
         }
     }
 
-    private void hookedPlugins() {
+    private void hookedPlugins(final Compatibility compatibility) {
         metrics.addCustomChart(new DrilldownPie("hookedPlugins", () -> {
             final Map<String, Map<String, Integer>> map = new HashMap<>();
-            for (final String hook : Compatibility.getHooked()) {
+            for (final String hook : compatibility.getHooked()) {
                 final Plugin plug = plugin.getServer().getPluginManager().getPlugin(hook);
                 final String hookVersion = plug == null ? "unknown" : plug.getDescription().getVersion();
 

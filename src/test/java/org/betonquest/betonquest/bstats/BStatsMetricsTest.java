@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.id.ID;
@@ -112,7 +113,7 @@ class BStatsMetricsTest {
         when(server.getBukkitVersion()).thenReturn("1.18.2-R0.1");
 
         final Metrics metrics = mock(Metrics.class);
-        new BStatsMetrics(plugin, metrics, Collections.emptyMap());
+        new BStatsMetrics(plugin, metrics, Collections.emptyMap(), mock(Compatibility.class));
     }
 
     @Test
@@ -144,7 +145,7 @@ class BStatsMetricsTest {
 
         final InstructionMetricsSupplier<ID> metricsSupplier = new CompositeInstructionMetricsSupplier<>(ids::keySet, types::keySet);
 
-        new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier));
+        new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class));
 
         verify(bstatsMetrics, times(6)).addCustomChart(chartArgumentCaptor.capture());
         final List<CustomChart> customCharts = chartArgumentCaptor.getAllValues();

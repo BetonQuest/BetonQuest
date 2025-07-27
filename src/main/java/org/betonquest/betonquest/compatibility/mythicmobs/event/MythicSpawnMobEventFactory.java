@@ -36,14 +36,22 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     private final PrimaryServerThreadData data;
 
     /**
+     * Compatibility instance to check for other hooks.
+     */
+    private final Compatibility compatibility;
+
+    /**
      * Create a new factory for {@link MythicSpawnMobEvent}s.
      *
-     * @param apiHelper the api helper used get MythicMobs
-     * @param data      the primary server thread data required for main thread checking
+     * @param apiHelper     the api helper used get MythicMobs
+     * @param data          the primary server thread data required for main thread checking
+     * @param compatibility the compatibility instance to check for other hooks
      */
-    public MythicSpawnMobEventFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data) {
+    public MythicSpawnMobEventFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data,
+                                      final Compatibility compatibility) {
         this.apiHelper = apiHelper;
         this.data = data;
+        this.compatibility = compatibility;
     }
 
     @Override
@@ -57,7 +65,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean privateMob;
-        if (Compatibility.getHooked().contains("ProtocolLib")) {
+        if (compatibility.getHooked().contains("ProtocolLib")) {
             privateMob = instruction.hasArgument("private");
         } else {
             privateMob = false;

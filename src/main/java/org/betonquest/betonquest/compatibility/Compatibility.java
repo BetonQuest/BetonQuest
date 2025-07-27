@@ -4,37 +4,39 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
-import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
-import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
-import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
-import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
-import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
-import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
+import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
+import org.betonquest.betonquest.compatibility.denizen.DenizenIntegratorFactory;
+import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegratorFactory;
+import org.betonquest.betonquest.compatibility.fabled.FabledIntegratorFactory;
+import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegratorFactory;
+import org.betonquest.betonquest.compatibility.heroes.HeroesIntegratorFactory;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
-import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
-import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegrator;
-import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
-import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegrator;
-import org.betonquest.betonquest.compatibility.magic.MagicIntegrator;
-import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegrator;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrator;
-import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
-import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
-import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
-import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegratorFactory;
+import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegratorFactory;
+import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.magic.MagicIntegratorFactory;
+import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegratorFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegratorFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
+import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
-import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
-import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
-import org.betonquest.betonquest.compatibility.quests.QuestsIntegrator;
-import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegrator;
-import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegrator;
-import org.betonquest.betonquest.compatibility.skript.SkriptIntegrator;
-import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegrator;
-import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
-import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
-import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
+import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegratorFactory;
+import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegratorFactory;
+import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegratorFactory;
+import org.betonquest.betonquest.compatibility.quests.QuestsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegratorFactory;
+import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegratorFactory;
+import org.betonquest.betonquest.compatibility.skript.SkriptIntegratorFactory;
+import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.vault.VaultIntegratorFactory;
+import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegratorFactory;
+import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegratorFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,7 +44,6 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,14 +53,7 @@ import java.util.TreeMap;
 /**
  * Loads compatibility with other plugins.
  */
-@SuppressWarnings("PMD.AssignmentToNonFinalStatic")
 public class Compatibility implements Listener {
-    /**
-     * An instance of this class.
-     */
-    @SuppressWarnings("NullAway.Init")
-    private static Compatibility instance;
-
     /**
      * BetonQuest plugin instance for tasks and configs.
      */
@@ -75,7 +69,7 @@ public class Compatibility implements Listener {
      * The key is the name of the plugin, the value a pair of the integrator class and an instance of it.
      * The instance must only exist if the plugin was hooked.
      */
-    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new TreeMap<>();
+    private final Map<String, Pair<IntegratorFactory, Integrator>> integrators = new TreeMap<>();
 
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
@@ -86,7 +80,6 @@ public class Compatibility implements Listener {
     public Compatibility(final BetonQuest betonQuest, final BetonQuestLogger log) {
         this.betonQuest = betonQuest;
         this.log = log;
-        instance = this;
 
         registerCompatiblePlugins();
 
@@ -117,8 +110,8 @@ public class Compatibility implements Listener {
      *
      * @return the list of hooked plugins
      */
-    public static List<String> getHooked() {
-        return instance.integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
+    public List<String> getHooked() {
+        return integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
                 .map(Map.Entry::getKey).toList();
     }
 
@@ -126,15 +119,15 @@ public class Compatibility implements Listener {
      * After all integrations are successfully hooked,
      * this method can be called to activate cross compatibility features.
      */
-    public static void postHook() {
-        instance.integrators.values().stream()
+    public void postHook() {
+        integrators.values().stream()
                 .filter(pair -> pair.getRight() != null)
                 .forEach(pair -> {
                     final Integrator integrator = pair.getRight();
                     try {
                         integrator.postHook();
                     } catch (final HookException e) {
-                        instance.log.warn("Error while enabling some features while post hooking into " + pair.getLeft()
+                        log.warn("Error while enabling some features while post hooking into " + pair.getLeft()
                                 + " reason: " + e.getMessage(), e);
                     }
                 });
@@ -143,8 +136,8 @@ public class Compatibility implements Listener {
     /**
      * Reloads all loaded integrators.
      */
-    public static void reload() {
-        instance.integrators.values().stream()
+    public void reload() {
+        integrators.values().stream()
                 .map(Pair::getRight)
                 .filter(Objects::nonNull)
                 .forEach(Integrator::reload);
@@ -153,13 +146,11 @@ public class Compatibility implements Listener {
     /**
      * Disables all loaded integrators.
      */
-    public static void disable() {
-        if (instance != null) {
-            instance.integrators.values().stream()
-                    .map(Pair::getRight)
-                    .filter(Objects::nonNull)
-                    .forEach(Integrator::close);
-        }
+    public void disable() {
+        integrators.values().stream()
+                .map(Pair::getRight)
+                .filter(Objects::nonNull)
+                .forEach(Integrator::close);
     }
 
     private String buildHookedPluginsMessage() {
@@ -192,17 +183,7 @@ public class Compatibility implements Listener {
             return;
         }
 
-        final Class<? extends Integrator> integratorClass = integrators.get(name).getKey();
-        final Integrator integrator;
-        try {
-            integrator = integratorClass.getConstructor().newInstance();
-        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException
-                       | NoSuchMethodException | NoClassDefFoundError e) {
-            log.warn("Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
-            log.warn("You are likely running an incompatible version of " + name + ".");
-            return;
-        }
-
+        final Integrator integrator = integrators.get(name).getKey().getIntegrator();
         log.info("Hooking into " + name);
 
         try {
@@ -232,41 +213,41 @@ public class Compatibility implements Listener {
     }
 
     private void registerCompatiblePlugins() {
-        register("MythicMobs", MythicMobsIntegrator.class);
-        register("Citizens", CitizensIntegrator.class);
-        register("Vault", VaultIntegrator.class);
-        register("Skript", SkriptIntegrator.class);
-        register("WorldGuard", WorldGuardIntegrator.class);
-        register("WorldEdit", WorldEditIntegrator.class);
-        register("FastAsyncWorldEdit", WorldEditIntegrator.class);
-        register("mcMMO", McMMOIntegrator.class);
-        register("MythicLib", MythicLibIntegrator.class);
-        register("MMOCore", MMOCoreIntegrator.class);
-        register("MMOItems", MMOItemsIntegrator.class);
-        register("EffectLib", EffectLibIntegrator.class);
-        register("Heroes", HeroesIntegrator.class);
-        register("Magic", MagicIntegrator.class);
-        register("Denizen", DenizenIntegrator.class);
-        register("Fabled", FabledIntegrator.class);
-        register("Quests", QuestsIntegrator.class);
-        register("Shopkeepers", ShopkeepersIntegrator.class);
-        register("PlaceholderAPI", PlaceholderAPIIntegrator.class);
-        register("ProtocolLib", ProtocolLibIntegrator.class);
-        register("Brewery", BreweryIntegrator.class);
-        register("BreweryX", BreweryIntegrator.class);
-        register("Jobs", JobsRebornIntegrator.class);
-        register("LuckPerms", LuckPermsIntegrator.class);
-        register("AuraSkills", AuraSkillsIntegrator.class);
-        register("DecentHolograms", DecentHologramsIntegrator.class);
-        register("HolographicDisplays", HolographicDisplaysIntegrator.class);
-        register("fake-block", FakeBlockIntegrator.class);
-        register("RedisChat", RedisChatIntegrator.class);
-        register("Train_Carts", TrainCartsIntegrator.class);
-        register(FancyNpcsIntegrator.PREFIX, FancyNpcsIntegrator.class);
-        register(ZNPCsPlusIntegrator.PREFIX, ZNPCsPlusIntegrator.class);
+        register("MythicMobs", new MythicMobsIntegratorFactory(this));
+        register("Citizens", new CitizensIntegratorFactory(this));
+        register("Vault", new VaultIntegratorFactory());
+        register("Skript", new SkriptIntegratorFactory());
+        register("WorldGuard", new WorldGuardIntegratorFactory());
+        register("WorldEdit", new WorldEditIntegratorFactory());
+        register("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
+        register("mcMMO", new McMMOIntegratorFactory());
+        register("MythicLib", new MythicLibIntegratorFactory());
+        register("MMOCore", new MMOCoreIntegratorFactory());
+        register("MMOItems", new MMOItemsIntegratorFactory());
+        register("EffectLib", new EffectLibIntegratorFactory());
+        register("Heroes", new HeroesIntegratorFactory());
+        register("Magic", new MagicIntegratorFactory());
+        register("Denizen", new DenizenIntegratorFactory());
+        register("Fabled", new FabledIntegratorFactory());
+        register("Quests", new QuestsIntegratorFactory());
+        register("Shopkeepers", new ShopkeepersIntegratorFactory());
+        register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory());
+        register("ProtocolLib", new ProtocolLibIntegratorFactory());
+        register("Brewery", new BreweryIntegratorFactory());
+        register("BreweryX", new BreweryIntegratorFactory());
+        register("Jobs", new JobsRebornIntegratorFactory());
+        register("LuckPerms", new LuckPermsIntegratorFactory());
+        register("AuraSkills", new AuraSkillsIntegratorFactory());
+        register("DecentHolograms", new DecentHologramsIntegratorFactory());
+        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory());
+        register("fake-block", new FakeBlockIntegratorFactory());
+        register("RedisChat", new RedisChatIntegratorFactory());
+        register("Train_Carts", new TrainCartsIntegratorFactory());
+        register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
+        register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
     }
 
-    private void register(final String name, final Class<? extends Integrator> integrator) {
+    private void register(final String name, final IntegratorFactory integrator) {
         integrators.put(name, new MutablePair<>(integrator, null));
     }
 }
