@@ -28,6 +28,9 @@ public class SkriptConditionBQ extends Condition {
 
     private Expression<String> condition;
 
+    /**
+     * Constructs a new SkriptCondition for BetonQuest conditions.
+     */
     public SkriptConditionBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());

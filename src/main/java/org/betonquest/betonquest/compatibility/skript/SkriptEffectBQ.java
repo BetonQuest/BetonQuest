@@ -29,6 +29,9 @@ public class SkriptEffectBQ extends Effect {
 
     private Expression<Player> player;
 
+    /**
+     * Constructs a new SkriptEffect for BetonQuest events.
+     */
     public SkriptEffectBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());

@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
  * <p>
  * Created on 16.10.2018.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MCMMOQuestItemHandler implements Listener {
 
     /**
@@ -23,10 +22,20 @@ public class MCMMOQuestItemHandler implements Listener {
      */
     private final ProfileProvider profileProvider;
 
+    /**
+     * Constructs a new MCMMOQuestItemHandler.
+     *
+     * @param profileProvider the profile provider to use for accessing player profiles
+     */
     public MCMMOQuestItemHandler(final ProfileProvider profileProvider) {
         this.profileProvider = profileProvider;
     }
 
+    /**
+     * Handles the McMMOPlayerSalvageCheckEvent to prevent salvaging QuestItems.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onQuestItemSalvaging(final McMMOPlayerSalvageCheckEvent event) {
         if (Utils.isQuestItem(event.getSalvageItem())) {
@@ -34,6 +43,11 @@ public class MCMMOQuestItemHandler implements Listener {
         }
     }
 
+    /**
+     * Handles the McMMOPlayerDisarmEvent to prevent disarming QuestItems.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onQuestItemDisarm(final McMMOPlayerDisarmEvent event) {
         final ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();

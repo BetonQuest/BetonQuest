@@ -345,6 +345,9 @@ public class EntityHider implements Listener {
         return policy;
     }
 
+    /**
+     * Closes the hider.
+     */
     public void close() {
         if (manager != null) {
             HandlerList.unregisterAll(bukkitListener);

@@ -89,26 +89,56 @@ public class ConversationColors {
         return messageParser.parse(raw);
     }
 
+    /**
+     * Gets the Component representing the text in the conversation.
+     *
+     * @return the Component for the text
+     */
     public Component getText() {
         return text;
     }
 
+    /**
+     * Gets the Component representing the NPC in the conversation.
+     *
+     * @return the Component for the NPC
+     */
     public Component getNpc() {
         return npc;
     }
 
+    /**
+     * Gets the Component representing the player in the conversation.
+     *
+     * @return the Component for the player
+     */
     public Component getPlayer() {
         return player;
     }
 
+    /**
+     * Gets the Component representing the formatted number.
+     *
+     * @return the Component for the number
+     */
     public Component getNumber() {
         return number;
     }
 
+    /**
+     * Gets the Component representing the formatted answer.
+     *
+     * @return the Component for the answer
+     */
     public Component getAnswer() {
         return answer;
     }
 
+    /**
+     * Gets the Component representing the formatted option.
+     *
+     * @return the Component for the option
+     */
     public Component getOption() {
         return option;
     }

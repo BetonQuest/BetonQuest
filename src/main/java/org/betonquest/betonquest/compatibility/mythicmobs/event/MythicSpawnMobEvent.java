@@ -41,6 +41,18 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
     @Nullable
     private final Variable<String> marked;
 
+    /**
+     * Constructs a new MythicSpawnMobEvent.
+     *
+     * @param apiHelper    the BukkitAPIHelper to use for spawning mobs
+     * @param loc          the location where the mob should be spawned
+     * @param mob          the name of the MythicMob to spawn
+     * @param level        the level of the mob to spawn
+     * @param amount       the amount of mobs to spawn
+     * @param privateMob   whether the mob should be private (invisible to other players)
+     * @param targetPlayer whether the mob should target the player who triggered the event
+     * @param marked       an optional variable containing a string to mark the mob with
+     */
     public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Variable<Location> loc, final String mob, final Variable<Number> level,
                                final Variable<Number> amount, final boolean privateMob, final boolean targetPlayer, @Nullable final Variable<String> marked) {
         this.apiHelper = apiHelper;

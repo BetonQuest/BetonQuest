@@ -39,6 +39,11 @@ public class CitizensWalkingListener implements Listener {
         this.registry = registry;
     }
 
+    /**
+     * Called when a player starts a conversation with an NPC.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
@@ -66,6 +71,11 @@ public class CitizensWalkingListener implements Listener {
         }
     }
 
+    /**
+     * Called when a player ends a conversation with an NPC.
+     *
+     * @param event the event
+     */
     @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {

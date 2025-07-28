@@ -39,6 +39,12 @@ public abstract class Database {
         this.profileInitialName = plugin.getPluginConfig().getString("profile.initial_name", "default");
     }
 
+    /**
+     * Returns the current database connection.
+     * If the connection is closed or broken, it will try to open a new connection.
+     *
+     * @return the current database connection
+     */
     public Connection getConnection() {
         try {
             if (con == null || con.isClosed() || isConnectionBroken(con)) {
@@ -66,6 +72,9 @@ public abstract class Database {
 
     protected abstract Connection openConnection() throws SQLException;
 
+    /**
+     * Closes the database connection if it is open.
+     */
     public void closeConnection() {
         if (con != null) {
             try {
@@ -77,6 +86,9 @@ public abstract class Database {
         con = null;
     }
 
+    /**
+     * Creates the database tables by executing all migrations that have not been executed yet.
+     */
     public final void createTables() {
         try {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();

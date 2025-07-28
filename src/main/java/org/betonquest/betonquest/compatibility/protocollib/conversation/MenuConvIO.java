@@ -55,6 +55,9 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * An {@link ChatConvIO} implementation that use player ingame movements to control the conversation.
+ */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
         "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
@@ -444,6 +447,11 @@ public class MenuConvIO extends ChatConvIO {
         chatDisplay.getSelection().ifPresent(index -> conv.passPlayerAnswer(index + 1));
     }
 
+    /**
+     * Handles the player interact event.
+     *
+     * @param event the event
+     */
     @SuppressWarnings("PMD.CollapsibleIfStatements")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
@@ -474,6 +482,11 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    /**
+     * Handles the player interact entity event.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
         if (state.isInactive()) {
@@ -500,6 +513,11 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    /**
+     * Handles the entity damage by entity event.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
         if (state.isInactive()) {
@@ -554,6 +572,11 @@ public class MenuConvIO extends ChatConvIO {
         return false;
     }
 
+    /**
+     * Handles the player item held event.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
         if (state.isInactive()) {
@@ -602,17 +625,47 @@ public class MenuConvIO extends ChatConvIO {
         return Scroll.UP;
     }
 
+    /**
+     * The actions that can be performed in the menu conversation.
+     */
     public enum ACTION {
+        /**
+         * The player selected an option.
+         */
         SELECT,
+        /**
+         * The player cancelled the conversation.
+         */
         CANCEL,
+        /**
+         * The player moved in the conversation.
+         */
         MOVE
     }
 
+    /**
+     * The controls that can be used in the menu conversation.
+     */
     public enum CONTROL {
+        /**
+         * The player jumped.
+         */
         JUMP,
+        /**
+         * The player sneaked.
+         */
         SNEAK,
+        /**
+         * The player scrolled.
+         */
         SCROLL,
+        /**
+         * The player moved.
+         */
         MOVE,
+        /**
+         * The player left-clicked.
+         */
         LEFT_CLICK
     }
 }

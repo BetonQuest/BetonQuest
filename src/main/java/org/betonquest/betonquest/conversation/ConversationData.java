@@ -106,13 +106,14 @@ public class ConversationData {
     /**
      * Loads conversation from package.
      *
-     * @param log            the custom logger for this class
-     * @param questTypeAPI   the quest type api
-     * @param featureAPI     the feature api
-     * @param messageCreator the message creator to parse messages
-     * @param pack           the package of the conversation this data represents
-     * @param convSection    the configuration section of the conversation
-     * @param publicData     the external used data
+     * @param log               the custom logger for this class
+     * @param variableProcessor the variable processor to resolve variables
+     * @param questTypeAPI      the quest type api
+     * @param featureAPI        the feature api
+     * @param messageCreator    the message creator to parse messages
+     * @param pack              the package of the conversation this data represents
+     * @param convSection       the configuration section of the conversation
+     * @param publicData        the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */

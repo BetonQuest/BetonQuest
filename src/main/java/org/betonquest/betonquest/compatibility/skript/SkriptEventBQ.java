@@ -16,6 +16,9 @@ public class SkriptEventBQ extends SkriptEvent {
     @SuppressWarnings("NullAway.Init")
     private Literal<?> literal;
 
+    /**
+     * Constructs a new ScriptEvent for BetonQuest custom events.
+     */
     public SkriptEventBQ() {
         super();
     }

@@ -288,6 +288,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return meta;
     }
 
+    /**
+     * Handles the InventoryClickEvent to process player clicks on options.
+     *
+     * @param event the event
+     */
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
@@ -322,6 +327,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
+    /**
+     * Handles the InventoryCloseEvent to manage conversation closing.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
@@ -359,6 +369,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
     }
 
+    /**
+     * Handles the PlayerItemConsumeEvent to prevent consuming items during a conversation.
+     *
+     * @param event the event
+     */
     @EventHandler
     public void onConsume(final PlayerItemConsumeEvent event) {
         final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
