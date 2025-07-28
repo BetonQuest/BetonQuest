@@ -20,23 +20,38 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Connects to and uses a MySQL database
+ * Connects to and uses a MySQL database.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class MySQL extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * Username for the MySQL user.
+     */
     private final String user;
 
+    /**
+     * Prefix for the database tables.
+     */
     private final String database;
 
+    /**
+     * Password for the MySQL user.
+     */
     private final String password;
 
+    /**
+     * Port number to connect to the MySQL server.
+     */
     private final String port;
 
+    /**
+     * Name of the host to connect to the MySQL server.
+     */
     private final String hostname;
 
     /**

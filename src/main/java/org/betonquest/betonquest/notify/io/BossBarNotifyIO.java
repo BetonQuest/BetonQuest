@@ -19,19 +19,35 @@ import java.util.Map;
 /**
  * Displays the message as boss bar.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
-
+    /**
+     * The flags for the boss bar.
+     */
     private final List<BossBar.Flag> flags;
 
+    /**
+     * The color of the boss bar.
+     */
     private final BossBar.Color color;
 
+    /**
+     * The style of the boss bar.
+     */
     private final BossBar.Overlay style;
 
+    /**
+     * The variable for the progress of the boss bar.
+     */
     private final Variable<Number> variableProgress;
 
+    /**
+     * The variable for the time the boss bar should stay visible.
+     */
     private final Variable<Number> variableStay;
 
+    /**
+     * The countdown variable for the boss bar.
+     */
     private final Variable<Number> variableCountdown;
 
     /**
@@ -110,8 +126,15 @@ public class BossBarNotifyIO extends NotifyIO {
     private void scheduleAnimation(final BossBar bossBar, final int interval, final float amount,
                                    final int startCountdown, final float startProgress) {
         new BukkitRunnable() {
+            /**
+             * The current countdown value.
+             */
             private int currentCountdown = startCountdown;
 
+            /**
+             * The current progress of the boss bar.
+             * Starts at the initial progress and decreases by the specified amount each tick.
+             */
             private float currentProgress = startProgress;
 
             @Override

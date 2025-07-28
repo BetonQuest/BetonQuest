@@ -39,7 +39,6 @@ class ProfileEventTest {
     /**
      * Test implementation of {@link ProfileEvent}.
      */
-    @SuppressWarnings("PMD.CommentRequired")
     private static class ProfileEventMock extends ProfileEvent {
 
         public ProfileEventMock(final Profile who) {

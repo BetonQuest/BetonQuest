@@ -34,7 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * EntityHider From: <a href="https://gist.github.com/aadnk/5871793">aadnk/5871793</a>
  * We use the fork: <a href="https://gist.github.com/dmulloy2/5526f5bf906c064c255e">dmulloy2/5526f5bf906c064c255e</a>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public class EntityHider implements Listener {
 
     /**
@@ -92,10 +92,19 @@ public class EntityHider implements Listener {
      */
     private final Listener bukkitListener;
 
+    /**
+     * ProtocolLib packet listener.
+     */
     private final PacketAdapter protocolListener;
 
+    /**
+     * Map of observers and their hidden entities.
+     */
     protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
 
+    /**
+     * The ProtocolManager used to send packets.
+     */
     @Nullable
     private ProtocolManager manager;
 
@@ -213,12 +222,20 @@ public class EntityHider implements Listener {
      */
     private Listener constructBukkit() {
         return new Listener() {
+            /**
+             * Invoked when an entity dies.
+             * @param event the event
+             */
             @EventHandler
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onEntityDeath(final EntityDeathEvent event) {
                 removeEntity(event.getEntity(), true);
             }
 
+            /**
+             * Invoked when a chunk is unloaded.
+             * @param event the event
+             */
             @EventHandler
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onChunkUnload(final ChunkUnloadEvent event) {
@@ -227,6 +244,10 @@ public class EntityHider implements Listener {
                 }
             }
 
+            /**
+             * Invoked when a player quits the server.
+             * @param event the event
+             */
             @EventHandler
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onPlayerQuit(final PlayerQuitEvent event) {

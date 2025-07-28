@@ -34,17 +34,26 @@ import java.util.regex.PatternSyntaxException;
  * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square
  * brackets. Regex allowed
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
+@SuppressWarnings("PMD.GodClass")
 public class BlockSelector {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
+    /**
+     * List of {@link Material}s that are used to match the {@link BlockData} of a {@link Block}.
+     */
     private final List<Material> materials;
 
+    /**
+     * Map of block states that are used to match the {@link BlockState} of a {@link Block}.
+     */
     private final Map<String, String> states;
 
+    /**
+     * Random instance used to select a random {@link Material} from the {@link BlockSelector}.
+     */
     private final Random random = new Random();
 
     /**

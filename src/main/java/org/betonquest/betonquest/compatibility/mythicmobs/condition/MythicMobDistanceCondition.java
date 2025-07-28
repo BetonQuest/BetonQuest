@@ -10,12 +10,20 @@ import org.bukkit.entity.Player;
 /**
  * Condition that checks if a player is within a certain distance of a specific MythicMob.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MythicMobDistanceCondition implements PlayerCondition {
+    /**
+     * The BukkitAPIHelper used to interact with MythicMobs.
+     */
     private final BukkitAPIHelper apiHelper;
 
+    /**
+     * The internal name of the MythicMob to check for.
+     */
     private final String mythicMobInternalName;
 
+    /**
+     * The distance within which the MythicMob should be checked.
+     */
     private final Variable<Number> distance;
 
     /**

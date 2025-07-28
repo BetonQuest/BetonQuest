@@ -16,12 +16,20 @@ import java.util.SortedMap;
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  */
-@SuppressWarnings("PMD.CommentRequired")
 public abstract class Database {
+    /**
+     * The plugin instance, used for accessing plugin configuration.
+     */
     protected final Plugin plugin;
 
+    /**
+     * The prefix for the database tables, used to avoid conflicts with.
+     */
     protected final String prefix;
 
+    /**
+     * The initial name for the profile, used when creating a new profile.
+     */
     protected final String profileInitialName;
 
     /**
@@ -29,9 +37,18 @@ public abstract class Database {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The current database connection.
+     */
     @Nullable
     protected Connection con;
 
+    /**
+     * Creates a new Database instance.
+     *
+     * @param log    the BetonQuestLogger to use for logging
+     * @param plugin the BetonQuest plugin instance
+     */
     protected Database(final BetonQuestLogger log, final BetonQuest plugin) {
         this.log = log;
         this.plugin = plugin;
@@ -70,6 +87,12 @@ public abstract class Database {
         }
     }
 
+    /**
+     * Opens a new database connection.
+     *
+     * @return the new database connection
+     * @throws SQLException if the connection could not be opened
+     */
     protected abstract Connection openConnection() throws SQLException;
 
     /**

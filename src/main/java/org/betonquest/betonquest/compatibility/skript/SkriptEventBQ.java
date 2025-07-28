@@ -8,11 +8,12 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Skript event, which listens to custom event fired by BetonQuest's event
+ * Skript event, which listens to custom event fired by BetonQuest's event.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class SkriptEventBQ extends SkriptEvent {
-
+    /**
+     * The literal that contains the identifier of the BetonQuest event.
+     */
     @SuppressWarnings("NullAway.Init")
     private Literal<?> literal;
 

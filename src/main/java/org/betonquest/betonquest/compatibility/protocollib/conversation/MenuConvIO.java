@@ -58,8 +58,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * An {@link ChatConvIO} implementation that use player ingame movements to control the conversation.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
      * Thread safety.
@@ -82,20 +81,37 @@ public class MenuConvIO extends ChatConvIO {
      */
     private final FixedComponentLineWrapper componentLineWrapper;
 
-    // Actions
+    /**
+     * The controls that are used in the conversation.
+     */
     protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
 
+    /**
+     * The current state of the conversation.
+     */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     protected volatile ConversationState state = ConversationState.CREATED;
 
+    /**
+     * The packet adapter used to intercept packets.
+     */
     protected PacketAdapter packetAdapter;
 
+    /**
+     * The runnable that updates the display.
+     */
     @Nullable
     protected BukkitRunnable displayRunnable;
 
+    /**
+     * The display used to show the conversation.
+     */
     @Nullable
     protected Display chatDisplay;
 
+    /**
+     * The armor stand used to steer the conversation.
+     */
     @Nullable
     private ArmorStand stand;
 

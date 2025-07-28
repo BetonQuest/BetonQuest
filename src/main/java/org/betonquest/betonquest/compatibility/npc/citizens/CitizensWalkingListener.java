@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * Prevents Citizens NPCs from walking around when in conversation with the player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
     /**
@@ -28,6 +27,9 @@ public class CitizensWalkingListener implements Listener {
      */
     public final NPCRegistry registry;
 
+    /**
+     * Map of NPCs which are currently in walking, and their locations to walk to.
+     */
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
 
     /**
