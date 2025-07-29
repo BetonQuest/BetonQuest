@@ -16,12 +16,20 @@ import java.util.SortedMap;
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  */
-@SuppressWarnings("PMD.CommentRequired")
 public abstract class Database {
+    /**
+     * The plugin instance, used for accessing plugin's data folder.
+     */
     protected final Plugin plugin;
 
+    /**
+     * The prefix for the database tables, used to avoid conflicts with.
+     */
     protected final String prefix;
 
+    /**
+     * The initial name for the profile, used when creating a new profile.
+     */
     protected final String profileInitialName;
 
     /**
@@ -29,9 +37,18 @@ public abstract class Database {
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The current database connection.
+     */
     @Nullable
     protected Connection con;
 
+    /**
+     * Creates a new Database instance.
+     *
+     * @param log    the BetonQuestLogger to use for logging
+     * @param plugin the BetonQuest plugin instance
+     */
     protected Database(final BetonQuestLogger log, final BetonQuest plugin) {
         this.log = log;
         this.plugin = plugin;
@@ -39,6 +56,12 @@ public abstract class Database {
         this.profileInitialName = plugin.getPluginConfig().getString("profile.initial_name", "default");
     }
 
+    /**
+     * Returns the current database connection.
+     * If the connection is closed or broken, it will try to open a new connection.
+     *
+     * @return the current database connection
+     */
     public Connection getConnection() {
         try {
             if (con == null || con.isClosed() || isConnectionBroken(con)) {
@@ -64,8 +87,17 @@ public abstract class Database {
         }
     }
 
+    /**
+     * Opens a new database connection.
+     *
+     * @return the new database connection
+     * @throws SQLException if the connection could not be opened
+     */
     protected abstract Connection openConnection() throws SQLException;
 
+    /**
+     * Closes the database connection if it is open.
+     */
     public void closeConnection() {
         if (con != null) {
             try {
@@ -77,6 +109,9 @@ public abstract class Database {
         con = null;
     }
 
+    /**
+     * Creates the database tables by executing all migrations that have not been executed yet.
+     */
     public final void createTables() {
         try {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();

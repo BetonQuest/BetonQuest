@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * Prevents Citizens NPCs from walking around when in conversation with the player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CitizensWalkingListener implements Listener {
 
     /**
@@ -28,6 +27,9 @@ public class CitizensWalkingListener implements Listener {
      */
     public final NPCRegistry registry;
 
+    /**
+     * Map of NPCs which are currently in walking, and their locations to walk to.
+     */
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
 
     /**
@@ -39,6 +41,11 @@ public class CitizensWalkingListener implements Listener {
         this.registry = registry;
     }
 
+    /**
+     * Called when a player starts a conversation with an NPC.
+     *
+     * @param event the event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onConversationStart(final PlayerConversationStartEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
@@ -66,6 +73,11 @@ public class CitizensWalkingListener implements Listener {
         }
     }
 
+    /**
+     * Called when a player ends a conversation with an NPC.
+     *
+     * @param event the event
+     */
     @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {

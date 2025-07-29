@@ -166,7 +166,7 @@ public final class Backup {
         con.updateSQL(UpdateType.DROP_BACKPACK);
         con.updateSQL(UpdateType.DROP_GLOBAL_POINTS);
         con.updateSQL(UpdateType.DROP_GLOBAL_TAGS);
-        con.updateSQL(UpdateType.DROP_MIRGATION);
+        con.updateSQL(UpdateType.DROP_MIGRATION);
         con.updateSQL(UpdateType.DROP_PLAYER_PROFILE);
         con.updateSQL(UpdateType.DROP_PLAYER);
         con.updateSQL(UpdateType.DROP_PROFILE);

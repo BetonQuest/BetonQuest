@@ -4,8 +4,17 @@ package org.betonquest.betonquest.conversation;
  * Represents the state of a conversation.
  */
 public enum ConversationState {
+    /**
+     * The conversation has not started yet.
+     */
     CREATED(false, false),
+    /**
+     * The conversation has started but not ended yet.
+     */
     ACTIVE(true, false),
+    /**
+     * The conversation has ended.
+     */
     ENDED(true, true);
 
     /**

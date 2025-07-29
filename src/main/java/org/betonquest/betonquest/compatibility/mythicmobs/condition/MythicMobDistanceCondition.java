@@ -7,15 +7,33 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Condition that checks if a player is within a certain distance of a specific MythicMob.
+ */
 public class MythicMobDistanceCondition implements PlayerCondition {
+    /**
+     * The BukkitAPIHelper used to interact with MythicMobs.
+     */
     private final BukkitAPIHelper apiHelper;
 
+    /**
+     * The internal name of the MythicMob to check for.
+     */
     private final String mythicMobInternalName;
 
+    /**
+     * The distance within which the MythicMob should be checked.
+     */
     private final Variable<Number> distance;
 
-    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final Variable<Number> distance) throws QuestException {
+    /**
+     * Constructs a new MythicMobDistanceCondition.
+     *
+     * @param apiHelper             the BukkitAPIHelper to use for checking MythicMobs
+     * @param mythicMobInternalName the internal name of the MythicMob to check for
+     * @param distance              the distance within which the MythicMob should be checked
+     */
+    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final Variable<Number> distance) {
         this.apiHelper = apiHelper;
         this.mythicMobInternalName = mythicMobInternalName;
         this.distance = distance;

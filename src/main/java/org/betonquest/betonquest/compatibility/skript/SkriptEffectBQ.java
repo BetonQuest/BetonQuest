@@ -18,17 +18,26 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
-@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
+@SuppressWarnings("NullAway.Init")
 public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The event identifier to be fired.
+     */
     private Expression<String> event;
 
+    /**
+     * The player for whom the event is fired.
+     */
     private Expression<Player> player;
 
+    /**
+     * Constructs a new SkriptEffect for BetonQuest events.
+     */
     public SkriptEffectBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());

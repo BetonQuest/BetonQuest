@@ -4,11 +4,21 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * A decorator for {@link PacketHandler} that allows extending the functionality of existing packet handlers.
+ * This class implements the {@link PacketHandler} interface and delegates calls to the wrapped packet handler.
+ */
 public abstract class PacketHandlerDecorator implements PacketHandler {
-
+    /**
+     * The wrapped packet handler that this decorator extends.
+     */
     private final PacketHandler packetHandler;
 
+    /**
+     * Creates a new packet handler decorator that wraps the given packet handler.
+     *
+     * @param packetHandler the packet handler to wrap
+     */
     protected PacketHandlerDecorator(final PacketHandler packetHandler) {
         this.packetHandler = packetHandler;
     }

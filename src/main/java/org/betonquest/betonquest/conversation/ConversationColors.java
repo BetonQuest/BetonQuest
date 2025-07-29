@@ -89,26 +89,56 @@ public class ConversationColors {
         return messageParser.parse(raw);
     }
 
+    /**
+     * The color of the text in the conversation.
+     *
+     * @return the Component representing the text color
+     */
     public Component getText() {
         return text;
     }
 
+    /**
+     * The color of the NPC name in the conversation.
+     *
+     * @return the Component representing the NPC color
+     */
     public Component getNpc() {
         return npc;
     }
 
+    /**
+     * The color of the player name in the conversation.
+     *
+     * @return the Component representing the player color
+     */
     public Component getPlayer() {
         return player;
     }
 
+    /**
+     * The color of the number in the conversation.
+     *
+     * @return the Component representing the number color
+     */
     public Component getNumber() {
         return number;
     }
 
+    /**
+     * The color of the answer in the conversation.
+     *
+     * @return the Component representing the answer color
+     */
     public Component getAnswer() {
         return answer;
     }
 
+    /**
+     * The color of the option in the conversation.
+     *
+     * @return the Component representing the option color
+     */
     public Component getOption() {
         return option;
     }

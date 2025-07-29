@@ -36,8 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Represents an object storing all profile-related data, which can load and save it.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidSynchronizedStatement",
-        "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
 @SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData, PointData {
     /**
@@ -50,21 +49,45 @@ public class PlayerData implements TagData, PointData {
      */
     private final Saver saver;
 
+    /**
+     * The profile this data belongs to.
+     */
     private final Profile profile;
 
+    /**
+     * The profileID of the data.
+     */
     private final String profileID;
 
+    /**
+     * List of tags the player has.
+     */
     private final List<String> tags = new CopyOnWriteArrayList<>();
 
+    /**
+     * List of journal entries the player has.
+     */
     private final List<Pointer> entries = new CopyOnWriteArrayList<>();
 
+    /**
+     * List of points the player has.
+     */
     private final List<Point> points = new CopyOnWriteArrayList<>();
 
+    /**
+     * List of not loaded objectiveIDs and their data instructions.
+     */
     private final Map<String, String> objectives = new ConcurrentHashMap<>();
 
+    /**
+     * The journal of the player, which contains all journal entries.
+     */
     @Nullable
     private Journal journal;
 
+    /**
+     * The player's backpack, which is a list of itemstacks.
+     */
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
 
     /**

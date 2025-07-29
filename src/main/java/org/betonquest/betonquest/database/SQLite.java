@@ -23,17 +23,20 @@ import java.util.TreeMap;
 /**
  * Connects to and uses a SQLite database
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class SQLite extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The database file location.
+     */
     private final String dbLocation;
 
     /**
-     * Creates a new SQLite instance
+     * Creates a new SQLite instance.
      *
      * @param log        the logger that will be used for logging
      * @param plugin     Plugin instance

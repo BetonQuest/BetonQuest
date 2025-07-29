@@ -197,6 +197,7 @@ public class Slots {
      * @param profile the player {@link Profile} for which these slots should get displayed for
      * @param slot    the slot which should contain this item
      * @return the menu item which should be displayed in the given slot to the player
+     * @throws QuestException if an error occurs while resolving the items
      */
     @Nullable
     public MenuItem getItem(final Profile profile, final int slot) throws QuestException {

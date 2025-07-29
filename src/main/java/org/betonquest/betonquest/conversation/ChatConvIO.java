@@ -62,6 +62,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         maxNpcDistance = BetonQuest.getInstance().getPluginConfig().getDouble("conversation.stop.distance");
     }
 
+    /**
+     * Handles the player's movement during a conversation.
+     *
+     * @param event the PlayerMoveEvent triggered by the player
+     */
     @EventHandler(ignoreCancelled = true)
     public void onWalkAway(final PlayerMoveEvent event) {
         if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
@@ -108,6 +113,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
     }
 
+    /**
+     * Handles the player's reply in the chat conversation.
+     *
+     * @param event the AsyncPlayerChatEvent triggered by the player
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().equals(onlineProfile.getPlayer())) {

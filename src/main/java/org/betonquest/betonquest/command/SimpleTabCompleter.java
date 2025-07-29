@@ -13,7 +13,6 @@ import java.util.Optional;
 /**
  * Interface which handles tab complete for commands.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @FunctionalInterface
 public interface SimpleTabCompleter extends TabCompleter {
 
@@ -35,5 +34,14 @@ public interface SimpleTabCompleter extends TabCompleter {
         return out;
     }
 
+    /**
+     * Get the tab completions for a command.
+     *
+     * @param sender  the sender of the command
+     * @param command the command being executed
+     * @param alias   the alias of the command
+     * @param args    the arguments passed to the command
+     * @return an optional list of completions for the command
+     */
     Optional<List<String>> simpleTabComplete(CommandSender sender, Command command, String alias, String... args);
 }

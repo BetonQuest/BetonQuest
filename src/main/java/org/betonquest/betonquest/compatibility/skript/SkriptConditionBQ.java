@@ -17,17 +17,26 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
-@SuppressWarnings({"PMD.CommentRequired", "NullAway.Init"})
+@SuppressWarnings("NullAway.Init")
 public class SkriptConditionBQ extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
+    /**
+     * The player for whom the condition is checked.
+     */
     private Expression<Player> player;
 
+    /**
+     * The condition identifier to be checked.
+     */
     private Expression<String> condition;
 
+    /**
+     * Constructs a new SkriptCondition for BetonQuest conditions.
+     */
     public SkriptConditionBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());

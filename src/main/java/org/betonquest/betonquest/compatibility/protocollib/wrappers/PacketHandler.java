@@ -4,7 +4,11 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Interface for handling packets in BetonQuest using ProtocolLib.
+ * This interface defines methods for sending, receiving, and broadcasting packets,
+ * as well as retrieving the raw packet data and its type.
+ */
 public interface PacketHandler {
 
     /**

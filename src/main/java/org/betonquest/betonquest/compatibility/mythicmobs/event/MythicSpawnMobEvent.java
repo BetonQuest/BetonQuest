@@ -22,25 +22,60 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns MythicMobs mobs.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
+    /**
+     * The BukkitAPIHelper used to interact with MythicMobs.
+     */
     private final BukkitAPIHelper apiHelper;
 
+    /**
+     * The location where the mob should be spawned.
+     */
     private final Variable<Location> loc;
 
+    /**
+     * The name of the MythicMob to spawn.
+     */
     private final String mob;
 
+    /**
+     * The level of the mob to spawn.
+     */
     private final Variable<Number> level;
 
+    /**
+     * The amount of mobs to spawn.
+     */
     private final Variable<Number> amount;
 
+    /**
+     * Whether the mob should be private (invisible to other players).
+     */
     private final boolean privateMob;
 
+    /**
+     * Whether the mob should target the player who triggered the event.
+     */
     private final boolean targetPlayer;
 
+    /**
+     * An optional variable containing a string to mark the mob with.
+     */
     @Nullable
     private final Variable<String> marked;
 
+    /**
+     * Constructs a new MythicSpawnMobEvent.
+     *
+     * @param apiHelper    the BukkitAPIHelper to use for spawning mobs
+     * @param loc          the location where the mob should be spawned
+     * @param mob          the name of the MythicMob to spawn
+     * @param level        the level of the mob to spawn
+     * @param amount       the amount of mobs to spawn
+     * @param privateMob   whether the mob should be private (invisible to other players)
+     * @param targetPlayer whether the mob should target the player who triggered the event
+     * @param marked       an optional variable containing a string to mark the mob with
+     */
     public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Variable<Location> loc, final String mob, final Variable<Number> level,
                                final Variable<Number> amount, final boolean privateMob, final boolean targetPlayer, @Nullable final Variable<String> marked) {
         this.apiHelper = apiHelper;

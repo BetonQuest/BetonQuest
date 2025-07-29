@@ -46,25 +46,46 @@ import java.util.Set;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Journal.class);
 
+    /**
+     * The plugin message instance used for getting messages.
+     */
     private final PluginMessage pluginMessage;
 
+    /**
+     * The profile of the player whose journal is created.
+     */
     private final Profile profile;
 
+    /**
+     * List of pointers to journal entries.
+     */
     private final List<Pointer> pointers;
 
+    /**
+     * List of texts generated from pointers.
+     */
     private final List<String> texts = new ArrayList<>();
 
+    /**
+     * The configuration accessor for the plugin's configuration.
+     */
     private final ConfigAccessor config;
 
+    /**
+     * The sender for notifications when the player's inventory is full.
+     */
     private final IngameNotificationSender inventoryFullBackpackSender;
 
+    /**
+     * The main page of the journal, which is generated from the main page entries.
+     */
     @Nullable
     private String mainPage;
 
