@@ -18,7 +18,7 @@ import java.util.SortedMap;
  */
 public abstract class Database {
     /**
-     * The plugin instance, used for accessing plugin configuration.
+     * The plugin instance, used for accessing plugin's data folder.
      */
     protected final Plugin plugin;
 

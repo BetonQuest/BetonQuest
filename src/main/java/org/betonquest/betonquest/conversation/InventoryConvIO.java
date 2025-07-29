@@ -289,7 +289,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     /**
-     * Handles the InventoryClickEvent to process player clicks on options.
+     * Process player clicks on options.
      *
      * @param event the event
      */
@@ -328,7 +328,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     /**
-     * Handles the InventoryCloseEvent to manage conversation closing.
+     * Manage conversation closing.
      *
      * @param event the event
      */
@@ -370,7 +370,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     /**
-     * Handles the PlayerItemConsumeEvent to prevent consuming items during a conversation.
+     * Prevent consuming items during a conversation.
      *
      * @param event the event
      */

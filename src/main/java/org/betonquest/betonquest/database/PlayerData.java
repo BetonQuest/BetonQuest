@@ -75,7 +75,7 @@ public class PlayerData implements TagData, PointData {
     private final List<Point> points = new CopyOnWriteArrayList<>();
 
     /**
-     * List of active objectiveIDs and their data instructions.
+     * List of not loaded objectiveIDs and their data instructions.
      */
     private final Map<String, String> objectives = new ConcurrentHashMap<>();
 

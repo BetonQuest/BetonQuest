@@ -27,7 +27,7 @@ public enum QueryType {
      */
     SELECT_BACKPACK(prefix -> "SELECT serialized, amount FROM " + prefix + "backpack WHERE profileID = ?;"),
     /**
-     * Get the player data of a profile. ProfileID.
+     * Get the current language and conversation of a profile. ProfileID.
      */
     SELECT_PLAYER(prefix -> "SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;"),
 
@@ -41,11 +41,11 @@ public enum QueryType {
     LOAD_ALL_GLOBAL_POINTS(prefix -> "SELECT * FROM " + prefix + "global_points"),
 
     /**
-     * Get all points of a category ordered ascending with a limit.
+     * Get all points of a category ordered ascending with a limit. Category, limit.
      */
     LOAD_TOP_X_POINTS_ASC(prefix -> "SELECT playerID,count FROM " + prefix + "points po join " + prefix + "player pl on po.profileID = pl.active_profile WHERE category = ? ORDER BY count ASC LIMIT ?;"),
     /**
-     * Get all points of a category ordered descending with a limit.
+     * Get all points of a category ordered descending with a limit. Category, limit.
      */
     LOAD_TOP_X_POINTS_DESC(prefix -> "SELECT playerID,count FROM " + prefix + "points po join " + prefix + "player pl on po.profileID = pl.active_profile WHERE category = ? ORDER BY count DESC LIMIT ?;");
 

@@ -6,9 +6,6 @@ import java.io.Serial;
  * An unchecked exception that is thrown when a packet cannot be processed.
  */
 public class UncheckedPacketException extends RuntimeException {
-    /**
-     * Serial version UID for serialization.
-     */
     @Serial
     private static final long serialVersionUID = 60789910395201791L;
 
