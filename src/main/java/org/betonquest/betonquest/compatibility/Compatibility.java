@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegratorFact
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegratorFactory;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegratorFactory;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegratorFactory;
+import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegratorFactory;
@@ -43,7 +44,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -72,6 +75,12 @@ public class Compatibility implements Listener {
     private final Map<String, Pair<IntegratorFactory, Integrator>> integrators = new TreeMap<>();
 
     /**
+     * The instance of the HologramProvider.
+     */
+    @Nullable
+    private HologramProvider hologramProvider;
+
+    /**
      * Loads all compatibility with other plugins that is available in the current runtime.
      *
      * @param betonQuest the BetonQuest plugin instance for tasks and configs
@@ -89,9 +98,6 @@ public class Compatibility implements Listener {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
-
-        //Must be called after all plugins have been integrated
-        HologramProvider.init();
 
         //Delay after server start to finish all hooking first
         new BukkitRunnable() {
@@ -120,17 +126,27 @@ public class Compatibility implements Listener {
      * this method can be called to activate cross compatibility features.
      */
     public void postHook() {
+        final List<HologramIntegrator> hologramIntegrators = new ArrayList<>();
         integrators.values().stream()
                 .filter(pair -> pair.getRight() != null)
                 .forEach(pair -> {
                     final Integrator integrator = pair.getRight();
                     try {
                         integrator.postHook();
+                        if (integrator instanceof final HologramIntegrator hologramIntegrator) {
+                            hologramIntegrators.add(hologramIntegrator);
+                        }
                     } catch (final HookException e) {
                         log.warn("Error while enabling some features while post hooking into " + pair.getLeft()
                                 + " reason: " + e.getMessage(), e);
                     }
                 });
+        hologramProvider = new HologramProvider(hologramIntegrators);
+        try {
+            hologramProvider.hook();
+        } catch (final HookException e) {
+            log.warn("Error while enabling holograms: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -141,6 +157,9 @@ public class Compatibility implements Listener {
                 .map(Pair::getRight)
                 .filter(Objects::nonNull)
                 .forEach(Integrator::reload);
+        if (hologramProvider != null) {
+            hologramProvider.reload();
+        }
     }
 
     /**
@@ -151,6 +170,9 @@ public class Compatibility implements Listener {
                 .map(Pair::getRight)
                 .filter(Objects::nonNull)
                 .forEach(Integrator::close);
+        if (hologramProvider != null) {
+            hologramProvider.close();
+        }
     }
 
     private String buildHookedPluginsMessage() {

@@ -108,23 +108,18 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
                 throw new UnsupportedVersionException(plugin, requiredVersion);
             }
         }
-        HologramProvider.addIntegrator(this);
     }
 
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     @Override
     public void reload() {
-        final HologramProvider provider = HologramProvider.getInstance();
-        if (provider.isHooked(pluginName)) {
-            provider.reload();
-        }
+        // Empty
     }
 
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     @Override
     public void close() {
-        final HologramProvider provider = HologramProvider.getInstance();
-        if (provider.isHooked(pluginName)) {
-            provider.close();
-        }
+        // Empty
     }
 
     /**

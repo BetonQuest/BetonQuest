@@ -138,7 +138,7 @@ public record QuestRegistry(
 
         eventScheduling.startAll();
         additional.forEach(questProcessor -> {
-            if (questProcessor instanceof StartTask startTask) {
+            if (questProcessor instanceof final StartTask startTask) {
                 startTask.startAll();
             }
         });
