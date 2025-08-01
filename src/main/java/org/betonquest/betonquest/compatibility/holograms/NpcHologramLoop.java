@@ -140,6 +140,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                     final BetonHologram hologram = hologramProvider.createHologram(npc.getLocation().add(holo.vector));
                     entry.setValue(hologram);
                     holo.holograms.add(hologram);
+                    updateHologram(hologram);
                 }
             });
             log.debug("Loaded NPC Holograms.");
