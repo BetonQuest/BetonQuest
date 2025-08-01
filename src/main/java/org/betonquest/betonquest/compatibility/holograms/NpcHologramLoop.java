@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
@@ -15,12 +14,12 @@ import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -46,6 +45,11 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     private final List<NpcHologram> npcHolograms;
 
     /**
+     * Plugin instance for task scheduling.
+     */
+    private final Plugin plugin;
+
+    /**
      * Feature API.
      */
     private final FeatureAPI featureAPI;
@@ -56,32 +60,28 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     private final NpcTypeRegistry npcTypeRegistry;
 
     /**
-     * Identifier mapped to their NpcIds representing them.
-     */
-    private final Map<String, List<NpcID>> identifierToId;
-
-    /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
+     * @param plugin            the plugin to schedule tasks
      * @param variableProcessor the variable processor to use
      * @param hologramProvider  the hologram provider to create new holograms
      * @param featureAPI        the Quest Type API
      * @param npcTypeRegistry   the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final VariableProcessor variableProcessor, final HologramProvider hologramProvider, final FeatureAPI featureAPI,
-                           final NpcTypeRegistry npcTypeRegistry) {
+                           final Plugin plugin, final VariableProcessor variableProcessor, final HologramProvider hologramProvider,
+                           final FeatureAPI featureAPI, final NpcTypeRegistry npcTypeRegistry) {
         super(loggerFactory, log, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
+        this.plugin = plugin;
         this.featureAPI = featureAPI;
         this.npcTypeRegistry = npcTypeRegistry;
-        identifierToId = new HashMap<>();
         npcHolograms = new ArrayList<>();
-        followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(),
+        followTask = plugin.getServer().getScheduler().runTaskTimer(plugin,
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
                         .forEach(this::updateHologram), 1L, 1L);
-        Bukkit.getServer().getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     @Override
     public void startAll() {
         log.debug("Delaying NPC Hologram creation…");
-        Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
+        plugin.getServer().getScheduler().runTask(plugin, () -> {
             log.debug("Loading delayed NPC Holograms.");
             npcHolograms.forEach(holo -> {
                 for (final Map.Entry<NpcID, BetonHologram> entry : holo.npcHolograms.entrySet()) {
@@ -133,13 +133,13 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                         log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
                         continue;
                     }
-                    identifierToId.computeIfAbsent(npcID.toString(), k -> new ArrayList<>()).add(npcID);
                     if (!npc.isSpawned()) {
                         continue;
                     }
                     final BetonHologram hologram = hologramProvider.createHologram(npc.getLocation().add(holo.vector));
                     entry.setValue(hologram);
                     holo.holograms.add(hologram);
+                    updateHologram(hologram);
                 }
             });
             log.debug("Loaded NPC Holograms.");
@@ -212,7 +212,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                 .filter(npcHologram -> ids.stream().anyMatch(npcId -> npcHologram.npcHolograms().containsKey(npcId)))
                 .toList();
         if (!list.isEmpty()) {
-            Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> list.forEach(this::updateHologram));
+            plugin.getServer().getScheduler().runTask(plugin, () -> list.forEach(this::updateHologram));
         }
     }
 

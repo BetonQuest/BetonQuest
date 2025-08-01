@@ -59,12 +59,12 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
 
     @Override
     public Location getLocation() {
-        return spawned == null ? EMPTY : spawned.getLocation();
+        return spawned == null ? EMPTY.clone() : spawned.getLocation();
     }
 
     @Override
     public Location getEyeLocation() {
-        return spawned == null ? EMPTY : spawned.getEyeLocation();
+        return spawned == null ? EMPTY.clone() : spawned.getEyeLocation();
     }
 
     @Override
