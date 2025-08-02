@@ -61,13 +61,14 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
+     * Also starts the npc update listener.
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
      * @param plugin            the plugin to schedule tasks
      * @param variableProcessor the variable processor to use
      * @param hologramProvider  the hologram provider to create new holograms
-     * @param featureAPI        the Quest Type API
+     * @param featureAPI        the Feature API to get NPC instances
      * @param npcTypeRegistry   the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
@@ -91,7 +92,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     /**
-     * Stops the follow task.
+     * Stops the follow task and unregisters the update listener.
      */
     public void close() {
         followTask.cancel();

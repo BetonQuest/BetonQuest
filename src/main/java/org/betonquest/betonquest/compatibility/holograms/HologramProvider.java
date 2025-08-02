@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Singleton class which provides Hologram.
+ * Class which provides Hologram creation.
  */
 public class HologramProvider implements Integrator {
     /**
@@ -44,9 +44,9 @@ public class HologramProvider implements Integrator {
     private NpcHologramLoop npcHologramLoop;
 
     /**
-     * Creates a new HologramProvider object and assigns it to singleton instance if not already.
+     * Creates a new HologramProvider from hooked {@link HologramIntegrator}.
      *
-     * @param integrations The list of integrators to use.
+     * @param integrations The list of integrators to consider.
      */
     public HologramProvider(final List<HologramIntegrator> integrations) {
         this.integrator = init(integrations);
@@ -130,7 +130,7 @@ public class HologramProvider implements Integrator {
         private final ProfileProvider profileProvider;
 
         /**
-         * Creates and registers a new HologramListener.
+         * Creates a new HologramListener.
          *
          * @param profileProvider the profile provider instance
          */
@@ -139,7 +139,7 @@ public class HologramProvider implements Integrator {
         }
 
         /**
-         * Called when a player joins the server.
+         * Refreshes Holograms when a player joins the server.
          *
          * @param event The event.
          */
