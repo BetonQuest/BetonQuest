@@ -247,12 +247,12 @@ NPC_options:
   ## Normal Conversation Start
   start:
     text: 'What can I do for you'
-    extends: tonight, today
+    extends: tonight,today
     
   ## Useless addition as example
   tonight:
     # Always false
-    conditions: random 0-1
+    conditions: random_0-1
     text: ' tonight?'
     extends: main_menu
 

@@ -473,7 +473,7 @@ This one requires the player to wear armor which gives him specified amount of p
     
 ## Real time: `realtime`
 
-**static****persistent**
+**static**, **persistent**
 
 There must a specific (real) time for this condition to return true.
 

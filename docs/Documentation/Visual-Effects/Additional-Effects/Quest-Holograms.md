@@ -25,7 +25,7 @@ holograms:
     - 'top:completed_quests;desc;10;&a;§6;2;&6'
     - '&2Your amount: &6%point.completed_quests.amount%'
     - '&Total amount: &6%azerothquests.globalpoint.total_completed_quests.amount%'
-    conditions: has_some_quest, !finished_some_quest    
+    conditions: has_some_quest,!finished_some_quest    
     location: 100;200;300;world
     # How often to check conditions (optional)
     check_interval: 20
@@ -62,4 +62,3 @@ every 10 seconds. If you want to make it faster, decrease `hologram.update_inter
 number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 
 Keep in mind that each hologram plugin also updates its holograms on a timer individually, meaning that hologram variables will refresh at a much quicker rate than the above.
-
