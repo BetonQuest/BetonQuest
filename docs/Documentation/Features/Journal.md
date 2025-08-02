@@ -26,8 +26,8 @@ journal_main_page:
   title:
     priority: 1
     text:
-      en: '&eThe Journal'
-      pl: '&eDziennik'
+      en-US: '&eThe Journal'
+      pl-PL: '&eDziennik'
     conditions: 'quest_started,!quest_completed'
 ```
 
