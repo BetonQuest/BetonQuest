@@ -4967,22 +4967,22 @@ Check the <a href="../../Scripting/Building-Blocks/Variables-List/">variables li
 <h2 id="translations">Translations<a class="headerlink" href="#translations" title="Permanent link">🔗</a></h2>
 <p>Conversation can be fully translated into multiple languages. A players can choose their preferred language with the <strong>/questlang</strong> command. You can translate every NPC option, player option and the NPC's name. This is how it's done:</p>
 <p><div class="highlight"><pre><span></span><code><span class="nt">quester</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Innkeeper&quot;</span>
-<span class="w">  </span><span class="nt">pl</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Karczmarz&quot;</span>
-<span class="w">  </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Gastwirt&quot;</span>
+<span class="w">  </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Innkeeper&quot;</span>
+<span class="w">  </span><span class="nt">pl-PL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Karczmarz&quot;</span>
+<span class="w">  </span><span class="nt">de-DE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Gastwirt&quot;</span>
 <span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example1&quot;</span><span class="w"> </span>
 <span class="nt">NPC_options</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">example1</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Good</span><span class="nv"> </span><span class="s">day,</span><span class="nv"> </span><span class="s">dear</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Welcome</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">town.&quot;</span>
-<span class="w">      </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Guten</span><span class="nv"> </span><span class="s">Tag,</span><span class="nv"> </span><span class="s">lieber</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Willkommen</span><span class="nv"> </span><span class="s">zurück</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">meiner</span><span class="nv"> </span><span class="s">Stadt.&quot;</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Good</span><span class="nv"> </span><span class="s">day,</span><span class="nv"> </span><span class="s">dear</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Welcome</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">town.&quot;</span>
+<span class="w">      </span><span class="nt">de-DE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Guten</span><span class="nv"> </span><span class="s">Tag,</span><span class="nv"> </span><span class="s">lieber</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Willkommen</span><span class="nv"> </span><span class="s">zurück</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">meiner</span><span class="nv"> </span><span class="s">Stadt.&quot;</span><span class="w"> </span>
 <span class="nt">player_options</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">example2</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">honor,</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">happy</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">here.&quot;</span>
-<span class="w">      </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Danke,</span><span class="nv"> </span><span class="s">Euer</span><span class="nv"> </span><span class="s">Ehren,</span><span class="nv"> </span><span class="s">ich</span><span class="nv"> </span><span class="s">bin</span><span class="nv"> </span><span class="s">froh,</span><span class="nv"> </span><span class="s">hier</span><span class="nv"> </span><span class="s">zu</span><span class="nv"> </span><span class="s">sein.&quot;</span>
+<span class="w">      </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">honor,</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">happy</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">here.&quot;</span>
+<span class="w">      </span><span class="nt">de-DE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Danke,</span><span class="nv"> </span><span class="s">Euer</span><span class="nv"> </span><span class="s">Ehren,</span><span class="nv"> </span><span class="s">ich</span><span class="nv"> </span><span class="s">bin</span><span class="nv"> </span><span class="s">froh,</span><span class="nv"> </span><span class="s">hier</span><span class="nv"> </span><span class="s">zu</span><span class="nv"> </span><span class="s">sein.&quot;</span>
 </code></pre></div>
-<code>en</code> and <code>de</code> are identifiers of languages present in the "<em>messages.yml</em>" config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "<em>config.yml</em>".</p>
+<code>en-US</code> and <code>de-DE</code> are identifiers of languages present in the lang folder. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "<em>config.yml</em>".</p>
 <p>The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and <code>notify</code> events.</p>
 <h2 id="chat-interceptors">Chat Interceptors<a class="headerlink" href="#chat-interceptors" title="Permanent link">🔗</a></h2>
 <p>While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
@@ -5003,12 +5003,12 @@ that you want to be excluded from interception. In this case you can just set <c
 <span class="w">  </span><span class="c1">## Normal Conversation Start</span>
 <span class="w">  </span><span class="nt">start</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;What</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">I</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">you&#39;</span>
-<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tonight, today</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tonight,today</span>
 
 <span class="w">  </span><span class="c1">## Useless addition as example</span>
 <span class="w">  </span><span class="nt">tonight</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Always false</span>
-<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random 0-1</span>
+<span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random_0-1</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="nv"> </span><span class="s">tonight?&#39;</span>
 <span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main_menu</span>
 
@@ -5018,7 +5018,7 @@ that you want to be excluded from interception. In this case you can just set <c
 
 <span class="w">  </span><span class="c1">## Main main_menu</span>
 <span class="w">  </span><span class="nt">main_menu</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">i_have_questions, bye</span>
+<span class="w">    </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">i_have_questions,bye</span>
 </code></pre></div>
 In the above example, the option <em>start</em> is extended by both <em>tonight</em> and <em>today</em>, both of whom are extended by <em>main_menu</em>. As <em>tonight</em> has a false condition the <em>today</em> option will win. The <em>start</em> option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from <em>today</em>. If you structure your conversation correctly you can make use of this to minimize duplication.</p>
 

@@ -4857,7 +4857,7 @@ It is also responsible for catching up missed schedules, if they have a catchup 
 </ol>
 <h3 id="register-the-type">Register the type<a class="headerlink" href="#register-the-type" title="Permanent link">🔗</a></h3>
 <p>To register the new schedule type to BetonQuest, use the following method:
-<div class="highlight"><pre><span></span><code><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">registerScheduleType</span><span class="p">(</span><span class="s">&quot;redstoneScheduler&quot;</span><span class="cm">/* (1)! */</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getFeatureRegistries</span><span class="p">().</span><span class="na">eventScheduling</span><span class="p">().</span><span class="na">register</span><span class="p">(</span><span class="s">&quot;redstoneScheduler&quot;</span><span class="cm">/* (1)! */</span><span class="p">,</span>
 <span class="w">  </span><span class="n">MyCustomSchedule</span><span class="p">.</span><span class="na">class</span><span class="cm">/* (2)! */</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">MyCustomScheduler</span><span class="p">()</span><span class="cm">/* (3)! */</span><span class="p">);</span>
 </code></pre></div></p>
 <ol>

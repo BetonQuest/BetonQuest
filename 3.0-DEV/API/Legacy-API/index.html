@@ -4959,12 +4959,13 @@ Read how to use them in the <a href="../Instruction/#argument">Instruction Argum
 <p>Creating and parsing variables is now done in the <code>VariableProcessor</code>.
 It is accessed from the BetonQuest instance with <code>#getVariableProcessor()</code>.</p>
 <h2 id="profiles">Profiles<a class="headerlink" href="#profiles" title="Permanent link">🔗</a></h2>
-<p>Currently, profiles are in development. So at the moment you can use the <code>PlayerConverter</code> class to get a profile.</p>
+<p>Currently, profiles are in development. So at the moment you can use the <code>ProfileProvider</code> class to get a profile,
+which can be accessed by <code>BetonQuest.getInstance().getProfileProvider()</code>.</p>
 <h2 id="base-concepts">Base concepts<a class="headerlink" href="#base-concepts" title="Permanent link">🔗</a></h2>
 <p>How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.</p>
 <p>For Conditions, Events and Variables there is the <a href="../Writing-Implementations/#writing-new-quest-type-implementations">new API</a> available.</p>
 <h3 id="writing-objectives">Writing objectives<a class="headerlink" href="#writing-objectives" title="Permanent link">🔗</a></h3>
-<p>Objectives are more complicated because they use event handlers and they must store players' data.
+<p>Objectives are more complicated because they often use event handlers, and they must store players' data.
 They extend <code>Objective</code> class.
 As always, you need to extract all data from supplied <code>Instruction</code> object in the constructor.
 Don't register listeners in the constructor!</p>
@@ -4972,7 +4973,7 @@ Don't register listeners in the constructor!</p>
 For example <code>block</code> objective does need to store amount of blocks left to place/break, and it does that using "BlockData" class.
 In the constructor it receives three strings: data string, ID of the player and ID of the objective.
 The latter two are used by BetonQuest to correctly save and load the former one from the database.</p>
-<p>The data string should contains all the information you need in your objective.
+<p>The data string should contain all the information you need in your objective.
 You must write a parser which will extract the information, methods used in the objective to alter the information,
 and override the <code>toString()</code> method in so it returns data string in the format parsable by your parser.
 Everytime the data in your object changes (like when killing a mob), you need to call <code>update()</code> method.
@@ -4997,41 +4998,37 @@ At runtime, if anyone uses <code>%objective.yourObjective.theProperty%</code> va
 BetonQuest will call that method with <code>theProperty</code> keyword as the first argument.
 Using it you should parse the data of the objective and return it as a String.
 If the supplied property name is incorrect or there was an error during getting the value,
-return an empty String and optionally log an error (<code>LogUtils.getLogger().log(...)</code>).</p>
-<p>Objectives are registered the same way as conditions and events,
-using <code>registerObjective(String name, Class&lt;? extends Objective&gt;)</code> method.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>IDE's typically autocomplete the wrong constructor. A correct constructor takes a single <code>Instruction</code> argument.</p>
-</div>
+throw a <code>QuestException</code> with an informative message.</p>
+<p>Objectives are registered the same way as conditions and events, see <a href="#base-concepts">register base concepts</a>.</p>
 <h2 id="firing-events">Firing events<a class="headerlink" href="#firing-events" title="Permanent link">🔗</a></h2>
-<p>The plugin has a static method for firing events - <code>event(String playerID, EventID eventID)</code>.</p>
+<p>The plugin has a static method for firing events - <code>event(Profile profile, EventID eventID)</code>.</p>
 <p>You can't fire an event directly using an instruction string.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">QuestPackage</span><span class="w"> </span><span class="n">questPackage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Config</span><span class="p">.</span><span class="na">getPackages</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;myPackage&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">QuestPackage</span><span class="w"> </span><span class="n">questPackage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getPackages</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;myPackage&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
 <span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">playerProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getProfileProvider</span><span class="p">().</span><span class="na">getProfile</span><span class="p">(</span><span class="n">player</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
 
 <span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getQuestAPI</span><span class="p">().</span><span class="na">event</span><span class="p">(</span><span class="n">playerProfile</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EventID</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="n">eventID</span><span class="p">));</span>
 </code></pre></div>
 <ol>
-<li>You can get the package from the <code>Config</code> class. It's a map of all packages, so you can get the one you need by its
+<li>You can get the package from the <code>BetonQuest</code> class. It's a map of all packages, so you can get the one you need by its
    name.</li>
-<li>You can get the player's profile from the <code>PlayerConverter</code> class. You can use the player object to obtain a players 
+<li>You can get the player's profile from the <code>ProfileProvider</code> class. You can use the player object to obtain a players 
    profile.</li>
 </ol>
+<p>When the eventID already contains the full path you can just pass <code>null</code> as package.</p>
 <h2 id="checking-conditions">Checking conditions<a class="headerlink" href="#checking-conditions" title="Permanent link">🔗</a></h2>
 <p>BetonQuest has static boolean method <code>condition(String playerID, String conditionID)</code>.
-It works similarly as event method described above.</p>
+It works similarly to the event method described above.</p>
 <h2 id="starting-objectives">Starting objectives<a class="headerlink" href="#starting-objectives" title="Permanent link">🔗</a></h2>
-<p>The <code>newObjective(String playerID, String objectiveID)</code> method will launch the objective from start.
-You can however use <code>resumeObjective(String playerID, String objectiveID, String instruction)</code>
+<p>The <code>newObjective(Profile profile, ObjectiveID objectiveID)</code> method will launch the objective from start.
+You can however use <code>resumeObjective(Profile profile, ObjectiveID objectiveID, String instruction)</code>
 to pass your own <code>ObjectiveData</code> instruction to the objective.
-It will not be saved to the database, because it is assumed that the objective has just been loaded from it and it exists there without any change.
+It will not be saved to the database, because it is assumed that the objective has just been loaded from it, and it exists there without any change.
 You should save it manually.</p>
 <h2 id="creating-additional-conversation-inputoutput-methods">Creating additional conversation input/output methods<a class="headerlink" href="#creating-additional-conversation-inputoutput-methods" title="Permanent link">🔗</a></h2>
 <p>In order to register an object as the conversation input/output it needs to implement <code>ConversationIO</code> interface.
 The constructor will receive three arguments: Conversation object, playerID String and NPC name String.
 It needs to parse the required data here and register all needed listeners.
-The <code>setResponse(String response)</code> method will receive NPC's text from the conversation. The <code>addOption(String option)</code>
+The <code>setResponse(Component response)</code> method will receive NPC's text from the conversation. The <code>addOption(Component option)</code>
 method will be called by the conversation for each reply option for this NPC text.
 The object must store all this data and when <code>display()</code> is called, it must use it to display the player the output.
 When it detects that the player chose an answer, it should pass it to the conversation using <code>Conversation.passPlayerAnswer(int number)</code> method.
@@ -5040,7 +5037,7 @@ It should clear all the previous options, so they do not overlap. <code>end()</c
 You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC).
 Remember to notify the conversation about that using <code>Conversation.end()</code>.</p>
 <p>Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions,
-through <code>BetonQuest.registerConversationIO(String name, Class&lt;? extends ConversationIO&gt;)</code> method.</p>
+see <a href="../Writing-Implementations/#registry">Registry</a>.</p>
 
 
 
