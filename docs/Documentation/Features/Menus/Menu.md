@@ -111,12 +111,12 @@ menu_items:
   skeletonQuestDone:
     item: "questDoneItem"
     text:
-       en: #(1)!
+       en-US: #(1)!
          - "&7[Quest] &6&lThe lost amulet"
          - "&4&o"
          - "&eLeft click to locate npc"
          - "&eRight click to cancel quest"
-       de: #(2)!
+       de-DE: #(2)!
          - "&7[Quest] &6&lDas verlorene Amulet"
          - "&4&o"
          - "&eLinksclick um den NPC zu finden"

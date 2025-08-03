@@ -133,7 +133,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 ### Register the type
 To register the new schedule type to BetonQuest, use the following method:
 ```java
-BetonQuest.getInstance().registerScheduleType("redstoneScheduler"/* (1)! */,
+BetonQuest.getInstance().getFeatureRegistries().eventScheduling().register("redstoneScheduler"/* (1)! */,
   MyCustomSchedule.class/* (2)! */,new MyCustomScheduler()/* (3)! */);
 ```
 

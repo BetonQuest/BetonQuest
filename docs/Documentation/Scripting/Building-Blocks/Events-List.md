@@ -86,8 +86,8 @@ The destination must be defined in `compass` section. You can specify a name for
 compass:
   beton:
     name:
-      en: Target
-      pl: Cel
+      en-US: Target
+      pl-PL: Cel
     location: 100;200;300;world
     item: scroll
 ```

@@ -32,8 +32,8 @@ cancel:
 1. Display name that will be shown in the GUI.The name can be translated with this syntax:
    ```YAML
    name:
-     en: '&2Wood for Innkeeper' # English translation
-     de: '&2Holz für den Gastwirt' # German translation
+     en-US: '&2Wood for Innkeeper' # English translation
+     de-DE: '&2Holz für den Gastwirt' # German translation
    ```
 2. A list of conditions separated by commas. The player needs to meet all those conditions to be able to cancel this quest. Place there the ones which detect that the player has started the quest, but he has not finished it yet. 
 3. A list of all objectives used in this quest. They will be canceled without firing their completion events.

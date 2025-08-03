@@ -200,22 +200,22 @@ Conversation can be fully translated into multiple languages. A players can choo
 
 ```YAML
 quester:
-  en: "Innkeeper"
-  pl: "Karczmarz"
-  de: "Gastwirt"
+  en-US: "Innkeeper"
+  pl-PL: "Karczmarz"
+  de-DE: "Gastwirt"
 first: "example1" 
 NPC_options:
   example1:
     text:
-      en: "Good day, dear %player%! Welcome back to my town."
-      de: "Guten Tag, lieber %player%! Willkommen zurück in meiner Stadt." 
+      en-US: "Good day, dear %player%! Welcome back to my town."
+      de-DE: "Guten Tag, lieber %player%! Willkommen zurück in meiner Stadt." 
 player_options:
   example2:
     text:
-      en: "Thank you your honor, I'm happy to be here."
-      de: "Danke, Euer Ehren, ich bin froh, hier zu sein."
+      en-US: "Thank you your honor, I'm happy to be here."
+      de-DE: "Danke, Euer Ehren, ich bin froh, hier zu sein."
 ```
-`en` and `de` are identifiers of languages present in the "_messages.yml_" config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "_config.yml_".
+`en-US` and `de-DE` are identifiers of languages present in the lang folder. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in "_config.yml_".
 
 The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and `notify` events.
 
@@ -247,12 +247,12 @@ NPC_options:
   ## Normal Conversation Start
   start:
     text: 'What can I do for you'
-    extends: tonight, today
+    extends: tonight,today
     
   ## Useless addition as example
   tonight:
     # Always false
-    conditions: random 0-1
+    conditions: random_0-1
     text: ' tonight?'
     extends: main_menu
 
@@ -262,6 +262,6 @@ NPC_options:
 
   ## Main main_menu
   main_menu:
-    pointers: i_have_questions, bye
+    pointers: i_have_questions,bye
 ```
 In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.

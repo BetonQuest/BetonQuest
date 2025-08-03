@@ -501,7 +501,7 @@ This event adds experience points in a specified skill. The first argument is th
 
 ### Items
 
-MMOItems usage is integrated to the [Items] system and thus used for events and conditions.
+MMOItems usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
 
 ```YAML linenums="1" title="Example"
 items:
