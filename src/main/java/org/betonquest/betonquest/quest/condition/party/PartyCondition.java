@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -55,7 +55,7 @@ public class PartyCondition implements NullableCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -71,26 +71,26 @@ public class PartyCondition implements NullableCondition {
      * @param everyone        the conditions that everyone in the party must meet
      * @param anyone          the conditions that at least one party member must meet
      * @param count           the minimum number of party members
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
     public PartyCondition(final Variable<Location> location, final Variable<Number> range,
                           final Variable<List<ConditionID>> conditions, final Variable<List<ConditionID>> everyone,
                           final Variable<List<ConditionID>> anyone, @Nullable final Variable<Number> count,
-                          final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+                          final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         this.location = location;
         this.range = range;
         this.conditions = conditions;
         this.everyone = everyone;
         this.anyone = anyone;
         this.count = count;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Set<OnlineProfile> partyMembers = Utils.getParty(questTypeAPI, profileProvider.getOnlineProfiles(),
+        final Set<OnlineProfile> partyMembers = Utils.getParty(questTypeApi, profileProvider.getOnlineProfiles(),
                 location.getValue(profile), range.getValue(profile).doubleValue(), conditions.getValue(profile)).keySet();
 
         final int pCount = count == null ? 0 : count.getValue(profile).intValue();
@@ -103,14 +103,14 @@ public class PartyCondition implements NullableCondition {
 
     private boolean meetEveryoneConditions(final List<ConditionID> conditions, final Set<OnlineProfile> partyMembers) {
         final Stream<OnlineProfile> everyoneStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
-        return everyoneStream.allMatch(member -> questTypeAPI.conditions(member, conditions));
+        return everyoneStream.allMatch(member -> questTypeApi.conditions(member, conditions));
     }
 
     private boolean meetAnyoneConditions(final List<ConditionID> conditions, final Set<OnlineProfile> partyMembers) {
         final Stream<ConditionID> anyoneStream = Bukkit.isPrimaryThread() ? conditions.stream() : conditions.stream().parallel();
         return anyoneStream.allMatch(condition -> {
             final Stream<OnlineProfile> memberStream = Bukkit.isPrimaryThread() ? partyMembers.stream() : partyMembers.parallelStream();
-            return memberStream.anyMatch(member -> questTypeAPI.condition(member, condition));
+            return memberStream.anyMatch(member -> questTypeApi.condition(member, condition));
         });
     }
 }

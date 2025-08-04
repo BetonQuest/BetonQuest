@@ -7,7 +7,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
@@ -61,7 +61,7 @@ public class CoreFeatureFactories {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The Config.
@@ -83,17 +83,17 @@ public class CoreFeatureFactories {
      *
      * @param loggerFactory      the factory to create new class specific loggers
      * @param lastExecutionCache the cache to catch up missed schedulers
-     * @param questTypeAPI       the class for executing events
+     * @param questTypeApi       the class for executing events
      * @param config             the config
      * @param colors             the colors to use for the conversation
      * @param fontRegistry       the font registry to use for the conversation
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
-                                final QuestTypeAPI questTypeAPI, final ConfigAccessor config, final ConversationColors colors,
+                                final QuestTypeApi questTypeApi, final ConfigAccessor config, final ConversationColors colors,
                                 final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.config = config;
         this.colors = colors;
         this.fontRegistry = fontRegistry;
@@ -135,9 +135,9 @@ public class CoreFeatureFactories {
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
         eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(
-                loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
+                loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
         eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
-                loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
+                loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
 
         final TextParserRegistry textParserRegistry = registries.textParser();
         registerTextParsers(textParserRegistry);

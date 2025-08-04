@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -19,7 +19,7 @@ import java.util.List;
  * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
  * @param log             A {@link BetonQuestLogger} instance for this class.
- * @param questTypeAPI    The {@link QuestTypeAPI} to check for conditions.
+ * @param questTypeApi    The {@link QuestTypeApi} to check for conditions.
  * @param profileProvider The {@link ProfileProvider} instance to get a profile from.
  * @param holograms       A list of actual hologram
  * @param interval        Interval in ticks that lie between updates to the visibility and content
@@ -39,7 +39,7 @@ import java.util.List;
  * @param questPackage    {@link QuestPackage} in which the hologram is specified in.
  * @param varMaxRange     The maximum range in which the hologram is visible.
  */
-public record HologramWrapper(BetonQuestLogger log, QuestTypeAPI questTypeAPI, ProfileProvider profileProvider,
+public record HologramWrapper(BetonQuestLogger log, QuestTypeApi questTypeApi, ProfileProvider profileProvider,
                               int interval, List<BetonHologram> holograms, boolean staticContent,
                               List<ConditionID> conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
@@ -67,7 +67,7 @@ public record HologramWrapper(BetonQuestLogger log, QuestTypeAPI questTypeAPI, P
      * @param profile The online player's profile.
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        final boolean conditionsMet = questTypeAPI.conditions(profile, conditionList);
+        final boolean conditionsMet = questTypeApi.conditions(profile, conditionList);
 
         for (final BetonHologram hologram : holograms) {
             final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);

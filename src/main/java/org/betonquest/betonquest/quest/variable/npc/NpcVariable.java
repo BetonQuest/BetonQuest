@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -20,7 +20,7 @@ public class NpcVariable implements NullableVariable {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Id of the npc.
@@ -46,16 +46,16 @@ public class NpcVariable implements NullableVariable {
     /**
      * Construct a new NPCVariable that allows for resolution of information about a NPC.
      *
-     * @param featureAPI    the Feature API
+     * @param featureApi    the Feature API
      * @param npcID         the npc id
      * @param key           the argument defining the value
      * @param formationMode the location formation mode to use for location resolution
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NpcVariable(final FeatureAPI featureAPI, final Variable<NpcID> npcID, final Argument key,
+    public NpcVariable(final FeatureApi featureApi, final Variable<NpcID> npcID, final Argument key,
                        @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.npcID = npcID;
         this.key = key;
         this.formationMode = formationMode;
@@ -67,7 +67,7 @@ public class NpcVariable implements NullableVariable {
 
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcID.getValue(profile), profile);
+        final Npc<?> npc = featureApi.getNpc(npcID.getValue(profile), profile);
         return key.resolve(npc, formationMode, decimalPlaces);
     }
 }

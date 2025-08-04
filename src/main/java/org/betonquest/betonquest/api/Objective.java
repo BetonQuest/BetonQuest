@@ -223,7 +223,7 @@ public abstract class Objective {
                         + profile + " finished");
         try {
             for (final EventID event : events.getValue(profile)) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(profile, event);
+                BetonQuest.getInstance().getQuestTypeApi().event(profile, event);
             }
         } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID().getFullID()
@@ -243,7 +243,7 @@ public abstract class Objective {
         log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for " + profile);
         try {
-            return BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditions.getValue(profile));
+            return BetonQuest.getInstance().getQuestTypeApi().conditions(profile, conditions.getValue(profile));
         } catch (final QuestException e) {
             log.warn(instruction.getPackage(),
                     "Error while checking conditions in objective '" + instruction.getID().getFullID()

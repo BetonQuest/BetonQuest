@@ -2,11 +2,11 @@ package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -41,15 +41,15 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
      * @param textCreator       the text creator to parse text
-     * @param questTypeAPI      the QuestTypeAPI
+     * @param questTypeApi      the QuestTypeApi
      * @param config            the config to load menu item options from
      * @param variableProcessor the variable resolver
-     * @param featureAPI        the Feature API
+     * @param featureApi        the Feature API
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final ParsedSectionTextCreator textCreator, final QuestTypeAPI questTypeAPI,
-                             final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureAPI featureAPI) {
-        super(log, "Menu Item", "menu_items", loggerFactory, textCreator, variableProcessor, questTypeAPI, featureAPI);
+                             final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
+                             final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureApi featureApi) {
+        super(log, "Menu Item", "menu_items", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
         this.config = config;
     }
 
@@ -70,7 +70,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
         final Variable<Boolean> close = new Variable<>(variableProcessor, pack, rawClose, Argument.BOOLEAN);
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
-        return new MenuItem(log, questTypeAPI, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
+        return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
     }
 
     @Override

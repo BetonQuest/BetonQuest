@@ -43,7 +43,7 @@ public class JoinQuitListener implements Listener {
     /**
      * Quest Type API.
      */
-    private final ObjectiveProcessor questTypeAPI;
+    private final ObjectiveProcessor questTypeApi;
 
     /**
      * Holds loaded PlayerData.
@@ -70,18 +70,18 @@ public class JoinQuitListener implements Listener {
      *
      * @param loggerFactory     used for logger creation in ConversationResumer
      * @param config            the plugin configuration file
-     * @param questTypeAPI      the object to get player Objectives
+     * @param questTypeApi      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param profileProvider   the profile provider instance
      * @param updater           the updater to notify players
      */
     public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
-                            final ObjectiveProcessor questTypeAPI, final PlayerDataStorage playerDataStorage,
+                            final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
                             final PluginMessage pluginMessage, final ProfileProvider profileProvider, final Updater updater) {
         this.loggerFactory = loggerFactory;
         this.config = config;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;
@@ -113,7 +113,7 @@ public class JoinQuitListener implements Listener {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         playerData.startObjectives();
-        questTypeAPI.startAll(onlineProfile, playerDataStorage);
+        questTypeApi.startAll(onlineProfile, playerDataStorage);
         checkResourcepack(player, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
@@ -130,7 +130,7 @@ public class JoinQuitListener implements Listener {
     private void checkResourcepack(final Player player, final OnlineProfile onlineProfile) {
         final PlayerResourcePackStatusEvent.Status resourcePackStatus = player.getResourcePackStatus();
         if (resourcePackStatus != null) {
-            questTypeAPI.getActive(onlineProfile).stream()
+            questTypeApi.getActive(onlineProfile).stream()
                     .filter(objective -> objective instanceof ResourcepackObjective)
                     .map(objective -> (ResourcepackObjective) objective)
                     .forEach(objective -> objective.processObjective(onlineProfile, resourcePackStatus));
@@ -145,7 +145,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        for (final Objective objective : questTypeAPI.getActive(onlineProfile)) {
+        for (final Objective objective : questTypeApi.getActive(onlineProfile)) {
             objective.pauseObjectiveForPlayer(onlineProfile);
         }
         playerDataStorage.remove(onlineProfile);

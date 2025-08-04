@@ -98,7 +98,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), variableProcessor,
-                plugin.getQuestTypeAPI(), plugin.getFeatureAPI(), textCreator, pack, section, publicData);
+                plugin.getQuestTypeApi(), plugin.getFeatureApi(), textCreator, pack, section, publicData);
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.party;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -27,7 +27,7 @@ public class PartyEventFactory implements PlayerEventFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -38,12 +38,12 @@ public class PartyEventFactory implements PlayerEventFactory {
      * Creates a PartyEventFactory instance.
      *
      * @param loggerFactory   the logger factory to create a logger for the events
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
     }
 
@@ -54,7 +54,7 @@ public class PartyEventFactory implements PlayerEventFactory {
         final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
         return new OnlineEventAdapter(
-                new PartyEvent(questTypeAPI, profileProvider, range, amount, conditions, events),
+                new PartyEvent(questTypeApi, profileProvider, range, amount, conditions, events),
                 loggerFactory.create(PartyEvent.class),
                 instruction.getPackage()
         );

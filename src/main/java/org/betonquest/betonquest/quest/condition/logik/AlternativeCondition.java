@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -29,7 +29,7 @@ public class AlternativeCondition implements NullableCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * List of condition IDs.
@@ -45,13 +45,13 @@ public class AlternativeCondition implements NullableCondition {
      * Create a new alternative condition.
      *
      * @param log          the logger
-     * @param questTypeAPI the Quest Type API to check conditions
+     * @param questTypeApi the Quest Type API to check conditions
      * @param conditionIDs the condition IDs
      * @param questPackage the quest package
      */
-    public AlternativeCondition(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<List<ConditionID>> conditionIDs, final QuestPackage questPackage) {
+    public AlternativeCondition(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Variable<List<ConditionID>> conditionIDs, final QuestPackage questPackage) {
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.conditionIDs = conditionIDs;
         this.questPackage = questPackage;
     }
@@ -61,7 +61,7 @@ public class AlternativeCondition implements NullableCondition {
     public boolean check(@Nullable final Profile profile) throws QuestException {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs.getValue(profile)) {
-                if (questTypeAPI.condition(profile, id)) {
+                if (questTypeApi.condition(profile, id)) {
                     return true;
                 }
             }
@@ -69,7 +69,7 @@ public class AlternativeCondition implements NullableCondition {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID id : conditionIDs.getValue(profile)) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> questTypeAPI.condition(profile, id));
+                        () -> questTypeApi.condition(profile, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {

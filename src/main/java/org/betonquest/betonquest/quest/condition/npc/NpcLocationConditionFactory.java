@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -24,7 +24,7 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Data used for primary server thread access.
@@ -34,11 +34,11 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     /**
      * Create a new factory for NPC Location Conditions.
      *
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcLocationConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
-        this.featureAPI = featureAPI;
+    public NpcLocationConditionFactory(final FeatureApi featureApi, final PrimaryServerThreadData data) {
+        this.featureApi = featureApi;
         this.data = data;
     }
 
@@ -56,6 +56,6 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> radius = instruction.get(Argument.NUMBER);
-        return new NullableConditionAdapter(new NpcLocationCondition(featureAPI, npcId, location, radius));
+        return new NullableConditionAdapter(new NpcLocationCondition(featureApi, npcId, location, radius));
     }
 }

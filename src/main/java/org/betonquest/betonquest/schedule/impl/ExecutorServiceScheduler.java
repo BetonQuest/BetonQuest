@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -51,10 +51,10 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
      * Constructor to create a new instance of this scheduler.
      *
      * @param log          the logger that will be used for logging
-     * @param questTypeAPI the class for executing events
+     * @param questTypeApi the class for executing events
      */
-    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI) {
-        this(log, questTypeAPI, Executors::newSingleThreadScheduledExecutor);
+    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi) {
+        this(log, questTypeApi, Executors::newSingleThreadScheduledExecutor);
     }
 
     /**
@@ -62,11 +62,11 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
      *
      * @param log          the logger that will be used for logging
      * @param executor     supplier used to create new instances of the executor used by this scheduler
-     * @param questTypeAPI the class for executing events
+     * @param questTypeApi the class for executing events
      */
-    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+    public ExecutorServiceScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi,
                                     final Supplier<ScheduledExecutorService> executor) {
-        super(log, questTypeAPI);
+        super(log, questTypeApi);
         this.log = log;
         this.executorServiceSupplier = executor;
     }

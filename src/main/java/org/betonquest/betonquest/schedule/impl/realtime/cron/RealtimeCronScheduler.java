@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
@@ -44,11 +44,11 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeAPI       the class for executing events
+     * @param questTypeApi       the class for executing events
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final LastExecutionCache lastExecutionCache) {
-        super(log, questTypeAPI);
+    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final LastExecutionCache lastExecutionCache) {
+        super(log, questTypeApi);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }
@@ -57,12 +57,12 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param log                the logger that will be used for logging
-     * @param questTypeAPI       the class for executing events
+     * @param questTypeApi       the class for executing events
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
-        super(log, questTypeAPI, executor);
+    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(log, questTypeApi, executor);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;
     }

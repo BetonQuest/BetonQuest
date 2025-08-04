@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.instruction;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -18,7 +18,7 @@ public class Item {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Item id to generate the QuestItem with.
@@ -33,14 +33,14 @@ public class Item {
     /**
      * Create a wrapper for Quest Item and target stack size.
      *
-     * @param featureAPI the feature api creating new items
+     * @param featureApi the feature api creating new items
      * @param itemID     the QuestItemID to create
      * @param amount     the size to set the created ItemStack to
      * @throws QuestException when the QuestItem could not be created
      */
-    public Item(final FeatureAPI featureAPI, final ItemID itemID, final Variable<Number> amount) throws QuestException {
+    public Item(final FeatureApi featureApi, final ItemID itemID, final Variable<Number> amount) throws QuestException {
         this.itemID = itemID;
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.amount = amount;
     }
 
@@ -84,7 +84,7 @@ public class Item {
      * @throws QuestException when there is no QuestItem for the ID
      */
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
-        return featureAPI.getItem(itemID, profile);
+        return featureApi.getItem(itemID, profile);
     }
 
     /**

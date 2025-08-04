@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -34,7 +34,7 @@ public class MenuItem {
     /**
      * The Quest TypeAPI.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The betonquest quest item this item is based on.
@@ -71,7 +71,7 @@ public class MenuItem {
      * Creates a new Menu Item.
      *
      * @param log          the custom logger for this class
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param item         the item to display
      * @param itemId       the id of the item
      * @param descriptions the descriptions overriding name and lore of the Item
@@ -79,11 +79,11 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<Item> item, final MenuItemID itemId,
+    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Variable<Item> item, final MenuItemID itemId,
                     @Nullable final Text descriptions, final ClickEvents clickEvents,
                     final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.item = item;
         this.itemId = itemId;
         this.descriptions = descriptions;
@@ -120,7 +120,7 @@ public class MenuItem {
         }
         for (final EventID eventID : resolved) {
             log.debug(itemId.getPackage(), "Item " + itemId + ": Run event " + eventID);
-            questTypeAPI.event(profile, eventID);
+            questTypeApi.event(profile, eventID);
         }
         try {
             return this.close.getValue(profile);
@@ -145,7 +145,7 @@ public class MenuItem {
             return false;
         }
         for (final ConditionID condition : resolved) {
-            if (questTypeAPI.condition(profile, condition)) {
+            if (questTypeApi.condition(profile, condition)) {
                 log.debug(itemId.getPackage(), "Item " + itemId + ": condition " + condition + " returned true");
             } else {
                 log.debug(itemId.getPackage(), "Item " + itemId + " wont be displayed: condition" + condition + " returned false.");

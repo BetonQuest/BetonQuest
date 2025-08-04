@@ -3,12 +3,12 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.argument.Argument;
@@ -43,12 +43,12 @@ public class EffectLibParticleManager {
     /**
      * The Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * The profile provider instance.
@@ -75,20 +75,20 @@ public class EffectLibParticleManager {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to create new custom loggers
-     * @param questTypeAPI      the Quest Type API
-     * @param featureAPI        the Feature API
+     * @param questTypeApi      the Quest Type API
+     * @param featureApi        the Feature API
      * @param profileProvider   the profile provider instance
      * @param variableProcessor the variable processor to create new variables
      * @param manager           the effect manager starting and controlling particles
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                    final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+                                    final QuestTypeApi questTypeApi, final FeatureApi featureApi,
                                     final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
                                     final EffectManager manager) {
         this.loggerFactory = loggerFactory;
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
-        this.featureAPI = featureAPI;
+        this.questTypeApi = questTypeApi;
+        this.featureApi = featureApi;
         this.profileProvider = profileProvider;
         this.variableProcessor = variableProcessor;
         this.manager = manager;
@@ -136,7 +136,7 @@ public class EffectLibParticleManager {
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
                 final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
-                        questTypeAPI, featureAPI, profileProvider, manager, effect);
+                        questTypeApi, featureApi, profileProvider, manager, effect);
 
                 activeParticles.add(particleRunnable);
                 particleRunnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);

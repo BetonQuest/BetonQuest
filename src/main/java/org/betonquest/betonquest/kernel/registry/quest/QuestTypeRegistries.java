@@ -22,7 +22,7 @@ public record QuestTypeRegistries(
      * Create a new quest registry for quest core elements.
      *
      * @param loggerFactory the logger factory to create individual class logger
-     * @param betonQuest    the plugin instance to get QuestTypeAPI from once initialized
+     * @param betonQuest    the plugin instance to get QuestTypeApi from once initialized
      * @return the newly created registries
      */
     public static QuestTypeRegistries create(final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest) {

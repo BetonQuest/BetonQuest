@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
 import org.bukkit.Bukkit;
@@ -32,12 +32,12 @@ public class EffectLibRunnable extends BukkitRunnable {
     /**
      * The Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * The profile provider instance.
@@ -68,18 +68,18 @@ public class EffectLibRunnable extends BukkitRunnable {
      * Constructs this runnable with the given effect.
      *
      * @param log                 the logger that will be used for logging
-     * @param questTypeAPI        the Quest Type API
-     * @param featureAPI          the Feature API
+     * @param questTypeApi        the Quest Type API
+     * @param featureApi          the Feature API
      * @param profileProvider     the profile provider instance
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI, final ProfileProvider profileProvider,
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final FeatureApi featureApi, final ProfileProvider profileProvider,
                              final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
-        this.featureAPI = featureAPI;
+        this.questTypeApi = questTypeApi;
+        this.featureApi = featureApi;
         this.profileProvider = profileProvider;
         this.manager = manager;
         this.effectConfiguration = effectConfiguration;
@@ -99,7 +99,7 @@ public class EffectLibRunnable extends BukkitRunnable {
         final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
         for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             try {
-                if (questTypeAPI.conditions(onlineProfile, effectConfiguration.conditions().getValue(onlineProfile))) {
+                if (questTypeApi.conditions(onlineProfile, effectConfiguration.conditions().getValue(onlineProfile))) {
                     activePlayerEffects.add(onlineProfile);
                 }
             } catch (final QuestException e) {
@@ -122,14 +122,14 @@ public class EffectLibRunnable extends BukkitRunnable {
             for (final NpcID npcId : effect.npcs().getValue(profile)) {
                 final Npc<?> npc;
                 try {
-                    npc = featureAPI.getNpc(npcId, profile);
+                    npc = featureApi.getNpc(npcId, profile);
                 } catch (final QuestException exception) {
                     log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
                     continue;
                 }
                 final Player player = profile.getPlayer();
 
-                if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureAPI.getNpcHider().isHidden(npcId, profile)) {
+                if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureApi.getNpcHider().isHidden(npcId, profile)) {
                     continue;
                 }
 

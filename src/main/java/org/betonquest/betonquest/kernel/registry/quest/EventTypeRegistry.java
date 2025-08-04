@@ -24,7 +24,7 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Plugin instance to get QuestTypeAPI from.
+     * Plugin instance to get QuestTypeApi from.
      */
     private final BetonQuest betonQuest;
 
@@ -33,7 +33,7 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
      *
      * @param log           the logger that will be used for logging
      * @param loggerFactory the logger factory to create a new custom logger
-     * @param betonQuest    the plugin instance to get QuestTypeAPI from once initialized
+     * @param betonQuest    the plugin instance to get QuestTypeApi from once initialized
      */
     public EventTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest) {
         super(log, "event");
@@ -45,6 +45,6 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
     protected TypeFactory<EventAdapter> getFactoryAdapter(
             @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
             @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
-        return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeAPI(), playerFactory, playerlessFactory);
+        return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeApi(), playerFactory, playerlessFactory);
     }
 }

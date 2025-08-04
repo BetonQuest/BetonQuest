@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -28,7 +28,7 @@ public class Menu {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The internal id of the menu.
@@ -51,15 +51,15 @@ public class Menu {
      *
      * @param log          the custom logger for this class
      * @param menuID       the id of the menu
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param menuData     the Menu Data
      * @param boundItem    the optional bound Item
      * @throws QuestException if the bound command is invalid
      */
-    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeAPI questTypeAPI,
+    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeApi,
                 final MenuData menuData, @Nullable final Variable<Item> boundItem) throws QuestException {
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.menuID = menuID;
         this.data = menuData;
         this.boundItem = boundItem;
@@ -80,7 +80,7 @@ public class Menu {
             return false;
         }
         for (final ConditionID conditionID : resolved) {
-            if (!questTypeAPI.condition(profile, conditionID)) {
+            if (!questTypeApi.condition(profile, conditionID)) {
                 log.debug(menuID.getPackage(), "Denied opening of " + menuID + ": Condition " + conditionID + "returned false.");
                 return false;
             }
@@ -118,7 +118,7 @@ public class Menu {
         }
         for (final EventID event : resolved) {
             log.debug(menuID.getPackage(), "Menu " + menuID + ": Run event " + event);
-            questTypeAPI.event(profile, event);
+            questTypeApi.event(profile, event);
         }
     }
 

@@ -4,7 +4,7 @@ import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
@@ -43,12 +43,12 @@ public class QuestsIntegrator implements Integrator {
         questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        final QuestTypeAPI questTypeAPI = plugin.getQuestTypeAPI();
+        final QuestTypeApi questTypeApi = plugin.getQuestTypeApi();
         final ProfileProvider profileProvider = plugin.getProfileProvider();
         questsInstance.getCustomRewards().add(new EventReward(
-                loggerFactory.create(EventReward.class), questTypeAPI, profileProvider));
+                loggerFactory.create(EventReward.class), questTypeApi, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
-                loggerFactory.create(ConditionRequirement.class), questTypeAPI, profileProvider));
+                loggerFactory.create(ConditionRequirement.class), questTypeApi, profileProvider));
     }
 
     @Override

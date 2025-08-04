@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -28,15 +28,15 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Creates the PickRandomEventFactory.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      */
-    public PickRandomEventFactory(final QuestTypeAPI questTypeAPI) {
-        this.questTypeAPI = questTypeAPI;
+    public PickRandomEventFactory(final QuestTypeApi questTypeApi) {
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
@@ -63,6 +63,6 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             return new RandomEvent(eventID, weight);
         });
         final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
-        return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeAPI));
+        return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeApi));
     }
 }

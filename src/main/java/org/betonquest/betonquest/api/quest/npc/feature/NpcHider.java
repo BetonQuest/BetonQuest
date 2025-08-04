@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
@@ -41,7 +41,7 @@ public class NpcHider {
     /**
      * The Quest Type API to check hiding conditions.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -69,15 +69,15 @@ public class NpcHider {
      *
      * @param log             the custom logger for this class
      * @param npcProcessor    the processor to get nps
-     * @param questTypeAPI    the Quest Type API to check hiding conditions
+     * @param questTypeApi    the Quest Type API to check hiding conditions
      * @param profileProvider the profile provider instance
      * @param npcTypes        the Npc types to get NpcIds
      */
     public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
+                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
         this.log = log;
         this.npcProcessor = npcProcessor;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         this.npcTypes = npcTypes;
         this.npcs = new HashMap<>();
@@ -158,7 +158,7 @@ public class NpcHider {
         if (conditions == null || conditions.isEmpty()) {
             return false;
         }
-        return questTypeAPI.conditions(profile, conditions);
+        return questTypeApi.conditions(profile, conditions);
     }
 
     /**
@@ -198,7 +198,7 @@ public class NpcHider {
         }
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcId);
-            if (conditions == null || conditions.isEmpty() || !questTypeAPI.conditions(onlineProfile, conditions)) {
+            if (conditions == null || conditions.isEmpty() || !questTypeApi.conditions(onlineProfile, conditions)) {
                 npc.show(onlineProfile);
             } else {
                 npc.hide(onlineProfile);

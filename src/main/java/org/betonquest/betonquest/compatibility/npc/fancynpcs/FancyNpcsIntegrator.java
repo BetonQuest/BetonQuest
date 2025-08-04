@@ -28,7 +28,7 @@ public class FancyNpcsIntegrator implements Integrator {
         final NpcTypeRegistry npcTypes = betonQuest.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();
         Bukkit.getPluginManager().registerEvents(new FancyCatcher(profileProvider, npcTypes), betonQuest);
-        final FancyHider hider = new FancyHider(betonQuest.getFeatureAPI().getNpcHider());
+        final FancyHider hider = new FancyHider(betonQuest.getFeatureApi().getNpcHider());
         Bukkit.getPluginManager().registerEvents(hider, betonQuest);
         npcTypes.register(PREFIX, new FancyFactory());
         npcTypes.registerIdentifier(new FancyIdentifier(PREFIX));

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.compass;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -20,7 +20,7 @@ public class CompassEventFactory implements PlayerEventFactory {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Storage to get the offline player data.
@@ -40,14 +40,14 @@ public class CompassEventFactory implements PlayerEventFactory {
     /**
      * Create the compass event factory.
      *
-     * @param featureAPI    the Feature API
+     * @param featureApi    the Feature API
      * @param dataStorage   the storage for used player data
      * @param pluginManager plugin manager to use
      * @param data          the data for primary server thread access
      */
-    public CompassEventFactory(final FeatureAPI featureAPI, final PlayerDataStorage dataStorage,
+    public CompassEventFactory(final FeatureApi featureApi, final PlayerDataStorage dataStorage,
                                final PluginManager pluginManager, final PrimaryServerThreadData data) {
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.dataStorage = dataStorage;
         this.pluginManager = pluginManager;
         this.data = data;
@@ -58,7 +58,7 @@ public class CompassEventFactory implements PlayerEventFactory {
         final Variable<CompassTargetAction> action = instruction.get(Argument.ENUM(CompassTargetAction.class));
         final Variable<CompassID> compassId = instruction.get(CompassID::new);
         return new PrimaryServerThreadEvent(
-                new CompassEvent(featureAPI, dataStorage, pluginManager, action, compassId),
+                new CompassEvent(featureApi, dataStorage, pluginManager, action, compassId),
                 data);
     }
 }

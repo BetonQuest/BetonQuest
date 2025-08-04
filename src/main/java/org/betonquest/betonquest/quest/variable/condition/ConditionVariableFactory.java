@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -17,7 +17,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The {@link PluginMessage} instance.
@@ -27,11 +27,11 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     /**
      * Create the Condition Variable Factory.
      *
-     * @param questTypeAPI  the Quest Type API
+     * @param questTypeApi  the Quest Type API
      * @param pluginMessage the {@link PluginMessage} instance
      */
-    public ConditionVariableFactory(final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage) {
-        this.questTypeAPI = questTypeAPI;
+    public ConditionVariableFactory(final QuestTypeApi questTypeApi, final PluginMessage pluginMessage) {
+        this.questTypeApi = questTypeApi;
         this.pluginMessage = pluginMessage;
     }
 
@@ -39,6 +39,6 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<ConditionID> conditionId = instruction.get(ConditionID::new);
         final boolean papiMode = instruction.hasArgument("papiMode");
-        return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeAPI);
+        return new ConditionVariable(pluginMessage, conditionId, papiMode, questTypeApi);
     }
 }

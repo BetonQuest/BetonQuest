@@ -5,7 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -309,7 +309,7 @@ public class Backpack implements Listener {
                 present = true;
                 try {
                     final ItemID itemId = new ItemID(null, buttonString);
-                    stack = BetonQuest.getInstance().getFeatureAPI().getItem(itemId, onlineProfile).generate(1);
+                    stack = BetonQuest.getInstance().getFeatureApi().getItem(itemId, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not load " + button + " button: " + e.getMessage(), e);
                 }
@@ -421,7 +421,7 @@ public class Backpack implements Listener {
         public Cancelers() {
             super();
             final List<QuestCanceler> cancelers = new ArrayList<>();
-            for (final Map.Entry<QuestCancelerID, QuestCanceler> entry : BetonQuest.getInstance().getFeatureAPI().getCancelers().entrySet()) {
+            for (final Map.Entry<QuestCancelerID, QuestCanceler> entry : BetonQuest.getInstance().getFeatureApi().getCancelers().entrySet()) {
                 try {
                     if (entry.getValue().isCancelable(onlineProfile)) {
                         cancelers.add(entry.getValue());
@@ -483,8 +483,8 @@ public class Backpack implements Listener {
         public Compass() {
             super();
             int counter = 0;
-            final FeatureAPI featureAPI = BetonQuest.getInstance().getFeatureAPI();
-            for (final Map.Entry<CompassID, QuestCompass> entry : featureAPI.getCompasses().entrySet()) {
+            final FeatureApi featureApi = BetonQuest.getInstance().getFeatureApi();
+            for (final Map.Entry<CompassID, QuestCompass> entry : featureApi.getCompasses().entrySet()) {
                 if (playerData.hasTag(entry.getKey().getTag())) {
                     compasses.put(counter, entry.getValue());
                     counter++;
@@ -532,7 +532,7 @@ public class Backpack implements Listener {
                 }
                 ItemStack compass;
                 try {
-                    compass = BetonQuest.getInstance().getFeatureAPI().getItem(item, onlineProfile).generate(1);
+                    compass = BetonQuest.getInstance().getFeatureApi().getItem(item, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);

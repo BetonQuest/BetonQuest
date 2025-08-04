@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -18,7 +18,7 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * The npc id.
@@ -38,13 +38,13 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * Create a new Npc Teleport Event.
      *
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      * @param npcId      the npc id
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final Variable<Location> location, final boolean spawn) {
-        this.featureAPI = featureAPI;
+    public NpcTeleportEvent(final FeatureApi featureApi, final Variable<NpcID> npcId, final Variable<Location> location, final boolean spawn) {
+        this.featureApi = featureApi;
         this.npcId = npcId;
         this.location = location;
         this.spawn = spawn;
@@ -53,7 +53,7 @@ public class NpcTeleportEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location loc = location.getValue(profile);
-        final Npc<?> npc = featureAPI.getNpc(npcId.getValue(profile), profile);
+        final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
         if (npc.isSpawned()) {
             npc.teleport(loc);
         } else if (spawn) {

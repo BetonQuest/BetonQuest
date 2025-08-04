@@ -4,7 +4,7 @@ import me.pikamug.quests.module.BukkitCustomRequirement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -36,13 +36,13 @@ public class ConditionRequirement extends BukkitCustomRequirement {
      * Create a new 'Quests' Condition Requirement.
      *
      * @param log             the custom logger
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         super();
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         setName("BetonQuest condition");
         setAuthor("BetonQuest");
@@ -64,7 +64,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
                 return false;
             }
             final ConditionID condition = new ConditionID(null, string);
-            return questTypeAPI.condition(profileProvider.getProfile(player), condition);
+            return questTypeApi.condition(profileProvider.getProfile(player), condition);
         } catch (final QuestException e) {
             log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
             return false;

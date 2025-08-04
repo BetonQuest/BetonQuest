@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -25,7 +25,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -35,11 +35,11 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     /**
      * Create the party condition factory.
      *
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyConditionFactory(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
-        this.questTypeAPI = questTypeAPI;
+    public PartyConditionFactory(final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
     }
 
@@ -66,6 +66,6 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
         final Variable<List<ConditionID>> anyone = instruction.getValueList("any", ConditionID::new);
         final Variable<Number> count = instruction.getValue("count", Argument.NUMBER);
 
-        return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeAPI, profileProvider);
+        return new PartyCondition(location, range, conditions, everyone, anyone, count, questTypeApi, profileProvider);
     }
 }

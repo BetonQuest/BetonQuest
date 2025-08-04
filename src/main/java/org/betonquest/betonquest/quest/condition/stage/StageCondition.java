@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -32,19 +32,19 @@ public class StageCondition implements PlayerCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Creates the stage condition.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param objectiveID  the objective ID
      * @param targetStage  the target stage
      * @param operation    the operation
      */
-    public StageCondition(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> targetStage,
+    public StageCondition(final QuestTypeApi questTypeApi, final Variable<ObjectiveID> objectiveID, final Variable<String> targetStage,
                           final Variable<Operation> operation) {
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
         this.targetStage = targetStage;
         this.operation = operation;
@@ -78,7 +78,7 @@ public class StageCondition implements PlayerCondition {
     }
 
     private StageObjective getStageObjective(final ObjectiveID objectiveID) throws QuestException {
-        if (questTypeAPI.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
+        if (questTypeApi.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
         throw new QuestException("Objective '" + objectiveID.getFullID() + "' is not a stage objective");

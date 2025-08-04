@@ -60,7 +60,7 @@ public class WorldGuardIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         questRegistries.condition().register("region", new RegionConditionFactory(plugin.getLoggerFactory(), data));
         questRegistries.objective().register("region", new RegionObjectiveFactory());
-        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(plugin.getFeatureAPI(), data));
+        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(plugin.getFeatureApi(), data));
     }
 
     @Override

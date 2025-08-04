@@ -10,7 +10,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensWalkingListener;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -48,7 +48,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Walking listener to check if movement is blocked by a conversation.
@@ -60,14 +60,14 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      *
      * @param log                     logger instance for this class
      * @param plugin                  the plugin to start tasks
-     * @param questTypeAPI            the Quest Type API
+     * @param questTypeApi            the Quest Type API
      * @param citizensWalkingListener the walking listener for conversations
      */
-    public CitizensMoveController(final BetonQuestLogger log, final Plugin plugin, final QuestTypeAPI questTypeAPI,
+    public CitizensMoveController(final BetonQuestLogger log, final Plugin plugin, final QuestTypeApi questTypeApi,
                                   final CitizensWalkingListener citizensWalkingListener) {
         this.log = log;
         this.plugin = plugin;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.citizensWalkingListener = citizensWalkingListener;
     }
 
@@ -122,7 +122,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
             for (final EventID event : oldMoveInstance.moveData.failEvents()) {
-                questTypeAPI.event(profile, event);
+                questTypeApi.event(profile, event);
             }
             return;
         }
@@ -320,7 +320,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
                     for (final EventID event : moveData.doneEvents()) {
-                        questTypeAPI.event(profile, event);
+                        questTypeApi.event(profile, event);
                     }
                 }
             }.runTaskLater(plugin, moveData.waitTicks());

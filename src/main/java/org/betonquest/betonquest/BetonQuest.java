@@ -4,6 +4,7 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.common.component.font.DefaultFont;
@@ -12,14 +13,14 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
@@ -113,7 +114,7 @@ import java.util.logging.Level;
  * Represents BetonQuest plugin.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
-public class BetonQuest extends JavaPlugin implements LanguageProvider {
+public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
     /**
      * BStats Plugin id.
      */
@@ -228,12 +229,12 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     /**
      * Quest Type API.
      */
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeApi;
 
     /**
      * Feature API.
      */
-    private FeatureAPI featureAPI;
+    private FeatureApi featureApi;
 
     /**
      * Cache for event schedulers, holding the last execution of an event.
@@ -371,7 +372,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
-        questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
+        questTypeApi = new QuestTypeApi(coreQuestRegistry);
 
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives(), profileProvider);
 
@@ -394,14 +395,14 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         final ParsedSectionTextCreator textCreator = new ParsedSectionTextCreator(textParser, playerDataStorage,
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, textCreator, profileProvider, questTypeAPI, playerDataStorage);
-        featureAPI = new FeatureAPI(questRegistry);
+                coreQuestRegistry, featureRegistries, pluginMessage, textCreator, profileProvider, questTypeApi, playerDataStorage);
+        featureApi = new FeatureApi(questRegistry);
 
         setupUpdater();
         registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                questTypeAPI, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
+                questTypeApi, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
                 profileProvider, this)
                 .register(questTypeRegistries);
 
@@ -411,7 +412,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         fontRegistry = new FontRegistry(defaultkey);
         fontRegistry.registerFont(defaultkey, new DefaultFont());
 
-        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeAPI, config, conversationColors, fontRegistry)
+        new CoreFeatureFactories(loggerFactory, lastExecutionCache, questTypeApi, config, conversationColors, fontRegistry)
                 .register(featureRegistries);
 
         try {
@@ -434,7 +435,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
 
             try {
-                playerHider = new PlayerHider(this, questTypeAPI, profileProvider);
+                playerHider = new PlayerHider(this, questTypeApi, profileProvider);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -452,7 +453,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility);
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, coreQuestRegistry.variables(),
-                pluginMessage, textCreator, questTypeAPI, featureAPI, profileProvider);
+                pluginMessage, textCreator, questTypeApi, featureApi, profileProvider);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -489,7 +490,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureAPI),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureApi),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider, updater)
@@ -605,7 +606,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this, questTypeAPI, profileProvider);
+            playerHider = new PlayerHider(this, questTypeApi, profileProvider);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -723,22 +724,14 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         return profileProvider;
     }
 
-    /**
-     * Returns the Quest Type API.
-     *
-     * @return the api for Quest Type logic
-     */
-    public QuestTypeAPI getQuestTypeAPI() {
-        return questTypeAPI;
+    @Override
+    public QuestTypeApi getQuestTypeApi() {
+        return questTypeApi;
     }
 
-    /**
-     * Returns the Feature API.
-     *
-     * @return the api for feature logic
-     */
-    public FeatureAPI getFeatureAPI() {
-        return featureAPI;
+    @Override
+    public FeatureApi getFeatureApi() {
+        return featureApi;
     }
 
     /**
