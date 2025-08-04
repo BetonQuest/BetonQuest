@@ -45,6 +45,6 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
     protected TypeFactory<EventAdapter> getFactoryAdapter(
             @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
             @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
-        return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeAPI(), playerFactory, playerlessFactory);
+        return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeApi(), playerFactory, playerlessFactory);
     }
 }

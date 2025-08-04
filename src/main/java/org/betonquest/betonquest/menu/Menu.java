@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -28,7 +28,7 @@ public class Menu {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The internal id of the menu.
@@ -56,7 +56,7 @@ public class Menu {
      * @param boundItem    the optional bound Item
      * @throws QuestException if the bound command is invalid
      */
-    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeAPI questTypeAPI,
+    public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeAPI,
                 final MenuData menuData, @Nullable final Variable<Item> boundItem) throws QuestException {
         this.log = log;
         this.questTypeAPI = questTypeAPI;

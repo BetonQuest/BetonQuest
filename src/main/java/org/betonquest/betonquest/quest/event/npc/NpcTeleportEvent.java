@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -18,7 +18,7 @@ public class NpcTeleportEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The npc id.
@@ -43,7 +43,7 @@ public class NpcTeleportEvent implements NullableEvent {
      * @param location   the location the Npc will be teleported to
      * @param spawn      if the npc should be spawned if not in the world
      */
-    public NpcTeleportEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final Variable<Location> location, final boolean spawn) {
+    public NpcTeleportEvent(final FeatureApi featureAPI, final Variable<NpcID> npcId, final Variable<Location> location, final boolean spawn) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;
         this.location = location;

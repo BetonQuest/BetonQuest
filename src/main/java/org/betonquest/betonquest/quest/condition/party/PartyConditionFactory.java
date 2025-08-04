@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -25,7 +25,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -38,7 +38,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyConditionFactory(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public PartyConditionFactory(final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
     }

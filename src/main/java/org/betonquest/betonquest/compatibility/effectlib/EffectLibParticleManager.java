@@ -3,12 +3,12 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
 import org.betonquest.betonquest.instruction.argument.Argument;
@@ -43,12 +43,12 @@ public class EffectLibParticleManager {
     /**
      * The Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The profile provider instance.
@@ -82,7 +82,7 @@ public class EffectLibParticleManager {
      * @param manager           the effect manager starting and controlling particles
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                    final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+                                    final QuestTypeApi questTypeAPI, final FeatureApi featureAPI,
                                     final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
                                     final EffectManager manager) {
         this.loggerFactory = loggerFactory;

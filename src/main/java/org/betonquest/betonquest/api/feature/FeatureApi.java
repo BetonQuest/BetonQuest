@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * The Feature logic.
  */
-public final class FeatureAPI {
+public final class FeatureApi {
 
     /**
      * Quest Registry providing processors.
@@ -38,7 +38,7 @@ public final class FeatureAPI {
      *
      * @param questRegistry the registry containing processors
      */
-    public FeatureAPI(final QuestRegistry questRegistry) {
+    public FeatureApi(final QuestRegistry questRegistry) {
         this.questRegistry = questRegistry;
     }
 

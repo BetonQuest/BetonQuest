@@ -4,6 +4,7 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
 import org.betonquest.betonquest.api.common.component.font.DefaultFont;
@@ -12,7 +13,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
@@ -20,7 +21,7 @@ import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
 import org.betonquest.betonquest.command.CancelQuestCommand;
@@ -113,7 +114,7 @@ import java.util.logging.Level;
  * Represents BetonQuest plugin.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
-public class BetonQuest extends JavaPlugin implements LanguageProvider {
+public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
     /**
      * BStats Plugin id.
      */
@@ -228,12 +229,12 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     /**
      * Quest Type API.
      */
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeAPI;
 
     /**
      * Feature API.
      */
-    private FeatureAPI featureAPI;
+    private FeatureApi featureAPI;
 
     /**
      * Cache for event schedulers, holding the last execution of an event.
@@ -371,7 +372,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questTypeRegistries);
-        questTypeAPI = new QuestTypeAPI(coreQuestRegistry);
+        questTypeAPI = new QuestTypeApi(coreQuestRegistry);
 
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives(), profileProvider);
 
@@ -395,7 +396,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider, questTypeAPI, playerDataStorage);
-        featureAPI = new FeatureAPI(questRegistry);
+        featureAPI = new FeatureApi(questRegistry);
 
         setupUpdater();
         registerListener(coreQuestRegistry);
@@ -723,21 +724,13 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         return profileProvider;
     }
 
-    /**
-     * Returns the Quest Type API.
-     *
-     * @return the api for Quest Type logic
-     */
-    public QuestTypeAPI getQuestTypeAPI() {
+    @Override
+    public QuestTypeApi getQuestTypeApi() {
         return questTypeAPI;
     }
 
-    /**
-     * Returns the Feature API.
-     *
-     * @return the api for feature logic
-     */
-    public FeatureAPI getFeatureAPI() {
+    @Override
+    public FeatureApi getFeatureApi() {
         return featureAPI;
     }
 

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.logik;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -28,7 +28,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Create the alternative condition factory.
@@ -36,7 +36,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
      * @param loggerFactory the logger factory to create a logger for the conditions
      * @param questTypeAPI  the Quest Type API to check conditions
      */
-    public AlternativeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI) {
+    public AlternativeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeApi questTypeAPI) {
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
     }

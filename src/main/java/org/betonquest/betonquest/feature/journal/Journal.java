@@ -8,13 +8,13 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -230,7 +230,7 @@ public class Journal {
         texts.clear();
         mainPage = generateMainPage();
         final boolean displayDatePrefix = "false".equalsIgnoreCase(config.getString("journal.format.hide_date"));
-        final FeatureAPI featureAPI = BetonQuest.getInstance().getFeatureAPI();
+        final FeatureApi featureAPI = BetonQuest.getInstance().getFeatureApi();
         for (final Pointer pointer : pointers) {
             final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
             final JournalEntryID entryID = pointer.pointer();
@@ -265,8 +265,8 @@ public class Journal {
         final Map<Integer, List<String>> lines = new HashMap<>(); // holds text lines with their priority
         final Set<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
         final BetonQuest betonQuest = BetonQuest.getInstance();
-        final FeatureAPI featureAPI = betonQuest.getFeatureAPI();
-        final QuestTypeAPI questTypeAPI = betonQuest.getQuestTypeAPI();
+        final FeatureApi featureAPI = betonQuest.getFeatureApi();
+        final QuestTypeApi questTypeAPI = betonQuest.getQuestTypeApi();
         for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureAPI.getJournalMainPages().entrySet()) {
             final JournalMainPageEntry mainPageEntry = entry.getValue();
             String text;

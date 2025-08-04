@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -21,7 +21,7 @@ public class RunIndependentEvent implements PlayerlessEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * List of Events to run.
@@ -34,7 +34,7 @@ public class RunIndependentEvent implements PlayerlessEvent {
      * @param questTypeAPI the Quest Type API
      * @param events       the events to run
      */
-    public RunIndependentEvent(final QuestTypeAPI questTypeAPI, final Variable<List<EventID>> events) {
+    public RunIndependentEvent(final QuestTypeApi questTypeAPI, final Variable<List<EventID>> events) {
         this.questTypeAPI = questTypeAPI;
         this.events = events;
     }

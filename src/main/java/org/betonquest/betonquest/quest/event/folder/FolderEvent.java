@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -47,7 +47,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Random generator used to choose events to run.
@@ -110,7 +110,7 @@ public class FolderEvent implements NullableEvent {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final Variable<List<EventID>> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
+                       final Variable<List<EventID>> events, final QuestTypeApi questTypeAPI, final Random randomGenerator,
                        @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
                        @Nullable final Variable<Number> random, final Variable<TimeUnit> timeUnit, final boolean cancelOnLogout,
                        final Variable<List<ConditionID>> cancelConditions) {

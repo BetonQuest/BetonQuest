@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -20,7 +20,7 @@ public class NpcVariable implements NullableVariable {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Id of the npc.
@@ -53,7 +53,7 @@ public class NpcVariable implements NullableVariable {
      * @param decimalPlaces the number of decimal places to use for location resolution
      * @throws IllegalArgumentException when location argument is given without location variable
      */
-    public NpcVariable(final FeatureAPI featureAPI, final Variable<NpcID> npcID, final Argument key,
+    public NpcVariable(final FeatureApi featureAPI, final Variable<NpcID> npcID, final Argument key,
                        @Nullable final LocationFormationMode formationMode, final int decimalPlaces) {
         this.featureAPI = featureAPI;
         this.npcID = npcID;

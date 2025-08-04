@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -29,7 +29,7 @@ public class AlternativeCondition implements NullableCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * List of condition IDs.
@@ -49,7 +49,7 @@ public class AlternativeCondition implements NullableCondition {
      * @param conditionIDs the condition IDs
      * @param questPackage the quest package
      */
-    public AlternativeCondition(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<List<ConditionID>> conditionIDs, final QuestPackage questPackage) {
+    public AlternativeCondition(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final Variable<List<ConditionID>> conditionIDs, final QuestPackage questPackage) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.conditionIDs = conditionIDs;

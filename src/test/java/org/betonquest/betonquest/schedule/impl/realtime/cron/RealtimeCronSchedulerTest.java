@@ -2,7 +2,7 @@ package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import com.cronutils.model.time.ExecutionTime;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.schedule.ScheduleID;
@@ -50,7 +50,7 @@ class RealtimeCronSchedulerTest {
      * Mocked BetonQuestAPI.
      */
     @Mock
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeAPI;
 
     private static RealtimeCronSchedule getSchedule(final CatchupStrategy catchupStrategy, final boolean shouldRunOnReboot) {
         final RealtimeCronSchedule schedule = mock(RealtimeCronSchedule.class);

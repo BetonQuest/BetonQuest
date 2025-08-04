@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.objective;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.id.ObjectiveID;
 
@@ -15,7 +15,7 @@ public class ObjectivePropertyVariable implements PlayerVariable {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The objective ID.
@@ -34,7 +34,7 @@ public class ObjectivePropertyVariable implements PlayerVariable {
      * @param objectiveID  The objective ID.
      * @param propertyName The property name.
      */
-    public ObjectivePropertyVariable(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final String propertyName) {
+    public ObjectivePropertyVariable(final QuestTypeApi questTypeAPI, final ObjectiveID objectiveID, final String propertyName) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.propertyName = propertyName;

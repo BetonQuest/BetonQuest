@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
@@ -26,7 +26,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     /**
      * QuestTypeAPI to check conditions.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Instruction used to create the types.
@@ -49,7 +49,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public EventAdapter(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
+    public EventAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
         this.questTypeAPI = questTypeAPI;

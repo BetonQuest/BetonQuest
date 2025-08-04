@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.compass;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -20,7 +20,7 @@ public class CompassEventFactory implements PlayerEventFactory {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Storage to get the offline player data.
@@ -45,7 +45,7 @@ public class CompassEventFactory implements PlayerEventFactory {
      * @param pluginManager plugin manager to use
      * @param data          the data for primary server thread access
      */
-    public CompassEventFactory(final FeatureAPI featureAPI, final PlayerDataStorage dataStorage,
+    public CompassEventFactory(final FeatureApi featureAPI, final PlayerDataStorage dataStorage,
                                final PluginManager pluginManager, final PrimaryServerThreadData data) {
         this.featureAPI = featureAPI;
         this.dataStorage = dataStorage;

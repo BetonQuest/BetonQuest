@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -24,7 +24,7 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Data used for primary server thread access.
@@ -37,7 +37,7 @@ public class NpcLocationConditionFactory implements PlayerConditionFactory, Play
      * @param featureAPI the Feature API
      * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcLocationConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+    public NpcLocationConditionFactory(final FeatureApi featureAPI, final PrimaryServerThreadData data) {
         this.featureAPI = featureAPI;
         this.data = data;
     }

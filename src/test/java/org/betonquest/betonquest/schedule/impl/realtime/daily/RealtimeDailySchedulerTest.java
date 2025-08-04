@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.schedule.ScheduleID;
@@ -51,7 +51,7 @@ class RealtimeDailySchedulerTest {
      * Mocked BetonQuestAPI.
      */
     @Mock
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeAPI;
 
     private static RealtimeDailySchedule getSchedule(final CatchupStrategy catchupStrategy) {
         final RealtimeDailySchedule schedule = mock(RealtimeDailySchedule.class);

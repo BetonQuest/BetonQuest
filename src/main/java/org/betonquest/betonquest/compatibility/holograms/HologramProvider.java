@@ -97,7 +97,7 @@ public class HologramProvider implements Integrator {
                 plugin.getVariableProcessor(), this);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class), plugin,
-                plugin.getVariableProcessor(), this, plugin.getFeatureAPI(), plugin.getFeatureRegistries().npc());
+                plugin.getVariableProcessor(), this, plugin.getFeatureApi(), plugin.getFeatureRegistries().npc());
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }

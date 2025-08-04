@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.NpcID;
 import org.bukkit.Bukkit;
@@ -32,12 +32,12 @@ public class EffectLibRunnable extends BukkitRunnable {
     /**
      * The Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The profile provider instance.
@@ -74,7 +74,7 @@ public class EffectLibRunnable extends BukkitRunnable {
      * @param manager             the effect manager which will create and control the particles
      * @param effectConfiguration the effect to show
      */
-    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI, final ProfileProvider profileProvider,
+    public EffectLibRunnable(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final FeatureApi featureAPI, final ProfileProvider profileProvider,
                              final EffectManager manager, final EffectConfiguration effectConfiguration) {
         super();
         this.log = log;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -33,14 +33,14 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Create a new factory to create NPC Variables.
      *
      * @param featureAPI the Quest Type API
      */
-    public NpcVariableFactory(final FeatureAPI featureAPI) {
+    public NpcVariableFactory(final FeatureApi featureAPI) {
         this.featureAPI = featureAPI;
     }
 

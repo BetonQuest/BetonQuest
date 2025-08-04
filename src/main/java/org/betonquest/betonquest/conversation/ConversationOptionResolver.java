@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ConversationID;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ public class ConversationOptionResolver {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The {@link ConversationData.OptionType} of the option.
@@ -49,7 +49,7 @@ public class ConversationOptionResolver {
      * @throws QuestException when the option string is incorrectly formatted or
      *                        when the conversation could not be found
      */
-    public ConversationOptionResolver(final FeatureAPI featureAPI, final QuestPackage currentPackage,
+    public ConversationOptionResolver(final FeatureApi featureAPI, final QuestPackage currentPackage,
                                       final String currentConversationName, final ConversationData.OptionType optionType,
                                       final String option) throws QuestException {
         this.featureAPI = featureAPI;

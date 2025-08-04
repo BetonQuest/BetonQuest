@@ -5,12 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
@@ -59,12 +59,12 @@ public class ConversationData {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Message creator to parse messages.
@@ -117,7 +117,7 @@ public class ConversationData {
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor, final QuestTypeApi questTypeAPI, final FeatureApi featureAPI,
                             final ParsedSectionMessageCreator messageCreator, final QuestPackage pack,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;

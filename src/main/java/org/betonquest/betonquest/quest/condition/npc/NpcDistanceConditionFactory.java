@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -21,7 +21,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Data used for condition check on the primary server thread.
@@ -40,7 +40,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
      * @param data          the data used for checking the condition on the main thread
      * @param loggerFactory the logger factory to create a logger for the conditions
      */
-    public NpcDistanceConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data,
+    public NpcDistanceConditionFactory(final FeatureApi featureAPI, final PrimaryServerThreadData data,
                                        final BetonQuestLoggerFactory loggerFactory) {
         this.featureAPI = featureAPI;
         this.data = data;

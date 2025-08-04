@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -52,7 +52,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The Npc Registry to create identifier strings from Npcs.
@@ -73,7 +73,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final Plugin plugin, final VariableProcessor variableProcessor, final HologramProvider hologramProvider,
-                           final FeatureAPI featureAPI, final NpcTypeRegistry npcTypeRegistry) {
+                           final FeatureApi featureAPI, final NpcTypeRegistry npcTypeRegistry) {
         super(loggerFactory, log, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
         this.plugin = plugin;
         this.featureAPI = featureAPI;

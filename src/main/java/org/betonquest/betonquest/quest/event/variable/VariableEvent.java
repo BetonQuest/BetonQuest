@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.variable;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -17,7 +17,7 @@ public class VariableEvent implements PlayerEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The variable objective id to change the variable in.
@@ -42,7 +42,7 @@ public class VariableEvent implements PlayerEvent {
      * @param key          the key of the variable to store
      * @param value        the value of the variable to store
      */
-    public VariableEvent(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> key, final Variable<String> value) {
+    public VariableEvent(final QuestTypeApi questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> key, final Variable<String> value) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
         this.key = key;

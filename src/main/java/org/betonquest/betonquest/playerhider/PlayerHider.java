@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,7 +43,7 @@ public class PlayerHider {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -54,15 +54,15 @@ public class PlayerHider {
      * Initialize and start a new {@link PlayerHider}.
      *
      * @param betonQuest      the plugin instance to get config and start the bukkit task
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) throws QuestException {
+    public PlayerHider(final BetonQuest betonQuest, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) throws QuestException {
         this.plugin = betonQuest;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
 
         for (final QuestPackage pack : betonQuest.getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
@@ -137,12 +137,12 @@ public class PlayerHider {
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : onlineProfiles) {
-                if (questTypeAPI.conditions(target, hider.getValue())) {
+                if (questTypeApi.conditions(target, hider.getValue())) {
                     targetProfiles.add(target);
                 }
             }
             for (final OnlineProfile source : onlineProfiles) {
-                if (!questTypeAPI.conditions(source, hider.getKey())) {
+                if (!questTypeApi.conditions(source, hider.getKey())) {
                     continue;
                 }
                 final List<OnlineProfile> hiddenProfiles = getOrCreateProfileList(source, profilesToHide);

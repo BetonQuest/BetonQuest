@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -17,7 +17,7 @@ public class CitizensMoveEvent implements PlayerEvent {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * ID of the NPC to move.
@@ -42,7 +42,7 @@ public class CitizensMoveEvent implements PlayerEvent {
      * @param citizensMoveController the move instance which handles the NPC movement
      * @param moveData               the parsed data for the NPC movement
      */
-    public CitizensMoveEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController,
+    public CitizensMoveEvent(final FeatureApi featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController,
                              final CitizensMoveController.MoveData moveData) {
         this.featureAPI = featureAPI;
         this.npcId = npcId;

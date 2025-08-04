@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.stage;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -22,14 +22,14 @@ public class StageEventFactory implements PlayerEventFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Creates the stage event factory.
      *
      * @param questTypeAPI the Quest Type API
      */
-    public StageEventFactory(final QuestTypeAPI questTypeAPI) {
+    public StageEventFactory(final QuestTypeApi questTypeAPI) {
         this.questTypeAPI = questTypeAPI;
     }
 

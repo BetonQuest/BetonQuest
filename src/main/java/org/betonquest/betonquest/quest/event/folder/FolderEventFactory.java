@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.folder;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -43,7 +43,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Create a new folder event factory.
@@ -54,7 +54,7 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
      * @param questTypeAPI  the Quest Type API
      */
     public FolderEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                              final PluginManager pluginManager, final QuestTypeAPI questTypeAPI) {
+                              final PluginManager pluginManager, final QuestTypeApi questTypeAPI) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
         this.pluginManager = pluginManager;

@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -63,8 +63,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param profileProvider   the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                         final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
-                         final VariableProcessor variableProcessor, final FeatureAPI featureAPI, final RPGMenu rpgMenu,
+                         final ParsedSectionMessageCreator messageCreator, final QuestTypeApi questTypeAPI,
+                         final VariableProcessor variableProcessor, final FeatureApi featureAPI, final RPGMenu rpgMenu,
                          final ProfileProvider profileProvider) {
         super(log, "Menu", "menus", loggerFactory, messageCreator, variableProcessor, questTypeAPI, featureAPI);
         this.rpgMenu = rpgMenu;

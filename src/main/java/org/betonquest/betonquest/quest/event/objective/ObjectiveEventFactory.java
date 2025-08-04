@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.objective;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -34,7 +34,7 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Creates a new factory for {@link ObjectiveEvent}s.
@@ -44,7 +44,7 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
      * @param questTypeAPI  the Quest Type API
      */
     public ObjectiveEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                                 final QuestTypeAPI questTypeAPI) {
+                                 final QuestTypeApi questTypeAPI) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;

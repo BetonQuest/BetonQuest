@@ -21,7 +21,7 @@ public interface PackageArgument<T> {
     /**
      * The default instance of {@link ItemParser}.
      */
-    ItemParser ITEM = new ItemParser(BetonQuest.getInstance().getFeatureAPI());
+    ItemParser ITEM = new ItemParser(BetonQuest.getInstance().getFeatureApi());
 
     /**
      * Gets a {@link T} from string.

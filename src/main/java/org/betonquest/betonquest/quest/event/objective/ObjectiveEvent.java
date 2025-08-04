@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
@@ -49,7 +49,7 @@ public class ObjectiveEvent implements NullableEvent {
     /**
      * API for starting objectives.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The action to do with the objectives.
@@ -67,7 +67,7 @@ public class ObjectiveEvent implements NullableEvent {
      * @param action       the action to do with the objectives
      * @throws QuestException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeApi questTypeAPI,
                           final QuestPackage questPackage, final Variable<List<ObjectiveID>> objectives, final String action) throws QuestException {
         this.log = log;
         this.questPackage = questPackage;

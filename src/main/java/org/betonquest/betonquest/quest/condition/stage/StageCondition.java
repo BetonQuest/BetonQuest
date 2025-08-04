@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.stage;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -32,7 +32,7 @@ public class StageCondition implements PlayerCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Creates the stage condition.
@@ -42,7 +42,7 @@ public class StageCondition implements PlayerCondition {
      * @param targetStage  the target stage
      * @param operation    the operation
      */
-    public StageCondition(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> targetStage,
+    public StageCondition(final QuestTypeApi questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> targetStage,
                           final Variable<Operation> operation) {
         this.questTypeAPI = questTypeAPI;
         this.objectiveID = objectiveID;
