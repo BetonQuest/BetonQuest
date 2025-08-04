@@ -7,7 +7,6 @@ import net.citizensnpcs.api.ai.event.NavigationEvent;
 import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -18,6 +17,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -41,6 +41,11 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     private final BetonQuestLogger log;
 
     /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeAPI questTypeAPI;
@@ -54,12 +59,14 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      * Creates a new Citizens Move Controller.
      *
      * @param log                     logger instance for this class
+     * @param plugin                  the plugin to start tasks
      * @param questTypeAPI            the Quest Type API
      * @param citizensWalkingListener the walking listener for conversations
      */
-    public CitizensMoveController(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+    public CitizensMoveController(final BetonQuestLogger log, final Plugin plugin, final QuestTypeAPI questTypeAPI,
                                   final CitizensWalkingListener citizensWalkingListener) {
         this.log = log;
+        this.plugin = plugin;
         this.questTypeAPI = questTypeAPI;
         this.citizensWalkingListener = citizensWalkingListener;
     }
@@ -119,7 +126,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
             }
             return;
         }
-        final MoveInstance moveInstance = new MoveInstance(moveData, profile, npc);
+        final MoveInstance moveInstance = new MoveInstance(plugin, moveData, profile, npc);
         movingNpcs.put(npc.getId(), moveInstance);
     }
 
@@ -217,6 +224,12 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
      * An active navigation for a Citizens NPC.
      */
     private final class MoveInstance {
+
+        /**
+         * Plugin to start tasks.
+         */
+        private final Plugin plugin;
+
         /**
          * Move data used for the npc movement.
          */
@@ -237,7 +250,8 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
          */
         private final ListIterator<Location> locationsIterator;
 
-        private MoveInstance(final MoveData moveData, final Profile profile, final NPC npc) throws QuestException {
+        private MoveInstance(final Plugin plugin, final MoveData moveData, final Profile profile, final NPC npc) throws QuestException {
+            this.plugin = plugin;
             this.moveData = moveData.getResolvedMoveData(profile);
             this.npcId = npc.getId();
             this.profile = profile;
@@ -309,7 +323,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                         questTypeAPI.event(profile, event);
                     }
                 }
-            }.runTaskLater(BetonQuest.getInstance(), moveData.waitTicks());
+            }.runTaskLater(plugin, moveData.waitTicks());
         }
     }
 }

@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -17,26 +18,29 @@ import java.util.List;
 /**
  * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
- * @param log           A {@link BetonQuestLogger} instance for this class.
- * @param holograms     A list of actual hologram
- * @param interval      Interval in ticks that lie between updates to the visibility and content
- * @param staticContent Indicates whether the displayed content of the hologram is changing after a while.
- *                      HolographicDisplays variables are not updated BetonQuest, it does not make a hologram flexible.
- *                      However, content updates such as refreshing the top list do.
- *                      <p>
- *                      If <code>true</code>, {@link HologramWrapper#updateContent()} will end instantly to not cause
- *                      an unneeded load.
- * @param conditionList List of all specified conditions. Hologram will only be visible if all conditions are met. If
- *                      none are specified, the hologram will be visible at all times.
- *                      <p>
- *                      If empty, {@link HologramWrapper#updateVisibility()} will end instantly to not cause
- *                      an unneeded load.
- * @param cleanedLines  List of validated lines. Used by {@link #updateContent()} to update content without
- *                      revalidating content and dealing with potential errors.
- * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
- * @param varMaxRange   The maximum range in which the hologram is visible.
+ * @param log             A {@link BetonQuestLogger} instance for this class.
+ * @param questTypeAPI    The {@link QuestTypeAPI} to check for conditions.
+ * @param profileProvider The {@link ProfileProvider} instance to get a profile from.
+ * @param holograms       A list of actual hologram
+ * @param interval        Interval in ticks that lie between updates to the visibility and content
+ * @param staticContent   Indicates whether the displayed content of the hologram is changing after a while.
+ *                        HolographicDisplays variables are not updated BetonQuest, it does not make a hologram flexible.
+ *                        However, content updates such as refreshing the top list do.
+ *                        <p>
+ *                        If <code>true</code>, {@link HologramWrapper#updateContent()} will end instantly to not cause
+ *                        an unneeded load.
+ * @param conditionList   List of all specified conditions. Hologram will only be visible if all conditions are met. If
+ *                        none are specified, the hologram will be visible at all times.
+ *                        <p>
+ *                        If empty, {@link HologramWrapper#updateVisibility()} will end instantly to not cause
+ *                        an unneeded load.
+ * @param cleanedLines    List of validated lines. Used by {@link #updateContent()} to update content without
+ *                        revalidating content and dealing with potential errors.
+ * @param questPackage    {@link QuestPackage} in which the hologram is specified in.
+ * @param varMaxRange     The maximum range in which the hologram is visible.
  */
-public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHologram> holograms, boolean staticContent,
+public record HologramWrapper(BetonQuestLogger log, QuestTypeAPI questTypeAPI, ProfileProvider profileProvider,
+                              int interval, List<BetonHologram> holograms, boolean staticContent,
                               List<ConditionID> conditionList,
                               List<AbstractLine> cleanedLines, QuestPackage questPackage,
                               Variable<Number> varMaxRange) {
@@ -52,7 +56,7 @@ public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHolo
             return;
         }
 
-        for (final OnlineProfile onlineProfile : BetonQuest.getInstance().getProfileProvider().getOnlineProfiles()) {
+        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
             updateVisibilityForPlayer(onlineProfile);
         }
     }
@@ -63,7 +67,7 @@ public record HologramWrapper(BetonQuestLogger log, int interval, List<BetonHolo
      * @param profile The online player's profile.
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
-        final boolean conditionsMet = BetonQuest.getInstance().getQuestTypeAPI().conditions(profile, conditionList);
+        final boolean conditionsMet = questTypeAPI.conditions(profile, conditionList);
 
         for (final BetonHologram hologram : holograms) {
             final boolean playerOutOfRange = isPlayerOutOfRange(profile, hologram);

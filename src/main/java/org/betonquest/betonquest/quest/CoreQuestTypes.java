@@ -459,7 +459,7 @@ public class CoreQuestTypes {
         variables.registerCombined("eval", new EvalVariableFactory());
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
-        variables.registerCombined("item", new ItemVariableFactory());
+        variables.registerCombined("item", new ItemVariableFactory(betonQuest.getPlayerDataStorage()));
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(variableProcessor));

@@ -71,12 +71,12 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         final Server server = plugin.getServer();
         final NPCRegistry npcRegistry = CitizensAPI.getNPCRegistry();
-        final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(npcRegistry);
+        final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, npcRegistry);
         server.getPluginManager().registerEvents(citizensWalkingListener, plugin);
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class),
-                plugin.getQuestTypeAPI(), citizensWalkingListener);
+                plugin, plugin.getQuestTypeAPI(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(npcRegistry));

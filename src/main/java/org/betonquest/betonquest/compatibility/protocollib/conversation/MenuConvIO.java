@@ -10,9 +10,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.display.Display;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.display.Scroll;
@@ -38,17 +36,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -64,6 +60,11 @@ public class MenuConvIO extends ChatConvIO {
      * Thread safety.
      */
     private final Lock lock = new ReentrantLock();
+
+    /**
+     * Plugin instance to schedule tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * All players that are currently on cooldown are in this list.
@@ -84,7 +85,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The controls that are used in the conversation.
      */
-    protected Map<CONTROL, ACTION> controls = new EnumMap<>(CONTROL.class);
+    protected Map<CONTROL, ACTION> controls;
 
     /**
      * The current state of the conversation.
@@ -123,53 +124,20 @@ public class MenuConvIO extends ChatConvIO {
      * @param colors               the colors used in the conversation
      * @param settings             the settings for the conversation IO
      * @param componentLineWrapper the component line wrapper to use for the conversation
+     * @param plugin               the plugin instance to run tasks
+     * @param controls             the used controls
      */
     @SuppressWarnings("NullAway.Init")
     public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors,
-                      final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper) {
+                      final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper,
+                      final Plugin plugin, final Map<CONTROL, ACTION> controls) {
         super(conv, onlineProfile, colors);
+        this.plugin = plugin;
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;
-        final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-
-        // Sort out Controls
-        try {
-            for (final CONTROL control : Arrays.stream(settings.controlCancel().split(","))
-                    .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf).toList()) {
-                if (!controls.containsKey(control)) {
-                    controls.put(control, ACTION.CANCEL);
-                }
-            }
-        } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_cancel': " + settings.controlCancel(), e);
-        }
-        try {
-            for (final CONTROL control : Arrays.stream(settings.controlSelect().split(","))
-                    .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf).toList()) {
-
-                if (!controls.containsKey(control)) {
-                    controls.put(control, ACTION.SELECT);
-                }
-            }
-        } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_select': " + settings.controlSelect(), e);
-        }
-        try {
-            for (final CONTROL control : Arrays.stream(settings.controlMove().split(","))
-                    .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf).toList()) {
-                if (!controls.containsKey(control)) {
-                    controls.put(control, ACTION.MOVE);
-                }
-            }
-        } catch (final IllegalArgumentException e) {
-            log.warn(conv.getPackage(), conv.getPackage().getQuestPath() + ": Invalid data for 'control_move': " + settings.controlMove(), e);
-        }
+        this.controls = controls;
     }
 
-    @SuppressWarnings("deprecation")
     private void start() {
         if (state.isStarted()) {
             return;
@@ -210,7 +178,7 @@ public class MenuConvIO extends ChatConvIO {
             packetAdapter = getPacketAdapter();
             ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
 
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+            Bukkit.getPluginManager().registerEvents(this, plugin);
         } finally {
             lock.unlock();
         }
@@ -304,7 +272,7 @@ public class MenuConvIO extends ChatConvIO {
                     }
                 }
             };
-            displayRunnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), settings.refreshDelay(), settings.refreshDelay());
+            displayRunnable.runTaskTimerAsynchronously(plugin, settings.refreshDelay(), settings.refreshDelay());
         }
     }
 
@@ -352,7 +320,7 @@ public class MenuConvIO extends ChatConvIO {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
             }
             if (stand != null) {
-                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                Bukkit.getScheduler().runTask(plugin, () -> {
                     if (stand != null) {
                         stand.remove();
                         stand = null;
@@ -374,7 +342,7 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     private PacketAdapter getPacketAdapter() {
-        return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
+        return new PacketAdapter(plugin, ListenerPriority.HIGHEST,
                 PacketType.Play.Client.STEER_VEHICLE,
                 PacketType.Play.Server.ANIMATION
         ) {
@@ -583,7 +551,7 @@ public class MenuConvIO extends ChatConvIO {
             return true;
         } else {
             selectionCooldowns.add(player);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), settings.rateLimit());
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> selectionCooldowns.remove(player), settings.rateLimit());
         }
         return false;
     }

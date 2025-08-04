@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
@@ -18,11 +19,18 @@ import java.util.Locale;
  * A factory for creating Item variables.
  */
 public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
+    /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage playerDataStorage;
 
     /**
      * Create a new Item variable factory.
+     *
+     * @param playerDataStorage the storage for player data
      */
-    public ItemVariableFactory() {
+    public ItemVariableFactory(final PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
@@ -54,7 +62,7 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         } else {
             questItem = instruction.get(PackageArgument.ITEM);
         }
-        return new ItemVariable(questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
+        return new ItemVariable(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})

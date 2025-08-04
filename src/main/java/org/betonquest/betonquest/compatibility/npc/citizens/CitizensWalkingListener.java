@@ -5,13 +5,13 @@ import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationStartEvent;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -28,6 +28,11 @@ public class CitizensWalkingListener implements Listener {
     public final NPCRegistry registry;
 
     /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
+
+    /**
      * Map of NPCs which are currently in walking, and their locations to walk to.
      */
     private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
@@ -35,9 +40,11 @@ public class CitizensWalkingListener implements Listener {
     /**
      * Creates new listener which prevents Citizens NPCs from walking around when in conversation.
      *
+     * @param plugin   the plugin to start tasks
      * @param registry the registry of NPCs to use
      */
-    public CitizensWalkingListener(final NPCRegistry registry) {
+    public CitizensWalkingListener(final Plugin plugin, final NPCRegistry registry) {
+        this.plugin = plugin;
         this.registry = registry;
     }
 
@@ -69,7 +76,7 @@ public class CitizensWalkingListener implements Listener {
                         }
                     }
                 }
-            }.runTask(BetonQuest.getInstance());
+            }.runTask(plugin);
         }
     }
 
@@ -105,7 +112,7 @@ public class CitizensWalkingListener implements Listener {
                         }
                     }
                 }
-            }.runTask(BetonQuest.getInstance());
+            }.runTask(plugin);
         }
     }
 

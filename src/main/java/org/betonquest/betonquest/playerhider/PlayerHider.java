@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeAPI;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +36,11 @@ public class PlayerHider {
     private final BukkitTask bukkitTask;
 
     /**
+     * Plugin instance to show/hide players.
+     */
+    private final Plugin plugin;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeAPI questTypeAPI;
@@ -53,11 +59,12 @@ public class PlayerHider {
      * @throws QuestException Thrown if there is a configuration error.
      */
     public PlayerHider(final BetonQuest betonQuest, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) throws QuestException {
+        this.plugin = betonQuest;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
         this.questTypeAPI = questTypeAPI;
 
-        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
+        for (final QuestPackage pack : betonQuest.getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
             if (hiderSection == null) {
                 continue;
@@ -70,7 +77,7 @@ public class PlayerHider {
         }
 
         final long period = betonQuest.getPluginConfig().getLong("hider.player_update_interval", 20);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(betonQuest, this::updateVisibility, 1, period);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateVisibility, 1, period);
     }
 
     /**
@@ -108,17 +115,18 @@ public class PlayerHider {
         }
     }
 
-    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, @Nullable final List<OnlineProfile> profilesToHide) {
+    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source,
+                                             @Nullable final List<OnlineProfile> profilesToHide) {
         if (profilesToHide == null) {
             for (final OnlineProfile target : onlineProfiles) {
-                source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());
+                source.getPlayer().showPlayer(plugin, target.getPlayer());
             }
         } else {
             for (final OnlineProfile target : onlineProfiles) {
                 if (profilesToHide.contains(target)) {
-                    source.getPlayer().hidePlayer(BetonQuest.getInstance(), target.getPlayer());
+                    source.getPlayer().hidePlayer(plugin, target.getPlayer());
                 } else {
-                    source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());
+                    source.getPlayer().showPlayer(plugin, target.getPlayer());
                 }
             }
         }

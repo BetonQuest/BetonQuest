@@ -4,7 +4,6 @@ import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.core.mobs.ActiveMob;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -17,6 +16,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -27,6 +27,11 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
      * The BukkitAPIHelper used to interact with MythicMobs.
      */
     private final BukkitAPIHelper apiHelper;
+
+    /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * The location where the mob should be spawned.
@@ -65,9 +70,15 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
     private final Variable<String> marked;
 
     /**
+     * Key to mark mobs.
+     */
+    private final NamespacedKey markedKey;
+
+    /**
      * Constructs a new MythicSpawnMobEvent.
      *
      * @param apiHelper    the BukkitAPIHelper to use for spawning mobs
+     * @param plugin       the plugin to start tasks
      * @param loc          the location where the mob should be spawned
      * @param mob          the name of the MythicMob to spawn
      * @param level        the level of the mob to spawn
@@ -76,9 +87,10 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
      * @param targetPlayer whether the mob should target the player who triggered the event
      * @param marked       an optional variable containing a string to mark the mob with
      */
-    public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Variable<Location> loc, final String mob, final Variable<Number> level,
+    public MythicSpawnMobEvent(final BukkitAPIHelper apiHelper, final Plugin plugin, final Variable<Location> loc, final String mob, final Variable<Number> level,
                                final Variable<Number> amount, final boolean privateMob, final boolean targetPlayer, @Nullable final Variable<String> marked) {
         this.apiHelper = apiHelper;
+        this.plugin = plugin;
         this.loc = loc;
         this.mob = mob;
         this.level = level;
@@ -86,6 +98,7 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
         this.privateMob = privateMob;
         this.targetPlayer = targetPlayer;
         this.marked = marked;
+        markedKey = new NamespacedKey("betonquest", "betonquest-marked");
     }
 
     @Override
@@ -104,14 +117,13 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
                     if (mythicHider == null) {
                         throw new QuestException("Can't hide MythicMob because the Hider is null!");
                     }
-                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> mythicHider.applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> mythicHider.applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
                 }
                 if (targetPlayer) {
-                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
                 }
                 if (marked != null) {
-                    final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(profile));
+                    entity.getPersistentDataContainer().set(markedKey, PersistentDataType.STRING, marked.getValue(profile));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestException("MythicMob type " + mob + " is invalid.", e);
@@ -128,8 +140,7 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
             try {
                 final Entity entity = apiHelper.spawnMythicMob(mob, location, level);
                 if (marked != null) {
-                    final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
-                    entity.getPersistentDataContainer().set(key, PersistentDataType.STRING, marked.getValue(null));
+                    entity.getPersistentDataContainer().set(markedKey, PersistentDataType.STRING, marked.getValue(null));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestException("MythicMob type " + mob + " is invalid.", e);
