@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -16,6 +15,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +28,10 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class AdvancementNotifyIO extends NotifyIO {
+    /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * Advancement frame.
@@ -42,23 +46,25 @@ public class AdvancementNotifyIO extends NotifyIO {
     /**
      * Create a new Advancement Notify IO.
      *
-     * @param pack the source pack to resolve variables
-     * @param data the customization data for notifications
+     * @param pack   the source pack to resolve variables
+     * @param data   the customization data for notifications
+     * @param plugin the plugin to start tasks
      * @throws QuestException when data could not be parsed
      */
-    public AdvancementNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public AdvancementNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
         super(pack, data);
+        this.plugin = plugin;
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
     }
 
     private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
         final UUID uuid = UUID.randomUUID();
-        final NamespacedKey rootKey = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-root");
-        final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "notify/" + uuid + "-message");
+        final NamespacedKey rootKey = new NamespacedKey(plugin, "notify/" + uuid + "-root");
+        final NamespacedKey key = new NamespacedKey(plugin, "notify/" + uuid + "-message");
         loadAdvancement(message, rootKey, key);
 
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), run -> grant(key, onlineProfile.getPlayer()));
+        Bukkit.getScheduler().runTask(plugin, run -> grant(key, onlineProfile.getPlayer()));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -66,7 +72,7 @@ public class AdvancementNotifyIO extends NotifyIO {
                 remove(key);
                 remove(rootKey);
             }
-        }.runTaskLater(BetonQuest.getInstance(), 10);
+        }.runTaskLater(plugin, 10);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class AdvancementNotifyIO extends NotifyIO {
                 Bukkit.getUnsafe().loadAdvancement(rootKey, generateJson(null, null));
                 Bukkit.getUnsafe().loadAdvancement(key, generateJson(message, rootKey));
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
     }
 
     @SuppressWarnings("deprecation")
@@ -92,7 +98,7 @@ public class AdvancementNotifyIO extends NotifyIO {
             public void run() {
                 Bukkit.getUnsafe().removeAdvancement(key);
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
     }
 
     private void grant(final NamespacedKey key, final Player player) {

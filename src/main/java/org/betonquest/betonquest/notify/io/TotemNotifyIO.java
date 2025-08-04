@@ -3,7 +3,6 @@ package org.betonquest.betonquest.notify.io;
 import com.comphenix.packetwrapper.WrapperPlayServerEntityStatus;
 import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -16,6 +15,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -26,6 +26,11 @@ import java.util.Map;
 public class TotemNotifyIO extends NotifyIO {
 
     /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
+
+    /**
      * The totems customModelData.
      * It instructs the game client to display a different model or texture when the totem is shown.
      */
@@ -34,12 +39,14 @@ public class TotemNotifyIO extends NotifyIO {
     /**
      * Creates a new TotemNotifyIO instance based on the user's instruction string.
      *
-     * @param pack the related {@link QuestPackage}
-     * @param data map with user instructions.
+     * @param pack   the related {@link QuestPackage}
+     * @param data   map with user instructions.
+     * @param plugin the plugin to start tasks
      * @throws QuestException if the user's input couldn't be parsed.
      */
-    public TotemNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public TotemNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
         super(pack, data);
+        this.plugin = plugin;
         variableCustomModelData = getNumberData("custommodeldata", 2);
     }
 
@@ -77,6 +84,6 @@ public class TotemNotifyIO extends NotifyIO {
         statusPacket.setEntityID(player.getEntityId());
         statusPacket.sendPacket(player);
 
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> player.stopSound(Sound.ITEM_TOTEM_USE, SoundCategory.PLAYERS));
+        Bukkit.getScheduler().runTask(plugin, () -> player.stopSound(Sound.ITEM_TOTEM_USE, SoundCategory.PLAYERS));
     }
 }

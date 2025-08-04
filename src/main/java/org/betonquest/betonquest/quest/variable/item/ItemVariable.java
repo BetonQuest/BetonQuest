@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.variable.item;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Item;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
@@ -20,6 +20,11 @@ import java.util.List;
  * or the amount in player's inventory.
  */
 public class ItemVariable implements NullableVariable {
+
+    /**
+     * Storage for player data.
+     */
+    private final PlayerDataStorage playerDataStorage;
 
     /**
      * The Item.
@@ -44,12 +49,15 @@ public class ItemVariable implements NullableVariable {
     /**
      * Creates a new ItemVariable.
      *
-     * @param item   the QuestItem
-     * @param type   the type how the item should be displayed
-     * @param raw    if the output should be raw
-     * @param amount the amount of the item
+     * @param playerDataStorage the storage for player data
+     * @param item              the QuestItem
+     * @param type              the type how the item should be displayed
+     * @param raw               if the output should be raw
+     * @param amount            the amount of the item
      */
-    public ItemVariable(final Variable<Item> item, final ItemDisplayType type, final boolean raw, final int amount) {
+    public ItemVariable(final PlayerDataStorage playerDataStorage, final Variable<Item> item, final ItemDisplayType type,
+                        final boolean raw, final int amount) {
+        this.playerDataStorage = playerDataStorage;
         this.item = item;
         this.type = type;
         this.raw = raw;
@@ -87,8 +95,7 @@ public class ItemVariable implements NullableVariable {
             }
             itemAmount += item.getAmount();
         }
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerDataStorage()
-                .get(onlineProfile).getBackpack();
+        final List<ItemStack> backpackItems = playerDataStorage.get(onlineProfile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (item == null || !questItem.matches(item)) {
                 continue;

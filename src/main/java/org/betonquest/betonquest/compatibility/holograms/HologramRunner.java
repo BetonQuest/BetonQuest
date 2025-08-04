@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -34,7 +34,7 @@ public final class HologramRunner {
      *
      * @param interval Interval in ticks
      */
-    private HologramRunner(final int interval) {
+    private HologramRunner(final Plugin plugin, final int interval) {
         final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -44,7 +44,7 @@ public final class HologramRunner {
                 }
             }
         };
-        task = runnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);
+        task = runnable.runTaskTimer(plugin, 1, interval);
     }
 
     /**
@@ -53,9 +53,9 @@ public final class HologramRunner {
      *
      * @param hologram Hologram to be added.
      */
-    static /* default */ void addHologram(final HologramWrapper hologram) {
+    static /* default */ void addHologram(final Plugin plugin, final HologramWrapper hologram) {
         RUNNERS.computeIfAbsent(hologram.interval(),
-                        k -> new HologramRunner(hologram.interval()))
+                        k -> new HologramRunner(plugin, hologram.interval()))
                 .addRunnerHologram(hologram);
         hologram.initialiseContent();
         hologram.holograms().forEach(BetonHologram::showAll);

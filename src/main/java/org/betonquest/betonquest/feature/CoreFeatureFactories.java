@@ -3,6 +3,7 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,6 +42,7 @@ import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronSchedul
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySchedule;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Registers the stuff that is not built from Instructions.
@@ -119,14 +121,15 @@ public class CoreFeatureFactories {
         itemTypes.register("simple", new SimpleQuestItemFactory());
         itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer());
 
+        final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());
         notifyIOTypes.register("chat", new ChatNotifyIOFactory());
-        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory());
+        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(plugin));
         notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
-        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory());
+        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(plugin));
         notifyIOTypes.register("title", new TitleNotifyIOFactory());
-        notifyIOTypes.register("totem", new TotemNotifyIOFactory());
+        notifyIOTypes.register("totem", new TotemNotifyIOFactory(plugin));
         notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory());
         notifyIOTypes.register("sound", new SoundIOFactory());
 

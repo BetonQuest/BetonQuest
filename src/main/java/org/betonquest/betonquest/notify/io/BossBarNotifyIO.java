@@ -2,12 +2,12 @@ package org.betonquest.betonquest.notify.io;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.notify.NotifyIO;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +20,11 @@ import java.util.Map;
  * Displays the message as boss bar.
  */
 public class BossBarNotifyIO extends NotifyIO {
+    /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
+
     /**
      * The flags for the boss bar.
      */
@@ -53,13 +58,15 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * Create a new Boss Bar Notify IO.
      *
-     * @param pack the source pack to resolve variables
-     * @param data the customization data for notifications
+     * @param pack   the source pack to resolve variables
+     * @param data   the customization data for notifications
+     * @param plugin the plugin to start tasks
      * @throws QuestException when data could not be parsed
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public BossBarNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
         super(pack, data);
+        this.plugin = plugin;
 
         flags = new ArrayList<>();
         if (data.containsKey("barflags")) {
@@ -120,7 +127,7 @@ public class BossBarNotifyIO extends NotifyIO {
             public void run() {
                 onlineProfile.getPlayer().hideBossBar(bossBar);
             }
-        }.runTaskLater(BetonQuest.getInstance(), stay);
+        }.runTaskLater(plugin, stay);
     }
 
     private void scheduleAnimation(final BossBar bossBar, final int interval, final float amount,
@@ -147,6 +154,6 @@ public class BossBarNotifyIO extends NotifyIO {
                 currentProgress -= amount;
                 bossBar.progress(Math.max(0.0F, currentProgress));
             }
-        }.runTaskTimer(BetonQuest.getInstance(), interval, interval);
+        }.runTaskTimer(plugin, interval, interval);
     }
 }

@@ -104,7 +104,8 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         final Variable<Number> maxRange = new Variable<>(variableProcessor, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
 
         final List<String> lines = section.getStringList("lines");
-        final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""), value -> new ConditionID(pack, value)).getValue(null);
+        final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""),
+                value -> new ConditionID(pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
@@ -122,6 +123,8 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         }
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 loggerFactory.create(HologramWrapper.class),
+                BetonQuest.getInstance().getQuestTypeAPI(),
+                BetonQuest.getInstance().getProfileProvider(),
                 checkInterval.getValue(null).intValue(),
                 holograms,
                 isStaticHologram(cleanedLines),
@@ -129,7 +132,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
                 cleanedLines,
                 pack,
                 maxRange);
-        HologramRunner.addHologram(hologramWrapper);
+        HologramRunner.addHologram(BetonQuest.getInstance(), hologramWrapper);
         return hologramWrapper;
     }
 
