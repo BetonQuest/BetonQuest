@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.schedule.ScheduleID;
@@ -54,7 +54,7 @@ class ExecutorServiceSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        scheduler = spy(new ExecutorServiceScheduler<>(logger, mock(QuestTypeAPI.class), this::newExecutor) {
+        scheduler = spy(new ExecutorServiceScheduler<>(logger, mock(QuestTypeApi.class), this::newExecutor) {
 
             @Override
             protected FictiveTime getNow() {

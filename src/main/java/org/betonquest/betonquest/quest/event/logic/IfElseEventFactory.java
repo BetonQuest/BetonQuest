@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -20,14 +20,14 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The event constructor.
      *
      * @param questTypeAPI the Quest Type API
      */
-    public IfElseEventFactory(final QuestTypeAPI questTypeAPI) {
+    public IfElseEventFactory(final QuestTypeApi questTypeAPI) {
         this.questTypeAPI = questTypeAPI;
     }
 

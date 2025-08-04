@@ -36,7 +36,7 @@ public class ZNPCsPlusIntegrator implements Integrator {
         final NpcTypeRegistry npcTypes = betonQuest.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();
         Bukkit.getPluginManager().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcTypes), betonQuest);
-        final ZNPCsPlusHider hider = new ZNPCsPlusHider(betonQuest.getFeatureAPI().getNpcHider());
+        final ZNPCsPlusHider hider = new ZNPCsPlusHider(betonQuest.getFeatureApi().getNpcHider());
         Bukkit.getPluginManager().registerEvents(hider, betonQuest);
         npcTypes.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcTypes.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));

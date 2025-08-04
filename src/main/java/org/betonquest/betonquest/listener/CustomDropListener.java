@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -28,7 +28,7 @@ public class CustomDropListener implements Listener {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Create a new custom drop Listener.
@@ -37,7 +37,7 @@ public class CustomDropListener implements Listener {
      * @param plugin     the plugin used as namespace
      * @param featureAPI the Feature API
      */
-    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin, final FeatureAPI featureAPI) {
+    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin, final FeatureApi featureAPI) {
         this.log = log;
         this.plugin = plugin;
         this.featureAPI = featureAPI;

@@ -4,13 +4,13 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -44,7 +44,7 @@ public class QuestCanceler {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Player Data storage.
@@ -59,7 +59,7 @@ public class QuestCanceler {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * The {@link PluginMessage} instance.
@@ -106,8 +106,8 @@ public class QuestCanceler {
      * @param pack          the {@link QuestPackage} of the canceler
      * @param cancelData    the relevant data to cancel a quest
      */
-    public QuestCanceler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerStorage,
-                         final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
+    public QuestCanceler(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final PlayerDataStorage playerStorage,
+                         final String cancelerID, final FeatureApi featureAPI, final PluginMessage pluginMessage,
                          final Message names, @Nullable final ItemID item,
                          final QuestPackage pack, final CancelData cancelData) {
         this.log = log;

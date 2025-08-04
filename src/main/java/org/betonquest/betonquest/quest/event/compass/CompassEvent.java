@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.compass;
 
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -24,7 +24,7 @@ public class CompassEvent implements PlayerEvent {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Storage to get the offline player data.
@@ -55,7 +55,7 @@ public class CompassEvent implements PlayerEvent {
      * @param action        the action to perform
      * @param compassId     the compass point
      */
-    public CompassEvent(final FeatureAPI featureAPI, final PlayerDataStorage storage, final PluginManager pluginManager,
+    public CompassEvent(final FeatureApi featureAPI, final PlayerDataStorage storage, final PluginManager pluginManager,
                         final Variable<CompassTargetAction> action, final Variable<CompassID> compassId) {
         this.featureAPI = featureAPI;
         this.dataStorage = storage;

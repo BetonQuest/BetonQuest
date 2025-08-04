@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -55,7 +55,7 @@ public class PartyCondition implements NullableCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -77,7 +77,7 @@ public class PartyCondition implements NullableCondition {
     public PartyCondition(final Variable<Location> location, final Variable<Number> range,
                           final Variable<List<ConditionID>> conditions, final Variable<List<ConditionID>> everyone,
                           final Variable<List<ConditionID>> anyone, @Nullable final Variable<Number> count,
-                          final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+                          final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider) {
         this.location = location;
         this.range = range;
         this.conditions = conditions;

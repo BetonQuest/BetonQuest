@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * The Core Quest Type logic.
  */
-public final class QuestTypeAPI {
+public final class QuestTypeApi {
 
     /**
      * Quest Registry providing processors.
@@ -26,7 +26,7 @@ public final class QuestTypeAPI {
      *
      * @param questRegistry the registry containing processors
      */
-    public QuestTypeAPI(final CoreQuestRegistry questRegistry) {
+    public QuestTypeApi(final CoreQuestRegistry questRegistry) {
         this.questRegistry = questRegistry;
     }
 

@@ -431,7 +431,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final OnlineEvent give = new GiveEvent(
-                    new VariableList<>(new Item(instance.getFeatureAPI(), itemID, new Variable<>(1))),
+                    new VariableList<>(new Item(instance.getFeatureApi(), itemID, new Variable<>(1))),
                     new NoNotificationSender(),
                     new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
@@ -856,7 +856,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // fire the event
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
-        instance.getQuestTypeAPI().event(profile, eventID);
+        instance.getQuestTypeApi().event(profile, eventID);
         sendMessage(sender, "player_event",
                 new VariableReplacement("event", Component.text(eventID.getInstruction().toString())));
     }
@@ -904,7 +904,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition",
                 new VariableReplacement("condition", Component.text((conditionID.inverted() ? "! " : "") + conditionID.getInstruction())),
-                new VariableReplacement("result", Component.text(instance.getQuestTypeAPI().condition(profile, conditionID))));
+                new VariableReplacement("result", Component.text(instance.getQuestTypeApi().condition(profile, conditionID))));
     }
 
     /**
@@ -1071,7 +1071,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final Stream<String> objectives;
             if (isOnline) {
                 // if the player is online then just retrieve tags from his active objectives
-                objectives = instance.getQuestTypeAPI().getPlayerObjectives(profile).stream()
+                objectives = instance.getQuestTypeApi().getPlayerObjectives(profile).stream()
                         .map(Objective::getLabel);
             } else {
                 // if player is offline then convert his raw objective strings to tags
@@ -1094,7 +1094,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Objective objective;
         try {
             objectiveID = new ObjectiveID(null, args[3]);
-            objective = instance.getQuestTypeAPI().getObjective(objectiveID);
+            objective = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1105,7 +1105,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "start", "s", "add", "a" -> {
                 log.debug("Adding new objective " + objectiveID + " for " + profile);
                 if (isOnline) {
-                    instance.getQuestTypeAPI().newObjective(profile, objectiveID);
+                    instance.getQuestTypeApi().newObjective(profile, objectiveID);
                 } else {
                     playerData.addNewRawObjective(objectiveID);
                 }
@@ -1240,7 +1240,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     log.reportException(e);
                     return;
                 }
-                instance.getQuestTypeAPI().renameObjective(nameID, renameID);
+                instance.getQuestTypeApi().renameObjective(nameID, renameID);
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
                     nameID.getPackage().saveAll();
@@ -1280,7 +1280,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 }
 
-                instance.getFeatureAPI().renameJournalEntry(oldEntryID, newEntryID);
+                instance.getFeatureApi().renameJournalEntry(oldEntryID, newEntryID);
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
                     final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
                     final List<Pointer> journalPointers = new ArrayList<>();
@@ -1355,7 +1355,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final Objective objective;
                 try {
                     objectiveID = new ObjectiveID(null, name);
-                    objective = instance.getQuestTypeAPI().getObjective(objectiveID);
+                    objective = instance.getQuestTypeApi().getObjective(objectiveID);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
                     sendMessage(sender, "error",
@@ -1735,7 +1735,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Objective tmp;
         try {
             objectiveID = new ObjectiveID(null, args[2]);
-            tmp = instance.getQuestTypeAPI().getObjective(objectiveID);
+            tmp = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));

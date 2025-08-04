@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -34,7 +34,7 @@ public class MenuItem {
     /**
      * The Quest TypeAPI.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The betonquest quest item this item is based on.
@@ -79,7 +79,7 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<Item> item, final MenuItemID itemId,
+    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final Variable<Item> item, final MenuItemID itemId,
                     @Nullable final Message descriptions, final ClickEvents clickEvents,
                     final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;

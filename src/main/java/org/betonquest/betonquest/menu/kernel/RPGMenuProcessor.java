@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.types.ItemParser;
@@ -36,7 +36,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
     /**
      * The QuestTypeAPI.
      */
-    protected final QuestTypeAPI questTypeAPI;
+    protected final QuestTypeApi questTypeAPI;
 
     /**
      * The Variable Processor.
@@ -62,7 +62,7 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
      */
     public RPGMenuProcessor(final BetonQuestLogger log, final String readable, final String internal,
                             final BetonQuestLoggerFactory loggerFactory, final ParsedSectionMessageCreator messageCreator,
-                            final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI) {
+                            final VariableProcessor variableProcessor, final QuestTypeApi questTypeAPI, final FeatureApi featureAPI) {
         super(log, readable, internal);
         this.loggerFactory = loggerFactory;
         this.messageCreator = messageCreator;

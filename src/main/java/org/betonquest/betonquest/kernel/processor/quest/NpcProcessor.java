@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
@@ -106,7 +106,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param questTypeAPI    the Quest Type API
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final NpcTypeRegistry npcTypes,
-                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider, final QuestTypeAPI questTypeAPI) {
+                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider, final QuestTypeApi questTypeAPI) {
         super(log, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -24,7 +24,7 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Data to use for syncing to the primary server thread.
@@ -37,7 +37,7 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
      * @param featureAPI the Feature API
      * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcTeleportEventFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+    public NpcTeleportEventFactory(final FeatureApi featureAPI, final PrimaryServerThreadData data) {
         this.featureAPI = featureAPI;
         this.data = data;
     }

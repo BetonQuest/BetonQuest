@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.cancel;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -22,7 +22,7 @@ public class CancelEventFactory implements PlayerEventFactory {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Creates a new cancel event factory.
@@ -30,7 +30,7 @@ public class CancelEventFactory implements PlayerEventFactory {
      * @param loggerFactory the logger factory to create a logger for the events
      * @param featureAPI    the feature API
      */
-    public CancelEventFactory(final BetonQuestLoggerFactory loggerFactory, final FeatureAPI featureAPI) {
+    public CancelEventFactory(final BetonQuestLoggerFactory loggerFactory, final FeatureApi featureAPI) {
         this.loggerFactory = loggerFactory;
         this.featureAPI = featureAPI;
     }

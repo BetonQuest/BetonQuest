@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.run;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestListException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -28,7 +28,7 @@ public class RunForAllEvent implements PlayerlessEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * List of Events to run.
@@ -49,7 +49,7 @@ public class RunForAllEvent implements PlayerlessEvent {
      * @param conditions                the conditions each profile must meet to run the events
      */
     public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,
-                          final QuestTypeAPI questTypeAPI, final Variable<List<EventID>> events,
+                          final QuestTypeApi questTypeAPI, final Variable<List<EventID>> events,
                           final Variable<List<ConditionID>> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
         this.questTypeAPI = questTypeAPI;

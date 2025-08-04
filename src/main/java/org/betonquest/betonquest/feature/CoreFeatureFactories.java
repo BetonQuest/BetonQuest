@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.MessageParserRegistry;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
@@ -61,7 +61,7 @@ public class CoreFeatureFactories {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The Config.
@@ -89,7 +89,7 @@ public class CoreFeatureFactories {
      * @param fontRegistry       the font registry to use for the conversation
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
-                                final QuestTypeAPI questTypeAPI, final ConfigAccessor config, final ConversationColors colors,
+                                final QuestTypeApi questTypeAPI, final ConfigAccessor config, final ConversationColors colors,
                                 final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;

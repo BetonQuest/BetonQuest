@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -23,7 +23,7 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Required data for executing on the main thread.
@@ -42,7 +42,7 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
      * @param primaryServerThreadData the data to use for syncing to the primary server thread
      * @param citizensMoveController  the move controller where to stop the NPC movement
      */
-    public CitizensStopEventFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData primaryServerThreadData, final CitizensMoveController citizensMoveController) {
+    public CitizensStopEventFactory(final FeatureApi featureAPI, final PrimaryServerThreadData primaryServerThreadData, final CitizensMoveController citizensMoveController) {
         this.featureAPI = featureAPI;
         this.primaryServerThreadData = primaryServerThreadData;
         this.citizensMoveController = citizensMoveController;

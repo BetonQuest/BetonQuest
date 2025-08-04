@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.party;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -24,7 +24,7 @@ public class PartyEvent implements OnlineEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -63,7 +63,7 @@ public class PartyEvent implements OnlineEvent {
      * @param conditions      the conditions that must be met by the party members
      * @param events          the events to fire
      */
-    public PartyEvent(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final Variable<Number> range,
+    public PartyEvent(final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider, final Variable<Number> range,
                       @Nullable final Variable<Number> amount, final Variable<List<ConditionID>> conditions, final Variable<List<EventID>> events) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;

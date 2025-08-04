@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
@@ -47,7 +47,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param questTypeAPI       the class for executing events
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final LastExecutionCache lastExecutionCache) {
+    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final LastExecutionCache lastExecutionCache) {
         super(log, questTypeAPI);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;
@@ -61,7 +61,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+    public RealtimeCronScheduler(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
         super(log, questTypeAPI, executor);
         this.log = log;
         this.lastExecutionCache = lastExecutionCache;

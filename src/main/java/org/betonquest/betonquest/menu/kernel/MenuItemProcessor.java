@@ -2,12 +2,12 @@ package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -47,8 +47,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      * @param featureAPI        the Feature API
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
-                             final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureAPI featureAPI) {
+                             final ParsedSectionMessageCreator messageCreator, final QuestTypeApi questTypeAPI,
+                             final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureApi featureAPI) {
         super(log, "Menu Item", "menu_items", loggerFactory, messageCreator, variableProcessor, questTypeAPI, featureAPI);
         this.config = config;
     }

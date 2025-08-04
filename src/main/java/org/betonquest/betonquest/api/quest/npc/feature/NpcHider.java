@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.NpcID;
@@ -41,7 +41,7 @@ public class NpcHider {
     /**
      * The Quest Type API to check hiding conditions.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -74,7 +74,7 @@ public class NpcHider {
      * @param npcTypes        the Npc types to get NpcIds
      */
     public NpcHider(final BetonQuestLogger log, final NpcProcessor npcProcessor,
-                    final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
+                    final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
         this.log = log;
         this.npcProcessor = npcProcessor;
         this.questTypeAPI = questTypeAPI;

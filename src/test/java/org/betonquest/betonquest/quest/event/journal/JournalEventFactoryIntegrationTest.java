@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
@@ -83,7 +83,7 @@ class JournalEventFactoryIntegrationTest {
     private EventAdapterFactory createJournalEventFactory(final BetonQuestLogger logger) {
         final ProfileProvider profileProvider = new UUIDProfileProvider(mock(Server.class));
         final JournalEventFactory journalEventFactory = new JournalEventFactory(new SingletonLoggerFactory(logger), mock(PluginMessage.class), dataStorage, InstantSource.fixed(now), saver, profileProvider);
-        return new EventAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(QuestTypeAPI.class), journalEventFactory, journalEventFactory);
+        return new EventAdapterFactory(mock(BetonQuestLoggerFactory.class), mock(QuestTypeApi.class), journalEventFactory, journalEventFactory);
     }
 
     @Test

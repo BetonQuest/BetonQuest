@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -22,7 +22,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Data used for primary server thread access.
@@ -35,7 +35,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
      * @param featureAPI the Feature API
      * @param data       the data for primary server thread access
      */
-    public NpcRegionConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
+    public NpcRegionConditionFactory(final FeatureApi featureAPI, final PrimaryServerThreadData data) {
         this.featureAPI = featureAPI;
         this.data = data;
     }

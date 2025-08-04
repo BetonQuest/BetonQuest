@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.id.ConditionID;
@@ -20,7 +20,7 @@ public class RunForAllEventFactory implements PlayerlessEventFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -33,7 +33,7 @@ public class RunForAllEventFactory implements PlayerlessEventFactory {
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public RunForAllEventFactory(final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public RunForAllEventFactory(final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider) {
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;
     }

@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.Zipper;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.id.ConditionID;
@@ -211,7 +211,7 @@ public final class Utils {
      * @param conditions   conditions that the party members must meet
      * @return the party of the location
      */
-    public static Map<OnlineProfile, Double> getParty(final QuestTypeAPI questTypeAPI, final Collection<OnlineProfile> profiles,
+    public static Map<OnlineProfile, Double> getParty(final QuestTypeApi questTypeAPI, final Collection<OnlineProfile> profiles,
                                                       final Location location, final double range, final List<ConditionID> conditions) {
         final World world = location.getWorld();
         final double squared = range * range;

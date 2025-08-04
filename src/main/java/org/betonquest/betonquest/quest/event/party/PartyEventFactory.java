@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.party;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -27,7 +27,7 @@ public class PartyEventFactory implements PlayerEventFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -41,7 +41,7 @@ public class PartyEventFactory implements PlayerEventFactory {
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public PartyEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.questTypeAPI = questTypeAPI;
         this.profileProvider = profileProvider;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -25,7 +25,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureAPI;
 
     /**
      * Data to use for syncing to the primary server thread.
@@ -44,7 +44,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
      * @param data                   the data to use for syncing to the primary server thread
      * @param citizensMoveController the move instance to handle movement of Citizens NPCs
      */
-    public CitizensMoveEventFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data, final CitizensMoveController citizensMoveController) {
+    public CitizensMoveEventFactory(final FeatureApi featureAPI, final PrimaryServerThreadData data, final CitizensMoveController citizensMoveController) {
         this.featureAPI = featureAPI;
         this.data = data;
         this.citizensMoveController = citizensMoveController;

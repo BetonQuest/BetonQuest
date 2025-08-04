@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.schedule.ScheduleID;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class SchedulerTest {
      * Mocked API.
      */
     @Mock
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeAPI;
 
     @Test
     void testAddSchedule() {
@@ -66,7 +66,7 @@ class SchedulerTest {
 
     @Test
     void testExecuteEvents() {
-        final QuestTypeAPI questTypeAPI = mock(QuestTypeAPI.class);
+        final QuestTypeApi questTypeAPI = mock(QuestTypeApi.class);
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeAPI);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
@@ -88,7 +88,7 @@ class SchedulerTest {
          * @param logger       the logger that will be used for logging
          * @param questTypeAPI the class for executing events
          */
-        public MockedScheduler(final BetonQuestLogger logger, final QuestTypeAPI questTypeAPI) {
+        public MockedScheduler(final BetonQuestLogger logger, final QuestTypeApi questTypeAPI) {
             super(logger, questTypeAPI);
         }
 

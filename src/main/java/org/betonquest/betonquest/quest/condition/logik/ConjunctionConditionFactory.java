@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.logik;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -18,14 +18,14 @@ public class ConjunctionConditionFactory implements PlayerConditionFactory, Play
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Constructor for the {@link ConjunctionConditionFactory} class.
      *
      * @param questTypeAPI the Quest Type API
      */
-    public ConjunctionConditionFactory(final QuestTypeAPI questTypeAPI) {
+    public ConjunctionConditionFactory(final QuestTypeApi questTypeAPI) {
         this.questTypeAPI = questTypeAPI;
     }
 

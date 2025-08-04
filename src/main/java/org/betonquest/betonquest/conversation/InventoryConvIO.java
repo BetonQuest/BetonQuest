@@ -215,7 +215,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             ItemStack item;
             try {
                 item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
-                        : BetonQuest.getInstance().getFeatureAPI().getItem(itemID.getValue(profile), profile).generate(1);
+                        : BetonQuest.getInstance().getFeatureApi().getItem(itemID.getValue(profile), profile).generate(1);
             } catch (final QuestException e) {
                 log.warn("Failed to generate item: " + e.getMessage(), e);
                 item = new ItemStack(Material.ENDER_PEARL);

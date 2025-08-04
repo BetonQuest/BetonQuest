@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -17,7 +17,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The {@link PluginMessage} instance.
@@ -30,7 +30,7 @@ public class ConditionVariableFactory implements PlayerVariableFactory {
      * @param questTypeAPI  the Quest Type API
      * @param pluginMessage the {@link PluginMessage} instance
      */
-    public ConditionVariableFactory(final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage) {
+    public ConditionVariableFactory(final QuestTypeApi questTypeAPI, final PluginMessage pluginMessage) {
         this.questTypeAPI = questTypeAPI;
         this.pluginMessage = pluginMessage;
     }

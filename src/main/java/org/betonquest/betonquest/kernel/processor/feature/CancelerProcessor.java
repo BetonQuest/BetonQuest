@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
@@ -58,7 +58,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Player Data Storage.
@@ -79,7 +79,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
      */
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                              final PluginMessage pluginMessage, final VariableProcessor variableProcessor,
-                             final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
+                             final ParsedSectionMessageCreator messageCreator, final QuestTypeApi questTypeAPI,
                              final PlayerDataStorage playerDataStorage) {
         super(log, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
@@ -108,7 +108,7 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
                 new VariableList<>(variableProcessor, pack, section.getString("journal", ""), value -> new JournalEntryID(pack, value)),
                 location);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
-        return new QuestCanceler(logger, questTypeAPI, playerDataStorage, section.getName(), plugin.getFeatureAPI(), pluginMessage, names, item, pack, cancelData);
+        return new QuestCanceler(logger, questTypeAPI, playerDataStorage, section.getName(), plugin.getFeatureApi(), pluginMessage, names, item, pack, cancelData);
     }
 
     @Override

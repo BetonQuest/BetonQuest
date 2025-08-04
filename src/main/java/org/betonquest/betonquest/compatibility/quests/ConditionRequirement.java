@@ -4,7 +4,7 @@ import me.pikamug.quests.module.BukkitCustomRequirement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * The profile provider instance.
@@ -39,7 +39,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
      * @param questTypeAPI    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeApi questTypeAPI, final ProfileProvider profileProvider) {
         super();
         this.log = log;
         this.questTypeAPI = questTypeAPI;

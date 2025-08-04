@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -28,14 +28,14 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeAPI;
 
     /**
      * Creates the PickRandomEventFactory.
      *
      * @param questTypeAPI the Quest Type API
      */
-    public PickRandomEventFactory(final QuestTypeAPI questTypeAPI) {
+    public PickRandomEventFactory(final QuestTypeApi questTypeAPI) {
         this.questTypeAPI = questTypeAPI;
     }
 

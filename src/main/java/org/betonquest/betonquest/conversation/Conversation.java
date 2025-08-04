@@ -226,7 +226,7 @@ public class Conversation implements Listener {
         this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_end");
 
         try {
-            this.data = plugin.getFeatureAPI().getConversation(conversationID);
+            this.data = plugin.getFeatureApi().getConversation(conversationID);
         } catch (final QuestException e) {
             log.error(pack, "Cannot start conversation '" + conversationID.getFullID() + "': " + e.getMessage(), e);
             return;
@@ -289,14 +289,14 @@ public class Conversation implements Listener {
             // If we refer to another conversation starting options the name is null
             if (option.name() == null) {
                 for (final String startingOptionName : option.conversationData().getStartingOptions()) {
-                    if (force || BetonQuest.getInstance().getQuestTypeAPI().conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
+                    if (force || BetonQuest.getInstance().getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
                         this.data = option.conversationData();
                         this.nextNPCOption = new ResolvedOption(option.conversationData(), NPC, startingOptionName);
                         break;
                     }
                 }
             } else {
-                if (force || BetonQuest.getInstance().getQuestTypeAPI().conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
+                if (force || BetonQuest.getInstance().getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
                     this.data = option.conversationData();
                     this.nextNPCOption = option;
                     break;
@@ -349,7 +349,7 @@ public class Conversation implements Listener {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> BetonQuest.getInstance().getQuestTypeAPI().condition(onlineProfile, conditionID));
+                        () -> BetonQuest.getInstance().getQuestTypeApi().condition(onlineProfile, conditionID));
                 conditions.add(future);
             }
             futuresOptions.add(Pair.of(option, conditions));
@@ -418,7 +418,7 @@ public class Conversation implements Listener {
                 // fire final events
                 try {
                     for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
-                        BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                        BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
                     }
                 } catch (final QuestException e) {
                     log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
@@ -650,7 +650,7 @@ public class Conversation implements Listener {
         final List<ResolvedOption> pointers = new ArrayList<>();
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-            pointers.add(new ConversationOptionResolver(plugin.getFeatureAPI(), nextConvData.getPack(),
+            pointers.add(new ConversationOptionResolver(plugin.getFeatureApi(), nextConvData.getPack(),
                     nextConvData.getPublicData().convName(), nextType, pointer).resolve());
         }
         return pointers;
@@ -778,7 +778,7 @@ public class Conversation implements Listener {
             for (final String startingOption : startingOptions) {
                 final ResolvedOption resolvedOption;
                 try {
-                    resolvedOption = new ConversationOptionResolver(plugin.getFeatureAPI(), pack, identifier.getBaseID(), NPC, startingOption).resolve();
+                    resolvedOption = new ConversationOptionResolver(plugin.getFeatureApi(), pack, identifier.getBaseID(), NPC, startingOption).resolve();
                 } catch (final QuestException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);
@@ -807,7 +807,7 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, npcOption, NPC)) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
             }
             new OptionPrinter(npcOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
@@ -836,7 +836,7 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, playerOption, PLAYER)) {
-                BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
             }
             new ResponsePrinter(playerOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
