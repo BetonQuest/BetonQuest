@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
@@ -37,6 +38,11 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * BetonQuest instance to provide to events.
      */
     private final PlayerDataStorage dataStorage;
@@ -61,14 +67,18 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
      *
      * @param loggerFactory   the logger factory to create a logger for the events
      * @param pluginMessage   the {@link PluginMessage} instance
+     * @param textParser      the text parser used to parse text
      * @param dataStorage     storage for used player data
      * @param instantSource   instant source to pass on
      * @param saver           database saver to use
      * @param profileProvider the profile provider
      */
-    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage, final PlayerDataStorage dataStorage, final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
+    public JournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage,
+                               final TextParser textParser, final PlayerDataStorage dataStorage,
+                               final InstantSource instantSource, final Saver saver, final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.dataStorage = dataStorage;
         this.instantSource = instantSource;
         this.saver = saver;
@@ -100,7 +110,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, textParser, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
@@ -108,17 +118,17 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, textParser, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, pluginMessage, textParser, journalChanger, notificationSender);
     }
 
     private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
-        return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, pluginMessage, entryID);
+        return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, pluginMessage, textParser, entryID);
     }
 }
