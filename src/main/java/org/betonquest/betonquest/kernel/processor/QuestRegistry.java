@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -68,20 +69,23 @@ public record QuestRegistry(
      * @param coreQuestRegistry the core quest type processors
      * @param otherRegistries   the available other types
      * @param pluginMessage     the {@link PluginMessage} instance
+     * @param textParser        the text parser to parse messages
      * @param textCreator       the text creator to parse text
      * @param profileProvider   the profile provider instance
      * @param questTypeAPI      the Quest Type API
      * @param playerDataStorage the storage to get player data
      * @return the newly created QuestRegistry
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                        final BetonQuest plugin, final CoreQuestRegistry coreQuestRegistry,
                                        final FeatureRegistries otherRegistries, final PluginMessage pluginMessage,
-                                       final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
-                                       final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerDataStorage) {
+                                       final TextParser textParser, final ParsedSectionTextCreator textCreator,
+                                       final ProfileProvider profileProvider, final QuestTypeAPI questTypeAPI,
+                                       final PlayerDataStorage playerDataStorage) {
         final VariableProcessor variables = coreQuestRegistry.variables();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
-        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, questTypeAPI, playerDataStorage);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, textParser, variables, textCreator, questTypeAPI, playerDataStorage);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
                 textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables);

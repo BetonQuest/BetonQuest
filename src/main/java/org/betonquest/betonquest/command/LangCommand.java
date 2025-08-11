@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -44,6 +45,11 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -64,15 +70,17 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
      * @param log              the logger that will be used for logging
      * @param dataStorage      the storage providing player data
      * @param pluginMessage    the {@link PluginMessage} instance
+     * @param textParser       the text parser to parse text
      * @param profileProvider  the profile provider instance
      * @param languageProvider the language provider instance
      */
     public LangCommand(final BetonQuestLogger log, final PlayerDataStorage dataStorage,
-                       final PluginMessage pluginMessage, final ProfileProvider profileProvider,
-                       final LanguageProvider languageProvider) {
+                       final PluginMessage pluginMessage, final TextParser textParser,
+                       final ProfileProvider profileProvider, final LanguageProvider languageProvider) {
         this.log = log;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.profileProvider = profileProvider;
         this.languageProvider = languageProvider;
         this.languageChangedSender = new IngameNotificationSender(log, pluginMessage, null,
@@ -116,7 +124,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final String lang = args[0];
         final PlayerData playerData = dataStorage.get(onlineProfile);
-        final Journal journal = playerData.getJournal(pluginMessage);
+        final Journal journal = playerData.getJournal(pluginMessage, textParser);
         playerData.setLanguage("default".equalsIgnoreCase(lang) ? null : lang);
         journal.update();
         languageChangedSender.sendNotification(onlineProfile);

@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -31,11 +33,25 @@ import java.util.Map;
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
+    /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
+     * The book page wrapper used to split pages.
+     */
+    private final BookPageWrapper bookPageWrapper;
 
     /**
      * Creates a new simple Quest Item Factory.
+     *
+     * @param textParser      the text parser used to parse text
+     * @param bookPageWrapper the book page wrapper used to split pages
      */
-    public SimpleQuestItemFactory() {
+    public SimpleQuestItemFactory(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
+        this.textParser = textParser;
+        this.bookPageWrapper = bookPageWrapper;
     }
 
     /**
@@ -67,7 +83,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 lore,
                 new EnchantmentsHandler(),
                 new PotionHandler(),
-                new BookHandler(),
+                new BookHandler(textParser, bookPageWrapper),
                 new HeadHandler(),
                 new ColorHandler(),
                 new FireworkHandler()

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -221,6 +222,11 @@ public class CoreQuestTypes {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * Variable processor to create new variables.
      */
     private final VariableProcessor variableProcessor;
@@ -254,6 +260,7 @@ public class CoreQuestTypes {
      * @param betonQuest        the plugin used for primary server access and type registration
      * @param questTypeAPI      the Quest Type API
      * @param pluginMessage     the plugin message instance
+     * @param textParser        the text parser to parse text
      * @param variableProcessor the variable processor to create new variables
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
@@ -264,14 +271,15 @@ public class CoreQuestTypes {
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
                           final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage,
-                          final VariableProcessor variableProcessor, final GlobalData globalData,
-                          final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                          final LanguageProvider languageProvider) {
+                          final TextParser textParser, final VariableProcessor variableProcessor,
+                          final GlobalData globalData, final PlayerDataStorage dataStorage,
+                          final ProfileProvider profileProvider, final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
         this.questTypeAPI = questTypeAPI;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.variableProcessor = variableProcessor;
         this.globalData = globalData;
         this.dataStorage = dataStorage;
@@ -374,14 +382,14 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeAPI));
         eventTypes.registerCombined("first", new FirstEventFactory(questTypeAPI));
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
-        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, pluginMessage, data));
+        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, pluginMessage, textParser, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
         eventTypes.registerCombined("if", new IfElseEventFactory(questTypeAPI));
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, dataStorage,
-                InstantSource.system(), betonQuest.getSaver(), profileProvider));
+        eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, textParser,
+                dataStorage, InstantSource.system(), betonQuest.getSaver(), profileProvider));
         eventTypes.register("kill", new KillEventFactory(loggerFactory, data));
         eventTypes.register("language", new LanguageEventFactory(dataStorage));
         eventTypes.registerCombined("lever", new LeverEventFactory(data));

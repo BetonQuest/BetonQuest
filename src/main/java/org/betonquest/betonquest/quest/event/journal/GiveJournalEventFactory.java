@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -31,6 +32,11 @@ public class GiveJournalEventFactory implements PlayerEventFactory {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * Data for primary server thread access.
      */
     private final PrimaryServerThreadData data;
@@ -40,20 +46,24 @@ public class GiveJournalEventFactory implements PlayerEventFactory {
      *
      * @param loggerFactory the logger factory to create a logger for the events
      * @param pluginMessage the plugin message to create the journal
+     * @param textParser    the text parser used to parse text
      * @param dataStorage   the storage providing player data
      * @param data          the data for primary server thread access
      */
-    public GiveJournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage, final PluginMessage pluginMessage, final PrimaryServerThreadData data) {
+    public GiveJournalEventFactory(final BetonQuestLoggerFactory loggerFactory, final PlayerDataStorage dataStorage,
+                                   final PluginMessage pluginMessage, final TextParser textParser,
+                                   final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.data = data;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new GiveJournalEvent(dataStorage::get, pluginMessage),
+                new GiveJournalEvent(dataStorage::get, pluginMessage, textParser),
                 loggerFactory.create(GiveJournalEvent.class),
                 instruction.getPackage()
         ), data);
