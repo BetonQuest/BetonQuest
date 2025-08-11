@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 /**
  * A parser that uses MiniMessage to parse text.
  */
-public class MiniMessageParser implements TextParser {
+public class MiniTextParser implements TextParser {
     /**
      * The MiniMessage instance to use for parsing.
      */
@@ -18,7 +18,7 @@ public class MiniMessageParser implements TextParser {
      *
      * @param miniMessage the MiniMessage instance to use for parsing
      */
-    public MiniMessageParser(final MiniMessage miniMessage) {
+    public MiniTextParser(final MiniMessage miniMessage) {
         this.miniMessage = miniMessage;
     }
 

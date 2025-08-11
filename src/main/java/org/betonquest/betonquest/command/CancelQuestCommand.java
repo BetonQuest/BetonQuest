@@ -38,7 +38,8 @@ public class CancelQuestCommand implements CommandExecutor {
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param profileProvider the profile provider instance
      */
-    public CancelQuestCommand(final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public CancelQuestCommand(final ConfigAccessor config, final PluginMessage pluginMessage,
+                              final ProfileProvider profileProvider) {
         this.config = config;
         this.pluginMessage = pluginMessage;
         this.profileProvider = profileProvider;

@@ -2,11 +2,14 @@ package org.betonquest.betonquest.feature.journal;
 
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -16,6 +19,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -69,6 +73,16 @@ public class Journal {
     private final FeatureApi featureApi;
 
     /**
+     * The text parser used to parse text in the journal.
+     */
+    private final TextParser textParser;
+
+    /**
+     * The wrapper for formatting book pages.
+     */
+    private final BookPageWrapper bookWrapper;
+
+    /**
      * The profile of the player whose journal is created.
      */
     private final Profile profile;
@@ -81,7 +95,7 @@ public class Journal {
     /**
      * List of texts generated from pointers.
      */
-    private final List<String> texts = new ArrayList<>();
+    private final List<Component> texts = new ArrayList<>();
 
     /**
      * The configuration accessor for the plugin's configuration.
@@ -97,7 +111,7 @@ public class Journal {
      * The main page of the journal, which is generated from the main page entries.
      */
     @Nullable
-    private String mainPage;
+    private Component mainPage;
 
     /**
      * Creates new Journal instance from List of Pointers.
@@ -105,15 +119,21 @@ public class Journal {
      * @param pluginMessage the {@link PluginMessage} instance
      * @param questTypeApi  the Quest Type API
      * @param featureApi    the Feature API
+     * @param textParser    the {@link TextParser} instance used to parse messages
+     * @param fontRegistry  the {@link FontRegistry} used for font handling
      * @param profile       the {@link OnlineProfile} of the player whose journal is created
      * @param list          list of pointers to journal entries
      * @param config        a {@link ConfigAccessor} that contains the plugin's configuration
      */
-    public Journal(final PluginMessage pluginMessage, final QuestTypeApi questTypeApi, final FeatureApi featureApi, final Profile profile,
-                   final List<Pointer> list, final ConfigAccessor config) {
+    public Journal(final PluginMessage pluginMessage, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
+                   final TextParser textParser, final FontRegistry fontRegistry,
+                   final Profile profile, final List<Pointer> list, final ConfigAccessor config) {
         this.pluginMessage = pluginMessage;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
+        this.textParser = textParser;
+        this.bookWrapper = new BookPageWrapper(fontRegistry, config.getInt("journal.format.line_length"),
+                config.getInt("journal.format.line_count"));
         this.profile = profile;
         this.pointers = list;
         this.config = config;
@@ -142,17 +162,15 @@ public class Journal {
                 return false;
             }
             final Component journalTitle = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title");
-            return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE) && Objects.equals(item.getItemMeta().getLore(), getJournalLore(onlineProfile));
+            return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE) && Objects.equals(item.getItemMeta().lore(), getJournalLore(onlineProfile));
         } catch (final QuestException e) {
             LOG.warn("Failed to check if the journal's title is correct: " + e.getMessage(), e);
             return false;
         }
     }
 
-    private static List<String> getJournalLore(final Profile profile) throws QuestException {
-        return Arrays.asList(Utils.format(LegacyComponentSerializer.legacySection()
-                        .serialize(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore")))
-                .split("\n"));
+    private static List<Component> getJournalLore(final Profile profile) throws QuestException {
+        return ComponentLineWrapper.splitNewLine(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore"));
     }
 
     /**
@@ -190,7 +208,6 @@ public class Journal {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         new PlayerJournalAddEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
         pointers.add(pointer);
-        // SQLite doesn't accept formatted date and MySQL doesn't accept numeric timestamp
         final String date = betonQuest.isMySQLUsed()
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
                 : Long.toString(pointer.timestamp());
@@ -224,29 +241,31 @@ public class Journal {
      *
      * @return list of Strings - texts for every journal entry
      */
-    public List<String> getText() {
-        final List<String> list;
+    public List<Component> getText() {
+        final List<Component> list;
         if (config.getBoolean("journal.format.reversed_order")) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
         }
-        final List<String> pagesList = new ArrayList<>();
-        for (final String entry : list) {
-            pagesList.addAll(Utils.pagesFromString(entry));
+        final List<Component> pagesList = new ArrayList<>();
+        for (final Component entry : list) {
+            pagesList.addAll(bookWrapper.splitPages(entry));
         }
         return pagesList;
     }
 
     /**
      * Generates texts for every pointer and places them inside a List.
+     *
+     * @throws QuestException if an error occurs while generating the texts
      */
-    public void generateTexts() {
+    public void generateTexts() throws QuestException {
         texts.clear();
         mainPage = generateMainPage();
         final boolean displayDatePrefix = !config.getBoolean("journal.format.hide_date");
         for (final Pointer pointer : pointers) {
-            final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
+            final Component datePrefix = displayDatePrefix ? pointer.generateDatePrefix(textParser, config).append(Component.newline()) : Component.empty();
             final JournalEntryID entryID = pointer.pointer();
             final Text journalEntry;
             try {
@@ -256,16 +275,16 @@ public class Journal {
                 continue;
             }
 
-            String text;
+            Component text;
             try {
-                text = LegacyComponentSerializer.legacySection().serialize(journalEntry.asComponent(profile));
+                text = journalEntry.asComponent(profile);
             } catch (final QuestException e) {
                 LOG.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
-                text = "error";
+                text = Component.text("error");
             }
 
-            texts.add(datePrefix + "§" + config.getString("journal.format.color.text") + Utils.format(text));
+            texts.add(Component.empty().append(datePrefix).append(textParser.parse(config.getString("journal.format.color.text")).append(text)));
         }
     }
 
@@ -275,33 +294,33 @@ public class Journal {
      * @return the main page string or null, if there is no main page
      */
     @Nullable
-    private String generateMainPage() {
-        final Map<Integer, List<String>> lines = new HashMap<>(); // holds text lines with their priority
-        final Set<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
+    private Component generateMainPage() {
+        final Map<Integer, List<Component>> lines = new HashMap<>();
+        final Set<Integer> numbers = new HashSet<>();
         for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureApi.getJournalMainPages().entrySet()) {
             final JournalMainPageEntry mainPageEntry = entry.getValue();
-            String text;
+            Component text;
             try {
                 final List<ConditionID> conditions = mainPageEntry.conditions().getValue(profile);
                 if (!conditions.isEmpty() && !questTypeApi.conditions(profile, conditions)) {
                     continue;
                 }
-                text = LegacyComponentSerializer.legacySection().serialize(mainPageEntry.entry().asComponent(profile));
+                text = mainPageEntry.entry().asComponent(profile);
             } catch (final QuestException e) {
                 LOG.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
                         + profile + " journal: " + e.getMessage(), e);
-                text = "error";
+                text = Component.text("error");
             }
             final int number = mainPageEntry.priority();
             numbers.add(number);
-            final List<String> linesOrder;
+            final List<Component> linesOrder;
             if (lines.containsKey(number)) {
                 linesOrder = lines.get(number);
             } else {
                 linesOrder = new ArrayList<>();
                 lines.put(number, linesOrder);
             }
-            linesOrder.add(text + "§r"); // reset the formatting
+            linesOrder.add(text);
         }
         if (numbers.isEmpty()) {
             return null;
@@ -310,21 +329,19 @@ public class Journal {
     }
 
     @SuppressWarnings("NullAway")
-    private String sort(final Set<Integer> numbers, final Map<Integer, List<String>> lines) {
-        // now all lines from all packages are extracted, sort numbers
+    private Component sort(final Set<Integer> numbers, final Map<Integer, List<Component>> lines) {
         Integer[] sorted = new Integer[numbers.size()];
         sorted = numbers.toArray(sorted);
         Arrays.sort(sorted);
-        // build the string and return it
-        final List<String> sortedLines = new ArrayList<>();
+        final List<Component> sortedLines = new ArrayList<>();
         for (final int i : sorted) {
-            final List<String> linesOrder = lines.get(i);
-            String[] sortedLinesOrder = new String[linesOrder.size()];
+            final List<Component> linesOrder = lines.get(i);
+            Component[] sortedLinesOrder = new Component[linesOrder.size()];
             sortedLinesOrder = linesOrder.toArray(sortedLinesOrder);
             Arrays.sort(sortedLinesOrder);
             sortedLines.addAll(Arrays.asList(sortedLinesOrder));
         }
-        return StringUtils.join(sortedLines, '\n').replace('&', '§');
+        return Component.join(JoinConfiguration.newlines(), sortedLines);
     }
 
     /**
@@ -339,7 +356,12 @@ public class Journal {
      * Adds journal to player inventory.
      */
     public void addToInv() {
-        generateTexts();
+        try {
+            generateTexts();
+        } catch (final QuestException e) {
+            LOG.warn("Failed to generate texts for journal: " + e.getMessage(), e);
+            return;
+        }
         final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
         final ItemStack item;
         try {
@@ -380,50 +402,49 @@ public class Journal {
      * @return the journal ItemStack
      * @throws QuestException if the journal cannot be generated
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public ItemStack getAsItem() throws QuestException {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
+
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.title(pluginMessage.getMessage(profile, "journal_title"));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
-        meta.setLore(getJournalLore(profile));
+        meta.lore(getJournalLore(profile));
 
-        // add main page and generate pages from texts
-        final List<String> finalList = new ArrayList<>();
-        final String color = config.getString("journal.format.color.line");
+        final List<Component> finalList = new ArrayList<>();
+        final Component color = textParser.parse(config.getString("journal.format.color.line"));
         if (config.getBoolean("journal.format.one_entry_per_page")) {
-            if (mainPage != null && !mainPage.isEmpty()) {
-                finalList.addAll(Utils.pagesFromString(mainPage));
+            if (mainPage != null) {
+                finalList.addAll(bookWrapper.splitPages(mainPage));
             }
             finalList.addAll(getText());
         } else {
-            final String line;
+            final Component line;
             if (config.getBoolean("journal.format.show_separator")) {
-                final String separator = config.getString("journal.format.separator");
-                line = "\n§" + color + separator + "\n";
+                final Component separator = textParser.parse(config.getString("journal.format.separator"));
+                line = color.append(separator.append(Component.newline()));
             } else {
-                line = "\n";
+                line = Component.newline();
             }
 
-            final StringBuilder stringBuilder = new StringBuilder();
-            for (final String entry : getText()) {
-                stringBuilder.append(entry).append(line);
-            }
-            if (mainPage != null && !mainPage.isEmpty()) {
+            final TextComponent.Builder stringBuilder = Component.text();
+            if (mainPage != null) {
                 if (config.getBoolean("journal.full_main_page")) {
-                    finalList.addAll(Utils.pagesFromString(mainPage));
+                    finalList.addAll(bookWrapper.splitPages(mainPage));
                 } else {
-                    stringBuilder.insert(0, mainPage + line);
+                    stringBuilder.append(mainPage).append(line);
                 }
             }
-            final String wholeString = stringBuilder.toString().trim();
-            finalList.addAll(Utils.pagesFromString(wholeString));
+            for (final Component entry : getText()) {
+                stringBuilder.append(entry).append(line);
+            }
+            finalList.addAll(bookWrapper.splitPages(stringBuilder.asComponent()));
         }
         if (finalList.isEmpty()) {
-            meta.addPage("");
+            meta.pages(Component.empty());
         } else {
-            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + color));
+            meta.pages(finalList);
         }
         item.setItemMeta(meta);
         return item;
@@ -444,7 +465,6 @@ public class Journal {
      * @return the slot from which the journal was removed
      */
     public int removeFromInv() {
-        // loop all items and check if any of them is a journal
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Inventory inventory = onlineProfile.getPlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {

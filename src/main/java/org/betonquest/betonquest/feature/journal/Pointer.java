@@ -1,6 +1,9 @@
 package org.betonquest.betonquest.feature.journal;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.id.JournalEntryID;
 
 import java.text.SimpleDateFormat;
@@ -21,19 +24,21 @@ public record Pointer(JournalEntryID pointer, long timestamp) {
     /**
      * Generates a date prefix with the timestamp.
      *
-     * @param config the config to load formatting values from
+     * @param textParser the text parser to use for formatting
+     * @param config     the config to load formatting values from
      * @return the formatted date
+     * @throws QuestException if parsing the date fails
      */
-    public String generateDatePrefix(final ConfigAccessor config) {
+    public Component generateDatePrefix(final TextParser textParser, final ConfigAccessor config) throws QuestException {
         final String date = new SimpleDateFormat(config.getString("date_format"), Locale.ROOT).format(timestamp);
         final String[] dateParts = date.split(" ");
-        final String day = "§" + config.getString("journal.format.color.date.day") + dateParts[0];
-        final String hour;
+        final Component day = textParser.parse(config.getString("journal.format.color.date.day")).append(Component.text(dateParts[0]));
+        final Component hour;
         if (dateParts.length >= HOUR_LENGTH) {
-            hour = "§" + config.getString("journal.format.color.date.hour") + dateParts[1];
+            hour = textParser.parse(config.getString("journal.format.color.date.hour")).append(Component.text(dateParts[1]));
         } else {
-            hour = "";
+            hour = Component.empty();
         }
-        return day + " " + hour;
+        return Component.empty().append(day).append(Component.space()).append(hour);
     }
 }

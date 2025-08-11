@@ -100,12 +100,12 @@ public class ComponentLineWrapper {
         final List<Component> lines = newLineWrapped.stream()
                 .map(line -> wrap(line, new Offset(offsetProvider), maxLineWidth))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
 
         return appendPrefixes(resolvedLinePrefix, lines).stream()
                 .map(Component::compact)
                 .map(Component::compact)
-                .toList();
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     private List<Component> appendPrefixes(final List<Component> prefixes, final List<Component> lines) {
@@ -122,7 +122,7 @@ public class ComponentLineWrapper {
     private List<Component> wrap(final Component component, final Offset offset, final int maxLineWidth) {
         final List<Pair<Component, Integer>> wordList = ComponentPatternSplitter.split(component, LEADING_SPACE).stream()
                 .map(word -> Pair.of(word, width(word)))
-                .toList();
+                .collect(Collectors.toCollection(LinkedList::new));
 
         final List<Component> lines = new ArrayList<>();
         final ComponentBuilder line = new ComponentBuilder();

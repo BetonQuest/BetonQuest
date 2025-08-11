@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +16,15 @@ import java.util.Set;
  * Handles de-/serialization of Books.
  */
 public class BookHandler implements ItemMetaHandler<BookMeta> {
+    /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
+     * The book wrapper used to split pages.
+     */
+    private final BookPageWrapper bookPageWrapper;
 
     /**
      * The title.
@@ -40,7 +51,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     /**
      * The text pages.
      */
-    private List<String> text = new ArrayList<>();
+    private List<Component> text = new ArrayList<>();
 
     /**
      * The required text existence.
@@ -49,8 +60,13 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     /**
      * The empty default Constructor.
+     *
+     * @param textParser      the text parser used to parse text
+     * @param bookPageWrapper the book wrapper used to split pages
      */
-    public BookHandler() {
+    public BookHandler(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
+        this.textParser = textParser;
+        this.bookPageWrapper = bookPageWrapper;
     }
 
     @Override
@@ -117,14 +133,14 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     public void populate(final BookMeta bookMeta) {
         bookMeta.setTitle(title);
         bookMeta.setAuthor(author);
-        bookMeta.setPages(text);
+        bookMeta.pages(text);
     }
 
     @Override
     public boolean check(final BookMeta bookMeta) {
         return checkExistence(titleE, title, bookMeta.getTitle())
                 && checkExistence(authorE, author, bookMeta.getAuthor())
-                && checkText(bookMeta.getPages());
+                && checkText(bookMeta.pages());
     }
 
     private void setTitle(final String string) {
@@ -146,13 +162,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    private void setText(final String string) {
+    private void setText(final String string) throws QuestException {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            text.add(""); // this will prevent "Invalid book tag" message in the empty book
+            text.add(Component.empty());
             textE = Existence.FORBIDDEN;
         } else {
-            text = Utils.pagesFromString(string.replace("_", " "));
-            text.replaceAll(textToTranslate -> ChatColor.translateAlternateColorCodes('&', textToTranslate));
+            text = bookPageWrapper.splitPages(textParser.parse(string));
             textE = Existence.REQUIRED;
         }
     }
@@ -165,37 +180,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         };
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    private boolean checkText(@Nullable final List<String> list) {
+    private boolean checkText(@Nullable final List<Component> list) {
         return switch (textE) {
             case WHATEVER -> true;
-            case REQUIRED -> {
-                if (list == null || list.size() != text.size()) {
-                    yield false;
-                }
-                for (int i = 0; i < text.size(); i++) {
-                    // this removes black color codes, bukkit adds them for some reason
-                    String line = list.get(i).replaceAll("(§0)?\\n(§0)?", "\n");
-                    while (line.startsWith("\"")) {
-                        line = line.substring(1);
-                    }
-                    while (line.endsWith("\"")) {
-                        line = line.substring(0, line.length() - 1);
-                    }
-                    String pattern = text.get(i).replaceAll("(§0)?\\n(§0)?", "\n");
-                    while (pattern.startsWith("\"")) {
-                        pattern = pattern.substring(1);
-                    }
-                    while (pattern.endsWith("\"")) {
-                        pattern = pattern.substring(0, pattern.length() - 1);
-                    }
-                    if (!line.equals(pattern)) {
-                        yield false;
-                    }
-                }
-                yield true;
-            }
-            case FORBIDDEN -> list == null || list.isEmpty() || list.size() == 1 && list.get(0).isEmpty();
+            case REQUIRED -> text.equals(list);
+            case FORBIDDEN ->
+                    list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
         };
     }
 }
