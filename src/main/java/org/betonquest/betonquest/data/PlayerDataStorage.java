@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
@@ -69,13 +70,15 @@ public class PlayerDataStorage {
      *
      * @param onlineProfiles the profiles to initialize
      * @param pluginMessage  the plugin message for journals and conversations
+     * @param textParser     the text parser to use for parsing text
      */
-    public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
+    public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage,
+                             final TextParser textParser) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = new PlayerData(onlineProfile);
             put(onlineProfile, playerData);
             playerData.startObjectives();
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal(pluginMessage, textParser).update();
             if (playerData.getActiveConversation() != null) {
                 new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
             }
@@ -96,13 +99,15 @@ public class PlayerDataStorage {
      *
      * @param onlineProfiles the profiles to update
      * @param pluginMessage  the plugin message to generate new journals
+     * @param textParser     the text parser to use for parsing text
      */
-    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
+    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage,
+                               final TextParser textParser) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             log.debug("Updating global objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
             objectives.startAll(onlineProfile, this);
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal(pluginMessage, textParser).update();
         }
     }
 

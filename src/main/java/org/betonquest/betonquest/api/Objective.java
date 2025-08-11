@@ -553,7 +553,7 @@ public abstract class Objective {
             final Server server = plugin.getServer();
             server.getScheduler().runTask(plugin, () -> server.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct information
-            plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();
+            plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage(), plugin.getTextParser()).update();
         }
     }
 

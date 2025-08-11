@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -56,6 +57,11 @@ public class JoinQuitListener implements Listener {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -73,17 +79,20 @@ public class JoinQuitListener implements Listener {
      * @param questTypeApi      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      * @param pluginMessage     the {@link PluginMessage} instance
+     * @param textParser        the text parser used to parse text
      * @param profileProvider   the profile provider instance
      * @param updater           the updater to notify players
      */
     public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
                             final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
-                            final PluginMessage pluginMessage, final ProfileProvider profileProvider, final Updater updater) {
+                            final PluginMessage pluginMessage, final TextParser textParser,
+                            final ProfileProvider profileProvider, final Updater updater) {
         this.loggerFactory = loggerFactory;
         this.config = config;
         this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.profileProvider = profileProvider;
         this.updater = updater;
     }
@@ -117,7 +126,7 @@ public class JoinQuitListener implements Listener {
         checkResourcepack(player, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal(pluginMessage, textParser).update();
         }
         if (player.hasPermission("betonquest.admin")) {
             updater.sendUpdateNotification(player);
