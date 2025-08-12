@@ -4,11 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -50,7 +50,7 @@ public class MenuItem {
      * Name and lore for displayed item.
      */
     @Nullable
-    private final Message descriptions;
+    private final Text descriptions;
 
     /**
      * Ids of all events that should be run on clicks.
@@ -80,7 +80,7 @@ public class MenuItem {
      * @param close        if the item click closes
      */
     public MenuItem(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Variable<Item> item, final MenuItemID itemId,
-                    @Nullable final Message descriptions, final ClickEvents clickEvents,
+                    @Nullable final Text descriptions, final ClickEvents clickEvents,
                     final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;

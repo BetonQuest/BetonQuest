@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api.feature;
 
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
@@ -86,10 +86,10 @@ public final class FeatureAPI {
      * Gets stored Journal Entry.
      *
      * @param journalEntryID the journal entry id
-     * @return the loaded Message
-     * @throws QuestException if no Message is loaded for the ID
+     * @return the loaded text
+     * @throws QuestException if no text is loaded for the ID
      */
-    public Message getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
+    public Text getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
         return questRegistry.journalEntries().get(journalEntryID);
     }
 

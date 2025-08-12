@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
@@ -20,7 +20,7 @@ import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -67,9 +67,9 @@ public class ConversationData {
     private final FeatureAPI featureAPI;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * The {@link QuestPackage} this conversation is in.
@@ -110,15 +110,16 @@ public class ConversationData {
      * @param variableProcessor the variable processor to resolve variables
      * @param questTypeAPI      the quest type api
      * @param featureAPI        the feature api
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      * @param pack              the package of the conversation this data represents
      * @param convSection       the configuration section of the conversation
      * @param publicData        the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
-                            final ParsedSectionMessageCreator messageCreator, final QuestPackage pack,
+    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+                            final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+                            final ParsedSectionTextCreator textCreator, final QuestPackage pack,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.variableProcessor = variableProcessor;
@@ -127,7 +128,7 @@ public class ConversationData {
         this.pack = pack;
         this.convName = publicData.convName();
         this.publicData = publicData;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
 
         this.npcOptions = loadNpcOptions(convSection);
         this.startingOptions = loadStartingOptions(convSection);
@@ -533,7 +534,7 @@ public class ConversationData {
      * @param convIO        The conversation IO that should be used for this conversation.
      * @param interceptor   The interceptor that should be used for this conversation.
      */
-    public record PublicData(String convName, Message quester, Variable<Boolean> blockMovement,
+    public record PublicData(String convName, Text quester, Variable<Boolean> blockMovement,
                              Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
                              Variable<InterceptorFactory> interceptor, boolean invincible) {
 
@@ -576,7 +577,7 @@ public class ConversationData {
          * A map of the text of the option in different languages.
          */
         @Nullable
-        private final Message text;
+        private final Text text;
 
         /**
          * Conditions that must be met for the option to be available.
@@ -654,13 +655,13 @@ public class ConversationData {
         }
 
         @Nullable
-        private Message parseText(final ConfigurationSection conv) throws QuestException {
+        private Text parseText(final ConfigurationSection conv) throws QuestException {
             if (!conv.contains("text")) {
                 return null;
             }
-            final Message text;
+            final Text text;
             try {
-                text = messageCreator.parseFromSection(pack, conv, "text");
+                text = textCreator.parseFromSection(pack, conv, "text");
             } catch (final QuestException e) {
                 throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
             }

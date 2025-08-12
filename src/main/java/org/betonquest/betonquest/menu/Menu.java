@@ -2,11 +2,11 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -207,7 +207,7 @@ public class Menu {
      * @param openEvents     Events which are fired when the menu is opened.
      * @param closeEvents    Events which are fired when the menu is closed.
      */
-    public record MenuData(Message title, int height, List<Slots> slots,
+    public record MenuData(Text title, int height, List<Slots> slots,
                            Variable<List<ConditionID>> openConditions,
                            Variable<List<EventID>> openEvents, Variable<List<EventID>> closeEvents) {
 

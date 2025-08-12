@@ -1,4 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.15:
+  - type: KEY_RENAME
+    oldKey: message_parser
+    newKey: text_parser
 3.0.0.14:
   - type: KEY_RENAME
     oldKey: conversation.io.menu.selection_cooldown

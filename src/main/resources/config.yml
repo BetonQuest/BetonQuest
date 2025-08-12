@@ -1,6 +1,6 @@
 configVersion: ""
 language: en-US
-message_parser: legacyminimessage
+text_parser: legacyminimessage
 date_format: dd.MM.yyyy HH:mm
 default_notify_io: chat
 updater:

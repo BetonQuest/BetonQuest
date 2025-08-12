@@ -4,10 +4,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -22,7 +22,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.Slots;
 import org.betonquest.betonquest.menu.command.MenuBoundCommand;
 import org.betonquest.betonquest.menu.command.SimpleCommand;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      * @param questTypeAPI      the QuestTypeAPI
      * @param variableProcessor the variable resolver
      * @param featureAPI        the Feature API
@@ -63,10 +63,10 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param profileProvider   the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                         final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
+                         final ParsedSectionTextCreator textCreator, final QuestTypeAPI questTypeAPI,
                          final VariableProcessor variableProcessor, final FeatureAPI featureAPI, final RPGMenu rpgMenu,
                          final ProfileProvider profileProvider) {
-        super(log, "Menu", "menus", loggerFactory, messageCreator, variableProcessor, questTypeAPI, featureAPI);
+        super(log, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeAPI, featureAPI);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -135,7 +135,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");
             }
-            final Message title = messageCreator.parseFromSection(pack, section, "title");
+            final Text title = textCreator.parseFromSection(pack, section, "title");
             final Variable<List<ConditionID>> openConditions = getID("open_conditions", ConditionID::new);
             final Variable<List<EventID>> openEvents = getID("open_events", EventID::new);
             final Variable<List<EventID>> closeEvents = getID("close_events", EventID::new);

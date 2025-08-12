@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.MessageParserRegistry;
+import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
  * @param conversationIO  The Registry holding registered conversation IOs.
  * @param item            The Registry holding registered item types.
  * @param interceptor     The Registry holding registered Interceptors.
- * @param messageParser   The Registry holding registered Message Parsers.
+ * @param textParser      The Registry holding registered text Parsers.
  * @param npc             The Registry holding registered npc types.
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
@@ -20,7 +20,7 @@ public record FeatureRegistries(
         ConversationIORegistry conversationIO,
         ItemTypeRegistry item,
         InterceptorRegistry interceptor,
-        MessageParserRegistry messageParser,
+        TextParserRegistry textParser,
         NpcTypeRegistry npc,
         NotifyIORegistry notifyIO,
         ScheduleRegistry eventScheduling
@@ -37,7 +37,7 @@ public record FeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
                 new ItemTypeRegistry(loggerFactory.create(ItemTypeRegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),
-                new MessageParserRegistryImpl(loggerFactory.create(MessageParserRegistryImpl.class)),
+                new TextParserRegistryImpl(loggerFactory.create(TextParserRegistryImpl.class)),
                 new NpcTypeRegistry(loggerFactory.create(NpcTypeRegistry.class)),
                 new NotifyIORegistry(loggerFactory.create(NotifyIORegistry.class)),
                 new ScheduleRegistry(loggerFactory.create(ScheduleRegistry.class))

@@ -16,11 +16,11 @@ import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
 import org.betonquest.betonquest.command.CancelQuestCommand;
@@ -64,14 +64,14 @@ import org.betonquest.betonquest.logger.handler.chat.AccumulatingReceiverSelecto
 import org.betonquest.betonquest.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.message.DecidingMessageParser;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
-import org.betonquest.betonquest.message.TagMessageParserDecider;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.playerhider.PlayerHider;
 import org.betonquest.betonquest.profile.UUIDProfileProvider;
 import org.betonquest.betonquest.quest.CoreQuestTypes;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
+import org.betonquest.betonquest.text.DecidingTextParser;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
+import org.betonquest.betonquest.text.TagTextParserDecider;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.web.DownloadSource;
@@ -180,9 +180,9 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     private String defaultLanguage;
 
     /**
-     * The message parser.
+     * The text parser.
      */
-    private MessageParser messageParser;
+    private TextParser textParser;
 
     /**
      * The plugin messages provider.
@@ -377,11 +377,11 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
-        final String defaultParser = config.getString("message_parser", "legacyminimessage");
-        messageParser = new DecidingMessageParser(featureRegistries.messageParser(), new TagMessageParserDecider(defaultParser));
+        final String defaultParser = config.getString("text_parser", "legacyminimessage");
+        textParser = new DecidingTextParser(featureRegistries.textParser(), new TagTextParserDecider(defaultParser));
         try {
             pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage,
-                    messageParser, configAccessorFactory, this);
+                    textParser, configAccessorFactory, this);
             for (final String language : pluginMessage.getLanguages()) {
                 log.debug("Loaded " + language + " language");
             }
@@ -391,10 +391,10 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
             return;
         }
 
-        final ParsedSectionMessageCreator messageCreator = new ParsedSectionMessageCreator(messageParser, playerDataStorage,
+        final ParsedSectionTextCreator textCreator = new ParsedSectionTextCreator(textParser, playerDataStorage,
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, messageCreator, profileProvider, questTypeAPI, playerDataStorage);
+                coreQuestRegistry, featureRegistries, pluginMessage, textCreator, profileProvider, questTypeAPI, playerDataStorage);
         featureAPI = new FeatureAPI(questRegistry);
 
         setupUpdater();
@@ -405,7 +405,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
                 profileProvider, this)
                 .register(questTypeRegistries);
 
-        conversationColors = new ConversationColors(messageParser, config);
+        conversationColors = new ConversationColors(textParser, config);
 
         final Key defaultkey = Key.key("default");
         fontRegistry = new FontRegistry(defaultkey);
@@ -452,7 +452,7 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility);
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, coreQuestRegistry.variables(),
-                pluginMessage, messageCreator, questTypeAPI, featureAPI, profileProvider);
+                pluginMessage, textCreator, questTypeAPI, featureAPI, profileProvider);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -697,12 +697,12 @@ public class BetonQuest extends JavaPlugin implements LanguageProvider {
     }
 
     /**
-     * Get the message parser.
+     * Get the text parser.
      *
-     * @return message parser
+     * @return text parser
      */
-    public MessageParser getMessageParser() {
-        return messageParser;
+    public TextParser getTextParser() {
+        return textParser;
     }
 
     /**

@@ -387,8 +387,8 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("lever", new LeverEventFactory(data));
         eventTypes.registerCombined("lightning", new LightningEventFactory(data));
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
-        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, languageProvider));
-        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getMessageParser(), dataStorage, profileProvider, languageProvider));
+        eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, languageProvider));
+        eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, profileProvider, languageProvider));
         eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureAPI(), data));
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));

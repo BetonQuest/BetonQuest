@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 
 /**
  * Holds the colors of the conversations.
@@ -11,9 +11,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 @SuppressWarnings("PMD.DataClass")
 public class ConversationColors {
     /**
-     * The message parser used to parse the colors.
+     * The text parser used to parse the colors.
      */
-    private final MessageParser messageParser;
+    private final TextParser textParser;
 
     /**
      * The config accessor used to get the colors from the config.
@@ -53,11 +53,11 @@ public class ConversationColors {
     /**
      * The constructor of the ConversationColors class.
      *
-     * @param messageParser the message parser used to parse the colors
-     * @param config        the config accessor used to get the colors from the config
+     * @param textParser the text parser used to parse the colors
+     * @param config     the config accessor used to get the colors from the config
      */
-    public ConversationColors(final MessageParser messageParser, final FileConfigAccessor config) {
-        this.messageParser = messageParser;
+    public ConversationColors(final TextParser textParser, final FileConfigAccessor config) {
+        this.textParser = textParser;
         this.config = config;
         this.text = Component.empty();
         this.npc = Component.empty();
@@ -86,7 +86,7 @@ public class ConversationColors {
         if (raw == null) {
             throw new QuestException("Conversation color '" + name + "' does not exist in the config!");
         }
-        return messageParser.parse(raw);
+        return textParser.parse(raw);
     }
 
     /**

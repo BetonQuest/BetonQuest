@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.Item;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.MenuItem;
 import org.betonquest.betonquest.menu.MenuItemID;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
@@ -40,16 +40,16 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      * @param questTypeAPI      the QuestTypeAPI
      * @param config            the config to load menu item options from
      * @param variableProcessor the variable resolver
      * @param featureAPI        the Feature API
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
+                             final ParsedSectionTextCreator textCreator, final QuestTypeAPI questTypeAPI,
                              final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureAPI featureAPI) {
-        super(log, "Menu Item", "menu_items", loggerFactory, messageCreator, variableProcessor, questTypeAPI, featureAPI);
+        super(log, "Menu Item", "menu_items", loggerFactory, textCreator, variableProcessor, questTypeAPI, featureAPI);
         this.config = config;
     }
 
@@ -58,9 +58,9 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
         final Variable<Item> item = new Variable<>(variableProcessor, pack, itemString, value -> itemParser.apply(pack, value));
-        final Message descriptions;
+        final Text descriptions;
         if (section.contains(CONFIG_TEXT)) {
-            descriptions = messageCreator.parseFromSection(pack, section, CONFIG_TEXT);
+            descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);
         } else {
             log.debug(pack, "No description for menu item '" + pack.getQuestPath() + "." + section.getName() + "'");
             descriptions = null;

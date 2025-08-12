@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.feature.journal;
 
-import org.betonquest.betonquest.api.message.Message;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param priority   the order priority
  * @param conditions the conditions to display the entry
- * @param entry      the message content
+ * @param entry      the text content
  */
-public record JournalMainPageEntry(int priority, Variable<List<ConditionID>> conditions, Message entry) {
+public record JournalMainPageEntry(int priority, Variable<List<ConditionID>> conditions, Text entry) {
 }
