@@ -12,7 +12,7 @@ import org.betonquest.betonquest.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -29,9 +29,9 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
     protected final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    protected final ParsedSectionMessageCreator messageCreator;
+    protected final ParsedSectionTextCreator textCreator;
 
     /**
      * The QuestTypeAPI.
@@ -55,17 +55,17 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      * @param loggerFactory     the logger factory to class specific loggers with
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      * @param variableProcessor the variable resolver
      * @param questTypeAPI      the QuestTypeAPI
      * @param featureAPI        the Feature API
      */
     public RPGMenuProcessor(final BetonQuestLogger log, final String readable, final String internal,
-                            final BetonQuestLoggerFactory loggerFactory, final ParsedSectionMessageCreator messageCreator,
+                            final BetonQuestLoggerFactory loggerFactory, final ParsedSectionTextCreator textCreator,
                             final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI) {
         super(log, readable, internal);
         this.loggerFactory = loggerFactory;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
         this.questTypeAPI = questTypeAPI;
         this.variableProcessor = variableProcessor;
         this.itemParser = new ItemParser(featureAPI);

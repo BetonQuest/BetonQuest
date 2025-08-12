@@ -2,8 +2,8 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.instruction.argument.types.location.LocationPar
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -26,27 +26,27 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     private final VariableProcessor variableProcessor;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * Create a new QuestProcessor to store {@link QuestCompass}es.
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the variable processor to create new variables
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      */
     public CompassProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                            final ParsedSectionMessageCreator messageCreator) {
+                            final ParsedSectionTextCreator textCreator) {
         super(log, "Compass", "compass");
         this.variableProcessor = variableProcessor;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
     }
 
     @Override
     protected QuestCompass loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final Message names = messageCreator.parseFromSection(pack, section, "name");
+        final Text names = textCreator.parseFromSection(pack, section, "name");
         final String location = section.getString("location");
         if (location == null) {
             throw new QuestException("Location not defined");

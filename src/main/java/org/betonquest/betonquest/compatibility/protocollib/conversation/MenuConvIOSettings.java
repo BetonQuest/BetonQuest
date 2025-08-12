@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -21,12 +21,12 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
     /**
      * Creates a new instance of MenuConvIOSettings from a configuration section.
      *
-     * @param messageParser the message parser to use to parse components
-     * @param config        the configuration section to read settings from
+     * @param textParser the text parser to use to parse components
+     * @param config     the configuration section to read settings from
      * @return a new instance of MenuConvIOSettings
-     * @throws QuestException if the message parser could not parse a message
+     * @throws QuestException if the text parser could not parse a text
      */
-    public static MenuConvIOSettings fromConfigurationSection(final MessageParser messageParser, final ConfigurationSection config) throws QuestException {
+    public static MenuConvIOSettings fromConfigurationSection(final TextParser textParser, final ConfigurationSection config) throws QuestException {
         final int lineLength = config.getInt("line_length");
         final int lineCount = config.getInt("line_count");
         final int lineFillBefore = config.getInt("line_fill_before");
@@ -53,10 +53,10 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
 
         return new MenuConvIOSettings(lineLength, lineCount, lineFillBefore, refreshDelay, rateLimit,
                 npcNameType, npcNameAlign, npcNameSeperator, optionsSeperator, controlSelect, controlMove, controlCancel,
-                new VariableComponent(messageParser.parse(npcName)), new VariableComponent(messageParser.parse(npcText)),
-                messageParser.parse(npcTextWrap), new VariableComponent(messageParser.parse(optionText)),
-                messageParser.parse(optionTextWrap), new VariableComponent(messageParser.parse(optionSelectedText)),
-                messageParser.parse(optionSelectedTextWrap), messageParser.parse(scrollUp), messageParser.parse(scrollDown)
+                new VariableComponent(textParser.parse(npcName)), new VariableComponent(textParser.parse(npcText)),
+                textParser.parse(npcTextWrap), new VariableComponent(textParser.parse(optionText)),
+                textParser.parse(optionTextWrap), new VariableComponent(textParser.parse(optionSelectedText)),
+                textParser.parse(optionSelectedTextWrap), textParser.parse(scrollUp), textParser.parse(scrollDown)
         );
     }
 }

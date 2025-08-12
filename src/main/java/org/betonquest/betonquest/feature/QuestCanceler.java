@@ -6,11 +6,11 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureAPI;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -69,7 +69,7 @@ public class QuestCanceler {
     /**
      * Names to displaying in different languages.
      */
-    private final Message names;
+    private final Text names;
 
     /**
      * Relevant data to cancel.
@@ -108,8 +108,7 @@ public class QuestCanceler {
      */
     public QuestCanceler(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final PlayerDataStorage playerStorage,
                          final String cancelerID, final FeatureAPI featureAPI, final PluginMessage pluginMessage,
-                         final Message names, @Nullable final ItemID item,
-                         final QuestPackage pack, final CancelData cancelData) {
+                         final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.questTypeAPI = questTypeAPI;
         this.playerStorage = playerStorage;

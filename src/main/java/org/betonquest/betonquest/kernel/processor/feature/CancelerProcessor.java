@@ -4,9 +4,9 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
@@ -21,7 +21,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -51,9 +51,9 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     private final VariableProcessor variableProcessor;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * Quest Type API.
@@ -73,27 +73,27 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
      * @param plugin            the class to get initialized feature API.
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param variableProcessor the variable processor to create new variables
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      * @param questTypeAPI      the Quest Type API
      * @param playerDataStorage the storage for player data
      */
     public CancelerProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest plugin,
                              final PluginMessage pluginMessage, final VariableProcessor variableProcessor,
-                             final ParsedSectionMessageCreator messageCreator, final QuestTypeAPI questTypeAPI,
+                             final ParsedSectionTextCreator textCreator, final QuestTypeAPI questTypeAPI,
                              final PlayerDataStorage playerDataStorage) {
         super(log, "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
         this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
         this.questTypeAPI = questTypeAPI;
         this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     protected QuestCanceler loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        final Message names = messageCreator.parseFromSection(pack, section, "name");
+        final Text names = textCreator.parseFromSection(pack, section, "name");
         final String itemString = section.getString("item");
         final String rawItem = itemString == null ? pack.getConfig().getString("item.cancel_button") : itemString;
         final ItemID item = rawItem == null ? null : new ItemID(pack, rawItem);

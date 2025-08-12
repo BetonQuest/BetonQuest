@@ -2,8 +2,8 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.JournalMainPageID;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
@@ -26,22 +26,22 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     private final VariableProcessor variableProcessor;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the variable resolver to resolve conditions
-     * @param messageCreator    the message creator to parse messages
+     * @param textCreator       the text creator to parse text
      */
     public JournalMainPageProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                                    final ParsedSectionMessageCreator messageCreator) {
+                                    final ParsedSectionTextCreator textCreator) {
         super(log, "Journal Main Page", "journal_main_page");
         this.variableProcessor = variableProcessor;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         final Variable<List<ConditionID>> conditions = new VariableList<>(variableProcessor, pack,
                 section.getString("conditions", ""),
                 value -> new ConditionID(pack, value));
-        final Message text = messageCreator.parseFromSection(pack, section, "text");
+        final Text text = textCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, conditions, text);
     }
 

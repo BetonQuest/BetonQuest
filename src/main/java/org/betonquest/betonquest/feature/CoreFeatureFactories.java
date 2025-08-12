@@ -7,8 +7,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.MessageParserRegistry;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
@@ -24,9 +24,6 @@ import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
-import org.betonquest.betonquest.message.parser.LegacyParser;
-import org.betonquest.betonquest.message.parser.MineDownMessageParser;
-import org.betonquest.betonquest.message.parser.MiniMessageParser;
 import org.betonquest.betonquest.notify.SuppressNotifyIOFactory;
 import org.betonquest.betonquest.notify.io.ActionBarNotifyIOFactory;
 import org.betonquest.betonquest.notify.io.AdvancementNotifyIOFactory;
@@ -41,6 +38,9 @@ import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronSchedul
 import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronScheduler;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySchedule;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
+import org.betonquest.betonquest.text.parser.LegacyParser;
+import org.betonquest.betonquest.text.parser.MineDownParser;
+import org.betonquest.betonquest.text.parser.MiniMessageParser;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
@@ -139,19 +139,19 @@ public class CoreFeatureFactories {
         eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
                 loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeAPI, lastExecutionCache));
 
-        final MessageParserRegistry messageParserRegistry = registries.messageParser();
-        registerMessageParsers(messageParserRegistry);
+        final TextParserRegistry textParserRegistry = registries.textParser();
+        registerTextParsers(textParserRegistry);
     }
 
-    private void registerMessageParsers(final MessageParserRegistry messageParserRegistry) {
+    private void registerTextParsers(final TextParserRegistry textParserRegistry) {
         final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder()
                 .hexColors()
                 .useUnusualXRepeatedCharacterHexFormat()
                 .extractUrls()
                 .build();
-        messageParserRegistry.register("legacy", new LegacyParser(legacySerializer));
+        textParserRegistry.register("legacy", new LegacyParser(legacySerializer));
         final MiniMessage miniMessage = MiniMessage.miniMessage();
-        messageParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
+        textParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
         final MiniMessage legacyMiniMessage = MiniMessage.builder()
                 .preProcessor(input -> {
                     final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input.replaceAll("(?<!\\\\)\\\\n", "\n")));
@@ -159,7 +159,7 @@ public class CoreFeatureFactories {
                     return serialize.replaceAll("\\\\<", "<");
                 })
                 .build();
-        messageParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
-        messageParserRegistry.register("minedown", new MineDownMessageParser());
+        textParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
+        textParserRegistry.register("minedown", new MineDownParser());
     }
 }

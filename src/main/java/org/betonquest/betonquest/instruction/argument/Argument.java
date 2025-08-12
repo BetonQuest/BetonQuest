@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.instruction.argument.types.BlockSelectorParser;
 import org.betonquest.betonquest.instruction.argument.types.BooleanParser;
 import org.betonquest.betonquest.instruction.argument.types.EnumParser;
-import org.betonquest.betonquest.instruction.argument.types.MessageParserToComponentParser;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.instruction.argument.types.StringParser;
+import org.betonquest.betonquest.instruction.argument.types.TextParserToComponentParser;
 import org.betonquest.betonquest.instruction.argument.types.UUIDParser;
 import org.betonquest.betonquest.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.instruction.argument.types.location.VectorParser;
@@ -76,9 +76,9 @@ public interface Argument<T> extends VariableResolver<T> {
     BlockSelectorParser BLOCK_SELECTOR = new BlockSelectorParser();
 
     /**
-     * The default instance of {@link MessageParserToComponentParser}.
+     * The default instance of {@link TextParserToComponentParser}.
      */
-    MessageParserToComponentParser MESSAGE = new MessageParserToComponentParser(BetonQuest.getInstance().getMessageParser());
+    TextParserToComponentParser MESSAGE = new TextParserToComponentParser(BetonQuest.getInstance().getTextParser());
 
     /**
      * The default instance of {@link UUIDParser}.

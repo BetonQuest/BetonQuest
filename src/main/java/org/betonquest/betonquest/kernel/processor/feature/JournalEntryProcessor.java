@@ -2,11 +2,11 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -14,22 +14,22 @@ import java.util.Map;
 /**
  * Loads and stores Journal entries.
  */
-public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Message> {
+public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> {
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
-     * @param log            the custom logger for this class
-     * @param messageCreator the message creator to parse messages
+     * @param log         the custom logger for this class
+     * @param textCreator the text creator to parse text
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final ParsedSectionMessageCreator messageCreator) {
+    public JournalEntryProcessor(final BetonQuestLogger log, final ParsedSectionTextCreator textCreator) {
         super(log, "Journal Entry", "journal");
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Messag
         }
         for (final String key : section.getKeys(false)) {
             try {
-                values.put(getIdentifier(pack, key), messageCreator.parseFromSection(pack, section, key));
+                values.put(getIdentifier(pack, key), textCreator.parseFromSection(pack, section, key));
             } catch (final QuestException e) {
                 log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }
@@ -53,11 +53,11 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Messag
     }
 
     /**
-     * Get the loaded {@link Message}s by their ID.
+     * Get the loaded {@link Text}s by their ID.
      *
      * @return loaded values map, reflecting changes
      */
-    public Map<JournalEntryID, Message> getValues() {
+    public Map<JournalEntryID, Text> getValues() {
         return values;
     }
 
@@ -68,7 +68,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Messag
      * @param rename the name it should have now
      */
     public void renameJournalEntry(final JournalEntryID name, final JournalEntryID rename) {
-        final Message message = values.remove(name);
-        values.put(rename, message);
+        final Text text = values.remove(name);
+        values.put(rename, text);
     }
 }

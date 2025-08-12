@@ -10,8 +10,8 @@ The language option sets the default language of BetonQuest.
 It is used for all players that do not have a specific language set or as fallback language just in case.  
 You can see all available languages in the `lang` folder, and you can add your own language files there.
 
-## `message_parser` - Default message parser
-Set the default parser used to format all messages in betonquest.
+## `text_parser` - Default message parser
+Set the default parser used to format all text in betonquest.
 For more information, see the [Message Formatting](../Features/Message-Formatting.md) page.
 
 ## `date_format` - The format of dates

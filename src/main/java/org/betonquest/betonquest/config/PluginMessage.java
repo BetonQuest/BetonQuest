@@ -9,15 +9,15 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.message.Message;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.message.ParsedMessage;
+import org.betonquest.betonquest.text.ParsedText;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -57,9 +57,9 @@ public class PluginMessage {
     private final VariableProcessor variableProcessor;
 
     /**
-     * The {@link MessageParser} instance.
+     * The {@link TextParser} instance.
      */
-    private final MessageParser messageParser;
+    private final TextParser textParser;
 
     /**
      * The {@link PlayerDataStorage} to get the language from.
@@ -84,7 +84,7 @@ public class PluginMessage {
     /**
      * All loaded messages.
      */
-    private Map<String, Message> loadedMessages;
+    private Map<String, Text> loadedMessages;
 
     /**
      * Creates a new instance of the PluginMessage handler.
@@ -92,17 +92,17 @@ public class PluginMessage {
      * @param instance              the BetonQuest instance
      * @param variableProcessor     the {@link VariableProcessor} instance
      * @param playerDataStorage     the {@link PlayerDataStorage} instance
-     * @param messageParser         the {@link MessageParser} instance
+     * @param textParser            the {@link TextParser} instance
      * @param configAccessorFactory the config accessor factory
      * @param languageProvider      the {@link LanguageProvider} instance
      * @throws QuestException if the messages could not be loaded
      */
     public PluginMessage(final BetonQuest instance, final VariableProcessor variableProcessor,
-                         final PlayerDataStorage playerDataStorage, final MessageParser messageParser,
+                         final PlayerDataStorage playerDataStorage, final TextParser textParser,
                          final ConfigAccessorFactory configAccessorFactory, final LanguageProvider languageProvider)
             throws QuestException {
         this.variableProcessor = variableProcessor;
-        this.messageParser = messageParser;
+        this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
 
@@ -160,7 +160,7 @@ public class PluginMessage {
         }
     }
 
-    private Map<String, Message> loadMessages() throws QuestException {
+    private Map<String, Text> loadMessages() throws QuestException {
         final Map<String, Map<String, String>> languageMessages = new HashMap<>();
         messages.entrySet().stream()
                 .map(entry -> {
@@ -190,14 +190,14 @@ public class PluginMessage {
                     }
                 });
 
-        final Map<String, Message> loadedMessages = new HashMap<>();
+        final Map<String, Text> loadedMessages = new HashMap<>();
         for (final Map.Entry<String, Map<String, String>> entry : languageMessages.entrySet()) {
             final String key = entry.getKey();
             final Map<String, Variable<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
                 values.put(value.getKey(), new Variable<>(variableProcessor, null, value.getValue(), Argument.STRING));
             }
-            loadedMessages.put(key, new ParsedMessage(messageParser, values, playerDataStorage, languageProvider));
+            loadedMessages.put(key, new ParsedText(textParser, values, playerDataStorage, languageProvider));
         }
         return loadedMessages;
     }
@@ -235,7 +235,7 @@ public class PluginMessage {
      * @throws QuestException           if the message could not be parsed
      */
     public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... variables) throws QuestException {
-        final Message component = loadedMessages.get(message);
+        final Text component = loadedMessages.get(message);
         if (component == null) {
             throw new IllegalArgumentException("Message not found: " + message);
         }

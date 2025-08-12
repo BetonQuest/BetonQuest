@@ -4,8 +4,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.Message;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
@@ -18,7 +18,7 @@ import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
-import org.betonquest.betonquest.message.ParsedSectionMessageCreator;
+import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,9 +55,9 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final VariableProcessor variableProcessor;
 
     /**
-     * Message creator to parse messages.
+     * Text creator to parse text.
      */
-    private final ParsedSectionMessageCreator messageCreator;
+    private final ParsedSectionTextCreator textCreator;
 
     /**
      * Create a new Conversation Data Processor to load and process conversation data.
@@ -65,19 +65,19 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param log                 the custom logger for this class
      * @param loggerFactory       the logger factory to create new class specific logger
      * @param plugin              the plugin instance used for new conversation data
-     * @param messageCreator      the message creator to parse messages
+     * @param textCreator         the text creator to parse text
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
      * @param variableProcessor   the variable processor to create new variables
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                                 final BetonQuest plugin, final ParsedSectionMessageCreator messageCreator,
+                                 final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
                                  final VariableProcessor variableProcessor) {
         super(log, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
-        this.messageCreator = messageCreator;
+        this.textCreator = textCreator;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
         this.variableProcessor = variableProcessor;
@@ -88,7 +88,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final String convName = section.getName();
         log.debug(pack, String.format("Loading conversation '%s'.", convName));
 
-        final Message quester = messageCreator.parseFromSection(pack, section, "quester");
+        final Text quester = textCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
         final Variable<Boolean> blockMovement = new Variable<>(variableProcessor, pack, section.getString("stop", "false"), Argument.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
@@ -98,7 +98,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), variableProcessor,
-                plugin.getQuestTypeAPI(), plugin.getFeatureAPI(), messageCreator, pack, section, publicData);
+                plugin.getQuestTypeAPI(), plugin.getFeatureAPI(), textCreator, pack, section, publicData);
     }
 
     @Override

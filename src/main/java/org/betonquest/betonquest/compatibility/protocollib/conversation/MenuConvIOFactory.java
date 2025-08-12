@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.protocollib.conversation;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -28,9 +28,9 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     private final Plugin plugin;
 
     /**
-     * the message parser to parse the configuration messages.
+     * the text parser to parse the configuration text.
      */
-    private final MessageParser messageParser;
+    private final TextParser textParser;
 
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
@@ -50,16 +50,16 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Menu conversation IO factory.
      *
-     * @param plugin        the plugin instance to run tasks
-     * @param messageParser the message parser to parse the configuration messages
-     * @param fontRegistry  the font registry used for the conversation
-     * @param config        the config accessor to the plugin's configuration
-     * @param colors        the colors used for the conversation
+     * @param plugin       the plugin instance to run tasks
+     * @param textParser   the text parser to parse the configuration text
+     * @param fontRegistry the font registry used for the conversation
+     * @param config       the config accessor to the plugin's configuration
+     * @param colors       the colors used for the conversation
      */
-    public MenuConvIOFactory(final Plugin plugin, final MessageParser messageParser, final FontRegistry fontRegistry,
+    public MenuConvIOFactory(final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
                              final ConfigAccessor config, final ConversationColors colors) {
         this.plugin = plugin;
-        this.messageParser = messageParser;
+        this.textParser = textParser;
         this.fontRegistry = fontRegistry;
         this.config = config;
         this.colors = colors;
@@ -67,7 +67,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
 
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
-        final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(messageParser, config.getConfigurationSection("conversation.io.menu"));
+        final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
         return new MenuConvIO(conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
     }

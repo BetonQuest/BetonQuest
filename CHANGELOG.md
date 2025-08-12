@@ -10,7 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `point` and `globalpoint` events and conditions now support variables
 - `cancel` event now has `bypass` keyword to ignore conditions in Quest Canceler
 - `quester` in conversation now supports variables
-- Support for Message Parsing Formatter
+- Support for Text Parsing Formatter
     - `notify` event
     - `notifyall` event
     - `npc` Variable

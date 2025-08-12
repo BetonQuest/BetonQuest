@@ -2,21 +2,21 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.message.Message;
-import org.betonquest.betonquest.api.message.MessageParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.message.ParsedMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
+import org.betonquest.betonquest.text.ParsedText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<message>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<text>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
 
     /**
      * Logger factory to create a logger for the events.
@@ -48,9 +48,9 @@ public class NotifyEventFactory implements PlayerEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * The {@link MessageParser} to use for parsing messages.
+     * The {@link TextParser} to use for parsing text.
      */
-    private final MessageParser messageParser;
+    private final TextParser textParser;
 
     /**
      * Storage for player data.
@@ -67,16 +67,16 @@ public class NotifyEventFactory implements PlayerEventFactory {
      *
      * @param loggerFactory     the logger factory to create a logger for the events
      * @param data              the data for primary server thread access
-     * @param messageParser     the message parser to use for parsing messages
+     * @param textParser        the text parser to use for parsing text
      * @param playerDataStorage the storage providing player data
      * @param languageProvider  the language provider to get the default language
      */
     public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                              final MessageParser messageParser, final PlayerDataStorage playerDataStorage,
+                              final TextParser textParser, final PlayerDataStorage playerDataStorage,
                               final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.messageParser = messageParser;
+        this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
     }
@@ -86,21 +86,21 @@ public class NotifyEventFactory implements PlayerEventFactory {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 
-        final Message message = getMessage(instruction, keyValueMatcher, rawInstruction);
+        final Text text = getText(instruction, keyValueMatcher, rawInstruction);
         final NotifyIO notifyIO = processInstruction(instruction, keyValueMatcher);
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new NotifyEvent(notifyIO, message),
+                new NotifyEvent(notifyIO, text),
                 loggerFactory.create(NotifyEvent.class),
                 instruction.getPackage()
         ), data);
     }
 
-    private Message getMessage(final Instruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {
+    private Text getText(final Instruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {
         final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
         keyValueMatcher.reset();
-        final String langMessages = rawInstruction.substring(0, indexEnd);
-        return getLanguages(instruction, langMessages);
+        final String langTexts = rawInstruction.substring(0, indexEnd);
+        return getLanguages(instruction, langTexts);
     }
 
     private NotifyIO processInstruction(final Instruction instruction, final Matcher keyValueMatcher) throws QuestException {
@@ -109,29 +109,29 @@ public class NotifyEventFactory implements PlayerEventFactory {
         return Notify.get(instruction.getPackage(), category, data);
     }
 
-    private Message getLanguages(final Instruction instruction, final String messages) throws QuestException {
+    private Text getLanguages(final Instruction instruction, final String texts) throws QuestException {
         final Map<String, Variable<String>> translations = new HashMap<>();
-        final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(messages);
+        final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(texts);
 
         while (languageMatcher.find()) {
             final String lang = languageMatcher.group("lang");
-            final String message = languageMatcher.group("message")
+            final String text = languageMatcher.group("text")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, instruction.get(message, Argument.STRING));
+            translations.put(lang, instruction.get(text, Argument.STRING));
         }
 
         final String defaultLanguageKey = languageProvider.getDefaultLanguage();
         if (translations.isEmpty()) {
-            final String message = messages
+            final String text = texts
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, instruction.get(message, Argument.STRING));
+            translations.put(defaultLanguageKey, instruction.get(text, Argument.STRING));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
-            throw new QuestException("No message defined for default language '" + defaultLanguageKey + "'!");
+            throw new QuestException("No text defined for default language '" + defaultLanguageKey + "'!");
         }
-        return new ParsedMessage(messageParser, translations, playerDataStorage, languageProvider);
+        return new ParsedText(textParser, translations, playerDataStorage, languageProvider);
     }
 
     private Map<String, String> getData(final Matcher keyValueMatcher) {
