@@ -4951,7 +4951,7 @@ New APIs will instead get their own page.</p>
 </div>
 <h2 id="re-moved-methods-in-30">(Re-)Moved Methods in 3.0<a class="headerlink" href="#re-moved-methods-in-30" title="Permanent link">🔗</a></h2>
 <h3 id="using-quest-types">Using Quest Types<a class="headerlink" href="#using-quest-types" title="Permanent link">🔗</a></h3>
-<p>The methods for using Conditions, Events and Objectives was moved into <code>BetonQuest.getInstance().getQuestTypeAPI()</code>.</p>
+<p>The methods for using Conditions, Events and Objectives was moved into <code>BetonQuest.getInstance().getQuestTypeApi()</code>.</p>
 <h3 id="instruction">Instruction<a class="headerlink" href="#instruction" title="Permanent link">🔗</a></h3>
 <p>Hard coded get methods were removed in favor of a more dynamic approach. 
 Read how to use them in the <a href="../Instruction/#argument">Instruction Arguments</a> section.</p>
@@ -5006,7 +5006,7 @@ throw a <code>QuestException</code> with an informative message.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">QuestPackage</span><span class="w"> </span><span class="n">questPackage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getPackages</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;myPackage&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//(1)!</span>
 <span class="kd">final</span><span class="w"> </span><span class="n">Profile</span><span class="w"> </span><span class="n">playerProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getProfileProvider</span><span class="p">().</span><span class="na">getProfile</span><span class="p">(</span><span class="n">player</span><span class="p">);</span><span class="w"> </span><span class="c1">//(2)!</span>
 
-<span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getQuestAPI</span><span class="p">().</span><span class="na">event</span><span class="p">(</span><span class="n">playerProfile</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EventID</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="n">eventID</span><span class="p">));</span>
+<span class="n">BetonQuest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getQuestTypeApi</span><span class="p">().</span><span class="na">event</span><span class="p">(</span><span class="n">playerProfile</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EventID</span><span class="p">(</span><span class="n">questPackage</span><span class="p">,</span><span class="w"> </span><span class="n">eventID</span><span class="p">));</span>
 </code></pre></div>
 <ol>
 <li>You can get the package from the <code>BetonQuest</code> class. It's a map of all packages, so you can get the one you need by its
