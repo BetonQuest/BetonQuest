@@ -74,7 +74,7 @@ nav:
 
       - 'Features':
           - 'Conversations': Documentation/Features/Conversations.md
-          - 'Message Formatting': Documentation/Features/Message-Formatting.md
+          - 'Text Formatting': Documentation/Features/Text-Formatting.md
           - 'NPCs': Documentation/Features/NPCs.md
           - 'Quest Menus':
               - 'Menus': Documentation/Features/Menus/Menu.md

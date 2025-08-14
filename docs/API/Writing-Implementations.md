@@ -102,7 +102,7 @@ The separation is as follows:
   - `ConversationIO`
   - `Interceptor`
   - `Item`
-  - `MessageParser`
+  - `TextParser`
   - `NotifyIO`
   - `Schedule`
 
