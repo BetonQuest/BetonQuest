@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
@@ -24,9 +24,9 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     private final BetonQuestLogger log;
 
     /**
-     * QuestTypeAPI to check conditions.
+     * QuestTypeApi to check conditions.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Instruction used to create the types.
@@ -42,17 +42,17 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
      * Create a new Wrapper for variables with instruction.
      *
      * @param log          the custom logger for this class
-     * @param questTypeAPI the QuestTypeAPI
+     * @param questTypeApi the QuestTypeApi
      * @param instruction  the instruction used to create the types
      * @param player       the type requiring a profile for execution
      * @param playerless   the type working without a profile
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public EventAdapter(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
+    public EventAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.instruction = instruction;
         conditions = instruction.getValueList("conditions", ConditionID::new);
     }
@@ -71,7 +71,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         log.debug(getPackage(), "Event will be fired for "
                 + (profile.getOnlineProfile().isPresent() ? "online" : "offline") + " profile.");
 
-        if (!questTypeAPI.conditions(profile, conditions.getValue(profile))) {
+        if (!questTypeApi.conditions(profile, conditions.getValue(profile))) {
             log.debug(getPackage(), "Event conditions were not met for " + profile);
             return false;
         }
@@ -86,7 +86,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
             return false;
         }
         log.debug(getPackage(), "Static event will be fired without a profile.");
-        if (!questTypeAPI.conditions(null, conditions.getValue(null))) {
+        if (!questTypeApi.conditions(null, conditions.getValue(null))) {
             log.debug(getPackage(), "Event conditions were not met");
             return false;
         }

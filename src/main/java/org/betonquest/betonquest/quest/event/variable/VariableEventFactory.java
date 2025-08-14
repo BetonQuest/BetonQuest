@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.variable;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -17,15 +17,15 @@ public class VariableEventFactory implements PlayerEventFactory {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Create a new factory for {@link VariableEvent}s.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      */
-    public VariableEventFactory(final QuestTypeAPI questTypeAPI) {
-        this.questTypeAPI = questTypeAPI;
+    public VariableEventFactory(final QuestTypeApi questTypeApi) {
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class VariableEventFactory implements PlayerEventFactory {
         final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
         final Variable<String> key = instruction.get(Argument.STRING);
         final Variable<String> value = instruction.get(Argument.STRING);
-        return new VariableEvent(questTypeAPI, objectiveID, key, value);
+        return new VariableEvent(questTypeApi, objectiveID, key, value);
     }
 }

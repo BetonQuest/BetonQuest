@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 import org.betonquest.betonquest.schedule.ScheduleID;
@@ -51,7 +51,7 @@ class RealtimeDailySchedulerTest {
      * Mocked BetonQuestAPI.
      */
     @Mock
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeApi;
 
     private static RealtimeDailySchedule getSchedule(final CatchupStrategy catchupStrategy) {
         final RealtimeDailySchedule schedule = mock(RealtimeDailySchedule.class);
@@ -66,7 +66,7 @@ class RealtimeDailySchedulerTest {
     @Test
     void testStartWithoutSchedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
-        final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, questTypeAPI, cache));
+        final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, questTypeApi, cache));
         scheduler.start(now);
 
         verify(cache).cacheStartupTime(eq(now), any());
@@ -86,7 +86,7 @@ class RealtimeDailySchedulerTest {
         final Instant nextMissedExecution = lastExecution.plus(1, ChronoUnit.DAYS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
-        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeAPI, () -> executorService, cache);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeApi, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ONE);
         when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution);
         scheduler.addSchedule(schedule);
@@ -113,7 +113,7 @@ class RealtimeDailySchedulerTest {
         final Instant nextMissedExecution3 = lastExecution.plus(3, ChronoUnit.DAYS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
-        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeAPI, () -> executorService, cache);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeApi, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
         when(schedule.getNextExecution(any())).thenReturn(nextMissedExecution1, nextMissedExecution2, nextMissedExecution3);
         scheduler.addSchedule(schedule);
@@ -140,7 +140,7 @@ class RealtimeDailySchedulerTest {
         final Instant nextExecution = lastExecution.plus(1, ChronoUnit.DAYS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
-        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeAPI, () -> executorService, cache);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeApi, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
         when(schedule.getNextExecution(any())).thenReturn(nextExecution);
         scheduler.addSchedule(schedule);
@@ -162,7 +162,7 @@ class RealtimeDailySchedulerTest {
         final Instant missedExecution = now.minus(6, ChronoUnit.HOURS);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(firstStartup));
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);
-        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeAPI, () -> executorService, cache);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeApi, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.ALL);
         when(schedule.getNextExecution(any())).thenReturn(missedExecution);
         scheduler.addSchedule(schedule);
@@ -193,7 +193,7 @@ class RealtimeDailySchedulerTest {
             return null;
         };
         when(executorService.schedule(any(Runnable.class), anyLong(), eq(TimeUnit.MILLISECONDS))).then(answer).then(answer).then(answer).then(invocation -> null);
-        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeAPI, () -> executorService, cache);
+        final RealtimeDailyScheduler scheduler = new RealtimeDailyScheduler(logger, questTypeApi, () -> executorService, cache);
         final RealtimeDailySchedule schedule = getSchedule(CatchupStrategy.NONE);
         when(schedule.getNextExecution(any())).thenReturn(nextExecution1, nextExecution2, nextExecution3, nextExecution4);
         scheduler.addSchedule(schedule);

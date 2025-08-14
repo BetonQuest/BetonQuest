@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.variable;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -17,7 +17,7 @@ public class VariableEvent implements PlayerEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The variable objective id to change the variable in.
@@ -37,13 +37,13 @@ public class VariableEvent implements PlayerEvent {
     /**
      * Create a new variable event.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param objectiveID  the objective id of the variable objective
      * @param key          the key of the variable to store
      * @param value        the value of the variable to store
      */
-    public VariableEvent(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveID, final Variable<String> key, final Variable<String> value) {
-        this.questTypeAPI = questTypeAPI;
+    public VariableEvent(final QuestTypeApi questTypeApi, final Variable<ObjectiveID> objectiveID, final Variable<String> key, final Variable<String> value) {
+        this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
         this.key = key;
         this.value = value;
@@ -52,7 +52,7 @@ public class VariableEvent implements PlayerEvent {
     @Override
     public void execute(final Profile profile) throws QuestException {
         final ObjectiveID resolved = this.objectiveID.getValue(profile);
-        final Objective obj = questTypeAPI.getObjective(resolved);
+        final Objective obj = questTypeApi.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
             throw new QuestException(resolved.getFullID() + " is not a variable objective");
         }

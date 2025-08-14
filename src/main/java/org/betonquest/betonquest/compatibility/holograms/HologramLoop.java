@@ -123,7 +123,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         }
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 loggerFactory.create(HologramWrapper.class),
-                BetonQuest.getInstance().getQuestTypeAPI(),
+                BetonQuest.getInstance().getQuestTypeApi(),
                 BetonQuest.getInstance().getProfileProvider(),
                 checkInterval.getValue(null).intValue(),
                 holograms,
@@ -160,7 +160,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
             } catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 stackSize = 1;
             }
-            return new ItemLine(BetonQuest.getInstance().getFeatureAPI().getItem(itemID, null).generate(stackSize));
+            return new ItemLine(BetonQuest.getInstance().getFeatureApi().getItem(itemID, null).generate(stackSize));
         } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }

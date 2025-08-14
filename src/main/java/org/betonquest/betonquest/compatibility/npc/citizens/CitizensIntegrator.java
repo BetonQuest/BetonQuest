@@ -5,7 +5,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -76,7 +76,7 @@ public class CitizensIntegrator implements Integrator {
 
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class),
-                plugin, plugin.getQuestTypeAPI(), citizensWalkingListener);
+                plugin, plugin.getQuestTypeApi(), citizensWalkingListener);
 
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
         questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(npcRegistry));
@@ -88,9 +88,9 @@ public class CitizensIntegrator implements Integrator {
         manager.registerEvents(citizensMoveController, plugin);
 
         final EventTypeRegistry eventTypes = questRegistries.event();
-        final FeatureAPI featureAPI = plugin.getFeatureAPI();
-        eventTypes.register("npcmove", new CitizensMoveEventFactory(featureAPI, data, citizensMoveController));
-        eventTypes.registerCombined("npcstop", new CitizensStopEventFactory(featureAPI, data, citizensMoveController));
+        final FeatureApi featureApi = plugin.getFeatureApi();
+        eventTypes.register("npcmove", new CitizensMoveEventFactory(featureApi, data, citizensMoveController));
+        eventTypes.registerCombined("npcstop", new CitizensStopEventFactory(featureApi, data, citizensMoveController));
 
         final FeatureRegistries featureRegistries = plugin.getFeatureRegistries();
         final ConversationIORegistry conversationIOTypes = featureRegistries.conversationIO();

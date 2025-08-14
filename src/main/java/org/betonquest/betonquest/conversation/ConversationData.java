@@ -5,11 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.id.ConditionID;
@@ -59,12 +59,12 @@ public class ConversationData {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Text creator to parse text.
@@ -108,8 +108,8 @@ public class ConversationData {
      *
      * @param log               the custom logger for this class
      * @param variableProcessor the variable processor to resolve variables
-     * @param questTypeAPI      the quest type api
-     * @param featureAPI        the feature api
+     * @param questTypeApi      the quest type api
+     * @param featureApi        the feature api
      * @param textCreator       the text creator to parse text
      * @param pack              the package of the conversation this data represents
      * @param convSection       the configuration section of the conversation
@@ -118,13 +118,13 @@ public class ConversationData {
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                            final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI,
+                            final QuestTypeApi questTypeApi, final FeatureApi featureApi,
                             final ParsedSectionTextCreator textCreator, final QuestPackage pack,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.variableProcessor = variableProcessor;
-        this.questTypeAPI = questTypeAPI;
-        this.featureAPI = featureAPI;
+        this.questTypeApi = questTypeApi;
+        this.featureApi = featureApi;
         this.pack = pack;
         this.convName = publicData.convName();
         this.publicData = publicData;
@@ -171,7 +171,7 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = featureAPI.getConversation(new ConversationID(targetPack, targetConvName));
+                conv = featureApi.getConversation(new ConversationID(targetPack, targetConvName));
             } catch (final QuestException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
@@ -201,7 +201,7 @@ public class ConversationData {
     private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName,
                                                       @Nullable final String currentOptionName, final OptionType optionType,
                                                       final String option) throws QuestException {
-        final ConversationOptionResolver resolver = new ConversationOptionResolver(featureAPI, pack, currentConversationName, optionType, option);
+        final ConversationOptionResolver resolver = new ConversationOptionResolver(featureApi, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
@@ -461,14 +461,14 @@ public class ConversationData {
             final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final ResolvedOption result = new ConversationOptionResolver(featureAPI, pack, this.convName, NPC, option).resolve();
+                final ResolvedOption result = new ConversationOptionResolver(featureApi, pack, this.convName, NPC, option).resolve();
                 sourceData = result.conversationData();
                 optionName = result.name();
             } else {
                 sourceData = this;
                 optionName = option;
             }
-            if (questTypeAPI.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
+            if (questTypeApi.conditions(profile, sourceData.getConditionIDs(optionName, NPC))) {
                 return true;
             }
         }
@@ -698,7 +698,7 @@ public class ConversationData {
 
             if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
+                    if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {
                         text = text.append(getOption(extend, type).getText(profile, optionPath));
                         break;
                     }
@@ -752,7 +752,7 @@ public class ConversationData {
             final List<EventID> events = new ArrayList<>(this.events);
 
             for (final String extend : extendLinks) {
-                if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
+                if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {
                     events.addAll(getOption(extend, type).getEvents(profile, optionPath));
                     break;
                 }
@@ -785,14 +785,14 @@ public class ConversationData {
                 for (final String extend : extendLinks) {
                     final ResolvedOption resolvedExtend;
                     try {
-                        resolvedExtend = new ConversationOptionResolver(featureAPI, pack, convName, type, extend).resolve();
+                        resolvedExtend = new ConversationOptionResolver(featureApi, pack, convName, type, extend).resolve();
                     } catch (final QuestException e) {
                         log.reportException(pack, e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
                     }
 
                     final ConversationData targetConvData = resolvedExtend.conversationData();
-                    if (questTypeAPI.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
+                    if (questTypeApi.conditions(profile, targetConvData.getOption(resolvedExtend.name(), type).getConditions())) {
                         pointers.addAll(targetConvData.getOption(resolvedExtend.name(), type).getPointers(profile, optionPath));
                         break;
                     }
@@ -826,7 +826,7 @@ public class ConversationData {
             optionPath.add(getName());
 
             for (final String extend : extendLinks) {
-                if (questTypeAPI.conditions(profile, getOption(extend, type).getConditions())) {
+                if (questTypeApi.conditions(profile, getOption(extend, type).getConditions())) {
                     return new FallbackConfigurationSection(properties, getOption(extend, type).getProperties(profile, optionPath));
                 }
             }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -17,7 +17,7 @@ public class CitizensMoveEvent implements PlayerEvent {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * ID of the NPC to move.
@@ -37,14 +37,14 @@ public class CitizensMoveEvent implements PlayerEvent {
     /**
      * Create a new CitizensMoveEvent.
      *
-     * @param featureAPI             the Feature API
+     * @param featureApi             the Feature API
      * @param npcId                  the ID of the NPC to move
      * @param citizensMoveController the move instance which handles the NPC movement
      * @param moveData               the parsed data for the NPC movement
      */
-    public CitizensMoveEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController,
+    public CitizensMoveEvent(final FeatureApi featureApi, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController,
                              final CitizensMoveController.MoveData moveData) {
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.npcId = npcId;
         this.citizensMoveController = citizensMoveController;
         this.moveData = moveData;
@@ -52,7 +52,7 @@ public class CitizensMoveEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId.getValue(profile), profile);
+        final Npc<?> bqNpc = featureApi.getNpc(npcId.getValue(profile), profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use Citizens MoveEvent for non Citizens NPC");
         }

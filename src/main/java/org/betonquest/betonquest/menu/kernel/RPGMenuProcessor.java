@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.instruction.argument.types.ItemParser;
@@ -34,9 +34,9 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
     protected final ParsedSectionTextCreator textCreator;
 
     /**
-     * The QuestTypeAPI.
+     * The QuestTypeApi.
      */
-    protected final QuestTypeAPI questTypeAPI;
+    protected final QuestTypeApi questTypeApi;
 
     /**
      * The Variable Processor.
@@ -57,18 +57,18 @@ public abstract class RPGMenuProcessor<I extends ID, T> extends SectionProcessor
      * @param loggerFactory     the logger factory to class specific loggers with
      * @param textCreator       the text creator to parse text
      * @param variableProcessor the variable resolver
-     * @param questTypeAPI      the QuestTypeAPI
-     * @param featureAPI        the Feature API
+     * @param questTypeApi      the QuestTypeApi
+     * @param featureApi        the Feature API
      */
     public RPGMenuProcessor(final BetonQuestLogger log, final String readable, final String internal,
                             final BetonQuestLoggerFactory loggerFactory, final ParsedSectionTextCreator textCreator,
-                            final VariableProcessor variableProcessor, final QuestTypeAPI questTypeAPI, final FeatureAPI featureAPI) {
+                            final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
         super(log, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.variableProcessor = variableProcessor;
-        this.itemParser = new ItemParser(featureAPI);
+        this.itemParser = new ItemParser(featureApi);
     }
 
     /**

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.objective;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -34,20 +34,20 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Creates a new factory for {@link ObjectiveEvent}s.
      *
      * @param betonQuest    the BetonQuest instance
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param questTypeAPI  the Quest Type API
+     * @param questTypeApi  the Quest Type API
      */
     public ObjectiveEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                                 final QuestTypeAPI questTypeAPI) {
+                                 final QuestTypeApi questTypeApi) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
@@ -64,6 +64,6 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
         final String action = instruction.next().toLowerCase(Locale.ROOT);
         final Variable<List<ObjectiveID>> objectives = instruction.getList(ObjectiveID::new);
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
-                questTypeAPI, instruction.getPackage(), objectives, action));
+                questTypeApi, instruction.getPackage(), objectives, action));
     }
 }

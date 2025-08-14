@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.conversation;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -15,7 +15,7 @@ public class ConversationCondition implements PlayerCondition {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * The conversation to check.
@@ -25,16 +25,16 @@ public class ConversationCondition implements PlayerCondition {
     /**
      * Creates a new ConversationCondition.
      *
-     * @param featureAPI     the feature API
+     * @param featureApi     the feature API
      * @param conversationID the conversation to check
      */
-    public ConversationCondition(final FeatureAPI featureAPI, final Variable<ConversationID> conversationID) {
-        this.featureAPI = featureAPI;
+    public ConversationCondition(final FeatureApi featureApi, final Variable<ConversationID> conversationID) {
+        this.featureApi = featureApi;
         this.conversationID = conversationID;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return featureAPI.getConversation(conversationID.getValue(profile)).isReady(profile);
+        return featureApi.getConversation(conversationID.getValue(profile)).isReady(profile);
     }
 }

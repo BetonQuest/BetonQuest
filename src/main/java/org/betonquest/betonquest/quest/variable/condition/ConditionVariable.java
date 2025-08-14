@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.condition;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.id.ConditionID;
@@ -31,7 +31,7 @@ public class ConditionVariable implements PlayerVariable {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Create a new Condition variable.
@@ -39,18 +39,18 @@ public class ConditionVariable implements PlayerVariable {
      * @param pluginMessage the {@link PluginMessage} instance
      * @param conditionId   the condition to get the "fulfillment" status
      * @param papiMode      if the return value should be in PAPI mode as defined in the documentation
-     * @param questTypeAPI  the Quest Type API
+     * @param questTypeApi  the Quest Type API
      */
-    public ConditionVariable(final PluginMessage pluginMessage, final Variable<ConditionID> conditionId, final boolean papiMode, final QuestTypeAPI questTypeAPI) {
+    public ConditionVariable(final PluginMessage pluginMessage, final Variable<ConditionID> conditionId, final boolean papiMode, final QuestTypeApi questTypeApi) {
         this.pluginMessage = pluginMessage;
         this.conditionId = conditionId;
         this.papiMode = papiMode;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        if (questTypeAPI.condition(profile, conditionId.getValue(profile))) {
+        if (questTypeApi.condition(profile, conditionId.getValue(profile))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }
         return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_not_met")) : "false";

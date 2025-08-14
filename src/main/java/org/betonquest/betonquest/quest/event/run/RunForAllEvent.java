@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.run;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestListException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -28,7 +28,7 @@ public class RunForAllEvent implements PlayerlessEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * List of Events to run.
@@ -44,15 +44,15 @@ public class RunForAllEvent implements PlayerlessEvent {
      * Create a new RunForAllEvent instance.
      *
      * @param profileCollectionSupplier the supplier for generating the profiles
-     * @param questTypeAPI              the Quest Type API
+     * @param questTypeApi              the Quest Type API
      * @param events                    the events to run
      * @param conditions                the conditions each profile must meet to run the events
      */
     public RunForAllEvent(final Supplier<? extends Iterable<? extends Profile>> profileCollectionSupplier,
-                          final QuestTypeAPI questTypeAPI, final Variable<List<EventID>> events,
+                          final QuestTypeApi questTypeApi, final Variable<List<EventID>> events,
                           final Variable<List<ConditionID>> conditions) {
         this.profileCollectionSupplier = profileCollectionSupplier;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.events = events;
         this.conditions = conditions;
     }
@@ -63,9 +63,9 @@ public class RunForAllEvent implements PlayerlessEvent {
         for (final Profile profile : profileCollectionSupplier.get()) {
             try {
                 final List<ConditionID> resolvedConditions = conditions.getValue(profile);
-                if (resolvedConditions.isEmpty() || questTypeAPI.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
+                if (resolvedConditions.isEmpty() || questTypeApi.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
                     for (final EventID event : events.getValue(profile)) {
-                        questTypeAPI.event(profile, event);
+                        questTypeApi.event(profile, event);
                     }
                 }
             } catch (final QuestException e) {

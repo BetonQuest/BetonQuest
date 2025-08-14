@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -22,7 +22,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Data used for primary server thread access.
@@ -32,11 +32,11 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     /**
      * Create a new factory for NPC Region Conditions.
      *
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      * @param data       the data for primary server thread access
      */
-    public NpcRegionConditionFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
-        this.featureAPI = featureAPI;
+    public NpcRegionConditionFactory(final FeatureApi featureApi, final PrimaryServerThreadData data) {
+        this.featureApi = featureApi;
         this.data = data;
     }
 
@@ -53,6 +53,6 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<String> region = instruction.get(Argument.STRING);
-        return new NullableConditionAdapter(new NpcRegionCondition(featureAPI, npcId, region));
+        return new NullableConditionAdapter(new NpcRegionCondition(featureApi, npcId, region));
     }
 }

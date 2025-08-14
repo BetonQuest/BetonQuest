@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.worldguard.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -17,7 +17,7 @@ public class NpcRegionCondition implements NullableCondition {
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * The Npc id.
@@ -32,18 +32,18 @@ public class NpcRegionCondition implements NullableCondition {
     /**
      * Create a new NpcRegionCondition.
      *
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      * @param npcId      the npc id, null or positive
      * @param region     the name of the region where the NPC should be
      */
-    public NpcRegionCondition(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final Variable<String> region) {
-        this.featureAPI = featureAPI;
+    public NpcRegionCondition(final FeatureApi featureApi, final Variable<NpcID> npcId, final Variable<String> region) {
+        this.featureApi = featureApi;
         this.npcId = npcId;
         this.region = region;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return WorldGuardIntegrator.isInsideRegion(featureAPI.getNpc(npcId.getValue(profile), profile).getLocation(), region.getValue(profile));
+        return WorldGuardIntegrator.isInsideRegion(featureApi.getNpc(npcId.getValue(profile), profile).getLocation(), region.getValue(profile));
     }
 }

@@ -328,7 +328,7 @@ public class PlayerData implements TagData, PointData {
             final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
-                BetonQuest.getInstance().getQuestTypeAPI().resumeObjective(profile, objectiveID, entry.getValue());
+                BetonQuest.getInstance().getQuestTypeApi().resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
@@ -355,7 +355,7 @@ public class PlayerData implements TagData, PointData {
     public void addNewRawObjective(final ObjectiveID objectiveID) {
         final Objective obj;
         try {
-            obj = BetonQuest.getInstance().getQuestTypeAPI().getObjective(objectiveID);
+            obj = BetonQuest.getInstance().getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             log.warn(objectiveID.getPackage(), "Cannot add objective to player data: " + e.getMessage(), e);
             return;
@@ -540,7 +540,7 @@ public class PlayerData implements TagData, PointData {
      * @param pluginMessage the plugin message to generate a new journal
      */
     public void purgePlayer(final PluginMessage pluginMessage) {
-        for (final Objective obj : BetonQuest.getInstance().getQuestTypeAPI().getPlayerObjectives(profile)) {
+        for (final Objective obj : BetonQuest.getInstance().getQuestTypeApi().getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
         // clear all lists

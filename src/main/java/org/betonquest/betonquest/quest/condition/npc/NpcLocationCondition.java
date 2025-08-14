@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -18,7 +18,7 @@ public class NpcLocationCondition implements NullableCondition {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Id of the npc.
@@ -38,14 +38,14 @@ public class NpcLocationCondition implements NullableCondition {
     /**
      * Create a new NPCLocationCondition.
      *
-     * @param featureAPI the Quest Type API
+     * @param featureApi the Quest Type API
      * @param npcId      the id of the npc
      * @param location   the location where the npc has to be around
      * @param radius     the maximal distance between the npc and the radius location
      */
-    public NpcLocationCondition(final FeatureAPI featureAPI, final Variable<NpcID> npcId,
+    public NpcLocationCondition(final FeatureApi featureApi, final Variable<NpcID> npcId,
                                 final Variable<Location> location, final Variable<Number> radius) {
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.npcId = npcId;
         this.location = location;
         this.radius = radius;
@@ -53,7 +53,7 @@ public class NpcLocationCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> npc = featureAPI.getNpc(npcId.getValue(profile), profile);
+        final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
         final Location location = this.location.getValue(profile);
         final Location npcLocation = npc.getLocation();
         if (!location.getWorld().equals(npcLocation.getWorld())) {

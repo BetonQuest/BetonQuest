@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.compass;
 
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -24,7 +24,7 @@ public class CompassEvent implements PlayerEvent {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Storage to get the offline player data.
@@ -49,15 +49,15 @@ public class CompassEvent implements PlayerEvent {
     /**
      * Create the compass event.
      *
-     * @param featureAPI    the Feature API
+     * @param featureApi    the Feature API
      * @param storage       the storage to get the offline player data
      * @param pluginManager the plugin manager to call the {@link QuestCompassTargetChangeEvent}
      * @param action        the action to perform
      * @param compassId     the compass point
      */
-    public CompassEvent(final FeatureAPI featureAPI, final PlayerDataStorage storage, final PluginManager pluginManager,
+    public CompassEvent(final FeatureApi featureApi, final PlayerDataStorage storage, final PluginManager pluginManager,
                         final Variable<CompassTargetAction> action, final Variable<CompassID> compassId) {
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
         this.dataStorage = storage;
         this.pluginManager = pluginManager;
         this.action = action;
@@ -71,7 +71,7 @@ public class CompassEvent implements PlayerEvent {
             case ADD -> changeTag(new AddTagChanger(new VariableList<>(compassId.getTag())), profile);
             case DEL -> changeTag(new DeleteTagChanger(new VariableList<>(compassId.getTag())), profile);
             case SET -> {
-                final QuestCompass compass = featureAPI.getCompasses().get(compassId);
+                final QuestCompass compass = featureApi.getCompasses().get(compassId);
                 if (compass == null) {
                     throw new QuestException("No compass found for id '" + compassId.getFullID() + "' found.");
                 }

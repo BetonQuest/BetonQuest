@@ -114,7 +114,7 @@ public class PasswordObjective extends Objective implements Listener {
             } else {
                 try {
                     for (final EventID event : failEvents.getValue(onlineProfile)) {
-                        BetonQuest.getInstance().getQuestTypeAPI().event(onlineProfile, event);
+                        BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
                     }
                 } catch (final QuestException e) {
                     throw new QuestException("Failed to resolve events: " + e.getMessage(), e);

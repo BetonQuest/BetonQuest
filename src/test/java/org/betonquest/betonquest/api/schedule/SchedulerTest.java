@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.schedule.ScheduleID;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,11 @@ class SchedulerTest {
      * Mocked API.
      */
     @Mock
-    private QuestTypeAPI questTypeAPI;
+    private QuestTypeApi questTypeApi;
 
     @Test
     void testAddSchedule() {
-        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeAPI);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(scheduleID);
@@ -44,7 +44,7 @@ class SchedulerTest {
 
     @Test
     void testStart() {
-        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeAPI);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         assertFalse(scheduler.isRunning(), "isRunning should be false before start is called");
         scheduler.start();
         assertTrue(scheduler.isRunning(), "isRunning should be true after start is called");
@@ -53,7 +53,7 @@ class SchedulerTest {
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testStop() {
-        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeAPI);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final ScheduleID scheduleID = mock(ScheduleID.class);
         final Schedule schedule = mock(Schedule.class);
         scheduler.schedules.put(scheduleID, schedule);
@@ -66,16 +66,16 @@ class SchedulerTest {
 
     @Test
     void testExecuteEvents() {
-        final QuestTypeAPI questTypeAPI = mock(QuestTypeAPI.class);
-        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeAPI);
+        final QuestTypeApi questTypeApi = mock(QuestTypeApi.class);
+        final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, questTypeApi);
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
         final EventID eventA = mock(EventID.class);
         final EventID eventB = mock(EventID.class);
         when(schedule.getEvents()).thenReturn(List.of(eventA, eventB));
         scheduler.executeEvents(schedule);
-        verify(questTypeAPI).event(null, eventA);
-        verify(questTypeAPI).event(null, eventB);
+        verify(questTypeApi).event(null, eventA);
+        verify(questTypeApi).event(null, eventB);
     }
 
     /**
@@ -86,10 +86,10 @@ class SchedulerTest {
          * Default constructor.
          *
          * @param logger       the logger that will be used for logging
-         * @param questTypeAPI the class for executing events
+         * @param questTypeApi the class for executing events
          */
-        public MockedScheduler(final BetonQuestLogger logger, final QuestTypeAPI questTypeAPI) {
-            super(logger, questTypeAPI);
+        public MockedScheduler(final BetonQuestLogger logger, final QuestTypeApi questTypeApi) {
+            super(logger, questTypeApi);
         }
 
         @Override

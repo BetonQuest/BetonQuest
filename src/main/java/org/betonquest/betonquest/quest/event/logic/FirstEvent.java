@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -23,23 +23,23 @@ public class FirstEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Makes a new first event.
      *
      * @param eventIDList  A list of events to execute in order.
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      */
-    public FirstEvent(final Variable<List<EventID>> eventIDList, final QuestTypeAPI questTypeAPI) {
+    public FirstEvent(final Variable<List<EventID>> eventIDList, final QuestTypeApi questTypeApi) {
         events = eventIDList;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final EventID event : events.getValue(profile)) {
-            if (questTypeAPI.event(profile, event)) {
+            if (questTypeApi.event(profile, event)) {
                 break;
             }
         }

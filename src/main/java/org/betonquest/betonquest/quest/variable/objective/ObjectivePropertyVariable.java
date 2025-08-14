@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.objective;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.id.ObjectiveID;
 
@@ -15,7 +15,7 @@ public class ObjectivePropertyVariable implements PlayerVariable {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The objective ID.
@@ -30,19 +30,19 @@ public class ObjectivePropertyVariable implements PlayerVariable {
     /**
      * Create a new objective property variable.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param objectiveID  The objective ID.
      * @param propertyName The property name.
      */
-    public ObjectivePropertyVariable(final QuestTypeAPI questTypeAPI, final ObjectiveID objectiveID, final String propertyName) {
-        this.questTypeAPI = questTypeAPI;
+    public ObjectivePropertyVariable(final QuestTypeApi questTypeApi, final ObjectiveID objectiveID, final String propertyName) {
+        this.questTypeApi = questTypeApi;
         this.objectiveID = objectiveID;
         this.propertyName = propertyName;
     }
 
     @Override
     public String getValue(final Profile profile) throws QuestException {
-        final Objective objective = questTypeAPI.getObjective(objectiveID);
+        final Objective objective = questTypeApi.getObjective(objectiveID);
         if (objective.containsPlayer(profile)) {
             return objective.getProperty(propertyName, profile);
         }

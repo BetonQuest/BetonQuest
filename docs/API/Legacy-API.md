@@ -16,7 +16,7 @@ icon: octicons/gear-16
 
 ### Using Quest Types
 
-The methods for using Conditions, Events and Objectives was moved into `BetonQuest.getInstance().getQuestTypeAPI()`.
+The methods for using Conditions, Events and Objectives was moved into `BetonQuest.getInstance().getQuestTypeApi()`.
 
 ### Instruction
 
@@ -91,7 +91,7 @@ You can't fire an event directly using an instruction string.
 final QuestPackage questPackage = BetonQuest.getInstance().getPackages().get("myPackage"); //(1)!
 final Profile playerProfile = BetonQuest.getInstance().getProfileProvider().getProfile(player); //(2)!
 
-BetonQuest.getInstance().getQuestAPI().event(playerProfile, new EventID(questPackage, eventID));
+BetonQuest.getInstance().getQuestTypeApi().event(playerProfile, new EventID(questPackage, eventID));
 ```
 
 1. You can get the package from the `BetonQuest` class. It's a map of all packages, so you can get the one you need by its

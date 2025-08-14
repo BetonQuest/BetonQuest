@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -213,7 +213,7 @@ public class CoreQuestTypes {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The {@link PluginMessage} instance.
@@ -252,7 +252,7 @@ public class CoreQuestTypes {
      * @param server            the server used for primary server thread access.
      * @param scheduler         the scheduler used for primary server thread access
      * @param betonQuest        the plugin used for primary server access and type registration
-     * @param questTypeAPI      the Quest Type API
+     * @param questTypeApi      the Quest Type API
      * @param pluginMessage     the plugin message instance
      * @param variableProcessor the variable processor to create new variables
      * @param globalData        the storage providing global data
@@ -263,14 +263,14 @@ public class CoreQuestTypes {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
-                          final QuestTypeAPI questTypeAPI, final PluginMessage pluginMessage,
+                          final QuestTypeApi questTypeApi, final PluginMessage pluginMessage,
                           final VariableProcessor variableProcessor, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
                           final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.pluginMessage = pluginMessage;
         this.variableProcessor = variableProcessor;
         this.globalData = globalData;
@@ -295,13 +295,13 @@ public class CoreQuestTypes {
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
         conditionTypes.register("advancement", new AdvancementConditionFactory(data, loggerFactory));
-        conditionTypes.registerCombined("and", new ConjunctionConditionFactory(questTypeAPI));
+        conditionTypes.registerCombined("and", new ConjunctionConditionFactory(questTypeApi));
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("check", new CheckConditionFactory());
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory(data));
-        conditionTypes.register("conversation", new ConversationConditionFactory(betonQuest.getFeatureAPI()));
+        conditionTypes.register("conversation", new ConversationConditionFactory(betonQuest.getFeatureApi()));
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
@@ -325,13 +325,13 @@ public class CoreQuestTypes {
         conditionTypes.register("location", new LocationConditionFactory(data, loggerFactory));
         conditionTypes.register("looking", new LookingAtConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("moonphase", new MoonPhaseConditionFactory(data));
-        conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(betonQuest.getFeatureAPI(), data, loggerFactory));
-        conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getFeatureAPI(), data));
+        conditionTypes.register("npcdistance", new NpcDistanceConditionFactory(betonQuest.getFeatureApi(), data, loggerFactory));
+        conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(betonQuest.getFeatureApi(), data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
-        conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeAPI));
-        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory, questTypeAPI));
+        conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeApi));
+        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory, questTypeApi));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
-        conditionTypes.registerCombined("party", new PartyConditionFactory(questTypeAPI, profileProvider));
+        conditionTypes.registerCombined("party", new PartyConditionFactory(questTypeApi, profileProvider));
         conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data));
         conditionTypes.register("point", new PointConditionFactory(dataStorage));
         conditionTypes.registerCombined("random", new RandomConditionFactory());
@@ -341,7 +341,7 @@ public class CoreQuestTypes {
         conditionTypes.register("score", new ScoreboardObjectiveConditionFactory(data));
         conditionTypes.register("scoretag", new ScoreboardTagConditionFactory(data, loggerFactory));
         conditionTypes.register("sneak", new SneakConditionFactory(loggerFactory, data));
-        conditionTypes.register("stage", new StageConditionFactory(questTypeAPI));
+        conditionTypes.register("stage", new StageConditionFactory(questTypeApi));
         conditionTypes.register("tag", new TagConditionFactory(dataStorage));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
         conditionTypes.registerCombined("time", new TimeConditionFactory(data, variableProcessor));
@@ -352,13 +352,13 @@ public class CoreQuestTypes {
 
     private void registerEvents(final EventTypeRegistry eventTypes) {
         eventTypes.register("burn", new BurnEventFactory(loggerFactory, data));
-        eventTypes.register("cancel", new CancelEventFactory(loggerFactory, betonQuest.getFeatureAPI()));
+        eventTypes.register("cancel", new CancelEventFactory(loggerFactory, betonQuest.getFeatureApi()));
         eventTypes.register("cancelconversation", new CancelConversationEventFactory(loggerFactory));
         eventTypes.register("chat", new ChatEventFactory(loggerFactory, data));
         eventTypes.registerCombined("chestclear", new ChestClearEventFactory(data));
         eventTypes.registerCombined("chestgive", new ChestGiveEventFactory(data));
         eventTypes.registerCombined("chesttake", new ChestTakeEventFactory(data));
-        eventTypes.register("compass", new CompassEventFactory(betonQuest.getFeatureAPI(), dataStorage, server.getPluginManager(), data));
+        eventTypes.register("compass", new CompassEventFactory(betonQuest.getFeatureApi(), dataStorage, server.getPluginManager(), data));
         eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, data));
         eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, data, pluginMessage));
         eventTypes.register("damage", new DamageEventFactory(loggerFactory, data));
@@ -371,14 +371,14 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("eval", new EvalEventFactory(eventTypes));
         eventTypes.register("experience", new ExperienceEventFactory(loggerFactory, data));
         eventTypes.registerCombined("explosion", new ExplosionEventFactory(data));
-        eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeAPI));
-        eventTypes.registerCombined("first", new FirstEventFactory(questTypeAPI));
+        eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
+        eventTypes.registerCombined("first", new FirstEventFactory(questTypeApi));
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
         eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, pluginMessage, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("if", new IfElseEventFactory(questTypeAPI));
+        eventTypes.registerCombined("if", new IfElseEventFactory(questTypeApi));
         eventTypes.register("itemdurability", new ItemDurabilityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("journal", new JournalEventFactory(loggerFactory, pluginMessage, dataStorage,
                 InstantSource.system(), betonQuest.getSaver(), profileProvider));
@@ -389,29 +389,29 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("log", new LogEventFactory(loggerFactory));
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, languageProvider));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, profileProvider, languageProvider));
-        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureAPI(), data));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeAPI));
+        eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureApi(), data));
+        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeApi));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
-        eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeAPI, profileProvider));
-        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeAPI));
+        eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeApi, profileProvider));
+        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeApi));
         eventTypes.register("point", new PointEventFactory(loggerFactory, dataStorage,
                 pluginMessage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
         eventTypes.registerCombined("run", new RunEventFactory());
-        eventTypes.register("runForAll", new RunForAllEventFactory(questTypeAPI, profileProvider));
-        eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeAPI));
+        eventTypes.register("runForAll", new RunForAllEventFactory(questTypeApi, profileProvider));
+        eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeApi));
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
         eventTypes.register("score", new ScoreboardObjectiveEventFactory(data));
         eventTypes.register("scoretag", new ScoreboardTagEventFactory(loggerFactory, data));
         eventTypes.registerCombined("spawn", new SpawnMobEventFactory(data));
-        eventTypes.register("stage", new StageEventFactory(questTypeAPI));
+        eventTypes.register("stage", new StageEventFactory(questTypeApi));
         eventTypes.register("sudo", new SudoEventFactory(loggerFactory, data));
         eventTypes.registerCombined("tag", new TagPlayerEventFactory(dataStorage, betonQuest.getSaver(), profileProvider));
         eventTypes.register("take", new TakeEventFactory(loggerFactory, pluginMessage));
         eventTypes.register("teleport", new TeleportEventFactory(loggerFactory, data));
         eventTypes.registerCombined("time", new TimeEventFactory(server, data));
-        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(betonQuest.getFeatureAPI().getNpcHider(), loggerFactory, data));
-        eventTypes.register("variable", new VariableEventFactory(questTypeAPI));
+        eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(betonQuest.getFeatureApi().getNpcHider(), loggerFactory, data));
+        eventTypes.register("variable", new VariableEventFactory(questTypeApi));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory, data));
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
@@ -454,7 +454,7 @@ public class CoreQuestTypes {
     }
 
     private void registerVariables(final VariableTypeRegistry variables) {
-        variables.register("condition", new ConditionVariableFactory(questTypeAPI, pluginMessage));
+        variables.register("condition", new ConditionVariableFactory(questTypeApi, pluginMessage));
         variables.registerCombined("constant", new ConstantVariableFactory());
         variables.registerCombined("eval", new EvalVariableFactory());
         variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
@@ -463,8 +463,8 @@ public class CoreQuestTypes {
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(variableProcessor));
-        variables.registerCombined("npc", new NpcVariableFactory(betonQuest.getFeatureAPI()));
-        variables.register("objective", new ObjectivePropertyVariableFactory(questTypeAPI));
+        variables.registerCombined("npc", new NpcVariableFactory(betonQuest.getFeatureApi()));
+        variables.register("objective", new ObjectivePropertyVariableFactory(questTypeApi));
         variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("quester", new QuesterVariableFactory());

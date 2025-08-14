@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -47,7 +47,7 @@ public class FolderEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Random generator used to choose events to run.
@@ -99,7 +99,7 @@ public class FolderEvent implements NullableEvent {
      * @param log              custom logger for this class
      * @param pluginManager    the plugin manager to register the quit listener
      * @param events           events to run
-     * @param questTypeAPI     the Quest Type API
+     * @param questTypeApi     the Quest Type API
      * @param randomGenerator  the random instance to use
      * @param delay            delay to apply before running the events
      * @param period           delay to apply between each event
@@ -110,14 +110,14 @@ public class FolderEvent implements NullableEvent {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public FolderEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final PluginManager pluginManager,
-                       final Variable<List<EventID>> events, final QuestTypeAPI questTypeAPI, final Random randomGenerator,
+                       final Variable<List<EventID>> events, final QuestTypeApi questTypeApi, final Random randomGenerator,
                        @Nullable final Variable<Number> delay, @Nullable final Variable<Number> period,
                        @Nullable final Variable<Number> random, final Variable<TimeUnit> timeUnit, final boolean cancelOnLogout,
                        final Variable<List<ConditionID>> cancelConditions) {
         this.betonQuest = betonQuest;
         this.log = log;
         this.pluginManager = pluginManager;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.randomGenerator = randomGenerator;
         this.delay = delay;
         this.period = period;
@@ -131,7 +131,7 @@ public class FolderEvent implements NullableEvent {
     private boolean checkCancelConditions(@Nullable final Profile profile) {
         try {
             final List<ConditionID> resolvedCancelConditions = cancelConditions.getValue(profile);
-            return !resolvedCancelConditions.isEmpty() && questTypeAPI.conditions(profile, resolvedCancelConditions);
+            return !resolvedCancelConditions.isEmpty() && questTypeApi.conditions(profile, resolvedCancelConditions);
         } catch (final QuestException e) {
             log.warn("Exception while checking cancel conditions: " + e.getMessage(), e);
             return false;
@@ -143,7 +143,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeAPI.event(profile, event);
+            questTypeApi.event(profile, event);
         }
     }
 
@@ -168,7 +168,7 @@ public class FolderEvent implements NullableEvent {
             if (checkCancelConditions(profile)) {
                 return;
             }
-            questTypeAPI.event(profile, event);
+            questTypeApi.event(profile, event);
         }
         if (!chosenList.isEmpty()) {
             final FolderEventCanceler eventCanceler = createFolderEventCanceler(profile);
@@ -181,7 +181,7 @@ public class FolderEvent implements NullableEvent {
                         this.cancel();
                         return;
                     }
-                    questTypeAPI.event(profile, event);
+                    questTypeApi.event(profile, event);
                 }
             }, delayTicks == 0 ? periodTicks : delayTicks, periodTicks);
         }

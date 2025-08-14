@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -56,17 +56,17 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
      * @param textCreator       the text creator to parse text
-     * @param questTypeAPI      the QuestTypeAPI
+     * @param questTypeApi      the QuestTypeApi
      * @param variableProcessor the variable resolver
-     * @param featureAPI        the Feature API
+     * @param featureApi        the Feature API
      * @param rpgMenu           the RPG Menu instance
      * @param profileProvider   the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                         final ParsedSectionTextCreator textCreator, final QuestTypeAPI questTypeAPI,
-                         final VariableProcessor variableProcessor, final FeatureAPI featureAPI, final RPGMenu rpgMenu,
+                         final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
+                         final VariableProcessor variableProcessor, final FeatureApi featureApi, final RPGMenu rpgMenu,
                          final ProfileProvider profileProvider) {
-        super(log, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeAPI, featureAPI);
+        super(log, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -88,7 +88,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
                 ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
-        final Menu menu = new Menu(log, menuID, questTypeAPI, menuData, boundItem);
+        final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
             final String string = new Variable<>(variableProcessor, pack, helper.getRequired("command"),
                     Argument.STRING).getValue(null).trim();

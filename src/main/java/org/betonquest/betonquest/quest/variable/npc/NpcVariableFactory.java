@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.variable.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -33,15 +33,15 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Create a new factory to create NPC Variables.
      *
-     * @param featureAPI the Quest Type API
+     * @param featureApi the Quest Type API
      */
-    public NpcVariableFactory(final FeatureAPI featureAPI) {
-        this.featureAPI = featureAPI;
+    public NpcVariableFactory(final FeatureApi featureApi) {
+        this.featureApi = featureApi;
     }
 
     @Override
@@ -78,6 +78,6 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
                 decimalPlaces = Integer.parseInt(instruction.next());
             }
         }
-        return new NpcVariable(featureAPI, npcID, key, locationFormationMode, decimalPlaces);
+        return new NpcVariable(featureApi, npcID, key, locationFormationMode, decimalPlaces);
     }
 }

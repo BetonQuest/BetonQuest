@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -31,7 +31,7 @@ public class IfElseEvent implements NullableEvent {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Creates a new if-else event.
@@ -39,21 +39,21 @@ public class IfElseEvent implements NullableEvent {
      * @param condition    the condition to check
      * @param event        the event to run if the condition is true
      * @param elseEvent    the event to run if the condition is false
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      */
-    public IfElseEvent(final Variable<ConditionID> condition, final Variable<EventID> event, final Variable<EventID> elseEvent, final QuestTypeAPI questTypeAPI) {
+    public IfElseEvent(final Variable<ConditionID> condition, final Variable<EventID> event, final Variable<EventID> elseEvent, final QuestTypeApi questTypeApi) {
         this.condition = condition;
         this.event = event;
         this.elseEvent = elseEvent;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        if (questTypeAPI.condition(profile, condition.getValue(profile))) {
-            questTypeAPI.event(profile, event.getValue(profile));
+        if (questTypeApi.condition(profile, condition.getValue(profile))) {
+            questTypeApi.event(profile, event.getValue(profile));
         } else {
-            questTypeAPI.event(profile, elseEvent.getValue(profile));
+            questTypeApi.event(profile, elseEvent.getValue(profile));
         }
     }
 }

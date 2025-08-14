@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -24,7 +24,7 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     /**
      * Quest Type API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Data to use for syncing to the primary server thread.
@@ -34,11 +34,11 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     /**
      * Create a new factory for Npc Teleport Events.
      *
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      * @param data       the data to use for syncing to the primary server thread
      */
-    public NpcTeleportEventFactory(final FeatureAPI featureAPI, final PrimaryServerThreadData data) {
-        this.featureAPI = featureAPI;
+    public NpcTeleportEventFactory(final FeatureApi featureApi, final PrimaryServerThreadData data) {
+        this.featureApi = featureApi;
         this.data = data;
     }
 
@@ -56,6 +56,6 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final boolean spawn = instruction.hasArgument("spawn");
-        return new NullableEventAdapter(new NpcTeleportEvent(featureAPI, npcId, location, spawn));
+        return new NullableEventAdapter(new NpcTeleportEvent(featureApi, npcId, location, spawn));
     }
 }

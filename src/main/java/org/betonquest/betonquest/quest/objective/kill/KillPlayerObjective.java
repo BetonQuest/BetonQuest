@@ -61,7 +61,7 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
             qeHandler.handle(() -> {
                 if (containsPlayer(killer)
                         && (name == null || event.getEntity().getName().equalsIgnoreCase(name.getValue(killer)))
-                        && BetonQuest.getInstance().getQuestTypeAPI().conditions(victim, required.getValue(victim))
+                        && BetonQuest.getInstance().getQuestTypeApi().conditions(victim, required.getValue(victim))
                         && checkConditions(killer)) {
 
                     getCountingData(killer).progress();

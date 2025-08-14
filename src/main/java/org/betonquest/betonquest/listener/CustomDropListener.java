@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.listener;
 
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -28,19 +28,19 @@ public class CustomDropListener implements Listener {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * Create a new custom drop Listener.
      *
      * @param log        the custom logger for exceptions
      * @param plugin     the plugin used as namespace
-     * @param featureAPI the Feature API
+     * @param featureApi the Feature API
      */
-    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin, final FeatureAPI featureAPI) {
+    public CustomDropListener(final BetonQuestLogger log, final Plugin plugin, final FeatureApi featureApi) {
         this.log = log;
         this.plugin = plugin;
-        this.featureAPI = featureAPI;
+        this.featureApi = featureApi;
     }
 
     /**
@@ -58,7 +58,7 @@ public class CustomDropListener implements Listener {
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');
                 try {
-                    event.getDrops().add(featureAPI.getItem(new ItemID(null, dataContainerValue.substring(0, separatorIndex)), null)
+                    event.getDrops().add(featureApi.getItem(new ItemID(null, dataContainerValue.substring(0, separatorIndex)), null)
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
                 } catch (final QuestException e) {
                     log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);

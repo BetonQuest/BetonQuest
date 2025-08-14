@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.instruction.Instruction;
@@ -23,30 +23,30 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, Player
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories} for
      * {@link org.betonquest.betonquest.api.quest.event Events}.
      *
      * @param loggerFactory     the logger factory to create a new custom logger
-     * @param questTypeAPI      the QuestTypeAPi
+     * @param questTypeApi      the QuestTypeAPi
      * @param playerFactory     the player factory to use
      * @param playerlessFactory the playerless factory to use
      * @throws IllegalArgumentException if no factory is given
      */
     public EventAdapterFactory(final BetonQuestLoggerFactory loggerFactory,
-                               final QuestTypeAPI questTypeAPI, @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
+                               final QuestTypeApi questTypeApi, @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
                                @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
         super(playerFactory, playerlessFactory);
         this.loggerFactory = loggerFactory;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
     }
 
     @Override
     protected EventAdapter getAdapter(final Instruction instruction,
                                       @Nullable final PlayerEvent playerType,
                                       @Nullable final PlayerlessEvent playerlessType) throws QuestException {
-        return new EventAdapter(loggerFactory.create(EventAdapter.class), questTypeAPI, instruction, playerType, playerlessType);
+        return new EventAdapter(loggerFactory.create(EventAdapter.class), questTypeApi, instruction, playerType, playerlessType);
     }
 }

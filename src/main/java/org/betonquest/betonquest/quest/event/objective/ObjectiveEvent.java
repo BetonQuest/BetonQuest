@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
@@ -49,7 +49,7 @@ public class ObjectiveEvent implements NullableEvent {
     /**
      * API for starting objectives.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The action to do with the objectives.
@@ -60,20 +60,20 @@ public class ObjectiveEvent implements NullableEvent {
      * Creates a new ObjectiveEvent.
      *
      * @param betonQuest   the BetonQuest instance
-     * @param questTypeAPI the class for starting objectives
+     * @param questTypeApi the class for starting objectives
      * @param log          the logger
      * @param questPackage the quest package of the instruction
      * @param objectives   the objectives to affect
      * @param action       the action to do with the objectives
      * @throws QuestException if the action is invalid
      */
-    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeAPI questTypeAPI,
+    public ObjectiveEvent(final BetonQuest betonQuest, final BetonQuestLogger log, final QuestTypeApi questTypeApi,
                           final QuestPackage questPackage, final Variable<List<ObjectiveID>> objectives, final String action) throws QuestException {
         this.log = log;
         this.questPackage = questPackage;
         this.betonQuest = betonQuest;
         this.objectives = objectives;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
             throw new QuestException("Invalid action: " + action);
         }
@@ -83,7 +83,7 @@ public class ObjectiveEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         for (final ObjectiveID objectiveID : objectives.getValue(profile)) {
-            final Objective objective = questTypeAPI.getObjective(objectiveID);
+            final Objective objective = questTypeApi.getObjective(objectiveID);
             if (profile == null) {
                 handleStatic(objectiveID, objective);
             } else if (profile.getOnlineProfile().isEmpty()) {
@@ -106,7 +106,7 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void handleForOnlinePlayer(final Profile profile, final ObjectiveID objectiveID, final Objective objective) {
         switch (action.toLowerCase(Locale.ROOT)) {
-            case "start", "add" -> questTypeAPI.newObjective(profile, objectiveID);
+            case "start", "add" -> questTypeApi.newObjective(profile, objectiveID);
             case "complete", "finish" -> objective.completeObjective(profile);
             default -> cancelObjectiveForOnlinePlayer(profile, objectiveID, objective);
         }

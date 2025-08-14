@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import net.citizensnpcs.api.npc.NPC;
-import org.betonquest.betonquest.api.feature.FeatureAPI;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -18,7 +18,7 @@ public class CitizensStopEvent implements NullableEvent {
     /**
      * Feature API.
      */
-    private final FeatureAPI featureAPI;
+    private final FeatureApi featureApi;
 
     /**
      * ID of the NPC to stop.
@@ -33,19 +33,19 @@ public class CitizensStopEvent implements NullableEvent {
     /**
      * Create a new CitizensStopEvent.
      *
-     * @param featureAPI             the Feature API
+     * @param featureApi             the Feature API
      * @param npcId                  the id of the NPC to stop
      * @param citizensMoveController the move controller where to stop NPC movement
      */
-    public CitizensStopEvent(final FeatureAPI featureAPI, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController) {
-        this.featureAPI = featureAPI;
+    public CitizensStopEvent(final FeatureApi featureApi, final Variable<NpcID> npcId, final CitizensMoveController citizensMoveController) {
+        this.featureApi = featureApi;
         this.npcId = npcId;
         this.citizensMoveController = citizensMoveController;
     }
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final Npc<?> bqNpc = featureAPI.getNpc(npcId.getValue(profile), profile);
+        final Npc<?> bqNpc = featureApi.getNpc(npcId.getValue(profile), profile);
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
             throw new QuestException("Can't use non Citizens NPC!");
         }

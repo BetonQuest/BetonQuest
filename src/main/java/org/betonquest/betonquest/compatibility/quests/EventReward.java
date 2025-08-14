@@ -4,7 +4,7 @@ import me.pikamug.quests.module.BukkitCustomReward;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.id.EventID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class EventReward extends BukkitCustomReward {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile provider instance.
@@ -36,13 +36,13 @@ public class EventReward extends BukkitCustomReward {
      * Create a new 'Quests' Reward.
      *
      * @param log             the custom logger
-     * @param questTypeAPI    the Quest Type API
+     * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public EventReward(final BetonQuestLogger log, final QuestTypeAPI questTypeAPI, final ProfileProvider profileProvider) {
+    public EventReward(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         super();
         this.log = log;
-        this.questTypeAPI = questTypeAPI;
+        this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         setName("BetonQuest event");
         setAuthor("BetonQuest");
@@ -64,7 +64,7 @@ public class EventReward extends BukkitCustomReward {
                 return;
             }
             final EventID event = new EventID(null, string);
-            questTypeAPI.event(profileProvider.getProfile(player), event);
+            questTypeApi.event(profileProvider.getProfile(player), event);
         } catch (final QuestException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }

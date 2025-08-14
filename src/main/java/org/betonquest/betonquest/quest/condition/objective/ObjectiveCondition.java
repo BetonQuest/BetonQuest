@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.objective;
 
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.instruction.variable.Variable;
@@ -15,7 +15,7 @@ public class ObjectiveCondition implements PlayerCondition {
     /**
      * Quest Type API.
      */
-    private final QuestTypeAPI questTypeAPI;
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The objective ID.
@@ -25,16 +25,16 @@ public class ObjectiveCondition implements PlayerCondition {
     /**
      * Creates a new ObjectiveCondition.
      *
-     * @param questTypeAPI the Quest Type API
+     * @param questTypeApi the Quest Type API
      * @param objectiveId  the objective ID
      */
-    public ObjectiveCondition(final QuestTypeAPI questTypeAPI, final Variable<ObjectiveID> objectiveId) {
-        this.questTypeAPI = questTypeAPI;
+    public ObjectiveCondition(final QuestTypeApi questTypeApi, final Variable<ObjectiveID> objectiveId) {
+        this.questTypeApi = questTypeApi;
         this.objectiveId = objectiveId;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
-        return questTypeAPI.getObjective(objectiveId.getValue(profile)).containsPlayer(profile);
+        return questTypeApi.getObjective(objectiveId.getValue(profile)).containsPlayer(profile);
     }
 }
