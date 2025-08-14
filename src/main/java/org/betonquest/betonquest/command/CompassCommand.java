@@ -2,6 +2,7 @@ package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.Backpack;
 import org.betonquest.betonquest.feature.Backpack.DisplayType;
@@ -27,6 +28,11 @@ public class CompassCommand implements CommandExecutor {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -36,11 +42,14 @@ public class CompassCommand implements CommandExecutor {
      *
      * @param config          the plugin configuration file
      * @param pluginMessage   the {@link PluginMessage} instance
+     * @param textParser      The text parser used to parse text
      * @param profileProvider the profile provider instance
      */
-    public CompassCommand(final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public CompassCommand(final ConfigAccessor config, final PluginMessage pluginMessage,
+                          final TextParser textParser, final ProfileProvider profileProvider) {
         this.config = config;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.profileProvider = profileProvider;
     }
 
@@ -48,7 +57,7 @@ public class CompassCommand implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                new Backpack(config, pluginMessage, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
+                new Backpack(config, pluginMessage, textParser, profileProvider.getProfile((Player) sender), DisplayType.COMPASS);
             }
             return true;
         }

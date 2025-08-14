@@ -4,10 +4,12 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeAPI;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
@@ -40,7 +42,7 @@ import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySched
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.text.parser.LegacyParser;
 import org.betonquest.betonquest.text.parser.MineDownParser;
-import org.betonquest.betonquest.text.parser.MiniMessageParser;
+import org.betonquest.betonquest.text.parser.MiniTextParser;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
@@ -74,6 +76,11 @@ public class CoreFeatureFactories {
     private final ConversationColors colors;
 
     /**
+     * The message parser to use for parsing messages.
+     */
+    private final TextParser textParser;
+
+    /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
      */
     private final FontRegistry fontRegistry;
@@ -86,16 +93,18 @@ public class CoreFeatureFactories {
      * @param questTypeAPI       the class for executing events
      * @param config             the config
      * @param colors             the colors to use for the conversation
+     * @param textParser         the text parser to use for parsing text
      * @param fontRegistry       the font registry to use for the conversation
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final LastExecutionCache lastExecutionCache,
                                 final QuestTypeAPI questTypeAPI, final ConfigAccessor config, final ConversationColors colors,
-                                final FontRegistry fontRegistry) {
+                                final TextParser textParser, final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeAPI = questTypeAPI;
         this.config = config;
         this.colors = colors;
+        this.textParser = textParser;
         this.fontRegistry = fontRegistry;
     }
 
@@ -118,8 +127,9 @@ public class CoreFeatureFactories {
         interceptorTypes.register("none", new NonInterceptingInterceptorFactory());
 
         final ItemTypeRegistry itemTypes = registries.item();
-        itemTypes.register("simple", new SimpleQuestItemFactory());
-        itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer());
+        final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
+        itemTypes.register("simple", new SimpleQuestItemFactory(textParser, bookPageWrapper));
+        itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
@@ -151,7 +161,7 @@ public class CoreFeatureFactories {
                 .build();
         textParserRegistry.register("legacy", new LegacyParser(legacySerializer));
         final MiniMessage miniMessage = MiniMessage.miniMessage();
-        textParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
+        textParserRegistry.register("minimessage", new MiniTextParser(miniMessage));
         final MiniMessage legacyMiniMessage = MiniMessage.builder()
                 .preProcessor(input -> {
                     final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input.replaceAll("(?<!\\\\)\\\\n", "\n")));
@@ -159,7 +169,7 @@ public class CoreFeatureFactories {
                     return serialize.replaceAll("\\\\<", "<");
                 })
                 .build();
-        textParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
+        textParserRegistry.register("legacyminimessage", new MiniTextParser(legacyMiniMessage));
         textParserRegistry.register("minedown", new MineDownParser());
     }
 }

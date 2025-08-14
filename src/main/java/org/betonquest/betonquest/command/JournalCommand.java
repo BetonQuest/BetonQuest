@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.command;
 
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.command.Command;
@@ -29,6 +30,11 @@ public class JournalCommand implements CommandExecutor {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -38,21 +44,22 @@ public class JournalCommand implements CommandExecutor {
      *
      * @param dataStorage     the storage providing player data
      * @param pluginMessage   the plugin message to create the journal
+     * @param textParser      the text parser used to parse text
      * @param profileProvider the profile provider instance
      */
-    public JournalCommand(final PlayerDataStorage dataStorage, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+    public JournalCommand(final PlayerDataStorage dataStorage, final PluginMessage pluginMessage,
+                          final TextParser textParser, final ProfileProvider profileProvider) {
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.profileProvider = profileProvider;
     }
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (JOURNAL.equalsIgnoreCase(cmd.getName())) {
-            // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
-                // giving the player his journal
-                dataStorage.get(profileProvider.getProfile((Player) sender)).getJournal(pluginMessage).addToInv();
+                dataStorage.get(profileProvider.getProfile((Player) sender)).getJournal(pluginMessage, textParser).addToInv();
             }
             return true;
         }

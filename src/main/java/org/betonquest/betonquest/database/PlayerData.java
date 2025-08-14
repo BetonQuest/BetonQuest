@@ -7,9 +7,11 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -58,6 +60,11 @@ public class PlayerData implements TagData, PointData {
      * The profileID of the data.
      */
     private final String profileID;
+
+    /**
+     * The font registry used for rendering text in the journal.
+     */
+    private final FontRegistry fontRegistry;
 
     /**
      * List of tags the player has.
@@ -112,6 +119,7 @@ public class PlayerData implements TagData, PointData {
         this.saver = BetonQuest.getInstance().getSaver();
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
+        this.fontRegistry = BetonQuest.getInstance().getFontRegistry();
         loadAllPlayerData();
     }
 
@@ -309,11 +317,12 @@ public class PlayerData implements TagData, PointData {
      * Returns a Journal instance or creates it if it does not exist.
      *
      * @param pluginMessage the plugin message to generate a new journal
+     * @param textParser    the text parser to use for formatting
      * @return possible new Journal instance
      */
-    public Journal getJournal(final PluginMessage pluginMessage) {
+    public Journal getJournal(final PluginMessage pluginMessage, final TextParser textParser) {
         if (journal == null) {
-            journal = new Journal(pluginMessage, profile, entries, BetonQuest.getInstance().getPluginConfig());
+            journal = new Journal(pluginMessage, textParser, fontRegistry, profile, entries, BetonQuest.getInstance().getPluginConfig());
         }
         return journal;
     }
@@ -538,8 +547,9 @@ public class PlayerData implements TagData, PointData {
      * Purges all profile's data from the database and from this object.
      *
      * @param pluginMessage the plugin message to generate a new journal
+     * @param textParser    the text parser to use for formatting
      */
-    public void purgePlayer(final PluginMessage pluginMessage) {
+    public void purgePlayer(final PluginMessage pluginMessage, final TextParser textParser) {
         for (final Objective obj : BetonQuest.getInstance().getQuestTypeAPI().getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
@@ -561,7 +571,7 @@ public class PlayerData implements TagData, PointData {
         saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         // update the journal so it's empty
         if (profile.getOnlineProfile().isPresent()) {
-            getJournal(pluginMessage).update();
+            getJournal(pluginMessage, textParser).update();
         }
     }
 
