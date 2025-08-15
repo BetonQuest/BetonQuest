@@ -38,7 +38,7 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
                 final ConfigurationSection featureSection = section.getConfigurationSection(key);
                 final I identifier = getIdentifier(pack, key);
                 if (featureSection == null) {
-                    log.warn(pack, "No configuration section for '" + identifier.getFull() + "' " + readable + "!");
+                    log.warn(pack, "No configuration section for '" + identifier + "' " + readable + "!");
                     continue;
                 }
                 values.put(identifier, loadSection(pack, featureSection));

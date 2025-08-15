@@ -73,7 +73,7 @@ public class CompassEvent implements PlayerEvent {
             case SET -> {
                 final QuestCompass compass = featureApi.getCompasses().get(compassId);
                 if (compass == null) {
-                    throw new QuestException("No compass found for id '" + compassId.getFull() + "' found.");
+                    throw new QuestException("No compass found for id '" + compassId + "' found.");
                 }
                 final Location location = compass.location().getValue(profile);
                 if (profile.getOnlineProfile().isPresent()) {

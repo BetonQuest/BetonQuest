@@ -54,7 +54,7 @@ public class VariableEvent implements PlayerEvent {
         final ObjectiveID resolved = this.objectiveID.getValue(profile);
         final Objective obj = questTypeApi.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
-            throw new QuestException(resolved.getFull() + " is not a variable objective");
+            throw new QuestException(resolved + " is not a variable objective");
         }
         final String keyReplaced = key.getValue(profile);
         final String valueReplaced = value.getValue(profile);

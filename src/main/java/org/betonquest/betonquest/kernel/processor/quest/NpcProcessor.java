@@ -220,8 +220,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                     + "' but there is no conversation assigned to it.");
             return false;
         } else {
-            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected.getFull()
-                    + "' and started conversation '" + conversationID.getFull() + "'.");
+            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
+                    + "' and started conversation '" + conversationID + "'.");
             new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, npc.getLocation(), npc);
             return true;
         }

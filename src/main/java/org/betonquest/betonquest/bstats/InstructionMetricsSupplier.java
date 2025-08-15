@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.bstats;
 
-import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 
 import java.util.Set;
@@ -8,15 +7,15 @@ import java.util.Set;
 /**
  * A supplier for providing raw data about instructions to calculate different metrics.
  *
- * @param <T> kind of {@link Identifier} that is supplied
+ * @param <T> kind of {@link InstructionIdentifier} that is supplied
  */
 public interface InstructionMetricsSupplier<T extends InstructionIdentifier> {
 
     /**
-     * Fetch a set of all current {@link Identifier}s.
+     * Fetch a set of all current {@link InstructionIdentifier}s.
      * If possible this method should do late-evaluation to provide updated data with every consecutive call.
      *
-     * @return set of {@link Identifier}s
+     * @return set of {@link InstructionIdentifier}s
      */
     Set<T> getIdentifiers();
 

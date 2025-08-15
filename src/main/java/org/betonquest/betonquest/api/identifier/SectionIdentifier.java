@@ -5,12 +5,13 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Identifier for a section in a configuration file.
- * This class is used to ensure that the identifier corresponds to a valid section in the config.
+ * Identifier for a section in a {@link QuestPackage}.
+ * This class is used to ensure that the identifier corresponds to a valid section in the {@link QuestPackage}.
  */
 public class SectionIdentifier extends Identifier {
     /**
-     * Creates a new Identifier. Handles relative and absolute paths and edge cases with special Identifiers.
+     * Creates a new section identifier,
+     * ensuring that the identifier corresponds to a valid section in the package's configuration.
      *
      * @param pack       the package the ID is in
      * @param identifier the identifier string leading to the object

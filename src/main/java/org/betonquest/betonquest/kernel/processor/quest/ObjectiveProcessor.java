@@ -77,7 +77,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     public void start(final Profile profile, final ObjectiveID objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Tried to start objective '" + objectiveID.getFull() + "' but it is not loaded! Check for errors on /bq reload!");
+            log.error("Tried to start objective '" + objectiveID + "' but it is not loaded! Check for errors on /bq reload!");
             return;
         }
         if (objective.containsPlayer(profile)) {

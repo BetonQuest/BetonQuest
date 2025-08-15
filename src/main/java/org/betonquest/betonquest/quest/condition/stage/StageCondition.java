@@ -81,6 +81,6 @@ public class StageCondition implements PlayerCondition {
         if (questTypeApi.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
-        throw new QuestException("Objective '" + objectiveID.getFull() + "' is not a stage objective");
+        throw new QuestException("Objective '" + objectiveID + "' is not a stage objective");
     }
 }

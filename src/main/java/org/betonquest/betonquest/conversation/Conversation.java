@@ -228,7 +228,7 @@ public class Conversation implements Listener {
         try {
             this.data = plugin.getFeatureApi().getConversation(conversationID);
         } catch (final QuestException e) {
-            log.error(pack, "Cannot start conversation '" + conversationID.getFull() + "': " + e.getMessage(), e);
+            log.error(pack, "Cannot start conversation '" + conversationID + "': " + e.getMessage(), e);
             return;
         }
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
@@ -239,14 +239,14 @@ public class Conversation implements Listener {
         ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
 
         if (startingOption == null) {
-            log.debug(pack, "Starting conversation '" + conversationID.getFull() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
             new Starter().runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             String firstOption = startingOption;
             if (!startingOption.contains(DOT)) {
                 firstOption = conversationID.get() + DOT + startingOption;
             }
-            log.debug(pack, "Starting conversation '" + conversationID.getFull() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
             new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
     }
@@ -330,7 +330,7 @@ public class Conversation implements Listener {
         inOut.clear();
         final ResolvedOption playerOption = availablePlayerOptions.get(number);
         if (playerOption == null) {
-            throw new IllegalStateException("No selectable player option found in conversation " + identifier.getFull());
+            throw new IllegalStateException("No selectable player option found in conversation " + identifier);
         }
         new PlayerEventRunner(playerOption).runTask(BetonQuest.getInstance());
         availablePlayerOptions.clear();
@@ -412,7 +412,7 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + conv.getID().getFull() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + conv.getID() + FOR + onlineProfile + "'.");
             inOut.end(() -> {
 
                 // fire final events

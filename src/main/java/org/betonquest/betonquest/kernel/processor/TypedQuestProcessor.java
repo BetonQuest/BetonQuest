@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -16,7 +15,7 @@ import java.util.Map;
  * Does the logic around a quest type and stores their type registry.
  * Also provides their BStats metrics.
  *
- * @param <I> the {@link Identifier} identifying the type
+ * @param <I> the {@link InstructionIdentifier} identifying the type
  * @param <T> the legacy type
  */
 public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> extends QuestProcessor<I, T> {

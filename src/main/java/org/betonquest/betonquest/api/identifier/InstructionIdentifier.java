@@ -16,7 +16,7 @@ public abstract class InstructionIdentifier extends Identifier {
     private final Instruction instruction;
 
     /**
-     * Constructor of an identifier that takes an instruction.
+     * Constructor of an identifier that creates an instruction from the given function.
      *
      * @param pack                the package the instruction is in
      * @param identifier          the identifier string leading to the instruction
@@ -38,7 +38,7 @@ public abstract class InstructionIdentifier extends Identifier {
      * @throws QuestException if the identifier or instruction could not be parsed
      */
     protected InstructionIdentifier(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
-        this(pack, identifier, (id) -> {
+        this(pack, identifier, id -> {
             final String rawInstruction = id.getPackage().getConfig().getString(section + SEPERATOR + id.get());
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
