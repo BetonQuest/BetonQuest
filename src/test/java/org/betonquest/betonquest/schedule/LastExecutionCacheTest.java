@@ -69,7 +69,7 @@ class LastExecutionCacheTest {
 
     @Test
     void testSaveIOException() throws IOException {
-        when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
+        when(scheduleID.getFull()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(Instant.parse("1970-01-01T00:00:00Z"), scheduleID);
         verify(logger, times(1)).error(eq("Could not save schedule cache: ioexception"), any(IOException.class));
@@ -85,7 +85,7 @@ class LastExecutionCacheTest {
     @Test
     void testRawExecutionTime() {
         final String expected = "2022-06-17T08:45:49.000000000Z";
-        when(scheduleID.getFullID()).thenReturn("test-package.testRawExecutionTime");
+        when(scheduleID.getFull()).thenReturn("test-package.testRawExecutionTime");
         when(cacheContent.getString("test-package.testRawExecutionTime")).thenReturn(expected);
         assertEquals(Optional.of(expected), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return cached time");
     }
@@ -93,21 +93,21 @@ class LastExecutionCacheTest {
     @Test
     void testExecutionTime() {
         final String expected = "1997-02-02T02:02:02.020202020Z";
-        when(scheduleID.getFullID()).thenReturn("test-package.testExecutionTime");
+        when(scheduleID.getFull()).thenReturn("test-package.testExecutionTime");
         when(cacheContent.getString("test-package.testExecutionTime")).thenReturn(expected);
         assertEquals(Optional.of(Instant.parse(expected)), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return cached time");
     }
 
     @Test
     void testRawNotCached() {
-        when(scheduleID.getFullID()).thenReturn("test-package.testRawNotCached");
+        when(scheduleID.getFull()).thenReturn("test-package.testRawNotCached");
         when(cacheContent.getString("test-package.testRawNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
 
     @Test
     void testNotCached() {
-        when(scheduleID.getFullID()).thenReturn("test-package.testNotCached");
+        when(scheduleID.getFull()).thenReturn("test-package.testNotCached");
         when(cacheContent.getString("test-package.testNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
@@ -115,14 +115,14 @@ class LastExecutionCacheTest {
     @Test
     void testIsContained() {
         final String expected = "2000-01-01T00:00:00Z";
-        when(scheduleID.getFullID()).thenReturn("test-package.testIsContained");
+        when(scheduleID.getFull()).thenReturn("test-package.testIsContained");
         when(cacheContent.getString("test-package.testIsContained")).thenReturn(expected);
         assertTrue(lastExecutionCache.isCached(scheduleID), "isCached() should return true");
     }
 
     @Test
     void testIsNotContained() {
-        when(scheduleID.getFullID()).thenReturn("test-package.testIsNotContained");
+        when(scheduleID.getFull()).thenReturn("test-package.testIsNotContained");
         when(cacheContent.getString("test-package.testIsNotContained")).thenReturn(null);
         assertFalse(lastExecutionCache.isCached(scheduleID), "isCached() should return false");
     }
@@ -130,7 +130,7 @@ class LastExecutionCacheTest {
     @Test
     void testCacheRaw() throws IOException {
         final String expected = "2014-10-16T14:28:00Z";
-        when(scheduleID.getFullID()).thenReturn("test-package.testCacheRaw");
+        when(scheduleID.getFull()).thenReturn("test-package.testCacheRaw");
         lastExecutionCache.cacheRawExecutionTime(scheduleID, expected);
         verify(cacheContent).set("test-package.testCacheRaw", expected);
         verify(cacheAccessor).save();
@@ -139,7 +139,7 @@ class LastExecutionCacheTest {
     @Test
     void testCacheInstant() throws IOException {
         final Instant toCache = Instant.parse("1970-01-01T00:00:00Z");
-        when(scheduleID.getFullID()).thenReturn("test-package.testCacheInstant");
+        when(scheduleID.getFull()).thenReturn("test-package.testCacheInstant");
         lastExecutionCache.cacheExecutionTime(toCache, scheduleID);
         verify(cacheContent).set("test-package.testCacheInstant", toCache.toString());
         verify(cacheAccessor).save();
@@ -158,8 +158,8 @@ class LastExecutionCacheTest {
         final ScheduleID newSchedule = mock(ScheduleID.class);
         final ScheduleID cachedSchedule = mock(ScheduleID.class);
         final String expected = "2000-01-01T00:00:00Z";
-        when(newSchedule.getFullID()).thenReturn("test-package.testCacheStartup-newSchedule");
-        when(cachedSchedule.getFullID()).thenReturn("test-package.testCacheStartup-cachedSchedule");
+        when(newSchedule.getFull()).thenReturn("test-package.testCacheStartup-newSchedule");
+        when(cachedSchedule.getFull()).thenReturn("test-package.testCacheStartup-cachedSchedule");
         when(cacheContent.getString("test-package.testCacheStartup-newSchedule")).thenReturn(null);
         when(cacheContent.getString("test-package.testCacheStartup-cachedSchedule")).thenReturn(expected);
         lastExecutionCache.cacheStartupTime(now, List.of(newSchedule, cachedSchedule));

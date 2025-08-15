@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,17 +11,17 @@ import java.util.Map;
 /**
  * Does the logic around {@link T}.
  *
- * @param <I> the {@link ID} identifying {@link T}
+ * @param <I> the {@link Identifier} identifying {@link T}
  * @param <T> the quest type being processed
  */
-public abstract class QuestProcessor<I extends ID, T> {
+public abstract class QuestProcessor<I extends Identifier, T> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     protected final BetonQuestLogger log;
 
     /**
-     * Loaded {@link T} identified by their {@link ID}.
+     * Loaded {@link T} identified by their {@link Identifier}.
      */
     protected final Map<I, T> values;
 

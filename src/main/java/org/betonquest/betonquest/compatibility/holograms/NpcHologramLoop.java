@@ -131,7 +131,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                     try {
                         npc = featureApi.getNpc(npcID, null);
                     } catch (final QuestException exception) {
-                        log.warn("Could not get Npc for id '" + npcID.getFullID() + "' at hologram creation: " + exception.getMessage(), exception);
+                        log.warn("Could not get Npc for id '" + npcID.getFull() + "' at hologram creation: " + exception.getMessage(), exception);
                         continue;
                     }
                     if (!npc.isSpawned()) {
@@ -159,7 +159,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                     try {
                         npc = featureApi.getNpc(npcID, null);
                     } catch (final QuestException exception) {
-                        log.warn("Could not get Npc for id '" + npcID.getFullID() + "' in hologram loop: " + exception.getMessage(), exception);
+                        log.warn("Could not get Npc for id '" + npcID.getFull() + "' in hologram loop: " + exception.getMessage(), exception);
                         return;
                     }
                     if (!npc.isSpawned()) {

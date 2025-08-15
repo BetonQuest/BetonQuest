@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * ID of a Condition.
  */
-public class ConditionID extends ID {
+public class ConditionID extends InstructionIdentifier {
 
     /**
      * If the condition is used inverted.

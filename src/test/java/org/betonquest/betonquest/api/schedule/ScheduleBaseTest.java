@@ -46,8 +46,8 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
         assertEquals("22:00", schedule.getTime(), "Returned time should be correct");
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
-        assertEquals("bell_ring", schedule.getEvents().get(0).getBaseID(), "Returned events should contain 1st event");
-        assertEquals("notify_goodNight", schedule.getEvents().get(1).getBaseID(), "Returned events should contain 2nd event");
+        assertEquals("bell_ring", schedule.getEvents().get(0).get(), "Returned events should contain 1st event");
+        assertEquals("notify_goodNight", schedule.getEvents().get(1).get(), "Returned events should contain 2nd event");
     }
 
     @Test

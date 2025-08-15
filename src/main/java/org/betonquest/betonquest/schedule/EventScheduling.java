@@ -61,7 +61,7 @@ public class EventScheduling {
                 final ScheduleID scheduleID = new ScheduleID(questPackage, key);
                 try {
                     final ConfigurationSection scheduleConfig = new UnmodifiableConfigurationSection(
-                            questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.getBaseID())
+                            questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.get())
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new QuestException("Missing type instruction"));

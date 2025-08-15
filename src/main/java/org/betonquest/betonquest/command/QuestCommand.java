@@ -433,9 +433,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final OnlineEvent give = new GiveEvent(
                     new VariableList<>(new Item(instance.getFeatureApi(), itemID, new Variable<>(1))),
                     new NoNotificationSender(),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFullID(), NotificationLevel.ERROR,
+                    new IngameNotificationSender(log, pluginMessage, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
                             "inventory_full_drop", "inventory_full"),
                     false, dataStorage);
             give.execute(profileProvider.getProfile((Player) sender));
@@ -516,7 +516,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
-            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, pointer -> pointer.pointer().getFullID());
+            final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, pointer -> pointer.pointer().getFull());
             sendMessage(sender, "player_journal");
             journal.getPointers().stream()
                     .filter(shouldDisplay)
@@ -1218,7 +1218,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final String newPath = "objectives." + rename.split("\\.")[1];
                 configuration.set(newPath, nameID.getInstruction().toString());
                 try {
-                    final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.getBaseID());
+                    final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.get());
                     if (sourceConfigurationSection == null) {
                         sendMessage(sender, "error",
                                 new VariableReplacement("error", Component.text("There is no SourceConfigurationSection!")));
@@ -1241,7 +1241,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 instance.getQuestTypeApi().renameObjective(nameID, renameID);
-                nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
+                nameID.getPackage().getConfig().set(nameID.get(), null);
                 try {
                     nameID.getPackage().saveAll();
                 } catch (final IOException e) {

@@ -44,7 +44,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @return the tag which marks that the given global objective has already been started for the player
      */
     public static String getTag(final ObjectiveID objectiveID) {
-        return objectiveID.getPackage().getQuestPath() + ".global-" + objectiveID.getBaseID();
+        return objectiveID.getPackage().getQuestPath() + ".global-" + objectiveID.get();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     public void start(final Profile profile, final ObjectiveID objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Tried to start objective '" + objectiveID.getFullID() + "' but it is not loaded! Check for errors on /bq reload!");
+            log.error("Tried to start objective '" + objectiveID.getFull() + "' but it is not loaded! Check for errors on /bq reload!");
             return;
         }
         if (objective.containsPlayer(profile)) {

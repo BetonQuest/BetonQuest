@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a quest compass ID.
  */
-public class CompassID extends ID {
+public class CompassID extends InstructionIdentifier {
 
     /**
      * Creates new QuestCompassID instance.
@@ -27,6 +28,6 @@ public class CompassID extends ID {
      * @return the compass tag
      */
     public String getTag() {
-        return getPackage() + ".compass-" + getBaseID();
+        return getPackage() + ".compass-" + get();
     }
 }

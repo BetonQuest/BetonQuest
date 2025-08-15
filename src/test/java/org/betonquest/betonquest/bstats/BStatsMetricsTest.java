@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bstats.bukkit.Metrics;
@@ -133,9 +133,9 @@ class BStatsMetricsTest {
         final Metrics bstatsMetrics = mock(Metrics.class);
         final ArgumentCaptor<CustomChart> chartArgumentCaptor = ArgumentCaptor.forClass(CustomChart.class);
 
-        final Map<ID, Void> ids = new HashMap<>();
+        final Map<InstructionIdentifier, Void> ids = new HashMap<>();
 
-        final ID firstId = mock(ID.class);
+        final InstructionIdentifier firstId = mock(InstructionIdentifier.class);
         final Instruction firstInstruction = new Instruction(questPackage, firstId, TEST_INSTRUCTION);
         when(firstId.getInstruction()).thenReturn(firstInstruction);
 
@@ -143,7 +143,7 @@ class BStatsMetricsTest {
         final Map<String, Void> types = new HashMap<>();
         types.put(TEST_INSTRUCTION, null);
 
-        final InstructionMetricsSupplier<ID> metricsSupplier = new CompositeInstructionMetricsSupplier<>(ids::keySet, types::keySet);
+        final InstructionMetricsSupplier<InstructionIdentifier> metricsSupplier = new CompositeInstructionMetricsSupplier<>(ids::keySet, types::keySet);
 
         new BStatsMetrics(plugin, bstatsMetrics, Map.of("id", metricsSupplier), mock(Compatibility.class));
 
@@ -160,7 +160,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":1}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
-        final ID secondId = mock(ID.class);
+        final InstructionIdentifier secondId = mock(InstructionIdentifier.class);
         final Instruction secondInstruction = new Instruction(questPackage, secondId, TEST_INSTRUCTION);
         when(secondId.getInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
@@ -168,7 +168,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idCount\",\"data\":{\"values\":{\"test\":2}}}", countChart);
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
-        final ID thirdId = mock(ID.class);
+        final InstructionIdentifier thirdId = mock(InstructionIdentifier.class);
         final Instruction thirdInstruction = new Instruction(questPackage, thirdId, OTHER_INSTRUCTION);
         when(thirdId.getInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);

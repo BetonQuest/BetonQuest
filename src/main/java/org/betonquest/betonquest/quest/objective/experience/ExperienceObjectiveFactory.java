@@ -43,7 +43,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,
-                pluginMessage, instruction.getPackage(), instruction.getID().getFullID(),
+                pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "level_to_gain");
         return new ExperienceObjective(instruction, amount, levelSender);
     }

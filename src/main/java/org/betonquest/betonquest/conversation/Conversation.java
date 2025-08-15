@@ -221,14 +221,14 @@ public class Conversation implements Listener {
         this.center = center;
         this.blacklist = plugin.getPluginConfig().getStringList("conversation.cmd_blacklist");
         this.messagesDelaying = plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed");
-        this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.ERROR, "command_blocked");
-        this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_start");
-        this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFullID(), NotificationLevel.INFO, "conversation_end");
+        this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.ERROR, "command_blocked");
+        this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
+        this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
         try {
             this.data = plugin.getFeatureApi().getConversation(conversationID);
         } catch (final QuestException e) {
-            log.error(pack, "Cannot start conversation '" + conversationID.getFullID() + "': " + e.getMessage(), e);
+            log.error(pack, "Cannot start conversation '" + conversationID.getFull() + "': " + e.getMessage(), e);
             return;
         }
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
@@ -239,14 +239,14 @@ public class Conversation implements Listener {
         ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
 
         if (startingOption == null) {
-            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID.getFull() + FOR + onlineProfile + "'.");
             new Starter().runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             String firstOption = startingOption;
             if (!startingOption.contains(DOT)) {
-                firstOption = conversationID.getBaseID() + DOT + startingOption;
+                firstOption = conversationID.get() + DOT + startingOption;
             }
-            log.debug(pack, "Starting conversation '" + conversationID.getFullID() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Starting conversation '" + conversationID.getFull() + FOR + onlineProfile + "'.");
             new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
         }
     }
@@ -330,7 +330,7 @@ public class Conversation implements Listener {
         inOut.clear();
         final ResolvedOption playerOption = availablePlayerOptions.get(number);
         if (playerOption == null) {
-            throw new IllegalStateException("No selectable player option found in conversation " + identifier.getFullID());
+            throw new IllegalStateException("No selectable player option found in conversation " + identifier.getFull());
         }
         new PlayerEventRunner(playerOption).runTask(BetonQuest.getInstance());
         availablePlayerOptions.clear();
@@ -412,7 +412,7 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + conv.getID().getFullID() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + conv.getID().getFull() + FOR + onlineProfile + "'.");
             inOut.end(() -> {
 
                 // fire final events
@@ -715,7 +715,7 @@ public class Conversation implements Listener {
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + conv.getID().getFullID() + FOR + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + conv.getID().getFull() + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
@@ -778,7 +778,7 @@ public class Conversation implements Listener {
             for (final String startingOption : startingOptions) {
                 final ResolvedOption resolvedOption;
                 try {
-                    resolvedOption = new ConversationOptionResolver(plugin.getFeatureApi(), pack, identifier.getBaseID(), NPC, startingOption).resolve();
+                    resolvedOption = new ConversationOptionResolver(plugin.getFeatureApi(), pack, identifier.get(), NPC, startingOption).resolve();
                 } catch (final QuestException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);

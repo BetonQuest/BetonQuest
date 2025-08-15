@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.bstats;
 
-import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 
 import java.util.Set;
 import java.util.function.Supplier;
@@ -9,12 +10,12 @@ import java.util.function.Supplier;
  * A {@link InstructionMetricsSupplier} that is made up of {@link Supplier}s for each method. This allows creating from
  * lambda and method references.
  *
- * @param <T> kind of {@link ID} that is supplied
+ * @param <T> kind of {@link Identifier} that is supplied
  */
-public class CompositeInstructionMetricsSupplier<T extends ID> implements InstructionMetricsSupplier<T> {
+public class CompositeInstructionMetricsSupplier<T extends InstructionIdentifier> implements InstructionMetricsSupplier<T> {
 
     /**
-     * The supplier to use for {@link ID}s.
+     * The supplier to use for {@link Identifier}s.
      */
     private final Supplier<Set<T>> identifierSupplier;
 
@@ -26,7 +27,7 @@ public class CompositeInstructionMetricsSupplier<T extends ID> implements Instru
     /**
      * Create the composite supplier by providing the partial suppliers.
      *
-     * @param identifierSupplier supplier for {@link ID}s
+     * @param identifierSupplier supplier for {@link Identifier}s
      * @param typeSupplier       supplier for types
      */
     public CompositeInstructionMetricsSupplier(final Supplier<Set<T>> identifierSupplier, final Supplier<Set<String>> typeSupplier) {

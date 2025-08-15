@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * ID of an Event.
  */
-public class EventID extends ID {
+public class EventID extends InstructionIdentifier {
 
     /**
      * Create a new Event ID.

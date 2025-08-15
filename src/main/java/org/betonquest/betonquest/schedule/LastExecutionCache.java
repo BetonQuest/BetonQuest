@@ -55,7 +55,7 @@ public class LastExecutionCache {
      * @param rawTime  raw string to cache
      */
     public void cacheRawExecutionTime(final ScheduleID schedule, final String rawTime) {
-        cache.getConfig().set(schedule.getFullID(), rawTime);
+        cache.getConfig().set(schedule.getFull(), rawTime);
         try {
             cache.save();
         } catch (final IOException e) {
@@ -81,7 +81,7 @@ public class LastExecutionCache {
      * @return optional containing the cached string, empty if nothing was cached
      */
     public Optional<String> getRawLastExecutionTime(final ScheduleID schedule) {
-        return Optional.ofNullable(cache.getConfig().getString(schedule.getFullID()));
+        return Optional.ofNullable(cache.getConfig().getString(schedule.getFull()));
     }
 
     /**

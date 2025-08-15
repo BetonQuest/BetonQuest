@@ -43,7 +43,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final BetonQuestLogger log = loggerFactory.create(PaymentObjective.class);
         final IngameNotificationSender paymentSender = new IngameNotificationSender(log,
-                pluginMessage, instruction.getPackage(), instruction.getID().getFullID(),
+                pluginMessage, instruction.getPackage(), instruction.getID().getFull(),
                 NotificationLevel.INFO, "payment_to_receive");
         return new PaymentObjective(instruction, targetAmount, paymentSender);
     }

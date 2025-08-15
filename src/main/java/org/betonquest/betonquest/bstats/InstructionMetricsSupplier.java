@@ -1,21 +1,22 @@
 package org.betonquest.betonquest.bstats;
 
-import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 
 import java.util.Set;
 
 /**
  * A supplier for providing raw data about instructions to calculate different metrics.
  *
- * @param <T> kind of {@link ID} that is supplied
+ * @param <T> kind of {@link Identifier} that is supplied
  */
-public interface InstructionMetricsSupplier<T extends ID> {
+public interface InstructionMetricsSupplier<T extends InstructionIdentifier> {
 
     /**
-     * Fetch a set of all current {@link ID}s. If possible this method should do late-evaluation to provide updated data with
-     * every consecutive call.
+     * Fetch a set of all current {@link Identifier}s.
+     * If possible this method should do late-evaluation to provide updated data with every consecutive call.
      *
-     * @return set of {@link ID}s
+     * @return set of {@link Identifier}s
      */
     Set<T> getIdentifiers();
 
