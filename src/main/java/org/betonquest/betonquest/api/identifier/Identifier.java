@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.identifier;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.VariableID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -83,7 +82,7 @@ public abstract class Identifier {
                 return resolveRelativePathDown(pack, identifier, packName);
             }
         }
-        final QuestPackage packFromName = packFromName(packName);
+        final QuestPackage packFromName = BetonQuest.getInstance().getPackages().get(packName);
         if (packFromName != null) {
             return packFromName;
         }
@@ -93,44 +92,13 @@ public abstract class Identifier {
         return null;
     }
 
-    @Nullable
-    private QuestPackage packFromName(final String packName) throws QuestException {
-        final QuestPackage potentialPack = BetonQuest.getInstance().getPackages().get(packName);
-        if (potentialPack == null) {
-            return null;
-        }
-        if (this instanceof VariableID) {
-            try {
-                BetonQuest.getInstance().getQuestRegistries().variable().getFactory(packName);
-            } catch (final QuestException ignored) {
-                return potentialPack;
-            }
-            throw new QuestException("You can't have a package with the name of a variable!");
-        }
-        return potentialPack;
-    }
-
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private QuestPackage resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws QuestException {
         final String[] root = pack.getQuestPath().split(PACKAGE_SEPERATOR);
         final String[] path = packName.split(PACKAGE_SEPERATOR);
-        int stepsUp = 0;
-        while (stepsUp < path.length && PACKAGE_NAVIGATOR.equals(path[stepsUp])) {
-            stepsUp++;
-        }
-        if (stepsUp > root.length) {
-            throw new QuestException("Relative path goes out of package scope! Consider removing a few '"
-                    + PACKAGE_NAVIGATOR + "'s in ID " + identifier);
-        }
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < root.length - stepsUp; i++) {
-            builder.append(root[i]).append(PACKAGE_SEPERATOR);
-        }
-        for (int i = stepsUp; i < path.length; i++) {
-            builder.append(path[i]).append(PACKAGE_SEPERATOR);
-        }
+        final int stepsUp = getStepsUp(root, path, identifier);
+        final String packagePath = buildPackagePath(root, path, stepsUp);
         try {
-            final String absolute = builder.substring(0, builder.length() - 1);
+            final String absolute = packagePath.substring(0, packagePath.length() - 1);
             final QuestPackage resolved = BetonQuest.getInstance().getPackages().get(absolute);
             if (resolved == null) {
                 throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
@@ -140,6 +108,29 @@ public abstract class Identifier {
         } catch (final StringIndexOutOfBoundsException e) {
             throw new QuestException("Relative path in ID '" + identifier + "' is invalid!", e);
         }
+    }
+
+    private int getStepsUp(final String[] root, final String[] path, final String identifier) throws QuestException {
+        int stepsUp = 0;
+        while (stepsUp < path.length && PACKAGE_NAVIGATOR.equals(path[stepsUp])) {
+            stepsUp++;
+        }
+        if (stepsUp > root.length) {
+            throw new QuestException("Relative path goes out of package scope! Consider removing a few '"
+                    + PACKAGE_NAVIGATOR + "'s in ID " + identifier);
+        }
+        return stepsUp;
+    }
+
+    private String buildPackagePath(final String[] root, final String[] path, final int stepsUp) {
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < root.length - stepsUp; i++) {
+            builder.append(root[i]).append(PACKAGE_SEPERATOR);
+        }
+        for (int i = stepsUp; i < path.length; i++) {
+            builder.append(path[i]).append(PACKAGE_SEPERATOR);
+        }
+        return builder.toString();
     }
 
     private QuestPackage resolveRelativePathDown(final QuestPackage pack, final String identifier, final String packName) throws QuestException {

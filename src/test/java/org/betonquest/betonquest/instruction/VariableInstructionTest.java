@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class VariableInstructionTest {
@@ -43,8 +44,10 @@ class VariableInstructionTest {
 
     @Test
     void copyWithNewIDShouldReturnNewVariableInstructionWithNewID() throws QuestException {
-        final VariableInstruction original = new VariableInstruction(questPackage, null, "%instruction%");
-        final Instruction copy = original.copy(new VariableID(questPackage, "%newID%"));
+        final VariableID variableID1 = mock(VariableID.class);
+        final VariableID variableID2 = mock(VariableID.class);
+        final VariableInstruction original = new VariableInstruction(questPackage, variableID1, "%instruction%");
+        final Instruction copy = original.copy(variableID2);
         assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
         assertNotEquals(original.getID(), copy.getID(), "Should have different ID");
     }
