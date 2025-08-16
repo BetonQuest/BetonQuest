@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
 import org.betonquest.betonquest.id.JournalMainPageID;
-import org.betonquest.betonquest.instruction.variable.Variable;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;

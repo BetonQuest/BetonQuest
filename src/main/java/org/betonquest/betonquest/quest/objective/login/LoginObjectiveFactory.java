@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.objective.login;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory for creating {@link LoginObjective} instances from {@link Instruction}s.

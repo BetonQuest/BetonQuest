@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.util.Utils;
 
 /**

@@ -2,10 +2,10 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;

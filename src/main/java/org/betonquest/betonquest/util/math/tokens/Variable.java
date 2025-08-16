@@ -17,14 +17,14 @@ public class Variable implements Token {
     /**
      * Underlying variable.
      */
-    private final org.betonquest.betonquest.instruction.variable.Variable<Number> variableNumber;
+    private final org.betonquest.betonquest.api.instruction.variable.Variable<Number> variableNumber;
 
     /**
      * Creates a new variable token from a variable number.
      *
      * @param variableNumber underlying variable
      */
-    public Variable(final org.betonquest.betonquest.instruction.variable.Variable<Number> variableNumber) {
+    public Variable(final org.betonquest.betonquest.api.instruction.variable.Variable<Number> variableNumber) {
         this.variableNumber = variableNumber;
     }
 

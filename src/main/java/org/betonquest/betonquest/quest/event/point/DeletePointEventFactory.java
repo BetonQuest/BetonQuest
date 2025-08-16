@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.quest.event.point;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -8,9 +11,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create delete points events from {@link Instruction}s.

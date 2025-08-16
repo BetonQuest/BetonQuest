@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;

@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.quest.condition.variable;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -8,9 +11,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerlessCondition;

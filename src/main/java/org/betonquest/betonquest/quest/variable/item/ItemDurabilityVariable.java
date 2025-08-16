@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.item;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariable;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;

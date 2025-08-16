@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.variable.condition;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Factory to create {@link ConditionVariable}s from {@link Instruction}s.

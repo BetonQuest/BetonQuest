@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;

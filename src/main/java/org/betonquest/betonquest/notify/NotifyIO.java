@@ -3,10 +3,10 @@ package org.betonquest.betonquest.notify;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

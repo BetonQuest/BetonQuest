@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
-import org.betonquest.betonquest.instruction.Instruction;
 import org.jetbrains.annotations.Nullable;
 
 /**

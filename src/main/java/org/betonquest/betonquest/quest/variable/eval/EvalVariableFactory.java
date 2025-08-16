@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.variable.eval;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
 
 /**
  * A factory for creating Eval variables.

@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.mythicmobs.npc;
 
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
 
 /**
  * Creates validated Npc Wrapper for MythicMobs Npcs.

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.tag;
 
+import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.TagData;
-import org.betonquest.betonquest.instruction.variable.VariableList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

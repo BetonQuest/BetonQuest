@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Creates validated Npc Wrapper for Citizens Npcs.

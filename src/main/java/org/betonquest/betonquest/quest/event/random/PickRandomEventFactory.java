@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.quest.event.random;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -8,9 +11,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.instruction.Instruction;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.List;
 import java.util.regex.Matcher;

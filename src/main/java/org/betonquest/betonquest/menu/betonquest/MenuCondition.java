@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.jetbrains.annotations.Nullable;

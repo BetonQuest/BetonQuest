@@ -4,10 +4,10 @@ import com.denizenscript.denizen.objects.PlayerTag;
 import com.denizenscript.denizen.utilities.implementation.BukkitScriptEntryData;
 import com.denizenscript.denizencore.scripts.ScriptRegistry;
 import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Runs specified Denizen task script.

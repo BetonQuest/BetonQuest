@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.objective;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Checks if the player has specified objective active.

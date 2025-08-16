@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.event.point;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**

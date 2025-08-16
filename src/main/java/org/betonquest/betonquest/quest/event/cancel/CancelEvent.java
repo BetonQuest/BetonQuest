@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.cancel;
 
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * The cancel event.

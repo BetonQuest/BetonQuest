@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Deletes the journal entry from all online players and database entries.

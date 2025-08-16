@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.condition.language;
 
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.List;
 

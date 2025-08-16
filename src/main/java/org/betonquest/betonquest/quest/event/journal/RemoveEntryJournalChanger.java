@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * A journal changer that will remove a specified entry.

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.id.ConversationID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Starts a conversation.

@@ -2,11 +2,11 @@ package org.betonquest.betonquest.text;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.instruction.argument.Argument;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 

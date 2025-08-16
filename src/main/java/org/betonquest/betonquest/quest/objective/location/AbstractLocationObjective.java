@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

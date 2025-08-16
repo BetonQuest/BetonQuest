@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.quest.event.eval.EvalEvent;
 
