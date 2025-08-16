@@ -1,15 +1,25 @@
 package org.betonquest.betonquest.kernel.processor;
 
+import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +35,7 @@ public record CoreQuestRegistry(
         EventProcessor events,
         ObjectiveProcessor objectives,
         VariableProcessor variables
-) {
+) implements QuestTypeApi {
 
     /**
      * Create a new Registry for storing and using Core Quest Types.
@@ -86,5 +96,55 @@ public record CoreQuestRegistry(
     public String readableSize() {
         return String.join(", ", conditions.readableSize(), events.readableSize(),
                 objectives.readableSize(), variables.readableSize());
+    }
+
+    @Override
+    public boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
+        int index = 0;
+        for (final ConditionID id : conditionIDs) {
+            ids[index++] = id;
+        }
+        return conditions(profile, ids);
+    }
+
+    @Override
+    public boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
+        return conditions().checks(profile, conditionIDs);
+    }
+
+    @Override
+    public boolean condition(@Nullable final Profile profile, final ConditionID conditionID) {
+        return conditions().check(profile, conditionID);
+    }
+
+    @Override
+    public boolean event(@Nullable final Profile profile, final EventID eventID) {
+        return events().execute(profile, eventID);
+    }
+
+    @Override
+    public void newObjective(final Profile profile, final ObjectiveID objectiveID) {
+        objectives().start(profile, objectiveID);
+    }
+
+    @Override
+    public void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
+        objectives().resume(profile, objectiveID, instruction);
+    }
+
+    @Override
+    public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
+        objectives().renameObjective(name, rename);
+    }
+
+    @Override
+    public List<Objective> getPlayerObjectives(final Profile profile) {
+        return objectives().getActive(profile);
+    }
+
+    @Override
+    public Objective getObjective(final ObjectiveID objectiveID) throws QuestException {
+        return objectives().get(objectiveID);
     }
 }
