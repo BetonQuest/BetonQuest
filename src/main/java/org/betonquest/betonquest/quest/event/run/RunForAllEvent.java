@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestListException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.List;

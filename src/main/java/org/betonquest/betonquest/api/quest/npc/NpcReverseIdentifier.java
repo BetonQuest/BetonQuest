@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.id.NpcID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.random;
 
-import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 
 /**
  * Represents an event with its weight.

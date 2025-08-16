@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.id;
+package org.betonquest.betonquest.api.quest.event;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;

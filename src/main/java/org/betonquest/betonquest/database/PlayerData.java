@@ -10,13 +10,13 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.JournalEntryID;
-import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.schedule;
+package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;

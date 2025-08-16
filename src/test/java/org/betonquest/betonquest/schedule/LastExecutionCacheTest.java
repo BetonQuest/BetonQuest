@@ -2,6 +2,7 @@ package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

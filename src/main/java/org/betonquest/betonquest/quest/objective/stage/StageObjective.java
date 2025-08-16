@@ -5,7 +5,7 @@ import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;

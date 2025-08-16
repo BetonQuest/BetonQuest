@@ -1,9 +1,8 @@
-package org.betonquest.betonquest.schedule;
+package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.SectionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.schedule.Schedule;
 
 /**
  * ID identifying a {@link Schedule}.

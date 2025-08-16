@@ -3,7 +3,7 @@ package org.betonquest.betonquest.instruction.variable;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
