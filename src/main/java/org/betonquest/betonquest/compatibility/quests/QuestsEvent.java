@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.Quests;
 import me.pikamug.quests.quests.Quest;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Starts a quests in Quests plugin.

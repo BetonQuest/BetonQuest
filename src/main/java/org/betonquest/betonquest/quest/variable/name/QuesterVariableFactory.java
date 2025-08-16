@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.name;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
-import org.betonquest.betonquest.instruction.Instruction;
 
 /**
  * Factory to create {@link QuesterVariable}s from {@link Instruction}s.

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.quest;
 
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 
 /**
  * Factory to create a specific {@link T}.

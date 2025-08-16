@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.feature;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 

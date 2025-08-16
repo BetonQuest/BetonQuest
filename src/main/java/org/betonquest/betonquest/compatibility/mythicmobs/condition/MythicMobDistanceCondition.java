@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.condition;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.entity.Player;
 
 /**

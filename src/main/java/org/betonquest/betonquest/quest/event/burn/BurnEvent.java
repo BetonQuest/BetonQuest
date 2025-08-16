@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.burn;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * The burn event. Sets the player on fire.

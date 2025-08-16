@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
-import org.betonquest.betonquest.instruction.Instruction;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;

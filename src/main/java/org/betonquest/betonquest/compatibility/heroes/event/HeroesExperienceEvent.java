@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.heroes.event;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Adds the experience to a class.

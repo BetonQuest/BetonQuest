@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mcmmo;
 
 import com.gmail.nossr50.api.ExperienceAPI;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 
 /**
  * Adds experience in specified skill.

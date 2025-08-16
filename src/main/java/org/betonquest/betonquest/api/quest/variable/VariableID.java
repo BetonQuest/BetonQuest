@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.quest.variable;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.instruction.VariableInstruction;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.VariableInstruction;
 import org.jetbrains.annotations.Nullable;
 
 /**

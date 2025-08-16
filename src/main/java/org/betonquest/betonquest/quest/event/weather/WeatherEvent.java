@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.weather;
 
 import org.betonquest.betonquest.api.common.function.Selector;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 

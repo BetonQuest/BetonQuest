@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.experience.Profession;
 import net.Indyuce.mmocore.manager.profession.ProfessionManager;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.argument.Argument;
 
 /**
  * Parses a string to a profession.

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.chest;
 
+import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Item;
-import org.betonquest.betonquest.instruction.variable.Variable;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
