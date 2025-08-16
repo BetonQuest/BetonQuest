@@ -232,11 +232,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private QuestTypeApi questTypeApi;
 
     /**
-     * Feature API.
-     */
-    private FeatureApi featureApi;
-
-    /**
      * Cache for event schedulers, holding the last execution of an event.
      */
     private LastExecutionCache lastExecutionCache;
@@ -396,7 +391,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
                 coreQuestRegistry, featureRegistries, pluginMessage, textCreator, profileProvider, questTypeApi, playerDataStorage);
-        featureApi = new FeatureApi(questRegistry);
 
         setupUpdater();
         registerListener(coreQuestRegistry);
@@ -453,7 +447,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), questRegistry.metricsSupplier(), compatibility);
 
         rpgMenu = new RPGMenu(loggerFactory.create(RPGMenu.class), loggerFactory, config, coreQuestRegistry.variables(),
-                pluginMessage, textCreator, questTypeApi, featureApi, profileProvider);
+                pluginMessage, textCreator, questTypeApi, questRegistry, profileProvider);
 
         log.info("BetonQuest successfully enabled!");
     }
@@ -490,7 +484,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, featureApi),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), this, questRegistry),
                 new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider, updater)
@@ -731,7 +725,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
     @Override
     public FeatureApi getFeatureApi() {
-        return featureApi;
+        return questRegistry;
     }
 
     /**

@@ -2,14 +2,32 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
+import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.feature.QuestCanceler;
+import org.betonquest.betonquest.feature.QuestCompass;
+import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
+import org.betonquest.betonquest.id.CompassID;
+import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.id.JournalMainPageID;
+import org.betonquest.betonquest.id.QuestCancelerID;
+import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
@@ -21,6 +39,7 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.schedule.EventScheduling;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +61,7 @@ import java.util.stream.Collectors;
  * @param journalEntries   Journal Entries.
  * @param journalMainPages Journal Main Pages.
  * @param npcs             Npc getting.
+ * @param additional       Additional quest processors.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public record QuestRegistry(
@@ -56,7 +76,7 @@ public record QuestRegistry(
         JournalMainPageProcessor journalMainPages,
         NpcProcessor npcs,
         List<QuestProcessor<?, ?>> additional
-) {
+) implements FeatureApi {
 
     /**
      * Create a new Registry for storing and using Conditions, Events, Objectives, Variables,
@@ -156,5 +176,55 @@ public record QuestRegistry(
                 npcs.metricsSupplier())
         );
         return map;
+    }
+
+    @Override
+    public ConversationData getConversation(final ConversationID conversationID) throws QuestException {
+        return conversations().get(conversationID);
+    }
+
+    @Override
+    public Map<QuestCancelerID, QuestCanceler> getCancelers() {
+        return new HashMap<>(cancelers().getValues());
+    }
+
+    @Override
+    public QuestCanceler getCanceler(final QuestCancelerID cancelerID) throws QuestException {
+        return cancelers().get(cancelerID);
+    }
+
+    @Override
+    public Map<CompassID, QuestCompass> getCompasses() {
+        return new HashMap<>(compasses().getValues());
+    }
+
+    @Override
+    public Text getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
+        return journalEntries().get(journalEntryID);
+    }
+
+    @Override
+    public void renameJournalEntry(final JournalEntryID name, final JournalEntryID rename) {
+        journalEntries().renameJournalEntry(name, rename);
+    }
+
+    @Override
+    public Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages() {
+        return new HashMap<>(journalMainPages().getValues());
+    }
+
+    @Override
+    public Npc<?> getNpc(final NpcID npcID, @Nullable final Profile profile) throws QuestException {
+        return npcs().get(npcID).getNpc(profile);
+    }
+
+    @Override
+    public NpcHider getNpcHider() {
+        return npcs().getNpcHider();
+    }
+
+    @Override
+    public QuestItem getItem(final ItemID itemID, @Nullable final Profile profile) throws QuestException {
+        return items().get(itemID).getItem(profile);
     }
 }

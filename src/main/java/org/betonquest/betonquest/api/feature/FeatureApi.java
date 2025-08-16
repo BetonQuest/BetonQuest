@@ -17,31 +17,14 @@ import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The Feature logic.
+ * The FeatureApi provides access to more complex features, often based on basic features.
  */
-public final class FeatureApi {
-
-    /**
-     * Quest Registry providing processors.
-     */
-    private final QuestRegistry questRegistry;
-
-    /**
-     * Create a new Feature API.
-     *
-     * @param questRegistry the registry containing processors
-     */
-    public FeatureApi(final QuestRegistry questRegistry) {
-        this.questRegistry = questRegistry;
-    }
-
+public interface FeatureApi {
     /**
      * Gets stored Conversation Data.
      *
@@ -49,18 +32,14 @@ public final class FeatureApi {
      * @return the loaded ConversationData
      * @throws QuestException if no ConversationData is loaded for the ID
      */
-    public ConversationData getConversation(final ConversationID conversationID) throws QuestException {
-        return questRegistry.conversations().get(conversationID);
-    }
+    ConversationData getConversation(ConversationID conversationID) throws QuestException;
 
     /**
      * Get the loaded Quest Canceler.
      *
      * @return quest cancelers in a new map
      */
-    public Map<QuestCancelerID, QuestCanceler> getCancelers() {
-        return new HashMap<>(questRegistry.cancelers().getValues());
-    }
+    Map<QuestCancelerID, QuestCanceler> getCancelers();
 
     /**
      * Gets stored Quest Canceler.
@@ -69,18 +48,14 @@ public final class FeatureApi {
      * @return the loaded QuestCanceler
      * @throws QuestException if no QuestCanceler is loaded for the ID
      */
-    public QuestCanceler getCanceler(final QuestCancelerID cancelerID) throws QuestException {
-        return questRegistry.cancelers().get(cancelerID);
-    }
+    QuestCanceler getCanceler(QuestCancelerID cancelerID) throws QuestException;
 
     /**
      * Get the loaded Compasses.
      *
      * @return compasses in a new map
      */
-    public Map<CompassID, QuestCompass> getCompasses() {
-        return new HashMap<>(questRegistry.compasses().getValues());
-    }
+    Map<CompassID, QuestCompass> getCompasses();
 
     /**
      * Gets stored Journal Entry.
@@ -89,9 +64,7 @@ public final class FeatureApi {
      * @return the loaded text
      * @throws QuestException if no text is loaded for the ID
      */
-    public Text getJournalEntry(final JournalEntryID journalEntryID) throws QuestException {
-        return questRegistry.journalEntries().get(journalEntryID);
-    }
+    Text getJournalEntry(JournalEntryID journalEntryID) throws QuestException;
 
     /**
      * Renames the Journal Entry instance.
@@ -99,18 +72,14 @@ public final class FeatureApi {
      * @param name   the current name
      * @param rename the name it should have now
      */
-    public void renameJournalEntry(final JournalEntryID name, final JournalEntryID rename) {
-        questRegistry.journalEntries().renameJournalEntry(name, rename);
-    }
+    void renameJournalEntry(JournalEntryID name, JournalEntryID rename);
 
     /**
      * Get the loaded Journal Main Page Entries.
      *
      * @return pages in a new map
      */
-    public Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages() {
-        return new HashMap<>(questRegistry.journalMainPages().getValues());
-    }
+    Map<JournalMainPageID, JournalMainPageEntry> getJournalMainPages();
 
     /**
      * Gets a Npc by its id.
@@ -120,18 +89,14 @@ public final class FeatureApi {
      * @return the betonquest Npc
      * @throws QuestException when there is no Npc with that id
      */
-    public Npc<?> getNpc(final NpcID npcID, @Nullable final Profile profile) throws QuestException {
-        return questRegistry.npcs().get(npcID).getNpc(profile);
-    }
+    Npc<?> getNpc(NpcID npcID, @Nullable Profile profile) throws QuestException;
 
     /**
      * Gets the NpcHider.
      *
      * @return the active npc hider
      */
-    public NpcHider getNpcHider() {
-        return questRegistry.npcs().getNpcHider();
-    }
+    NpcHider getNpcHider();
 
     /**
      * Gets a QuestItem by their id.
@@ -141,7 +106,5 @@ public final class FeatureApi {
      * @return the stored quest item
      * @throws QuestException if there exists no QuestItem with that id
      */
-    public QuestItem getItem(final ItemID itemID, @Nullable final Profile profile) throws QuestException {
-        return questRegistry.items().get(itemID).getItem(profile);
-    }
+    QuestItem getItem(ItemID itemID, @Nullable Profile profile) throws QuestException;
 }
