@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
@@ -90,7 +89,6 @@ public record QuestRegistry(
      * @param pluginMessage     the {@link PluginMessage} instance
      * @param textCreator       the text creator to parse text
      * @param profileProvider   the profile provider instance
-     * @param questTypeApi      the Quest Type API
      * @param playerDataStorage the storage to get player data
      * @return the newly created QuestRegistry
      */
@@ -98,17 +96,17 @@ public record QuestRegistry(
                                        final BetonQuest plugin, final CoreQuestRegistry coreQuestRegistry,
                                        final FeatureRegistries otherRegistries, final PluginMessage pluginMessage,
                                        final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
-                                       final QuestTypeApi questTypeApi, final PlayerDataStorage playerDataStorage) {
+                                       final PlayerDataStorage playerDataStorage) {
         final VariableProcessor variables = coreQuestRegistry.variables();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
-        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, questTypeApi, playerDataStorage);
+        final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, coreQuestRegistry, playerDataStorage);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
                 textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables);
         final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), otherRegistries.item());
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), textCreator);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, textCreator);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider, questTypeApi);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry);
         return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
 
