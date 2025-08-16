@@ -2,6 +2,7 @@ package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.schedule.ScheduleID;
 
 import java.io.IOException;
 import java.time.Instant;

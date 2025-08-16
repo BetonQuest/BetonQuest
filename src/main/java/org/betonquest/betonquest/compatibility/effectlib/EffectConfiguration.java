@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.effectlib;
 
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

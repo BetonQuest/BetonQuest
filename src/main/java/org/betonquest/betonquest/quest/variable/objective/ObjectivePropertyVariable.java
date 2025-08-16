@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
-import org.betonquest.betonquest.id.ObjectiveID;
 
 /**
  * Resolves to a specified property of an objective.
