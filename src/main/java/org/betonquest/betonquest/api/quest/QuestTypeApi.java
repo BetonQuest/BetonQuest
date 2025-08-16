@@ -2,9 +2,9 @@ package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
 import org.jetbrains.annotations.Nullable;
 

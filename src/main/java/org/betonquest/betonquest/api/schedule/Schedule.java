@@ -1,8 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.schedule.ScheduleID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

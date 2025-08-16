@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.feature.journal;
 
+import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.instruction.variable.Variable;
 
 import java.util.List;

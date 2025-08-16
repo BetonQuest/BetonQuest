@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.TypeFactory;
@@ -72,7 +71,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new Instruction(questPackage, new NoID(questPackage), instruction);
+            final Instruction innerInstruction = new Instruction(questPackage, null, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

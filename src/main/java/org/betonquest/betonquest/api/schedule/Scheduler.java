@@ -2,8 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.schedule.ScheduleID;
+import org.betonquest.betonquest.api.quest.event.EventID;
 
 import java.util.HashMap;
 import java.util.Map;

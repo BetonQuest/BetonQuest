@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.stage;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.betonquest.betonquest.id.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.List;

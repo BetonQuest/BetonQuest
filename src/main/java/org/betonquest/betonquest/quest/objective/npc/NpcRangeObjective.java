@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestListException;
-import org.betonquest.betonquest.id.NpcID;
+import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.instruction.Instruction;
 import org.betonquest.betonquest.instruction.variable.Variable;
 import org.bukkit.Bukkit;

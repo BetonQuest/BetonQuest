@@ -2,7 +2,7 @@ package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.VariableID;
+import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
