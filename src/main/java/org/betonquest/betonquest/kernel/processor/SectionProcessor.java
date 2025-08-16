@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -11,10 +11,10 @@ import java.util.Map;
 /**
  * Does the load logic around {@link T} from a configuration section.
  *
- * @param <I> the {@link ID} identifying the type
+ * @param <I> the {@link Identifier} identifying the type
  * @param <T> the type
  */
-public abstract class SectionProcessor<I extends ID, T> extends QuestProcessor<I, T> {
+public abstract class SectionProcessor<I extends Identifier, T> extends QuestProcessor<I, T> {
 
     /**
      * Create a new QuestProcessor to store and execute type logic.
@@ -38,7 +38,7 @@ public abstract class SectionProcessor<I extends ID, T> extends QuestProcessor<I
                 final ConfigurationSection featureSection = section.getConfigurationSection(key);
                 final I identifier = getIdentifier(pack, key);
                 if (featureSection == null) {
-                    log.warn(pack, "No configuration section for '" + identifier.getFullID() + "' " + readable + "!");
+                    log.warn(pack, "No configuration section for '" + identifier + "' " + readable + "!");
                     continue;
                 }
                 values.put(identifier, loadSection(pack, featureSection));

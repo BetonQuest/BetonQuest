@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.CompassProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
@@ -149,8 +149,8 @@ public record QuestRegistry(
      *
      * @return available instruction metrics
      */
-    public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
-        final Map<String, InstructionMetricsSupplier<? extends ID>> map = new HashMap<>(core.metricsSupplier());
+    public Map<String, InstructionMetricsSupplier<? extends InstructionIdentifier>> metricsSupplier() {
+        final Map<String, InstructionMetricsSupplier<? extends InstructionIdentifier>> map = new HashMap<>(core.metricsSupplier());
         map.putAll(Map.ofEntries(
                 items.metricsSupplier(),
                 npcs.metricsSupplier())

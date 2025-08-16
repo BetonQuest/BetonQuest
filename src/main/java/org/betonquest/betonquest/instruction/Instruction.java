@@ -2,8 +2,8 @@ package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.NoID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.PackageArgument;
@@ -33,7 +33,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     /**
      * The identifier for this instruction.
      */
-    private final ID identifier;
+    private final Identifier identifier;
 
     /**
      * The raw instruction string.
@@ -53,7 +53,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final QuestPackage pack, @Nullable final ID identifier, final String instruction) throws QuestException {
+    public Instruction(final QuestPackage pack, @Nullable final Identifier identifier, final String instruction) throws QuestException {
         this(new QuotingTokenizer(), pack, useFallbackIdIfNecessary(pack, identifier), instruction);
     }
 
@@ -66,7 +66,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Tokenizer tokenizer, final QuestPackage pack, final ID identifier, final String instruction) throws QuestException {
+    public Instruction(final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
@@ -83,14 +83,14 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction to copy
      * @param identifier  identifier of the new instruction
      */
-    public Instruction(final Instruction instruction, final ID identifier) {
+    public Instruction(final Instruction instruction, final Identifier identifier) {
         this.pack = instruction.pack;
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
     }
 
-    private static ID useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final ID identifier) {
+    private static Identifier useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final Identifier identifier) {
         if (identifier != null) {
             return identifier;
         }
@@ -111,11 +111,11 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     }
 
     /**
-     * Get the {@link ID} of this instruction.
+     * Get the {@link Identifier} of this instruction.
      *
      * @return the instruction identifier
      */
-    public ID getID() {
+    public Identifier getID() {
         return identifier;
     }
 
@@ -174,7 +174,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param newID the ID to identify the copied instruction with
      * @return copy of this instruction with the new ID
      */
-    public Instruction copy(final ID newID) {
+    public Instruction copy(final Identifier newID) {
         return new Instruction(this, newID);
     }
 

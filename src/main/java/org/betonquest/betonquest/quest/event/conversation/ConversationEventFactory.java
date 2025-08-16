@@ -71,7 +71,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
             final ConversationID conversationID = new ConversationID(instruction.getPackage(), split[0]);
             final String optionName = split.length == 2 ? split[1] : null;
             if (optionName != null) {
-                final String optionPath = "conversations." + conversationID.getBaseID() + ".NPC_options." + optionName;
+                final String optionPath = "conversations." + conversationID.get() + ".NPC_options." + optionName;
                 if (!conversationID.getPackage().getConfig().contains(optionPath)) {
                     throw new QuestException("NPC Option '" + optionName + "' does not exist in '" + conversationID + "'.");
                 }

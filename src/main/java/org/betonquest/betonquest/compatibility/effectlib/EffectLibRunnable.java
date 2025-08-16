@@ -124,7 +124,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                 try {
                     npc = featureApi.getNpc(npcId, profile);
                 } catch (final QuestException exception) {
-                    log.debug("Could not get Npc for id '" + npcId.getFullID() + "' in effects!", exception);
+                    log.debug("Could not get Npc for id '" + npcId + "' in effects!", exception);
                     continue;
                 }
                 final Player player = profile.getPlayer();

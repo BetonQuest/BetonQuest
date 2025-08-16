@@ -107,7 +107,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
-                pluginMessage, instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, "new_journal_entry");
+                pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
         return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
     }
 

@@ -53,7 +53,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
         final ChestTakeEvent chestTakeEvent = instruction.hasArgument("items-stay") ? null : new ChestTakeEvent(loc, items);
         final BetonQuestLogger log = loggerFactory.create(ChestPutObjective.class);
         final IngameNotificationSender occupiedSender = new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
-                instruction.getID().getFullID(), NotificationLevel.INFO, "chest_occupied");
+                instruction.getID().getFull(), NotificationLevel.INFO, "chest_occupied");
         return new ChestPutObjective(instruction, chestItemCondition, chestTakeEvent, loc, occupiedSender,
                 multipleAccess);
     }

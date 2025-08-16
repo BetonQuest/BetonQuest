@@ -180,7 +180,7 @@ public class Journal {
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
                 : Long.toString(pointer.timestamp());
         betonQuest.getSaver().add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(),
-                pointer.pointer().getFullID(), date));
+                pointer.pointer().getFull(), date));
     }
 
     /**
@@ -197,7 +197,7 @@ public class Journal {
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
                         : Long.toString(pointer.timestamp());
                 betonQuest.getSaver().add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(),
-                        pointer.pointer().getFullID(), date));
+                        pointer.pointer().getFull(), date));
                 pointers.remove(pointer);
                 break;
             }

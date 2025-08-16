@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
@@ -8,7 +9,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
  * This is used for runtime-only IDs that are not stored anywhere.
  */
 @SuppressWarnings("PMD.ShortClassName")
-public class NoID extends ID {
+public class NoID extends Identifier {
 
     /**
      * Constructs a new NoID.

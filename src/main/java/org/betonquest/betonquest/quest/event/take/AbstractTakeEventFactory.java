@@ -78,7 +78,7 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
     protected NotificationSender getNotificationSender(final Instruction instruction, final BetonQuestLogger log) {
         return instruction.hasArgument("notify")
                 ? new IngameNotificationSender(log, pluginMessage, instruction.getPackage(),
-                instruction.getID().getFullID(), NotificationLevel.INFO, "items_taken")
+                instruction.getID().getFull(), NotificationLevel.INFO, "items_taken")
                 : new NoNotificationSender();
     }
 }

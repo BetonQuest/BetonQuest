@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.SectionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * ID of a menu.
  */
-public class MenuID extends ID {
+public class MenuID extends SectionIdentifier {
 
     /**
      * Create a new Menu ID.
@@ -18,9 +18,6 @@ public class MenuID extends ID {
      * @throws QuestException if there is no such menu
      */
     public MenuID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(pack, identifier);
-        if (!super.pack.getConfig().isConfigurationSection("menus." + super.getBaseID())) {
-            throw new QuestException("Menu '" + getFullID() + "' is not defined");
-        }
+        super(pack, identifier, "menus", "Menu");
     }
 }

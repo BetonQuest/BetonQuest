@@ -1,54 +1,60 @@
-package org.betonquest.betonquest.id;
+package org.betonquest.betonquest.api.identifier;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.instruction.Instruction;
+import org.betonquest.betonquest.id.VariableID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 /**
- * Identifies any object(events, objectives, conversations etc.) of BetonQuest's scripting system via the path syntax.
- * Handles relative and absolute paths.
+ * Identifiers are used to identify objects in BetonQuest.
+ * A dot separates the package name from the identifier.
+ * The package name can be relative or absolute.
+ * Navigation in the package hierarchy is done with the dash as separator and the underscore as up navigator.
  */
-@SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.GodClass"})
-public abstract class ID {
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+public abstract class Identifier {
+    /**
+     * The string used to separate the package name from the identifier.
+     */
+    public static final String SEPERATOR = ".";
 
     /**
-     * The string used to go "up the hierarchy" in relative paths.
+     * The string to separate the package address into parts.
      */
-    public static final String UP_STR = "_";
+    public static final String PACKAGE_SEPERATOR = "-";
+
+    /**
+     * The string used to navigate up in the package hierarchy.
+     */
+    public static final String PACKAGE_NAVIGATOR = "_";
 
     /**
      * The package the object is in.
      */
-    protected final QuestPackage pack;
+    private final QuestPackage pack;
 
     /**
      * The identifier of the object without the package name.
      */
-    protected String identifier;
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
+    private final String identifier;
 
     /**
-     * The created instruction of the object.
-     */
-    @Nullable
-    protected Instruction instruction;
-
-    /**
-     * Creates a new ID. Handles relative and absolute paths and edge cases with special IDs like variables.
+     * Creates a new Identifier. Handles relative and absolute paths and edge cases with special Identifiers.
      *
      * @param pack       the package the ID is in
-     * @param identifier the id instruction string
-     * @throws QuestException if the ID could not be parsed
+     * @param identifier the identifier string leading to the object
+     * @throws QuestException if the identifier could not be parsed
      */
-    protected ID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
+    protected Identifier(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
         if (identifier.isEmpty()) {
             throw new QuestException("ID is null");
         }
-        if (identifier.contains(".")) {
-            final int dotIndex = identifier.indexOf('.');
+        if (identifier.contains(SEPERATOR)) {
+            final int dotIndex = identifier.indexOf(SEPERATOR);
             final QuestPackage parsed = parsePackageFromIdentifier(pack, identifier, dotIndex);
             if (parsed != null) {
                 this.pack = parsed;
@@ -60,38 +66,20 @@ public abstract class ID {
             }
         }
         if (pack == null) {
-            throw new QuestException("No package specified for id '" + identifier + "'!");
+            throw new QuestException("No package specified for ID '" + identifier + "'!");
         }
         this.pack = pack;
         this.identifier = identifier;
-    }
-
-    /**
-     * Constructor of an id that also create an instruction.
-     *
-     * @param pack       the package the ID is in
-     * @param identifier the id instruction string
-     * @param section    the section of the config file
-     * @param readable   the readable name of the object
-     * @throws QuestException if the instruction or ID could not be created.
-     */
-    protected ID(@Nullable final QuestPackage pack, final String identifier, final String section, final String readable) throws QuestException {
-        this(pack, identifier);
-        final String rawInstruction = this.pack.getConfig().getString(section + "." + this.identifier);
-        if (rawInstruction == null) {
-            throw new QuestException(readable + " '" + getFullID() + "' is not defined");
-        }
-        instruction = new Instruction(this.pack, this, rawInstruction);
     }
 
     @Nullable
     private QuestPackage parsePackageFromIdentifier(@Nullable final QuestPackage pack, final String identifier, final int dotIndex) throws QuestException {
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null) {
-            if (packName.startsWith(UP_STR + "-")) {
+            if (packName.startsWith(PACKAGE_NAVIGATOR + PACKAGE_SEPERATOR)) {
                 return resolveRelativePathUp(pack, identifier, packName);
             }
-            if (packName.startsWith("-")) {
+            if (packName.startsWith(PACKAGE_SEPERATOR)) {
                 return resolveRelativePathDown(pack, identifier, packName);
             }
         }
@@ -105,13 +93,6 @@ public abstract class ID {
         return null;
     }
 
-    /**
-     * Checks if there is a pack with that name.
-     *
-     * @param packName the potential pack name
-     * @return the pack with that name, if present
-     * @throws QuestException when this is a variable id and the pack has the same name as a variable type
-     */
     @Nullable
     private QuestPackage packFromName(final String packName) throws QuestException {
         final QuestPackage potentialPack = BetonQuest.getInstance().getPackages().get(packName);
@@ -131,22 +112,22 @@ public abstract class ID {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private QuestPackage resolveRelativePathUp(final QuestPackage pack, final String identifier, final String packName) throws QuestException {
-        final String[] root = pack.getQuestPath().split("-");
-        final String[] path = packName.split("-");
+        final String[] root = pack.getQuestPath().split(PACKAGE_SEPERATOR);
+        final String[] path = packName.split(PACKAGE_SEPERATOR);
         int stepsUp = 0;
-        while (stepsUp < path.length && UP_STR.equals(path[stepsUp])) {
+        while (stepsUp < path.length && PACKAGE_NAVIGATOR.equals(path[stepsUp])) {
             stepsUp++;
         }
         if (stepsUp > root.length) {
             throw new QuestException("Relative path goes out of package scope! Consider removing a few '"
-                    + UP_STR + "'s in ID " + identifier);
+                    + PACKAGE_NAVIGATOR + "'s in ID " + identifier);
         }
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < root.length - stepsUp; i++) {
-            builder.append(root[i]).append('-');
+            builder.append(root[i]).append(PACKAGE_SEPERATOR);
         }
         for (int i = stepsUp; i < path.length; i++) {
-            builder.append(path[i]).append('-');
+            builder.append(path[i]).append(PACKAGE_SEPERATOR);
         }
         try {
             final String absolute = builder.substring(0, builder.length() - 1);
@@ -178,45 +159,31 @@ public abstract class ID {
      *
      * @return the package
      */
-    public final QuestPackage getPackage() {
+    public QuestPackage getPackage() {
         return pack;
     }
 
     /**
-     * Returns the base ID of the object. This is the ID without the package name.
+     * Returns the identifier of the object without the package name.
      *
-     * @return the base ID
+     * @return the identifier in the format {@code identifier}
      */
-    public final String getBaseID() {
+    public String get() {
         return identifier;
     }
 
     /**
-     * Returns the full ID of the object, which is in this format: <br>
-     * <code>pack.identifier</code>
+     * Returns the full identifier of the object, including the package name.
      *
-     * @return the full ID
+     * @return the full identifier in the format {@code package.identifier}
      */
-    public final String getFullID() {
-        return pack.getQuestPath() + "." + getBaseID();
-    }
-
-    /**
-     * Returns the instruction of the object.
-     *
-     * @return the instruction
-     * @throws IllegalStateException if the instruction is not set
-     */
-    public Instruction getInstruction() {
-        if (instruction == null) {
-            throw new IllegalStateException("Instruction is not set for ID " + getFullID());
-        }
-        return instruction;
+    public String getFull() {
+        return pack.getQuestPath() + SEPERATOR + get();
     }
 
     @Override
     public String toString() {
-        return getFullID();
+        return getFull();
     }
 
     @Override
@@ -227,7 +194,7 @@ public abstract class ID {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final ID other = (ID) obj;
+        final Identifier other = (Identifier) obj;
         return Objects.equals(identifier, other.identifier)
                 && Objects.equals(pack.getQuestPath(), other.pack.getQuestPath());
     }

@@ -215,18 +215,18 @@ public abstract class Objective {
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         log.debug(instruction.getPackage(),
-                "Objective '" + instruction.getID().getFullID() + "' has been completed for "
+                "Objective '" + instruction.getID() + "' has been completed for "
                         + profile + ", firing events.");
         // fire all events
         log.debug(instruction.getPackage(),
-                "Firing events in objective '" + instruction.getID().getFullID() + "' for "
+                "Firing events in objective '" + instruction.getID() + "' for "
                         + profile + " finished");
         try {
             for (final EventID event : events.getValue(profile)) {
                 BetonQuest.getInstance().getQuestTypeApi().event(profile, event);
             }
         } catch (final QuestException e) {
-            log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID().getFullID()
+            log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID()
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
     }
@@ -240,13 +240,13 @@ public abstract class Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final Profile profile) {
-        log.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
-                + "\" objective for " + profile);
+        log.debug(instruction.getPackage(), "Condition check in '" + instruction.getID()
+                + "' objective for " + profile);
         try {
             return BetonQuest.getInstance().getQuestTypeApi().conditions(profile, conditions.getValue(profile));
         } catch (final QuestException e) {
             log.warn(instruction.getPackage(),
-                    "Error while checking conditions in objective '" + instruction.getID().getFullID()
+                    "Error while checking conditions in objective '" + instruction.getID()
                             + "' for " + profile + ": " + e.getMessage(), e);
             return false;
         }
@@ -261,7 +261,7 @@ public abstract class Objective {
     public final void newPlayer(final Profile profile) {
         final String defaultInstruction = getDefaultDataInstruction(profile);
         createObjectiveForPlayer(profile, defaultInstruction);
-        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
+        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(instruction.getID().getFull(), defaultInstruction);
     }
 
     /**
@@ -314,7 +314,7 @@ public abstract class Objective {
 
     private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof QuestException) {
-            log.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for "
+            log.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID() + " objective data for "
                     + profile + ": " + exception.getCause().getMessage(), exception);
         } else {
             log.reportException(instruction.getPackage(), exception);
@@ -323,7 +323,7 @@ public abstract class Objective {
 
     private ObjectiveData constructObjectiveDataUnsafe(final Profile profile, final String instructionString)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        final String fullId = this.instruction.getID().getFullID();
+        final String fullId = this.instruction.getID().getFull();
         return template.getConstructor(String.class, Profile.class, String.class)
                 .newInstance(instructionString, profile, fullId);
     }
@@ -441,7 +441,7 @@ public abstract class Objective {
      * @return the label of the objective
      */
     public final String getLabel() {
-        return instruction.getID().getFullID();
+        return instruction.getID().getFull();
     }
 
     /**
@@ -464,7 +464,7 @@ public abstract class Objective {
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
             stop(profile);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFullID(),
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFull(),
                     entry.getValue().toString());
         }
     }

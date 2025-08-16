@@ -69,6 +69,6 @@ public class DeleteJournalPlayerlessEvent implements PlayerlessEvent {
             journal.removePointer(resolved);
             journal.update();
         }
-        saver.add(new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, resolved.getFullID()));
+        saver.add(new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, resolved.getFull()));
     }
 }

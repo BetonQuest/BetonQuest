@@ -76,7 +76,7 @@ public class PointEventFactory implements PlayerEventFactory {
         final NotificationSender pointSender;
         if (instruction.hasArgument("notify")) {
             pointSender = new IngameNotificationSender(loggerFactory.create(PointEvent.class), pluginMessage,
-                    instruction.getPackage(), instruction.getID().getFullID(), NotificationLevel.INFO, type.getNotifyCategory());
+                    instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, type.getNotifyCategory());
         } else {
             pointSender = new NoNotificationSender();
         }

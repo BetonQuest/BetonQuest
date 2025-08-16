@@ -132,8 +132,8 @@ class EventSchedulingTest {
         doNothing().when(cronType).createAndScheduleNewInstance(any(), any());
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -144,8 +144,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         doThrow(new QuestException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -156,8 +156,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         doThrow(new InvocationTargetException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -168,8 +168,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         doThrow(new NoSuchMethodException()).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -191,7 +191,7 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNameWithSpace.yml");
         scheduling.loadData(pack);
         verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     /**

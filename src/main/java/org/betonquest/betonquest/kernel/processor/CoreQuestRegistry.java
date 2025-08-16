@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
@@ -69,7 +69,7 @@ public record CoreQuestRegistry(
      *
      * @return instruction metrics for core quest types
      */
-    public Map<String, InstructionMetricsSupplier<? extends ID>> metricsSupplier() {
+    public Map<String, InstructionMetricsSupplier<? extends InstructionIdentifier>> metricsSupplier() {
         return Map.ofEntries(
                 conditions.metricsSupplier(),
                 events.metricsSupplier(),

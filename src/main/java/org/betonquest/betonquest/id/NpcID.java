@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Identifies a {@link org.betonquest.betonquest.api.quest.npc.Npc Npc} via the path syntax.
  */
-public class NpcID extends ID {
+public class NpcID extends InstructionIdentifier {
 
     /**
      * Creates a new Npc id.

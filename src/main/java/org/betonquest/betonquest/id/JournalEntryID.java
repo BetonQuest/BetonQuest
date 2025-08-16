@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a journal entry ID.
  */
-public class JournalEntryID extends ID {
+public class JournalEntryID extends InstructionIdentifier {
 
     /**
      * Creates new JournalEntryID instance.

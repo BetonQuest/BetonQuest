@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.tokenizer.Tokenizer;
 
 /**
@@ -23,7 +23,7 @@ public class VariableInstruction extends Instruction {
      * @throws QuestException if the instruction could not be tokenized,
      *                        or if the instruction does not start and end with '%' character.
      */
-    public VariableInstruction(final QuestPackage pack, final ID identifier, final String instruction) throws QuestException {
+    public VariableInstruction(final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
         super(DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
     }
 
@@ -33,7 +33,7 @@ public class VariableInstruction extends Instruction {
      * @param instruction The raw instruction string for this variable.
      * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final VariableInstruction instruction, final ID identifier) {
+    public VariableInstruction(final VariableInstruction instruction, final Identifier identifier) {
         super(instruction, identifier);
     }
 
@@ -50,7 +50,7 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public VariableInstruction copy(final ID newID) {
+    public VariableInstruction copy(final Identifier newID) {
         return new VariableInstruction(this, newID);
     }
 }

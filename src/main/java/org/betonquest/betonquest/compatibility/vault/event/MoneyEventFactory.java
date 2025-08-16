@@ -85,7 +85,7 @@ public class MoneyEventFactory implements PlayerEventFactory {
         final IngameNotificationSender takenSender;
         if (notify) {
             final QuestPackage pack = instruction.getPackage();
-            final String fullID = instruction.getID().getFullID();
+            final String fullID = instruction.getID().getFull();
             final BetonQuestLogger log = loggerFactory.create(MoneyEvent.class);
             givenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_given");
             takenSender = new IngameNotificationSender(log, pluginMessage, pack, fullID, NotificationLevel.INFO, "money_taken");

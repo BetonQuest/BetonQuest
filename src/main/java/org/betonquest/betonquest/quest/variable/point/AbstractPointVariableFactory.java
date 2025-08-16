@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.variable.point;
 
 import org.apache.commons.lang3.tuple.Triple;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.instruction.Instruction;
 
 import java.util.Locale;
@@ -61,7 +61,7 @@ public abstract class AbstractPointVariableFactory<T> {
             final String questPath = instruction.current();
             final String pointCategory = instruction.next();
             try {
-                final ID packageId = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
+                final Identifier packageId = new Identifier(instruction.getPackage(), questPath + "." + pointCategory) {
                 };
                 category = packageId.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final QuestException e) {

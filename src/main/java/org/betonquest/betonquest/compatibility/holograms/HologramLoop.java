@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.instruction.argument.Argument;
 import org.betonquest.betonquest.instruction.argument.types.NumberParser;
@@ -228,7 +228,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Internal identifier/key for a Hologram.
      */
-    protected static class HologramID extends ID {
+    protected static class HologramID extends Identifier {
 
         /**
          * Creates a new ID.
