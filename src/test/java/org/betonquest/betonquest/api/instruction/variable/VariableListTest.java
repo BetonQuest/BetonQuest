@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.variable;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
@@ -48,7 +49,7 @@ class VariableListTest {
     }
 
     private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
-        return new VariableList<>(variableProcessor, questPackage, input, value -> new EventID(questPackage, value));
+        return new VariableList<>(variableProcessor, questPackage, input, value -> new EventID(mock(QuestPackageManager.class), questPackage, value));
     }
 
     @Test

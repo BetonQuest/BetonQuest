@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.Text;
@@ -15,6 +16,10 @@ import java.util.Map;
  * Loads and stores Journal entries.
  */
 public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> {
+    /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
 
     /**
      * Text creator to parse text.
@@ -24,11 +29,13 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
     /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
-     * @param log         the custom logger for this class
-     * @param textCreator the text creator to parse text
+     * @param log                 the custom logger for this class
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param textCreator         the text creator to parse text
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final ParsedSectionTextCreator textCreator) {
+    public JournalEntryProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final ParsedSectionTextCreator textCreator) {
         super(log, "Journal Entry", "journal");
+        this.questPackageManager = questPackageManager;
         this.textCreator = textCreator;
     }
 
@@ -49,7 +56,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
 
     @Override
     protected JournalEntryID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalEntryID(pack, identifier);
+        return new JournalEntryID(questPackageManager, pack, identifier);
     }
 
     /**

@@ -650,8 +650,8 @@ public class Conversation implements Listener {
         final List<ResolvedOption> pointers = new ArrayList<>();
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-            pointers.add(new ConversationOptionResolver(plugin.getFeatureApi(), nextConvData.getPack(),
-                    nextConvData.getPublicData().convName(), nextType, pointer).resolve());
+            pointers.add(new ConversationOptionResolver(plugin.getQuestPackageManager(), plugin.getFeatureApi(),
+                    nextConvData.getPack(), nextConvData.getPublicData().convName(), nextType, pointer).resolve());
         }
         return pointers;
     }
@@ -778,7 +778,8 @@ public class Conversation implements Listener {
             for (final String startingOption : startingOptions) {
                 final ResolvedOption resolvedOption;
                 try {
-                    resolvedOption = new ConversationOptionResolver(plugin.getFeatureApi(), pack, identifier.get(), NPC, startingOption).resolve();
+                    resolvedOption = new ConversationOptionResolver(plugin.getQuestPackageManager(),
+                            plugin.getFeatureApi(), pack, identifier.get(), NPC, startingOption).resolve();
                 } catch (final QuestException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);

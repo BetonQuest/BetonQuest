@@ -11,6 +11,6 @@ public class RealtimeCronScheduleTest extends CronRebootScheduleTest {
 
     @Override
     protected RealtimeCronSchedule createSchedule() throws QuestException {
-        return new RealtimeCronSchedule(scheduleID, section);
+        return new RealtimeCronSchedule(questPackageManager, scheduleID, section);
     }
 }

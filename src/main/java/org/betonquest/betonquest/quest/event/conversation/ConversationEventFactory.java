@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -23,6 +24,11 @@ public class ConversationEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Data for primary server thread access.
      */
     private final PrimaryServerThreadData data;
@@ -35,13 +41,15 @@ public class ConversationEventFactory implements PlayerEventFactory {
     /**
      * Create the conversation event factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
-     * @param pluginMessage the {@link PluginMessage} instance
+     * @param loggerFactory       the logger factory to create a logger for the events
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param data                the data for primary server thread access
+     * @param pluginMessage       the {@link PluginMessage} instance
      */
-    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
+    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager questPackageManager, final PrimaryServerThreadData data,
                                     final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
+        this.questPackageManager = questPackageManager;
         this.data = data;
         this.pluginMessage = pluginMessage;
     }
@@ -68,7 +76,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
         final String option = instruction.getValue("option", "");
         return instruction.get(conversation + " " + option, combined -> {
             final String[] split = combined.split(" ");
-            final ConversationID conversationID = new ConversationID(instruction.getPackage(), split[0]);
+            final ConversationID conversationID = new ConversationID(questPackageManager, instruction.getPackage(), split[0]);
             final String optionName = split.length == 2 ? split[1] : null;
             if (optionName != null) {
                 final String optionPath = "conversations." + conversationID.get() + ".NPC_options." + optionName;

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -22,8 +23,8 @@ public class CitizensArgument implements PackageArgument<NpcID> {
     }
 
     @Override
-    public NpcID apply(final QuestPackage pack, final String string) throws QuestException {
-        final NpcID npcId = new NpcID(pack, string);
+    public NpcID apply(final QuestPackageManager questPackageManager, final QuestPackage pack, final String string) throws QuestException {
+        final NpcID npcId = new NpcID(questPackageManager, pack, string);
         final Instruction npcInstruction = npcId.getInstruction();
         if (!"citizens".equals(npcInstruction.getPart(0))) {
             throw new QuestException("Cannot use non-Citizens NPC ID!");

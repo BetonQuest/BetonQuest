@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -21,18 +22,25 @@ import java.util.concurrent.ExecutionException;
  */
 public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
-     * @param log            the custom logger for this class
-     * @param conditionTypes the available condition types
+     * @param log                 the custom logger for this class
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param conditionTypes      the available condition types
      */
-    public ConditionProcessor(final BetonQuestLogger log, final ConditionTypeRegistry conditionTypes) {
+    public ConditionProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final ConditionTypeRegistry conditionTypes) {
         super(log, conditionTypes, "Condition", "conditions");
+        this.questPackageManager = questPackageManager;
     }
 
     @Override
     protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(pack, identifier);
+        return new ConditionID(questPackageManager, pack, identifier);
     }
 
     /**

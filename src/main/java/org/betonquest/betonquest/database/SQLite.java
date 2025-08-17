@@ -308,7 +308,7 @@ public class SQLite extends Database {
                     final int amount = resultSet.getInt("amount");
                     final byte[] bytes;
                     try {
-                        bytes = new SimpleQuestItemFactory().parseInstruction(instruction).generate(1).serializeAsBytes();
+                        bytes = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager()).parseInstruction(instruction).generate(1).serializeAsBytes();
                     } catch (final QuestException e) {
                         log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
                         continue;

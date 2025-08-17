@@ -2,6 +2,7 @@ package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -23,6 +24,11 @@ public class EventScheduling {
     private final BetonQuestLogger log;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Map that contains all types of schedulers,
      * with keys being their names and values holding the scheduler and schedule class.
      */
@@ -31,11 +37,13 @@ public class EventScheduling {
     /**
      * Creates a new instance of the event scheduling class.
      *
-     * @param log           the logger that will be used for logging
-     * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
+     * @param log                 the logger that will be used for logging
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param scheduleTypes       map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public EventScheduling(final BetonQuestLogger log, final ScheduleRegistry scheduleTypes) {
+    public EventScheduling(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final ScheduleRegistry scheduleTypes) {
         this.log = log;
+        this.questPackageManager = questPackageManager;
         this.scheduleTypes = scheduleTypes;
     }
 
@@ -59,7 +67,7 @@ public class EventScheduling {
             }
 
             try {
-                final ScheduleID scheduleID = new ScheduleID(questPackage, key);
+                final ScheduleID scheduleID = new ScheduleID(questPackageManager, questPackage, key);
                 try {
                     final ConfigurationSection scheduleConfig = new UnmodifiableConfigurationSection(
                             questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.get())
@@ -67,7 +75,7 @@ public class EventScheduling {
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new QuestException("Missing type instruction"));
                     final ScheduleType<?, ?> scheduleType = scheduleTypes.getFactory(type);
-                    scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
+                    scheduleType.createAndScheduleNewInstance(questPackageManager, scheduleID, scheduleConfig);
                     log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final QuestException e) {
                     log.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
@@ -121,12 +129,12 @@ public class EventScheduling {
      */
     @SuppressWarnings("PMD.PreserveStackTrace")
     public record ScheduleType<S extends Schedule, T>(Class<S> scheduleClass, Scheduler<S, T> scheduler) {
-        /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ S newScheduleInstance(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             try {
                 return scheduleClass
-                        .getConstructor(ScheduleID.class, ConfigurationSection.class)
-                        .newInstance(scheduleID, scheduleConfig);
+                        .getConstructor(QuestPackageManager.class, ScheduleID.class, ConfigurationSection.class)
+                        .newInstance(questPackageManager, scheduleID, scheduleConfig);
             } catch (final InvocationTargetException e) {
                 if (e.getCause() instanceof final QuestException cause) {
                     throw cause;
@@ -136,9 +144,9 @@ public class EventScheduling {
             }
         }
 
-        /* default */ void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ void createAndScheduleNewInstance(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-            scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
+            scheduler.addSchedule(newScheduleInstance(questPackageManager, scheduleID, scheduleConfig));
         }
     }
 }

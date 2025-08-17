@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -68,19 +69,21 @@ public class RPGMenu {
     /**
      * Create a new RPG menu instance.
      *
-     * @param log               the custom logger for this class
-     * @param loggerFactory     the factory to crete new custom logger instances
-     * @param pluginConfig      the plugin config
-     * @param variableProcessor the variable processor instance to get and create variables
-     * @param pluginMessage     the plugin message instance
-     * @param textCreator       the text creator to parse text
-     * @param questTypeApi      the Quest Type API
-     * @param featureApi        the Feature API
-     * @param profileProvider   the profile provider instance
+     * @param log                 the custom logger for this class
+     * @param loggerFactory       the factory to crete new custom logger instances
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param pluginConfig        the plugin config
+     * @param variableProcessor   the variable processor instance to get and create variables
+     * @param pluginMessage       the plugin message instance
+     * @param textCreator         the text creator to parse text
+     * @param questTypeApi        the Quest Type API
+     * @param featureApi          the Feature API
+     * @param profileProvider     the profile provider instance
      */
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                   final ConfigAccessor pluginConfig, final VariableProcessor variableProcessor,
-                   final PluginMessage pluginMessage, final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
+                   final QuestPackageManager questPackageManager, final ConfigAccessor pluginConfig,
+                   final VariableProcessor variableProcessor, final PluginMessage pluginMessage,
+                   final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
                    final FeatureApi featureApi, final ProfileProvider profileProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
@@ -97,10 +100,10 @@ public class RPGMenu {
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
+                questPackageManager, textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
         betonQuest.addProcessor(menuItemProcessor);
-        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, textCreator,
-                questTypeApi, variableProcessor, featureApi, this, profileProvider);
+        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
+                questPackageManager, textCreator, questTypeApi, variableProcessor, featureApi, this, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);

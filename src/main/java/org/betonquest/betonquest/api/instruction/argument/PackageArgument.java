@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.types.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -26,10 +27,11 @@ public interface PackageArgument<T> {
     /**
      * Gets a {@link T} from string.
      *
-     * @param pack   the source package
-     * @param string the string to parse
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param pack                the source package
+     * @param string              the string to parse
      * @return the {@link T}
      * @throws QuestException when the string cannot be parsed as {@link T}
      */
-    T apply(QuestPackage pack, String string) throws QuestException;
+    T apply(QuestPackageManager questPackageManager, QuestPackage pack, String string) throws QuestException;
 }

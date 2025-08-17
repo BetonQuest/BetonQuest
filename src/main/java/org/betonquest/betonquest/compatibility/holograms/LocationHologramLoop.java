@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -20,14 +21,16 @@ public class LocationHologramLoop extends HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
-     * @param loggerFactory     logger factory to use
-     * @param log               the logger that will be used for logging
-     * @param variableProcessor the {@link VariableProcessor} to use
-     * @param hologramProvider  the hologram provider to create new holograms
+     * @param loggerFactory       logger factory to use
+     * @param log                 the logger that will be used for logging
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param variableProcessor   the {@link VariableProcessor} to use
+     * @param hologramProvider    the hologram provider to create new holograms
      */
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                final VariableProcessor variableProcessor, final HologramProvider hologramProvider) {
-        super(loggerFactory, log, variableProcessor, hologramProvider, "Hologram", "holograms");
+                                final QuestPackageManager questPackageManager, final VariableProcessor variableProcessor,
+                                final HologramProvider hologramProvider) {
+        super(loggerFactory, log, questPackageManager, variableProcessor, hologramProvider, "Hologram", "holograms");
     }
 
     @Override

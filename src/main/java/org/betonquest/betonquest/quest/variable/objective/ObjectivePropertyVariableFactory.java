@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.variable.objective;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -16,6 +17,11 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -23,9 +29,11 @@ public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
     /**
      * Create a new factory to create Objective Property Variables.
      *
-     * @param questTypeApi the Quest Type API
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param questTypeApi        the Quest Type API
      */
-    public ObjectivePropertyVariableFactory(final QuestTypeApi questTypeApi) {
+    public ObjectivePropertyVariableFactory(final QuestPackageManager questPackageManager, final QuestTypeApi questTypeApi) {
+        this.questPackageManager = questPackageManager;
         this.questTypeApi = questTypeApi;
     }
 
@@ -44,7 +52,7 @@ public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
 
         final ObjectiveID objectiveID;
         try {
-            objectiveID = new ObjectiveID(instruction.getPackage(), objectiveString.toString());
+            objectiveID = new ObjectiveID(questPackageManager, instruction.getPackage(), objectiveString.toString());
         } catch (final QuestException e) {
             throw new QuestException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
         }

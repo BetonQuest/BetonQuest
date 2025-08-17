@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -20,6 +21,11 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
      * Logger Factory to create new class specific loggers.
      */
     private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
 
     /**
      * The font registry to use in APIs that work with {@link net.kyori.adventure.text.Component}.
@@ -44,16 +50,19 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new inventory conversation IO factory for citizens specific heads.
      *
-     * @param loggerFactory the logger factory to create new conversation specific loggers
-     * @param fontRegistry  the font registry to use for the conversation
-     * @param colors        the colors to use for the conversation
-     * @param config        the config to use for the conversation
-     * @param printMessages if the IO should also print the messages in the chat
+     * @param loggerFactory       the logger factory to create new conversation specific loggers
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param fontRegistry        the font registry to use for the conversation
+     * @param colors              the colors to use for the conversation
+     * @param config              the config to use for the conversation
+     * @param printMessages       if the IO should also print the messages in the chat
      */
-    public CitizensInventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final FontRegistry fontRegistry,
+    public CitizensInventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory,
+                                          final QuestPackageManager questPackageManager, final FontRegistry fontRegistry,
                                           final ConversationColors colors, final ConfigAccessor config,
                                           final boolean printMessages) {
         this.loggerFactory = loggerFactory;
+        this.questPackageManager = questPackageManager;
         this.fontRegistry = fontRegistry;
         this.colors = colors;
         this.config = config;
@@ -66,7 +75,7 @@ public class CitizensInventoryConvIOFactory implements ConversationIOFactory {
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(CitizensInventoryConvIO.class);
-        return new CitizensInventoryConvIO(conversation, onlineProfile, log, colors, showNumber, showNPCText,
+        return new CitizensInventoryConvIO(conversation, onlineProfile, log, questPackageManager, colors, showNumber, showNPCText,
                 printMessages, componentLineWrapper);
     }
 }

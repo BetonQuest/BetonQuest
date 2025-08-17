@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -25,6 +26,11 @@ public class SkriptConditionBQ extends Condition {
     private final BetonQuestLogger log;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * The player for whom the condition is checked.
      */
     private Expression<Player> player;
@@ -40,6 +46,7 @@ public class SkriptConditionBQ extends Condition {
     public SkriptConditionBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -61,7 +68,7 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-            return BetonQuest.getInstance().getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(null, conditionID));
+            return BetonQuest.getInstance().getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(questPackageManager, null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

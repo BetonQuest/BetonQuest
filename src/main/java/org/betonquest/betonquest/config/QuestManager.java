@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
@@ -25,7 +26,7 @@ import java.util.Map;
  * Class to load all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
 @SuppressWarnings("PMD.DataClass")
-public class QuestManager {
+public class QuestManager implements QuestPackageManager {
     /**
      * The character to separate {@link Quest} address parts.
      */
@@ -120,6 +121,7 @@ public class QuestManager {
      *
      * @return a map of packages and their names
      */
+    @Override
     public Map<String, QuestPackage> getPackages() {
         return packages;
     }

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictExcep
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
@@ -47,7 +48,7 @@ class EventSchedulingTest {
     @BeforeEach
     void setUp() {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        scheduling = new EventScheduling(mock(BetonQuestLogger.class), scheduleTypes);
+        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(QuestPackageManager.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")
@@ -128,13 +129,13 @@ class EventSchedulingTest {
     void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
-        doNothing().when(simpleType).createAndScheduleNewInstance(any(), any());
+        doNothing().when(simpleType).createAndScheduleNewInstance(any(), any(), any());
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
-        doNothing().when(cronType).createAndScheduleNewInstance(any(), any());
+        doNothing().when(cronType).createAndScheduleNewInstance(any(), any(), any());
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
+        verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -143,10 +144,10 @@ class EventSchedulingTest {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        doThrow(new QuestException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any());
+        doThrow(new QuestException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
+        verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -155,10 +156,10 @@ class EventSchedulingTest {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        doThrow(new InvocationTargetException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any());
+        doThrow(new InvocationTargetException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
+        verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -167,10 +168,10 @@ class EventSchedulingTest {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        doThrow(new NoSuchMethodException()).when(simpleType).createAndScheduleNewInstance(any(), any());
+        doThrow(new NoSuchMethodException()).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.get())), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
+        verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
+        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
@@ -180,8 +181,8 @@ class EventSchedulingTest {
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNoSchedules.yml");
         scheduling.loadData(pack);
-        verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any());
-        verify(cronType, times(0)).createAndScheduleNewInstance(any(), any());
+        verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any(), any());
+        verify(cronType, times(0)).createAndScheduleNewInstance(any(), any(), any());
     }
 
     @Test
@@ -191,8 +192,8 @@ class EventSchedulingTest {
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNameWithSpace.yml");
         scheduling.loadData(pack);
-        verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.get())), any());
+        verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any(), any());
+        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     /**
@@ -200,8 +201,8 @@ class EventSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(scheduleID, instruction);
+        private MockedSchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
+            super(questPackageManager, scheduleID, instruction);
         }
     }
 }

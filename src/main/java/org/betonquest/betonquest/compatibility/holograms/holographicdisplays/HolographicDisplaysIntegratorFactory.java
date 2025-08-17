@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.IntegratorFactory;
 
@@ -8,13 +9,21 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class HolographicDisplaysIntegratorFactory implements IntegratorFactory {
     /**
-     * Creates a new instance of the factory.
+     * The quest package manager to use for the instruction.
      */
-    public HolographicDisplaysIntegratorFactory() {
+    private final QuestPackageManager questPackageManager;
+
+    /**
+     * Creates a new instance of the factory.
+     *
+     * @param questPackageManager the quest package manager to use for the instruction
+     */
+    public HolographicDisplaysIntegratorFactory(final QuestPackageManager questPackageManager) {
+        this.questPackageManager = questPackageManager;
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new HolographicDisplaysIntegrator();
+        return new HolographicDisplaysIntegrator(questPackageManager);
     }
 }

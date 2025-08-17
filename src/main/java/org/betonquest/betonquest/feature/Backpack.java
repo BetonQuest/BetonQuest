@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -50,6 +51,11 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -87,6 +93,7 @@ public class Backpack implements Listener {
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
+        this.questPackageManager = instance.getQuestPackageManager();
         this.onlineProfile = onlineProfile;
         this.playerData = instance.getPlayerDataStorage().get(onlineProfile);
         this.display = switch (type) {
@@ -308,7 +315,7 @@ public class Backpack implements Listener {
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 try {
-                    final ItemID itemId = new ItemID(null, buttonString);
+                    final ItemID itemId = new ItemID(questPackageManager, null, buttonString);
                     stack = BetonQuest.getInstance().getFeatureApi().getItem(itemId, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not load " + button + " button: " + e.getMessage(), e);

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
@@ -36,6 +37,11 @@ import java.util.Set;
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * RPG Menu instance.
      */
     private final RPGMenu rpgMenu;
@@ -53,20 +59,23 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     /**
      * Create a new Processor to create and store Menu Items.
      *
-     * @param log               the custom logger for this class
-     * @param loggerFactory     the logger factory to class specific loggers with
-     * @param textCreator       the text creator to parse text
-     * @param questTypeApi      the QuestTypeApi
-     * @param variableProcessor the variable resolver
-     * @param featureApi        the Feature API
-     * @param rpgMenu           the RPG Menu instance
-     * @param profileProvider   the Profile Provider
+     * @param log                 the custom logger for this class
+     * @param loggerFactory       the logger factory to class specific loggers with
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param textCreator         the text creator to parse text
+     * @param questTypeApi        the QuestTypeApi
+     * @param variableProcessor   the variable resolver
+     * @param featureApi          the Feature API
+     * @param rpgMenu             the RPG Menu instance
+     * @param profileProvider     the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
+                         final QuestPackageManager questPackageManager,
                          final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
                          final VariableProcessor variableProcessor, final FeatureApi featureApi, final RPGMenu rpgMenu,
                          final ProfileProvider profileProvider) {
-        super(log, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
+        super(log, questPackageManager, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
+        this.questPackageManager = questPackageManager;
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -85,7 +94,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Variable<Item> boundItem = section.isSet("bind")
-                ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(pack, value))
+                ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(questPackageManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(MenuID.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
@@ -111,7 +120,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
 
     @Override
     protected MenuID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new MenuID(pack, identifier);
+        return new MenuID(questPackageManager, pack, identifier);
     }
 
     /**
@@ -152,7 +161,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
                 final Variable<List<MenuItemID>> itemsList = new VariableList<>(variableProcessor, pack,
-                        slotsSection.getString(key, ""), value -> new MenuItemID(pack, value));
+                        slotsSection.getString(key, ""), value -> new MenuItemID(questPackageManager, pack, value));
                 try {
                     slots.add(new Slots(rpgMenu, key, itemsList));
                 } catch (final IllegalArgumentException e) {

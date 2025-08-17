@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -21,6 +22,11 @@ import java.util.List;
  */
 public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID, JournalMainPageEntry> {
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Variable to resolve conditions.
      */
     private final VariableProcessor variableProcessor;
@@ -33,13 +39,15 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log               the custom logger for this class
-     * @param variableProcessor the variable resolver to resolve conditions
-     * @param textCreator       the text creator to parse text
+     * @param log                 the custom logger for this class
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param variableProcessor   the variable resolver to resolve conditions
+     * @param textCreator         the text creator to parse text
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+    public JournalMainPageProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final VariableProcessor variableProcessor,
                                     final ParsedSectionTextCreator textCreator) {
         super(log, "Journal Main Page", "journal_main_page");
+        this.questPackageManager = questPackageManager;
         this.variableProcessor = variableProcessor;
         this.textCreator = textCreator;
     }
@@ -52,13 +60,13 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         }
         final Variable<List<ConditionID>> conditions = new VariableList<>(variableProcessor, pack,
                 section.getString("conditions", ""),
-                value -> new ConditionID(pack, value));
+                value -> new ConditionID(questPackageManager, pack, value));
         final Text text = textCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, conditions, text);
     }
 
     @Override
     protected JournalMainPageID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalMainPageID(pack, identifier);
+        return new JournalMainPageID(questPackageManager, pack, identifier);
     }
 }

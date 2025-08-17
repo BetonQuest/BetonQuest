@@ -98,15 +98,15 @@ public record QuestRegistry(
                                        final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
                                        final PlayerDataStorage playerDataStorage) {
         final VariableProcessor variables = coreQuestRegistry.variables();
-        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), otherRegistries.eventScheduling());
+        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), plugin.getQuestPackageManager(), otherRegistries.eventScheduling());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, coreQuestRegistry, playerDataStorage);
-        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, textCreator);
+        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), plugin.getQuestPackageManager(), variables, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
                 textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables);
-        final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), otherRegistries.item());
-        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), textCreator);
-        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, textCreator);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry);
+        final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), plugin.getQuestPackageManager(), otherRegistries.item());
+        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), plugin.getQuestPackageManager(), textCreator);
+        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), plugin.getQuestPackageManager(), variables, textCreator);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, plugin.getQuestPackageManager(), otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry);
         return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
 

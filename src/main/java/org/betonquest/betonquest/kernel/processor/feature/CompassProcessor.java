@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -19,6 +20,10 @@ import org.bukkit.configuration.ConfigurationSection;
  * Loads and stores {@link QuestCompass}es.
  */
 public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> {
+    /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
 
     /**
      * Variable processor to create new variables.
@@ -33,13 +38,15 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     /**
      * Create a new QuestProcessor to store {@link QuestCompass}es.
      *
-     * @param log               the custom logger for this class
-     * @param variableProcessor the variable processor to create new variables
-     * @param textCreator       the text creator to parse text
+     * @param log                 the custom logger for this class
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param variableProcessor   the variable processor to create new variables
+     * @param textCreator         the text creator to parse text
      */
-    public CompassProcessor(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+    public CompassProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final VariableProcessor variableProcessor,
                             final ParsedSectionTextCreator textCreator) {
         super(log, "Compass", "compass");
+        this.questPackageManager = questPackageManager;
         this.variableProcessor = variableProcessor;
         this.textCreator = textCreator;
     }
@@ -53,12 +60,12 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
         }
         final Variable<Location> loc = new Variable<>(variableProcessor, pack, location, LocationParser.LOCATION);
         final String itemName = section.getString("item");
-        final ItemID itemID = itemName == null ? null : new ItemID(pack, itemName);
+        final ItemID itemID = itemName == null ? null : new ItemID(questPackageManager, pack, itemName);
         return new QuestCompass(names, loc, itemID);
     }
 
     @Override
     protected CompassID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new CompassID(pack, identifier);
+        return new CompassID(questPackageManager, pack, identifier);
     }
 }

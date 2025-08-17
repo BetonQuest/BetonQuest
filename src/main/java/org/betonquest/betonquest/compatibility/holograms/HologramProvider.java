@@ -94,10 +94,11 @@ public class HologramProvider implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                plugin.getVariableProcessor(), this);
+                plugin.getQuestPackageManager(), plugin.getVariableProcessor(), this);
         plugin.addProcessor(locationHologramLoop);
-        this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class), plugin,
-                plugin.getVariableProcessor(), this, plugin.getFeatureApi(), plugin.getFeatureRegistries().npc());
+        this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
+                plugin.getQuestPackageManager(), plugin, plugin.getVariableProcessor(), this,
+                plugin.getFeatureApi(), plugin.getFeatureRegistries().npc());
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
     }

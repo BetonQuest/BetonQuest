@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +37,7 @@ public class PlayerHider {
     /**
      * Plugin instance to show/hide players.
      */
-    private final Plugin plugin;
+    private final BetonQuest plugin;
 
     /**
      * Quest Type API.
@@ -64,7 +63,7 @@ public class PlayerHider {
         hiders = new HashMap<>();
         this.questTypeApi = questTypeApi;
 
-        for (final QuestPackage pack : betonQuest.getPackages().values()) {
+        for (final QuestPackage pack : betonQuest.getQuestPackageManager().getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
             if (hiderSection == null) {
                 continue;
@@ -95,7 +94,7 @@ public class PlayerHider {
         final ConditionID[] conditionList = new ConditionID[rawConditionsList.length];
         for (int i = 0; i < rawConditionsList.length; i++) {
             try {
-                conditionList[i] = new ConditionID(pack, rawConditionsList[i]);
+                conditionList[i] = new ConditionID(plugin.getQuestPackageManager(), pack, rawConditionsList[i]);
             } catch (final QuestException e) {
                 throw new QuestException("Error while loading " + rawConditionsList[i]
                         + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);

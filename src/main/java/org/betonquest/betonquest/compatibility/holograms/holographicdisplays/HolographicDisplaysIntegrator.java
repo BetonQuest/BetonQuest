@@ -5,6 +5,7 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -29,10 +30,18 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
+     * The quest package manager to use for the instruction.
      */
-    public HolographicDisplaysIntegrator() {
+    private final QuestPackageManager questPackageManager;
+
+    /**
+     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
+     *
+     * @param questPackageManager the quest package manager to use for the instruction
+     */
+    public HolographicDisplaysIntegrator(final QuestPackageManager questPackageManager) {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
+        this.questPackageManager = questPackageManager;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
@@ -67,7 +76,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(pack, group);
+                final VariableID variable = new VariableID(questPackageManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = BetonQuest.getInstance().getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
@@ -50,6 +51,11 @@ public class ConversationData {
      * All references made by this conversation's pointers to other conversations.
      */
     private final List<CrossConversationReference> externalPointers = new ArrayList<>();
+
+    /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
 
     /**
      * The {@link VariableProcessor} to resolve variables.
@@ -106,22 +112,25 @@ public class ConversationData {
     /**
      * Loads conversation from package.
      *
-     * @param log               the custom logger for this class
-     * @param variableProcessor the variable processor to resolve variables
-     * @param questTypeApi      the quest type api
-     * @param featureApi        the feature api
-     * @param textCreator       the text creator to parse text
-     * @param pack              the package of the conversation this data represents
-     * @param convSection       the configuration section of the conversation
-     * @param publicData        the external used data
+     * @param log                 the custom logger for this class
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param variableProcessor   the variable processor to resolve variables
+     * @param questTypeApi        the quest type api
+     * @param featureApi          the feature api
+     * @param textCreator         the text creator to parse text
+     * @param pack                the package of the conversation this data represents
+     * @param convSection         the configuration section of the conversation
+     * @param publicData          the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
-    public ConversationData(final BetonQuestLogger log, final VariableProcessor variableProcessor,
-                            final QuestTypeApi questTypeApi, final FeatureApi featureApi,
-                            final ParsedSectionTextCreator textCreator, final QuestPackage pack,
-                            final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
+    public ConversationData(final BetonQuestLogger log, final QuestPackageManager questPackageManager,
+                            final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi,
+                            final FeatureApi featureApi, final ParsedSectionTextCreator textCreator,
+                            final QuestPackage pack, final ConfigurationSection convSection,
+                            final PublicData publicData) throws QuestException {
         this.log = log;
+        this.questPackageManager = questPackageManager;
         this.variableProcessor = variableProcessor;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
@@ -171,7 +180,7 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = featureApi.getConversation(new ConversationID(targetPack, targetConvName));
+                conv = featureApi.getConversation(new ConversationID(questPackageManager, targetPack, targetConvName));
             } catch (final QuestException e) {
                 log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConvName
@@ -201,7 +210,7 @@ public class ConversationData {
     private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName,
                                                       @Nullable final String currentOptionName, final OptionType optionType,
                                                       final String option) throws QuestException {
-        final ConversationOptionResolver resolver = new ConversationOptionResolver(featureApi, pack, currentConversationName, optionType, option);
+        final ConversationOptionResolver resolver = new ConversationOptionResolver(questPackageManager, featureApi, pack, currentConversationName, optionType, option);
         return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
     }
 
@@ -461,7 +470,7 @@ public class ConversationData {
             final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final ResolvedOption result = new ConversationOptionResolver(featureApi, pack, this.convName, NPC, option).resolve();
+                final ResolvedOption result = new ConversationOptionResolver(questPackageManager, featureApi, pack, this.convName, NPC, option).resolve();
                 sourceData = result.conversationData();
                 optionName = result.name();
             } else {
@@ -651,7 +660,7 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final PackageArgument<T> resolver) throws QuestException {
-            return resolve(conv, identifier, (value) -> resolver.apply(pack, value));
+            return resolve(conv, identifier, (value) -> resolver.apply(questPackageManager, pack, value));
         }
 
         @Nullable
@@ -785,7 +794,7 @@ public class ConversationData {
                 for (final String extend : extendLinks) {
                     final ResolvedOption resolvedExtend;
                     try {
-                        resolvedExtend = new ConversationOptionResolver(featureApi, pack, convName, type, extend).resolve();
+                        resolvedExtend = new ConversationOptionResolver(questPackageManager, featureApi, pack, convName, type, extend).resolve();
                     } catch (final QuestException e) {
                         log.reportException(pack, e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);

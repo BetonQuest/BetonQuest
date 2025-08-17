@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -26,6 +27,11 @@ public class SkriptEffectBQ extends Effect {
     private final BetonQuestLogger log;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * The event identifier to be fired.
      */
     private Expression<String> event;
@@ -41,6 +47,7 @@ public class SkriptEffectBQ extends Effect {
     public SkriptEffectBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +72,7 @@ public class SkriptEffectBQ extends Effect {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
                     final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                    BetonQuest.getInstance().getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(null, eventID));
+                    BetonQuest.getInstance().getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(questPackageManager, null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

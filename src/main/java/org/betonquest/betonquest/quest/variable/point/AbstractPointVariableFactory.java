@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.variable.point;
 
 import org.apache.commons.lang3.tuple.Triple;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -27,12 +28,19 @@ public abstract class AbstractPointVariableFactory<T> {
     protected final BetonQuestLogger logger;
 
     /**
+     * The quest package manager to use for the instruction.
+     */
+    private final QuestPackageManager questPackageManager;
+
+    /**
      * Create a new Point variable factory.
      *
-     * @param dataHolder the data holder
-     * @param logger     the logger instance for this factory
+     * @param questPackageManager the quest package manager to use for the instruction
+     * @param dataHolder          the data holder
+     * @param logger              the logger instance for this factory
      */
-    public AbstractPointVariableFactory(final T dataHolder, final BetonQuestLogger logger) {
+    public AbstractPointVariableFactory(final QuestPackageManager questPackageManager, final T dataHolder, final BetonQuestLogger logger) {
+        this.questPackageManager = questPackageManager;
         this.dataHolder = dataHolder;
         this.logger = logger;
     }
@@ -61,7 +69,7 @@ public abstract class AbstractPointVariableFactory<T> {
             final String questPath = instruction.current();
             final String pointCategory = instruction.next();
             try {
-                final Identifier packageId = new Identifier(instruction.getPackage(), questPath + "." + pointCategory) {
+                final Identifier packageId = new Identifier(questPackageManager, instruction.getPackage(), questPath + "." + pointCategory) {
                 };
                 category = packageId.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final QuestException e) {

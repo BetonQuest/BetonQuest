@@ -4,6 +4,7 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -28,10 +29,18 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new DecentHologramsIntegrator for DecentHolograms.
+     * The quest package manager to use for the instruction.
      */
-    public DecentHologramsIntegrator() {
+    private final QuestPackageManager questPackageManager;
+
+    /**
+     * Creates a new DecentHologramsIntegrator for DecentHolograms.
+     *
+     * @param questPackageManager the quest package manager to use for the instruction
+     */
+    public DecentHologramsIntegrator(final QuestPackageManager questPackageManager) {
         super("DecentHolograms", "2.7.5");
+        this.questPackageManager = questPackageManager;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
@@ -59,7 +68,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(pack, group);
+                final VariableID variable = new VariableID(questPackageManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
