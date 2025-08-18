@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -70,6 +71,7 @@ public class RPGMenu {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the factory to crete new custom logger instances
+     * @param packManager       the quest package manager to get quest packages from
      * @param pluginConfig      the plugin config
      * @param variableProcessor the variable processor instance to get and create variables
      * @param pluginMessage     the plugin message instance
@@ -79,8 +81,9 @@ public class RPGMenu {
      * @param profileProvider   the profile provider instance
      */
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                   final ConfigAccessor pluginConfig, final VariableProcessor variableProcessor,
-                   final PluginMessage pluginMessage, final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
+                   final QuestPackageManager packManager, final ConfigAccessor pluginConfig,
+                   final VariableProcessor variableProcessor, final PluginMessage pluginMessage,
+                   final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
                    final FeatureApi featureApi, final ProfileProvider profileProvider) {
         this.log = log;
         this.loggerFactory = loggerFactory;
@@ -97,10 +100,10 @@ public class RPGMenu {
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
+                packManager, textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
         betonQuest.addProcessor(menuItemProcessor);
-        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory, textCreator,
-                questTypeApi, variableProcessor, featureApi, this, profileProvider);
+        this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
+                packManager, textCreator, questTypeApi, variableProcessor, featureApi, this, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);

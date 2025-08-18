@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,11 +52,13 @@ public abstract class Schedule {
      * It should parse all options from the configuration section.
      * If anything goes wrong, throw {@link QuestException} with an error message describing the problem.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param scheduleID  id of the new schedule
      * @param instruction config defining the schedule
      * @throws QuestException if parsing the config failed
      */
-    public Schedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
+    public Schedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                    final ConfigurationSection instruction) throws QuestException {
         this.scheduleID = scheduleID;
 
         this.time = Optional.ofNullable(instruction.getString("time"))
@@ -66,7 +69,7 @@ public abstract class Schedule {
         final List<EventID> events = new ArrayList<>();
         for (final String eventId : eventsString.split(",")) {
             try {
-                events.add(new EventID(scheduleID.getPackage(), eventId));
+                events.add(new EventID(packManager, scheduleID.getPackage(), eventId));
             } catch (final QuestException e) {
                 throw new QuestException("Error while loading events: " + e.getMessage(), e);
             }

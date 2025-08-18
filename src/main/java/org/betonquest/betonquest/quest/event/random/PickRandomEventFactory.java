@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.random;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -26,6 +27,11 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     private static final Pattern EVENT_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<event>.+)");
 
     /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -33,9 +39,11 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     /**
      * Creates the PickRandomEventFactory.
      *
+     * @param packManager  the quest package manager to get quest packages from
      * @param questTypeApi the Quest Type API
      */
-    public PickRandomEventFactory(final QuestTypeApi questTypeApi) {
+    public PickRandomEventFactory(final QuestPackageManager packManager, final QuestTypeApi questTypeApi) {
+        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
     }
 
@@ -58,7 +66,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final EventID eventID = new EventID(instruction.getPackage(), eventString);
+            final EventID eventID = new EventID(packManager, instruction.getPackage(), eventString);
             final double weight = Argument.NUMBER.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         });

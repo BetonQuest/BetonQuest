@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.Identifier;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -22,7 +23,6 @@ import org.bukkit.configuration.ConfigurationSection;
  * @param <T> the type
  */
 public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionProcessor<I, T> {
-
     /**
      * Logger Factory to create Menu Item Logger.
      */
@@ -52,6 +52,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
      * Create a new Processor to create and store Menu Items.
      *
      * @param log               the custom logger for this class
+     * @param packManager       the quest package manager to get quest packages from
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      * @param loggerFactory     the logger factory to class specific loggers with
@@ -60,10 +61,11 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
      * @param questTypeApi      the QuestTypeApi
      * @param featureApi        the Feature API
      */
-    public RPGMenuProcessor(final BetonQuestLogger log, final String readable, final String internal,
-                            final BetonQuestLoggerFactory loggerFactory, final ParsedSectionTextCreator textCreator,
-                            final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
-        super(log, readable, internal);
+    public RPGMenuProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable,
+                            final String internal, final BetonQuestLoggerFactory loggerFactory,
+                            final ParsedSectionTextCreator textCreator, final VariableProcessor variableProcessor,
+                            final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
+        super(log, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
@@ -120,9 +122,9 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
          * @return requested ids or empty list when not present
          * @throws QuestException if one of the ids can't be found
          */
-        protected <U extends Identifier> VariableList<U> getID(final String path, final PackageArgument<U> argument)
+        protected <U extends Identifier> VariableList<U> getID(final String path, final IdentifierArgument<U> argument)
                 throws QuestException {
-            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(pack, value));
+            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(packManager, pack, value));
         }
     }
 }

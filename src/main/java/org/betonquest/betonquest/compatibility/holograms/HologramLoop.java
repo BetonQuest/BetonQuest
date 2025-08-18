@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
@@ -78,14 +79,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
      *
      * @param loggerFactory     logger factory to use
      * @param log               the logger that will be used for logging
+     * @param packManager       the quest package manager to get quest packages from
      * @param variableProcessor the {@link VariableProcessor} to use
      * @param hologramProvider  the hologram provider to create new holograms
      * @param readable          the type name used for logging, with the first letter in upper case
      * @param internal          the section name and/or bstats topic identifier
      */
-    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final VariableProcessor variableProcessor,
+    public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                        final QuestPackageManager packManager, final VariableProcessor variableProcessor,
                         final HologramProvider hologramProvider, final String readable, final String internal) {
-        super(log, readable, internal);
+        super(log, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.variableProcessor = variableProcessor;
         this.hologramProvider = hologramProvider;
@@ -105,7 +108,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
 
         final List<String> lines = section.getStringList("lines");
         final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""),
-                value -> new ConditionID(pack, value)).getValue(null);
+                value -> new ConditionID(packManager, pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
@@ -153,7 +156,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
             final String[] args = line.substring(5).split(":");
-            final ItemID itemID = new ItemID(pack, args[0]);
+            final ItemID itemID = new ItemID(packManager, pack, args[0]);
             int stackSize;
             try {
                 stackSize = Integer.parseInt(args[1]);
@@ -222,7 +225,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
 
     @Override
     protected HologramID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new HologramID(pack, identifier);
+        return new HologramID(packManager, pack, identifier);
     }
 
     /**
@@ -233,12 +236,13 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         /**
          * Creates a new ID.
          *
-         * @param pack       the package the ID is in
-         * @param identifier the id instruction string
+         * @param packManager the quest package manager to get quest packages from
+         * @param pack        the package the ID is in
+         * @param identifier  the id instruction string
          * @throws QuestException if the ID could not be parsed
          */
-        protected HologramID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
-            super(pack, identifier);
+        protected HologramID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+            super(packManager, pack, identifier);
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -24,15 +25,17 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log            the custom logger for this class
+     * @param packManager    the quest package manager to get quest packages from
      * @param conditionTypes the available condition types
      */
-    public ConditionProcessor(final BetonQuestLogger log, final ConditionTypeRegistry conditionTypes) {
-        super(log, conditionTypes, "Condition", "conditions");
+    public ConditionProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                              final ConditionTypeRegistry conditionTypes) {
+        super(log, packManager, conditionTypes, "Condition", "conditions");
     }
 
     @Override
     protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(pack, identifier);
+        return new ConditionID(packManager, pack, identifier);
     }
 
     /**

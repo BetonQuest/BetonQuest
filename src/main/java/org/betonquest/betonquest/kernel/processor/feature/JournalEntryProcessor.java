@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.Text;
@@ -15,7 +16,6 @@ import java.util.Map;
  * Loads and stores Journal entries.
  */
 public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> {
-
     /**
      * Text creator to parse text.
      */
@@ -25,10 +25,12 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
      * @param log         the custom logger for this class
+     * @param packManager the quest package manager to get quest packages from
      * @param textCreator the text creator to parse text
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final ParsedSectionTextCreator textCreator) {
-        super(log, "Journal Entry", "journal");
+    public JournalEntryProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                                 final ParsedSectionTextCreator textCreator) {
+        super(log, packManager, "Journal Entry", "journal");
         this.textCreator = textCreator;
     }
 
@@ -49,7 +51,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
 
     @Override
     protected JournalEntryID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalEntryID(pack, identifier);
+        return new JournalEntryID(packManager, pack, identifier);
     }
 
     /**

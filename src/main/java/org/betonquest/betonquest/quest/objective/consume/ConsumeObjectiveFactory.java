@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -26,7 +26,7 @@ public class ConsumeObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Item> item = instruction.get(PackageArgument.ITEM);
+        final Variable<Item> item = instruction.get(IdentifierArgument.ITEM);
         final Variable<Number> targetAmount = instruction.getValue(AMOUNT_ARGUMENT, Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new ConsumeObjective(instruction, targetAmount, item);
     }

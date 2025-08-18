@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
     protected Schedule createSchedule() throws QuestException {
-        return new Schedule(scheduleID, section) {
+        return new Schedule(mock(QuestPackageManager.class), scheduleID, section) {
         };
     }
 

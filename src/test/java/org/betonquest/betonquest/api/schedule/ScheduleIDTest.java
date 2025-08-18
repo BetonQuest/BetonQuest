@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class ScheduleIDTest {
         when(pack.getConfig()).thenReturn(config);
         when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(true);
 
-        assertDoesNotThrow(() -> new ScheduleID(pack, "testSchedule"),
+        assertDoesNotThrow(() -> new ScheduleID(mock(QuestPackageManager.class), pack, "testSchedule"),
                 "Should not throw any exception on constructing a valid schedule id");
     }
 
@@ -32,7 +33,7 @@ class ScheduleIDTest {
         when(pack.getConfig()).thenReturn(config);
         when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(false);
 
-        assertThrows(QuestException.class, () -> new ScheduleID(pack, "testSchedule"),
+        assertThrows(QuestException.class, () -> new ScheduleID(mock(QuestPackageManager.class), pack, "testSchedule"),
                 "Should throw an exception if no schedule with this id exists");
     }
 }

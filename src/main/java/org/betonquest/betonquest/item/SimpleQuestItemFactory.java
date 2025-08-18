@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -31,11 +32,18 @@ import java.util.Map;
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new simple Quest Item Factory.
+     *
+     * @param packManager the quest package manager to get quest packages from
      */
-    public SimpleQuestItemFactory() {
+    public SimpleQuestItemFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     /**
@@ -82,7 +90,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     @Override
     public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
-        final Instruction instruction = new Instruction(rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final Instruction instruction = new Instruction(packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

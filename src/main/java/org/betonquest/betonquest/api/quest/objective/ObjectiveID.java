@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.objective;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
@@ -13,11 +14,12 @@ public class ObjectiveID extends InstructionIdentifier {
     /**
      * Create a new Objective ID.
      *
-     * @param pack       the package of the objective
-     * @param identifier the complete identifier of the objective
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the package of the objective
+     * @param identifier  the complete identifier of the objective
      * @throws QuestException if there is no such objective
      */
-    public ObjectiveID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(pack, identifier, "objectives", "Objective");
+    public ObjectiveID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(packManager, pack, identifier, "objectives", "Objective");
     }
 }

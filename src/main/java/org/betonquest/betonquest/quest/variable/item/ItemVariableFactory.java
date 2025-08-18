@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.variable.item;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -58,9 +58,9 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         final Variable<Item> questItem;
         if (pos == 3) {
             final String path = instruction.getPart(1) + "." + instruction.getPart(2);
-            questItem = instruction.get(path, PackageArgument.ITEM);
+            questItem = instruction.get(path, IdentifierArgument.ITEM);
         } else {
-            questItem = instruction.get(PackageArgument.ITEM);
+            questItem = instruction.get(IdentifierArgument.ITEM);
         }
         return new ItemVariable(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
     }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -17,15 +17,16 @@ import org.jetbrains.annotations.Nullable;
  * Stores Variables and resolve them.
  */
 public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableAdapter> {
-
     /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
      * @param log           the custom logger for this class
+     * @param packManager   the quest package manager to get quest packages from
      * @param variableTypes the available variable types
      */
-    public VariableProcessor(final BetonQuestLogger log, final VariableTypeRegistry variableTypes) {
-        super(log, variableTypes, "Variable", "variables");
+    public VariableProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                             final VariableTypeRegistry variableTypes) {
+        super(log, packManager, variableTypes, "Variable", "variables");
     }
 
     @Override
@@ -35,7 +36,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
 
     @Override
     protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new VariableID(pack, identifier);
+        return new VariableID(packManager, pack, identifier);
     }
 
     /**
@@ -51,7 +52,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throws QuestException {
         final VariableID variableID;
         try {
-            variableID = new VariableID(pack, instruction);
+            variableID = new VariableID(packManager, pack, instruction);
         } catch (final QuestException e) {
             throw new QuestException("Could not load variable: " + e.getMessage(), e);
         }
@@ -101,7 +102,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throw new QuestException("Variable without explicit package '" + variable + "'! Expected format '<package>:<variable>'");
         }
         final String packString = variable.substring(0, index);
-        final QuestPackage pack = BetonQuest.getInstance().getPackages().get(packString);
+        final QuestPackage pack = packManager.getPackage(packString);
         if (pack == null) {
             throw new QuestException("The variable '" + variable + "' reference the non-existent package '" + packString + "' !");
         }

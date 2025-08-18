@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -41,14 +42,16 @@ public record CoreQuestRegistry(
      * Create a new Registry for storing and using Core Quest Types.
      *
      * @param loggerFactory       the logger factory used for new custom logger instances
+     * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
      */
-    public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestTypeRegistries questTypeRegistries) {
+    public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                             final QuestTypeRegistries questTypeRegistries) {
         this(
-                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questTypeRegistries.condition()),
-                new EventProcessor(loggerFactory.create(EventProcessor.class), questTypeRegistries.event()),
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questTypeRegistries.objective()),
-                new VariableProcessor(loggerFactory.create(VariableProcessor.class), questTypeRegistries.variable())
+                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), packManager, questTypeRegistries.condition()),
+                new EventProcessor(loggerFactory.create(EventProcessor.class), packManager, questTypeRegistries.event()),
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), packManager, questTypeRegistries.objective()),
+                new VariableProcessor(loggerFactory.create(VariableProcessor.class), packManager, questTypeRegistries.variable())
         );
     }
 

@@ -58,10 +58,10 @@ public class RPGMenuCommand extends SimpleCommand {
             case "open":
             case "o":
                 if (!args[1].contains(".")) {
-                    return new ArrayList<>(getPlugin().getPackages().keySet());
+                    return new ArrayList<>(getPlugin().getQuestPackageManager().getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf('.'));
-                final QuestPackage configPack = getPlugin().getPackages().get(pack);
+                final QuestPackage configPack = getPlugin().getQuestPackageManager().getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
                 }
@@ -95,7 +95,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 //parse menu id
                 if (args.length >= 2) {
                     try {
-                        menu = new MenuID(null, args[1]);
+                        menu = new MenuID(getPlugin().getQuestPackageManager(), null, args[1]);
                     } catch (final QuestException e) {
                         sendMessage(sender, "command_invalid_menu", new VariableReplacement("menu", Component.text(args[1])));
                         return false;

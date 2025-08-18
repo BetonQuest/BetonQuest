@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronSchedule(scheduleID, section) {
+        return new CronSchedule(mock(QuestPackageManager.class), scheduleID, section) {
         };
     }
 

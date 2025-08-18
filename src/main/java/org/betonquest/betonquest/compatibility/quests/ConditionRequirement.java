@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomRequirement;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -23,6 +24,11 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     private final BetonQuestLogger log;
 
     /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -36,12 +42,15 @@ public class ConditionRequirement extends BukkitCustomRequirement {
      * Create a new 'Quests' Condition Requirement.
      *
      * @param log             the custom logger
+     * @param packManager     the quest package manager to get quest packages from
      * @param questTypeApi    the Quest Type API
      * @param profileProvider the profile provider instance
      */
-    public ConditionRequirement(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
+    public ConditionRequirement(final BetonQuestLogger log, final QuestPackageManager packManager,
+                                final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
         super();
         this.log = log;
+        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         setName("BetonQuest condition");
@@ -63,7 +72,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return false;
             }
-            final ConditionID condition = new ConditionID(null, string);
+            final ConditionID condition = new ConditionID(packManager, null, string);
             return questTypeApi.condition(profileProvider.getProfile(player), condition);
         } catch (final QuestException e) {
             log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);

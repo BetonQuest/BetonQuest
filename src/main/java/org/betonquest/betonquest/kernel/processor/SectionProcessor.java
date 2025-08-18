@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -19,12 +20,14 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log      the custom logger for this class
-     * @param readable the type name used for logging, with the first letter in upper case
-     * @param internal the section name and/or bstats topic identifier
+     * @param log         the custom logger for this class
+     * @param packManager the quest package manager to get quest packages from
+     * @param readable    the type name used for logging, with the first letter in upper case
+     * @param internal    the section name and/or bstats topic identifier
      */
-    public SectionProcessor(final BetonQuestLogger log, final String readable, final String internal) {
-        super(log, readable, internal);
+    public SectionProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable,
+                            final String internal) {
+        super(log, packManager, readable, internal);
     }
 
     @Override

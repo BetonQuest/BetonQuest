@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.eval;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -15,6 +16,11 @@ import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
  */
 public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
+    /**
      * The event type registry providing factories to parse the evaluated instruction.
      */
     private final EventTypeRegistry eventTypeRegistry;
@@ -22,9 +28,11 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     /**
      * Create a new Eval event factory.
      *
+     * @param packManager       the quest package manager to get quest packages from
      * @param eventTypeRegistry the event type registry providing factories to parse the evaluated instruction
      */
-    public EvalEventFactory(final EventTypeRegistry eventTypeRegistry) {
+    public EvalEventFactory(final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry) {
+        this.packManager = packManager;
         this.eventTypeRegistry = eventTypeRegistry;
     }
 
@@ -40,7 +48,7 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
-        return new NullableEventAdapter(new EvalEvent(eventTypeRegistry, instruction.getPackage(),
+        return new NullableEventAdapter(new EvalEvent(packManager, eventTypeRegistry, instruction.getPackage(),
                 instruction.get(rawInstruction, Argument.STRING)));
     }
 }

@@ -2,11 +2,14 @@ package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.ArgumentConverter;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierArgumentConverter;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageArgumentConverter;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
@@ -23,8 +26,13 @@ import java.util.Locale;
 /**
  * The Instruction. Primary object for input parsing.
  */
-@SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter {
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter {
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
     /**
      * The quest package that this instruction belongs to.
      */
@@ -48,25 +56,29 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     /**
      * Create an instruction using the quoting tokenizer.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final QuestPackage pack, @Nullable final Identifier identifier, final String instruction) throws QuestException {
-        this(new QuotingTokenizer(), pack, useFallbackIdIfNecessary(pack, identifier), instruction);
+    public Instruction(final QuestPackageManager packManager, final QuestPackage pack,
+                       @Nullable final Identifier identifier, final String instruction) throws QuestException {
+        this(packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), instruction);
     }
 
     /**
      * Create an instruction using the given tokenizer.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
+    public Instruction(final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
+        this.packManager = packManager;
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
@@ -80,22 +92,24 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     /**
      * Copies an instruction using the given instruction and a new identifier.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param instruction instruction to copy
      * @param identifier  identifier of the new instruction
      */
-    public Instruction(final Instruction instruction, final Identifier identifier) {
+    public Instruction(final QuestPackageManager packManager, final Instruction instruction, final Identifier identifier) {
+        this.packManager = packManager;
         this.pack = instruction.pack;
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
     }
 
-    private static Identifier useFallbackIdIfNecessary(final QuestPackage pack, @Nullable final Identifier identifier) {
+    private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
         if (identifier != null) {
             return identifier;
         }
         try {
-            return new NoID(pack);
+            return new NoID(packManager, pack);
         } catch (final QuestException e) {
             throw new IllegalStateException("Could not find instruction: " + e.getMessage(), e);
         }
@@ -175,7 +189,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @return copy of this instruction with the new ID
      */
     public Instruction copy(final Identifier newID) {
-        return new Instruction(this, newID);
+        return new Instruction(packManager, this, newID);
     }
 
     @Override
@@ -238,5 +252,25 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
             return new VariableList<>();
         }
         return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value), valueChecker);
+    }
+
+    @Override
+    @Nullable
+    public <T> Variable<T> get(@Nullable final String string, final IdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
+        if (string == null) {
+            if (defaultValue != null) {
+                return new Variable<>(defaultValue);
+            }
+            return null;
+        }
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(packManager, pack, value));
+    }
+
+    @Override
+    public <T> Variable<List<T>> getList(@Nullable final String string, final IdentifierArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        if (string == null) {
+            return new VariableList<>();
+        }
+        return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(packManager, pack, value), valueChecker);
     }
 }

@@ -46,9 +46,9 @@ public class QuestsIntegrator implements Integrator {
         final QuestTypeApi questTypeApi = plugin.getQuestTypeApi();
         final ProfileProvider profileProvider = plugin.getProfileProvider();
         questsInstance.getCustomRewards().add(new EventReward(
-                loggerFactory.create(EventReward.class), questTypeApi, profileProvider));
+                loggerFactory.create(EventReward.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
-                loggerFactory.create(ConditionRequirement.class), questTypeApi, profileProvider));
+                loggerFactory.create(ConditionRequirement.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
     }
 
     @Override

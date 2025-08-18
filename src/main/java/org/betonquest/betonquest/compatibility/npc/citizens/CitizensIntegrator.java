@@ -97,8 +97,8 @@ public class CitizensIntegrator implements Integrator {
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
         final FontRegistry fontRegistry = plugin.getFontRegistry();
         final ConversationColors colors = plugin.getConversationColors();
-        conversationIOTypes.register("chest", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, false));
-        conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, fontRegistry, colors, pluginConfig, true));
+        conversationIOTypes.register("chest", new CitizensInventoryConvIOFactory(loggerFactory, plugin.getQuestPackageManager(), fontRegistry, colors, pluginConfig, false));
+        conversationIOTypes.register("combined", new CitizensInventoryConvIOFactory(loggerFactory, plugin.getQuestPackageManager(), fontRegistry, colors, pluginConfig, true));
 
         final NpcTypeRegistry npcTypes = featureRegistries.npc();
         manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcTypes, npcRegistry,

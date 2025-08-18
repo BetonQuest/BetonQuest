@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,12 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 public abstract class AbstractScheduleTest {
+
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    @Mock
+    protected QuestPackageManager packManager;
 
     /**
      * ID of the schedule to test.

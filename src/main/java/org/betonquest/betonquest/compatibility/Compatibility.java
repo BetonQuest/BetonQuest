@@ -260,8 +260,8 @@ public class Compatibility implements Listener {
         register("Jobs", new JobsRebornIntegratorFactory());
         register("LuckPerms", new LuckPermsIntegratorFactory());
         register("AuraSkills", new AuraSkillsIntegratorFactory());
-        register("DecentHolograms", new DecentHologramsIntegratorFactory());
-        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory());
+        register("DecentHolograms", new DecentHologramsIntegratorFactory(betonQuest.getQuestPackageManager()));
+        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(betonQuest.getQuestPackageManager()));
         register("fake-block", new FakeBlockIntegratorFactory());
         register("RedisChat", new RedisChatIntegratorFactory());
         register("Train_Carts", new TrainCartsIntegratorFactory());

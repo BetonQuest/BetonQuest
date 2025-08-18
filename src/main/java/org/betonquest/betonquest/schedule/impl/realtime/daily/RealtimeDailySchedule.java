@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
@@ -32,12 +33,14 @@ public class RealtimeDailySchedule extends Schedule {
     /**
      * Creates new instance of the schedule.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param scheduleID  id of the new schedule
      * @param instruction config defining the schedule
      * @throws QuestException if parsing the config failed
      */
-    public RealtimeDailySchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-        super(scheduleID, instruction);
+    public RealtimeDailySchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                                 final ConfigurationSection instruction) throws QuestException {
+        super(packManager, scheduleID, instruction);
         try {
             this.timeToRun = LocalTime.parse(super.time, TIME_FORMAT);
         } catch (final DateTimeParseException e) {

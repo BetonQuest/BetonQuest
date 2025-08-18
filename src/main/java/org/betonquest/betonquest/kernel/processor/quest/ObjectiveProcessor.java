@@ -2,6 +2,7 @@ package org.betonquest.betonquest.kernel.processor.quest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -30,10 +31,12 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
      * @param log            the custom logger for this class
+     * @param packManager    the quest package manager to get quest packages from
      * @param objectiveTypes the available objective types
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final ObjectiveTypeRegistry objectiveTypes) {
-        super(log, objectiveTypes, "Objective", "objectives");
+    public ObjectiveProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                              final ObjectiveTypeRegistry objectiveTypes) {
+        super(log, packManager, objectiveTypes, "Objective", "objectives");
         globalObjectiveIds = new HashSet<>();
     }
 
@@ -58,7 +61,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
 
     @Override
     protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ObjectiveID(pack, identifier);
+        return new ObjectiveID(packManager, pack, identifier);
     }
 
     @Override

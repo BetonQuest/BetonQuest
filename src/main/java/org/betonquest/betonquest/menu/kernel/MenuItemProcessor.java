@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
@@ -31,6 +32,11 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     private static final String CONFIG_TEXT = "text";
 
     /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
+
+    /**
      * Config to load menu options from.
      */
     private final ConfigAccessor config;
@@ -40,6 +46,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      *
      * @param log               the custom logger for this class
      * @param loggerFactory     the logger factory to class specific loggers with
+     * @param packManager       the quest package manager to get quest packages from
      * @param textCreator       the text creator to parse text
      * @param questTypeApi      the QuestTypeApi
      * @param config            the config to load menu item options from
@@ -47,9 +54,11 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      * @param featureApi        the Feature API
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                             final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
-                             final ConfigAccessor config, final VariableProcessor variableProcessor, final FeatureApi featureApi) {
-        super(log, "Menu Item", "menu_items", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
+                             final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
+                             final QuestTypeApi questTypeApi, final ConfigAccessor config,
+                             final VariableProcessor variableProcessor, final FeatureApi featureApi) {
+        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
+        this.packManager = packManager;
         this.config = config;
     }
 
@@ -57,7 +66,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
-        final Variable<Item> item = new Variable<>(variableProcessor, pack, itemString, value -> itemParser.apply(pack, value));
+        final Variable<Item> item = new Variable<>(variableProcessor, pack, itemString, value -> itemParser.apply(packManager, pack, value));
         final Text descriptions;
         if (section.contains(CONFIG_TEXT)) {
             descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);
@@ -75,7 +84,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
 
     @Override
     protected MenuItemID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new MenuItemID(pack, identifier);
+        return new MenuItemID(packManager, pack, identifier);
     }
 
     /**

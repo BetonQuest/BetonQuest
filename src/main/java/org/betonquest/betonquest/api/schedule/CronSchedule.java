@@ -6,6 +6,7 @@ import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -61,12 +62,14 @@ public abstract class CronSchedule extends Schedule {
      * It should parse all options from the configuration section.
      * If anything goes wrong, throw {@link QuestException} with an error message describing the problem.
      *
+     * @param packManager the quest package manager to get quest packages from
      * @param scheduleId  id of the new schedule
      * @param instruction config defining the schedule
      * @throws QuestException if parsing the config failed
      */
-    public CronSchedule(final ScheduleID scheduleId, final ConfigurationSection instruction) throws QuestException {
-        this(scheduleId, instruction, DEFAULT_CRON_DEFINITION);
+    public CronSchedule(final QuestPackageManager packManager, final ScheduleID scheduleId,
+                        final ConfigurationSection instruction) throws QuestException {
+        this(packManager, scheduleId, instruction, DEFAULT_CRON_DEFINITION);
     }
 
     /**
@@ -74,14 +77,15 @@ public abstract class CronSchedule extends Schedule {
      * <b>Make sure to create a constructor with the following two arguments when extending this class:</b>
      * {@code ScheduleID id, ConfigurationSection instruction}
      *
+     * @param packManager    the quest package manager to get quest packages from
      * @param scheduleID     id of the new schedule
      * @param instruction    config defining the schedule
      * @param cronDefinition a custom cron syntax, you may use {@link #DEFAULT_CRON_DEFINITION}
      * @throws QuestException if parsing the config failed
      */
-    protected CronSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction,
-                           final CronDefinition cronDefinition) throws QuestException {
-        super(scheduleID, instruction);
+    protected CronSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                           final ConfigurationSection instruction, final CronDefinition cronDefinition) throws QuestException {
+        super(packManager, scheduleID, instruction);
         try {
             this.timeCron = new CronParser(cronDefinition).parse(super.time).validate();
             this.executionTime = ExecutionTime.forCron(timeCron);

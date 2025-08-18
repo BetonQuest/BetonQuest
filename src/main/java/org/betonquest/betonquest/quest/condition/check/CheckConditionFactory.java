@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.check;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -20,11 +21,18 @@ import java.util.List;
  * Factory for {@link CheckCondition}s.
  */
 public class CheckConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
 
     /**
      * Create the check condition factory.
+     *
+     * @param packManager the quest package manager to get quest packages from
      */
-    public CheckConditionFactory() {
+    public CheckConditionFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     @Override
@@ -71,7 +79,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new Instruction(questPackage, null, instruction);
+            final Instruction innerInstruction = new Instruction(packManager, questPackage, null, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

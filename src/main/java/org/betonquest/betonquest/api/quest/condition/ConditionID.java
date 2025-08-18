@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
@@ -18,12 +19,13 @@ public class ConditionID extends InstructionIdentifier {
     /**
      * Create a new Condition ID.
      *
-     * @param pack       the package of the condition
-     * @param identifier the complete identifier of the condition, inclusive exclamation mark for negating
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the package of the condition
+     * @param identifier  the complete identifier of the condition, inclusive exclamation mark for negating
      * @throws QuestException if there is no such condition
      */
-    public ConditionID(@Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(pack, removeExclamationMark(identifier), "conditions", "Condition");
+    public ConditionID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(packManager, pack, removeExclamationMark(identifier), "conditions", "Condition");
         this.isInverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
     }
 

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -97,7 +98,8 @@ public class EffectLibParticleManager {
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CognitiveComplexity"})
     private void loadParticleConfiguration() {
-        for (final QuestPackage pack : BetonQuest.getInstance().getPackages().values()) {
+        final QuestPackageManager packManager = BetonQuest.getInstance().getQuestPackageManager();
+        for (final QuestPackage pack : packManager.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection(EFFECTLIB_CONFIG_SECTION);
             if (section == null) {
                 continue;
@@ -131,8 +133,8 @@ public class EffectLibParticleManager {
                 }
 
                 final Variable<List<Location>> locations = load(pack, settings, key, "locations", Argument.LOCATION);
-                final Variable<List<NpcID>> npcs = load(pack, settings, key, "npcs", value -> new NpcID(pack, value));
-                final Variable<List<ConditionID>> conditions = load(pack, settings, key, "conditions", value -> new ConditionID(pack, value));
+                final Variable<List<NpcID>> npcs = load(pack, settings, key, "npcs", value -> new NpcID(packManager, pack, value));
+                final Variable<List<ConditionID>> conditions = load(pack, settings, key, "conditions", value -> new ConditionID(packManager, pack, value));
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
                 final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),

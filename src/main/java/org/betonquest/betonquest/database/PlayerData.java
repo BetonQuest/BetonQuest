@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -43,6 +44,11 @@ public class PlayerData implements TagData, PointData {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The quest package manager to get quest packages from.
+     */
+    private final QuestPackageManager packManager;
 
     /**
      * The database saver for player data.
@@ -109,6 +115,7 @@ public class PlayerData implements TagData, PointData {
      */
     public PlayerData(final Profile profile) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.packManager = BetonQuest.getInstance().getQuestPackageManager();
         this.saver = BetonQuest.getInstance().getSaver();
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
@@ -167,7 +174,7 @@ public class PlayerData implements TagData, PointData {
 
     private void loadJournalPointer(final String pointer, final long date) {
         try {
-            final JournalEntryID entryID = new JournalEntryID(null, pointer);
+            final JournalEntryID entryID = new JournalEntryID(packManager, null, pointer);
             entries.add(new Pointer(entryID, date));
         } catch (final QuestException e) {
             log.warn("Loaded '" + pointer
@@ -327,7 +334,7 @@ public class PlayerData implements TagData, PointData {
         for (final Map.Entry<String, String> entry : objectives.entrySet()) {
             final String objective = entry.getKey();
             try {
-                final ObjectiveID objectiveID = new ObjectiveID(null, objective);
+                final ObjectiveID objectiveID = new ObjectiveID(packManager, null, objective);
                 BetonQuest.getInstance().getQuestTypeApi().resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective

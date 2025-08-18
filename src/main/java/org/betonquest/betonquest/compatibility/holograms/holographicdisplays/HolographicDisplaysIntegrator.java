@@ -5,6 +5,7 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -29,10 +30,18 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
+     * The quest package manager to get quest packages from.
      */
-    public HolographicDisplaysIntegrator() {
+    private final QuestPackageManager packManager;
+
+    /**
+     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
+     *
+     * @param packManager the quest package manager to get quest packages from
+     */
+    public HolographicDisplaysIntegrator(final QuestPackageManager packManager) {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
+        this.packManager = packManager;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
@@ -67,7 +76,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(pack, group);
+                final VariableID variable = new VariableID(packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = BetonQuest.getInstance().getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";

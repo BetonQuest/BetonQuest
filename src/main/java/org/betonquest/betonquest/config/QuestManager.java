@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigrator;
@@ -24,8 +25,7 @@ import java.util.Map;
 /**
  * Class to load all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
-@SuppressWarnings("PMD.DataClass")
-public class QuestManager {
+public class QuestManager implements QuestPackageManager {
     /**
      * The character to separate {@link Quest} address parts.
      */
@@ -52,9 +52,29 @@ public class QuestManager {
     public static final String FILE_NAME_INDICATOR = "package";
 
     /**
+     * The logger factory to create loggers for the QuestTemplate and QuestPackage classes.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The factory that creates {@link ConfigAccessor}s for the {@link QuestTemplate}s and {@link QuestPackage}s.
+     */
+    private final ConfigAccessorFactory configAccessorFactory;
+
+    /**
+     * The root directory where to create the root folders for templates and packages.
+     */
+    private final File root;
+
+    /**
+     * The migrator updating {@link QuestPackage}s and {@link QuestTemplate}s.
+     */
+    private final QuestMigrator questMigrator;
 
     /**
      * All loaded {@link QuestPackage}s.
@@ -70,11 +90,29 @@ public class QuestManager {
      * @param root                  The root directory where to create the root folders for templates and packages
      * @param questMigrator         the migrator updating QuestPackages and -Templates
      */
-    public QuestManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory,
-                        final File root, final QuestMigrator questMigrator) {
+    public QuestManager(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+                        final ConfigAccessorFactory configAccessorFactory, final File root,
+                        final QuestMigrator questMigrator) {
+        this.loggerFactory = loggerFactory;
         this.log = log;
+        this.configAccessorFactory = configAccessorFactory;
+        this.root = root;
+        this.questMigrator = questMigrator;
         this.packages = new HashMap<>();
 
+        loadPackages();
+    }
+
+    /**
+     * Reloads all {@link QuestPackage}s.
+     * This will clear all previously loaded packages.
+     */
+    public void reload() {
+        packages.clear();
+        loadPackages();
+    }
+
+    private void loadPackages() {
         final File templatesDir = new File(root, QUEST_TEMPLATES_FOLDER);
         final File packagesDir = new File(root, QUEST_PACKAGES_FOLDER);
 
@@ -115,11 +153,7 @@ public class QuestManager {
         }
     }
 
-    /**
-     * Get all Packages that are loaded.
-     *
-     * @return a map of packages and their names
-     */
+    @Override
     public Map<String, QuestPackage> getPackages() {
         return packages;
     }
