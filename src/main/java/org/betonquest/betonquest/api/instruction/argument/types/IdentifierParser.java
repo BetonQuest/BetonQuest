@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.instruction.argument.types;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.quest.QuestException;
 
@@ -16,7 +15,7 @@ public class IdentifierParser implements PackageArgument<String> {
     }
 
     @Override
-    public String apply(final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+    public String apply(final QuestPackage pack, final String string) throws QuestException {
         if (string.contains(".")) {
             return string;
         }

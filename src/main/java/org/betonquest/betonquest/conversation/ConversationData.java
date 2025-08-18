@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -659,7 +659,7 @@ public class ConversationData {
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
-                                    final PackageArgument<T> resolver) throws QuestException {
+                                    final IdentifierArgument<T> resolver) throws QuestException {
             return resolve(conv, identifier, (value) -> resolver.apply(packManager, pack, value));
         }
 

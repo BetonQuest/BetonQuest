@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.id.ItemID;
 /**
  * Parses a string to an item.
  */
-public class ItemParser implements PackageArgument<Item> {
+public class ItemParser implements IdentifierArgument<Item> {
     /**
      * The feature API to use for parsing.
      */

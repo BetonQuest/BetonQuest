@@ -6,8 +6,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.ArgumentConverter;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierArgumentConverter;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageArgumentConverter;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
@@ -24,8 +26,8 @@ import java.util.Locale;
 /**
  * The Instruction. Primary object for input parsing.
  */
-@SuppressWarnings("PMD.TooManyMethods")
-public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter {
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter {
     /**
      * The quest package manager to get quest packages from.
      */
@@ -241,11 +243,31 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
             }
             return null;
         }
-        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(packManager, pack, value));
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value));
     }
 
     @Override
     public <T> Variable<List<T>> getList(@Nullable final String string, final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        if (string == null) {
+            return new VariableList<>();
+        }
+        return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value), valueChecker);
+    }
+
+    @Nullable
+    @Override
+    public <T> Variable<T> get(@Nullable final String string, final IdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
+        if (string == null) {
+            if (defaultValue != null) {
+                return new Variable<>(defaultValue);
+            }
+            return null;
+        }
+        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(packManager, pack, value));
+    }
+
+    @Override
+    public <T> Variable<List<T>> getList(@Nullable final String string, final IdentifierArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         if (string == null) {
             return new VariableList<>();
         }

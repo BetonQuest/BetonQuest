@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.give;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -72,7 +72,7 @@ public class GiveEventFactory implements PlayerEventFactory {
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(
-                        instruction.getList(PackageArgument.ITEM),
+                        instruction.getList(IdentifierArgument.ITEM),
                         itemsGivenSender,
                         itemsInBackpackSender,
                         itemsDroppedSender,
