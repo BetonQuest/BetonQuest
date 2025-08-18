@@ -565,8 +565,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
         defaultLanguage = config.getString("language", "en-US");
-        questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
-                getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), getDescription()));
+        questManager.reload();
         try {
             pluginMessage.reload();
         } catch (final IOException | QuestException e) {
