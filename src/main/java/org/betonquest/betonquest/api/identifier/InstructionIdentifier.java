@@ -26,8 +26,8 @@ public abstract class InstructionIdentifier extends Identifier {
      * @throws QuestException if the identifier could not be parsed
      */
     protected InstructionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
-                                    final String identifier, final QuestFunction<Identifier,
-                    Instruction> instructionFunction) throws QuestException {
+                                    final String identifier,
+                                    final QuestFunction<Identifier, Instruction> instructionFunction) throws QuestException {
         super(packManager, pack, identifier);
         this.instruction = instructionFunction.apply(this);
     }

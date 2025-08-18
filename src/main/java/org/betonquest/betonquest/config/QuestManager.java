@@ -116,11 +116,6 @@ public class QuestManager implements QuestPackageManager {
         }
     }
 
-    /**
-     * Get all Packages that are loaded.
-     *
-     * @return a map of packages and their names
-     */
     @Override
     public Map<String, QuestPackage> getPackages() {
         return packages;

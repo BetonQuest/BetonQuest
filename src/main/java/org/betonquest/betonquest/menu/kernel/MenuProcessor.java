@@ -37,11 +37,6 @@ import java.util.Set;
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * RPG Menu instance.
      */
     private final RPGMenu rpgMenu;
@@ -74,7 +69,6 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
                          final QuestTypeApi questTypeApi, final VariableProcessor variableProcessor,
                          final FeatureApi featureApi, final RPGMenu rpgMenu, final ProfileProvider profileProvider) {
         super(log, packManager, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
-        this.packManager = packManager;
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();

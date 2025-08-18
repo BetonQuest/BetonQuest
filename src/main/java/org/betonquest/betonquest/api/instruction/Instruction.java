@@ -254,8 +254,8 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
         return new VariableList<>(BetonQuest.getInstance().getVariableProcessor(), pack, string, value -> argument.apply(pack, value), valueChecker);
     }
 
-    @Nullable
     @Override
+    @Nullable
     public <T> Variable<T> get(@Nullable final String string, final IdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {

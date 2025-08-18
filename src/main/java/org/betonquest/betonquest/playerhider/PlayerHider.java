@@ -53,18 +53,18 @@ public class PlayerHider {
     /**
      * Initialize and start a new {@link PlayerHider}.
      *
-     * @param betonQuest      the plugin instance to get config and start the bukkit task
+     * @param plugin          the plugin instance
      * @param api             the BetonQuest API instance
      * @param profileProvider the profile provider instance
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest, final BetonQuestApi api, final ProfileProvider profileProvider) throws QuestException {
-        this.plugin = betonQuest;
+    public PlayerHider(final Plugin plugin, final BetonQuest api, final ProfileProvider profileProvider) throws QuestException {
+        this.plugin = plugin;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
         this.api = api;
 
-        for (final QuestPackage pack : betonQuest.getQuestPackageManager().getPackages().values()) {
+        for (final QuestPackage pack : api.getQuestPackageManager().getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
             if (hiderSection == null) {
                 continue;
@@ -76,7 +76,7 @@ public class PlayerHider {
             }
         }
 
-        final long period = betonQuest.getPluginConfig().getLong("hider.player_update_interval", 20);
+        final long period = api.getPluginConfig().getLong("hider.player_update_interval", 20);
         bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateVisibility, 1, period);
     }
 
