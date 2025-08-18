@@ -601,6 +601,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     }
 
     @Override
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void onDisable() {
         if (questRegistry != null) {
             questRegistry.eventScheduling().stopAll();
@@ -619,7 +620,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         if (saver != null) {
             saver.end();
         }
-        compatibility.disable();
+        if (compatibility != null) {
+            compatibility.disable();
+        }
         if (database != null) {
             database.closeConnection();
         }
