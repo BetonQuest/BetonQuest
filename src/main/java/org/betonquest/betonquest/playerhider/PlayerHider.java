@@ -3,11 +3,13 @@ package org.betonquest.betonquest.playerhider;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -53,12 +55,13 @@ public class PlayerHider {
     /**
      * Initialize and start a new {@link PlayerHider}.
      *
-     * @param plugin          the plugin instance
-     * @param api             the BetonQuest API instance
-     * @param profileProvider the profile provider instance
+     * @param plugin            the plugin instance
+     * @param api               the BetonQuest API instance
+     * @param variableProcessor the variable processor to resolve variables
+     * @param profileProvider   the profile provider instance
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final Plugin plugin, final BetonQuest api, final ProfileProvider profileProvider) throws QuestException {
+    public PlayerHider(final Plugin plugin, final BetonQuest api, final VariableProcessor variableProcessor, final ProfileProvider profileProvider) throws QuestException {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
@@ -72,7 +75,8 @@ public class PlayerHider {
             for (final String key : hiderSection.getKeys(false)) {
                 final String rawConditionsSource = hiderSection.getString(key + ".source_player");
                 final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                hiders.put(getConditions(pack, key, rawConditionsSource), getConditions(pack, key, rawConditionsTarget));
+                hiders.put(getConditions(variableProcessor, pack, key, rawConditionsSource),
+                        getConditions(variableProcessor, pack, key, rawConditionsTarget));
             }
         }
 
@@ -87,21 +91,18 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final QuestPackage pack, final String key, @Nullable final String rawConditions) throws QuestException {
+    private ConditionID[] getConditions(final VariableProcessor variableProcessor, final QuestPackage pack, final String key,
+                                        @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
             return new ConditionID[0];
         }
-        final String[] rawConditionsList = rawConditions.split(",");
-        final ConditionID[] conditionList = new ConditionID[rawConditionsList.length];
-        for (int i = 0; i < rawConditionsList.length; i++) {
-            try {
-                conditionList[i] = new ConditionID(api.getQuestPackageManager(), pack, rawConditionsList[i]);
-            } catch (final QuestException e) {
-                throw new QuestException("Error while loading " + rawConditionsList[i]
-                        + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
-            }
+        try {
+            return new VariableList<>(variableProcessor, pack, rawConditions,
+                    string -> new ConditionID(api.getQuestPackageManager(), pack, string))
+                    .getValue(null).toArray(ConditionID[]::new);
+        } catch (final QuestException e) {
+            throw new QuestException("Error while loading conditions for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
         }
-        return conditionList;
     }
 
     /**
