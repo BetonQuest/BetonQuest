@@ -197,6 +197,10 @@ public class NpcHider {
      * @param npcId         the id of the Npc
      */
     public void applyVisibility(final OnlineProfile onlineProfile, final NpcID npcId) {
+        final Set<ConditionID> conditions = npcs.get(npcId);
+        if (conditions == null) {
+            return;
+        }
         final Npc<?> npc;
         try {
             npc = npcProcessor.get(npcId).getNpc(onlineProfile);
@@ -205,11 +209,10 @@ public class NpcHider {
             return;
         }
         if (npc.isSpawned()) {
-            final Set<ConditionID> conditions = npcs.get(npcId);
-            if (conditions == null || conditions.isEmpty() || !questTypeApi.conditions(onlineProfile, conditions)) {
-                npc.show(onlineProfile);
-            } else {
+            if (conditions.isEmpty() || questTypeApi.conditions(onlineProfile, conditions)) {
                 npc.hide(onlineProfile);
+            } else {
+                npc.show(onlineProfile);
             }
         }
     }
