@@ -49,13 +49,13 @@ public record PlayerConversationState(ConversationID currentConversation, String
         final String fullID = mainParts[0];
         final String[] splitID = fullID.split("\\.");
         final String packName = splitID[0];
-        final QuestPackageManager questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
-        final QuestPackage questPackage = questPackageManager.getPackages().get(packName);
+        final QuestPackageManager packManager = BetonQuest.getInstance().getQuestPackageManager();
+        final QuestPackage questPackage = packManager.getPackages().get(packName);
         if (questPackage == null) {
             throw new QuestException("The package " + packName + " does not exist!");
         }
         final String identifier = splitID[1];
-        final ConversationID currentConversation = new ConversationID(questPackageManager, questPackage, identifier);
+        final ConversationID currentConversation = new ConversationID(packManager, questPackage, identifier);
 
         final String optionName = mainParts[1];
 

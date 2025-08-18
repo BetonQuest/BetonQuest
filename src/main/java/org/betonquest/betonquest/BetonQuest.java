@@ -334,7 +334,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         questManager = new QuestManager(loggerFactory, loggerFactory.create(QuestManager.class), configAccessorFactory,
                 getDataFolder(), new QuestMigrator(loggerFactory.create(QuestMigrator.class), getDescription()));
-        Notify.load(config, getQuestPackageManager().getPackages().values());
+        Notify.load(config, questManager.getPackages().values());
 
         setupDatabase();
 
@@ -422,7 +422,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
 
             try {
-                playerHider = new PlayerHider(this, coreQuestRegistry, profileProvider);
+                playerHider = new PlayerHider(this, this, profileProvider);
             } catch (final QuestException e) {
                 log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
@@ -594,7 +594,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             playerHider.stop();
         }
         try {
-            playerHider = new PlayerHider(this, getQuestTypeApi(), profileProvider);
+            playerHider = new PlayerHider(this, this, profileProvider);
         } catch (final QuestException e) {
             log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }

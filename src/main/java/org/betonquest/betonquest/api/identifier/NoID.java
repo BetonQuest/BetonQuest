@@ -14,11 +14,11 @@ public class NoID extends Identifier {
     /**
      * Constructs a new NoID.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                the quest package to use
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the quest package to use
      * @throws QuestException if the ID cannot be created
      */
-    public NoID(final QuestPackageManager questPackageManager, final QuestPackage pack) throws QuestException {
-        super(questPackageManager, pack, "NoID");
+    public NoID(final QuestPackageManager packManager, final QuestPackage pack) throws QuestException {
+        super(packManager, pack, "NoID");
     }
 }

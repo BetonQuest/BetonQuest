@@ -16,7 +16,7 @@ public class IdentifierParser implements PackageArgument<String> {
     }
 
     @Override
-    public String apply(final QuestPackageManager questPackageManager, final QuestPackage pack, final String string) throws QuestException {
+    public String apply(final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         if (string.contains(".")) {
             return string;
         }

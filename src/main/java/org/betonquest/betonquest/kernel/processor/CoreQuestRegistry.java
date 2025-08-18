@@ -42,15 +42,16 @@ public record CoreQuestRegistry(
      * Create a new Registry for storing and using Core Quest Types.
      *
      * @param loggerFactory       the logger factory used for new custom logger instances
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
      */
-    public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager questPackageManager, final QuestTypeRegistries questTypeRegistries) {
+    public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                             final QuestTypeRegistries questTypeRegistries) {
         this(
-                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), questPackageManager, questTypeRegistries.condition()),
-                new EventProcessor(loggerFactory.create(EventProcessor.class), questPackageManager, questTypeRegistries.event()),
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), questPackageManager, questTypeRegistries.objective()),
-                new VariableProcessor(loggerFactory.create(VariableProcessor.class), questPackageManager, questTypeRegistries.variable())
+                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), packManager, questTypeRegistries.condition()),
+                new EventProcessor(loggerFactory.create(EventProcessor.class), packManager, questTypeRegistries.event()),
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), packManager, questTypeRegistries.objective()),
+                new VariableProcessor(loggerFactory.create(VariableProcessor.class), packManager, questTypeRegistries.variable())
         );
     }
 

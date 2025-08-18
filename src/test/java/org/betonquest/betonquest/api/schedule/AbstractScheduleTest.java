@@ -20,10 +20,10 @@ import static org.mockito.Mockito.*;
 public abstract class AbstractScheduleTest {
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
     @Mock
-    protected QuestPackageManager questPackageManager;
+    protected QuestPackageManager packManager;
 
     /**
      * ID of the schedule to test.

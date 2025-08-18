@@ -55,9 +55,9 @@ public class CoreFeatureFactories {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Cache to catch up missed schedulers.
@@ -87,21 +87,20 @@ public class CoreFeatureFactories {
     /**
      * Create a new Core Other Factories class for registering.
      *
-     * @param loggerFactory       the factory to create new class specific loggers
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param lastExecutionCache  the cache to catch up missed schedulers
-     * @param questTypeApi        the class for executing events
-     * @param config              the config
-     * @param colors              the colors to use for the conversation
-     * @param fontRegistry        the font registry to use for the conversation
+     * @param loggerFactory      the factory to create new class specific loggers
+     * @param packManager        the quest package manager to get quest packages from
+     * @param lastExecutionCache the cache to catch up missed schedulers
+     * @param questTypeApi       the class for executing events
+     * @param config             the config
+     * @param colors             the colors to use for the conversation
+     * @param fontRegistry       the font registry to use for the conversation
      */
-    public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory,
-                                final QuestPackageManager questPackageManager,
-                                final LastExecutionCache lastExecutionCache,
-                                final QuestTypeApi questTypeApi, final ConfigAccessor config, final ConversationColors colors,
+    public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                                final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
+                                final ConfigAccessor config, final ConversationColors colors,
                                 final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeApi = questTypeApi;
         this.config = config;
@@ -119,8 +118,8 @@ public class CoreFeatureFactories {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));
-        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, questPackageManager, config, fontRegistry, colors, false));
-        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, questPackageManager, config, fontRegistry, colors, true));
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, packManager, config, fontRegistry, colors, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, packManager, config, fontRegistry, colors, true));
         conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
@@ -128,7 +127,7 @@ public class CoreFeatureFactories {
         interceptorTypes.register("none", new NonInterceptingInterceptorFactory());
 
         final ItemTypeRegistry itemTypes = registries.item();
-        itemTypes.register("simple", new SimpleQuestItemFactory(questPackageManager));
+        itemTypes.register("simple", new SimpleQuestItemFactory(packManager));
         itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer());
 
         final Plugin plugin = BetonQuest.getInstance();

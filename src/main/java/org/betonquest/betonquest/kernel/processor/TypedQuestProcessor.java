@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -27,14 +28,15 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log      the custom logger for this class
-     * @param types    the available types
-     * @param readable the type name used for logging, with the first letter in upper case
-     * @param internal the section name and/or bstats topic identifier
+     * @param log         the custom logger for this class
+     * @param packManager the quest package manager to get quest packages from
+     * @param types       the available types
+     * @param readable    the type name used for logging, with the first letter in upper case
+     * @param internal    the section name and/or bstats topic identifier
      */
-    public TypedQuestProcessor(final BetonQuestLogger log, final FactoryRegistry<TypeFactory<T>> types,
-                               final String readable, final String internal) {
-        super(log, readable, internal);
+    public TypedQuestProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                               final FactoryRegistry<TypeFactory<T>> types, final String readable, final String internal) {
+        super(log, packManager, readable, internal);
         this.types = types;
     }
 

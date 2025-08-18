@@ -28,19 +28,19 @@ public abstract class AbstractPointVariableFactory<T> {
     protected final BetonQuestLogger logger;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Create a new Point variable factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param dataHolder          the data holder
-     * @param logger              the logger instance for this factory
+     * @param packManager the quest package manager to get quest packages from
+     * @param dataHolder  the data holder
+     * @param logger      the logger instance for this factory
      */
-    public AbstractPointVariableFactory(final QuestPackageManager questPackageManager, final T dataHolder, final BetonQuestLogger logger) {
-        this.questPackageManager = questPackageManager;
+    public AbstractPointVariableFactory(final QuestPackageManager packManager, final T dataHolder, final BetonQuestLogger logger) {
+        this.packManager = packManager;
         this.dataHolder = dataHolder;
         this.logger = logger;
     }
@@ -69,7 +69,7 @@ public abstract class AbstractPointVariableFactory<T> {
             final String questPath = instruction.current();
             final String pointCategory = instruction.next();
             try {
-                final Identifier packageId = new Identifier(questPackageManager, instruction.getPackage(), questPath + "." + pointCategory) {
+                final Identifier packageId = new Identifier(packManager, instruction.getPackage(), questPath + "." + pointCategory) {
                 };
                 category = packageId.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final QuestException e) {

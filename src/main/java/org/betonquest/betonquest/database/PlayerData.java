@@ -46,9 +46,9 @@ public class PlayerData implements TagData, PointData {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * The database saver for player data.
@@ -115,7 +115,7 @@ public class PlayerData implements TagData, PointData {
      */
     public PlayerData(final Profile profile) {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
+        this.packManager = BetonQuest.getInstance().getQuestPackageManager();
         this.saver = BetonQuest.getInstance().getSaver();
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
@@ -174,7 +174,7 @@ public class PlayerData implements TagData, PointData {
 
     private void loadJournalPointer(final String pointer, final long date) {
         try {
-            final JournalEntryID entryID = new JournalEntryID(questPackageManager, null, pointer);
+            final JournalEntryID entryID = new JournalEntryID(packManager, null, pointer);
             entries.add(new Pointer(entryID, date));
         } catch (final QuestException e) {
             log.warn("Loaded '" + pointer
@@ -334,7 +334,7 @@ public class PlayerData implements TagData, PointData {
         for (final Map.Entry<String, String> entry : objectives.entrySet()) {
             final String objective = entry.getKey();
             try {
-                final ObjectiveID objectiveID = new ObjectiveID(questPackageManager, null, objective);
+                final ObjectiveID objectiveID = new ObjectiveID(packManager, null, objective);
                 BetonQuest.getInstance().getQuestTypeApi().resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective

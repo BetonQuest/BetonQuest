@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class EvalCondition implements NullableCondition {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * The condition type registry providing factories to parse the evaluated instruction.
@@ -39,13 +39,14 @@ public class EvalCondition implements NullableCondition {
     /**
      * Creates a new Eval condition.
      *
-     * @param questPackageManager   the quest package manager to use for the instruction
+     * @param packManager           the quest package manager to get quest packages from
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      * @param pack                  the quest package to relate the condition to
      * @param evaluation            the evaluation input
      */
-    public EvalCondition(final QuestPackageManager questPackageManager, final ConditionTypeRegistry conditionTypeRegistry, final QuestPackage pack, final Variable<String> evaluation) {
-        this.questPackageManager = questPackageManager;
+    public EvalCondition(final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry,
+                         final QuestPackage pack, final Variable<String> evaluation) {
+        this.packManager = packManager;
         this.conditionTypeRegistry = conditionTypeRegistry;
         this.pack = pack;
         this.evaluation = evaluation;
@@ -54,21 +55,21 @@ public class EvalCondition implements NullableCondition {
     /**
      * Constructs a condition with a given instruction and returns it.
      *
-     * @param questPackageManager   the quest package manager to use for the instruction
+     * @param packManager           the quest package manager to get quest packages from
      * @param instruction           the instruction string to parse
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      * @param pack                  the quest package to relate the condition to
      * @return the condition
      * @throws QuestException if the condition could not be created
      */
-    public static ConditionAdapter createCondition(final QuestPackageManager questPackageManager, final ConditionTypeRegistry conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction conditionInstruction = new Instruction(questPackageManager, pack, null, instruction);
+    public static ConditionAdapter createCondition(final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
+        final Instruction conditionInstruction = new Instruction(packManager, pack, null, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
         return conditionFactory.parseInstruction(conditionInstruction);
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return createCondition(questPackageManager, conditionTypeRegistry, pack, evaluation.getValue(profile)).check(profile);
+        return createCondition(packManager, conditionTypeRegistry, pack, evaluation.getValue(profile)).check(profile);
     }
 }

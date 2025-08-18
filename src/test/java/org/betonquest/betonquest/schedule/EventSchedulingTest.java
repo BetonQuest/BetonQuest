@@ -201,8 +201,9 @@ class EventSchedulingTest {
      */
     private static final class MockedSchedule extends Schedule {
 
-        private MockedSchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(questPackageManager, scheduleID, instruction);
+        private MockedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                               final ConfigurationSection instruction) throws QuestException {
+            super(packManager, scheduleID, instruction);
         }
     }
 }

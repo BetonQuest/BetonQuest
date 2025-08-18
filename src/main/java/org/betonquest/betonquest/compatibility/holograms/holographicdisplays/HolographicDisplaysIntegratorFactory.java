@@ -9,21 +9,21 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class HolographicDisplaysIntegratorFactory implements IntegratorFactory {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new instance of the factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public HolographicDisplaysIntegratorFactory(final QuestPackageManager questPackageManager) {
-        this.questPackageManager = questPackageManager;
+    public HolographicDisplaysIntegratorFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new HolographicDisplaysIntegrator(questPackageManager);
+        return new HolographicDisplaysIntegrator(packManager);
     }
 }

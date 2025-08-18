@@ -27,9 +27,9 @@ public class SkriptEffectBQ extends Effect {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * The event identifier to be fired.
@@ -47,7 +47,7 @@ public class SkriptEffectBQ extends Effect {
     public SkriptEffectBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
+        packManager = BetonQuest.getInstance().getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class SkriptEffectBQ extends Effect {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
                     final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                    BetonQuest.getInstance().getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(questPackageManager, null, eventID));
+                    BetonQuest.getInstance().getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(packManager, null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

@@ -24,9 +24,9 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Configuration to read io options.
@@ -51,18 +51,18 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new inventory conversation IO factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param loggerFactory       the logger factory to create new conversation specific loggers
-     * @param config              the config to read io options from
-     * @param fontRegistry        the font registry to use for the inventory
-     * @param colors              the colors to use for the conversation
-     * @param printMessages       if the IO should also print the messages in the chat
+     * @param packManager   the quest package manager to get quest packages from
+     * @param loggerFactory the logger factory to create new conversation specific loggers
+     * @param config        the config to read io options from
+     * @param fontRegistry  the font registry to use for the inventory
+     * @param colors        the colors to use for the conversation
+     * @param printMessages if the IO should also print the messages in the chat
      */
-    public InventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory,
-                                  final QuestPackageManager questPackageManager, final ConfigAccessor config,
-                                  final FontRegistry fontRegistry, final ConversationColors colors, final boolean printMessages) {
+    public InventoryConvIOFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                                  final ConfigAccessor config, final FontRegistry fontRegistry,
+                                  final ConversationColors colors, final boolean printMessages) {
         this.loggerFactory = loggerFactory;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.config = config;
         this.fontRegistry = fontRegistry;
         this.colors = colors;
@@ -75,6 +75,6 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);
         final BetonQuestLogger log = loggerFactory.create(InventoryConvIO.class);
-        return new InventoryConvIO(conversation, onlineProfile, log, questPackageManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        return new InventoryConvIO(conversation, onlineProfile, log, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 }

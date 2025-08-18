@@ -30,18 +30,18 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public HolographicDisplaysIntegrator(final QuestPackageManager questPackageManager) {
+    public HolographicDisplaysIntegrator(final QuestPackageManager packManager) {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
@@ -76,7 +76,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(questPackageManager, pack, group);
+                final VariableID variable = new VariableID(packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = BetonQuest.getInstance().getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";

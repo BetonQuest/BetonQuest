@@ -26,9 +26,9 @@ public class SkriptConditionBQ extends Condition {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * The player for whom the condition is checked.
@@ -46,7 +46,7 @@ public class SkriptConditionBQ extends Condition {
     public SkriptConditionBQ() {
         super();
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
+        this.packManager = BetonQuest.getInstance().getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-            return BetonQuest.getInstance().getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(questPackageManager, null, conditionID));
+            return BetonQuest.getInstance().getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(packManager, null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

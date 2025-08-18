@@ -44,19 +44,19 @@ public abstract class Identifier {
     /**
      * Creates a new Identifier. Handles relative and absolute paths and edge cases with special Identifiers.
      *
-     * @param questPackageManager the package manager to resolve packages
-     * @param pack                the package the ID is in
-     * @param identifier          the identifier string leading to the object
+     * @param packManager the package manager to resolve packages
+     * @param pack        the package the ID is in
+     * @param identifier  the identifier string leading to the object
      * @throws QuestException if the identifier could not be parsed
      */
-    protected Identifier(final QuestPackageManager questPackageManager, @Nullable final QuestPackage pack,
+    protected Identifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                          final String identifier) throws QuestException {
         if (identifier.isEmpty()) {
             throw new QuestException("ID is null");
         }
         if (identifier.contains(SEPERATOR)) {
             final int dotIndex = identifier.indexOf(SEPERATOR);
-            final QuestPackage parsed = parsePackageFromIdentifier(questPackageManager, pack, identifier, dotIndex);
+            final QuestPackage parsed = parsePackageFromIdentifier(packManager, pack, identifier, dotIndex);
             if (parsed != null) {
                 this.pack = parsed;
                 this.identifier = identifier.substring(dotIndex + 1);
@@ -74,19 +74,19 @@ public abstract class Identifier {
     }
 
     @Nullable
-    private QuestPackage parsePackageFromIdentifier(final QuestPackageManager questPackageManager,
+    private QuestPackage parsePackageFromIdentifier(final QuestPackageManager packManager,
                                                     @Nullable final QuestPackage pack, final String identifier,
                                                     final int dotIndex) throws QuestException {
         final String packName = identifier.substring(0, dotIndex);
         if (pack != null) {
             if (packName.startsWith(PACKAGE_NAVIGATOR + PACKAGE_SEPERATOR)) {
-                return resolveRelativePathUp(questPackageManager, pack, identifier, packName);
+                return resolveRelativePathUp(packManager, pack, identifier, packName);
             }
             if (packName.startsWith(PACKAGE_SEPERATOR)) {
-                return resolveRelativePathDown(questPackageManager, pack, identifier, packName);
+                return resolveRelativePathDown(packManager, pack, identifier, packName);
             }
         }
-        final QuestPackage packFromName = questPackageManager.getPackage(packName);
+        final QuestPackage packFromName = packManager.getPackage(packName);
         if (packFromName != null) {
             return packFromName;
         }
@@ -96,7 +96,7 @@ public abstract class Identifier {
         return null;
     }
 
-    private QuestPackage resolveRelativePathUp(final QuestPackageManager questPackageManager, final QuestPackage pack,
+    private QuestPackage resolveRelativePathUp(final QuestPackageManager packManager, final QuestPackage pack,
                                                final String identifier, final String packName) throws QuestException {
         final String[] root = pack.getQuestPath().split(PACKAGE_SEPERATOR);
         final String[] path = packName.split(PACKAGE_SEPERATOR);
@@ -104,7 +104,7 @@ public abstract class Identifier {
         final String packagePath = buildPackagePath(root, path, stepsUp);
         try {
             final String absolute = packagePath.substring(0, packagePath.length() - 1);
-            final QuestPackage resolved = questPackageManager.getPackage(absolute);
+            final QuestPackage resolved = packManager.getPackage(absolute);
             if (resolved == null) {
                 throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                         + absolute + "', but this package does not exist!");
@@ -138,12 +138,12 @@ public abstract class Identifier {
         return builder.toString();
     }
 
-    private QuestPackage resolveRelativePathDown(final QuestPackageManager questPackageManager, final QuestPackage pack,
+    private QuestPackage resolveRelativePathDown(final QuestPackageManager packManager, final QuestPackage pack,
                                                  final String identifier, final String packName) throws QuestException {
         final String currentPath = pack.getQuestPath();
         final String fullPath = currentPath + packName;
 
-        final QuestPackage resolved = questPackageManager.getPackage(fullPath);
+        final QuestPackage resolved = packManager.getPackage(fullPath);
         if (resolved == null) {
             throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
                     + fullPath + "', but this package does not exist!");

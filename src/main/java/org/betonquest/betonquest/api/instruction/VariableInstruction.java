@@ -16,35 +16,36 @@ public class VariableInstruction extends Instruction {
     private static final Tokenizer DOT_TOKENIZER = (instruction) -> instruction.split("\\.");
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                The quest package that this instruction belongs to.
-     * @param identifier          The identifier of the variable.
-     * @param instruction         The instruction string. It should start and end with '%' character.
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        The quest package that this instruction belongs to.
+     * @param identifier  The identifier of the variable.
+     * @param instruction The instruction string. It should start and end with '%' character.
      * @throws QuestException if the instruction could not be tokenized,
      *                        or if the instruction does not start and end with '%' character.
      */
-    public VariableInstruction(final QuestPackageManager questPackageManager, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
-        super(questPackageManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
-        this.questPackageManager = questPackageManager;
+    public VariableInstruction(final QuestPackageManager packManager, final QuestPackage pack,
+                               final Identifier identifier, final String instruction) throws QuestException {
+        super(packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
+        this.packManager = packManager;
     }
 
     /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param instruction         The raw instruction string for this variable.
-     * @param identifier          The identifier for this variable.
+     * @param packManager the quest package manager to get quest packages from
+     * @param instruction The raw instruction string for this variable.
+     * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final QuestPackageManager questPackageManager, final VariableInstruction instruction, final Identifier identifier) {
-        super(questPackageManager, instruction, identifier);
-        this.questPackageManager = questPackageManager;
+    public VariableInstruction(final QuestPackageManager packManager, final VariableInstruction instruction, final Identifier identifier) {
+        super(packManager, instruction, identifier);
+        this.packManager = packManager;
     }
 
     private static String cleanInstruction(final String instruction) throws QuestException {
@@ -61,6 +62,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final Identifier newID) {
-        return new VariableInstruction(questPackageManager, this, newID);
+        return new VariableInstruction(packManager, this, newID);
     }
 }

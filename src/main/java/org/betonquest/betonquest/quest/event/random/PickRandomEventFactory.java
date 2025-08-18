@@ -27,9 +27,9 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     private static final Pattern EVENT_WEIGHT = Pattern.compile("(?<weight>\\d+\\.?\\d?)~(?<event>.+)");
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Quest Type API.
@@ -39,11 +39,11 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     /**
      * Creates the PickRandomEventFactory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param questTypeApi        the Quest Type API
+     * @param packManager  the quest package manager to get quest packages from
+     * @param questTypeApi the Quest Type API
      */
-    public PickRandomEventFactory(final QuestPackageManager questPackageManager, final QuestTypeApi questTypeApi) {
-        this.questPackageManager = questPackageManager;
+    public PickRandomEventFactory(final QuestPackageManager packManager, final QuestTypeApi questTypeApi) {
+        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
     }
 
@@ -66,7 +66,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final EventID eventID = new EventID(questPackageManager, instruction.getPackage(), eventString);
+            final EventID eventID = new EventID(packManager, instruction.getPackage(), eventString);
             final double weight = Argument.NUMBER.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         });

@@ -17,12 +17,12 @@ public class PointVariableFactory extends AbstractPointVariableFactory<PlayerDat
     /**
      * Create a new Point variable factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param dataStorage         the player data storage
-     * @param logger              the logger instance for this factory
+     * @param packManager the quest package manager to get quest packages from
+     * @param dataStorage the player data storage
+     * @param logger      the logger instance for this factory
      */
-    public PointVariableFactory(final QuestPackageManager questPackageManager, final PlayerDataStorage dataStorage, final BetonQuestLogger logger) {
-        super(questPackageManager, dataStorage, logger);
+    public PointVariableFactory(final QuestPackageManager packManager, final PlayerDataStorage dataStorage, final BetonQuestLogger logger) {
+        super(packManager, dataStorage, logger);
     }
 
     @Override

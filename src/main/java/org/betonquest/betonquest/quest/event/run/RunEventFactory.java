@@ -20,17 +20,17 @@ import java.util.List;
  */
 public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Create a run event factory with the given BetonQuest instance.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public RunEventFactory(final QuestPackageManager questPackageManager) {
-        this.questPackageManager = questPackageManager;
+    public RunEventFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
-                    events.add(EvalEvent.createEvent(questPackageManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
+                    events.add(EvalEvent.createEvent(packManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
                     builder = new StringBuilder();
                 }
                 builder.append(part.substring(1)).append(' ');
@@ -59,7 +59,7 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
             }
         }
         if (!builder.isEmpty()) {
-            events.add(EvalEvent.createEvent(questPackageManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
+            events.add(EvalEvent.createEvent(packManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
         }
         return new NullableEventAdapter(new RunEvent(events));
     }

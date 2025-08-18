@@ -9,21 +9,21 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class DecentHologramsIntegratorFactory implements IntegratorFactory {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new instance of the factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public DecentHologramsIntegratorFactory(final QuestPackageManager questPackageManager) {
-        this.questPackageManager = questPackageManager;
+    public DecentHologramsIntegratorFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new DecentHologramsIntegrator(questPackageManager);
+        return new DecentHologramsIntegrator(packManager);
     }
 }

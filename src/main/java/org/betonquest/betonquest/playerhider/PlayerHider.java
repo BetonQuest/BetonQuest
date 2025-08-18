@@ -1,15 +1,16 @@
 package org.betonquest.betonquest.playerhider;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,12 +38,12 @@ public class PlayerHider {
     /**
      * Plugin instance to show/hide players.
      */
-    private final BetonQuest plugin;
+    private final Plugin plugin;
 
     /**
-     * Quest Type API.
+     * The BetonQuest API instance.
      */
-    private final QuestTypeApi questTypeApi;
+    private final BetonQuestApi api;
 
     /**
      * The profile provider instance.
@@ -53,15 +54,15 @@ public class PlayerHider {
      * Initialize and start a new {@link PlayerHider}.
      *
      * @param betonQuest      the plugin instance to get config and start the bukkit task
-     * @param questTypeApi    the Quest Type API
+     * @param api             the BetonQuest API instance
      * @param profileProvider the profile provider instance
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final BetonQuest betonQuest, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) throws QuestException {
+    public PlayerHider(final BetonQuest betonQuest, final BetonQuestApi api, final ProfileProvider profileProvider) throws QuestException {
         this.plugin = betonQuest;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
-        this.questTypeApi = questTypeApi;
+        this.api = api;
 
         for (final QuestPackage pack : betonQuest.getQuestPackageManager().getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
@@ -94,7 +95,7 @@ public class PlayerHider {
         final ConditionID[] conditionList = new ConditionID[rawConditionsList.length];
         for (int i = 0; i < rawConditionsList.length; i++) {
             try {
-                conditionList[i] = new ConditionID(plugin.getQuestPackageManager(), pack, rawConditionsList[i]);
+                conditionList[i] = new ConditionID(api.getQuestPackageManager(), pack, rawConditionsList[i]);
             } catch (final QuestException e) {
                 throw new QuestException("Error while loading " + rawConditionsList[i]
                         + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
@@ -136,12 +137,12 @@ public class PlayerHider {
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : onlineProfiles) {
-                if (questTypeApi.conditions(target, hider.getValue())) {
+                if (api.getQuestTypeApi().conditions(target, hider.getValue())) {
                     targetProfiles.add(target);
                 }
             }
             for (final OnlineProfile source : onlineProfiles) {
-                if (!questTypeApi.conditions(source, hider.getKey())) {
+                if (!api.getQuestTypeApi().conditions(source, hider.getKey())) {
                     continue;
                 }
                 final List<OnlineProfile> hiddenProfiles = getOrCreateProfileList(source, profilesToHide);

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -21,6 +22,11 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     protected final BetonQuestLogger log;
 
     /**
+     * The quest package manager to get quest packages from.
+     */
+    protected final QuestPackageManager packManager;
+
+    /**
      * Loaded {@link T} identified by their {@link Identifier}.
      */
     protected final Map<I, T> values;
@@ -38,12 +44,14 @@ public abstract class QuestProcessor<I extends Identifier, T> {
     /**
      * Create a new QuestProcessor to store and execute {@link T} logic.
      *
-     * @param log      the custom logger for this class
-     * @param readable the type name used for logging, with the first letter in upper case
-     * @param internal the section name and/or bstats topic identifier
+     * @param log         the custom logger for this class
+     * @param packManager the quest package manager to get quest packages from
+     * @param readable    the type name used for logging, with the first letter in upper case
+     * @param internal    the section name and/or bstats topic identifier
      */
-    public QuestProcessor(final BetonQuestLogger log, final String readable, final String internal) {
+    public QuestProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable, final String internal) {
         this.log = log;
+        this.packManager = packManager;
         this.values = new HashMap<>();
         this.readable = readable;
         this.internal = internal;

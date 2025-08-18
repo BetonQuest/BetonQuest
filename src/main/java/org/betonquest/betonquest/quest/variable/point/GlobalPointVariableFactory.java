@@ -17,12 +17,12 @@ public class GlobalPointVariableFactory extends AbstractPointVariableFactory<Glo
     /**
      * Create a new Point variable factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param globalData          the global data holder
-     * @param logger              the logger instance for this factory
+     * @param packManager the quest package manager to get quest packages from
+     * @param globalData  the global data holder
+     * @param logger      the logger instance for this factory
      */
-    public GlobalPointVariableFactory(final QuestPackageManager questPackageManager, final GlobalData globalData, final BetonQuestLogger logger) {
-        super(questPackageManager, globalData, logger);
+    public GlobalPointVariableFactory(final QuestPackageManager packManager, final GlobalData globalData, final BetonQuestLogger logger) {
+        super(packManager, globalData, logger);
     }
 
     @Override

@@ -23,8 +23,8 @@ public class CitizensArgument implements PackageArgument<NpcID> {
     }
 
     @Override
-    public NpcID apply(final QuestPackageManager questPackageManager, final QuestPackage pack, final String string) throws QuestException {
-        final NpcID npcId = new NpcID(questPackageManager, pack, string);
+    public NpcID apply(final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+        final NpcID npcId = new NpcID(packManager, pack, string);
         final Instruction npcInstruction = npcId.getInstruction();
         if (!"citizens".equals(npcInstruction.getPart(0))) {
             throw new QuestException("Cannot use non-Citizens NPC ID!");

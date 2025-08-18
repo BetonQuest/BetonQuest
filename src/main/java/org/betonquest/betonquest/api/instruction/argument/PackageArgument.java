@@ -27,11 +27,11 @@ public interface PackageArgument<T> {
     /**
      * Gets a {@link T} from string.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                the source package
-     * @param string              the string to parse
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the source package
+     * @param string      the string to parse
      * @return the {@link T}
      * @throws QuestException when the string cannot be parsed as {@link T}
      */
-    T apply(QuestPackageManager questPackageManager, QuestPackage pack, String string) throws QuestException;
+    T apply(QuestPackageManager packManager, QuestPackage pack, String string) throws QuestException;
 }

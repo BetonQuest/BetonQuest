@@ -46,9 +46,9 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     private final List<NpcHologram> npcHolograms;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Plugin instance for task scheduling.
@@ -69,21 +69,21 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * Starts a loop, which checks hologram conditions and shows them to players.
      * Also starts the npc update listener.
      *
-     * @param loggerFactory       logger factory to use
-     * @param log                 the logger that will be used for logging
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param plugin              the plugin to schedule tasks
-     * @param variableProcessor   the variable processor to use
-     * @param hologramProvider    the hologram provider to create new holograms
-     * @param featureApi          the Feature API to get NPC instances
-     * @param npcTypeRegistry     the registry to create identifier strings from Npcs
+     * @param loggerFactory     logger factory to use
+     * @param log               the logger that will be used for logging
+     * @param packManager       the quest package manager to get quest packages from
+     * @param plugin            the plugin to schedule tasks
+     * @param variableProcessor the variable processor to use
+     * @param hologramProvider  the hologram provider to create new holograms
+     * @param featureApi        the Feature API to get NPC instances
+     * @param npcTypeRegistry   the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final QuestPackageManager questPackageManager, final Plugin plugin,
+                           final QuestPackageManager packManager, final Plugin plugin,
                            final VariableProcessor variableProcessor, final HologramProvider hologramProvider,
                            final FeatureApi featureApi, final NpcTypeRegistry npcTypeRegistry) {
-        super(loggerFactory, log, questPackageManager, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
-        this.questPackageManager = questPackageManager;
+        super(loggerFactory, log, packManager, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
+        this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
         this.npcTypeRegistry = npcTypeRegistry;
@@ -157,7 +157,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new VariableList<>(variableProcessor, pack, section.getString("npcs", ""), value -> new NpcID(questPackageManager, pack, value)).getValue(null);
+        return new VariableList<>(variableProcessor, pack, section.getString("npcs", ""), value -> new NpcID(packManager, pack, value)).getValue(null);
     }
 
     private void updateHologram(final NpcHologram npcHologram) {

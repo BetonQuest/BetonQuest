@@ -74,7 +74,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
                                  final VariableProcessor variableProcessor) {
-        super(log, "Conversation", "conversations");
+        super(log, plugin.getQuestPackageManager(), "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
         this.textCreator = textCreator;
@@ -93,17 +93,17 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final Variable<Boolean> blockMovement = new Variable<>(variableProcessor, pack, section.getString("stop", "false"), Argument.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
         final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
-        final Variable<List<EventID>> finalEvents = new VariableList<>(variableProcessor, pack, section.getString("final_events", ""), value -> new EventID(plugin.getQuestPackageManager(), pack, value));
+        final Variable<List<EventID>> finalEvents = new VariableList<>(variableProcessor, pack, section.getString("final_events", ""), value -> new EventID(packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(convName, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 
-        return new ConversationData(loggerFactory.create(ConversationData.class), plugin.getQuestPackageManager(),
+        return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
                 variableProcessor, plugin.getQuestTypeApi(), plugin.getFeatureApi(), textCreator, pack, section, publicData);
     }
 
     @Override
     protected ConversationID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConversationID(plugin.getQuestPackageManager(), pack, identifier);
+        return new ConversationID(packManager, pack, identifier);
     }
 
     /**

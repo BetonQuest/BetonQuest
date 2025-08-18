@@ -24,9 +24,9 @@ public class ConversationEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Data for primary server thread access.
@@ -41,15 +41,15 @@ public class ConversationEventFactory implements PlayerEventFactory {
     /**
      * Create the conversation event factory.
      *
-     * @param loggerFactory       the logger factory to create a logger for the events
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param data                the data for primary server thread access
-     * @param pluginMessage       the {@link PluginMessage} instance
+     * @param loggerFactory the logger factory to create a logger for the events
+     * @param packManager   the quest package manager to get quest packages from
+     * @param data          the data for primary server thread access
+     * @param pluginMessage the {@link PluginMessage} instance
      */
-    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager questPackageManager, final PrimaryServerThreadData data,
-                                    final PluginMessage pluginMessage) {
+    public ConversationEventFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                                    final PrimaryServerThreadData data, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.data = data;
         this.pluginMessage = pluginMessage;
     }
@@ -76,7 +76,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
         final String option = instruction.getValue("option", "");
         return instruction.get(conversation + " " + option, combined -> {
             final String[] split = combined.split(" ");
-            final ConversationID conversationID = new ConversationID(questPackageManager, instruction.getPackage(), split[0]);
+            final ConversationID conversationID = new ConversationID(packManager, instruction.getPackage(), split[0]);
             final String optionName = split.length == 2 ? split[1] : null;
             if (optionName != null) {
                 final String optionPath = "conversations." + conversationID.get() + ".NPC_options." + optionName;

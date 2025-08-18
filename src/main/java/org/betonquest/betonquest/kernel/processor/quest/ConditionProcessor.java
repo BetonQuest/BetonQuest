@@ -22,25 +22,20 @@ import java.util.concurrent.ExecutionException;
  */
 public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
     /**
-     * The quest package manager to use for the instruction.
-     */
-    private final QuestPackageManager questPackageManager;
-
-    /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param conditionTypes      the available condition types
+     * @param log            the custom logger for this class
+     * @param packManager    the quest package manager to get quest packages from
+     * @param conditionTypes the available condition types
      */
-    public ConditionProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final ConditionTypeRegistry conditionTypes) {
-        super(log, conditionTypes, "Condition", "conditions");
-        this.questPackageManager = questPackageManager;
+    public ConditionProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                              final ConditionTypeRegistry conditionTypes) {
+        super(log, packManager, conditionTypes, "Condition", "conditions");
     }
 
     @Override
     protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(questPackageManager, pack, identifier);
+        return new ConditionID(packManager, pack, identifier);
     }
 
     /**

@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ConversationOptionResolver {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Feature API.
@@ -46,7 +46,7 @@ public class ConversationOptionResolver {
      * Prepares the given information for resolving a conversation option inside a conversation.
      * Use {@link #resolve()} to resolve the information.
      *
-     * @param questPackageManager     the quest package manager to use for the instruction
+     * @param packManager             the quest package manager to get quest packages from
      * @param featureApi              the feature API
      * @param currentPackage          the package from which we are searching for the conversation
      * @param currentConversationName the current conversation data
@@ -55,10 +55,10 @@ public class ConversationOptionResolver {
      * @throws QuestException when the option string is incorrectly formatted or
      *                        when the conversation could not be found
      */
-    public ConversationOptionResolver(final QuestPackageManager questPackageManager, final FeatureApi featureApi, final QuestPackage currentPackage,
-                                      final String currentConversationName, final ConversationData.OptionType optionType,
-                                      final String option) throws QuestException {
-        this.questPackageManager = questPackageManager;
+    public ConversationOptionResolver(final QuestPackageManager packManager, final FeatureApi featureApi,
+                                      final QuestPackage currentPackage, final String currentConversationName,
+                                      final ConversationData.OptionType optionType, final String option) throws QuestException {
+        this.packManager = packManager;
         this.featureApi = featureApi;
         this.optionType = optionType;
 
@@ -68,7 +68,7 @@ public class ConversationOptionResolver {
             // therefore we need to select the "starting options". This means the optionName must be null.)
             // Or "pack.Conv.option" (different conversation, different package)
             case 3 -> {
-                final ConversationID conversationID = new ConversationID(questPackageManager, currentPackage, parts[0] + "." + parts[1]);
+                final ConversationID conversationID = new ConversationID(packManager, currentPackage, parts[0] + "." + parts[1]);
                 pack = conversationID.getPackage();
                 convName = parts[1];
                 optionName = parts[2].isEmpty() ? null : parts[2];
@@ -97,7 +97,7 @@ public class ConversationOptionResolver {
      * @throws QuestException when the conversation containing the option could not be found
      */
     public ResolvedOption resolve() throws QuestException {
-        final ConversationID conversationWithNextOption = new ConversationID(questPackageManager, pack, convName);
+        final ConversationID conversationWithNextOption = new ConversationID(packManager, pack, convName);
 
         //Since the conversation might be in another package we must load this again
         final ConversationData newData = featureApi.getConversation(conversationWithNextOption);

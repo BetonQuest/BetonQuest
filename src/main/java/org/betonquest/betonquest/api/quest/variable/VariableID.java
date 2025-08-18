@@ -20,18 +20,18 @@ public class VariableID extends InstructionIdentifier {
     /**
      * Constructs a new VariableID with the given logger factory, quest package, and identifier.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                The quest package that this identifier belongs to.
-     * @param identifier          The identifier string. It should start and end with '%' character.
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        The quest package that this identifier belongs to.
+     * @param identifier  The identifier string. It should start and end with '%' character.
      * @throws QuestException if the instruction could not be created or
      *                        if the identifier string does not start and end with '%' character.
      */
-    public VariableID(final QuestPackageManager questPackageManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(questPackageManager, pack, identifier.substring(1, identifier.length() - 1), id -> {
+    public VariableID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(packManager, pack, identifier.substring(1, identifier.length() - 1), id -> {
             if (!identifier.startsWith(VARIABLE_IDENTIFIER) || !identifier.endsWith(VARIABLE_IDENTIFIER)) {
                 throw new QuestException("Variable instruction has to start and end with '%' characters");
             }
-            return new VariableInstruction(questPackageManager, id.getPackage(), id, id.get());
+            return new VariableInstruction(packManager, id.getPackage(), id, id.get());
         });
         checkPackageIsNotVariableType(super.getPackage());
     }

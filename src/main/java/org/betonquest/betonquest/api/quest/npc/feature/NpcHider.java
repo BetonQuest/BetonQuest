@@ -37,7 +37,7 @@ public class NpcHider {
     /**
      * The Quest Package Manager to use for the instruction.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Processor to get Npcs.
@@ -73,18 +73,17 @@ public class NpcHider {
     /**
      * Create and start a new Npc Hider.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param npcProcessor        the processor to get nps
-     * @param questTypeApi        the Quest Type API to check hiding conditions
-     * @param profileProvider     the profile provider instance
-     * @param npcTypes            the Npc types to get NpcIds
+     * @param log             the custom logger for this class
+     * @param packManager     the quest package manager to get quest packages from
+     * @param npcProcessor    the processor to get nps
+     * @param questTypeApi    the Quest Type API to check hiding conditions
+     * @param profileProvider the profile provider instance
+     * @param npcTypes        the Npc types to get NpcIds
      */
-    public NpcHider(final BetonQuestLogger log, final QuestPackageManager questPackageManager,
-                    final NpcProcessor npcProcessor, final QuestTypeApi questTypeApi,
-                    final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
+    public NpcHider(final BetonQuestLogger log, final QuestPackageManager packManager, final NpcProcessor npcProcessor,
+                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
         this.log = log;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.npcProcessor = npcProcessor;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
@@ -106,7 +105,7 @@ public class NpcHider {
         for (final String idString : section.getKeys(false)) {
             final NpcID npcId;
             try {
-                npcId = new NpcID(questPackageManager, pack, idString);
+                npcId = new NpcID(packManager, pack, idString);
             } catch (final QuestException exception) {
                 log.warn(pack, "NpcId '" + idString + "' does not exist, in hide_npcs", exception);
                 continue;
@@ -117,7 +116,7 @@ public class NpcHider {
 
             for (final String condition : conditionsString.split(",")) {
                 try {
-                    conditions.add(new ConditionID(questPackageManager, pack, condition));
+                    conditions.add(new ConditionID(packManager, pack, condition));
                 } catch (final QuestException e) {
                     log.warn(pack, "Condition '" + condition + "' does not exist, in hide_npcs with ID " + idString, e);
                     continue npcs;

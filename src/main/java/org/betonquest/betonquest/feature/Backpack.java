@@ -51,9 +51,9 @@ public class Backpack implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * The {@link PluginMessage} instance.
@@ -93,7 +93,7 @@ public class Backpack implements Listener {
         this.pluginMessage = pluginMessage;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
-        this.questPackageManager = instance.getQuestPackageManager();
+        this.packManager = instance.getQuestPackageManager();
         this.onlineProfile = onlineProfile;
         this.playerData = instance.getPlayerDataStorage().get(onlineProfile);
         this.display = switch (type) {
@@ -315,7 +315,7 @@ public class Backpack implements Listener {
             if (buttonString != null && !buttonString.isEmpty()) {
                 present = true;
                 try {
-                    final ItemID itemId = new ItemID(questPackageManager, null, buttonString);
+                    final ItemID itemId = new ItemID(packManager, null, buttonString);
                     stack = BetonQuest.getInstance().getFeatureApi().getItem(itemId, onlineProfile).generate(1);
                 } catch (final QuestException e) {
                     log.warn("Could not load " + button + " button: " + e.getMessage(), e);

@@ -33,17 +33,17 @@ import java.util.Map;
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public SimpleQuestItemFactory(final QuestPackageManager questPackageManager) {
-        this.questPackageManager = questPackageManager;
+    public SimpleQuestItemFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     /**
@@ -90,7 +90,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     @Override
     public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
-        final Instruction instruction = new Instruction(questPackageManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final Instruction instruction = new Instruction(packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

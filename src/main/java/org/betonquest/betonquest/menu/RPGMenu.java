@@ -69,19 +69,19 @@ public class RPGMenu {
     /**
      * Create a new RPG menu instance.
      *
-     * @param log                 the custom logger for this class
-     * @param loggerFactory       the factory to crete new custom logger instances
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pluginConfig        the plugin config
-     * @param variableProcessor   the variable processor instance to get and create variables
-     * @param pluginMessage       the plugin message instance
-     * @param textCreator         the text creator to parse text
-     * @param questTypeApi        the Quest Type API
-     * @param featureApi          the Feature API
-     * @param profileProvider     the profile provider instance
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the factory to crete new custom logger instances
+     * @param packManager       the quest package manager to get quest packages from
+     * @param pluginConfig      the plugin config
+     * @param variableProcessor the variable processor instance to get and create variables
+     * @param pluginMessage     the plugin message instance
+     * @param textCreator       the text creator to parse text
+     * @param questTypeApi      the Quest Type API
+     * @param featureApi        the Feature API
+     * @param profileProvider   the profile provider instance
      */
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                   final QuestPackageManager questPackageManager, final ConfigAccessor pluginConfig,
+                   final QuestPackageManager packManager, final ConfigAccessor pluginConfig,
                    final VariableProcessor variableProcessor, final PluginMessage pluginMessage,
                    final ParsedSectionTextCreator textCreator, final QuestTypeApi questTypeApi,
                    final FeatureApi featureApi, final ProfileProvider profileProvider) {
@@ -100,10 +100,10 @@ public class RPGMenu {
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                questPackageManager, textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
+                packManager, textCreator, questTypeApi, pluginConfig, variableProcessor, featureApi);
         betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
-                questPackageManager, textCreator, questTypeApi, variableProcessor, featureApi, this, profileProvider);
+                packManager, textCreator, questTypeApi, variableProcessor, featureApi, this, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);

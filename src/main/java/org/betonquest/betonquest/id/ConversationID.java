@@ -14,12 +14,12 @@ public class ConversationID extends SectionIdentifier {
     /**
      * Creates new ConversationID instance.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                the package where the identifier was used in
-     * @param identifier          the identifier of the conversation
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the package where the identifier was used in
+     * @param identifier  the identifier of the conversation
      * @throws QuestException when the conversation could not be resolved with the given identifier
      */
-    public ConversationID(final QuestPackageManager questPackageManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(questPackageManager, pack, identifier, "conversations", "Conversation");
+    public ConversationID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(packManager, pack, identifier, "conversations", "Conversation");
     }
 }

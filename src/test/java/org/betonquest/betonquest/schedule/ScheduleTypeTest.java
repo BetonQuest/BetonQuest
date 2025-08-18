@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class ScheduleTypeTest {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
     @Mock
-    private QuestPackageManager questPackageManager;
+    private QuestPackageManager packManager;
 
     /**
      * ID of the schedule to test.
@@ -76,21 +76,21 @@ class ScheduleTypeTest {
     void testCreate() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertDoesNotThrow(() -> type.newScheduleInstance(questPackageManager, scheduleID, section), "");
+        assertDoesNotThrow(() -> type.newScheduleInstance(packManager, scheduleID, section), "");
     }
 
     @Test
     void testCreateThrowingUnchecked() {
         final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule.class, scheduler);
-        assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(questPackageManager, scheduleID, section), "");
+        assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
     }
 
     @Test
     void testCreateInvalidConstructor() {
         final Scheduler<InvalidConstructorSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<InvalidConstructorSchedule, FictiveTime> type = new ScheduleType<>(InvalidConstructorSchedule.class, scheduler);
-        assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(questPackageManager, scheduleID, section), "");
+        assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
     }
 
     @Test
@@ -98,14 +98,14 @@ class ScheduleTypeTest {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertThrows(QuestException.class, () -> type.newScheduleInstance(questPackageManager, scheduleID, section), "");
+        assertThrows(QuestException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
     }
 
     @Test
     void testAddSchedule() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(questPackageManager, scheduleID, section), "");
+        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(packManager, scheduleID, section), "");
         verify(scheduler).addSchedule(any());
     }
 
@@ -117,13 +117,13 @@ class ScheduleTypeTest {
         /**
          * Creates new instance of the schedule.
          *
-         * @param questPackageManager the quest package manager to use for the instruction
-         * @param scheduleID          id of the new schedule
-         * @param instruction         config defining the schedule
+         * @param packManager the quest package manager to get quest packages from
+         * @param scheduleID  id of the new schedule
+         * @param instruction config defining the schedule
          * @throws QuestException if parsing the config failed
          */
-        public MockedSchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(questPackageManager, scheduleID, instruction);
+        public MockedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
+            super(packManager, scheduleID, instruction);
         }
     }
 
@@ -135,14 +135,14 @@ class ScheduleTypeTest {
         /**
          * Creates new instance of the schedule.
          *
-         * @param questPackageManager the quest package manager to use for the instruction
-         * @param scheduleID          id of the new schedule
-         * @param instruction         config defining the schedule
+         * @param packManager the quest package manager to get quest packages from
+         * @param scheduleID  id of the new schedule
+         * @param instruction config defining the schedule
          * @throws QuestException if parsing the config failed
          */
         @SuppressWarnings("unused")
-        public InvalidConstructorSchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction, final String illegalArgument) throws QuestException {
-            super(questPackageManager, scheduleID, instruction);
+        public InvalidConstructorSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection instruction, final String illegalArgument) throws QuestException {
+            super(packManager, scheduleID, instruction);
         }
     }
 
@@ -154,13 +154,14 @@ class ScheduleTypeTest {
         /**
          * Creates new instance of the schedule.
          *
-         * @param questPackageManager the quest package manager to use for the instruction
-         * @param scheduleID          id of the new schedule
-         * @param instruction         config defining the schedule
+         * @param packManager the quest package manager to get quest packages from
+         * @param scheduleID  id of the new schedule
+         * @param instruction config defining the schedule
          * @throws QuestException if parsing the config failed
          */
-        public ThrowingUncheckedSchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(questPackageManager, scheduleID, instruction);
+        public ThrowingUncheckedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                                         final ConfigurationSection instruction) throws QuestException {
+            super(packManager, scheduleID, instruction);
             throw new IllegalArgumentException("unchecked");
         }
     }

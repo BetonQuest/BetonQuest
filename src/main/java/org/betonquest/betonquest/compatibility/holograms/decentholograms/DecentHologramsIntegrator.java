@@ -29,18 +29,18 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public DecentHologramsIntegrator(final QuestPackageManager questPackageManager) {
+    public DecentHologramsIntegrator(final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
@@ -68,7 +68,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(questPackageManager, pack, group);
+                final VariableID variable = new VariableID(packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {

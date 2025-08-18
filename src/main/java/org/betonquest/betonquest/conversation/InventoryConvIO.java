@@ -63,9 +63,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     @Nullable
     protected Component response;
@@ -106,7 +106,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param questPackageManager  the quest package manager to use for the instruction
+     * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
@@ -114,13 +114,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
      * @param componentLineWrapper the component line wrapper
      */
     public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                           final QuestPackageManager questPackageManager, final ConversationColors colors,
+                           final QuestPackageManager packManager, final ConversationColors colors,
                            final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                            final FixedComponentLineWrapper componentLineWrapper) {
         this.log = log;
         this.conv = conv;
         this.profile = onlineProfile;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.colors = colors;
         this.componentLineWrapper = componentLineWrapper;
         final TextComponent.Builder answerPrefix = Component.text();
@@ -151,7 +151,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         try {
             final Variable<ItemID> variableItem = item == null ? null
                     : new Variable<>(BetonQuest.getInstance().getVariableProcessor(), conv.getPackage(), item,
-                    (value) -> new ItemID(questPackageManager, conv.getPackage(), value));
+                    (value) -> new ItemID(packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
         } catch (final QuestException e) {
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), null));

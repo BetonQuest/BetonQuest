@@ -24,9 +24,9 @@ public class EventReward extends BukkitCustomReward {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Quest Type API.
@@ -41,15 +41,16 @@ public class EventReward extends BukkitCustomReward {
     /**
      * Create a new 'Quests' Reward.
      *
-     * @param log                 the custom logger
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param questTypeApi        the Quest Type API
-     * @param profileProvider     the profile provider instance
+     * @param log             the custom logger
+     * @param packManager     the quest package manager to get quest packages from
+     * @param questTypeApi    the Quest Type API
+     * @param profileProvider the profile provider instance
      */
-    public EventReward(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final QuestTypeApi questTypeApi, final ProfileProvider profileProvider) {
+    public EventReward(final BetonQuestLogger log, final QuestPackageManager packManager, final QuestTypeApi questTypeApi,
+                       final ProfileProvider profileProvider) {
         super();
         this.log = log;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
         setName("BetonQuest event");
@@ -71,7 +72,7 @@ public class EventReward extends BukkitCustomReward {
                 log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
                 return;
             }
-            final EventID event = new EventID(questPackageManager, null, string);
+            final EventID event = new EventID(packManager, null, string);
             questTypeApi.event(profileProvider.getProfile(player), event);
         } catch (final QuestException e) {
             log.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);

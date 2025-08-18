@@ -14,12 +14,12 @@ public class NpcID extends InstructionIdentifier {
     /**
      * Creates a new Npc id.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param pack                the package the ID is in
-     * @param identifier          the id instruction string
+     * @param packManager the quest package manager to get quest packages from
+     * @param pack        the package the ID is in
+     * @param identifier  the id instruction string
      * @throws QuestException when the npc could not be resolved with the given identifier
      */
-    public NpcID(final QuestPackageManager questPackageManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(questPackageManager, pack, identifier, "npcs", "Npc");
+    public NpcID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(packManager, pack, identifier, "npcs", "Npc");
     }
 }

@@ -49,29 +49,23 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
     protected final ItemParser itemParser;
 
     /**
-     * The quest package manager to use for the instruction.
-     */
-    private final QuestPackageManager questPackageManager;
-
-    /**
      * Create a new Processor to create and store Menu Items.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param readable            the type name used for logging, with the first letter in upper case
-     * @param internal            the section name and/or bstats topic identifier
-     * @param loggerFactory       the logger factory to class specific loggers with
-     * @param textCreator         the text creator to parse text
-     * @param variableProcessor   the variable resolver
-     * @param questTypeApi        the QuestTypeApi
-     * @param featureApi          the Feature API
+     * @param log               the custom logger for this class
+     * @param packManager       the quest package manager to get quest packages from
+     * @param readable          the type name used for logging, with the first letter in upper case
+     * @param internal          the section name and/or bstats topic identifier
+     * @param loggerFactory     the logger factory to class specific loggers with
+     * @param textCreator       the text creator to parse text
+     * @param variableProcessor the variable resolver
+     * @param questTypeApi      the QuestTypeApi
+     * @param featureApi        the Feature API
      */
-    public RPGMenuProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager,
-                            final String readable, final String internal, final BetonQuestLoggerFactory loggerFactory,
+    public RPGMenuProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable,
+                            final String internal, final BetonQuestLoggerFactory loggerFactory,
                             final ParsedSectionTextCreator textCreator, final VariableProcessor variableProcessor,
                             final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
-        super(log, readable, internal);
-        this.questPackageManager = questPackageManager;
+        super(log, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
@@ -130,7 +124,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
          */
         protected <U extends Identifier> VariableList<U> getID(final String path, final PackageArgument<U> argument)
                 throws QuestException {
-            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(questPackageManager, pack, value));
+            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(packManager, pack, value));
         }
     }
 }

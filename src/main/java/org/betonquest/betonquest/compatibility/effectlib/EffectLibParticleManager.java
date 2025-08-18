@@ -98,8 +98,8 @@ public class EffectLibParticleManager {
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CognitiveComplexity"})
     private void loadParticleConfiguration() {
-        final QuestPackageManager questPackageManager = BetonQuest.getInstance().getQuestPackageManager();
-        for (final QuestPackage pack : questPackageManager.getPackages().values()) {
+        final QuestPackageManager packManager = BetonQuest.getInstance().getQuestPackageManager();
+        for (final QuestPackage pack : packManager.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection(EFFECTLIB_CONFIG_SECTION);
             if (section == null) {
                 continue;
@@ -133,8 +133,8 @@ public class EffectLibParticleManager {
                 }
 
                 final Variable<List<Location>> locations = load(pack, settings, key, "locations", Argument.LOCATION);
-                final Variable<List<NpcID>> npcs = load(pack, settings, key, "npcs", value -> new NpcID(questPackageManager, pack, value));
-                final Variable<List<ConditionID>> conditions = load(pack, settings, key, "conditions", value -> new ConditionID(questPackageManager, pack, value));
+                final Variable<List<NpcID>> npcs = load(pack, settings, key, "npcs", value -> new NpcID(packManager, pack, value));
+                final Variable<List<ConditionID>> conditions = load(pack, settings, key, "conditions", value -> new ConditionID(packManager, pack, value));
 
                 final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
                 final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),

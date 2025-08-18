@@ -15,24 +15,18 @@ import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
  */
 public class ItemProcessor extends TypedQuestProcessor<ItemID, QuestItemWrapper> {
     /**
-     * The quest package manager to use for the instruction.
-     */
-    private final QuestPackageManager questPackageManager;
-
-    /**
      * Create a new ItemProcessor to store and get {@link QuestItem}s.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param types               the available types
+     * @param log         the custom logger for this class
+     * @param packManager the quest package manager to get quest packages from
+     * @param types       the available types
      */
-    public ItemProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final ItemTypeRegistry types) {
-        super(log, types, "Item", "items");
-        this.questPackageManager = questPackageManager;
+    public ItemProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final ItemTypeRegistry types) {
+        super(log, packManager, types, "Item", "items");
     }
 
     @Override
     protected ItemID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ItemID(questPackageManager, pack, identifier);
+        return new ItemID(packManager, pack, identifier);
     }
 }

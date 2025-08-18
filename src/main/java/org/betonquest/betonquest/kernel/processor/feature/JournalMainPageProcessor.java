@@ -22,11 +22,6 @@ import java.util.List;
  */
 public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID, JournalMainPageEntry> {
     /**
-     * The quest package manager to use for the instruction.
-     */
-    private final QuestPackageManager questPackageManager;
-
-    /**
      * Variable to resolve conditions.
      */
     private final VariableProcessor variableProcessor;
@@ -39,15 +34,14 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param variableProcessor   the variable resolver to resolve conditions
-     * @param textCreator         the text creator to parse text
+     * @param log               the custom logger for this class
+     * @param packManager       the quest package manager to get quest packages from
+     * @param variableProcessor the variable resolver to resolve conditions
+     * @param textCreator       the text creator to parse text
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final VariableProcessor variableProcessor,
-                                    final ParsedSectionTextCreator textCreator) {
-        super(log, "Journal Main Page", "journal_main_page");
-        this.questPackageManager = questPackageManager;
+    public JournalMainPageProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                                    final VariableProcessor variableProcessor, final ParsedSectionTextCreator textCreator) {
+        super(log, packManager, "Journal Main Page", "journal_main_page");
         this.variableProcessor = variableProcessor;
         this.textCreator = textCreator;
     }
@@ -60,13 +54,13 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         }
         final Variable<List<ConditionID>> conditions = new VariableList<>(variableProcessor, pack,
                 section.getString("conditions", ""),
-                value -> new ConditionID(questPackageManager, pack, value));
+                value -> new ConditionID(packManager, pack, value));
         final Text text = textCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, conditions, text);
     }
 
     @Override
     protected JournalMainPageID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalMainPageID(questPackageManager, pack, identifier);
+        return new JournalMainPageID(packManager, pack, identifier);
     }
 }

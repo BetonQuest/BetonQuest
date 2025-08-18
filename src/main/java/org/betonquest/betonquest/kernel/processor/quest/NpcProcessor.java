@@ -98,24 +98,25 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * Create a new Quest Npc Processor to store them.
      *
-     * @param log                 the custom logger for this class
-     * @param loggerFactory       the logger factory used to create logger for the started conversations
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param npcTypes            the available npc types
-     * @param pluginMessage       the {@link PluginMessage} instance
-     * @param plugin              the plugin to load config
-     * @param profileProvider     the profile provider instance
-     * @param questTypeApi        the Quest Type API
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory used to create logger for the started conversations
+     * @param packManager     the quest package manager to get quest packages from
+     * @param npcTypes        the available npc types
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param plugin          the plugin to load config
+     * @param profileProvider the profile provider instance
+     * @param questTypeApi    the Quest Type API
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                        final QuestPackageManager questPackageManager, final NpcTypeRegistry npcTypes,
-                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider, final QuestTypeApi questTypeApi) {
-        super(log, npcTypes, "Npc", "npcs");
+                        final QuestPackageManager packManager, final NpcTypeRegistry npcTypes,
+                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider,
+                        final QuestTypeApi questTypeApi) {
+        super(log, packManager, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), questPackageManager, this, questTypeApi, profileProvider, npcTypes);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, this, questTypeApi, profileProvider, npcTypes);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
@@ -143,8 +144,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
             } else {
                 try {
-                    final NpcID npcID = new NpcID(plugin.getQuestPackageManager(), pack, key);
-                    final ConversationID conversationID = new ConversationID(plugin.getQuestPackageManager(), pack, Objects.requireNonNull(section.getString(key)));
+                    final NpcID npcID = new NpcID(packManager, pack, key);
+                    final ConversationID conversationID = new ConversationID(packManager, pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
                     log.warn(pack, "Error while loading " + NPC_SECTION + " '" + packName + "." + key + "': " + exception.getMessage(), exception);
@@ -160,12 +161,12 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         interactionLimit = plugin.getPluginConfig().getInt("npc.interaction_limit", 500);
         acceptNpcLeftClick = plugin.getPluginConfig().getBoolean("npc.accept_left_click");
         final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
-        npcHider.reload(plugin.getQuestPackageManager().getPackages().values(), updateInterval, plugin);
+        npcHider.reload(packManager.getPackages().values(), updateInterval, plugin);
     }
 
     @Override
     protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new NpcID(plugin.getQuestPackageManager(), pack, identifier);
+        return new NpcID(packManager, pack, identifier);
     }
 
     @Override

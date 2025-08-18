@@ -42,7 +42,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param log                  the custom logger for the conversation
-     * @param questPackageManager  the quest package manager to use for the instruction
+     * @param packManager          the quest package manager to get quest packages from
      * @param colors               the colors used in the conversation
      * @param showNumber           whether to show the number of the conversation
      * @param showNPCText          whether to show the NPC text
@@ -50,10 +50,10 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
      * @param componentLineWrapper the component line wrapper
      */
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile, final BetonQuestLogger log,
-                                   final QuestPackageManager questPackageManager, final ConversationColors colors,
+                                   final QuestPackageManager packManager, final ConversationColors colors,
                                    final boolean showNumber, final boolean showNPCText, final boolean printMessages,
                                    final FixedComponentLineWrapper componentLineWrapper) {
-        super(conv, onlineProfile, log, questPackageManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
+        super(conv, onlineProfile, log, packManager, colors, showNumber, showNPCText, printMessages, componentLineWrapper);
     }
 
     @Override

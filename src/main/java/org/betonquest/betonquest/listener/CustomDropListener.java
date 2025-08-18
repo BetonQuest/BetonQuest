@@ -22,9 +22,9 @@ public class CustomDropListener implements Listener {
     private final BetonQuestLogger log;
 
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Plugin used as namespace.
@@ -39,14 +39,15 @@ public class CustomDropListener implements Listener {
     /**
      * Create a new custom drop Listener.
      *
-     * @param log                 the custom logger for exceptions
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param plugin              the plugin used as namespace
-     * @param featureApi          the Feature API
+     * @param log         the custom logger for exceptions
+     * @param packManager the quest package manager to get quest packages from
+     * @param plugin      the plugin used as namespace
+     * @param featureApi  the Feature API
      */
-    public CustomDropListener(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final Plugin plugin, final FeatureApi featureApi) {
+    public CustomDropListener(final BetonQuestLogger log, final QuestPackageManager packManager, final Plugin plugin,
+                              final FeatureApi featureApi) {
         this.log = log;
-        this.questPackageManager = questPackageManager;
+        this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
     }
@@ -66,7 +67,7 @@ public class CustomDropListener implements Listener {
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');
                 try {
-                    event.getDrops().add(featureApi.getItem(new ItemID(questPackageManager, null, dataContainerValue.substring(0, separatorIndex)), null)
+                    event.getDrops().add(featureApi.getItem(new ItemID(packManager, null, dataContainerValue.substring(0, separatorIndex)), null)
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
                 } catch (final QuestException e) {
                     log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);

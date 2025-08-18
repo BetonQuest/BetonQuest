@@ -22,17 +22,17 @@ import java.util.List;
  */
 public class CheckConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
     /**
-     * The quest package manager to use for the instruction.
+     * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager questPackageManager;
+    private final QuestPackageManager packManager;
 
     /**
      * Create the check condition factory.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
+     * @param packManager the quest package manager to get quest packages from
      */
-    public CheckConditionFactory(final QuestPackageManager questPackageManager) {
-        this.questPackageManager = questPackageManager;
+    public CheckConditionFactory(final QuestPackageManager packManager) {
+        this.packManager = packManager;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = BetonQuest.getInstance().getQuestRegistries().condition().getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new Instruction(questPackageManager, questPackage, null, instruction);
+            final Instruction innerInstruction = new Instruction(packManager, questPackage, null, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

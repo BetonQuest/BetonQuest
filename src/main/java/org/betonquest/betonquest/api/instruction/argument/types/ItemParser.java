@@ -29,15 +29,15 @@ public class ItemParser implements PackageArgument<Item> {
     }
 
     @Override
-    public Item apply(final QuestPackageManager questPackageManager, final QuestPackage pack, final String string) throws QuestException {
+    public Item apply(final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         final ItemID item;
         final Variable<Number> number;
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
-            item = new ItemID(questPackageManager, pack, parts[0]);
+            item = new ItemID(packManager, pack, parts[0]);
             number = new Variable<>(Argument.NUMBER.apply(parts[1]));
         } else {
-            item = new ItemID(questPackageManager, pack, string);
+            item = new ItemID(packManager, pack, string);
             number = new Variable<>(1);
         }
         return new Item(featureApi, item, number);

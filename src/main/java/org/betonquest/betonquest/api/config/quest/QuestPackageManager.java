@@ -12,7 +12,7 @@ public interface QuestPackageManager {
     /**
      * Get all QuestPackages.
      *
-     * @return a map of all QuestPackages, where the key is the package name and the value is the QuestPackage object
+     * @return a map of all QuestPackages, with the name as key
      */
     Map<String, QuestPackage> getPackages();
 

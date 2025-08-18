@@ -18,20 +18,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableAdapter> {
     /**
-     * The quest package manager to use for the instruction.
-     */
-    private final QuestPackageManager questPackageManager;
-
-    /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
-     * @param log                 the custom logger for this class
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param variableTypes       the available variable types
+     * @param log           the custom logger for this class
+     * @param packManager   the quest package manager to get quest packages from
+     * @param variableTypes the available variable types
      */
-    public VariableProcessor(final BetonQuestLogger log, final QuestPackageManager questPackageManager, final VariableTypeRegistry variableTypes) {
-        super(log, variableTypes, "Variable", "variables");
-        this.questPackageManager = questPackageManager;
+    public VariableProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+                             final VariableTypeRegistry variableTypes) {
+        super(log, packManager, variableTypes, "Variable", "variables");
     }
 
     @Override
@@ -41,7 +36,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
 
     @Override
     protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new VariableID(questPackageManager, pack, identifier);
+        return new VariableID(packManager, pack, identifier);
     }
 
     /**
@@ -57,7 +52,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throws QuestException {
         final VariableID variableID;
         try {
-            variableID = new VariableID(questPackageManager, pack, instruction);
+            variableID = new VariableID(packManager, pack, instruction);
         } catch (final QuestException e) {
             throw new QuestException("Could not load variable: " + e.getMessage(), e);
         }
@@ -107,7 +102,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throw new QuestException("Variable without explicit package '" + variable + "'! Expected format '<package>:<variable>'");
         }
         final String packString = variable.substring(0, index);
-        final QuestPackage pack = questPackageManager.getPackage(packString);
+        final QuestPackage pack = packManager.getPackage(packString);
         if (pack == null) {
             throw new QuestException("The variable '" + variable + "' reference the non-existent package '" + packString + "' !");
         }

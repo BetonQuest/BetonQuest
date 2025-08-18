@@ -33,13 +33,14 @@ public class RealtimeDailySchedule extends Schedule {
     /**
      * Creates new instance of the schedule.
      *
-     * @param questPackageManager the quest package manager to use for the instruction
-     * @param scheduleID          id of the new schedule
-     * @param instruction         config defining the schedule
+     * @param packManager the quest package manager to get quest packages from
+     * @param scheduleID  id of the new schedule
+     * @param instruction config defining the schedule
      * @throws QuestException if parsing the config failed
      */
-    public RealtimeDailySchedule(final QuestPackageManager questPackageManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-        super(questPackageManager, scheduleID, instruction);
+    public RealtimeDailySchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
+                                 final ConfigurationSection instruction) throws QuestException {
+        super(packManager, scheduleID, instruction);
         try {
             this.timeToRun = LocalTime.parse(super.time, TIME_FORMAT);
         } catch (final DateTimeParseException e) {
