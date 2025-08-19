@@ -98,26 +98,27 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * Create a new Quest Npc Processor to store them.
      *
-     * @param log             the custom logger for this class
-     * @param loggerFactory   the logger factory used to create logger for the started conversations
-     * @param packManager     the quest package manager to get quest packages from
-     * @param npcTypes        the available npc types
-     * @param pluginMessage   the {@link PluginMessage} instance
-     * @param plugin          the plugin to load config
-     * @param profileProvider the profile provider instance
-     * @param questTypeApi    the Quest Type API
+     * @param log               the custom logger for this class
+     * @param loggerFactory     the logger factory used to create logger for the started conversations
+     * @param packManager       the quest package manager to get quest packages from
+     * @param variableProcessor the variable processor to handle variables in Npc conversations
+     * @param npcTypes          the available npc types
+     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param plugin            the plugin to load config
+     * @param profileProvider   the profile provider instance
+     * @param questTypeApi      the Quest Type API
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                        final QuestPackageManager packManager, final NpcTypeRegistry npcTypes,
-                        final PluginMessage pluginMessage, final BetonQuest plugin, final ProfileProvider profileProvider,
-                        final QuestTypeApi questTypeApi) {
+                        final QuestPackageManager packManager, final VariableProcessor variableProcessor,
+                        final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
+                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi) {
         super(log, packManager, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, plugin.getVariableProcessor(),
-                this, questTypeApi, profileProvider, npcTypes);
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, variableProcessor, this,
+                questTypeApi, profileProvider, npcTypes);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }
 
