@@ -32,6 +32,7 @@ class IdentifierTest {
         private static Stream<Arguments> identifiersToResolve() {
             final Map<String, QuestPackage> packages = new HashMap<>();
             final QuestPackageManager manager = mock(QuestPackageManager.class);
+            final QuestPackage root = createQuestPackage(manager, packages, "");
             final QuestPackage pack1 = createQuestPackage(manager, packages, "Test1");
             final QuestPackage pack1Sub1 = createQuestPackage(manager, packages, "Test1-1");
             final QuestPackage pack2 = createQuestPackage(manager, packages, "Test2");
@@ -40,12 +41,15 @@ class IdentifierTest {
 
             return Stream.of(
                     Arguments.of(manager, pack1, "testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack1Sub1, "_-.testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack2Sub1, "_-_-Test1.testEvent", pack1, "testEvent"),
-                    Arguments.of(manager, pack2Sub2, "_-1.testEvent", pack2Sub1, "testEvent"),
-                    Arguments.of(manager, pack2, "-1.testEvent", pack2Sub1, "testEvent"),
-                    Arguments.of(manager, pack1, "Test2.testEvent", pack2, "testEvent"),
-                    Arguments.of(manager, null, "Test1.testEvent", pack1, "testEvent")
+                    Arguments.of(manager, pack1Sub1, "_->testEvent", pack1, "testEvent"),
+                    Arguments.of(manager, pack2Sub1, "_-_-Test1>testEvent", pack1, "testEvent"),
+                    Arguments.of(manager, pack2Sub2, "_-1>testEvent", pack2Sub1, "testEvent"),
+                    Arguments.of(manager, pack2, "-1>testEvent", pack2Sub1, "testEvent"),
+                    Arguments.of(manager, pack1, "Test2>testEvent", pack2, "testEvent"),
+                    Arguments.of(manager, null, "Test1>testEvent", pack1, "testEvent"),
+                    Arguments.of(manager, pack1, "\\>testEvent", pack1, ">testEvent"),
+                    Arguments.of(manager, pack1, ">testEvent", root, "testEvent"),
+                    Arguments.of(manager, pack1, ">>testEvent", root, ">testEvent")
             );
         }
 
@@ -61,7 +65,7 @@ class IdentifierTest {
 
             assertEquals(expectedPack, resolvedPack, "Resolved package does not match expected package");
             assertEquals(expectedIdentifier, resolvedIdentifierString, "Resolved identifier does not match expected identifier");
-            assertEquals(expectedPack.getQuestPath() + "." + expectedIdentifier, resolvedFull, "Resolved full identifier does not match expected full identifier");
+            assertEquals(expectedPack.getQuestPath() + Identifier.SEPARATOR + expectedIdentifier, resolvedFull, "Resolved full identifier does not match expected full identifier");
         }
     }
 
@@ -75,14 +79,14 @@ class IdentifierTest {
             final QuestPackage pack2 = createQuestPackage(manager, packages, "Test2");
 
             return Stream.of(
-                    Arguments.of(manager, pack1, "NonExisting.testEvent",
-                            "ID 'NonExisting.testEvent' could not be parsed: No package 'NonExisting' found!"),
-                    Arguments.of(manager, pack1Sub1, "_-_-_-.testEvent",
-                            "ID '_-_-_-.testEvent' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
-                    Arguments.of(manager, pack1Sub1, "_-_-.testEvent",
-                            "ID '_-_-.testEvent' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
-                    Arguments.of(manager, pack2, "-NonExisting.testEvent",
-                            "ID '-NonExisting.testEvent' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
+                    Arguments.of(manager, pack1, "NonExisting>testEvent",
+                            "ID 'NonExisting>testEvent' could not be parsed: No package 'NonExisting' found!"),
+                    Arguments.of(manager, pack1Sub1, "_-_-_->testEvent",
+                            "ID '_-_-_->testEvent' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
+                    Arguments.of(manager, pack1Sub1, "_-_->testEvent",
+                            "ID '_-_->testEvent' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
+                    Arguments.of(manager, pack2, "-NonExisting>testEvent",
+                            "ID '-NonExisting>testEvent' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
             );
         }
 

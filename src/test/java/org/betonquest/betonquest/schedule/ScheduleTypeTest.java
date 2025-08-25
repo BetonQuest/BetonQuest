@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
+import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,9 @@ class ScheduleTypeTest {
     @BeforeEach
     void prepareConfig() {
         final MultiConfiguration mockConfig = mock(MultiConfiguration.class);
+        final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
+        lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
+        lenient().when(mockConfig.options()).thenReturn(configurationOptions);
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
         lenient().when(mockConfig.getString("events.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
@@ -83,14 +87,14 @@ class ScheduleTypeTest {
     void testCreateThrowingUnchecked() {
         final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule.class, scheduler);
-        assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
+        assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
     }
 
     @Test
     void testCreateInvalidConstructor() {
         final Scheduler<InvalidConstructorSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<InvalidConstructorSchedule, FictiveTime> type = new ScheduleType<>(InvalidConstructorSchedule.class, scheduler);
-        assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
+        assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
     }
 
     @Test
@@ -98,14 +102,14 @@ class ScheduleTypeTest {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertThrows(QuestException.class, () -> type.newScheduleInstance(packManager, scheduleID, section), "");
+        assertThrows(QuestException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
     }
 
     @Test
     void testAddSchedule() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
-        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(packManager, scheduleID, section), "");
+        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(packManager, scheduleID, section));
         verify(scheduler).addSchedule(any());
     }
 

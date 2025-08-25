@@ -108,7 +108,8 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
                 new VariableList<>(variableProcessor, pack, section.getString("journal", ""), value -> new JournalEntryID(packManager, pack, value)),
                 location);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
-        return new QuestCanceler(logger, questTypeApi, playerDataStorage, section.getName(), api.getFeatureApi(), pluginMessage, names, item, pack, cancelData);
+        return new QuestCanceler(logger, questTypeApi, playerDataStorage, getIdentifier(pack, section.getName()),
+                api.getFeatureApi(), pluginMessage, names, item, pack, cancelData);
     }
 
     @Override

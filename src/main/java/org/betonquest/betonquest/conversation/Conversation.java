@@ -21,7 +21,6 @@ import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Bukkit;
@@ -63,7 +62,7 @@ public class Conversation implements Listener {
     /**
      * The option separator.
      */
-    private static final String DOT = ".";
+    private static final String OPTIONS_SEPARATOR = ".";
 
     /**
      * Common log message identifier separator.
@@ -243,8 +242,8 @@ public class Conversation implements Listener {
             new Starter().runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             String firstOption = startingOption;
-            if (!startingOption.contains(DOT)) {
-                firstOption = conversationID.get() + DOT + startingOption;
+            if (!startingOption.contains(OPTIONS_SEPARATOR)) {
+                firstOption = conversationID.get() + OPTIONS_SEPARATOR + startingOption;
             }
             log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
             new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
@@ -650,8 +649,7 @@ public class Conversation implements Listener {
         final List<ResolvedOption> pointers = new ArrayList<>();
         for (final String pointer : rawPointers) {
             final OptionType nextType = option.type() == PLAYER ? NPC : PLAYER;
-            pointers.add(new ConversationOptionResolver(plugin.getQuestPackageManager(), plugin.getFeatureApi(),
-                    nextConvData.getPack(), nextConvData.getPublicData().convName(), nextType, pointer).resolve());
+            pointers.add(nextConvData.resolveOption(new ConversationOptionID(plugin.getQuestPackageManager(), nextConvData.getPack(), pointer), nextType));
         }
         return pointers;
     }
@@ -778,8 +776,7 @@ public class Conversation implements Listener {
             for (final String startingOption : startingOptions) {
                 final ResolvedOption resolvedOption;
                 try {
-                    resolvedOption = new ConversationOptionResolver(plugin.getQuestPackageManager(),
-                            plugin.getFeatureApi(), pack, identifier.get(), NPC, startingOption).resolve();
+                    resolvedOption = data.resolveOption(new ConversationOptionID(plugin.getQuestPackageManager(), pack, startingOption), NPC);
                 } catch (final QuestException e) {
                     log.reportException(pack, e);
                     throw new IllegalStateException("Cannot continue starting conversation without options.", e);

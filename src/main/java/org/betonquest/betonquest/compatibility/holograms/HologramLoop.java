@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -175,10 +176,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
             throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
         }
 
-        String pointName = validator.group(1);
-        if (!pointName.contains(".")) {
-            pointName = pack.getQuestPath() + '.' + pointName;
-        }
+        final String pointName = PackageArgument.IDENTIFIER.apply(pack, validator.group(1));
 
         final TopXObject.OrderType orderType;
         if (ORDER_DESC.equalsIgnoreCase(validator.group(2))) {
