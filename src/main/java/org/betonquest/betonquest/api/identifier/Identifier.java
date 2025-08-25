@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.api.identifier;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Identifiers are used to identify objects in BetonQuest.
@@ -19,7 +20,7 @@ public abstract class Identifier {
     /**
      * The string used to separate the package name from the identifier.
      */
-    public static final String SEPERATOR = ".";
+    public static final String SEPERATOR = ">";
 
     /**
      * The string to separate the package address into parts.
@@ -30,6 +31,11 @@ public abstract class Identifier {
      * The string used to navigate up in the package hierarchy.
      */
     public static final String PACKAGE_NAVIGATOR = "_";
+
+    /**
+     * The pattern to find unescaped separators in an identifier.
+     */
+    private static final Pattern SEPARATOR_PATTERN = Pattern.compile("^(?<package>.*?)(?<!\\\\)(?:\\\\\\\\)*" + SEPERATOR + "(?<identifier>.*)$");
 
     /**
      * The package the object is in.
@@ -52,35 +58,37 @@ public abstract class Identifier {
      */
     protected Identifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                          final String identifier) throws QuestException {
-        if (identifier.isEmpty()) {
-            throw new QuestException("ID is empty!");
-        }
-        if (identifier.contains(SEPERATOR)) {
-            final Pair<String, String> split = splitSeperator(identifier);
+        final RawIdentifier rawIdentifier = splitIdentifier(identifier);
+        this.identifier = rawIdentifier.identifier;
+        if (rawIdentifier.pack == null) {
+            if (pack == null) {
+                throw new QuestException("ID '%s' has no package specified!".formatted(identifier));
+            }
+            this.pack = pack;
+        } else {
             try {
-                this.pack = parsePackageFromIdentifier(packManager, pack, split.getKey());
-                this.identifier = split.getValue();
-                return;
+                this.pack = parsePackageFromIdentifier(packManager, pack, rawIdentifier.pack);
             } catch (final QuestException e) {
                 throw new QuestException("ID '%s' could not be parsed: %s".formatted(identifier, e.getMessage()), e);
             }
         }
-        if (pack == null) {
-            throw new QuestException("ID '%s' has no package specified!".formatted(identifier));
-        }
-        this.pack = pack;
-        this.identifier = identifier;
     }
 
-    private Pair<String, String> splitSeperator(final String identifier) throws QuestException {
-        final int dotIndex = identifier.indexOf(SEPERATOR);
-        if (identifier.length() == dotIndex + 1) {
-            throw new QuestException("ID '%s' has no identifier after the package name!".formatted(identifier));
+    private static RawIdentifier splitIdentifier(final String rawIdentifier) throws QuestException {
+        if (rawIdentifier.isEmpty()) {
+            throw new QuestException("ID is empty!");
         }
-        if (dotIndex < 0) {
-            throw new QuestException("ID '%s' has no package name!".formatted(identifier));
+        final Matcher matcher = SEPARATOR_PATTERN.matcher(rawIdentifier);
+        if (matcher.matches()) {
+            final String pack = matcher.group("package").replace("\\>", ">");
+            final String identifier = matcher.group("identifier").replace("\\>", ">");
+            if (identifier.isEmpty()) {
+                throw new QuestException("ID '%s' has no identifier after the package name!".formatted(rawIdentifier));
+            }
+            return new RawIdentifier(pack, identifier);
+        } else {
+            return new RawIdentifier(null, rawIdentifier.replace("\\>", ">"));
         }
-        return Pair.of(identifier.substring(0, dotIndex), identifier.substring(dotIndex + 1));
     }
 
     private QuestPackage parsePackageFromIdentifier(final QuestPackageManager packManager,
@@ -200,5 +208,14 @@ public abstract class Identifier {
     @Override
     public int hashCode() {
         return Objects.hash(identifier, pack.getQuestPath());
+    }
+
+    /**
+     * A record to hold the raw parts of an identifier.
+     *
+     * @param pack       the package part, or null if not present
+     * @param identifier the identifier part
+     */
+    private record RawIdentifier(@Nullable String pack, String identifier) {
     }
 }
