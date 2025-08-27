@@ -1,14 +1,11 @@
 package org.betonquest.betonquest.quest.objective.location;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.event.HandlerList;
 
 /**
  * Player has to reach certain radius around the specified location.
@@ -51,16 +48,6 @@ public class LocationObjective extends AbstractLocationObjective {
         }
         final double pRange = range.getValue(onlineProfile).doubleValue();
         return location.distanceSquared(targetLocation) <= pRange * pRange;
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

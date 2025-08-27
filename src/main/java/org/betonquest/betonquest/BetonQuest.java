@@ -360,7 +360,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
         questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
-        final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries);
+        final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
+                getServer().getPluginManager(), this);
 
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives(), profileProvider);
 

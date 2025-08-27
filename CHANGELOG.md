@@ -86,6 +86,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menu conversation IO settings are now defined the config.yml file in the `conversation.io.menu` section
 - `chest` conversation IO now actually ends when there is to npc option left or the player closes the inventory
 - `menu` Conversation IO displaying and scroll behavior rework
+- `objectives` event listener are now registered on reload instead when the first player gets it active
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

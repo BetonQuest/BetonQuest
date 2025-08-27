@@ -9,10 +9,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -93,16 +91,6 @@ public class CommandObjective extends Objective implements Listener {
                 }
             });
         }
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

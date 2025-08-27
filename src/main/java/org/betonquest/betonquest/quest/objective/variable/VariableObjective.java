@@ -1,19 +1,9 @@
 package org.betonquest.betonquest.quest.objective.variable;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -26,66 +16,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Creates variables based on what player is typing.
+ * Stores {@code key:value} pairs for a player.
  * Will not run any events, will not check any conditions.
  * The only way to remove it is using "objective cancel" event.
  */
-public class VariableObjective extends Objective implements Listener {
-    /**
-     * Pattern to match the chat variable format.
-     */
-    public static final Pattern CHAT_VARIABLE_PATTERN = Pattern.compile("^(?<key>[a-zA-Z]+): (?<value>.+)$");
-
-    /**
-     * Deactivates the chat input for this objective.
-     */
-    private final boolean noChat;
+public class VariableObjective extends Objective {
 
     /**
      * Creates a new VariableObjective instance.
      *
      * @param instruction the instruction that created this objective
-     * @param noChat      whether to disable chat input for this objective
      * @throws QuestException if there is an error in the instruction
      */
-    public VariableObjective(final Instruction instruction, final boolean noChat) throws QuestException {
+    public VariableObjective(final Instruction instruction) throws QuestException {
         super(instruction, VariableData.class);
-        this.noChat = noChat;
-    }
-
-    @Override
-    public void start() {
-        if (!noChat) {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (!noChat) {
-            HandlerList.unregisterAll(this);
-        }
-    }
-
-    /**
-     * Handles chat input.
-     *
-     * @param event the AsyncPlayerChatEvent
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onChat(final AsyncPlayerChatEvent event) {
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (!containsPlayer(onlineProfile)) {
-            return;
-        }
-        final Matcher chatVariableMatcher = CHAT_VARIABLE_PATTERN.matcher(event.getMessage());
-        if (chatVariableMatcher.matches()) {
-            event.setCancelled(true);
-            final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
-            final String value = chatVariableMatcher.group("value");
-            getVariableData(onlineProfile).add(key, value);
-            event.getPlayer().sendMessage(Component.text("✓", NamedTextColor.DARK_GREEN, TextDecoration.BOLD));
-        }
     }
 
     /**
@@ -132,7 +76,7 @@ public class VariableObjective extends Objective implements Listener {
         return null;
     }
 
-    private VariableData getVariableData(final Profile profile) {
+    /* default */ VariableData getVariableData(final Profile profile) {
         return Objects.requireNonNull((VariableData) dataMap.get(profile));
     }
 

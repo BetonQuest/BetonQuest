@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.jobsreborn.objective;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -11,9 +10,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import java.util.Locale;
@@ -67,16 +64,6 @@ public class PaymentObjective extends Objective implements Listener {
                         new VariableReplacement("amount", Component.text(playerData.targetAmount - playerData.amount)));
             }
         }
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

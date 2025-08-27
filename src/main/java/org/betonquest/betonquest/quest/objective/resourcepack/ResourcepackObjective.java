@@ -1,15 +1,12 @@
 package org.betonquest.betonquest.quest.objective.resourcepack;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
@@ -33,16 +30,6 @@ public class ResourcepackObjective extends Objective implements Listener {
     public ResourcepackObjective(final Instruction instruction, final Variable<PlayerResourcePackStatusEvent.Status> targetStatus) throws QuestException {
         super(instruction);
         this.targetStatus = targetStatus;
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     /**

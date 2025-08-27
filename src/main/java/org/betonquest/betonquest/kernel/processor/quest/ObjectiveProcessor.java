@@ -11,6 +11,10 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +27,16 @@ import java.util.Set;
 public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objective> {
 
     /**
+     * Manager to register listener.
+     */
+    private final PluginManager pluginManager;
+
+    /**
+     * Plugin instance to associate registered listener with.
+     */
+    private final Plugin plugin;
+
+    /**
      * Loaded global objectives.
      */
     private final Set<ObjectiveID> globalObjectiveIds;
@@ -33,10 +47,15 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param log            the custom logger for this class
      * @param packManager    the quest package manager to get quest packages from
      * @param objectiveTypes the available objective types
+     * @param pluginManager  the manager to register listener
+     * @param plugin         the plugin instance to associate registered listener with
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                              final ObjectiveTypeRegistry objectiveTypes) {
+                              final ObjectiveTypeRegistry objectiveTypes,
+                              final PluginManager pluginManager, final Plugin plugin) {
         super(log, packManager, objectiveTypes, "Objective", "objectives");
+        this.pluginManager = pluginManager;
+        this.plugin = plugin;
         globalObjectiveIds = new HashSet<>();
     }
 
@@ -55,6 +74,9 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
         globalObjectiveIds.clear();
         for (final Objective objective : values.values()) {
             objective.close();
+            if (objective instanceof Listener) {
+                HandlerList.unregisterAll((Listener) objective);
+            }
         }
         super.clear();
     }
@@ -68,6 +90,9 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
     protected void postCreation(final ObjectiveID identifier, final Objective value) {
         if (identifier.getInstruction().hasArgument("global")) {
             globalObjectiveIds.add(identifier);
+        }
+        if (value instanceof Listener) {
+            pluginManager.registerEvents((Listener) value, plugin);
         }
     }
 

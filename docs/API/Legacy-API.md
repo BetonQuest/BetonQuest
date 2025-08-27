@@ -68,10 +68,9 @@ You don't want your objective ignoring all conditions, right?
 When you decide that the objective is completed you should call `completeObjective()` method.
 It will fire all events for you, so you don't have to do this manually.
 
-`start()` and `stop()` methods must start objective's listeners and stop them accordingly.
-It's because the plugin turns the objective's listeners off if there are no players having it active.
-Here usually you will register/unregister listeners, but some objectives may be different.
-For example `delay` objective starts and cancels a runnable, instead of using listeners.
+If the objective is a listener it will automatically be registered from BetonQuest.
+Some objectives, like the `delay` objective, starts and cancels a runnable, instead of using listeners.
+Start it in the constructor and save it as field so you can cancel it in the `close()` method.
 
 If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method.
 At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable,

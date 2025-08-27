@@ -47,7 +47,7 @@ public class NpcRangeObjective extends Objective {
     /**
      * BukkitTask ID to stop range check loop.
      */
-    private int npcMoveTask;
+    private final int npcMoveTask;
 
     /**
      * Creates a new NPCRangeObjective from the given instruction.
@@ -65,6 +65,8 @@ public class NpcRangeObjective extends Objective {
         this.radius = radius;
         this.checkStuff = getStuff(trigger);
         this.playersInRange = new HashMap<>();
+        this.npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(),
+                () -> qeHandler.handle(this::loop), 0, 20);
     }
 
     private QuestBiPredicate<Profile, Boolean> getStuff(final Variable<Trigger> trigger) {
@@ -102,14 +104,9 @@ public class NpcRangeObjective extends Objective {
     }
 
     @Override
-    public void start() {
-        npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(), () -> qeHandler.handle(this::loop), 0, 20);
-    }
-
-    @Override
-    public void stop() {
+    public void close() {
         Bukkit.getScheduler().cancelTask(npcMoveTask);
-        playersInRange.clear();
+        super.close();
     }
 
     private void loop() throws QuestException {

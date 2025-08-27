@@ -17,7 +17,9 @@ public class VariableObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final boolean noChat = instruction.hasArgument("no-chat");
-        return new VariableObjective(instruction, noChat);
+        if (instruction.hasArgument("no-chat")) {
+            return new ChatVariableObjective(instruction);
+        }
+        return new VariableObjective(instruction);
     }
 }

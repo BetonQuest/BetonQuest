@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.objective.crafting;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.bukkit.event.ItemStackCraftedEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -10,11 +9,9 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.InventoryUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -96,15 +93,5 @@ public class CraftingObjective extends CountingObjective implements Listener {
                 }
             });
         }
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 }

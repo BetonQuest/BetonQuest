@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.npc.citizens.objective;
 
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -11,9 +10,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
@@ -78,15 +75,5 @@ public class NPCKillObjective extends CountingObjective implements Listener {
                 completeIfDoneOrNotify(profile);
             }
         });
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 }

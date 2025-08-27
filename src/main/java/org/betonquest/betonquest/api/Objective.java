@@ -98,8 +98,9 @@ public abstract class Objective {
 
     /**
      * Creates a new instance of the objective.
+     * <p>
      * <b>Do not register listeners here!</b>
-     * There is a {@link #start()} method for it.
+     * This is done automatically after creation.
      *
      * @param instruction Instruction object representing the objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
@@ -110,8 +111,9 @@ public abstract class Objective {
 
     /**
      * Creates a new instance of the objective.
+     * <p>
      * <b>Do not register listeners here!</b>
-     * There is a {@link #start()} method for it.
+     * This is done automatically after creation.
      *
      * @param instruction Instruction object representing the objective
      * @param template    the class of the objective data object
@@ -132,12 +134,6 @@ public abstract class Objective {
     }
 
     /**
-     * This method is called by the plugin when the objective needs to start
-     * listening for events. Register your Listeners here!
-     */
-    public abstract void start();
-
-    /**
      * This method is called by the plugin when the objective starts for a specific profile.
      *
      * @param profile the {@link Profile} of the player
@@ -146,12 +142,6 @@ public abstract class Objective {
     public void start(final Profile profile) {
         //Empty
     }
-
-    /**
-     * This method is called by the plugin when the objective needs to be
-     * stopped. You have to unregister all Listeners here.
-     */
-    public abstract void stop();
 
     /**
      * This method is called by the plugin when the objective stop for a specific profile.
@@ -394,9 +384,6 @@ public abstract class Objective {
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {
-        if (dataMap.isEmpty()) {
-            start();
-        }
         dataMap.put(profile, data);
         start(profile);
     }
@@ -404,9 +391,6 @@ public abstract class Objective {
     private void deactivateObjective(final Profile profile) {
         stop(profile);
         dataMap.remove(profile);
-        if (dataMap.isEmpty()) {
-            stop();
-        }
     }
 
     /**
@@ -456,11 +440,9 @@ public abstract class Objective {
 
     /**
      * Should be called at the end of the use of this objective, for example
-     * when reloading the plugin. It will unregister listeners and save all
-     * profile data to their "inactive" map.
+     * when reloading the plugin. It will save all profile data to their "inactive" map.
      */
     public void close() {
-        stop();
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
             stop(profile);

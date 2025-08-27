@@ -42,30 +42,18 @@ public class StageObjective extends Objective {
     }
 
     @Override
-    public void start() {
-        // Empty
-    }
-
-    @Override
-    public void stop() {
-        // Empty
-    }
-
-    @Override
     public String getDefaultDataInstruction() {
         return qeHandler.handle(() -> stageMap.getStage(0), "");
     }
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        return qeHandler.handle(() -> {
-            return switch (name.toLowerCase(Locale.ROOT)) {
-                case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
-                case "current" -> getStage(profile);
-                case "next" -> stageMap.nextStage(getStage(profile));
-                case "previous" -> stageMap.previousStage(getStage(profile));
-                default -> "";
-            };
+        return qeHandler.handle(() -> switch (name.toLowerCase(Locale.ROOT)) {
+            case "index" -> String.valueOf(stageMap.getIndex(getStage(profile)));
+            case "current" -> getStage(profile);
+            case "next" -> stageMap.nextStage(getStage(profile));
+            case "previous" -> stageMap.previousStage(getStage(profile));
+            default -> "";
         }, "");
     }
 

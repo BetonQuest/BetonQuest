@@ -1,15 +1,12 @@
 package org.betonquest.betonquest.quest.objective.login;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -25,7 +22,6 @@ public class LoginObjective extends Objective implements Listener {
      */
     public LoginObjective(final Instruction instruction) throws QuestException {
         super(instruction);
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     /**
@@ -39,22 +35,6 @@ public class LoginObjective extends Objective implements Listener {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
         }
-    }
-
-    @Override
-    public void start() {
-        // Empty
-    }
-
-    @Override
-    public void close() {
-        HandlerList.unregisterAll(this);
-        super.close();
-    }
-
-    @Override
-    public void stop() {
-        // Empty
     }
 
     @Override

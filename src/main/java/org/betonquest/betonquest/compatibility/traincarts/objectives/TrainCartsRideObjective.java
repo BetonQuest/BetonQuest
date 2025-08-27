@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
@@ -109,19 +108,14 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
     }
 
     @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
+    public void close() {
         while (!startTimes.isEmpty()) {
             final Player player = Bukkit.getPlayer(startTimes.keySet().iterator().next());
             if (player != null) {
                 stopCount(profileProvider.getProfile(player));
             }
         }
+        super.close();
     }
 
     @Override

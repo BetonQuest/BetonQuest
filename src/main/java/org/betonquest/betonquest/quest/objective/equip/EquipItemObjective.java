@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.objective.equip;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
@@ -9,9 +8,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
@@ -44,11 +41,6 @@ public class EquipItemObjective extends Objective implements Listener {
         this.slotType = slotType;
     }
 
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
     /**
      * Check if the player has equipped the right item in the right slot.
      *
@@ -65,11 +57,6 @@ public class EquipItemObjective extends Objective implements Listener {
                 completeObjective(onlineProfile);
             }
         });
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

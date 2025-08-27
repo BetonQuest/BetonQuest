@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -39,7 +37,7 @@ import java.util.stream.Collectors;
  * right-click or damage the entity. Each entity can only be interacted once.
  * The interaction can optionally be canceled by adding the argument cancel.
  */
-public class EntityInteractObjective extends CountingObjective {
+public class EntityInteractObjective extends CountingObjective implements Listener {
 
     /**
      * The target location of the entity to interact with.
@@ -84,24 +82,12 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * The interaction type (right, left, any).
      */
-    protected Variable<Interaction> interaction;
+    protected Interaction interaction;
 
     /**
      * Whether to cancel the interaction.
      */
     protected boolean cancel;
-
-    /**
-     * The listener for right-click events.
-     */
-    @Nullable
-    private RightClickListener rightClickListener;
-
-    /**
-     * The listener for left-click events.
-     */
-    @Nullable
-    private LeftClickListener leftClickListener;
 
     /**
      * Creates a new instance of the EntityInteractObjective.
@@ -134,26 +120,8 @@ public class EntityInteractObjective extends CountingObjective {
         this.slot = slot;
         this.mobType = mobType;
         this.marked = marked;
-        this.interaction = interaction;
+        this.interaction = interaction.getValue(null);
         this.cancel = cancel;
-    }
-
-    @Override
-    public void start() {
-        qeHandler.handle(() -> {
-            switch (interaction.getValue(null)) {
-                case RIGHT:
-                    rightClickListener = new RightClickListener();
-                    break;
-                case LEFT:
-                    leftClickListener = new LeftClickListener();
-                    break;
-                case ANY:
-                    rightClickListener = new RightClickListener();
-                    leftClickListener = new LeftClickListener();
-                    break;
-            }
-        });
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
@@ -198,13 +166,61 @@ public class EntityInteractObjective extends CountingObjective {
         return success;
     }
 
-    @Override
-    public void stop() {
-        if (rightClickListener != null) {
-            HandlerList.unregisterAll(rightClickListener);
+    /**
+     * The left click event handler.
+     *
+     * @param event the event that triggered this method
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onDamage(final EntityDamageByEntityEvent event) {
+        if (interaction == Interaction.RIGHT) {
+            return;
         }
-        if (leftClickListener != null) {
-            HandlerList.unregisterAll(leftClickListener);
+        final Player player;
+        // check if entity is damaged by a Player
+        if (event.getDamager() instanceof Player) {
+            player = (Player) event.getDamager();
+        } else {
+            return;
+        }
+        if (slot != null && slot != EquipmentSlot.HAND) {
+            return;
+        }
+        qeHandler.handle(() -> {
+            final boolean success = onInteract(player, event.getEntity());
+            if (success && cancel) {
+                event.setCancelled(true);
+            }
+        });
+    }
+
+    /**
+     * The right click event handler.
+     *
+     * @param event the event that triggered this method
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onRightClick(final PlayerInteractEntityEvent event) {
+        if (interaction == Interaction.LEFT || slot != null && slot != event.getHand()) {
+            return;
+        }
+        qeHandler.handle(() -> {
+            final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
+            if (success && cancel) {
+                event.setCancelled(true);
+            }
+        });
+    }
+
+    /**
+     * The right click event handler specific for armor stands.
+     *
+     * @param event the event that triggered this method
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorRightClick(final PlayerInteractAtEntityEvent event) {
+        if (event.getRightClicked() instanceof ArmorStand) {
+            onRightClick(event);
         }
     }
 
@@ -252,85 +268,6 @@ public class EntityInteractObjective extends CountingObjective {
         @Override
         public String toString() {
             return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
-        }
-    }
-
-    /**
-     * Listener for left-click events on entities.
-     */
-    private class LeftClickListener implements Listener {
-        /**
-         * Creates a new instance of the LeftClickListener.
-         */
-        public LeftClickListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
-
-        /**
-         * The left click event handler.
-         *
-         * @param event the event that triggered this method
-         */
-        @EventHandler(ignoreCancelled = true)
-        public void onDamage(final EntityDamageByEntityEvent event) {
-            final Player player;
-            // check if entity is damaged by a Player
-            if (event.getDamager() instanceof Player) {
-                player = (Player) event.getDamager();
-            } else {
-                return;
-            }
-            if (slot != null && slot != EquipmentSlot.HAND) {
-                return;
-            }
-            qeHandler.handle(() -> {
-                final boolean success = onInteract(player, event.getEntity());
-                if (success && cancel) {
-                    event.setCancelled(true);
-                }
-            });
-        }
-    }
-
-    /**
-     * Listener for right-click events on entities.
-     */
-    private class RightClickListener implements Listener {
-        /**
-         * Creates a new instance of the RightClickListener.
-         */
-        public RightClickListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
-
-        /**
-         * The right click event handler.
-         *
-         * @param event the event that triggered this method
-         */
-        @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractEntityEvent event) {
-            if (slot != null && slot != event.getHand()) {
-                return;
-            }
-            qeHandler.handle(() -> {
-                final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
-                if (success && cancel) {
-                    event.setCancelled(true);
-                }
-            });
-        }
-
-        /**
-         * The right click event handler specific for armor stands.
-         *
-         * @param event the event that triggered this method
-         */
-        @EventHandler(ignoreCancelled = true)
-        public void onArmorRightClick(final PlayerInteractAtEntityEvent event) {
-            if (event.getRightClicked() instanceof ArmorStand) {
-                onRightClick(event);
-            }
         }
     }
 }

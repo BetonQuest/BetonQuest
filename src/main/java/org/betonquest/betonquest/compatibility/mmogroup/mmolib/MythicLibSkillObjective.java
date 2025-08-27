@@ -2,15 +2,12 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
 import io.lumine.mythic.lib.api.event.skill.SkillCastEvent;
 import io.lumine.mythic.lib.skill.trigger.TriggerType;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import java.util.List;
@@ -66,16 +63,6 @@ public class MythicLibSkillObjective extends Objective implements Listener {
             return;
         }
         completeObjective(onlineProfile);
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

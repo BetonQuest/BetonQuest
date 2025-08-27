@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -9,9 +8,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 import org.betonquest.betonquest.quest.objective.location.AbstractLocationObjective;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
@@ -40,16 +37,6 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
         super(instruction);
         this.loc = loc;
         this.range = range;
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override
