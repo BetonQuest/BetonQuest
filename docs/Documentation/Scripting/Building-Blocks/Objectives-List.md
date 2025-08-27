@@ -17,11 +17,10 @@ It works great with the location condition and the item in hand condition to fur
 | _cancel_     | Keyword (`cancel`)                                            | Not Set                 | Prevents the player from interacting with the block.                                                          |
 | _hand_       | hand:(`hand`,`off_hand`, `any`)                               | `hand`                  | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times |
 
-!!! example
-    ```YAML
-    action right DOOR conditions:holding_key loc:100;200;300;world range:5
-    action any any conditions:holding_magicWand events:fireSpell #Custom click listener for a wand
-    ```
+```YAML title="Example"
+action right DOOR conditions:holding_key loc:100;200;300;world range:5
+action any any conditions:holding_magicWand events:fireSpell #Custom click listener for a wand
+```
 
 <h5> Variable Properties </h5> 
 
@@ -35,10 +34,9 @@ target and precision number (radius around location where the arrow must land, s
 of an arrow after hit is on the wall of a _full_ block, which means that shooting not full blocks (like heads) won't
 give accurate results. Experiment with this objective a bit to make sure you've set the numbers correctly.
 
-!!! example
-    ```YAML
-    arrow 100.5;200.5;300.5;world 1.1 events:reward conditions:correct_player_position
-    ```
+```YAML title="Example"
+arrow 100.5;200.5;300.5;world 1.1 events:reward conditions:correct_player_position
+```
 
 ## :material-pickaxe: Break or Place Blocks: `block`
 
@@ -54,8 +52,7 @@ To complete this objective the player must break or place the specified amount o
 | _Region definer_ | region:location                                      | Optional. Default: none                        | Adds an optional second location to only count blocks broken/placed in a rectangle between the specified location and this location. This won't have an effect if parameter location isn't set.                                                                           |
 | _ignorecancel_   | Keyword (`ignorecancel`)                             | Protected blocks will not affect the objective | Allows the objective to progress, even if the event is cancelled by the Server. For example if the player is not allowed to build.                                                                                                                                        |
 
-  
-```YAML
+```YAML title="Example"
 objectives:
   breakLogs: "block .*_LOG -16 events:reward notify"
   placeBricks: "block BRICKS 64 events:epicReward notify:5"
@@ -92,10 +89,9 @@ objective will be completable only for breedable ones.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already breed,
 `left` is the amount of animals still needed to breed and `total` is the amount of animals initially required.
 
-!!! example
-    ```YAML
-    breed cow 10 notify:2 events:reward
-    ```
+```YAML title="Example"
+breed cow 10 notify:2 events:reward
+```
 
 ## Put items in a chest: `chestput`
 
@@ -105,11 +101,10 @@ items after a colon. The items will be removed upon completing the objective unl
 argument. By default, only one player can look into the chest at the same time. You can change it by adding the key 
 `multipleaccess`.
 
-!!! example
-    ```YAML
-    chestput 100;200;300;world emerald:5,sword events:tag,message
-    chestput 0;50;100;world apple:42 events:message multipleaccess:true
-    ```
+```YAML title="Example"
+chestput 100;200;300;world emerald:5,sword events:tag,message
+chestput 0;50;100;world apple:42 events:message multipleaccess:true
+```
 
 ## :material-food-fork-drink: Eat/drink: `consume`
 
@@ -121,7 +116,7 @@ This objective is completed by eating the specified food or drinking the specifi
 | _Amount_  | amount:number                         | 1                      | The amount of items to consume.           |
 
 
-```YAML
+```YAML title="Example"
 objectives:
   eatApple: "consume apple events:faster_endurance_regen"
   eatSteak: "consume steak amount:4 events:health_boost"
@@ -145,10 +140,9 @@ objective, optionally with the notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already crafted,
 `left` is the amount of items still needed to craft and `total` is the amount of items initially required.
 
-!!! example
-    ```YAML
-    craft saddle 5 events:reward
-    ```
+```YAML title="Example"
+craft saddle 5 events:reward
+```
 
 ## :fontawesome-solid-wand-magic-sparkles: Enchant item: `enchant`
 
@@ -190,10 +184,9 @@ optionally with the notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience levels,
 `left` is the amount of experience levels still needed and `total` is the amount of experience required.
 
-!!! example
-    ```YAML
-    experience 25 level events:reward
-    ```
+```YAML title="Example"
+experience 25 level events:reward
+```
 
 ##:material-clock-time-two-outline: Wait: `delay` 
 
@@ -235,11 +228,10 @@ Optionally you can also add the `cancel` argument to prevent the player from dyi
 In this case, the player will be healed and all status effects will be removed.
 You can also specify the `respawn` location to which the player will be teleported to.
 
-!!! example
-    ```YAML
-    die respawn:100;200;300;world;90;0 events:respawned
-    die cancel respawn:100;200;300;world;90;0 events:respawned
-    ```
+```YAML title="Example"
+die respawn:100;200;300;world;90;0 events:respawned
+die cancel respawn:100;200;300;world;90;0 events:respawned
+```
 
 ## :fontawesome-solid-fish-fins: Fishing: `fish`
 
@@ -303,17 +295,15 @@ interact right creeper 1 marked:sick conditions:syringeInHand cancel
 | total  | 20             | The initially required amount of entities to interact.     |
 
 ## Resource pack state: `resourcepack`
-**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 To complete this objective the player must have the specified resource pack state.
 The first argument is the state of the resource pack.
 It can be `successfully_loaded`, `declined`, `failed_download` and `accepted`.
 
-!!! example
-    ```YAML
-    resourcepack successfully_loaded events:reward
-    resourcepack declined events:declined
-    ```
+```YAML title="Example"
+resourcepack successfully_loaded events:reward
+resourcepack declined events:declined
+```
 
 ## Kill player: `kill`
 
@@ -325,10 +315,9 @@ and `notify` will display notifications when a player is killed, optionally with
 The kill objective has three properties: `left` is the amount of players still left to kill, `amount` is the amount of
 already killed players and `total` is the initially required amount to kill.
 
-!!! example
-    ```YAML
-    kill 5 required:team_B
-    ```
+```YAML title="Example"
+kill 5 required:team_B
+```
 
 ## Location: `location`
 
@@ -361,10 +350,9 @@ If you use `global` this objective will be also completed directly when a new pl
 If you use `persistent` it will be permanent.
 Don't forget that if you use global and persistent you can still remove the objective explicitly.
 
-!!! example
-    ```YAML
-    login events:welcome_message
-    ```
+```YAML title="Example"
+login events:welcome_message
+```
 
 ## Logout: `logout`
 
@@ -440,7 +428,7 @@ The objective's instruction string is defined as follows:
    With disabled prefix every command or chat message will trigger these events!
 
 
-```YAML
+```YAML title="Example"
 objectives:
   theBetonPassword: 'password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward'
   theBetonPasswordSpaced: 'password "beton quest" ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward'
@@ -459,11 +447,10 @@ You can also add the `notify` keyword to display how many items are left to pick
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already picked up,
 `left` is the amount of items still needed to pick up and `total` is the amount of items initially required.
 
-!!! example
-    ```YAML
-    pickup emerald amount:3 events:reward notify
-    pickup emerald,diamond amount:6 events:reward notify
-    ```
+```YAML title="Example"
+pickup emerald amount:3 events:reward notify
+pickup emerald,diamond amount:6 events:reward notify
+```
 
 ## :material-skull: Entity Kill: `mobkill`
 
@@ -513,10 +500,9 @@ created potions are counted.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of potions already brewed,
 `left` is the amount of potions still needed to brew and `total` is the amount of potions initially required.
 
-!!! example
-    ```YAML
-    brew weird_concoction 4 events:add_tag
-    ```
+```YAML title="Example"
+brew weird_concoction 4 events:add_tag
+```
 
 ## Sheep shearing: `shear`
 
@@ -530,12 +516,11 @@ optionally with the notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of sheep already sheared,
 `left` is the amount of sheep still needed to shear and `total` is the amount of sheep initially required.
 
-!!! example
-    ```YAML
-    shear 1 name:Bob color:black
-    shear 1 name:jeb
-    shear 1 "name:jeb 2"
-    ```
+```YAML title="Example"
+shear 1 name:Bob color:black
+shear 1 name:jeb
+shear 1 "name:jeb 2"
+```
 
 ## Smelting: `smelt`
 
@@ -592,10 +577,9 @@ objective will not be completable and will log errors in the console.
 Step objective contains one property, `location`. It shows the exact location of the pressure plate in a string
 formatted like `X: 100, Y: 200, Z:300`.
 
-!!! example
-    ```YAML
-    step 100;200;300;world events:done
-    ```
+```YAML title="Example"
+step 100;200;300;world events:done
+```
 
 ## Taming: `tame`
 
@@ -607,14 +591,11 @@ notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already tamed,
 `left` is the amount of animals still needed to tame and `total` is the amount of animals initially required.
 
-!!! example
-    ```YAML
-    tame WOLF 2 events:wolfs_tamed
-    ```
-   
+```YAML title="Example"
+tame WOLF 2 events:wolfs_tamed
+```
 
 ## Player must Jump: `jump`
-**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 To complete this objective the player must jump. The only argument is amount. You can use the `notify` keyword to display a
 message each time the player advances the objective, optionally with the notification interval after a colon.
@@ -622,10 +603,9 @@ message each time the player advances the objective, optionally with the notific
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
 `left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
 
-!!! example
-    ```YAML
-    jump 15 events:legExerciseDone
-    ```
+```YAML title="Example"
+jump 15 events:legExerciseDone
+```
 
 ## Ride an entity: `ride`
 
@@ -633,11 +613,10 @@ This objective can be completed by riding the specified
 [entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 `any` is also a valid input and matches any entity.
 
-!!! example
-    ```YAML
-    ride horse
-    ride any
-    ```
+```YAML title="Example"
+ride horse
+ride any
+```
 
 ## Run a Command: `command`
 
@@ -646,11 +625,10 @@ command. The first argument is the command text. To allow spaces use [quoting](.
 The command argument is case-sensitive and also supports using placeholders.
 The second required argument is a list of events to execute when the objective ismet.
 
-!!! example
-    ```YAML
-    command "/warp %player% farms" events:event1,event2
-    command //replace_oak\_wood events:event1,event2
-    ```
+```YAML title="Example"
+command "/warp %player% farms" events:event1,event2
+command //replace_oak\_wood events:event1,event2
+```
 
 With this configuration, the command objective requires the player to execute `/warp MyName farms` to be completed. The
 command objective matches from the start of the command that was executed, therefore if the player executed
@@ -663,21 +641,19 @@ Optional arguments:
 * `cancel`: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the `Unknown Command` message when using custom commands.
 * `failEvents`: If provided, specifies a list of events to execute if a non-matching command is run and conditions are met.
 
-!!! complex example
-    ```YAML
-    command "/warp %player% farms" ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
-    ```
+```YAML title="Complex Example"
+command "/warp %player% farms" ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
+```
 
 ## Equip Armor Item: `equip`
-**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 The player must equip the specified quest item in the specified slot.
 The item must be any quest item as defined in the _items_ section.
 Available slot types: `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
-```YAML
-equip HEAD amazing_helmet events:event1,event2
-equip CHEST amazing_armor events:event1,event2
+```YAML title="Example"
+eqHelm: equip HEAD amazing_helmet events:event1,event2
+equipBody: equip CHEST amazing_armor events:event1,event2
 ```
 
 ## Variable: `variable`
