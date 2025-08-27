@@ -127,10 +127,13 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean onInteract(final Player player, final Entity entity) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+        if (!containsPlayer(onlineProfile)) {
+            return false;
+        }
         if (!entity.getType().equals(mobType.getValue(onlineProfile))) {
             return false;
         }
-        if (customName != null && (entity.customName() == null || !entity.customName().equals(customName.getValue(onlineProfile)))) {
+        if (customName != null && (entity.customName() == null || !customName.getValue(onlineProfile).equals(entity.customName()))) {
             return false;
         }
         if (realName != null && !realName.getValue(onlineProfile).equals(entity.getName())) {
@@ -146,7 +149,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
             }
         }
         // check if the profile has this objective
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
+        if (!checkConditions(onlineProfile)) {
             return false;
         }
         // Check location matches
@@ -154,7 +157,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
             final Location location = loc.getValue(onlineProfile);
             final double pRange = range.getValue(onlineProfile).doubleValue();
             if (!entity.getWorld().equals(location.getWorld())
-                    || entity.getLocation().distance(location) > pRange) {
+                    || entity.getLocation().distanceSquared(location) > pRange * pRange) {
                 return false;
             }
         }
