@@ -694,7 +694,9 @@ To remove this objective, use `objective delete` event - there is no other way.
 You can also use `variable` event to change variables stored in this objective. There is one optional argument, `no-chat`. If you use it, the objective won't be modified 
 by what players type in chat which is only useful when you're also using the `variable` event.
 
-!!! example
-    ```YAML
-    variable
-    ```
+Also, the key is interpreted in lower case. That means there is no difference between `MyFirstVariable`, `myfirstvariable` or `MYfirstVARIABLE`.
+
+```YAML title="Example"
+storage: variable
+storeChat: variable no-chat
+```
