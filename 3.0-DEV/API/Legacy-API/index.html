@@ -4989,10 +4989,9 @@ it must be also verified with <code>checkConditions()</code> method.
 You don't want your objective ignoring all conditions, right?
 When you decide that the objective is completed you should call <code>completeObjective()</code> method.
 It will fire all events for you, so you don't have to do this manually.</p>
-<p><code>start()</code> and <code>stop()</code> methods must start objective's listeners and stop them accordingly.
-It's because the plugin turns the objective's listeners off if there are no players having it active.
-Here usually you will register/unregister listeners, but some objectives may be different.
-For example <code>delay</code> objective starts and cancels a runnable, instead of using listeners.</p>
+<p>If the objective is a listener it will automatically be registered from BetonQuest.
+Some objectives, like the <code>delay</code> objective, starts and cancels a runnable, instead of using listeners.
+Start it in the constructor and save it as field so you can cancel it in the <code>close()</code> method.</p>
 <p>If your objective has some properties (used in variables) you should override the <code>String getProperty(String property, String playerID)</code> method.
 At runtime, if anyone uses <code>%objective.yourObjective.theProperty%</code> variable,
 BetonQuest will call that method with <code>theProperty</code> keyword as the first argument.
