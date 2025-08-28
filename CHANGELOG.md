@@ -87,6 +87,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `chest` conversation IO now actually ends when there is to npc option left or the player closes the inventory
 - `menu` Conversation IO displaying and scroll behavior rework
 - `objectives` event listener are now registered on reload instead when the first player gets it active
+- `npcmove` event - remove strange code effecting the end of a navigation to may return to a previous location in some cases
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -304,15 +304,14 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                 }
                 return;
             }
-            returnToStart(npc);
+            delayDoneEvents(npc);
         }
 
         private String locationToShortReadable(final Location location) {
             return location.getX() + ";" + location.getY() + ";" + location.getZ() + ";" + location.getWorld().getName();
         }
 
-        private void returnToStart(final NPC npc) {
-            npc.getNavigator().setTarget(locationsIterator.previous());
+        private void delayDoneEvents(final NPC npc) {
             npc.getNavigator().setPaused(true);
             new BukkitRunnable() {
                 @Override
