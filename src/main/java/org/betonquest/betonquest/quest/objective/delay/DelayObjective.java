@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -31,10 +30,6 @@ import java.util.Objects;
  * will be completed as soon as the time is up and he logs in again.
  */
 public class DelayObjective extends Objective {
-    /**
-     * The interval in ticks at which the objective checks if the time is up.
-     */
-    private final Variable<Number> interval;
 
     /**
      * The delay time in seconds, minutes, or ticks.
@@ -44,8 +39,7 @@ public class DelayObjective extends Objective {
     /**
      * The runnable task that checks the delay.
      */
-    @Nullable
-    private BukkitTask runnable;
+    private final BukkitTask runnable;
 
     /**
      * Constructor for the DelayObjective.
@@ -58,8 +52,26 @@ public class DelayObjective extends Objective {
     public DelayObjective(final Instruction instruction, final Variable<Number> interval,
                           final Variable<Number> delay) throws QuestException {
         super(instruction, DelayData.class);
-        this.interval = interval;
         this.delay = delay;
+        this.runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                final List<Profile> players = new LinkedList<>();
+                final long time = new Date().getTime();
+                for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+                    final Profile profile = entry.getKey();
+                    final DelayData playerData = (DelayData) entry.getValue();
+                    if (time >= playerData.getTime() && checkConditions(profile)) {
+                        // don't complete the objective, it will throw CME/
+                        // store the player instead, complete later
+                        players.add(profile);
+                    }
+                }
+                for (final Profile profile : players) {
+                    completeObjective(profile);
+                }
+            }
+        }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
     }
 
     private double timeToMilliSeconds(final double time) {
@@ -73,35 +85,9 @@ public class DelayObjective extends Objective {
     }
 
     @Override
-    public void start() {
-        qeHandler.handle(() -> {
-            runnable = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    final List<Profile> players = new LinkedList<>();
-                    final long time = new Date().getTime();
-                    for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
-                        final Profile profile = entry.getKey();
-                        final DelayData playerData = (DelayData) entry.getValue();
-                        if (time >= playerData.getTime() && checkConditions(profile)) {
-                            // don't complete the objective, it will throw CME/
-                            // store the player instead, complete later
-                            players.add(profile);
-                        }
-                    }
-                    for (final Profile profile : players) {
-                        completeObjective(profile);
-                    }
-                }
-            }.runTaskTimer(BetonQuest.getInstance(), 0, interval.getValue(null).longValue());
-        });
-    }
-
-    @Override
-    public void stop() {
-        if (runnable != null) {
-            runnable.cancel();
-        }
+    public void close() {
+        runnable.cancel();
+        super.close();
     }
 
     @Override

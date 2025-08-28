@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -12,10 +11,8 @@ import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.event.MenuOpenEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
@@ -82,16 +79,6 @@ public class MenuObjective extends Objective implements Listener {
             return;
         }
         this.completeObjective(profile);
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

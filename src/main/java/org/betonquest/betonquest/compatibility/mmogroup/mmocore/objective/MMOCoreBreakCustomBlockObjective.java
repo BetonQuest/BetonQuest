@@ -5,15 +5,12 @@ import net.Indyuce.mmocore.api.block.SkullBlockType;
 import net.Indyuce.mmocore.api.block.VanillaBlockType;
 import net.Indyuce.mmocore.api.event.CustomBlockMineEvent;
 import net.Indyuce.mmoitems.comp.mmocore.load.MMOItemsBlockType;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,15 +67,5 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
             actualBlockId = skullBlock.getValue();
         }
         return actualBlockId;
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.objective.npc;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -9,10 +8,8 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import static org.betonquest.betonquest.quest.objective.interact.Interaction.ANY;
@@ -75,16 +72,6 @@ public class NpcInteractObjective extends Objective implements Listener {
                 completeObjective(profile);
             }
         });
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     @Override

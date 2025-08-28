@@ -17,6 +17,8 @@ import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -44,13 +46,16 @@ public record CoreQuestRegistry(
      * @param loggerFactory       the logger factory used for new custom logger instances
      * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
+     * @param pluginManager       the manager to register listener
+     * @param plugin              the plugin instance to associate registered listener with
      */
     public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final QuestTypeRegistries questTypeRegistries) {
+                             final QuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
         this(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), packManager, questTypeRegistries.condition()),
                 new EventProcessor(loggerFactory.create(EventProcessor.class), packManager, questTypeRegistries.event()),
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), packManager, questTypeRegistries.objective()),
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), packManager, questTypeRegistries.objective(),
+                        pluginManager, plugin),
                 new VariableProcessor(loggerFactory.create(VariableProcessor.class), packManager, questTypeRegistries.variable())
         );
     }

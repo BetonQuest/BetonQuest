@@ -17,7 +17,6 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -160,16 +159,5 @@ public class BrewObjective extends CountingObjective implements Listener {
                     && potion.matches(storageContents[index]);
         }
         return resultPotions;
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        locations.clear();
-        HandlerList.unregisterAll(this);
     }
 }

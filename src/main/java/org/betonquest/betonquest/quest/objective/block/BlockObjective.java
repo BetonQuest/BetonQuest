@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.objective.block;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -9,11 +8,9 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.util.BlockSelector;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -147,16 +144,6 @@ public class BlockObjective extends CountingObjective implements Listener {
     private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
         final IngameNotificationSender message = data.getDirectionFactor() > 0 ? blockPlaceSender : blockBreakSender;
         completeIfDoneOrNotify(onlineProfile, message);
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
     }
 
     private boolean checkLocation(final Location loc, final Profile profile) throws QuestException {

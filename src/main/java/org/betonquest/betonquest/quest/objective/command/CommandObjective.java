@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.command;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -9,10 +9,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -96,16 +94,6 @@ public class CommandObjective extends Objective implements Listener {
     }
 
     @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
-
-    @Override
     public String getDefaultDataInstruction() {
         return "";
     }
@@ -117,11 +105,11 @@ public class CommandObjective extends Objective implements Listener {
 
     private boolean foundMatch(final String commandExecuted, final String commandRequired) {
         if (exact) {
-            return ignoreCase ? StringUtils.equalsIgnoreCase(commandExecuted, commandRequired)
-                    : StringUtils.equals(commandExecuted, commandRequired);
+            return ignoreCase ? Strings.CI.equals(commandExecuted, commandRequired)
+                    : Strings.CS.equals(commandExecuted, commandRequired);
         } else {
-            return ignoreCase ? StringUtils.startsWithIgnoreCase(commandExecuted, commandRequired)
-                    : StringUtils.startsWith(commandExecuted, commandRequired);
+            return ignoreCase ? Strings.CI.startsWith(commandExecuted, commandRequired)
+                    : Strings.CS.startsWith(commandExecuted, commandRequired);
         }
     }
 }
