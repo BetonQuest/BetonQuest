@@ -127,6 +127,9 @@ public class EffectLibRunnable extends BukkitRunnable {
                     log.debug("Could not get Npc for id '" + npcId + "' in effects!", exception);
                     continue;
                 }
+                if (!npc.isSpawned()) {
+                    continue;
+                }
                 final Player player = profile.getPlayer();
 
                 if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureApi.getNpcHider().isHidden(npcId, profile)) {

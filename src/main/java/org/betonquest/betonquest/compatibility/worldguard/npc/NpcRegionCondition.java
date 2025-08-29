@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +45,7 @@ public class NpcRegionCondition implements NullableCondition {
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return WorldGuardIntegrator.isInsideRegion(featureApi.getNpc(npcId.getValue(profile), profile).getLocation(), region.getValue(profile));
+        final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
+        return npc.isSpawned() && WorldGuardIntegrator.isInsideRegion(npc.getLocation(), region.getValue(profile));
     }
 }
