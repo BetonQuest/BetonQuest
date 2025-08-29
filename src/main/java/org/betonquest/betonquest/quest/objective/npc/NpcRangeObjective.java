@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -111,9 +112,13 @@ public class NpcRangeObjective extends Objective {
 
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
-        final List<OnlineProfile> allOnlineProfiles = profileProvider.getOnlineProfiles();
+        final List<OnlineProfile> profiles = dataMap.keySet().stream()
+                .map(Profile::getOnlineProfile)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
         final QuestListException questListException = new QuestListException("Could not loop all online profiles:");
-        for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+        for (final OnlineProfile onlineProfile : profiles) {
             try {
                 for (final NpcID npcId : npcIds.getValue(onlineProfile)) {
                     final Location npcLocation = BetonQuest.getInstance().getFeatureApi().getNpc(npcId, onlineProfile).getLocation();
@@ -125,14 +130,14 @@ public class NpcRangeObjective extends Objective {
                 questListException.addException(onlineProfile.toString(), e);
             }
         }
-        for (final OnlineProfile onlineProfile : allOnlineProfiles) {
+        for (final OnlineProfile onlineProfile : profiles) {
             checkPlayer(onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
         questListException.throwIfNotEmpty();
     }
 
     private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestException {
-        if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getPlayer().getWorld())) {
+        if (!location.getWorld().equals(onlineProfile.getPlayer().getWorld())) {
             return false;
         }
         final double radius = this.radius.getValue(onlineProfile).doubleValue();
