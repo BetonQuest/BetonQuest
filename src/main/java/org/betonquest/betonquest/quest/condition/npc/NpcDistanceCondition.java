@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -44,7 +45,11 @@ public class NpcDistanceCondition implements OnlineCondition {
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Location npcLocation = featureApi.getNpc(npcID.getValue(profile), profile).getLocation();
+        final Npc<?> npc = featureApi.getNpc(npcID.getValue(profile), profile);
+        if (!npc.isSpawned()) {
+            return false;
+        }
+        final Location npcLocation = npc.getLocation();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;

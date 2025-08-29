@@ -33,6 +33,8 @@ public interface Npc<T> {
 
     /**
      * Gets the position of the NPC.
+     * <p>
+     * You should check if the NPC is spawned before calling this method.
      *
      * @return the location the NPC is at, copy
      */
@@ -40,6 +42,8 @@ public interface Npc<T> {
 
     /**
      * Get a Location detailing the current eye position of the living entity.
+     * <p>
+     * You should check if the NPC is spawned before calling this method.
      *
      * @return a location at the eyes of the npc
      */
