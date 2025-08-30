@@ -730,3 +730,45 @@ conversation:
     ```
     
     </div>
+
+### 3.0.0-DEV-392 - Cross packages are now referenced with `>` instead of `.` :thunder_cloud_rain:
+
+To fix some issues where it was not clear if a variable or a package is referenced as both use a dot `.` as separator,
+the cross package reference now uses a greater than `>` symbol.
+This migration is actually automated, but there are so many edge cases that it is likely that some things are not
+migrated correctly. Most cases should bring up a warning or error in the console, so you can fix them manually.
+But there are also some edge cases that are not detected, so you may need to check all cross package references manually.
+
+<div class="grid" markdown>
+
+```YAML title="Old package.yml"
+objectives:
+  myObjective: login
+    conditions:OtherPackage.myCondition
+    events:OtherPackage.myEvent
+events:
+  myEvent: notify Test
+    conditions:OtherPackage.myCondition
+```
+
+```YAML title="New üackage.yml"
+objectives:
+  myObjective: login
+    conditions:OtherPackage>myCondition
+    events:OtherPackage>myEvent
+events:
+  myEvent: notify Test
+    conditions:OtherPackage>myCondition
+```
+
+</div>
+
+That's how to do this in general, but there are a lot of edge cases, so please check all cross package references.
+Some well known edge cases are:
+
+- Variables in general use `.` as separator, so they conflicted with cross package references.
+  So they are migrated automatically, you need to migrate them manually, if they refer to another package.
+- `math.calc` variable can reference a variable from another package.
+  As the hole variable gets interpreted first, you need to escape the package reference with `\>`.
+- It is also not possible to know in which context constats are used, so if you use cross package references in constants,
+  you need to change them manually.

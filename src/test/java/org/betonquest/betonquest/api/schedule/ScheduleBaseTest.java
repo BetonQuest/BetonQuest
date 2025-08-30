@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -29,6 +30,9 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
         lenient().when(questPackage.getConfig()).thenReturn(mockConfig);
         lenient().when(mockConfig.getString("events.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
         lenient().when(mockConfig.getString("events.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
+        final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
+        lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
+        lenient().when(mockConfig.options()).thenReturn(configurationOptions);
 
         lenient().when(section.getString("time")).thenReturn("22:00");
         lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");

@@ -22,7 +22,7 @@ import java.util.TreeMap;
 /**
  * Connects to and uses a MySQL database.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
 public class MySQL extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -102,6 +102,7 @@ public class MySQL extends Database {
         migrations.put(new MigrationKey("betonquest", 2), this::migration2);
         migrations.put(new MigrationKey("betonquest", 3), this::migration3);
         migrations.put(new MigrationKey("betonquest", 4), this::migration4);
+        migrations.put(new MigrationKey("betonquest", 5), this::migration5);
         return migrations;
     }
 
@@ -322,6 +323,17 @@ public class MySQL extends Database {
             }
             statement.executeUpdate("DROP TABLE " + prefix + "backpack");
             statement.executeUpdate("ALTER TABLE " + prefix + "backpack_tmp RENAME TO " + prefix + "backpack");
+        }
+    }
+
+    private void migration5(final Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + prefix + "tags SET tag = REPLACE(tag, '.', '>')");
+            statement.executeUpdate("UPDATE " + prefix + "global_tags SET tag = REPLACE(tag, '.', '>')");
+            statement.executeUpdate("UPDATE " + prefix + "points SET category = REPLACE(category, '.', '>')");
+            statement.executeUpdate("UPDATE " + prefix + "global_points SET category = REPLACE(category, '.', '>')");
+            statement.executeUpdate("UPDATE " + prefix + "journal SET pointer = REPLACE(pointer, '.', '>')");
+            statement.executeUpdate("UPDATE " + prefix + "objectives SET objective = REPLACE(objective, '.', '>')");
         }
     }
 }
