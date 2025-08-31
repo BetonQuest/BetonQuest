@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -29,8 +28,7 @@ public class BQEventSkript implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
-        final CustomEventForSkript event = new CustomEventForSkript(profile, identifier.getValue(profile));
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        new CustomEventForSkript(profile, identifier.getValue(profile)).callEvent();
     }
 
     /**

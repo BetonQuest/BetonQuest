@@ -358,7 +358,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("chestclear", new ChestClearEventFactory(data));
         eventTypes.registerCombined("chestgive", new ChestGiveEventFactory(data));
         eventTypes.registerCombined("chesttake", new ChestTakeEventFactory(data));
-        eventTypes.register("compass", new CompassEventFactory(betonQuest.getFeatureApi(), dataStorage, server.getPluginManager(), data));
+        eventTypes.register("compass", new CompassEventFactory(betonQuest.getFeatureApi(), dataStorage, data));
         eventTypes.registerCombined("command", new CommandEventFactory(loggerFactory, data));
         eventTypes.register("conversation", new ConversationEventFactory(loggerFactory, betonQuest.getQuestPackageManager(), data, pluginMessage));
         eventTypes.register("damage", new DamageEventFactory(loggerFactory, data));

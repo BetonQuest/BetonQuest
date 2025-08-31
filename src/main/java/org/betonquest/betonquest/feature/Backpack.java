@@ -574,9 +574,7 @@ public class Backpack implements Listener {
                 return;
             }
 
-            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, loc);
-            Bukkit.getServer().getPluginManager().callEvent(event);
-            if (!event.isCancelled()) {
+            if (new QuestCompassTargetChangeEvent(onlineProfile, loc).callEvent()) {
                 onlineProfile.getPlayer().setCompassTarget(loc);
             }
             onlineProfile.getPlayer().closeInventory();

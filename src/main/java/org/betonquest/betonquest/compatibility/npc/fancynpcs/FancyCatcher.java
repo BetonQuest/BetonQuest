@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -57,7 +56,7 @@ public class FancyCatcher extends NpcInteractCatcher<Npc> {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onLocationChange(final NpcModifyEvent event) {
         if (event.getModification() == NpcModifyEvent.NpcModification.LOCATION) {
-            Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new FancyAdapter(event.getNpc())));
+            new NpcVisibilityUpdateEvent(new FancyAdapter(event.getNpc())).callEvent();
         }
     }
 }

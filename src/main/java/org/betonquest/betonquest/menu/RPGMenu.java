@@ -24,7 +24,6 @@ import org.betonquest.betonquest.menu.kernel.MenuItemProcessor;
 import org.betonquest.betonquest.menu.kernel.MenuProcessor;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.Nullable;
@@ -151,14 +150,12 @@ public class RPGMenu {
      */
     public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) throws QuestException {
         final Menu menu = menuProcessor.get(menuID);
-        final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
-        Bukkit.getPluginManager().callEvent(openEvent);
-        if (openEvent.isCancelled()) {
+        if (new MenuOpenEvent(onlineProfile, menuID).callEvent()) {
+            new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
+            log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
+        } else {
             log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
-            return;
         }
-        new OpenedMenu(loggerFactory.create(OpenedMenu.class), onlineProfile, menu);
-        log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
     }
 
     /**

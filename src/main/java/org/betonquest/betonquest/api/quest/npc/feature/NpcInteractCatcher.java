@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -64,7 +63,7 @@ public abstract class NpcInteractCatcher<T> implements Listener {
         if (cancelled) {
             npcInteractEvent.setCancelled(true);
         }
-        Bukkit.getPluginManager().callEvent(npcInteractEvent);
+        npcInteractEvent.callEvent();
         return npcInteractEvent.isCancelled();
     }
 }
