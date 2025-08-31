@@ -202,11 +202,6 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         }
         npcInteractionLimiter.put(playerUUID, currentClick);
 
-        if (CombatTagger.isTagged(onlineProfile)) {
-            busySender.sendNotification(onlineProfile);
-            return false;
-        }
-
         return startConversation(onlineProfile, npcIds, npc, onlineProfile);
     }
 
@@ -226,13 +221,18 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
             log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + identifier
                     + "' but there is no conversation assigned to it.");
             return false;
-        } else {
-            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
-                    + "' and started conversation '" + conversationID + "'.");
-            final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
-            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
-            return true;
         }
+
+        if (CombatTagger.isTagged(onlineProfile)) {
+            busySender.sendNotification(onlineProfile);
+            return false;
+        }
+
+        log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
+                + "' and started conversation '" + conversationID + "'.");
+        final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
+            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
+        return true;
     }
 
     /**
