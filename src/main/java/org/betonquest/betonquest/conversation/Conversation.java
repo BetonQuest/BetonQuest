@@ -56,7 +56,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
 
     /**
@@ -119,11 +119,6 @@ public class Conversation implements Listener {
      * List of blocked commands while in conversation.
      */
     private final List<String> blacklist;
-
-    /**
-     * This, a reference for sub-objects.
-     */
-    private final Conversation conv;
 
     /**
      * A map of options that the player can currently choose.
@@ -211,7 +206,6 @@ public class Conversation implements Listener {
     public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
                         final Location center, @Nullable final String startingOption) {
         this.log = log;
-        this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
@@ -235,7 +229,7 @@ public class Conversation implements Listener {
             return;
         }
 
-        ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
+        ACTIVE_CONVERSATIONS.put(onlineProfile, this);
 
         if (startingOption == null) {
             log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
@@ -411,7 +405,7 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + conv.getID() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
             inOut.end(() -> {
 
                 // fire final events
@@ -695,7 +689,7 @@ public class Conversation implements Listener {
                 }
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
-                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
+                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, Conversation.this);
                 final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(plugin, () -> {
                     Bukkit.getServer().getPluginManager().callEvent(event);
                     return null;
@@ -713,7 +707,7 @@ public class Conversation implements Listener {
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + conv.getID().getFull() + FOR + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + identifier + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
@@ -724,19 +718,19 @@ public class Conversation implements Listener {
                 // would leave it active while the conversation is not
                 // started, causing it to display "null" all the time
                 try {
-                    conv.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(conv, onlineProfile);
+                    Conversation.this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(Conversation.this, onlineProfile);
                 } catch (final QuestException e) {
                     log.warn(pack, "Error when loading conversation IO: " + e.getMessage(), e);
                     return;
                 }
 
                 // register listener for immunity and blocking commands
-                Bukkit.getPluginManager().registerEvents(conv, plugin);
+                Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
                 // start interceptor if needed
                 if (messagesDelaying) {
                     try {
-                        conv.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
+                        Conversation.this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
                     } catch (final QuestException e) {
                         log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;
@@ -757,7 +751,7 @@ public class Conversation implements Listener {
 
                 printNPCText();
                 final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, conv, nextNPCOption, conv.nextNPCOption);
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, Conversation.this, nextNPCOption, Conversation.this.nextNPCOption);
 
                 new BukkitRunnable() {
 
@@ -870,7 +864,7 @@ public class Conversation implements Listener {
                 printNPCText();
 
                 final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent event = new ConversationOptionEvent(profile, conv, playerOption, conv.nextNPCOption);
+                final ConversationOptionEvent event = new ConversationOptionEvent(profile, Conversation.this, playerOption, Conversation.this.nextNPCOption);
 
                 new BukkitRunnable() {
                     @Override
