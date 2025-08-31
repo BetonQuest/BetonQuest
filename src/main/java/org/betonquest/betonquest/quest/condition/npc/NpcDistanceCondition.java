@@ -10,6 +10,8 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 /**
  * Checks if the player is close to a npc.
  */
@@ -49,7 +51,11 @@ public class NpcDistanceCondition implements OnlineCondition {
         if (!npc.isSpawned()) {
             return false;
         }
-        final Location npcLocation = npc.getLocation();
+        final Optional<Location> loc = npc.getLocation();
+        if (loc.isEmpty()) {
+            return false;
+        }
+        final Location npcLocation = loc.get();
         final Player player = profile.getPlayer();
         if (!player.getWorld().equals(npcLocation.getWorld())) {
             return false;

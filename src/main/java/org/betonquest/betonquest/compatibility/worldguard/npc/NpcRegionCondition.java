@@ -8,7 +8,10 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
+import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * Checks if a Npc is inside a WorldGuard region.
@@ -46,6 +49,10 @@ public class NpcRegionCondition implements NullableCondition {
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
-        return npc.isSpawned() && WorldGuardIntegrator.isInsideRegion(npc.getLocation(), region.getValue(profile));
+        if (!npc.isSpawned()) {
+            return false;
+        }
+        final Optional<Location> location = npc.getLocation();
+        return location.isPresent() && WorldGuardIntegrator.isInsideRegion(location.get(), region.getValue(profile));
     }
 }

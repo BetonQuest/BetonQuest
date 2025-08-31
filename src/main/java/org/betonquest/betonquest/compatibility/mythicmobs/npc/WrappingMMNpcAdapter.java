@@ -10,14 +10,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * A Mythic Mob which has not been spawned yet.
  */
 public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
-    /**
-     * An 'empty' location.
-     */
-    private static final Location EMPTY = new Location(null, 0, 0, 0);
 
     /**
      * Mob type to spawn.
@@ -58,13 +56,13 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
     }
 
     @Override
-    public Location getLocation() {
-        return spawned == null ? EMPTY.clone() : spawned.getLocation();
+    public Optional<Location> getLocation() {
+        return spawned == null ? Optional.empty() : spawned.getLocation();
     }
 
     @Override
-    public Location getEyeLocation() {
-        return spawned == null ? EMPTY.clone() : spawned.getEyeLocation();
+    public Optional<Location> getEyeLocation() {
+        return spawned == null ? Optional.empty() : spawned.getEyeLocation();
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -228,7 +229,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         } else {
             log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
                     + "' and started conversation '" + conversationID + "'.");
-            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, npc.getLocation(), npc);
+            final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
+            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
             return true;
         }
     }

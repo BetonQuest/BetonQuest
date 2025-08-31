@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.util.Optional;
+
 /**
  * ZNPCsPlus Compatibility Adapter for general BetonQuest NPC behaviour.
  */
@@ -44,12 +46,12 @@ public class ZNPCsPlusAdapter implements Npc<NpcEntry> {
     }
 
     @Override
-    public Location getLocation() {
-        return entry.getNpc().getLocation().toBukkitLocation(entry.getNpc().getWorld());
+    public Optional<Location> getLocation() {
+        return Optional.of(entry.getNpc().getLocation().toBukkitLocation(entry.getNpc().getWorld()));
     }
 
     @Override
-    public Location getEyeLocation() {
+    public Optional<Location> getEyeLocation() {
         return getLocation();
     }
 

@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.quest.npc;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
 
+import java.util.Optional;
+
 /**
  * Npc Plugin Adapter for general BetonQuest Npc behaviour.
  *
@@ -33,21 +35,17 @@ public interface Npc<T> {
 
     /**
      * Gets the position of the Npc.
-     * <p>
-     * You should check if the Npc is spawned before calling this method.
      *
      * @return the location the Npc is at, copy
      */
-    Location getLocation();
+    Optional<Location> getLocation();
 
     /**
      * Get a Location detailing the current eye position of the living entity.
-     * <p>
-     * You should check if the Npc is spawned before calling this method.
      *
      * @return a location at the eyes of the npc
      */
-    Location getEyeLocation();
+    Optional<Location> getEyeLocation();
 
     /**
      * Teleports the Npc to a position or spawns it there.

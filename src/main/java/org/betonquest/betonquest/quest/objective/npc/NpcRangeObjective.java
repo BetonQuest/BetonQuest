@@ -111,6 +111,7 @@ public class NpcRangeObjective extends Objective {
         super.close();
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> profiles = dataMap.keySet().stream()
@@ -126,7 +127,11 @@ public class NpcRangeObjective extends Objective {
                     if (!npc.isSpawned()) {
                         continue;
                     }
-                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npc.getLocation())) {
+                    final Optional<Location> location = npc.getLocation();
+                    if (location.isEmpty()) {
+                        continue;
+                    }
+                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, location.get())) {
                         profilesInside.add(onlineProfile.getProfileUUID());
                     }
                 }

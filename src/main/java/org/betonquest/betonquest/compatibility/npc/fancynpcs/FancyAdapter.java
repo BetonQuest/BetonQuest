@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 /**
  * FancyNpcs Compatibility Adapter for general BetonQuest NPC behaviour.
  */
@@ -82,13 +84,13 @@ public class FancyAdapter implements org.betonquest.betonquest.api.quest.npc.Npc
     }
 
     @Override
-    public Location getLocation() {
-        return npc.getData().getLocation().clone();
+    public Optional<Location> getLocation() {
+        return Optional.of(npc.getData().getLocation().clone());
     }
 
     @Override
-    public Location getEyeLocation() {
-        return getLocation().add(0, npc.getEyeHeight(), 0);
+    public Optional<Location> getEyeLocation() {
+        return Optional.of(npc.getData().getLocation().clone().add(0, npc.getEyeHeight(), 0));
     }
 
     @Override

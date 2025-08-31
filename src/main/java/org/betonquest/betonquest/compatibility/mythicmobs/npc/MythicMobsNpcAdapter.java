@@ -34,17 +34,23 @@ public record MythicMobsNpcAdapter(ActiveMob activeMob) implements Npc<ActiveMob
     }
 
     @Override
-    public Location getLocation() {
-        return activeMob.getEntity().getBukkitEntity().getLocation();
+    public Optional<Location> getLocation() {
+        if (!isSpawned()) {
+            return Optional.empty();
+        }
+        return Optional.of(activeMob.getEntity().getBukkitEntity().getLocation());
     }
 
     @Override
-    public Location getEyeLocation() {
+    public Optional<Location> getEyeLocation() {
+        if (!isSpawned()) {
+            return Optional.empty();
+        }
         final Entity entity = activeMob.getEntity().getBukkitEntity();
         if (entity instanceof LivingEntity) {
-            return ((LivingEntity) entity).getEyeLocation();
+            return Optional.of(((LivingEntity) entity).getEyeLocation());
         }
-        return entity.getLocation();
+        return getLocation();
     }
 
     @Override
