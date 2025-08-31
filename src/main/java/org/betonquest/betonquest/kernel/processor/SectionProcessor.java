@@ -37,6 +37,10 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
             return;
         }
         for (final String key : section.getKeys(false)) {
+            if (key.contains(" ")) {
+                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' (in " + pack.getQuestPath() + " package)");
+                continue;
+            }
             try {
                 final ConfigurationSection featureSection = section.getConfigurationSection(key);
                 final I identifier = getIdentifier(pack, key);
@@ -45,6 +49,7 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
                     continue;
                 }
                 values.put(identifier, loadSection(pack, featureSection));
+                log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
             } catch (final QuestException e) {
                 log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
             }
