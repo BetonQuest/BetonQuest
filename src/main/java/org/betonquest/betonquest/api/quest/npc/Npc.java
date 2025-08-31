@@ -3,8 +3,10 @@ package org.betonquest.betonquest.api.quest.npc;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
 
+import java.util.Optional;
+
 /**
- * NPC Plugin Adapter for general BetonQuest NPC behaviour.
+ * Npc Plugin Adapter for general BetonQuest Npc behaviour.
  *
  * @param <T> the original npc type
  */
@@ -18,7 +20,7 @@ public interface Npc<T> {
     T getOriginal();
 
     /**
-     * Gets the name of the NPC.
+     * Gets the name of the Npc.
      *
      * @return the name without formatting
      */
@@ -32,23 +34,23 @@ public interface Npc<T> {
     String getFormattedName();
 
     /**
-     * Gets the position of the NPC.
+     * Gets the position of the Npc.
      *
-     * @return the location the NPC is at, copy
+     * @return the location the Npc is at, copy
      */
-    Location getLocation();
+    Optional<Location> getLocation();
 
     /**
      * Get a Location detailing the current eye position of the living entity.
      *
      * @return a location at the eyes of the npc
      */
-    Location getEyeLocation();
+    Optional<Location> getEyeLocation();
 
     /**
-     * Teleports the NPC to a position or spawns it there.
+     * Teleports the Npc to a position or spawns it there.
      *
-     * @param location the new location of the NPC
+     * @param location the new location of the Npc
      */
     void teleport(Location location);
 

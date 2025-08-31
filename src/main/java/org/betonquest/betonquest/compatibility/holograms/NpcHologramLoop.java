@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -128,6 +129,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     /**
      * Delays the start task one tick further to allow loading of NPCs on server start.
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     public void startAll() {
         log.debug("Delaying NPC Hologram creation…");
@@ -146,7 +148,12 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                     if (!npc.isSpawned()) {
                         continue;
                     }
-                    final BetonHologram hologram = hologramProvider.createHologram(npc.getLocation().add(holo.vector));
+                    final Optional<Location> location = npc.getLocation();
+                    if (location.isEmpty()) {
+                        log.debug("Spawned Npc '" + npcID + "' has no location at hologram creation");
+                        continue;
+                    }
+                    final BetonHologram hologram = hologramProvider.createHologram(location.get().add(holo.vector));
                     entry.setValue(hologram);
                     holo.holograms.add(hologram);
                     updateHologram(hologram);
@@ -171,13 +178,14 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
                         log.warn("Could not get Npc for id '" + npcID + "' in hologram loop: " + exception.getMessage(), exception);
                         return;
                     }
-                    if (!npc.isSpawned()) {
+                    final Optional<Location> npcLocation = npc.getLocation();
+                    if (!npc.isSpawned() || npcLocation.isEmpty()) {
                         if (hologram != null) {
                             hologram.disable();
                         }
                         return;
                     }
-                    final Location location = npc.getLocation().add(npcHologram.vector());
+                    final Location location = npcLocation.get().add(npcHologram.vector());
                     if (hologram == null) {
                         final BetonHologram newHologram = hologramProvider.createHologram(location);
                         entry.setValue(newHologram);

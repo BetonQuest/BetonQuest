@@ -10,6 +10,8 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Checks if a npc is at a specific location.
  */
@@ -55,7 +57,11 @@ public class NpcLocationCondition implements NullableCondition {
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final Npc<?> npc = featureApi.getNpc(npcId.getValue(profile), profile);
         final Location location = this.location.getValue(profile);
-        final Location npcLocation = npc.getLocation();
+        final Optional<Location> loc = npc.getLocation();
+        if (loc.isEmpty()) {
+            return false;
+        }
+        final Location npcLocation = loc.get();
         if (!location.getWorld().equals(npcLocation.getWorld())) {
             return false;
         }

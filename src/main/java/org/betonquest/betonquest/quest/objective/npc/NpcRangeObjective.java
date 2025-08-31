@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestListException;
+import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -110,6 +111,7 @@ public class NpcRangeObjective extends Objective {
         super.close();
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void loop() throws QuestException {
         final List<UUID> profilesInside = new ArrayList<>();
         final List<OnlineProfile> profiles = dataMap.keySet().stream()
@@ -121,8 +123,15 @@ public class NpcRangeObjective extends Objective {
         for (final OnlineProfile onlineProfile : profiles) {
             try {
                 for (final NpcID npcId : npcIds.getValue(onlineProfile)) {
-                    final Location npcLocation = BetonQuest.getInstance().getFeatureApi().getNpc(npcId, onlineProfile).getLocation();
-                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npcLocation)) {
+                    final Npc<?> npc = BetonQuest.getInstance().getFeatureApi().getNpc(npcId, onlineProfile);
+                    if (!npc.isSpawned()) {
+                        continue;
+                    }
+                    final Optional<Location> location = npc.getLocation();
+                    if (location.isEmpty()) {
+                        continue;
+                    }
+                    if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, location.get())) {
                         profilesInside.add(onlineProfile.getProfileUUID());
                     }
                 }

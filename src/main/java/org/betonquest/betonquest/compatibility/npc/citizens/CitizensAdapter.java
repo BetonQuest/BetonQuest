@@ -10,6 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.util.Optional;
+
 /**
  * Citizens Compatibility Adapter for BetonQuest Npcs.
  */
@@ -44,17 +46,21 @@ public class CitizensAdapter implements Npc<NPC> {
     }
 
     @Override
-    public Location getLocation() {
-        return npc.getEntity().getLocation();
+    public Optional<Location> getLocation() {
+        final Entity entity = npc.getEntity();
+        if (entity == null) {
+            return Optional.empty();
+        }
+        return Optional.of(entity.getLocation());
     }
 
     @Override
-    public Location getEyeLocation() {
+    public Optional<Location> getEyeLocation() {
         final Entity entity = npc.getEntity();
         if (entity instanceof LivingEntity) {
-            return ((LivingEntity) entity).getEyeLocation();
+            return Optional.of(((LivingEntity) entity).getEyeLocation());
         }
-        return npc.getEntity().getLocation();
+        return getLocation();
     }
 
     @Override

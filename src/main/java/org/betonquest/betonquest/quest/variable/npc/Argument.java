@@ -22,7 +22,8 @@ public enum Argument {
     /**
      * Retrieve the location of the NPC with the given location formation and decimal places.
      */
-    LOCATION((npc, loc, dec) -> loc.getFormattedLocation(npc.getLocation(), dec));
+    LOCATION((npc, loc, dec) -> npc.getLocation()
+            .map(location -> loc.getFormattedLocation(location, dec)).orElse(""));
 
     /**
      * Function to resolve this argument from an NPC instance and optional {@link LocationFormationMode} with decimal places.

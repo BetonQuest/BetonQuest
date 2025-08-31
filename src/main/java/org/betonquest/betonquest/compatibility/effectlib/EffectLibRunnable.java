@@ -19,6 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A {@link BukkitRunnable} that shows an EffectLib effect to all players that meet the required conditions.
@@ -124,12 +125,20 @@ public class EffectLibRunnable extends BukkitRunnable {
                 try {
                     npc = featureApi.getNpc(npcId, profile);
                 } catch (final QuestException exception) {
-                    log.debug("Could not get Npc for id '" + npcId + "' in effects!", exception);
+                    log.debug("Could not get Npc for id '" + npcId + "' in effects: " + exception.getMessage(), exception);
+                    continue;
+                }
+                if (!npc.isSpawned()) {
+                    continue;
+                }
+                final Optional<Location> location = npc.getLocation();
+                if (location.isEmpty()) {
+                    log.debug("Spawned Npc '" + npcId + "' has no location in effects");
                     continue;
                 }
                 final Player player = profile.getPlayer();
 
-                if (!npc.getLocation().getWorld().equals(player.getWorld()) || featureApi.getNpcHider().isHidden(npcId, profile)) {
+                if (!location.get().getWorld().equals(player.getWorld()) || featureApi.getNpcHider().isHidden(npcId, profile)) {
                     continue;
                 }
 
@@ -166,7 +175,7 @@ public class EffectLibRunnable extends BukkitRunnable {
          * @param npc the npc to get the position
          */
         public NpcDynamicLocation(final Npc<?> npc) {
-            super(npc.getEyeLocation());
+            super(npc.getEyeLocation().orElse(null));
             this.npcWeakReference = new WeakReference<>(npc);
         }
 
@@ -177,7 +186,11 @@ public class EffectLibRunnable extends BukkitRunnable {
                 return;
             }
 
-            final Location currentLocation = entityReference.getEyeLocation();
+            final Optional<Location> location = entityReference.getEyeLocation();
+            if (location.isEmpty()) {
+                return;
+            }
+            final Location currentLocation = location.get();
             setDirection(currentLocation.getDirection());
             updateFrom(currentLocation);
         }
