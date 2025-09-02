@@ -20,6 +20,12 @@ import java.util.Objects;
  * Objective that tracks the payment received by a player.
  */
 public class PaymentObjective extends Objective implements Listener {
+
+    /**
+     * The Factory for the Payment Data.
+     */
+    private static final ObjectiveDataFactory PAYMENT_FACTORY = PaymentData::new;
+
     /**
      * The target amount of money to be received.
      */
@@ -39,7 +45,7 @@ public class PaymentObjective extends Objective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public PaymentObjective(final Instruction instruction, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
-        super(instruction, PaymentData.class);
+        super(instruction, PAYMENT_FACTORY);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }

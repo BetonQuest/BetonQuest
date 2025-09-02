@@ -23,13 +23,18 @@ import java.util.regex.Pattern;
 public class VariableObjective extends Objective {
 
     /**
+     * The Factory for the Variable Data.
+     */
+    private static final ObjectiveDataFactory VARIABLE_FACTORY = VariableData::new;
+
+    /**
      * Creates a new VariableObjective instance.
      *
      * @param instruction the instruction that created this objective
      * @throws QuestException if there is an error in the instruction
      */
     public VariableObjective(final Instruction instruction) throws QuestException {
-        super(instruction, VariableData.class);
+        super(instruction, VARIABLE_FACTORY);
     }
 
     /**

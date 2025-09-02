@@ -40,6 +40,11 @@ import java.util.stream.Collectors;
 public class EntityInteractObjective extends CountingObjective implements Listener {
 
     /**
+     * The Factory for the Entity Interact Data.
+     */
+    private static final ObjectiveDataFactory ENTITY_INTERACT_FACTORY = EntityInteractData::new;
+
+    /**
      * The target location of the entity to interact with.
      */
     @Nullable
@@ -112,7 +117,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
                                    @Nullable final Variable<String> realName, @Nullable final EquipmentSlot slot,
                                    final Variable<EntityType> mobType, @Nullable final Variable<String> marked,
                                    final Variable<Interaction> interaction, final boolean cancel) throws QuestException {
-        super(instruction, EntityInteractData.class, targetAmount, "mobs_to_click");
+        super(instruction, ENTITY_INTERACT_FACTORY, targetAmount, "mobs_to_click");
         this.loc = loc;
         this.range = range;
         this.customName = customName;

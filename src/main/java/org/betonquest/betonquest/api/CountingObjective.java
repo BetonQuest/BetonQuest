@@ -23,6 +23,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and a versatile data object to track the progress.
  */
 public abstract class CountingObjective extends Objective {
+    /**
+     * The Factory for the Counting Data.
+     */
+    private static final ObjectiveDataFactory COUNTING_FACTORY = CountingData::new;
 
     /**
      * The message used for notifying the player.
@@ -45,22 +49,22 @@ public abstract class CountingObjective extends Objective {
      */
     public CountingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
-        this(instruction, CountingData.class, targetAmount, notifyMessageName);
+        this(instruction, COUNTING_FACTORY, targetAmount, notifyMessageName);
     }
 
     /**
      * Create a counting objective.
      *
      * @param instruction       the objective instruction
-     * @param template          the class of the objective data object
+     * @param templateFactory   the factory of the objective data object
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final Class<? extends ObjectiveData> template,
+    public CountingObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory,
                              final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
-        super(instruction, template);
+        super(instruction, templateFactory);
         final BetonQuest instance = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.targetAmount = targetAmount;

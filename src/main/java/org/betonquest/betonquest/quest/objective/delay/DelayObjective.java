@@ -32,6 +32,11 @@ import java.util.Objects;
 public class DelayObjective extends Objective {
 
     /**
+     * The Factory for the Delay Data.
+     */
+    private static final ObjectiveDataFactory DELAY_FACTORY = DelayData::new;
+
+    /**
      * The delay time in seconds, minutes, or ticks.
      */
     private final Variable<Number> delay;
@@ -51,7 +56,7 @@ public class DelayObjective extends Objective {
      */
     public DelayObjective(final Instruction instruction, final Variable<Number> interval,
                           final Variable<Number> delay) throws QuestException {
-        super(instruction, DelayData.class);
+        super(instruction, DELAY_FACTORY);
         this.delay = delay;
         this.runnable = new BukkitRunnable() {
             @Override

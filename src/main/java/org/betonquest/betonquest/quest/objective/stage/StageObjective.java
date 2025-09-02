@@ -18,6 +18,11 @@ import java.util.Locale;
 public class StageObjective extends Objective {
 
     /**
+     * The Factory for the Stage Data.
+     */
+    private static final ObjectiveDataFactory STAGE_FACTORY = StageData::new;
+
+    /**
      * The mapping of stages to indices.
      */
     private final StageMap stageMap;
@@ -36,7 +41,7 @@ public class StageObjective extends Objective {
      * @throws QuestException if the instruction is invalid
      */
     public StageObjective(final Instruction instruction, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
-        super(instruction, StageData.class);
+        super(instruction, STAGE_FACTORY);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
     }
