@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -15,27 +14,20 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.database.UpdateType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * Superclass for all objectives. You need to extend it in order to create new
- * custom objectives.
- * </p>
- * <p>
- * Registering your objectives is done through
- * {@code BetonQuest.getQuestRegistries().objectives().register(String, Class)
- * registerObjectives()} method.
- * </p>
+ * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class Objective {
 
     /**
@@ -421,129 +413,6 @@ public abstract class Objective {
             stop(profile);
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFull(),
                     entry.getValue().toString());
-        }
-    }
-
-    /**
-     * Represents the states of an objective.
-     */
-    public enum ObjectiveState {
-
-        /**
-         * The objective is new and does not exist before.
-         */
-        NEW,
-
-        /**
-         * The objective is active.
-         */
-        ACTIVE,
-
-        /**
-         * The objective is complete.
-         */
-        COMPLETED,
-
-        /**
-         * The objective is paused.
-         */
-        PAUSED,
-
-        /**
-         * The objective is canceled.
-         */
-        CANCELED,
-    }
-
-    /**
-     * Factory to create Objective Data.
-     */
-    @FunctionalInterface
-    public interface ObjectiveDataFactory {
-
-        /**
-         * Create a new objective data object to persist objective progress.
-         *
-         * @param instruction the stored data instruction
-         * @param profile     the profile the data is for
-         * @param objID       the id of the objective the data is for
-         * @return the newly created data object
-         * @throws QuestException when the objective data could not be parsed
-         */
-        ObjectiveData create(String instruction, Profile profile, String objID) throws QuestException;
-    }
-
-    /**
-     * Stores the profile's data for the objective.
-     */
-    public static class ObjectiveData {
-        /**
-         * Instruction containing all required information.
-         */
-        protected String instruction;
-
-        /**
-         * Profile the data is for.
-         */
-        protected Profile profile;
-
-        /**
-         * Full path of the ObjectiveID.
-         */
-        protected String objID;
-
-        /**
-         * The ObjectiveData object is loaded from the database and the
-         * constructor needs to parse the data in the instruction, so it can be
-         * later retrieved and modified by your objective code.
-         *
-         * @param instruction the instruction of the data object; parse it to get all
-         *                    required information
-         * @param profile     the {@link Profile} to load the data for
-         * @param objID       ID of the objective, used by BetonQuest to store this
-         *                    ObjectiveData in the database
-         */
-        public ObjectiveData(final String instruction, final Profile profile, final String objID) {
-            this.instruction = instruction;
-            this.profile = profile;
-            this.objID = objID;
-        }
-
-        /**
-         * This method should return the whole instruction string, which can be
-         * successfully parsed by the constructor. This method is used by
-         * BetonQuest to save the ObjectiveData to the database. That's why the
-         * output syntax here must be compatible with input syntax in the
-         * constructor.
-         *
-         * @return the instruction string
-         */
-        @Override
-        public String toString() {
-            return instruction;
-        }
-
-        /**
-         * <p>
-         * Should be called when the data inside ObjectiveData changes. It will
-         * update the database with the changes.
-         * </p>
-         *
-         * <p>
-         * If you forget it, the objective will still work for players who don't
-         * leave the server. However, if someone leaves before completing, they
-         * will have to start this objective from scratch.
-         * </p>
-         */
-        protected final void update() {
-            final BetonQuest plugin = BetonQuest.getInstance();
-            final Saver saver = plugin.getSaver();
-            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
-            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
-            final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
-            plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
-            // update the journal so all possible variables display correct information
-            plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();
         }
     }
 

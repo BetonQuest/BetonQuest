@@ -4,6 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -110,7 +112,7 @@ public class VariableObjective extends Objective {
         private final Map<String, String> variables;
 
         /**
-         * Constructs a mew {@link org.betonquest.betonquest.api.Objective.ObjectiveData} for this objective.
+         * Constructs a mew {@link ObjectiveData} for this objective.
          *
          * @param instruction the data of the objective
          * @param profile     the profile of the player

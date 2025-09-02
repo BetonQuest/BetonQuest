@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.event;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -28,12 +29,12 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
     /**
      * Objective future state.
      */
-    private final Objective.ObjectiveState state;
+    private final ObjectiveState state;
 
     /**
      * Objective previous state.
      */
-    private final Objective.ObjectiveState previousState;
+    private final ObjectiveState previousState;
 
     /**
      * Constructor of PlayerObjectiveChangeEvent.
@@ -45,7 +46,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      * @param previousState previous state of this objective
      */
     public PlayerObjectiveChangeEvent(final Profile who, final Objective objective, final Identifier objectiveID,
-                                      final Objective.ObjectiveState state, final Objective.ObjectiveState previousState) {
+                                      final ObjectiveState state, final ObjectiveState previousState) {
         super(who);
         this.objective = objective;
         this.objectiveID = objectiveID;
@@ -85,7 +86,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      *
      * @return the future state
      */
-    public Objective.ObjectiveState getState() {
+    public ObjectiveState getState() {
         return state;
     }
 
@@ -94,7 +95,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      *
      * @return the previous state
      */
-    public Objective.ObjectiveState getPreviousState() {
+    public ObjectiveState getPreviousState() {
         return previousState;
     }
 
