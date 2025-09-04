@@ -45,6 +45,21 @@ constants:
   village_name: Concrete
 ```
 
+To properly parse a `constant` variable, you must use %constant.`constantName`%.
+
+```YAML
+events:
+  notifyEnterVillage: notify Welcome to %constant.village_name%
+```
+The above example will output `Welcome to Concrete!`.
+
+If you want to parse a variable from a different package, follow the same syntax as you would [working across packages](https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features). The proper syntax is `%questPackageFolderName.constant.constantName%`. 
+For example, if the `village_name` constant was in a package called `questFolder1`:
+
+```YAML
+  events: notifyEnterVillageAcrossPackages: notify Welcome to %questFolder1.constant.village_name%
+```
+
 ## BetonQuest Data Types
 
 ### Point Variable
