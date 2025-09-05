@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Skript effect, which fires specified BetonQuest's event
+ * Skript effect, which fires specified BetonQuest's event.
  */
 @SuppressWarnings("NullAway.Init")
 public class SkriptEffectBQ extends Effect {
@@ -25,6 +25,11 @@ public class SkriptEffectBQ extends Effect {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The BetonQuest instance.
+     */
+    private final BetonQuest plugin;
 
     /**
      * The quest package manager to get quest packages from.
@@ -46,8 +51,9 @@ public class SkriptEffectBQ extends Effect {
      */
     public SkriptEffectBQ() {
         super();
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        packManager = BetonQuest.getInstance().getQuestPackageManager();
+        this.plugin = BetonQuest.getInstance();
+        this.log = plugin.getLoggerFactory().create(getClass());
+        packManager = plugin.getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -71,12 +77,12 @@ public class SkriptEffectBQ extends Effect {
             public void run() {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
-                    final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-                    BetonQuest.getInstance().getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(packManager, null, eventID));
+                    final ProfileProvider profileProvider = plugin.getProfileProvider();
+                    plugin.getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(packManager, null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
     }
 }

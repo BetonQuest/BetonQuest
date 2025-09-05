@@ -240,10 +240,9 @@ public class OpenedMenu implements Listener {
 
     private void clickLogic(final InventoryClickEvent event, final MenuItem item) {
         //call event
-        final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
-        Bukkit.getPluginManager().callEvent(clickEvent);
         log.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
-        if (clickEvent.isCancelled()) {
+        final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
+        if (!clickEvent.callEvent()) {
             log.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
             return;
         }
@@ -281,8 +280,7 @@ public class OpenedMenu implements Listener {
             return;
         }
         //call event
-        final MenuCloseEvent closeEvent = new MenuCloseEvent(onlineProfile, getId());
-        Bukkit.getPluginManager().callEvent(closeEvent);
+        new MenuCloseEvent(onlineProfile, getId()).callEvent();
         log.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
         //clean up
         HandlerList.unregisterAll(this);

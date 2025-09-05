@@ -19,7 +19,6 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
-import org.bukkit.Server;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -550,8 +549,7 @@ public abstract class Objective {
             saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
             saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
-            final Server server = plugin.getServer();
-            server.getScheduler().runTask(plugin, () -> server.getPluginManager().callEvent(event));
+            plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
             // update the journal so all possible variables display correct information
             plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();
         }

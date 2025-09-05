@@ -718,13 +718,13 @@ public class ConversationData {
 
         private Component getFormattedText(@Nullable final Profile profile) {
             if (text == null) {
-                log.warn(getPack(), "No text in conversation '" + publicData.conversationID.get() + "'!");
+                log.warn(getPack(), "No text in conversation '" + publicData.conversationID + "'!");
                 return Component.empty();
             }
             try {
                 return text.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID.get() + "': " + e.getMessage(), e);
+                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID + "': " + e.getMessage(), e);
                 return Component.empty();
             }
         }

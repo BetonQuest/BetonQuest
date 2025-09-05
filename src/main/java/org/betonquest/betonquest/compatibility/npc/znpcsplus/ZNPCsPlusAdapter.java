@@ -6,7 +6,6 @@ import lol.pyr.znpcsplus.util.NpcLocation;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -58,7 +57,7 @@ public class ZNPCsPlusAdapter implements Npc<NpcEntry> {
     @Override
     public void teleport(final Location location) {
         entry.getNpc().setLocation(new NpcLocation(location));
-        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(this));
+        new NpcVisibilityUpdateEvent(this).callEvent();
     }
 
     @Override
@@ -75,7 +74,7 @@ public class ZNPCsPlusAdapter implements Npc<NpcEntry> {
     @Override
     public void despawn() {
         entry.getNpc().setEnabled(false);
-        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(this));
+        new NpcVisibilityUpdateEvent(this).callEvent();
     }
 
     @Override

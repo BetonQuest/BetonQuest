@@ -278,9 +278,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
      */
     public void callSyncBukkitEvent(final Event event) {
         if (getServer().isPrimaryThread()) {
-            getServer().getPluginManager().callEvent(event);
+            event.callEvent();
         } else {
-            getServer().getScheduler().runTask(this, () -> getServer().getPluginManager().callEvent(event));
+            getServer().getScheduler().runTask(this, event::callEvent);
         }
     }
 

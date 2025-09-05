@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.quest.event.point.Point;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -146,8 +145,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
 
     private void processBreak(final Player player, final ItemStack itemStack, final Damageable damageable) {
         if (!ignoreEvents) {
-            final PlayerItemBreakEvent event = new PlayerItemBreakEvent(player, itemStack);
-            Bukkit.getPluginManager().callEvent(event);
+            new PlayerItemBreakEvent(player, itemStack).callEvent();
         }
         itemStack.setAmount(itemStack.getAmount() - 1);
         damageable.setDamage(0);

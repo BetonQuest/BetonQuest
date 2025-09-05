@@ -14,7 +14,6 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -88,7 +87,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      */
     @EventHandler
     public void onCitizensReload(final CitizensReloadEvent event) {
-        Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(null));
+        new NpcVisibilityUpdateEvent(null).callEvent();
     }
 
     /**
@@ -123,7 +122,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
 
     private void updateHologram(final NPC npc) {
         if (npc.getOwningRegistry().equals(registry)) {
-            Bukkit.getPluginManager().callEvent(new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)));
+            new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)).callEvent();
         }
     }
 }

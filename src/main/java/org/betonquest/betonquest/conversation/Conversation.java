@@ -56,7 +56,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
 public class Conversation implements Listener {
 
     /**
@@ -119,11 +119,6 @@ public class Conversation implements Listener {
      * List of blocked commands while in conversation.
      */
     private final List<String> blacklist;
-
-    /**
-     * This, a reference for sub-objects.
-     */
-    private final Conversation conv;
 
     /**
      * A map of options that the player can currently choose.
@@ -211,7 +206,6 @@ public class Conversation implements Listener {
     public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
                         final Location center, @Nullable final String startingOption) {
         this.log = log;
-        this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
@@ -235,18 +229,18 @@ public class Conversation implements Listener {
             return;
         }
 
-        ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
+        ACTIVE_CONVERSATIONS.put(onlineProfile, this);
 
         if (startingOption == null) {
             log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
-            new Starter().runTaskAsynchronously(BetonQuest.getInstance());
+            new Starter().runTaskAsynchronously(plugin);
         } else {
             String firstOption = startingOption;
             if (!startingOption.contains(OPTIONS_SEPARATOR)) {
                 firstOption = conversationID.get() + OPTIONS_SEPARATOR + startingOption;
             }
             log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
-            new Starter(firstOption).runTaskAsynchronously(BetonQuest.getInstance());
+            new Starter(firstOption).runTaskAsynchronously(plugin);
         }
     }
 
@@ -288,14 +282,14 @@ public class Conversation implements Listener {
             // If we refer to another conversation starting options the name is null
             if (option.name() == null) {
                 for (final String startingOptionName : option.conversationData().getStartingOptions()) {
-                    if (force || BetonQuest.getInstance().getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
+                    if (force || plugin.getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(startingOptionName, NPC))) {
                         this.data = option.conversationData();
                         this.nextNPCOption = new ResolvedOption(option.conversationData(), NPC, startingOptionName);
                         break;
                     }
                 }
             } else {
-                if (force || BetonQuest.getInstance().getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
+                if (force || plugin.getQuestTypeApi().conditions(onlineProfile, option.conversationData().getConditionIDs(option.name(), NPC))) {
                     this.data = option.conversationData();
                     this.nextNPCOption = option;
                     break;
@@ -313,11 +307,11 @@ public class Conversation implements Listener {
      */
     private void printNPCText() {
         if (nextNPCOption == null) {
-            new ConversationEnder().runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(plugin);
             return;
         }
         inOut.setNpcResponse(data.getPublicData().getQuester(log, onlineProfile), data.getText(onlineProfile, nextNPCOption));
-        new NPCEventRunner(nextNPCOption).runTask(BetonQuest.getInstance());
+        new NPCEventRunner(nextNPCOption).runTask(plugin);
     }
 
     /**
@@ -331,7 +325,7 @@ public class Conversation implements Listener {
         if (playerOption == null) {
             throw new IllegalStateException("No selectable player option found in conversation " + identifier);
         }
-        new PlayerEventRunner(playerOption).runTask(BetonQuest.getInstance());
+        new PlayerEventRunner(playerOption).runTask(plugin);
         availablePlayerOptions.clear();
     }
 
@@ -348,7 +342,7 @@ public class Conversation implements Listener {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> BetonQuest.getInstance().getQuestTypeApi().condition(onlineProfile, conditionID));
+                        () -> plugin.getQuestTypeApi().condition(onlineProfile, conditionID));
                 conditions.add(future);
             }
             futuresOptions.add(Pair.of(option, conditions));
@@ -382,10 +376,10 @@ public class Conversation implements Listener {
             public void run() {
                 inOut.display();
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
         // end conversations if there are no possible options
         if (availablePlayerOptions.isEmpty()) {
-            new ConversationEnder().runTask(BetonQuest.getInstance());
+            new ConversationEnder().runTask(plugin);
         }
     }
 
@@ -411,13 +405,13 @@ public class Conversation implements Listener {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + conv.getID() + FOR + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
             inOut.end(() -> {
 
                 // fire final events
                 try {
                     for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
-                        BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
+                        plugin.getQuestTypeApi().event(onlineProfile, event);
                     }
                 } catch (final QuestException e) {
                     log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
@@ -431,7 +425,7 @@ public class Conversation implements Listener {
                         public void run() {
                             interceptor.end();
                         }
-                    }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
+                    }.runTaskLaterAsynchronously(plugin, 20);
                 }
 
                 // delete conversation
@@ -441,9 +435,9 @@ public class Conversation implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
+                        new PlayerConversationEndEvent(onlineProfile, Conversation.this).callEvent();
                     }
-                }.runTask(BetonQuest.getInstance());
+                }.runTask(plugin);
             });
         } finally {
             lock.writeLock().unlock();
@@ -592,9 +586,9 @@ public class Conversation implements Listener {
 
                 @Override
                 public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
+                    new PlayerConversationEndEvent(onlineProfile, Conversation.this).callEvent();
                 }
-            }.runTask(BetonQuest.getInstance());
+            }.runTask(plugin);
         } finally {
             lock.readLock().unlock();
         }
@@ -695,9 +689,9 @@ public class Conversation implements Listener {
                 }
                 state = ConversationState.ACTIVE;
                 // the conversation start event must be run on next tick
-                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
-                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> {
-                    Bukkit.getServer().getPluginManager().callEvent(event);
+                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, Conversation.this);
+                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(plugin, () -> {
+                    event.callEvent();
                     return null;
                 });
 
@@ -713,7 +707,7 @@ public class Conversation implements Listener {
 
                 // stop the conversation if it's canceled
                 if (event.isCancelled()) {
-                    log.debug(pack, "Conversation '" + conv.getID().getFull() + FOR + player.getPlayerProfile() + "' has been "
+                    log.debug(pack, "Conversation '" + identifier + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
@@ -724,19 +718,19 @@ public class Conversation implements Listener {
                 // would leave it active while the conversation is not
                 // started, causing it to display "null" all the time
                 try {
-                    conv.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(conv, onlineProfile);
+                    Conversation.this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(Conversation.this, onlineProfile);
                 } catch (final QuestException e) {
                     log.warn(pack, "Error when loading conversation IO: " + e.getMessage(), e);
                     return;
                 }
 
                 // register listener for immunity and blocking commands
-                Bukkit.getPluginManager().registerEvents(conv, BetonQuest.getInstance());
+                Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
                 // start interceptor if needed
                 if (messagesDelaying) {
                     try {
-                        conv.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
+                        Conversation.this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
                     } catch (final QuestException e) {
                         log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;
@@ -757,13 +751,13 @@ public class Conversation implements Listener {
 
                 printNPCText();
                 final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, conv, nextNPCOption, conv.nextNPCOption);
+                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, Conversation.this, nextNPCOption, Conversation.this.nextNPCOption);
 
                 new BukkitRunnable() {
 
                     @Override
                     public void run() {
-                        Bukkit.getPluginManager().callEvent(optionEvent);
+                        optionEvent.callEvent();
                     }
                 }.runTask(plugin);
             } finally {
@@ -805,9 +799,9 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, npcOption, NPC)) {
-                BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
+                plugin.getQuestTypeApi().event(onlineProfile, event);
             }
-            new OptionPrinter(npcOption).runTaskAsynchronously(BetonQuest.getInstance());
+            new OptionPrinter(npcOption).runTaskAsynchronously(plugin);
         }
     }
 
@@ -834,9 +828,9 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             for (final EventID event : data.getEventIDs(onlineProfile, playerOption, PLAYER)) {
-                BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
+                plugin.getQuestTypeApi().event(onlineProfile, event);
             }
-            new ResponsePrinter(playerOption).runTaskAsynchronously(BetonQuest.getInstance());
+            new ResponsePrinter(playerOption).runTaskAsynchronously(plugin);
         }
     }
 
@@ -870,12 +864,12 @@ public class Conversation implements Listener {
                 printNPCText();
 
                 final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent event = new ConversationOptionEvent(profile, conv, playerOption, conv.nextNPCOption);
+                final ConversationOptionEvent event = new ConversationOptionEvent(profile, Conversation.this, playerOption, Conversation.this.nextNPCOption);
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Bukkit.getServer().getPluginManager().callEvent(event);
+                        event.callEvent();
                     }
                 }.runTask(plugin);
             } catch (final QuestException e) {

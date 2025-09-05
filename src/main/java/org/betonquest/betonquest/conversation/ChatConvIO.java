@@ -25,11 +25,17 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class ChatConvIO implements ConversationIO, Listener {
+
     protected final Conversation conv;
 
     protected final OnlineProfile onlineProfile;
 
     protected final ConversationColors colors;
+
+    /**
+     * The BetonQuest instance.
+     */
+    private final BetonQuest plugin;
 
     private final double maxNpcDistance;
 
@@ -52,14 +58,15 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      */
     @SuppressWarnings("NullAway.Init")
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile, final ConversationColors colors) {
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(ChatConvIO.class);
+        this.plugin = BetonQuest.getInstance();
+        this.log = plugin.getLoggerFactory().create(ChatConvIO.class);
         this.options = new HashMap<>();
         this.conv = conv;
         this.onlineProfile = onlineProfile;
         this.colors = colors;
 
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        maxNpcDistance = BetonQuest.getInstance().getPluginConfig().getDouble("conversation.stop.distance");
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        maxNpcDistance = plugin.getPluginConfig().getDouble("conversation.stop.distance");
     }
 
     /**
@@ -104,9 +111,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         newLocation.setPitch(pitch);
         newLocation.setYaw(yaw);
         event.getPlayer().teleport(newLocation);
-        if (BetonQuest.getInstance().getPluginConfig().getBoolean("conversation.stop.notify")) {
+        if (plugin.getPluginConfig().getBoolean("conversation.stop.notify")) {
             try {
-                conv.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "pullback"));
+                conv.sendMessage(plugin.getPluginMessage().getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
                 log.warn("Failed to get pullback message: " + e.getMessage(), e);
             }
@@ -143,7 +150,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             public void run() {
                 display();
             }
-        }.runTask(BetonQuest.getInstance());
+        }.runTask(plugin);
     }
 
     @Override
