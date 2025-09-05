@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -61,6 +62,11 @@ public class Backpack implements Listener {
     private final PluginMessage pluginMessage;
 
     /**
+     * Message parser to parse messages.
+     */
+    private final TextParser textParser;
+
+    /**
      * The {@link OnlineProfile} of the player.
      */
     private final OnlineProfile onlineProfile;
@@ -85,12 +91,15 @@ public class Backpack implements Listener {
      *
      * @param config        the plugin configuration file
      * @param pluginMessage the {@link PluginMessage} instance
+     * @param textParser    the text parser to parse text
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final DisplayType type) {
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final TextParser textParser,
+                    final OnlineProfile onlineProfile, final DisplayType type) {
         this.config = config;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         final BetonQuest instance = BetonQuest.getInstance();
         this.log = instance.getLoggerFactory().create(getClass());
         this.packManager = instance.getQuestPackageManager();
@@ -108,10 +117,12 @@ public class Backpack implements Listener {
      *
      * @param config        the plugin configuration file
      * @param pluginMessage the {@link PluginMessage} instance
+     * @param textParser    the text parser to parse text
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile) {
-        this(config, pluginMessage, onlineProfile, DisplayType.DEFAULT);
+    public Backpack(final ConfigAccessor config, final PluginMessage pluginMessage, final TextParser textParser,
+                    final OnlineProfile onlineProfile) {
+        this(config, pluginMessage, textParser, onlineProfile, DisplayType.DEFAULT);
     }
 
     /**
@@ -256,7 +267,7 @@ public class Backpack implements Listener {
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
                 try {
-                    backpackItems.add(0, playerData.getJournal(pluginMessage).getAsItem());
+                    backpackItems.add(0, playerData.getJournal(pluginMessage, textParser).getAsItem());
                 } catch (final QuestException e) {
                     log.warn("Could not add journal to backpack: " + e.getMessage(), e);
                 }
@@ -337,7 +348,7 @@ public class Backpack implements Listener {
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
-                playerData.getJournal(pluginMessage).addToInv();
+                playerData.getJournal(pluginMessage, textParser).addToInv();
                 display = new BackpackPage(page);
             } else if (slot < SLOT_CANCEL) {
                 final int slotId = pageOffset + slot;
@@ -396,7 +407,7 @@ public class Backpack implements Listener {
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
                     } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
-                        playerData.getJournal(pluginMessage).removeFromInv();
+                        playerData.getJournal(pluginMessage, textParser).removeFromInv();
                     }
                     display = new BackpackPage(page);
                 }

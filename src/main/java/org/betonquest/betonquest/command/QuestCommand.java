@@ -29,6 +29,7 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -122,6 +123,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The plugin configuration accessor.
      */
     private final ConfigAccessor config;
@@ -151,6 +157,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param loggerFactory         logger factory to use
      * @param log                   the logger that will be used for logging
+     * @param textParser            the text parser used to parse text
      * @param configAccessorFactory the config accessor factory to use
      * @param logWatcher            the player log watcher to use
      * @param debuggingController   the log publishing controller to use
@@ -166,7 +173,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
                         final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                        final PluginMessage pluginMessage, final ConfigAccessor config, final Compatibility compatibility) {
+                        final PluginMessage pluginMessage, final TextParser textParser,
+                        final ConfigAccessor config, final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.configAccessorFactory = configAccessorFactory;
@@ -176,6 +184,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.config = config;
         this.compatibility = compatibility;
     }
@@ -456,7 +465,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         log.debug("Purging player " + args[1]);
-        playerData.purgePlayer(pluginMessage);
+        playerData.purgePlayer(pluginMessage, textParser);
         // done
         sendMessage(sender, "purged",
                 new VariableReplacement("player", Component.text(args[1])));
@@ -513,7 +522,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (playerData == null) {
             return;
         }
-        final Journal journal = playerData.getJournal(pluginMessage);
+        final Journal journal = playerData.getJournal(pluginMessage, textParser);
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
@@ -1283,7 +1292,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 instance.getFeatureApi().renameJournalEntry(oldEntryID, newEntryID);
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage, textParser);
                     final List<Pointer> journalPointers = new ArrayList<>();
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(oldEntryID)) {
@@ -1383,7 +1392,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage, textParser);
                     int count = 0;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(entryID)) {
