@@ -98,26 +98,26 @@ You can also complete the objective for the player using `complete` argument - i
 
 #### Manage tags: `tag`
 Tags subcommand allows you to easily list and modify tags. '`/q tag Beton`' would list tags for player Beton.
-'`/q tag Beton add test`' would add "test" tag for that player, and '`/q tag Beton del test`' would remove it.
+'`/q tag Beton add quest>test`' would add a "test" tag from the "example" package for that player, and '`/q tag Beton del quest>test`' would remove it.
 
 #### Manage points: `point`
 Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that:
-'`/q point Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts.
-Removing the whole point category can be achieved by '`/q point Beton del reputation`'.
+'`/q point Beton add quest>reputation 20`' (adding 20 points to "reputation" category from "example" package). You can also subtract points with negative amounts.
+Removing the whole point category can be achieved by '`/q point Beton del quest>reputation`'.
 
 #### Run events: `event`
 Running events for online players can be done with event argument:
-'`/q event Beton quest.give_emeralds`' would run `give_emeralds` for player Beton (if he's online) from the package `quest`.
+'`/q event Beton quest>give_emeralds`' would run `give_emeralds` for player Beton (if he's online) from the package `quest`.
 If you want to run a static event, replace player's name with `-`.
 
 #### Check conditions: `condition`,
-There is also condition argument for checking conditions, for example '`/q condition Beton has_food`'.
+There is also condition argument for checking conditions, for example '`/q condition Beton quest>has_food`'.
 Events and conditions need to be defined in their files, this command doesn't accept raw instructions.
 If you want to check a static condition replace the player's name with `-`.
 
 #### Manage the journal: `journal`
 Journal subcommand works in the same way as those two above.
-Adding and removing looks like `/q journal Beton add quest.wood_started` (or `del`), and you can also specify the date
+Adding and removing looks like `/q journal Beton add quest>wood_started` (or `del`), and you can also specify the date
 of entry when adding it, by appending date written like this: `23.04.2014_16:52` at the end of the command.
 Note that there is `_` character instead of space!
 
