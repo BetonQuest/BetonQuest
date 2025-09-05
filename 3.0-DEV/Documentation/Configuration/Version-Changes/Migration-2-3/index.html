@@ -3471,6 +3471,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5348,6 +5371,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5511,6 +5557,8 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-316-chest-conversation-io">3.0.0-DEV-316 - Chest Conversation IO</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-329-delete-menu_conv_io-settings">3.0.0-DEV-329 - Delete <code>menu_conv_io</code> settings</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-337-menu-conversation-io-components">3.0.0-DEV-337 - Menu Conversation IO line wrapping</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
+<li><a href="#300-dev-365-menu-conversation-io-line-wrapping-rework">3.0.0-DEV-365 - Menu Conversation IO line wrapping rework</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code></a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6083,6 +6131,44 @@ As a result, the following settings were renamed and some new settings were adde
 </code></pre></div>
 </div>
 </details>
+<h3 id="300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of" title="Permanent link">🔗</a></h3>
+<p>To fix some issues where it was not clear if a variable or a package is referenced as both use a dot <code>.</code> as separator,
+the cross package reference now uses a greater than <code>&gt;</code> symbol.
+This migration is actually automated, but there are so many edge cases that it is likely that some things are not
+migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.
+But there are also some edge cases that are not detected, you may need to check all cross package references manually.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old package.yml</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myObjective</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage.myCondition</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">events:OtherPackage.myEvent</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify Test</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage.myCondition</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New package.yml</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myObjective</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage&gt;myCondition</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">events:OtherPackage&gt;myEvent</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify Test</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage&gt;myCondition</span>
+</code></pre></div>
+</div>
+<p>That's how to do this in general, but there are a lot of edge cases, so please check all cross package references.
+Some well known edge cases are:</p>
+<ul>
+<li>The <code>run</code> events is not migrated, as it is too complex</li>
+<li>Variables are not migrated:<ul>
+<li>They used <code>.</code> as separator what means that they previously conflicted with cross package references so it can not be detected reliably.</li>
+<li>A special case for variables are some <code>ph</code> variables and the <code>math.calc</code> variable.
+  They can contain a <code>&gt;</code> as cross package reference or for some other reason.
+  It is necessary to escape the <code>&gt;</code> with a backslash <code>\&gt;</code> inside those variables.</li>
+</ul>
+</li>
+<li>Constants are not migrated, as we don't know in which context they are used.</li>
+<li>Commands executed in other scripts are not migrated, as we don't have access to this content.</li>
+</ul>
 
 
 

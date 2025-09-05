@@ -4866,7 +4866,7 @@ The first argument is the type of action that should be done.
 It is either <code>open</code> to open a new menu, <code>close</code> to close the currently opened menu, or <code>update</code> to update the 
 content of the currently opened menu.<br />
 If you want to open a menu you have to add a second argument which should be the id of a menu.
-If you want to open menus from other packages just use <code>packageName.id</code> format.</p>
+If you want to open menus from other packages just use the cross package format.</p>
 <p><strong>Example:</strong> <code>menu open quest_gui</code></p>
 <p><strong>Example:</strong> <code>menu close</code></p>
 <p><strong>Example:</strong> <code>menu update</code></p>
@@ -4874,13 +4874,13 @@ If you want to open menus from other packages just use <code>packageName.id</cod
 <h3 id="menu-condition-menu">Menu Condition: <code>menu</code><a class="headerlink" href="#menu-condition-menu" title="Permanent link">🔗</a></h3>
 <p>This condition can be used to check if the player has currently opened any menu.
 You can add <code>id:</code> optional and specify the id of a menu to check if the player has opened the menu with this id.
-If you want to check for menus from other packages just use <code>packageName.id</code> format.</p>
+If you want to check for menus from other packages just use the cross package format.</p>
 <p><strong>Example:</strong> <code>menu id:quest_gui</code></p>
 <h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">🔗</a></h2>
 <h3 id="menu-objective-menu">Menu Objective: <code>menu</code><a class="headerlink" href="#menu-objective-menu" title="Permanent link">🔗</a></h3>
 <p>This objective is completed when the player opens the menu with the given id.
 The only required argument is the id of the menu.
-If you want to use menus from other packages just use <code>packageName.id</code> format.</p>
+If you want to use menus from other packages just use the cross package format.</p>
 <p>The objective also has the property <code>menu</code> which can be used by the <a href="../../../Scripting/Building-Blocks/Variables-List/#objective-property-variable">objective variable</a>. It returns the title of the menu which should be opened.</p>
 <p><strong>Example:</strong> <code>menu quest_gui</code></p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">🔗</a></h2>

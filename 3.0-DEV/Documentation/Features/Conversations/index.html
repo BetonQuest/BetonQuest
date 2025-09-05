@@ -4944,18 +4944,18 @@ The blue overlay shows the player's key presses.</p>
 more focused files, you can point to both NPC and player options in other conversations. Use the 
 <a href="../../Scripting/Packages-%26-Templates/#working-across-packages">cross-package syntax</a> to do so.</p>
 <p>There is one special case when you want to refer to the starting options of another conversation. In this case you do not specify
-an option name after the second point (<code>package.conversation.</code>).</p>
+an option name after the point (<code>package&gt;conversation.</code>).</p>
 <div class="highlight"><span class="filename">Cross-conversation Pointers Examples</span><pre><span></span><code><span class="nt">myConversationOption</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Look</span><span class="nv"> </span><span class="s">carefully</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">guard</span><span class="nv"> </span><span class="s">over</span><span class="nv"> </span><span class="s">there...&quot;</span>
-<span class="w">  </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lookCareful,guardConv.lookDetected,mainStory.Mirko.interrupt&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">  </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lookCareful,guardConv.lookDetected,mainStory&gt;Mirko.interrupt&quot;</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="nt">specialOption</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">option</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">starting</span><span class="nv"> </span><span class="s">options</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">conversation</span><span class="nv"> </span><span class="s">&#39;guardConv&#39;</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">package</span><span class="nv"> </span><span class="s">&#39;myPackage&#39;.&quot;</span>
-<span class="w">  </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myPackage.guardConv.&quot;</span>
+<span class="w">  </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;myPackage&gt;guardConv.&quot;</span>
 </code></pre></div>
 <ol>
 <li><code>lookCareful</code> refers to another option in the same conversation named <code>lookCareful</code>.  <br />
 <code>guardConv.lookDetected</code> refers to the option <code>lookDetected</code> in the conversation <code>guardConv</code> in the same package.  <br />
-<code>mainStory.Mirko.interrupt</code> refers to the option <code>interrupt</code> in the conversation <code>Mirko</code> in the package <code>mainStory</code>.    </li>
+<code>mainStory&gt;Mirko.interrupt</code> refers to the option <code>interrupt</code> in the conversation <code>Mirko</code> in the package <code>mainStory</code>.    </li>
 </ol>
 <h2 id="conversation-variables">Conversation Variables<a class="headerlink" href="#conversation-variables" title="Permanent link">🔗</a></h2>
 <p>You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation.
