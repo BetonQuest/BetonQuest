@@ -60,7 +60,7 @@ public class LanguageRename implements QuestMigration {
     private void renameLanguageKeys(final MultiConfiguration config, final String... selection) throws InvalidConfigurationException {
         for (final String key : config.getKeys(true)) {
             final String[] split = key.split("\\.");
-            if (split.length - 1 != selection.length || !keyMatchesSelection(split, selection)) {
+            if (!keyMatchesSelection(split, selection)) {
                 continue;
             }
             final Object value = config.get(key);
@@ -87,6 +87,9 @@ public class LanguageRename implements QuestMigration {
 
     @SuppressWarnings("PMD.UseVarargs")
     private boolean keyMatchesSelection(final String[] split, final String[] selection) {
+        if (split.length - 1 != selection.length) {
+            return false;
+        }
         for (int i = 0; i < selection.length - 1; i++) {
             final String select = selection[i];
             if (!("*".equals(select) || split[i].equals(select))) {

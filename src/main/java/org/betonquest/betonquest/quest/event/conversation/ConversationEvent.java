@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.conversation.ConversationID;
 
 /**
  * Starts a conversation.

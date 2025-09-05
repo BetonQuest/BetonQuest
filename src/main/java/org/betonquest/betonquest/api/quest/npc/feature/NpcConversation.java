@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.conversation.ConversationID;
 import org.bukkit.Location;
 
 /**

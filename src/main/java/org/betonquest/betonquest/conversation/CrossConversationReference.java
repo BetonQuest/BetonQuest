@@ -10,8 +10,10 @@ import org.jetbrains.annotations.Nullable;
  * @param sourcePack   the referring package
  * @param sourceConv   the referring conversation
  * @param sourceOption the referring option
+ * @param optionType   the type of option that is referring
  * @param resolver     the resolver that will be used to resolve the conversation option
  */
-public record CrossConversationReference(QuestPackage sourcePack, String sourceConv, @Nullable String sourceOption,
-                                         ConversationOptionResolver resolver) {
+public record CrossConversationReference(QuestPackage sourcePack, ConversationID sourceConv,
+                                         @Nullable String sourceOption, ConversationData.OptionType optionType,
+                                         ConversationOptionID resolver) {
 }

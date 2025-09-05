@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.variable.point;
 
 import org.apache.commons.lang3.tuple.Triple;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -17,12 +16,11 @@ public class PointVariableFactory extends AbstractPointVariableFactory<PlayerDat
     /**
      * Create a new Point variable factory.
      *
-     * @param packManager the quest package manager to get quest packages from
      * @param dataStorage the player data storage
      * @param logger      the logger instance for this factory
      */
-    public PointVariableFactory(final QuestPackageManager packManager, final PlayerDataStorage dataStorage, final BetonQuestLogger logger) {
-        super(packManager, dataStorage, logger);
+    public PointVariableFactory(final PlayerDataStorage dataStorage, final BetonQuestLogger logger) {
+        super(dataStorage, logger);
     }
 
     @Override

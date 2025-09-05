@@ -49,6 +49,8 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-316 - Chest Conversation IO](#300-dev-316-chest-conversation-io) :thunder_cloud_rain:
 - [3.0.0-DEV-329 - Delete `menu_conv_io` settings](#300-dev-329-delete-menu_conv_io-settings) :thunder_cloud_rain:
 - [3.0.0-DEV-337 - Menu Conversation IO line wrapping](#300-dev-337-menu-conversation-io-components) :white_sun_cloud:
+- [3.0.0-DEV-365 - Menu Conversation IO line wrapping rework](#300-dev-365-menu-conversation-io-line-wrapping-rework) :sun:
+- [3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.`](#300-dev-394-cross-packages-are-now-referenced-with-instead-of) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -730,3 +732,47 @@ conversation:
     ```
     
     </div>
+
+### 3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.` :thunder_cloud_rain:
+
+To fix some issues where it was not clear if a variable or a package is referenced as both use a dot `.` as separator,
+the cross package reference now uses a greater than `>` symbol.
+This migration is actually automated, but there are so many edge cases that it is likely that some things are not
+migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.
+But there are also some edge cases that are not detected, you may need to check all cross package references manually.
+
+<div class="grid" markdown>
+
+```YAML title="Old package.yml"
+objectives:
+  myObjective: login
+    conditions:OtherPackage.myCondition
+    events:OtherPackage.myEvent
+events:
+  myEvent: notify Test
+    conditions:OtherPackage.myCondition
+```
+
+```YAML title="New package.yml"
+objectives:
+  myObjective: login
+    conditions:OtherPackage>myCondition
+    events:OtherPackage>myEvent
+events:
+  myEvent: notify Test
+    conditions:OtherPackage>myCondition
+```
+
+</div>
+
+That's how to do this in general, but there are a lot of edge cases, so please check all cross package references.
+Some well known edge cases are:
+
+- The `run` events is not migrated, as it is too complex
+- Variables are not migrated:
+    - They used `.` as separator what means that they previously conflicted with cross package references so it can not be detected reliably.
+    - A special case for variables are some `ph` variables and the `math.calc` variable.
+      They can contain a `>` as cross package reference or for some other reason.
+      It is necessary to escape the `>` with a backslash `\>` inside those variables.
+- Constants are not migrated, as we don't know in which context they are used.
+- Commands executed in other scripts are not migrated, as we don't have access to this content.

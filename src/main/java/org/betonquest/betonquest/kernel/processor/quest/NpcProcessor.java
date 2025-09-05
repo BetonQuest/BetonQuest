@@ -19,7 +19,7 @@ import org.betonquest.betonquest.api.quest.npc.feature.NpcConversation;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
-import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
@@ -151,7 +151,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                     final ConversationID conversationID = new ConversationID(packManager, pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
-                    log.warn(pack, "Error while loading " + NPC_SECTION + " '" + packName + "." + key + "': " + exception.getMessage(), exception);
+                    log.warn(pack, "Error while loading " + NPC_SECTION + " for key '" + key + "' (in " + packName + " package): " + exception.getMessage(), exception);
                 }
             }
         }
@@ -231,7 +231,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
                 + "' and started conversation '" + conversationID + "'.");
         final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
-            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
+        new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
         return true;
     }
 

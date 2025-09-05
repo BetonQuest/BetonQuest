@@ -457,15 +457,15 @@ public class CoreQuestTypes {
         variables.register("condition", new ConditionVariableFactory(questTypeApi, pluginMessage));
         variables.registerCombined("constant", new ConstantVariableFactory());
         variables.registerCombined("eval", new EvalVariableFactory());
-        variables.register("globalpoint", new GlobalPointVariableFactory(betonQuest.getQuestPackageManager(), globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
+        variables.register("globalpoint", new GlobalPointVariableFactory(globalData, loggerFactory.create(GlobalPointVariableFactory.class)));
         variables.register("globaltag", new GlobalTagVariableFactory(globalData, pluginMessage));
         variables.registerCombined("item", new ItemVariableFactory(betonQuest.getPlayerDataStorage()));
         variables.register("itemdurability", new ItemDurabilityVariableFactory());
         variables.register("location", new LocationVariableFactory());
         variables.registerCombined("math", new MathVariableFactory(variableProcessor));
         variables.registerCombined("npc", new NpcVariableFactory(betonQuest.getFeatureApi()));
-        variables.register("objective", new ObjectivePropertyVariableFactory(betonQuest.getQuestPackageManager(), questTypeApi));
-        variables.register("point", new PointVariableFactory(betonQuest.getQuestPackageManager(), dataStorage, loggerFactory.create(PointVariableFactory.class)));
+        variables.register("objective", new ObjectivePropertyVariableFactory(questTypeApi));
+        variables.register("point", new PointVariableFactory(dataStorage, loggerFactory.create(PointVariableFactory.class)));
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("quester", new QuesterVariableFactory());
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());

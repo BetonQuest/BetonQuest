@@ -55,8 +55,8 @@ conversation:
       rate_limit: 10
       npc_name_type: chat
       npc_name_align: center
-      npc_name_seperator: true
-      options_seperator: true
+      npc_name_separator: true
+      options_separator: true
       control_select: jump,left_click
       control_move: scroll,move
       control_cancel: sneak

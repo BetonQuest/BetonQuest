@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.quest.variable;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
@@ -33,16 +32,6 @@ public class VariableID extends InstructionIdentifier {
             }
             return new VariableInstruction(packManager, id.getPackage(), id, id.get());
         });
-        checkPackageIsNotVariableType(super.getPackage());
-    }
-
-    private static void checkPackageIsNotVariableType(final QuestPackage pack) throws QuestException {
-        try {
-            BetonQuest.getInstance().getQuestRegistries().variable().getFactory(pack.getQuestPath());
-        } catch (final QuestException ignored) {
-            return;
-        }
-        throw new QuestException("You can't have a package with the name of a variable!");
     }
 
     @Override

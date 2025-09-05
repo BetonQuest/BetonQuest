@@ -67,7 +67,7 @@ public class Display {
         final LineView optionView = getFormattedOptionLines(settings, wrapper, options);
 
         final int minimalHeight = npcTextView.getSize() + 1;
-        final int fillHeight = settings.optionsSeperator() ? lineCount - optionView.getSize() : 0;
+        final int fillHeight = settings.optionsSeparator() ? lineCount - optionView.getSize() : 0;
         final LineView npcTextFilledView = new LineView.Filler(npcTextView, Math.max(minimalHeight, fillHeight));
 
         final LineView combined = new LineView.Combiner(npcTextFilledView, optionView);
@@ -99,7 +99,7 @@ public class Display {
     private LineView getFormattedNpcLines(final MenuConvIOSettings settings, final FixedComponentLineWrapper wrapper,
                                           final Component npcText, final boolean npcNameChat) {
         final List<Line> lines = new ArrayList<>();
-        if (npcNameChat && settings.npcNameSeperator()) {
+        if (npcNameChat && settings.npcNameSeparator()) {
             lines.add(new Line.Fixed(Component.empty()));
         }
         final VariableReplacement replacement = new VariableReplacement("npc_text", npcText);

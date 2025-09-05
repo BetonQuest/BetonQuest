@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.variable.objective;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -15,12 +14,6 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
  * {@code %objective.<id>.<property>%}
  */
 public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
     /**
      * Quest Type API.
      */
@@ -29,33 +22,15 @@ public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
     /**
      * Create a new factory to create Objective Property Variables.
      *
-     * @param packManager  the quest package manager to get quest packages from
      * @param questTypeApi the Quest Type API
      */
-    public ObjectivePropertyVariableFactory(final QuestPackageManager packManager, final QuestTypeApi questTypeApi) {
-        this.packManager = packManager;
+    public ObjectivePropertyVariableFactory(final QuestTypeApi questTypeApi) {
         this.questTypeApi = questTypeApi;
     }
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final StringBuilder objectiveString = new StringBuilder();
-        String next = "";
-        while (instruction.hasNext()) {
-            if (!objectiveString.isEmpty()) {
-                objectiveString.append('.');
-            }
-            objectiveString.append(next);
-            next = instruction.next();
-        }
-        final String propertyName = next;
-
-        final ObjectiveID objectiveID;
-        try {
-            objectiveID = new ObjectiveID(packManager, instruction.getPackage(), objectiveString.toString());
-        } catch (final QuestException e) {
-            throw new QuestException("Error in objective property variable '" + instruction + "' " + e.getMessage(), e);
-        }
-        return new ObjectivePropertyVariable(questTypeApi, objectiveID, propertyName);
+        final ObjectiveID objectiveID = instruction.get(ObjectiveID::new).getValue(null);
+        return new ObjectivePropertyVariable(questTypeApi, objectiveID, instruction.next());
     }
 }

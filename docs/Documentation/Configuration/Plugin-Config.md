@@ -156,8 +156,8 @@ Every io has its own settings that can be configured in the `io` section.
   
       npc_name_type: chat              #(6)!
       npc_name_align: center           #(7)!
-      npc_name_seperator: true         #(8)!
-      options_seperator: true          #(9)!
+      npc_name_separator: true         #(8)!
+      options_separator: true          #(9)!
       control_select: jump,left_click  #(10)!
       control_move: scroll,move        #(11)!
       control_cancel: sneak            #(12)!

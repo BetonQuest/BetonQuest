@@ -1,4 +1,28 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.17:
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.npc_name_seperator
+    newKey: conversation.io.menu.npc_name_separator
+  - type: KEY_RENAME
+    oldKey: conversation.io.menu.options_seperator
+    newKey: conversation.io.menu.options_separator
+3.0.0.16:
+  - type: VALUE_REPLACE
+    key: item.backpack.previous_button
+    oldValue: .
+    newValue: >
+  - type: VALUE_REPLACE
+    key: item.backpack.next_button
+    oldValue: .
+    newValue: >
+  - type: VALUE_REPLACE
+    key: item.backpack.cancel_button
+    oldValue: .
+    newValue: >
+  - type: VALUE_REPLACE
+    key: item.backpack.compass_button
+    oldValue: .
+    newValue: >
 3.0.0.15:
   - type: KEY_RENAME
     oldKey: message_parser

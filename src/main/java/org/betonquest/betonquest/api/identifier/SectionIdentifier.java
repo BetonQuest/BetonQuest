@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.identifier;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -24,7 +25,8 @@ public class SectionIdentifier extends Identifier {
     protected SectionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                 final String identifier, final String section, final String readable) throws QuestException {
         super(packManager, pack, identifier);
-        if (!super.getPackage().getConfig().isConfigurationSection(section + SEPERATOR + super.get())) {
+        final MultiConfiguration config = super.getPackage().getConfig();
+        if (!config.isConfigurationSection(section + config.options().pathSeparator() + super.get())) {
             throw new QuestException(readable + " '" + super.getFull() + "' is not defined");
         }
     }

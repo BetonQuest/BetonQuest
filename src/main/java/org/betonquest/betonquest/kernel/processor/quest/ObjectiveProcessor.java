@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.processor.quest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -66,7 +67,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @return the tag which marks that the given global objective has already been started for the player
      */
     public static String getTag(final ObjectiveID objectiveID) {
-        return objectiveID.getPackage().getQuestPath() + ".global-" + objectiveID.get();
+        return PackageArgument.IDENTIFIER.apply(objectiveID.getPackage(), "global-" + objectiveID.get());
     }
 
     @Override

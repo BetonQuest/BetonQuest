@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.tag;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -68,7 +69,7 @@ public abstract class AbstractTagVariable<T> {
      * @throws QuestException if the papiMode is enabled and the message could not be resolved
      */
     public String getValueFor(@Nullable final Profile profile, final List<String> tags) throws QuestException {
-        if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
+        if (tags.contains(PackageArgument.IDENTIFIER.apply(questPackage, tagName))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }
         return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_not_met")) : "false";
