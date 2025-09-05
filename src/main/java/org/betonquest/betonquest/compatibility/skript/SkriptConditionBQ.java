@@ -16,7 +16,7 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Skript condition, which checks specified BetonQuest's condition
+ * Skript condition, which checks specified BetonQuest's condition.
  */
 @SuppressWarnings("NullAway.Init")
 public class SkriptConditionBQ extends Condition {
@@ -24,6 +24,11 @@ public class SkriptConditionBQ extends Condition {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The BetonQuest instance.
+     */
+    private final BetonQuest plugin;
 
     /**
      * The quest package manager to get quest packages from.
@@ -45,8 +50,9 @@ public class SkriptConditionBQ extends Condition {
      */
     public SkriptConditionBQ() {
         super();
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.packManager = BetonQuest.getInstance().getQuestPackageManager();
+        this.plugin = BetonQuest.getInstance();
+        this.log = plugin.getLoggerFactory().create(getClass());
+        this.packManager = plugin.getQuestPackageManager();
     }
 
     @SuppressWarnings("unchecked")
@@ -67,8 +73,8 @@ public class SkriptConditionBQ extends Condition {
     public boolean check(final Event event) {
         final String conditionID = condition.getSingle(event);
         try {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
-            return BetonQuest.getInstance().getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(packManager, null, conditionID));
+            final ProfileProvider profileProvider = plugin.getProfileProvider();
+            return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(packManager, null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

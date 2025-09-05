@@ -30,6 +30,11 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
+     * The BetonQuest instance.
+     */
+    private final BetonQuest plugin;
+
+    /**
      * The quest package manager to get quest packages from.
      */
     private final QuestPackageManager packManager;
@@ -41,13 +46,14 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
      */
     public HolographicDisplaysIntegrator(final QuestPackageManager packManager) {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
+        this.plugin = BetonQuest.getInstance();
         this.packManager = packManager;
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
+        this.log = plugin.getLoggerFactory().create(getClass());
     }
 
     @Override
     public BetonHologram createHologram(final Location location) {
-        final Hologram hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(location);
+        final Hologram hologram = HolographicDisplaysAPI.get(plugin).createHologram(location);
         hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
         return new HolographicDisplaysHologram(hologram);
     }
@@ -59,13 +65,12 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
             log.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
                     + "Install it to use conditioned holograms.");
         }
-        final BetonQuest instance = BetonQuest.getInstance();
-        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(instance);
-        final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
+        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(plugin);
+        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
         api.registerIndividualPlaceholder("bq", new HologramPlaceholder(
-                loggerFactory.create(HologramPlaceholder.class), instance.getVariableProcessor()));
+                loggerFactory.create(HologramPlaceholder.class), plugin.getVariableProcessor()));
         api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
-                loggerFactory.create(HologramGlobalPlaceholder.class), instance.getVariableProcessor()));
+                loggerFactory.create(HologramGlobalPlaceholder.class), plugin.getVariableProcessor()));
     }
 
     @Override
@@ -78,7 +83,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
             try {
                 final VariableID variable = new VariableID(packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
-                final String prefix = BetonQuest.getInstance().getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
+                final String prefix = plugin.getVariableProcessor().get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
