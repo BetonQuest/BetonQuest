@@ -13,18 +13,18 @@ Optional arguments are displayed as such: `[argument]`.
 * `/cancelquest` - Opens the quest canceler menu
 * `/q` - Lists all available admin commands
 * `/q reload` - Reloads the plugin
-* `/q objectives <playerName> <list/add/del/complete> <objectiveName/filter>` - Shows player's currently active objectives
-* `/q tags <playerName> <list/add/del> <tag/filter>` - Lists all player's tags
-* `/q globaltags <list/add/del/purge> <tag/filter>` - Manges global tags
-* `/q points <playerName> <list/add/del> <category/filter> <amount>` - Lists all player's points in all categories
-* `/q globalpoints <list/add/del/purge> <category/filter> <amount>` - Manges global points
-* `/q journal <playerName> <list/add/del> <package.pointer/filter> <date>` 
-* `/q event <playerName> <package.eventID>` - Fires an event for the player
-* `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
-* `/q item <package.itemID> <serializer>` - Creates an item based on what you're holding in hand
-* `/q variable <playerName> <package.objectiveID> <list/set/del> [key/filter] [value]` - Manage variables stored in
+* `/q objective <playerName> <list/add/del/complete> <objectiveName/filter>` - Shows player's currently active objectives
+* `/q tag <playerName> <list/add/del> <tag/filter>` - Lists all player's tags
+* `/q globaltag <list/add/del/purge> <tag/filter>` - Manges global tags
+* `/q point <playerName> <list/add/del> <category/filter> <amount>` - Lists all player's points in all categories
+* `/q globalpoint <list/add/del/purge> <category/filter> <amount>` - Manges global points
+* `/q journal <playerName> <list/add/del> <package>pointer/filter> <date>` 
+* `/q event <playerName> <package>eventID>` - Fires an event for the player
+* `/q condition <playerName> <package>conditionID>` - Shows if the player meet specified condition or not
+* `/q item <package>itemID> <serializer>` - Creates an item based on what you're holding in hand
+* `/q variable <playerName> <package>objectiveID> <list/set/del> [key/filter] [value]` - Manage variables stored in
 [`variable`](../Scripting/Building-Blocks/Objectives-List.md#variable-variable) objectives
-* `/q give <package.itemID>` - Gives you an item defined in the configuration
+* `/q give <package>itemID>` - Gives you an item defined in the configuration
 * `/q purge <playerName>` - Deletes all player's data from the database
 * `/q rename <tag/point/globalpoint/objective/entry> <oldName> <newName>` - Renames all specified things in the database
 * `/q delete <tag/point/objective/entry> <name>` - Deletes all specified things in the database
@@ -97,13 +97,13 @@ It can also directly add or cancel objectives using instruction strings.
 You can also complete the objective for the player using `complete` argument - it will run all events and remove the objective.
 
 #### Manage tags: `tag`
-Tags subcommand allows you to easily list and modify tags. '`/q tags Beton`' would list tags for player Beton.
-'`/q tags Beton add test`' would add "test" tag for that player, and '`/q tags Beton del test`' would remove it.
+Tags subcommand allows you to easily list and modify tags. '`/q tag Beton`' would list tags for player Beton.
+'`/q tag Beton add test`' would add "test" tag for that player, and '`/q tag Beton del test`' would remove it.
 
 #### Manage points: `point`
 Points subcommand is similar - listing points is done the same way. Adding points to a category looks like that:
-'`/q points Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts.
-Removing the whole point category can be achieved by '`/q points Beton del reputation`'.
+'`/q point Beton add reputation 20`' (adding 20 points to "reputation" category). You can also subtract points with negative amounts.
+Removing the whole point category can be achieved by '`/q point Beton del reputation`'.
 
 #### Run events: `event`
 Running events for online players can be done with event argument:
@@ -127,7 +127,7 @@ It will copy the item you're holding into the _items.yml_ file and save it there
 The _serializer_ defines the format in which the item is saved (and loaded).
 You can skip the package name here as well.
 
-The '`/q give package.item`' command will simply give you specified item.
+The '`/q give package>item`' command will simply give you specified item.
 
 #### Manage variables: `variable`
 This command relates to active [variable objectives](../Scripting/Building-Blocks/Objectives-List.md#variable-variable).
@@ -168,7 +168,7 @@ The command ('`/q debug ingame`') allows you to manage your ingame debugging.
 The ingame debugging sends you live information about quests to your chat. Running the command without any argument
 shows your active filters. If you don't have any filters active you will see all console output from `/q reload`. If you
 have filters active you only see information from the selected packages. Appending a package name activates the filter
-for that package. You can also use `*` / `MyFolder-*` instead of a package name to address all packages / all packages
+for that package> You can also use `*` / `MyFolder-*` instead of a package name to address all packages / all packages
 of a folder. Appending a level allows you to select which types of messages are displayed. The default level `error`
 shows all `WARNINGS` and `ERRORS` from the log. If you want to see more information use the levels `info` or `debug`.
 Beware though, the debug level might be spammy.
