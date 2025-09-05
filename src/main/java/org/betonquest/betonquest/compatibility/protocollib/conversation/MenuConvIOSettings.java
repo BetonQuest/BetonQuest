@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefore, int refreshDelay, int rateLimit,
                                  String npcNameType, String npcNameAlign,
-                                 boolean npcNameSeperator, boolean optionsSeperator,
+                                 boolean npcNameSeparator, boolean optionsSeparator,
                                  String controlSelect, String controlMove, String controlCancel,
                                  VariableComponent npcName, VariableComponent npcText, Component npcTextWrap,
                                  VariableComponent optionText, Component optionTextWrap,
@@ -35,8 +35,8 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
 
         final String npcNameType = config.getString("npc_name_type", "");
         final String npcNameAlign = config.getString("npc_name_align", "");
-        final boolean npcNameSeperator = config.getBoolean("npc_name_seperator");
-        final boolean optionsSeperator = config.getBoolean("options_seperator");
+        final boolean npcNameSeparator = config.getBoolean("npc_name_separator");
+        final boolean optionsSeparator = config.getBoolean("options_separator");
         final String controlSelect = config.getString("control_select", "");
         final String controlMove = config.getString("control_move", "");
         final String controlCancel = config.getString("control_cancel", "");
@@ -52,7 +52,7 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
         final String scrollDown = config.getString("scroll_down", "");
 
         return new MenuConvIOSettings(lineLength, lineCount, lineFillBefore, refreshDelay, rateLimit,
-                npcNameType, npcNameAlign, npcNameSeperator, optionsSeperator, controlSelect, controlMove, controlCancel,
+                npcNameType, npcNameAlign, npcNameSeparator, optionsSeparator, controlSelect, controlMove, controlCancel,
                 new VariableComponent(textParser.parse(npcName)), new VariableComponent(textParser.parse(npcText)),
                 textParser.parse(npcTextWrap), new VariableComponent(textParser.parse(optionText)),
                 textParser.parse(optionTextWrap), new VariableComponent(textParser.parse(optionSelectedText)),

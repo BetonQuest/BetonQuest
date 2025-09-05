@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.identifier;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -45,7 +46,8 @@ public abstract class InstructionIdentifier extends Identifier {
     protected InstructionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                     final String identifier, final String section, final String readable) throws QuestException {
         this(packManager, pack, identifier, id -> {
-            final String rawInstruction = id.getPackage().getConfig().getString(section + SEPERATOR + id.get());
+            final MultiConfiguration config = id.getPackage().getConfig();
+            final String rawInstruction = config.getString(section + config.options().pathSeparator() + id.get());
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
             }

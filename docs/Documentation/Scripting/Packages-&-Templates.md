@@ -69,26 +69,25 @@ The names of these features must be unique in that package, no matter which file
 ### Working across Packages
 
 Accessing features from other packages can be very helpful to link quests together.
-All events, conditions, objectives, items and conversations can be accessed. Just journal entries only work in their own
-package. 
+All events, conditions, objectives, items and conversations can be accessed.
 
 You never need to access a specific file since feature names are unique within a package.
 
 #### Top-Level Packages
 
 You can access **top-level packages** (placed directly in "_QuestPackages_") by prefixing the feature's name with a
-dot and the package name. 
+greater than (`>`) and the package name. 
 
 ??? example
     Let's assume you have a `rewards` package that contains player reward events.  
     Let's run the `easyMobObjective` event of the `rewards` package from another package:
     
-    1. Add a dot (`.`) before the event name :arrow_right: `{==.==}easyMobObjective`
-    2. Add the package name in front of the dot :arrow_right: `{==rewards==}.easyMobObjective`
+    1. Add a greater than (`>`) before the event name :arrow_right: `{==>==}easyMobObjective`
+    2. Add the package name in front of the greater than :arrow_right: `{==rewards==}>easyMobObjective`
     
     An example usage could look like this:
     ````YAML
-    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards.easyMobObjective==}"
+    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards>easyMobObjective==}"
     ````
     Note that this only works for top-level packages (the `rewards` package is placed directly in the `QuestPackages`
     folder).
@@ -106,13 +105,13 @@ the package name and the path from the "_QuestPackages_" folder to the package.
         is located in the `QuestPackages` folder.
         Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-        :arrow_right: `{==dailyQuests-==}dailyQuestOne.startDailyQuest`
+        :arrow_right: `{==dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne.startDailyQuest==}"
+        zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne>startDailyQuest==}"
         ````
         
     === "Multiple Nested Packages"
@@ -120,13 +119,13 @@ the package name and the path from the "_QuestPackages_" folder to the package.
         is contained inside a folder called `repeatable` which is located in the `QuestPackages` folder.
         Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-        :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne.startDailyQuest`
+        :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne.startDailyQuest==}"
+        zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne>startDailyQuest==}"
         ````
     
 #### Relative paths
@@ -145,14 +144,14 @@ to match the current location, relative paths will still work.
         Let's assume you have a `weeklyQuests` folder that contains a `weeklyQuestOne` and a `weeklyQuestTwo` package.
         Let's run the `startQuestTwo` event of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
         
-        1. Combine the event name with the package name :arrow_right: `{==weeklyQuestTwo.==}startQuestTwo`
+        1. Combine the event name with the package name :arrow_right: `{==weeklyQuestTwo>==}startQuestTwo`
         2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
         underscores ("go one folder up"). A dash must be added after each underscore (`-`).
-        :arrow_right: `{==_-==}weeklyQuestTwo.startQuestTwo`
+        :arrow_right: `{==_-==}weeklyQuestTwo>startQuestTwo`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 50 events:{==_-weeklyQuestTwo.startQuestTwo==}"
+        zombieObjective: "mobkill ZOMBIE 50 events:{==_-weeklyQuestTwo>startQuestTwo==}"
         ````
         
     === "Going Downwards"
@@ -160,19 +159,20 @@ to match the current location, relative paths will still work.
         package called `subQuest`.
         Let's run the `startQuest` event of the `subQuest` package from the `weeklyQuests` package.
         
-        1. Combine the event name with the package name :arrow_right: `{==subQuest.==}startQuest`
+        1. Combine the event name with the package name :arrow_right: `{==subQuest>==}startQuest`
         2. Add the path from the current _package.yml_ to the folder the package of interest lies in. Package names 
         must be seperated by dashes (`-`). The path must also be started with a dash to signal "from the current package
-        downwards". :arrow_right: `{==-weeklyQuestTwo-==}subQuest.startQuest`
+        downwards". :arrow_right: `{==-weeklyQuestTwo-==}subQuest>startQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 50 events:{==-weeklyQuestTwo-subQuest.startQuest==}"
+        zombieObjective: "mobkill ZOMBIE 50 events:{==-weeklyQuestTwo-subQuest>startQuest==}"
         ````
     
 ### Disabling Packages
 
-Each package can optionally be disabled/enabled by setting `enabled` inside the `package` section to `true` or `false`.
+Packages are enabled by default, you can disable a package if you don't want it to be loaded.
+Set `enabled` inside the `package` section to `true` or `false` to enable or disable the package.
 
 ```YAML
 package:

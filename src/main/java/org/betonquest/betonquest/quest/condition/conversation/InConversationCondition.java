@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.id.ConversationID;
+import org.betonquest.betonquest.conversation.ConversationID;
 import org.jetbrains.annotations.Nullable;
 
 /**

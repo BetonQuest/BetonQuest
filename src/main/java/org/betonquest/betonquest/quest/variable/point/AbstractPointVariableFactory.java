@@ -1,9 +1,8 @@
 package org.betonquest.betonquest.quest.variable.point;
 
 import org.apache.commons.lang3.tuple.Triple;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 
@@ -28,19 +27,12 @@ public abstract class AbstractPointVariableFactory<T> {
     protected final BetonQuestLogger logger;
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Create a new Point variable factory.
      *
-     * @param packManager the quest package manager to get quest packages from
-     * @param dataHolder  the data holder
-     * @param logger      the logger instance for this factory
+     * @param dataHolder the data holder
+     * @param logger     the logger instance for this factory
      */
-    public AbstractPointVariableFactory(final QuestPackageManager packManager, final T dataHolder, final BetonQuestLogger logger) {
-        this.packManager = packManager;
+    public AbstractPointVariableFactory(final T dataHolder, final BetonQuestLogger logger) {
         this.dataHolder = dataHolder;
         this.logger = logger;
     }
@@ -53,36 +45,13 @@ public abstract class AbstractPointVariableFactory<T> {
      * @throws QuestException if the instruction could not be parsed
      */
     protected Triple<String, Integer, PointCalculationType> parseInstruction(final Instruction instruction) throws QuestException {
-        final String category = getCategory(instruction);
+        final String category = instruction.get(PackageArgument.IDENTIFIER).getValue(null);
         final PointCalculationType type = getType(instruction.next());
         int amount = 0;
         if (type == PointCalculationType.LEFT) {
             amount = getAmount(instruction);
         }
         return Triple.of(category, amount, type);
-    }
-
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private String getCategory(final Instruction instruction) throws QuestException {
-        String category = instruction.next();
-        if (instruction.size() == 4) {
-            final String questPath = instruction.current();
-            final String pointCategory = instruction.next();
-            try {
-                final Identifier packageId = new Identifier(packManager, instruction.getPackage(), questPath + "." + pointCategory) {
-                };
-                category = packageId.getPackage().getQuestPath() + "." + pointCategory;
-            } catch (final QuestException e) {
-                logger.warn(instruction.getPackage(), e.getMessage());
-            }
-        } else if (instruction.size() == 3) {
-            if (category.contains("*")) {
-                category = category.replace('*', '.');
-            } else {
-                category = instruction.getPackage().getQuestPath() + "." + category;
-            }
-        }
-        return category;
     }
 
     private int getAmount(final Instruction instruction) throws QuestException {

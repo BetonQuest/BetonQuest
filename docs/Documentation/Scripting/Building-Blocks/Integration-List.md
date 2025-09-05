@@ -133,7 +133,7 @@ Move event can fail if the NPC is already moving for another player.
 | _fail_      | fail:events                                                | Disabled               | List of events fired if this event fails.                                    |
 
 ```YAML title="Example"
-movenpc innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
+npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward
 ```
 
 #### Stop moving NPC: `npcstop`
@@ -145,7 +145,7 @@ This will stop all current move tasks for the NPC.
 | _NpcID_   | npcId  | :octicons-x-circle-16: | The NpcId.  |
 
 ```YAML title="Example"
-stopnpc guard
+npcstop guard
 ```
 
 ### Objectives

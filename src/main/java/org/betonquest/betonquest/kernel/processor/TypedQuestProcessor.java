@@ -55,15 +55,14 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
         if (section == null) {
             return;
         }
-        final String packName = pack.getQuestPath();
         for (final String key : section.getKeys(false)) {
             if (key.contains(" ")) {
-                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
             } else {
                 try {
                     loadKey(key, pack);
                 } catch (final QuestException e) {
-                    log.warn(pack, "Error while loading " + readable + " '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warn(pack, "Error while loading " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
                 }
             }
         }

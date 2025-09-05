@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.id;
+package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;

@@ -19,7 +19,6 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
-import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
@@ -78,16 +77,6 @@ public class ConversationData {
     private final ParsedSectionTextCreator textCreator;
 
     /**
-     * The {@link QuestPackage} this conversation is in.
-     */
-    private final QuestPackage pack;
-
-    /**
-     * The name of this conversation.
-     */
-    private final String convName;
-
-    /**
      * The external used data.
      */
     private final PublicData publicData;
@@ -118,7 +107,6 @@ public class ConversationData {
      * @param questTypeApi      the quest type api
      * @param featureApi        the feature api
      * @param textCreator       the text creator to parse text
-     * @param pack              the package of the conversation this data represents
      * @param convSection       the configuration section of the conversation
      * @param publicData        the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
@@ -127,15 +115,12 @@ public class ConversationData {
     public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
                             final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi,
                             final FeatureApi featureApi, final ParsedSectionTextCreator textCreator,
-                            final QuestPackage pack, final ConfigurationSection convSection,
-                            final PublicData publicData) throws QuestException {
+                            final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
         this.variableProcessor = variableProcessor;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
-        this.pack = pack;
-        this.convName = publicData.convName();
         this.publicData = publicData;
         this.textCreator = textCreator;
 
@@ -145,7 +130,7 @@ public class ConversationData {
         validateNpcOptions();
         validatePlayerOptions();
 
-        log.debug(pack, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
+        log.debug(getPack(), String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
                 playerOptions.size()));
     }
 
@@ -161,10 +146,10 @@ public class ConversationData {
     public void checkExternalPointers() throws QuestException {
         for (final CrossConversationReference externalPointer : externalPointers) {
 
-            final ResolvedOption resolvedPointer = externalPointer.resolver().resolve();
-            final QuestPackage targetPack = resolvedPointer.conversationData().pack;
-            final String targetConvName = resolvedPointer.conversationData().convName;
-            final String targetOptionName = resolvedPointer.name();
+            final ResolvedOption resolvedOption = resolveOption(externalPointer.resolver(), externalPointer.optionType());
+            final QuestPackage targetPack = resolvedOption.conversationData().publicData.conversationID().getPackage();
+            final ConversationID targetConv = resolvedOption.conversationData().publicData.conversationID;
+            final String targetOptionName = resolvedOption.name();
 
             // This is null if we refer to the starting options of a conversation
             if (targetOptionName == null) {
@@ -180,17 +165,17 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = featureApi.getConversation(new ConversationID(packManager, targetPack, targetConvName));
+                conv = featureApi.getConversation(targetConv);
             } catch (final QuestException e) {
-                log.warn("Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to the '" + targetConvName
+                log.warn(getPack(), "Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
+                        + sourceOption + " points to the '" + targetConv.get()
                         + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
                 continue;
             }
 
-            if (!conv.hasOption(resolvedPointer)) {
-                log.warn(conv.pack, "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConvName
+            if (!conv.hasOption(resolvedOption)) {
+                log.warn(getPack(), "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
+                        + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConv.get()
                         + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
             }
         }
@@ -200,36 +185,50 @@ public class ConversationData {
     /**
      * Resolves a pointer to an option in a conversation.
      *
-     * @param pack                    the package from which we are searching for the conversation
-     * @param currentConversationName the current conversation data's name
-     * @param currentOptionName       the option string to resolve
-     * @param optionType              the {@link ConversationData.OptionType} of the option
+     * @param currentOptionName the option string to resolve
+     * @param optionType        the {@link ConversationData.OptionType} of the option
      * @return a {@link CrossConversationReference} pointing to the option
      * @throws QuestException when the conversation could not be resolved
      */
-    private CrossConversationReference resolvePointer(final QuestPackage pack, final String currentConversationName,
-                                                      @Nullable final String currentOptionName, final OptionType optionType,
-                                                      final String option) throws QuestException {
-        final ConversationOptionResolver resolver = new ConversationOptionResolver(packManager, featureApi, pack, currentConversationName, optionType, option);
-        return new CrossConversationReference(pack, currentConversationName, currentOptionName, resolver);
+    private CrossConversationReference resolvePointer(@Nullable final String currentOptionName,
+                                                      final OptionType optionType, final String option) throws QuestException {
+        final ConversationOptionID resolver = new ConversationOptionID(packManager, getPack(), option);
+        return new CrossConversationReference(getPack(), publicData.conversationID, currentOptionName, optionType, resolver);
+    }
+
+    /**
+     * Resolves a pointer to an option in a conversation.
+     *
+     * @param conversationOptionID the option string to resolve
+     * @param optionType           the {@link ConversationData.OptionType} of the option
+     * @return a {@link ResolvedOption} pointing to the option
+     * @throws QuestException when the conversation could not be resolved
+     */
+    public ResolvedOption resolveOption(final ConversationOptionID conversationOptionID, final ConversationData.OptionType optionType) throws QuestException {
+        final String conversationName = conversationOptionID.getConversationName();
+        final String optionName = conversationOptionID.getOptionName();
+        final ConversationID targetConversationID = conversationName == null ? publicData.conversationID : new ConversationID(packManager, getPack(), conversationName);
+
+        final ConversationData newData = featureApi.getConversation(targetConversationID);
+        return new ResolvedOption(newData, optionType, optionName);
     }
 
     private void validatePlayerOptions() throws QuestException {
         for (final ConversationOption option : playerOptions.values()) {
             for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), NPC, pointer));
+                    externalPointers.add(resolvePointer(option.getName(), NPC, pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new QuestException(
                             String.format("Player option %s points to %s NPC option, but it does not exist",
                                     option.getName(), pointer));
                 }
             }
-            validateExtends(pack, option, PLAYER);
+            validateExtends(option, PLAYER);
         }
     }
 
-    private void validateExtends(final QuestPackage pack, final ConversationOption option, final OptionType optionType) throws QuestException {
+    private void validateExtends(final ConversationOption option, final OptionType optionType) throws QuestException {
         final Map<String, ConversationData.ConversationOption> optionMap;
         if (optionType == PLAYER) {
             optionMap = playerOptions;
@@ -238,7 +237,7 @@ public class ConversationData {
         }
         for (final String extend : option.getExtends()) {
             if (extend.contains(".")) {
-                externalPointers.add(resolvePointer(pack, convName, option.getName(), optionType, extend));
+                externalPointers.add(resolvePointer(option.getName(), optionType, extend));
             } else {
                 if (!optionMap.containsKey(extend)) {
                     throw new QuestException(String.format("%s %s extends %s, but it does not exist",
@@ -252,14 +251,14 @@ public class ConversationData {
         for (final ConversationOption option : npcOptions.values()) {
             for (final String pointer : option.getPointers(null)) {
                 if (pointer.contains(".")) {
-                    externalPointers.add(resolvePointer(pack, convName, option.getName(), PLAYER, pointer));
+                    externalPointers.add(resolvePointer(option.getName(), PLAYER, pointer));
                 } else if (!playerOptions.containsKey(pointer)) {
                     throw new QuestException(
                             String.format("NPC option %s points to %s player option, but it does not exist",
                                     option.getName(), pointer));
                 }
             }
-            validateExtends(pack, option, NPC);
+            validateExtends(option, NPC);
         }
     }
 
@@ -272,7 +271,7 @@ public class ConversationData {
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new VariableList<>(variableProcessor, pack, convSection.getString("first", ""),
+            startingOptions = new VariableList<>(variableProcessor, getPack(), convSection.getString("first", ""),
                     Argument.STRING, VariableList.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
@@ -280,7 +279,7 @@ public class ConversationData {
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
-                externalPointers.add(resolvePointer(pack, convName, null, NPC, startingOption));
+                externalPointers.add(resolvePointer(null, NPC, startingOption));
             } else if (!npcOptions.containsKey(startingOption)) {
                 throw new QuestException("Starting option " + startingOption + " does not exist");
             }
@@ -411,8 +410,8 @@ public class ConversationData {
      *
      * @return the package containing this conversation
      */
-    public QuestPackage getPack() {
-        return pack;
+    public final QuestPackage getPack() {
+        return publicData.conversationID.getPackage();
     }
 
     /**
@@ -470,7 +469,7 @@ public class ConversationData {
             final ConversationData sourceData;
             final String optionName;
             if (option.contains(".")) {
-                final ResolvedOption result = new ConversationOptionResolver(packManager, featureApi, pack, this.convName, NPC, option).resolve();
+                final ResolvedOption result = resolveOption(new ConversationOptionID(packManager, getPack(), option), NPC);
                 sourceData = result.conversationData();
                 optionName = result.name();
             } else {
@@ -536,14 +535,14 @@ public class ConversationData {
     /**
      * The external used data.
      *
-     * @param convName      The name of this conversation.
-     * @param quester       A map of the quester's name in different languages.
-     * @param blockMovement If true, the player will not be able to move during this conversation.
-     * @param finalEvents   All events that will be executed when the conversation ends.
-     * @param convIO        The conversation IO that should be used for this conversation.
-     * @param interceptor   The interceptor that should be used for this conversation.
+     * @param conversationID The ID of the conversation.
+     * @param quester        A map of the quester's name in different languages.
+     * @param blockMovement  If true, the player will not be able to move during this conversation.
+     * @param finalEvents    All events that will be executed when the conversation ends.
+     * @param convIO         The conversation IO that should be used for this conversation.
+     * @param interceptor    The interceptor that should be used for this conversation.
      */
-    public record PublicData(String convName, Text quester, Variable<Boolean> blockMovement,
+    public record PublicData(ConversationID conversationID, Text quester, Variable<Boolean> blockMovement,
                              Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
                              Variable<InterceptorFactory> interceptor, boolean invincible) {
 
@@ -655,12 +654,12 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final Argument<T> resolver) throws QuestException {
-            return new VariableList<>(variableProcessor, pack, conv.getString(identifier, ""), resolver).getValue(null);
+            return new VariableList<>(variableProcessor, getPack(), conv.getString(identifier, ""), resolver).getValue(null);
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final IdentifierArgument<T> resolver) throws QuestException {
-            return resolve(conv, identifier, (value) -> resolver.apply(packManager, pack, value));
+            return resolve(conv, identifier, (value) -> resolver.apply(packManager, getPack(), value));
         }
 
         @Nullable
@@ -670,7 +669,7 @@ public class ConversationData {
             }
             final Text text;
             try {
-                text = textCreator.parseFromSection(pack, conv, "text");
+                text = textCreator.parseFromSection(getPack(), conv, "text");
             } catch (final QuestException e) {
                 throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
             }
@@ -719,13 +718,13 @@ public class ConversationData {
 
         private Component getFormattedText(@Nullable final Profile profile) {
             if (text == null) {
-                log.warn(pack, "No text in conversation '" + convName + "'!");
+                log.warn(getPack(), "No text in conversation '" + publicData.conversationID.get() + "'!");
                 return Component.empty();
             }
             try {
                 return text.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(pack, "Could not resolve message in conversation '" + convName + "': " + e.getMessage(), e);
+                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID.get() + "': " + e.getMessage(), e);
                 return Component.empty();
             }
         }
@@ -794,9 +793,9 @@ public class ConversationData {
                 for (final String extend : extendLinks) {
                     final ResolvedOption resolvedExtend;
                     try {
-                        resolvedExtend = new ConversationOptionResolver(packManager, featureApi, pack, convName, type, extend).resolve();
+                        resolvedExtend = resolveOption(new ConversationOptionID(packManager, getPack(), extend), type);
                     } catch (final QuestException e) {
-                        log.reportException(pack, e);
+                        log.reportException(getPack(), e);
                         throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
                     }
 

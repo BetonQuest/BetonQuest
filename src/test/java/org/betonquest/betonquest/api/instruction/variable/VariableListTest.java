@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +46,9 @@ class VariableListTest {
         lenient().when(config.getString("events.a")).thenReturn("?");
         lenient().when(config.getString("events.b")).thenReturn("?");
         lenient().when(config.getString("events.c")).thenReturn("?");
+        final ConfigurationOptions configurationOptions = mock(ConfigurationOptions.class);
+        lenient().when(config.options()).thenReturn(configurationOptions);
+        lenient().when(configurationOptions.pathSeparator()).thenReturn('.');
         this.questPackage = pack;
     }
 

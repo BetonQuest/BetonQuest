@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -380,17 +381,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completeId(final String[] args, @Nullable final AccessorType type) {
         final String last = args[args.length - 1];
-        if (last == null || !last.contains(".")) {
+        if (last == null || !last.contains(Identifier.SEPARATOR)) {
             return completePackage();
         } else {
-            final String pack = last.substring(0, last.indexOf('.'));
+            final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
             final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
             if (configPack == null) {
                 return Optional.of(new ArrayList<>());
             }
             if (type == null) {
                 final List<String> completions = new ArrayList<>();
-                completions.add(pack + '.');
+                completions.add(pack + Identifier.SEPARATOR);
                 return Optional.of(completions);
             }
             final ConfigurationSection configuration = configPack.getConfig()
@@ -398,7 +399,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final List<String> completions = new ArrayList<>();
             if (configuration != null) {
                 for (final String key : configuration.getKeys(false)) {
-                    completions.add(pack + '.' + key);
+                    completions.add(pack + Identifier.SEPARATOR + key);
                 }
             }
             return Optional.of(completions);
@@ -534,7 +535,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String pointerName = args[3];
-        if (!pointerName.contains(".")) {
+        if (!pointerName.contains(Identifier.SEPARATOR)) {
             sendMessage(sender, "specify_pointer");
             return;
         }
@@ -771,8 +772,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String itemID = args[1];
         final String pack;
         final String name;
-        if (itemID.contains(".")) {
-            final String[] parts = itemID.split("\\.");
+        if (itemID.contains(Identifier.SEPARATOR)) {
+            final String[] parts = itemID.split(Identifier.SEPARATOR);
             pack = parts[0];
             name = parts[1];
         } else {
@@ -1251,7 +1252,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             case "journals", "journal", "j", "entries", "entry", "e" -> {
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                final QuestPackage newPackage = instance.getQuestPackageManager().getPackages().get(rename.split("\\.")[0]);
+                final QuestPackage newPackage = instance.getQuestPackageManager().getPackages().get(rename.split(Identifier.SEPARATOR)[0]);
                 if (newPackage == null) {
                     final String message = "You can't rename into non-existent package!";
                     sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
@@ -1809,10 +1810,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         if (args.length == 3) {
             final String last = args[args.length - 1];
-            if (last == null || !last.contains(".")) {
+            if (last == null || !last.contains(Identifier.SEPARATOR)) {
                 return completePackage();
             } else {
-                final String pack = last.substring(0, last.indexOf('.'));
+                final String pack = last.substring(0, last.indexOf(Identifier.SEPARATOR));
                 final QuestPackage configPack = instance.getQuestPackageManager().getPackages().get(pack);
                 if (configPack == null) {
                     return Optional.of(Collections.emptyList());
@@ -1823,7 +1824,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     for (final String key : configuration.getKeys(false)) {
                         final String rawObjectiveInstruction = configuration.getString(key);
                         if (rawObjectiveInstruction != null && rawObjectiveInstruction.stripIndent().startsWith("variable")) {
-                            completions.add(pack + '.' + key);
+                            completions.add(pack + Identifier.SEPARATOR + key);
                         }
                     }
                 }

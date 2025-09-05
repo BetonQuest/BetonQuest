@@ -55,13 +55,7 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         }
         final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
         final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
-        final Variable<Item> questItem;
-        if (pos == 3) {
-            final String path = instruction.getPart(1) + "." + instruction.getPart(2);
-            questItem = instruction.get(path, IdentifierArgument.ITEM);
-        } else {
-            questItem = instruction.get(IdentifierArgument.ITEM);
-        }
+        final Variable<Item> questItem = instruction.get(IdentifierArgument.ITEM);
         return new ItemVariable(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
     }
 

@@ -71,7 +71,6 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         if (section.contains(CONFIG_TEXT)) {
             descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);
         } else {
-            log.debug(pack, "No description for menu item '" + pack.getQuestPath() + "." + section.getName() + "'");
             descriptions = null;
         }
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();

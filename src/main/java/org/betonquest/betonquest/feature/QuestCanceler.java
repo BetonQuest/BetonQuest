@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -21,6 +22,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.id.QuestCancelerID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.bukkit.Location;
@@ -54,7 +56,7 @@ public class QuestCanceler {
     /**
      * Identifier of the canceler.
      */
-    private final String cancelerID;
+    private final QuestCancelerID cancelerID;
 
     /**
      * Feature API.
@@ -107,7 +109,7 @@ public class QuestCanceler {
      * @param cancelData    the relevant data to cancel a quest
      */
     public QuestCanceler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final PlayerDataStorage playerStorage,
-                         final String cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
+                         final QuestCancelerID cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
                          final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.questTypeApi = questTypeApi;
@@ -119,7 +121,7 @@ public class QuestCanceler {
         this.item = item;
         this.data = cancelData;
         this.pack = pack;
-        this.notificationSender = new IngameNotificationSender(log, pluginMessage, pack, cancelerID, NotificationLevel.INFO, "quest_canceled");
+        this.notificationSender = new IngameNotificationSender(log, pluginMessage, pack, cancelerID.getFull(), NotificationLevel.INFO, "quest_canceled");
     }
 
     /**
@@ -169,11 +171,7 @@ public class QuestCanceler {
         try {
             for (final String entry : toRemove.getValue(profile)) {
                 log.debug(pack, "  Removing " + logIdentifier + " " + entry);
-                if (entry.contains(".")) {
-                    action.accept(entry);
-                } else {
-                    action.accept(pack.getQuestPath() + "." + entry);
-                }
+                action.accept(PackageArgument.IDENTIFIER.apply(pack, entry));
             }
         } catch (final QuestException e) {
             log.warn(pack, "Cannot remove " + logIdentifier + " in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
@@ -240,8 +238,7 @@ public class QuestCanceler {
         try {
             return names.asComponent(profile);
         } catch (final QuestException e) {
-            log.warn(pack, "Could not resolve Quest name in canceler '" + pack.getQuestPath() + "." + cancelerID + "': "
-                    + e.getMessage(), e);
+            log.warn(pack, "Could not resolve Quest name in canceler '" + cancelerID + "': " + e.getMessage(), e);
             return Component.text("Quest");
         }
     }

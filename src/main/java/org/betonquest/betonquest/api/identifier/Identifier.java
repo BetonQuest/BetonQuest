@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Identifiers are used to identify objects in BetonQuest.
@@ -18,17 +20,22 @@ public abstract class Identifier {
     /**
      * The string used to separate the package name from the identifier.
      */
-    public static final String SEPERATOR = ".";
+    public static final String SEPARATOR = ">";
 
     /**
      * The string to separate the package address into parts.
      */
-    public static final String PACKAGE_SEPERATOR = "-";
+    public static final String PACKAGE_SEPARATOR = "-";
 
     /**
      * The string used to navigate up in the package hierarchy.
      */
     public static final String PACKAGE_NAVIGATOR = "_";
+
+    /**
+     * The pattern to find unescaped separators in an identifier.
+     */
+    private static final Pattern SEPARATOR_PATTERN = Pattern.compile("^(?<package>.*?)(?<!\\\\)(?:\\\\\\\\)*" + SEPARATOR + "(?<identifier>.*)$");
 
     /**
      * The package the object is in.
@@ -51,104 +58,106 @@ public abstract class Identifier {
      */
     protected Identifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                          final String identifier) throws QuestException {
-        if (identifier.isEmpty()) {
-            throw new QuestException("ID is null");
-        }
-        if (identifier.contains(SEPERATOR)) {
-            final int dotIndex = identifier.indexOf(SEPERATOR);
-            final QuestPackage parsed = parsePackageFromIdentifier(packManager, pack, identifier, dotIndex);
-            if (parsed != null) {
-                this.pack = parsed;
-                this.identifier = identifier.substring(dotIndex + 1);
-                return;
-            }
+        final RawIdentifier rawIdentifier = splitIdentifier(identifier);
+        this.identifier = rawIdentifier.identifier;
+        if (rawIdentifier.pack == null) {
             if (pack == null) {
-                throw new QuestException("Package in ID '" + identifier + "' does not exist");
+                throw new QuestException("ID '%s' has no package specified!".formatted(identifier));
+            }
+            this.pack = pack;
+        } else {
+            try {
+                this.pack = parsePackageFromIdentifier(packManager, pack, rawIdentifier.pack);
+            } catch (final QuestException e) {
+                throw new QuestException("ID '%s' could not be parsed: %s".formatted(identifier, e.getMessage()), e);
             }
         }
-        if (pack == null) {
-            throw new QuestException("No package specified for ID '" + identifier + "'!");
-        }
-        this.pack = pack;
-        this.identifier = identifier;
     }
 
-    @Nullable
+    private RawIdentifier splitIdentifier(final String rawIdentifier) throws QuestException {
+        if (rawIdentifier.isEmpty()) {
+            throw new QuestException("ID is empty!");
+        }
+        final Matcher matcher = SEPARATOR_PATTERN.matcher(rawIdentifier);
+        if (matcher.matches()) {
+            final String pack = matcher.group("package").replace("\\" + SEPARATOR, SEPARATOR);
+            final String identifier = matcher.group("identifier").replace("\\" + SEPARATOR, SEPARATOR);
+            if (identifier.isEmpty()) {
+                throw new QuestException("ID '%s' has no identifier after the package name!".formatted(rawIdentifier));
+            }
+            return new RawIdentifier(pack, identifier);
+        } else {
+            return new RawIdentifier(null, rawIdentifier.replace("\\" + SEPARATOR, SEPARATOR));
+        }
+    }
+
     private QuestPackage parsePackageFromIdentifier(final QuestPackageManager packManager,
-                                                    @Nullable final QuestPackage pack, final String identifier,
-                                                    final int dotIndex) throws QuestException {
-        final String packName = identifier.substring(0, dotIndex);
+                                                    @Nullable final QuestPackage pack, final String packPath)
+            throws QuestException {
         if (pack != null) {
-            if (packName.startsWith(PACKAGE_NAVIGATOR + PACKAGE_SEPERATOR)) {
-                return resolveRelativePathUp(packManager, pack, identifier, packName);
+            if (packPath.startsWith(PACKAGE_NAVIGATOR + PACKAGE_SEPARATOR)) {
+                return resolveRelativePathUp(packManager, pack, packPath);
             }
-            if (packName.startsWith(PACKAGE_SEPERATOR)) {
-                return resolveRelativePathDown(packManager, pack, identifier, packName);
+            if (packPath.startsWith(PACKAGE_SEPARATOR)) {
+                return resolveRelativePathDown(packManager, pack, packPath);
             }
         }
-        final QuestPackage packFromName = packManager.getPackage(packName);
-        if (packFromName != null) {
-            return packFromName;
+        final QuestPackage packFromPath = packManager.getPackage(packPath);
+        if (packFromPath == null) {
+            throw new QuestException("No package '%s' found!".formatted(packPath));
         }
-        if (identifier.length() == dotIndex + 1) {
-            throw new QuestException("ID of the pack is null");
-        }
-        return null;
+        return packFromPath;
     }
 
     private QuestPackage resolveRelativePathUp(final QuestPackageManager packManager, final QuestPackage pack,
-                                               final String identifier, final String packName) throws QuestException {
-        final String[] root = pack.getQuestPath().split(PACKAGE_SEPERATOR);
-        final String[] path = packName.split(PACKAGE_SEPERATOR);
-        final int stepsUp = getStepsUp(root, path, identifier);
-        final String packagePath = buildPackagePath(root, path, stepsUp);
-        try {
-            final String absolute = packagePath.substring(0, packagePath.length() - 1);
-            final QuestPackage resolved = packManager.getPackage(absolute);
-            if (resolved == null) {
-                throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
-                        + absolute + "', but this package does not exist!");
-            }
-            return resolved;
-        } catch (final StringIndexOutOfBoundsException e) {
-            throw new QuestException("Relative path in ID '" + identifier + "' is invalid!", e);
+                                               final String packPath) throws QuestException {
+        final String[] root = pack.getQuestPath().split(PACKAGE_SEPARATOR);
+        final String[] path = packPath.split(PACKAGE_SEPARATOR);
+        final int levelsUp = getPathUpLevels(root, path, packPath);
+        final String resolvedPackPath = resolvePackagePath(root, path, levelsUp);
+        final QuestPackage resolvedPack = packManager.getPackage(resolvedPackPath);
+        if (resolvedPack == null) {
+            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist!"
+                    .formatted(packPath, resolvedPackPath));
         }
+        return resolvedPack;
     }
 
-    private int getStepsUp(final String[] root, final String[] path, final String identifier) throws QuestException {
-        int stepsUp = 0;
-        while (stepsUp < path.length && PACKAGE_NAVIGATOR.equals(path[stepsUp])) {
-            stepsUp++;
+    private int getPathUpLevels(final String[] root, final String[] path, final String packPath) throws QuestException {
+        int levelsUp = 0;
+        while (levelsUp < path.length && PACKAGE_NAVIGATOR.equals(path[levelsUp])) {
+            levelsUp++;
         }
-        if (stepsUp > root.length) {
-            throw new QuestException("Relative path goes out of package scope! Consider removing a few '"
-                    + PACKAGE_NAVIGATOR + "'s in ID " + identifier);
+        if (levelsUp > root.length) {
+            throw new QuestException("Relative path '%s' goes up too many levels!".formatted(packPath));
         }
-        return stepsUp;
+        return levelsUp;
     }
 
-    private String buildPackagePath(final String[] root, final String[] path, final int stepsUp) {
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < root.length - stepsUp; i++) {
-            builder.append(root[i]).append(PACKAGE_SEPERATOR);
+    private String resolvePackagePath(final String[] root, final String[] path, final int levelsUp) {
+        final StringBuilder packPath = new StringBuilder();
+        for (int i = 0; i < root.length - levelsUp; i++) {
+            packPath.append(root[i]).append(PACKAGE_SEPARATOR);
         }
-        for (int i = stepsUp; i < path.length; i++) {
-            builder.append(path[i]).append(PACKAGE_SEPERATOR);
+        for (int i = levelsUp; i < path.length; i++) {
+            packPath.append(path[i]).append(PACKAGE_SEPARATOR);
         }
-        return builder.toString();
+        if (!packPath.isEmpty()) {
+            packPath.deleteCharAt(packPath.length() - 1);
+        }
+        return packPath.toString();
     }
 
     private QuestPackage resolveRelativePathDown(final QuestPackageManager packManager, final QuestPackage pack,
-                                                 final String identifier, final String packName) throws QuestException {
-        final String currentPath = pack.getQuestPath();
-        final String fullPath = currentPath + packName;
+                                                 final String packPath) throws QuestException {
+        final String resolvedPackPath = pack.getQuestPath() + packPath;
 
-        final QuestPackage resolved = packManager.getPackage(fullPath);
-        if (resolved == null) {
-            throw new QuestException("Relative path in ID '" + identifier + "' resolved to '"
-                    + fullPath + "', but this package does not exist!");
+        final QuestPackage resolvedPack = packManager.getPackage(resolvedPackPath);
+        if (resolvedPack == null) {
+            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist!"
+                    .formatted(packPath, resolvedPackPath));
         }
-        return resolved;
+        return resolvedPack;
     }
 
     /**
@@ -175,7 +184,7 @@ public abstract class Identifier {
      * @return the full identifier in the format {@code package.identifier}
      */
     public String getFull() {
-        return pack.getQuestPath() + SEPERATOR + get();
+        return pack.getQuestPath() + SEPARATOR + get();
     }
 
     @Override
@@ -199,5 +208,14 @@ public abstract class Identifier {
     @Override
     public int hashCode() {
         return Objects.hash(identifier, pack.getQuestPath());
+    }
+
+    /**
+     * A record to hold the raw parts of an identifier.
+     *
+     * @param pack       the package part, or null if not present
+     * @param identifier the identifier part
+     */
+    private record RawIdentifier(@Nullable String pack, String identifier) {
     }
 }

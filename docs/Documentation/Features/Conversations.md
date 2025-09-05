@@ -171,20 +171,20 @@ more focused files, you can point to both NPC and player options in other conver
 [cross-package syntax](../Scripting/Packages-&-Templates.md#working-across-packages) to do so.
 
 There is one special case when you want to refer to the starting options of another conversation. In this case you do not specify
-an option name after the second point (`package.conversation.`).
+an option name after the point (`package>conversation.`).
 
 ```YAML title="Cross-conversation Pointers Examples"
 myConversationOption:
   text: "Look carefully at that guard over there..."
-  pointers: "lookCareful,guardConv.lookDetected,mainStory.Mirko.interrupt" #(1)!
+  pointers: "lookCareful,guardConv.lookDetected,mainStory>Mirko.interrupt" #(1)!
 specialOption:
   text: "This option points to the starting options of the conversation 'guardConv' in the package 'myPackage'."
-  pointers: "myPackage.guardConv."
+  pointers: "myPackage>guardConv."
 ```
 
 1. `lookCareful` refers to another option in the same conversation named `lookCareful`.    
    `guardConv.lookDetected` refers to the option `lookDetected` in the conversation `guardConv` in the same package.    
-   `mainStory.Mirko.interrupt` refers to the option `interrupt` in the conversation `Mirko` in the package `mainStory`.    
+   `mainStory>Mirko.interrupt` refers to the option `interrupt` in the conversation `Mirko` in the package `mainStory`.    
 
 ## Conversation Variables
 
