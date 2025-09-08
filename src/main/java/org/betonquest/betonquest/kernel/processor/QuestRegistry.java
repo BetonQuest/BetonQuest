@@ -120,7 +120,7 @@ public record QuestRegistry(
      * @param packages the quest packages to load
      */
     public void loadData(final Collection<QuestPackage> packages) {
-        eventScheduling.stopAll();
+        eventScheduling.clear();
         core.clear();
         cancelers.clear();
         conversations.clear();
@@ -142,7 +142,7 @@ public record QuestRegistry(
             journalEntries.load(pack);
             journalMainPages.load(pack);
             npcs.load(pack);
-            eventScheduling.loadData(pack);
+            eventScheduling.load(pack);
             additional.forEach(questProcessor -> questProcessor.load(pack));
 
             log.debug(pack, "Everything in package " + packName + " loaded");

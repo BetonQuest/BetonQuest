@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 import org.betonquest.betonquest.schedule.EventScheduling;
+import org.betonquest.betonquest.schedule.ScheduleFactory;
 
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class ScheduleRegistry extends FactoryRegistry<EventScheduling.ScheduleTy
      * @param scheduler instance of the scheduler
      * @param <S>       type of schedule
      */
-    public <S extends Schedule> void register(final String name, final Class<S> schedule, final Scheduler<S, ?> scheduler) {
+    public <S extends Schedule> void register(final String name, final ScheduleFactory<S> schedule, final Scheduler<S, ?> scheduler) {
         register(name, new EventScheduling.ScheduleType<>(schedule, scheduler));
     }
 

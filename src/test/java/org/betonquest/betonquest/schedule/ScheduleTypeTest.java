@@ -18,8 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -79,36 +77,29 @@ class ScheduleTypeTest {
     @Test
     void testCreate() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
         assertDoesNotThrow(() -> type.newScheduleInstance(packManager, scheduleID, section), "");
     }
 
     @Test
     void testCreateThrowingUnchecked() {
         final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule.class, scheduler);
-        assertThrows(InvocationTargetException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
-    }
-
-    @Test
-    void testCreateInvalidConstructor() {
-        final Scheduler<InvalidConstructorSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<InvalidConstructorSchedule, FictiveTime> type = new ScheduleType<>(InvalidConstructorSchedule.class, scheduler);
-        assertThrows(NoSuchMethodException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
+        final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule::new, scheduler);
+        assertThrows(IllegalArgumentException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
     }
 
     @Test
     void testCreateInvalidInstruction() {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
         assertThrows(QuestException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
     }
 
     @Test
     void testAddSchedule() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule.class, scheduler);
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
         assertDoesNotThrow(() -> type.createAndScheduleNewInstance(packManager, scheduleID, section));
         verify(scheduler).addSchedule(any());
     }
@@ -127,25 +118,6 @@ class ScheduleTypeTest {
          * @throws QuestException if parsing the config failed
          */
         public MockedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(packManager, scheduleID, instruction);
-        }
-    }
-
-    /**
-     * Class extending a schedule with a constructor that differs from the required signature.
-     */
-    private static class InvalidConstructorSchedule extends Schedule {
-
-        /**
-         * Creates new instance of the schedule.
-         *
-         * @param packManager the quest package manager to get quest packages from
-         * @param scheduleID  id of the new schedule
-         * @param instruction config defining the schedule
-         * @throws QuestException if parsing the config failed
-         */
-        @SuppressWarnings("unused")
-        public InvalidConstructorSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection instruction, final String illegalArgument) throws QuestException {
             super(packManager, scheduleID, instruction);
         }
     }

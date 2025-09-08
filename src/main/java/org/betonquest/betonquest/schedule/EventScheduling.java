@@ -8,25 +8,14 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
+import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.bukkit.configuration.ConfigurationSection;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 /**
  * Class responsible for managing schedule types, their schedulers, as well as parsing schedules from config.
  */
-public class EventScheduling {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
+public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
 
     /**
      * Map that contains all types of schedulers,
@@ -42,52 +31,28 @@ public class EventScheduling {
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
     public EventScheduling(final BetonQuestLogger log, final QuestPackageManager packManager, final ScheduleRegistry scheduleTypes) {
-        this.log = log;
-        this.packManager = packManager;
+        super(log, packManager, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 
-    /**
-     * Method used for loading all schedules of a quest package and registering them in the correct schedulers.
-     *
-     * @param questPackage package to load
-     */
-    public void loadData(final QuestPackage questPackage) {
-        log.debug(questPackage, "Parsing schedules for package '" + questPackage.getQuestPath() + "'.");
-        final ConfigurationSection configuration = questPackage.getConfig().getConfigurationSection("schedules");
-        if (configuration == null) {
-            log.debug(questPackage, "Package contains no schedules.");
-            return;
+    @Override
+    protected Void loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
+        final ScheduleID scheduleID = getIdentifier(pack, section.getName());
+        final String type = section.getString("type");
+        if (type == null) {
+            throw new QuestException("Missing type instruction");
         }
-        for (final String key : configuration.getKeys(false)) {
-            if (key.contains(" ")) {
-                log.warn(questPackage,
-                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage.getQuestPath() + " package)");
-                continue;
-            }
-
-            try {
-                final ScheduleID scheduleID = new ScheduleID(packManager, questPackage, key);
-                try {
-                    final ConfigurationSection scheduleConfig = new UnmodifiableConfigurationSection(
-                            questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.get())
-                    );
-                    final String type = Optional.ofNullable(scheduleConfig.getString("type"))
-                            .orElseThrow(() -> new QuestException("Missing type instruction"));
-                    final ScheduleType<?, ?> scheduleType = scheduleTypes.getFactory(type);
-                    scheduleType.createAndScheduleNewInstance(packManager, scheduleID, scheduleConfig);
-                    log.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
-                } catch (final QuestException e) {
-                    log.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
-                } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
-                               | IllegalAccessException e) {
-                    log.reportException(questPackage, e);
-                }
-            } catch (final QuestException e) {
-                log.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
-            }
+        final ScheduleType<?, ?> scheduleType = scheduleTypes.getFactory(type);
+        if (scheduleType == null) {
+            throw new QuestException("Unknown schedule type: " + type);
         }
-        log.debug(questPackage, "Finished loading schedules from package '" + questPackage.getQuestPath() + "'.");
+        try {
+            scheduleType.createAndScheduleNewInstance(packManager, scheduleID, new UnmodifiableConfigurationSection(section));
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException(e);
+        }
+        log.debug(pack, "Parsed schedule '" + scheduleID + "'.");
+        return null;
     }
 
     /**
@@ -105,47 +70,40 @@ public class EventScheduling {
         }
     }
 
-    /**
-     * Stop all schedulers and disable all schedules.
-     */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public void stopAll() {
+    @Override
+    public void clear() {
         log.debug("Stopping schedulers...");
         for (final ScheduleType<?, ?> type : scheduleTypes.values()) {
             try {
                 type.scheduler.stop();
             } catch (final Exception e) {
-                log.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
+                log.error("Error while stopping " + type.scheduler + ": " + e.getMessage(), e);
             }
         }
+        super.clear();
+    }
+
+    @Override
+    protected ScheduleID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
+        return new ScheduleID(packManager, pack, identifier);
     }
 
     /**
      * Helper class that holds all implementations needed for a specific schedule type.
      *
-     * @param scheduleClass class of the schedule
-     * @param scheduler     instance of the scheduler
-     * @param <S>           type of the schedule.
+     * @param scheduleFactory factory of the schedule
+     * @param scheduler       instance of the scheduler
+     * @param <S>             type of the schedule.
      */
-    @SuppressWarnings("PMD.PreserveStackTrace")
-    public record ScheduleType<S extends Schedule, T>(Class<S> scheduleClass, Scheduler<S, T> scheduler) {
+    public record ScheduleType<S extends Schedule, T>(ScheduleFactory<S> scheduleFactory, Scheduler<S, T> scheduler) {
         /* default */ S newScheduleInstance(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
-                throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-            try {
-                return scheduleClass
-                        .getConstructor(QuestPackageManager.class, ScheduleID.class, ConfigurationSection.class)
-                        .newInstance(packManager, scheduleID, scheduleConfig);
-            } catch (final InvocationTargetException e) {
-                if (e.getCause() instanceof final QuestException cause) {
-                    throw cause;
-                } else {
-                    throw e;
-                }
-            }
+                throws QuestException {
+            return scheduleFactory.createNewInstance(packManager, scheduleID, scheduleConfig);
         }
 
         /* default */ void createAndScheduleNewInstance(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
-                throws QuestException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                throws QuestException {
             scheduler.addSchedule(newScheduleInstance(packManager, scheduleID, scheduleConfig));
         }
     }

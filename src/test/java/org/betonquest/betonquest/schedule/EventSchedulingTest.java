@@ -22,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -54,13 +53,13 @@ class EventSchedulingTest {
     @SuppressWarnings("unchecked")
     private Scheduler<?, FictiveTime> registerMockedType(final String name) {
         final Scheduler<MockedSchedule, FictiveTime> mockedScheduler = mock(Scheduler.class);
-        scheduleTypes.register(name, new ScheduleType<>(MockedSchedule.class, mockedScheduler));
+        scheduleTypes.register(name, new ScheduleType<>(MockedSchedule::new, mockedScheduler));
         return mockedScheduler;
     }
 
     @SuppressWarnings("unchecked")
     private ScheduleType<?, FictiveTime> registerSpyType(final String name) {
-        final ScheduleType<Schedule, FictiveTime> spyType = spy(new ScheduleType<Schedule, FictiveTime>(Schedule.class, mock(Scheduler.class)));
+        final ScheduleType<Schedule, FictiveTime> spyType = spy(new ScheduleType<Schedule, FictiveTime>(MockedSchedule::new, mock(Scheduler.class)));
         scheduleTypes.register(name, spyType);
         return spyType;
     }
@@ -72,7 +71,6 @@ class EventSchedulingTest {
                 .toList();
         final MultiConfiguration multiConfig = new MultiSectionConfiguration(configs);
         final QuestPackage pack = mock(QuestPackage.class);
-        when(pack.getQuestPath()).thenReturn("test-modules-schedule");
         when(pack.getConfig()).thenReturn(multiConfig);
         return pack;
     }
@@ -105,7 +103,7 @@ class EventSchedulingTest {
     void testStopAll() {
         final Scheduler<?, FictiveTime> schedulerA = registerMockedType("typeA");
         final Scheduler<?, FictiveTime> schedulerB = registerMockedType("typeB");
-        scheduling.stopAll();
+        scheduling.clear();
         verify(schedulerA).stop();
         verify(schedulerB).stop();
     }
@@ -118,7 +116,7 @@ class EventSchedulingTest {
                 .mapToObj(i -> "type" + (char) (i + 'A'))
                 .map(this::registerMockedType)
                 .toList();
-        scheduling.stopAll();
+        scheduling.clear();
         verify(throwingScheduler).stop();
         for (final Scheduler<?, FictiveTime> scheduler : schedulers) {
             verify(scheduler).stop();
@@ -126,72 +124,55 @@ class EventSchedulingTest {
     }
 
     @Test
-    void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         doNothing().when(simpleType).createAndScheduleNewInstance(any(), any(), any());
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         doNothing().when(cronType).createAndScheduleNewInstance(any(), any(), any());
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        scheduling.loadData(pack);
+        scheduling.load(pack);
         verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
         verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
-    void testLoadParseException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    void testLoadParseException() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
         doThrow(new QuestException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
-        scheduling.loadData(pack);
+        scheduling.load(pack);
         verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
         verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
-    void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        doThrow(new InvocationTargetException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
-        scheduling.loadData(pack);
+        doThrow(new QuestException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
+        scheduling.load(pack);
         verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
         verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
 
     @Test
-    void testLoadCreationException() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
-        final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
-        final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
-        doThrow(new NoSuchMethodException()).when(simpleType).createAndScheduleNewInstance(any(), any(), any());
-        scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(any(), argThat(id -> "testSimple".equals(id.get())), any());
-        verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
-    }
-
-    @Test
-    void testLoadNoSchedules() throws KeyConflictException, InvalidSubConfigurationException, QuestException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    void testLoadNoSchedules() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNoSchedules.yml");
-        scheduling.loadData(pack);
+        scheduling.load(pack);
         verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any(), any());
         verify(cronType, times(0)).createAndScheduleNewInstance(any(), any(), any());
     }
 
     @Test
-    void testLoadNameWithSpace() throws QuestException, InvocationTargetException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException, KeyConflictException, InvalidSubConfigurationException {
+    void testLoadNameWithSpace() throws QuestException, KeyConflictException, InvalidSubConfigurationException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNameWithSpace.yml");
-        scheduling.loadData(pack);
+        scheduling.load(pack);
         verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any(), any());
         verify(cronType).createAndScheduleNewInstance(any(), argThat(id -> "testRealtime".equals(id.get())), any());
     }
