@@ -1,6 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.kernel.FeatureRegistry;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
+import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreAttributeConditionFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition.MMOCoreClassConditionFactory;
@@ -14,10 +20,6 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.event.MMOCoreSki
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreBreakCustomBlockObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreChangeClassObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective.MMOCoreProfessionObjectiveFactory;
-import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
@@ -38,23 +40,23 @@ public class MMOCoreIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
-        conditionTypes.register("mmoclass", new MMOCoreClassConditionFactory(data));
-        conditionTypes.register("mmoattribute", new MMOCoreAttributeConditionFactory(data));
-        conditionTypes.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
+        final ConditionRegistry conditionRegistry = questRegistries.condition();
+        conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory(data));
+        conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory(data));
+        conditionRegistry.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
 
-        final ObjectiveTypeRegistry objectiveTypes = questRegistries.objective();
-        objectiveTypes.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
-        objectiveTypes.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
-        objectiveTypes.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
+        final FeatureRegistry<TypeFactory<Objective>> objectiveRegistry = questRegistries.objective();
+        objectiveRegistry.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());
+        objectiveRegistry.register("mmochangeclass", new MMOCoreChangeClassObjectiveFactory());
+        objectiveRegistry.register("mmocorebreakblock", new MMOCoreBreakCustomBlockObjectiveFactory());
 
-        final EventTypeRegistry eventTypes = questRegistries.event();
-        eventTypes.register("mmoclassexperience", new MMOCoreClassExperienceEventFactory(data));
-        eventTypes.register("mmoprofessionexperience", new MMOCoreProfessionExperienceEventFactory(data));
-        eventTypes.register("mmocoreclasspoints", new MMOCoreClassPointsEventFactory(data));
-        eventTypes.register("mmocoreattributepoints", new MMOCoreAttributePointsEventFactory(data));
-        eventTypes.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsEventFactory(data));
-        eventTypes.register("mmocoreskillpoints", new MMOCoreSkillPointsEventFactory(data));
+        final EventRegistry eventRegistry = questRegistries.event();
+        eventRegistry.register("mmoclassexperience", new MMOCoreClassExperienceEventFactory(data));
+        eventRegistry.register("mmoprofessionexperience", new MMOCoreProfessionExperienceEventFactory(data));
+        eventRegistry.register("mmocoreclasspoints", new MMOCoreClassPointsEventFactory(data));
+        eventRegistry.register("mmocoreattributepoints", new MMOCoreAttributePointsEventFactory(data));
+        eventRegistry.register("mmocoreattributereallocationpoints", new MMOCoreAttributeReallocationPointsEventFactory(data));
+        eventRegistry.register("mmocoreskillpoints", new MMOCoreSkillPointsEventFactory(data));
     }
 
     @Override

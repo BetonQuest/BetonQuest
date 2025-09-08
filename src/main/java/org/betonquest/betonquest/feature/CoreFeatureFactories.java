@@ -21,8 +21,8 @@ import org.betonquest.betonquest.conversation.io.SlowTellrawConvIOFactory;
 import org.betonquest.betonquest.conversation.io.TellrawConvIOFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
+import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
-import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ItemTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
@@ -123,7 +123,7 @@ public class CoreFeatureFactories {
      * @param registries containing the registry to register in
      */
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-    public void register(final FeatureRegistries registries) {
+    public void register(final BaseFeatureRegistries registries) {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));

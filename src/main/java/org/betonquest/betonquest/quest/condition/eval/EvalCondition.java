@@ -4,11 +4,14 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
+import org.betonquest.betonquest.kernel.registry.QuestTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,7 +65,7 @@ public class EvalCondition implements NullableCondition {
      * @return the condition
      * @throws QuestException if the condition could not be created
      */
-    public static ConditionAdapter createCondition(final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
+    public static ConditionAdapter createCondition(final QuestPackageManager packManager, final QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter> conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
         final Instruction conditionInstruction = new Instruction(packManager, pack, null, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
         return conditionFactory.parseInstruction(conditionInstruction);

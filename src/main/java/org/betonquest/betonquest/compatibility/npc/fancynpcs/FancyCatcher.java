@@ -6,8 +6,8 @@ import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import de.oliver.fancynpcs.api.events.NpcModifyEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,10 +20,10 @@ public class FancyCatcher extends NpcInteractCatcher<Npc> {
      * Initializes the Fancy catcher.
      *
      * @param profileProvider the profile provider instance
-     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param npcRegistry     the registry to identify the clicked Npc
      */
-    public FancyCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry) {
-        super(profileProvider, npcTypeRegistry);
+    public FancyCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry) {
+        super(profileProvider, npcRegistry);
     }
 
     /**

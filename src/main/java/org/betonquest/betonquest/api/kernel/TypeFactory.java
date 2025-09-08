@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.kernel.registry;
+package org.betonquest.betonquest.api.kernel;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;

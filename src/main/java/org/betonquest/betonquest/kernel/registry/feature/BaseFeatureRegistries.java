@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
+import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
@@ -16,7 +17,7 @@ import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
  * @param notifyIO        The Registry holding registered NotifyIOs.
  * @param eventScheduling The Registry holding registered Event Schedulers.
  */
-public record FeatureRegistries(
+public record BaseFeatureRegistries(
         ConversationIORegistry conversationIO,
         ItemTypeRegistry item,
         InterceptorRegistry interceptor,
@@ -24,7 +25,7 @@ public record FeatureRegistries(
         NpcTypeRegistry npc,
         NotifyIORegistry notifyIO,
         ScheduleRegistry eventScheduling
-) {
+) implements FeatureRegistries {
 
     /**
      * Create a new other factory registry for quest elements not based on the Instruction object.
@@ -32,8 +33,8 @@ public record FeatureRegistries(
      * @param loggerFactory the logger factory to create individual class logger
      * @return the newly created registries
      */
-    public static FeatureRegistries create(final BetonQuestLoggerFactory loggerFactory) {
-        return new FeatureRegistries(
+    public static BaseFeatureRegistries create(final BetonQuestLoggerFactory loggerFactory) {
+        return new BaseFeatureRegistries(
                 new ConversationIORegistry(loggerFactory.create(ConversationIORegistry.class)),
                 new ItemTypeRegistry(loggerFactory.create(ItemTypeRegistry.class)),
                 new InterceptorRegistry(loggerFactory.create(FactoryRegistry.class)),

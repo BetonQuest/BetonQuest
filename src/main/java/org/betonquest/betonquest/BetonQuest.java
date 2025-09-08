@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.logger.CachingBetonQuestLoggerFactory;
@@ -22,6 +23,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.command.BackpackCommand;
@@ -56,8 +58,8 @@ import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
 import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.kernel.registry.feature.FeatureRegistries;
-import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
+import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.listener.CustomDropListener;
 import org.betonquest.betonquest.listener.JoinQuitListener;
 import org.betonquest.betonquest.listener.MobKillListener;
@@ -149,12 +151,12 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     /**
      * Registry for quest core elements.
      */
-    private QuestTypeRegistries questTypeRegistries;
+    private BaseQuestTypeRegistries questTypeRegistries;
 
     /**
      * Stores Registry for ConvIO, Interceptor, NotifyIO and EventScheduling.
      */
-    private FeatureRegistries featureRegistries;
+    private BaseFeatureRegistries featureRegistries;
 
     /**
      * Factory to create new class specific loggers.
@@ -348,7 +350,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
-        questTypeRegistries = QuestTypeRegistries.create(loggerFactory, this);
+        questTypeRegistries = BaseQuestTypeRegistries.create(loggerFactory, this);
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
@@ -358,7 +360,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
-        featureRegistries = FeatureRegistries.create(loggerFactory);
+        featureRegistries = BaseFeatureRegistries.create(loggerFactory);
 
         final String defaultParser = config.getString("text_parser", "legacyminimessage");
         textParser = new DecidingTextParser(featureRegistries.textParser(), new TagTextParserDecider(defaultParser));
@@ -779,20 +781,12 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         return playerDataStorage;
     }
 
-    /**
-     * Gets the QuestRegistry holding the core Quest types.
-     *
-     * @return registry holding Conditions and Events
-     */
+    @Override
     public QuestTypeRegistries getQuestRegistries() {
         return questTypeRegistries;
     }
 
-    /**
-     * Gets the Registries holding other types.
-     *
-     * @return registry holding ConvIO, Interceptor, ...
-     */
+    @Override
     public FeatureRegistries getFeatureRegistries() {
         return featureRegistries;
     }

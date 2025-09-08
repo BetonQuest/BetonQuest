@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.kernel.registry.quest;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
 
 /**
  * Stores the Objectives that can be used in BetonQuest.

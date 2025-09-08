@@ -2,6 +2,9 @@ package org.betonquest.betonquest.quest;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.kernel.FeatureRegistry;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -10,10 +13,9 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.VariableTypeRegistry;
 import org.betonquest.betonquest.quest.condition.advancement.AdvancementConditionFactory;
 import org.betonquest.betonquest.quest.condition.armor.ArmorConditionFactory;
@@ -294,7 +296,7 @@ public class CoreQuestTypes {
      *
      * @param questTypeRegistries the registry to register the types in
      */
-    public void register(final QuestTypeRegistries questTypeRegistries) {
+    public void register(final BaseQuestTypeRegistries questTypeRegistries) {
         // When adding new types they need to be ordered by name in the corresponding method!
         registerConditions(questTypeRegistries.condition());
         registerEvents(questTypeRegistries.event());
@@ -308,7 +310,7 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("check", new CheckConditionFactory(betonQuest.getQuestPackageManager()));
+        conditionTypes.registerCombined("check", new CheckConditionFactory(betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory(data));
         conditionTypes.register("conversation", new ConversationConditionFactory(betonQuest.getFeatureApi()));
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
@@ -406,7 +408,7 @@ public class CoreQuestTypes {
         eventTypes.register("point", new PointEventFactory(loggerFactory, dataStorage,
                 pluginMessage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
-        eventTypes.registerCombined("run", new RunEventFactory(betonQuest.getQuestPackageManager()));
+        eventTypes.registerCombined("run", new RunEventFactory(betonQuest.getQuestPackageManager(), eventTypes));
         eventTypes.register("runForAll", new RunForAllEventFactory(questTypeApi, profileProvider));
         eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeApi));
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));
@@ -425,7 +427,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
     }
 
-    private void registerObjectives(final ObjectiveTypeRegistry objectiveTypes) {
+    private void registerObjectives(final FeatureRegistry<TypeFactory<Objective>> objectiveTypes) {
         objectiveTypes.register("action", new ActionObjectiveFactory());
         objectiveTypes.register("arrow", new ArrowShootObjectiveFactory());
         objectiveTypes.register("block", new BlockObjectiveFactory(loggerFactory, pluginMessage));

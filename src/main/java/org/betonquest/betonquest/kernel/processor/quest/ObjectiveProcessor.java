@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -11,7 +12,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
-import org.betonquest.betonquest.kernel.registry.quest.ObjectiveTypeRegistry;
+import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -52,7 +53,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * @param plugin         the plugin instance to associate registered listener with
      */
     public ObjectiveProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                              final ObjectiveTypeRegistry objectiveTypes,
+                              final FactoryRegistry<TypeFactory<Objective>> objectiveTypes,
                               final PluginManager pluginManager, final Plugin plugin) {
         super(log, packManager, objectiveTypes, "Objective", "objectives");
         this.pluginManager = pluginManager;

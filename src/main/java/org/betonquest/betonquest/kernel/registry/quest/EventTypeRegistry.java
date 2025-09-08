@@ -1,22 +1,24 @@
 package org.betonquest.betonquest.kernel.registry.quest;
 
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
+import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapterFactory;
 import org.betonquest.betonquest.kernel.registry.QuestTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Stores the event types that can be used in BetonQuest.
  */
-public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, PlayerlessEvent, EventAdapter> {
+public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, PlayerlessEvent, EventAdapter>
+        implements EventRegistry {
 
     /**
      * Logger factory to create class specific logger for quest type factories.
@@ -24,27 +26,27 @@ public class EventTypeRegistry extends QuestTypeRegistry<PlayerEvent, Playerless
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Plugin instance to get QuestTypeApi from.
+     * BetonQuest API to get QuestTypeApi from.
      */
-    private final BetonQuest betonQuest;
+    private final BetonQuestApi api;
 
     /**
      * Create a new event type registry.
      *
      * @param log           the logger that will be used for logging
      * @param loggerFactory the logger factory to create a new custom logger
-     * @param betonQuest    the plugin instance to get QuestTypeApi from once initialized
+     * @param api           the BetonQuest API to get QuestTypeApi from once initialized
      */
-    public EventTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuest betonQuest) {
+    public EventTypeRegistry(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory, final BetonQuestApi api) {
         super(log, "event");
         this.loggerFactory = loggerFactory;
-        this.betonQuest = betonQuest;
+        this.api = api;
     }
 
     @Override
     protected TypeFactory<EventAdapter> getFactoryAdapter(
             @Nullable final PlayerQuestFactory<PlayerEvent> playerFactory,
             @Nullable final PlayerlessQuestFactory<PlayerlessEvent> playerlessFactory) {
-        return new EventAdapterFactory(loggerFactory, betonQuest.getQuestTypeApi(), playerFactory, playerlessFactory);
+        return new EventAdapterFactory(loggerFactory, api.getQuestTypeApi(), playerFactory, playerlessFactory);
     }
 }

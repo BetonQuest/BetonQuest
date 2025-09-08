@@ -11,8 +11,8 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,14 +37,14 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
      * Initializes the catcher for Citizens.
      *
      * @param profileProvider the profile provider instance
-     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param npcRegistry     the registry to identify the clicked Npc
      * @param registry        the registry of NPCs to notice interactions
      * @param cancelPredicate the move predicate to check if the NPC currently blocks conversations
      *                        if the predicate test yields 'true' the adapted event will be fired cancelled
      */
-    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry,
+    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
                                    final NPCRegistry registry, final Predicate<NPC> cancelPredicate) {
-        super(profileProvider, npcTypeRegistry);
+        super(profileProvider, npcRegistry);
         this.registry = registry;
         this.cancelPredicate = cancelPredicate;
     }

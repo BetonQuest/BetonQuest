@@ -8,8 +8,8 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,12 +29,12 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
      * Initializes the interact catcher.
      *
      * @param profileProvider the profile provider instance
-     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param npcRegistry     the registry to identify the clicked Npc
      * @param apiHelper       the api helper used get MythicMobs
      */
-    public MythicMobsInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry,
+    public MythicMobsInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
                                      final BukkitAPIHelper apiHelper) {
-        super(profileProvider, npcTypeRegistry);
+        super(profileProvider, npcRegistry);
         this.apiHelper = apiHelper;
     }
 

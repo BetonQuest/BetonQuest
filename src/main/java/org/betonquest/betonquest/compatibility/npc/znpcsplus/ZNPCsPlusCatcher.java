@@ -4,8 +4,8 @@ import lol.pyr.znpcsplus.api.event.NpcInteractEvent;
 import lol.pyr.znpcsplus.api.interaction.InteractionType;
 import lol.pyr.znpcsplus.api.npc.NpcEntry;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventHandler;
 
@@ -17,10 +17,10 @@ public class ZNPCsPlusCatcher extends NpcInteractCatcher<NpcEntry> {
      * Initializes the ZNpsPlus catcher.
      *
      * @param profileProvider the profile provider instance
-     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param npcRegistry     the registry to identify the clicked Npc
      */
-    public ZNPCsPlusCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry) {
-        super(profileProvider, npcTypeRegistry);
+    public ZNPCsPlusCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry) {
+        super(profileProvider, npcRegistry);
     }
 
     /**

@@ -12,9 +12,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -64,7 +64,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     /**
      * The Npc Registry to create identifier strings from Npcs.
      */
-    private final NpcTypeRegistry npcTypeRegistry;
+    private final NpcRegistry npcRegistry;
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
@@ -77,17 +77,17 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param variableProcessor the variable processor to use
      * @param hologramProvider  the hologram provider to create new holograms
      * @param featureApi        the Feature API to get NPC instances
-     * @param npcTypeRegistry   the registry to create identifier strings from Npcs
+     * @param npcRegistry       the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final QuestPackageManager packManager, final Plugin plugin,
                            final VariableProcessor variableProcessor, final HologramProvider hologramProvider,
-                           final FeatureApi featureApi, final NpcTypeRegistry npcTypeRegistry) {
+                           final FeatureApi featureApi, final NpcRegistry npcRegistry) {
         super(loggerFactory, log, packManager, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
-        this.npcTypeRegistry = npcTypeRegistry;
+        this.npcRegistry = npcRegistry;
         npcHolograms = new ArrayList<>();
         followTask = plugin.getServer().getScheduler().runTaskTimer(plugin,
                 () -> npcHolograms.stream().filter(NpcHologram::follow)
@@ -222,7 +222,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
             npcHolograms.forEach(this::updateHologram);
             return;
         }
-        final Set<NpcID> ids = npcTypeRegistry.getIdentifier(npc, null);
+        final Set<NpcID> ids = npcRegistry.getIdentifier(npc, null);
         if (ids.isEmpty()) {
             return;
         }

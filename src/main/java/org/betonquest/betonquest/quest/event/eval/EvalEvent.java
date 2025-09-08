@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,7 +62,9 @@ public class EvalEvent implements NullableEvent {
      * @return the event
      * @throws QuestException if the event could not be created
      */
-    public static EventAdapter createEvent(final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
+    public static EventAdapter createEvent(final QuestPackageManager packManager,
+                                           final EventTypeRegistry eventTypeRegistry,
+                                           final QuestPackage pack, final String instruction) throws QuestException {
         final Instruction eventInstruction = new Instruction(packManager, pack, null, instruction);
         final TypeFactory<EventAdapter> eventFactory = eventTypeRegistry.getFactory(eventInstruction.getPart(0));
         return eventFactory.parseInstruction(eventInstruction);

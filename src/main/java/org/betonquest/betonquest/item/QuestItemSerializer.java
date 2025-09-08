@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Allows to serialize ItemStacks as string format parsed by a
- * {@link org.betonquest.betonquest.kernel.registry.TypeFactory} to {@link QuestItem}.
+ * {@link TypeFactory} to {@link QuestItem}.
  */
 @FunctionalInterface
 public interface QuestItemSerializer {

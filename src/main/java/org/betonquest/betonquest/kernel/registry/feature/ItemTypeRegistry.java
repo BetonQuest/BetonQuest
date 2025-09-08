@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItemSerializer;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Set;
 /**
  * Registry for {@link QuestItem} types.
  */
-public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItemWrapper>> {
+public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItemWrapper>> implements ItemRegistry {
     /**
      * Identifies registered serializer by string.
      */
@@ -31,24 +32,13 @@ public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItemWrapp
         serializers = new HashMap<>();
     }
 
-    /**
-     * Registers a {@link QuestItemSerializer} to allow parsing an ItemStack to instruction string.
-     *
-     * @param name       the name of the type
-     * @param serializer the serializer to parse items to string
-     */
+    @Override
     public void registerSerializer(final String name, final QuestItemSerializer serializer) {
         log.debug("Registering item serializer for '" + name + "' type");
         serializers.put(name, serializer);
     }
 
-    /**
-     * Fetches the serializer to parse ItemStacks into String format.
-     *
-     * @param name the name of the serializer
-     * @return a factory to create the type
-     * @throws QuestException when there is no serializer with that name registered
-     */
+    @Override
     public QuestItemSerializer getSerializer(final String name) throws QuestException {
         final QuestItemSerializer serializer = serializers.get(name);
         if (serializer == null) {
@@ -57,11 +47,7 @@ public class ItemTypeRegistry extends FactoryRegistry<TypeFactory<QuestItemWrapp
         return serializer;
     }
 
-    /**
-     * Gets the keys of all registered serializers.
-     *
-     * @return the actual key set
-     */
+    @Override
     public Set<String> serializerKeySet() {
         return serializers.keySet();
     }
