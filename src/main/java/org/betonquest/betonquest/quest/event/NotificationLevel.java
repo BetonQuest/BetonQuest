@@ -10,7 +10,7 @@ public enum NotificationLevel {
     INFO("info"),
 
     /**
-     * The notification is a error.
+     * The notification is an error.
      */
     ERROR("error");
 
