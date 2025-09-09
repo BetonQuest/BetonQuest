@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
+import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,21 +25,28 @@ public class HasBrewCondition implements OnlineCondition {
     private final Variable<String> nameVar;
 
     /**
+     * Interpretation mode for brews.
+     */
+    private final Variable<IdentifierType> mode;
+
+    /**
      * Creates a new has Brew condition.
      *
      * @param countVar the amount of brews to check.
      * @param nameVar  the name of the brew to check.
+     * @param mode     the interpretation mode for brews.
      */
-    public HasBrewCondition(final Variable<Number> countVar, final Variable<String> nameVar) {
+    public HasBrewCondition(final Variable<Number> countVar, final Variable<String> nameVar, final Variable<IdentifierType> mode) {
         this.countVar = countVar;
         this.nameVar = nameVar;
+        this.mode = mode;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         final int count = countVar.getValue(profile).intValue();
-        final String name = nameVar.getValue(profile).replace("_", " ");
-        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
+        final String name = nameVar.getValue(profile);
+        final BRecipe recipe = mode.getValue(profile).getRecipeOrThrow(name);
 
         final Player player = profile.getPlayer();
         int remaining = count;

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 
@@ -41,8 +42,9 @@ public class TakeBrewEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> countVar = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<String> brewVar = instruction.get(Argument.STRING);
+        final Variable<IdentifierType> mode = instruction.getValue("mode", Argument.ENUM(IdentifierType.class), IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(TakeBrewEvent.class);
         return new PrimaryServerThreadEvent(
-                new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar), logger, instruction.getPackage()), data);
+                new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar, mode), logger, instruction.getPackage()), data);
     }
 }

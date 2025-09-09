@@ -30,21 +30,6 @@ public final class BreweryUtils {
     }
 
     /**
-     * Get a brewing recipe by name or throw a {@link QuestException} if it does not exist.
-     *
-     * @param name the name of the brewing recipe.
-     * @return the {@link BRecipe} with the given name.
-     * @throws QuestException if there is no brewing recipe with the given name.
-     */
-    public static BRecipe getRecipeOrThrow(final String name) throws QuestException {
-        final BRecipe recipe = BRecipe.get(name);
-        if (recipe == null) {
-            throw new QuestException("There is no brewing recipe with the name " + name + "!");
-        }
-        return recipe;
-    }
-
-    /**
      * Validate a quality and throw a {@link QuestException} if it is not between 1 and 10.
      *
      * @param quality the quality to validate.

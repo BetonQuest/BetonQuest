@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
+import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,16 +33,23 @@ public class GiveBrewEvent implements OnlineEvent {
     private final Variable<String> nameVar;
 
     /**
+     * Interpretation mode for brews.
+     */
+    private final Variable<IdentifierType> mode;
+
+    /**
      * Create a new Give Brew Event.
      *
      * @param amountVar  the amount of brews to give.
      * @param qualityVar the quality of the brews.
      * @param nameVar    the name of the brew to give.
+     * @param mode       the interpretation mode for brews.
      */
-    public GiveBrewEvent(final Variable<Number> amountVar, final Variable<Number> qualityVar, final Variable<String> nameVar) {
+    public GiveBrewEvent(final Variable<Number> amountVar, final Variable<Number> qualityVar, final Variable<String> nameVar, final Variable<IdentifierType> mode) {
         this.amountVar = amountVar;
         this.qualityVar = qualityVar;
         this.nameVar = nameVar;
+        this.mode = mode;
     }
 
     @Override
@@ -49,9 +57,8 @@ public class GiveBrewEvent implements OnlineEvent {
         final Player player = profile.getPlayer();
         final int quality = qualityVar.getValue(profile).intValue();
         BreweryUtils.validateQualityOrThrow(quality);
-
-        final String name = nameVar.getValue(profile).replace("_", " ");
-        final BRecipe recipe = BreweryUtils.getRecipeOrThrow(name);
+        final String name = nameVar.getValue(profile);
+        final BRecipe recipe = mode.getValue(profile).getRecipeOrThrow(name);
 
         final int amount = amountVar.getValue(profile).intValue();
         final ItemStack[] brews = IntStream.range(0, amount)

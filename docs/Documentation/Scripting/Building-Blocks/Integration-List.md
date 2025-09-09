@@ -83,8 +83,11 @@ drunkquality 3
 #### Has Brew: `hasbrew`
 This condition is true if the player has the given brew with the specified amount in his inventory.
 
+You can specify the mode to select the brew by either the name or its id, defaulting to the name.
+
 ``` YAML linenums="1"
-hasbrew 2 MY_BREW
+hasbrew 2 "MY BREW"
+hasbrew 2 brew_17 mode:id
 ```
 
 ### Events
@@ -92,15 +95,21 @@ hasbrew 2 MY_BREW
 #### Give Brew: `givebrew`
 Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.
 
+You can specify the mode to select the brew by either the name or its id, defaulting to the name.
+
 ``` YAML linenums="1"
-givebrew 1 10 MY_BREW
+givebrew 1 10 "MY BREW"
+givebrew 1 10 brew_17 mode:id
 ```
 
 #### Take Brew: `takebrew`
 Removes the specified drink from the players inventory. An amount needs to be specified.
 
+You can specify the mode to select the brew by either the name or its id, defaulting to the name.
+
 ``` YAML linenums="1"
-takebrew 2 MY_OTHER_BREW 
+takebrew 2 "MY OTHER BREW"
+takebrew 2 brew_quest_3
 ```
 
 ## Citizens[](https://www.spigotmc.org/resources/13811/)
