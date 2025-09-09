@@ -59,10 +59,9 @@ public class SpawnMobEvent implements NullableEvent {
      * @param amount           the amount of entities to spawn
      * @param name             the name of the mob
      * @param marked           the marked variable
-     * @throws QuestException if the entity type is not a mob
      */
     public SpawnMobEvent(final Variable<Location> variableLocation, final Variable<EntityType> type, final Equipment equipment,
-                         final Variable<Number> amount, @Nullable final Variable<Component> name, @Nullable final Variable<String> marked) throws QuestException {
+                         final Variable<Number> amount, @Nullable final Variable<Component> name, @Nullable final Variable<String> marked) {
         this.variableLocation = variableLocation;
         this.type = type;
         this.equipment = equipment;

@@ -24,9 +24,8 @@ public class Migrator {
      * Creates a new generic migration process.
      *
      * @param loggerFactory the logger factory.
-     * @throws IOException If an I/O error occurs
      */
-    public Migrator(final BetonQuestLoggerFactory loggerFactory) throws IOException {
+    public Migrator(final BetonQuestLoggerFactory loggerFactory) {
         this.migrations = new LinkedList<>();
         migrations.add(new RPGMenuMerge());
         migrations.add(new PackageStructure());

@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -70,7 +69,7 @@ public class InventoryConvIOFactory implements ConversationIOFactory {
     }
 
     @Override
-    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
+    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
         final boolean showNumber = config.getBoolean("conversation.io.chest.show_number", true);
         final boolean showNPCText = config.getBoolean("conversation.io.chest.show_npc_text", true);
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 270);

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -36,7 +35,7 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     }
 
     @Override
-    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
+    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 320);
         int messageDelay = BetonQuest.getInstance().getPluginConfig().getInt("conversation.io.slowtellraw.message_delay", 10);
         if (messageDelay <= 0) {

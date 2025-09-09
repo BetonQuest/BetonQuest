@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.auraskills;
 
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
@@ -29,7 +28,7 @@ public class AuraSkillsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook() {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 

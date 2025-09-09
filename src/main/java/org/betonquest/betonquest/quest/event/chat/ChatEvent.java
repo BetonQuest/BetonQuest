@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.chat;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.entity.Player;
 
@@ -25,7 +24,7 @@ public class ChatEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) {
         final Player player = profile.getPlayer();
         for (final String message : messages) {
             player.chat(message.replace("%player%", player.getName()));

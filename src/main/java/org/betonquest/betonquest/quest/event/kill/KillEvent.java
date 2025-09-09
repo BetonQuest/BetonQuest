@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.kill;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
 /**
@@ -16,7 +15,7 @@ public class KillEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) {
         profile.getPlayer().setHealth(0);
     }
 }

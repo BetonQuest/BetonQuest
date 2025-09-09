@@ -54,10 +54,9 @@ public class Menu {
      * @param questTypeApi the Quest Type API
      * @param menuData     the Menu Data
      * @param boundItem    the optional bound Item
-     * @throws QuestException if the bound command is invalid
      */
     public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeApi,
-                final MenuData menuData, @Nullable final Variable<Item> boundItem) throws QuestException {
+                final MenuData menuData, @Nullable final Variable<Item> boundItem) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.menuID = menuID;

@@ -11,7 +11,7 @@ public class PureWordState implements TokenizerState {
     }
 
     @Override
-    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) throws TokenizerException {
+    public TokenizerState parseNext(final TokenizerContext ctx, final int codePoint) {
         if (Character.isWhitespace(codePoint)) {
             ctx.endWord();
             return new NoWordState();

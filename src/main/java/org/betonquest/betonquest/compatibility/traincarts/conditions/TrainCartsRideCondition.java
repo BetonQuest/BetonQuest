@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.traincarts.conditions;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
 
@@ -25,7 +24,7 @@ public class TrainCartsRideCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) {
         return TrainCartsUtils.isRidingTrainCart(profile, trainName);
     }
 }

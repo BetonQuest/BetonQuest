@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
  * Handles the remove string list migration.
@@ -17,7 +16,7 @@ public class RemoveStringList implements QuestMigration {
     }
 
     @Override
-    public void migrate(final Quest quest) throws InvalidConfigurationException {
+    public void migrate(final Quest quest) {
         final MultiConfiguration config = quest.getQuestConfig();
         migrateSection(config, "npc_holograms", "npcs");
         migrateSection(config, "effectlib", "npcs", "conditions", "locations");

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -51,7 +50,7 @@ public class GiveJournalEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveJournalEvent(dataStorage::get, pluginMessage),
                 loggerFactory.create(GiveJournalEvent.class),

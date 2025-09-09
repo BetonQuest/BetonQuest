@@ -3,7 +3,6 @@ package org.betonquest.betonquest.config.patcher.migration.migrator.from2to3;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class MoonPhaseRename implements QuestMigration {
     }
 
     @Override
-    public void migrate(final Quest quest) throws InvalidConfigurationException {
+    public void migrate(final Quest quest) {
         final MultiConfiguration config = quest.getQuestConfig();
         replaceStartValueInSection(config, "conditions", "mooncycle", "moonphase");
         for (final Map.Entry<String, String> entry : phasesMap.entrySet()) {

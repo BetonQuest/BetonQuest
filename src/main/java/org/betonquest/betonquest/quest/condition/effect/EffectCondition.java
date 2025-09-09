@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.potion.PotionEffectType;
 
@@ -25,7 +24,7 @@ public class EffectCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) {
         return profile.getPlayer().hasPotionEffect(type);
     }
 }

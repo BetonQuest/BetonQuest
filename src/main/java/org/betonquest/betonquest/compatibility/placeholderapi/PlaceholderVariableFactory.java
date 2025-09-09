@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
@@ -20,12 +19,12 @@ public class PlaceholderVariableFactory implements PlayerVariableFactory, Player
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) {
         return parseInstruction(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) {
         return parseInstruction(instruction);
     }
 

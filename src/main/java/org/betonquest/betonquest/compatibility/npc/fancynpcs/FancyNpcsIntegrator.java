@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.Bukkit;
@@ -23,7 +22,7 @@ public class FancyNpcsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook() {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final NpcTypeRegistry npcTypes = betonQuest.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();

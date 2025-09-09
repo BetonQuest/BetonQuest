@@ -36,9 +36,8 @@ public class Item {
      * @param featureApi the feature api creating new items
      * @param itemID     the QuestItemID to create
      * @param amount     the size to set the created ItemStack to
-     * @throws QuestException when the QuestItem could not be created
      */
-    public Item(final FeatureApi featureApi, final ItemID itemID, final Variable<Number> amount) throws QuestException {
+    public Item(final FeatureApi featureApi, final ItemID itemID, final Variable<Number> amount) {
         this.itemID = itemID;
         this.featureApi = featureApi;
         this.amount = amount;

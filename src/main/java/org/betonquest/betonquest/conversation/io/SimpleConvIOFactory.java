@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation.io;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
@@ -26,7 +25,7 @@ public class SimpleConvIOFactory implements ConversationIOFactory {
     }
 
     @Override
-    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
+    public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
         return new SimpleConvIO(conversation, onlineProfile, colors);
     }
 }

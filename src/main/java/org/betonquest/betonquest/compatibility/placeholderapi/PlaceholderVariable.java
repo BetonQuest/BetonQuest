@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +25,7 @@ public class PlaceholderVariable implements NullableVariable {
     }
 
     @Override
-    public String getValue(@Nullable final Profile profile) throws QuestException {
+    public String getValue(@Nullable final Profile profile) {
         final OfflinePlayer player = profile == null ? null : profile.getPlayer();
         return PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
     }

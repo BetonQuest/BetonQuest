@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.conversation.Conversation;
 
@@ -17,7 +16,7 @@ public class CancelConversationEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) {
         final Conversation conv = Conversation.getConversation(profile);
         if (conv != null) {
             conv.endConversation();
