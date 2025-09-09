@@ -11,7 +11,7 @@ public abstract class ProfileEvent extends Event {
     /**
      * The profile this event is for.
      */
-    protected Profile profile;
+    protected final Profile profile;
 
     /**
      * Creates a new profile event.

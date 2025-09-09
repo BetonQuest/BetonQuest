@@ -110,7 +110,7 @@ public class NpcHider {
             for (final String idString : section.getKeys(false)) {
                 try {
                     loadKey(pack, section, idString);
-                } catch (QuestException e) {
+                } catch (final QuestException e) {
                     log.warn("Could not load hide_npcs '" + idString + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
                 }
             }
