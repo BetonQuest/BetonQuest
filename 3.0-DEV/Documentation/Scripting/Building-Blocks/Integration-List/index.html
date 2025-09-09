@@ -6615,16 +6615,25 @@ The <code>level</code> argument is optional and would convert the amount to leve
 </code></pre></div></td></tr></table></div>
 <h4 id="has-brew-hasbrew">Has Brew: <code>hasbrew</code><a class="headerlink" href="#has-brew-hasbrew" title="Permanent link">🔗</a></h4>
 <p>This condition is true if the player has the given brew with the specified amount in his inventory.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">hasbrew 2 MY_BREW</span>
+<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">hasbrew 2 &quot;MY BREW&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">hasbrew 2 brew_17 mode:id</span>
 </code></pre></div></td></tr></table></div>
 <h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link">🔗</a></h3>
 <h4 id="give-brew-givebrew">Give Brew: <code>givebrew</code><a class="headerlink" href="#give-brew-givebrew" title="Permanent link">🔗</a></h4>
 <p>Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 MY_BREW</span>
+<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 &quot;MY BREW&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">givebrew 1 10 brew_17 mode:id</span>
 </code></pre></div></td></tr></table></div>
 <h4 id="take-brew-takebrew">Take Brew: <code>takebrew</code><a class="headerlink" href="#take-brew-takebrew" title="Permanent link">🔗</a></h4>
 <p>Removes the specified drink from the players inventory. An amount needs to be specified.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">takebrew 2 MY_OTHER_BREW</span><span class="w"> </span>
+<p>You can specify the mode to select the brew by either the name or its id, defaulting to the name.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">takebrew 2 &quot;MY OTHER BREW&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">takebrew 2 brew_quest_3</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="citizens">Citizens<a href="https://www.spigotmc.org/resources/13811/"></a><a class="headerlink" href="#citizens" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin you can use it's NPCs. I highly recommend you installing it,
