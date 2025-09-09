@@ -4,9 +4,11 @@ import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
@@ -14,6 +16,11 @@ import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondit
  * Factory to create {@link MythicMobDistanceCondition}s from {@link Instruction}s.
  */
 public class MythicMobDistanceConditionFactory implements PlayerConditionFactory {
+    /**
+     * Factory to create new class specific loggers.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
     /**
      * API Helper for getting MythicMobs.
      */
@@ -27,10 +34,12 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     /**
      * Create a new factory for {@link MythicMobDistanceCondition}s.
      *
-     * @param apiHelper the api helper used get MythicMobs
-     * @param data      the primary server thread data required for main thread checking
+     * @param loggerFactory the logger factory to create class specific logger
+     * @param apiHelper     the api helper used get MythicMobs
+     * @param data          the primary server thread data required for main thread checking
      */
-    public MythicMobDistanceConditionFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data) {
+    public MythicMobDistanceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data) {
+        this.loggerFactory = loggerFactory;
         this.apiHelper = apiHelper;
         this.data = data;
     }
@@ -43,6 +52,10 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
         }
 
         final Variable<Number> distance = instruction.get(Argument.NUMBER);
-        return new PrimaryServerThreadPlayerCondition(new MythicMobDistanceCondition(apiHelper, internalName, distance), data);
+        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
+                new MythicMobDistanceCondition(apiHelper, internalName, distance),
+                loggerFactory.create(MythicMobDistanceCondition.class),
+                instruction.getPackage()
+        ), data);
     }
 }

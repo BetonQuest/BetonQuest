@@ -727,7 +727,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 #### :material-skull: Spawn MythicMob: `mspawnmob`
 
-**persistent**, **static**
+**static**
 
 | Parameter  | Syntax                                               | Default Value          | Explanation                                                                                                                             |
 |------------|------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|

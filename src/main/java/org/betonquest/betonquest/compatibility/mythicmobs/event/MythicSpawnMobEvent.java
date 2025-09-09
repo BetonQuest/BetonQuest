@@ -5,10 +5,10 @@ import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Spawns MythicMobs mobs.
  */
-public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
+public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
     /**
      * The BukkitAPIHelper used to interact with MythicMobs.
      */
@@ -102,8 +102,8 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
+    public void execute(final OnlineProfile profile) throws QuestException {
+        final Player player = profile.getPlayer();
         final int pAmount = amount.getValue(profile).intValue();
         final int level = this.level.getValue(profile).intValue();
         final Location location = loc.getValue(profile);
@@ -117,7 +117,7 @@ public class MythicSpawnMobEvent implements PlayerEvent, PlayerlessEvent {
                     if (mythicHider == null) {
                         throw new QuestException("Can't hide MythicMob because the Hider is null!");
                     }
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> mythicHider.applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> mythicHider.applyVisibilityPrivate(profile, entity), 20L);
                 }
                 if (targetPlayer) {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);

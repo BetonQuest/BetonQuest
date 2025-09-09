@@ -5,11 +5,13 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
+import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
@@ -24,6 +26,11 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
      * Expected format: {@code identifier:amount}.
      */
     private static final int MOB_FORMAT_LENGTH = 2;
+
+    /**
+     * Factory to create new class specific loggers.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * API Helper for getting MythicMobs.
@@ -43,12 +50,14 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     /**
      * Create a new factory for {@link MythicSpawnMobEvent}s.
      *
+     * @param loggerFactory the logger factory to create class specific logger
      * @param apiHelper     the api helper used get MythicMobs
      * @param data          the primary server thread data required for main thread checking
      * @param compatibility the compatibility instance to check for other hooks
      */
-    public MythicSpawnMobEventFactory(final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data,
+    public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data,
                                       final Compatibility compatibility) {
+        this.loggerFactory = loggerFactory;
         this.apiHelper = apiHelper;
         this.data = data;
         this.compatibility = compatibility;
@@ -72,7 +81,11 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         }
         final boolean targetPlayer = instruction.hasArgument("target");
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        return new PrimaryServerThreadEvent(new MythicSpawnMobEvent(apiHelper, data.plugin(), loc, mob, level, amount, privateMob, targetPlayer, marked), data);
+        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
+                new MythicSpawnMobEvent(apiHelper, data.plugin(), loc, mob, level, amount, privateMob, targetPlayer, marked),
+                loggerFactory.create(MythicSpawnMobEvent.class),
+                instruction.getPackage()
+        ), data);
     }
 
     @Override
