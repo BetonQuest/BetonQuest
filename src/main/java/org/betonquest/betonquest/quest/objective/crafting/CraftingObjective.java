@@ -41,8 +41,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
         this.item = item;
     }
 
-    private int calculateCraftAmount(final CraftItemEvent event) {
-        final ItemStack result = event.getInventory().getResult();
+    private int calculateCraftAmount(final CraftItemEvent event, final ItemStack result) {
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
         final ItemStack[] ingredients = event.getInventory().getMatrix();
         return switch (event.getClick()) {
@@ -70,7 +69,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
                 if (containsPlayer(onlineProfile)
                         && item.getValue(onlineProfile).matches(event.getInventory().getResult(), onlineProfile)
                         && checkConditions(onlineProfile)) {
-                    getCountingData(onlineProfile).progress(calculateCraftAmount(event));
+                    getCountingData(onlineProfile).progress(calculateCraftAmount(event, event.getInventory().getResult()));
                     completeIfDoneOrNotify(onlineProfile);
                 }
             });

@@ -96,6 +96,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The packet adapter used to intercept packets.
      */
+    @Nullable
     protected PacketAdapter packetAdapter;
 
     /**

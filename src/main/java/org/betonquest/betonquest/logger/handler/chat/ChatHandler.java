@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.logger.handler.chat;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -75,8 +77,12 @@ public class ChatHandler extends Handler {
     }
 
     private void sendMessageToPlayers(final Set<UUID> receivers, final String msg) {
+        final Component message = GsonComponentSerializer.gson().deserialize(msg);
         for (final UUID uuid : receivers) {
-            server.getPlayer(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+            final Player player = server.getPlayer(uuid);
+            if (player != null) {
+                player.sendMessage(message);
+            }
         }
     }
 
