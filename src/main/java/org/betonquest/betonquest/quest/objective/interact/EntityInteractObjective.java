@@ -6,10 +6,8 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
-import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -25,12 +23,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Player has to interact with specified amount of specified mobs. It can also
@@ -231,54 +224,6 @@ public class EntityInteractObjective extends CountingObjective implements Listen
     public void onArmorRightClick(final PlayerInteractAtEntityEvent event) {
         if (event.getRightClicked() instanceof ArmorStand) {
             onRightClick(event);
-        }
-    }
-
-    /**
-     * The entity counting data for the objective.
-     */
-    public static class EntityInteractData extends CountingData {
-        /**
-         * The set of entities that have been interacted with.
-         */
-        private final Set<UUID> entities;
-
-        /**
-         * Creates a new instance of the EntityInteractData.
-         *
-         * @param instruction the instruction that created this objective
-         * @param profile     the profile of the player
-         * @param objID       the ID of the objective
-         * @throws QuestException when the instruction data is malformed
-         */
-        public EntityInteractData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
-            super(instruction, profile, objID);
-            entities = new HashSet<>();
-            final String[] entityInstruction = instruction.split(";", 3);
-            if (entityInstruction.length >= 2 && !entityInstruction[1].isEmpty()) {
-                Arrays.stream(entityInstruction[1].split("/"))
-                        .map(UUID::fromString)
-                        .forEach(entities::add);
-            }
-        }
-
-        /**
-         * Checks if the interaction with a given entity progresses the objective.
-         *
-         * @param entity the entity to try to progress with
-         * @return true if the entity was added to the set, false otherwise
-         */
-        public boolean tryProgressWithEntity(final Entity entity) {
-            final boolean success = entities.add(entity.getUniqueId());
-            if (success) {
-                progress();
-            }
-            return success;
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
         }
     }
 }
