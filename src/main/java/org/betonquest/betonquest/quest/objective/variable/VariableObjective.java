@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -118,7 +119,7 @@ public class VariableObjective extends Objective {
          * @param profile     the profile of the player
          * @param objID       the ID of the objective
          */
-        public VariableData(final String instruction, final Profile profile, final String objID) {
+        public VariableData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
             variables = deserializeData(instruction);
         }

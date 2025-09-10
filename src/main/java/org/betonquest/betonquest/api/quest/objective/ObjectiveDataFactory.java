@@ -18,5 +18,5 @@ public interface ObjectiveDataFactory {
      * @return the newly created data object
      * @throws QuestException when the objective data could not be parsed
      */
-    ObjectiveData create(String instruction, Profile profile, String objID) throws QuestException;
+    ObjectiveData create(String instruction, Profile profile, ObjectiveID objID) throws QuestException;
 }

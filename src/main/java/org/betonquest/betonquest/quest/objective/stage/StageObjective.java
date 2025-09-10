@@ -168,7 +168,7 @@ public class StageObjective extends Objective {
          * @param profile     the profile
          * @param objID       the objective ID
          */
-        public StageData(final String instruction, final Profile profile, final String objID) {
+        public StageData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
         }
 

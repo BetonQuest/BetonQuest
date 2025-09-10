@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -188,7 +189,7 @@ public abstract class CountingObjective extends Objective {
          * @param profile     the {@link Profile} to create the data for
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
          */
-        public CountingData(final String instruction, final Profile profile, final String objID) {
+        public CountingData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
             this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];
@@ -219,11 +220,11 @@ public abstract class CountingObjective extends Objective {
             try {
                 return Integer.parseInt(countingInstruction);
             } catch (final NumberFormatException e) {
-                log.warn("Loaded counting objective '" + objID + "' from database with invalid amount."
+                log.warn(objID.getPackage(), "Loaded counting objective '" + objID + "' from database with invalid amount."
                         + " This is probably caused by a change of the objective's implementation."
                         + " The objective will be reset to an amount of 1."
                         + " This is normally the previous amount and can be ignored.");
-                log.debug("Invalid instruction string: '" + instruction + "'");
+                log.debug(objID.getPackage(), "Invalid instruction string: '" + instruction + "'");
                 dirty.set(true);
                 return 1;
             }

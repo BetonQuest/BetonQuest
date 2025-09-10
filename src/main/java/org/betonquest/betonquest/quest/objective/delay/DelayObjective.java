@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -192,7 +193,7 @@ public class DelayObjective extends Objective {
          * @param profile     the profile associated with this objective
          * @param objID       the ID of the objective
          */
-        public DelayData(final String instruction, final Profile profile, final String objID) {
+        public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
             timestamp = Double.parseDouble(instruction);
         }

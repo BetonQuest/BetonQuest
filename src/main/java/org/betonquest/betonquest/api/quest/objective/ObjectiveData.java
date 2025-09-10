@@ -11,19 +11,19 @@ import org.betonquest.betonquest.database.UpdateType;
  */
 public class ObjectiveData {
     /**
-     * Instruction containing all required information.
-     */
-    protected String instruction;
-
-    /**
      * Profile the data is for.
      */
-    protected Profile profile;
+    protected final Profile profile;
 
     /**
      * Full path of the ObjectiveID.
      */
-    protected String objID;
+    protected final ObjectiveID objID;
+
+    /**
+     * Instruction containing all required information.
+     */
+    protected String instruction;
 
     /**
      * The ObjectiveData object is loaded from the database and the
@@ -36,7 +36,7 @@ public class ObjectiveData {
      * @param objID       ID of the objective, used by BetonQuest to store this
      *                    ObjectiveData in the database
      */
-    public ObjectiveData(final String instruction, final Profile profile, final String objID) {
+    public ObjectiveData(final String instruction, final Profile profile, final ObjectiveID objID) {
         this.instruction = instruction;
         this.profile = profile;
         this.objID = objID;
@@ -67,8 +67,8 @@ public class ObjectiveData {
     protected final void update() {
         final BetonQuest plugin = BetonQuest.getInstance();
         final Saver saver = plugin.getSaver();
-        saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
-        saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
+        saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID.getFull()));
+        saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID.getFull(), toString()));
         final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
         plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
         plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();

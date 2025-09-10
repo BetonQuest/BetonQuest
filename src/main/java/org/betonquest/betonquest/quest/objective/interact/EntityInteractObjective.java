@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -249,7 +250,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
          * @param profile     the profile of the player
          * @param objID       the ID of the objective
          */
-        public EntityInteractData(final String instruction, final Profile profile, final String objID) {
+        public EntityInteractData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
             entities = new HashSet<>();
             final String[] entityInstruction = instruction.split(";", 3);

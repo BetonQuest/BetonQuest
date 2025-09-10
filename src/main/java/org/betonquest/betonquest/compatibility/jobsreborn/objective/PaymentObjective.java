@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -127,7 +128,7 @@ public class PaymentObjective extends Objective implements Listener {
          * @param profile     the {@link Profile} to load the data for
          * @param objID       ID of the objective, used by BetonQuest to store this ObjectiveData in the database
          */
-        public PaymentData(final String instruction, final Profile profile, final String objID) {
+        public PaymentData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
             targetAmount = Double.parseDouble(instruction);
         }

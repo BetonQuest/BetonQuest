@@ -282,7 +282,7 @@ public abstract class Objective {
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
             try {
-                final ObjectiveData data = templateFactory.create(instructionString, profile, instruction.getID().getFull());
+                final ObjectiveData data = templateFactory.create(instructionString, profile, (ObjectiveID) instruction.getID());
                 runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
                 activateObjective(profile, data);
             } catch (final QuestException exception) {
