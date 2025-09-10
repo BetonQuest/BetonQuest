@@ -143,9 +143,9 @@ public class CoreFeatureFactories {
         notifyIOTypes.register("sound", new SoundIOFactory());
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(
+        eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule::new, new RealtimeDailyScheduler(
                 loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
-        eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(
+        eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule::new, new RealtimeCronScheduler(
                 loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
 
         final TextParserRegistry textParserRegistry = registries.textParser();

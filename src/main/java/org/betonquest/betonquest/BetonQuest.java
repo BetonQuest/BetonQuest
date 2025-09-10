@@ -604,7 +604,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void onDisable() {
         if (questRegistry != null) {
-            questRegistry.eventScheduling().stopAll();
+            questRegistry.eventScheduling().clear();
         }
         // suspend all conversations
         if (profileProvider != null) {
