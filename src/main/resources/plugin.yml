@@ -40,11 +40,6 @@ softdepend:
   - FancyNpcs
   - ZNPCsPlus
 commands:
-  betonquest:
-    description: General quest command
-    usage: /<command>
-    permission: betonquest.admin
-    aliases: [ q, bq, bquest, bquests, betonquests, quest, quests ]
   journal:
     description: Adds journal to your inventory
     usage: /<command>
@@ -55,21 +50,26 @@ commands:
     usage: /<command>
     permission: betonquest.backpack
     aliases: [ b, bb, bbackpack, betonbackpack, betonquestbackpack ]
-  cancelquest:
-    description: Opens the window with quest cancelers
-    usage: /<command>
-    permission: betonquest.cancelquest
-    aliases: [ bcq, bcancelquest, betoncancelquest, betonquestcancelquest ]
   compass:
     description: Opens the compass menu
     usage: /<command>
     permission: betonquest.compass
     aliases: [ bc, bcompass, betoncompass, betonquestcompass ]
+  cancelquest:
+    description: Opens the window with quest cancelers
+    usage: /<command>
+    permission: betonquest.cancelquest
+    aliases: [ bcq, bcancelquest, betoncancelquest, betonquestcancelquest ]
   questlang:
     description: Changes the language
     usage: /<command> lang
     permission: betonquest.language
     aliases: [ ql ]
+  betonquest:
+    description: General quest command
+    usage: /<command>
+    permission: betonquest.admin
+    aliases: [ q, bq, bquest, bquests, betonquests, quest, quests ]
 permissions:
   betonquest.admin:
     default: op
