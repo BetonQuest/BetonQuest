@@ -6,9 +6,13 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,6 +36,11 @@ import java.util.Objects;
 public class DelayObjective extends Objective {
 
     /**
+     * The Factory for the Delay Data.
+     */
+    private static final ObjectiveDataFactory DELAY_FACTORY = DelayData::new;
+
+    /**
      * The delay time in seconds, minutes, or ticks.
      */
     private final Variable<Number> delay;
@@ -51,7 +60,7 @@ public class DelayObjective extends Objective {
      */
     public DelayObjective(final Instruction instruction, final Variable<Number> interval,
                           final Variable<Number> delay) throws QuestException {
-        super(instruction, DelayData.class);
+        super(instruction, DELAY_FACTORY);
         this.delay = delay;
         this.runnable = new BukkitRunnable() {
             @Override
@@ -184,10 +193,11 @@ public class DelayObjective extends Objective {
          * @param instruction the data of the objective
          * @param profile     the profile associated with this objective
          * @param objID       the ID of the objective
+         * @throws QuestException when the instruction could not be parsed as number
          */
-        public DelayData(final String instruction, final Profile profile, final String objID) {
+        public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            timestamp = Double.parseDouble(instruction);
+            timestamp = Argument.NUMBER.apply(instruction).doubleValue();
         }
 
         private double getTime() {

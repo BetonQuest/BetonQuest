@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,32 +19,32 @@ class EntityInteractObjectiveTest {
     private static final String NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED = "1/1/1/0;";
 
     @Test
-    void testCreateFromMinimalCountingDataWithoutInteractAppendix() {
-        final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData("1", null, null);
+    void testCreateFromMinimalCountingDataWithoutInteractAppendix() throws QuestException {
+        final EntityInteractData data = new EntityInteractData("1", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from default data.");
     }
 
     @Test
-    void testCreateFromExtendedCountingDataWithoutInteractAppendix() {
-        final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData("1/1/1/0", null, null);
+    void testCreateFromExtendedCountingDataWithoutInteractAppendix() throws QuestException {
+        final EntityInteractData data = new EntityInteractData("1/1/1/0", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from serialized data without UUID list.");
     }
 
     @Test
-    void testCreateFromMinimalCountingDataWithInteractAppendix() {
-        final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData("1;", null, null);
+    void testCreateFromMinimalCountingDataWithInteractAppendix() throws QuestException {
+        final EntityInteractData data = new EntityInteractData("1;", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from minimal data with empty UUID list.");
     }
 
     @Test
-    void testCreateFromExtendedCountingDataWithInteractAppendix() {
-        final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, null, null);
+    void testCreateFromExtendedCountingDataWithInteractAppendix() throws QuestException {
+        final EntityInteractData data = new EntityInteractData(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from serialized data.");
     }
 
     @Test
-    void testCreateDataWithCollected() {
-        final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData("2/1/1/1;00000000-0000-0000-0000-000000000000", null, null);
+    void testCreateDataWithCollected() throws QuestException {
+        final EntityInteractData data = new EntityInteractData("2/1/1/1;00000000-0000-0000-0000-000000000000", null, null);
         assertEquals("2/1/1/1;00000000-0000-0000-0000-000000000000", data.toString(), "Data should serialize with UUID.");
     }
 }

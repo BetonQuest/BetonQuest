@@ -9,6 +9,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +26,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and a versatile data object to track the progress.
  */
 public abstract class CountingObjective extends Objective {
+    /**
+     * The Factory for the Counting Data.
+     */
+    private static final ObjectiveDataFactory COUNTING_FACTORY = CountingData::new;
 
     /**
      * The message used for notifying the player.
@@ -45,22 +52,22 @@ public abstract class CountingObjective extends Objective {
      */
     public CountingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
-        this(instruction, CountingData.class, targetAmount, notifyMessageName);
+        this(instruction, COUNTING_FACTORY, targetAmount, notifyMessageName);
     }
 
     /**
      * Create a counting objective.
      *
      * @param instruction       the objective instruction
-     * @param template          the class of the objective data object
+     * @param templateFactory   the factory of the objective data object
      * @param targetAmount      the target amount of units required for completion
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final Instruction instruction, final Class<? extends ObjectiveData> template,
+    public CountingObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory,
                              final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
-        super(instruction, template);
+        super(instruction, templateFactory);
         final BetonQuest instance = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = instance.getLoggerFactory();
         this.targetAmount = targetAmount;
@@ -181,8 +188,9 @@ public abstract class CountingObjective extends Objective {
          *                    {@link #toString()}
          * @param profile     the {@link Profile} to create the data for
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
+         * @throws QuestException when the instruction format is invalid
          */
-        public CountingData(final String instruction, final Profile profile, final String objID) {
+        public CountingData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
             this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];
@@ -205,7 +213,7 @@ public abstract class CountingObjective extends Objective {
                     lastChange = new AtomicInteger(Integer.parseInt(instructionParts[3]));
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid instruction string: " + instruction);
+                    throw new QuestException("Invalid instruction string: " + instruction);
             }
         }
 
@@ -213,11 +221,11 @@ public abstract class CountingObjective extends Objective {
             try {
                 return Integer.parseInt(countingInstruction);
             } catch (final NumberFormatException e) {
-                log.warn("Loaded counting objective '" + objID + "' from database with invalid amount."
+                log.warn(objID.getPackage(), "Loaded counting objective '" + objID + "' from database with invalid amount."
                         + " This is probably caused by a change of the objective's implementation."
                         + " The objective will be reset to an amount of 1."
                         + " This is normally the previous amount and can be ignored.");
-                log.debug("Invalid instruction string: '" + instruction + "'");
+                log.debug(objID.getPackage(), "Invalid instruction string: '" + instruction + "'");
                 dirty.set(true);
                 return 1;
             }

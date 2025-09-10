@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.objective.variable;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -122,8 +123,9 @@ class VariableObjectiveTest {
 
     @ParameterizedTest
     @MethodSource("serializedVariableObjectiveData")
-    void loading_variables_from_serialized_data(final String serializedData, final String expectedKey, final String expectedValue, @Mock final Profile profile) {
-        final VariableObjective.VariableData data = new VariableObjective.VariableData(serializedData, profile, "");
+    void loading_variables_from_serialized_data(final String serializedData, final String expectedKey, final String expectedValue,
+                                                @Mock final Profile profile, @Mock final ObjectiveID objectiveID) {
+        final VariableObjective.VariableData data = new VariableObjective.VariableData(serializedData, profile, objectiveID);
         final String value = data.get(expectedKey);
         assertEquals(expectedValue, value, "Values from deserialized variable objective instruction should be correct.");
     }

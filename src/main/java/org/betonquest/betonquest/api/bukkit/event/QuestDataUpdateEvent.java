@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.event;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -13,9 +14,9 @@ public class QuestDataUpdateEvent extends ProfileEvent {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
-     * Objective id string.
+     * Objective id.
      */
-    private final String objID;
+    private final ObjectiveID objID;
 
     /**
      * Objective data string.
@@ -26,10 +27,10 @@ public class QuestDataUpdateEvent extends ProfileEvent {
      * Create a new Data Update event.
      *
      * @param profile the profile that changed the objective for
-     * @param objID   the string representation of the objective id
+     * @param objID   the objective id
      * @param data    the string representation of the new objective data
      */
-    public QuestDataUpdateEvent(final Profile profile, final String objID, final String data) {
+    public QuestDataUpdateEvent(final Profile profile, final ObjectiveID objID, final String data) {
         super(profile);
         this.objID = objID;
         this.data = data;
@@ -49,7 +50,7 @@ public class QuestDataUpdateEvent extends ProfileEvent {
      *
      * @return the id of the objective that changed
      */
-    public String getObjID() {
+    public ObjectiveID getObjID() {
         return objID;
     }
 

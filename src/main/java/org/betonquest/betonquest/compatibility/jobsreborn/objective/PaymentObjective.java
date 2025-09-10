@@ -6,9 +6,13 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +24,12 @@ import java.util.Objects;
  * Objective that tracks the payment received by a player.
  */
 public class PaymentObjective extends Objective implements Listener {
+
+    /**
+     * The Factory for the Payment Data.
+     */
+    private static final ObjectiveDataFactory PAYMENT_FACTORY = PaymentData::new;
+
     /**
      * The target amount of money to be received.
      */
@@ -39,7 +49,7 @@ public class PaymentObjective extends Objective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public PaymentObjective(final Instruction instruction, final Variable<Number> targetAmount, final IngameNotificationSender paymentSender) throws QuestException {
-        super(instruction, PaymentData.class);
+        super(instruction, PAYMENT_FACTORY);
         this.targetAmount = targetAmount;
         this.paymentSender = paymentSender;
     }
@@ -118,10 +128,11 @@ public class PaymentObjective extends Objective implements Listener {
          * @param instruction the instruction of the data object; parse it to get all required information
          * @param profile     the {@link Profile} to load the data for
          * @param objID       ID of the objective, used by BetonQuest to store this ObjectiveData in the database
+         * @throws QuestException when the instruction is invalid
          */
-        public PaymentData(final String instruction, final Profile profile, final String objID) {
+        public PaymentData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            targetAmount = Double.parseDouble(instruction);
+            targetAmount = Argument.NUMBER.apply(instruction).doubleValue();
         }
 
         private void add(final Double amount) {

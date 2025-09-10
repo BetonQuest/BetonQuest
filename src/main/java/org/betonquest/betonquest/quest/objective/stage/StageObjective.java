@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 
 import java.util.List;
@@ -16,6 +18,11 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class StageObjective extends Objective {
+
+    /**
+     * The Factory for the Stage Data.
+     */
+    private static final ObjectiveDataFactory STAGE_FACTORY = StageData::new;
 
     /**
      * The mapping of stages to indices.
@@ -36,7 +43,7 @@ public class StageObjective extends Objective {
      * @throws QuestException if the instruction is invalid
      */
     public StageObjective(final Instruction instruction, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
-        super(instruction, StageData.class);
+        super(instruction, STAGE_FACTORY);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
     }
@@ -151,7 +158,7 @@ public class StageObjective extends Objective {
     }
 
     /**
-     * {@link org.betonquest.betonquest.api.Objective.ObjectiveData} for {@link StageObjective}.
+     * {@link ObjectiveData} for {@link StageObjective}.
      */
     public static class StageData extends ObjectiveData {
         /**
@@ -161,7 +168,7 @@ public class StageObjective extends Objective {
          * @param profile     the profile
          * @param objID       the objective ID
          */
-        public StageData(final String instruction, final Profile profile, final String objID) {
+        public StageData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
         }
 

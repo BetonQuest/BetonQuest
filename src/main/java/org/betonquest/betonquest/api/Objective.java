@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
-import org.betonquest.betonquest.api.bukkit.event.QuestDataUpdateEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -15,30 +14,26 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.database.UpdateType;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
- * <p>
- * Superclass for all objectives. You need to extend it in order to create new
- * custom objectives.
- * </p>
- * <p>
- * Registering your objectives is done through
- * {@code BetonQuest.getQuestRegistries().objectives().register(String, Class)
- * registerObjectives()} method.
- * </p>
+ * Superclass for all objectives. You need to extend it in order to create new custom objectives.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class Objective {
+
+    /**
+     * The factory for the default Objective Data.
+     */
+    private static final ObjectiveDataFactory DATA_FACTORY = ObjectiveData::new;
 
     /**
      * Profile provider to get profiles from players.
@@ -63,7 +58,7 @@ public abstract class Objective {
     /**
      * Should be set to the data class used to hold the objective specific information.
      */
-    private final Class<? extends ObjectiveData> template;
+    private final ObjectiveDataFactory templateFactory;
 
     /**
      * Instruction of this.
@@ -105,7 +100,7 @@ public abstract class Objective {
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
     public Objective(final Instruction instruction) throws QuestException {
-        this(instruction, ObjectiveData.class);
+        this(instruction, DATA_FACTORY);
     }
 
     /**
@@ -114,13 +109,13 @@ public abstract class Objective {
      * <b>Do not register listeners here!</b>
      * This is done automatically after creation.
      *
-     * @param instruction Instruction object representing the objective
-     * @param template    the class of the objective data object
+     * @param instruction     Instruction object representing the objective
+     * @param templateFactory the factory for the objective data object
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(final Instruction instruction, final Class<? extends ObjectiveData> template) throws QuestException {
+    public Objective(final Instruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.template = template;
+        this.templateFactory = templateFactory;
         this.instruction = instruction;
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
@@ -286,40 +281,15 @@ public abstract class Objective {
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
-            createObjectiveData(profile, instructionString)
-                    .ifPresent(data -> startObjectiveWithEvent(profile, data, previousState));
+            try {
+                final ObjectiveData data = templateFactory.create(instructionString, profile, (ObjectiveID) instruction.getID());
+                runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
+                activateObjective(profile, data);
+            } catch (final QuestException exception) {
+                log.warn(instruction.getPackage(), "Error while loading " + instruction.getID() + " objective data for "
+                        + profile + ": " + exception.getMessage(), exception);
+            }
         }
-    }
-
-    private Optional<ObjectiveData> createObjectiveData(final Profile profile, final String instructionString) {
-        try {
-            return Optional.of(constructObjectiveDataUnsafe(profile, instructionString));
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
-                       | InvocationTargetException exception) {
-            handleObjectiveDataConstructionError(profile, exception);
-            return Optional.empty();
-        }
-    }
-
-    private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
-        if (exception.getCause() instanceof QuestException) {
-            log.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID() + " objective data for "
-                    + profile + ": " + exception.getCause().getMessage(), exception);
-        } else {
-            log.reportException(instruction.getPackage(), exception);
-        }
-    }
-
-    private ObjectiveData constructObjectiveDataUnsafe(final Profile profile, final String instructionString)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        final String fullId = this.instruction.getID().getFull();
-        return template.getConstructor(String.class, Profile.class, String.class)
-                .newInstance(instructionString, profile, fullId);
-    }
-
-    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) {
-        runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
-        activateObjective(profile, data);
     }
 
     /**
@@ -368,13 +338,9 @@ public abstract class Objective {
     @SuppressWarnings("PMD.AvoidSynchronizedStatement")
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
-            stopObjectiveWithEvent(profile, newState);
+            runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
+            deactivateObjective(profile);
         }
-    }
-
-    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) {
-        runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-        deactivateObjective(profile);
     }
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
@@ -406,7 +372,7 @@ public abstract class Objective {
      * Returns the data of the specified profile.
      *
      * @param profile the {@link Profile} to get the data for
-     * @return the data string for this objective
+     * @return the data string for this objective or null if there is no data
      */
     @Nullable
     public final String getData(final Profile profile) {
@@ -447,111 +413,6 @@ public abstract class Objective {
             stop(profile);
             BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFull(),
                     entry.getValue().toString());
-        }
-    }
-
-    /**
-     * Represents the states of an objective.
-     */
-    public enum ObjectiveState {
-
-        /**
-         * The objective is new and does not exist before.
-         */
-        NEW,
-
-        /**
-         * The objective is active.
-         */
-        ACTIVE,
-
-        /**
-         * The objective is complete.
-         */
-        COMPLETED,
-
-        /**
-         * The objective is paused.
-         */
-        PAUSED,
-
-        /**
-         * The objective is canceled.
-         */
-        CANCELED,
-    }
-
-    /**
-     * Stores the profile's data for the objective.
-     */
-    public static class ObjectiveData {
-        /**
-         * Instruction containing all required information.
-         */
-        protected String instruction;
-
-        /**
-         * Profile the data is for.
-         */
-        protected Profile profile;
-
-        /**
-         * Full path of the ObjectiveID.
-         */
-        protected String objID;
-
-        /**
-         * The ObjectiveData object is loaded from the database and the
-         * constructor needs to parse the data in the instruction, so it can be
-         * later retrieved and modified by your objective code.
-         *
-         * @param instruction the instruction of the data object; parse it to get all
-         *                    required information
-         * @param profile     the {@link Profile} to load the data for
-         * @param objID       ID of the objective, used by BetonQuest to store this
-         *                    ObjectiveData in the database
-         */
-        public ObjectiveData(final String instruction, final Profile profile, final String objID) {
-            this.instruction = instruction;
-            this.profile = profile;
-            this.objID = objID;
-        }
-
-        /**
-         * This method should return the whole instruction string, which can be
-         * successfully parsed by the constructor. This method is used by
-         * BetonQuest to save the ObjectiveData to the database. That's why the
-         * output syntax here must be compatible with input syntax in the
-         * constructor.
-         *
-         * @return the instruction string
-         */
-        @Override
-        public String toString() {
-            return instruction;
-        }
-
-        /**
-         * <p>
-         * Should be called when the data inside ObjectiveData changes. It will
-         * update the database with the changes.
-         * </p>
-         *
-         * <p>
-         * If you forget it, the objective will still work for players who don't
-         * leave the server. However, if someone leaves before completing, they
-         * will have to start this objective from scratch.
-         * </p>
-         */
-        protected final void update() {
-            final BetonQuest plugin = BetonQuest.getInstance();
-            final Saver saver = plugin.getSaver();
-            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
-            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
-            final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
-            plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
-            // update the journal so all possible variables display correct information
-            plugin.getPlayerDataStorage().get(profile).getJournal(plugin.getPluginMessage()).update();
         }
     }
 

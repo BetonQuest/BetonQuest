@@ -4,6 +4,9 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
+import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -23,13 +26,18 @@ import java.util.regex.Pattern;
 public class VariableObjective extends Objective {
 
     /**
+     * The Factory for the Variable Data.
+     */
+    private static final ObjectiveDataFactory VARIABLE_FACTORY = VariableData::new;
+
+    /**
      * Creates a new VariableObjective instance.
      *
      * @param instruction the instruction that created this objective
      * @throws QuestException if there is an error in the instruction
      */
     public VariableObjective(final Instruction instruction) throws QuestException {
-        super(instruction, VariableData.class);
+        super(instruction, VARIABLE_FACTORY);
     }
 
     /**
@@ -105,13 +113,13 @@ public class VariableObjective extends Objective {
         private final Map<String, String> variables;
 
         /**
-         * Constructs a mew {@link org.betonquest.betonquest.api.Objective.ObjectiveData} for this objective.
+         * Constructs a mew {@link ObjectiveData} for this objective.
          *
          * @param instruction the data of the objective
          * @param profile     the profile of the player
          * @param objID       the ID of the objective
          */
-        public VariableData(final String instruction, final Profile profile, final String objID) {
+        public VariableData(final String instruction, final Profile profile, final ObjectiveID objID) {
             super(instruction, profile, objID);
             variables = deserializeData(instruction);
         }
