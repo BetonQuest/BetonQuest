@@ -6,6 +6,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -192,10 +193,11 @@ public class DelayObjective extends Objective {
          * @param instruction the data of the objective
          * @param profile     the profile associated with this objective
          * @param objID       the ID of the objective
+         * @throws QuestException when the instruction could not be parsed as number
          */
-        public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) {
+        public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            timestamp = Double.parseDouble(instruction);
+            timestamp = Argument.NUMBER.apply(instruction).doubleValue();
         }
 
         private double getTime() {

@@ -249,8 +249,9 @@ public class EntityInteractObjective extends CountingObjective implements Listen
          * @param instruction the instruction that created this objective
          * @param profile     the profile of the player
          * @param objID       the ID of the objective
+         * @throws QuestException when the instruction data is malformed
          */
-        public EntityInteractData(final String instruction, final Profile profile, final ObjectiveID objID) {
+        public EntityInteractData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
             entities = new HashSet<>();
             final String[] entityInstruction = instruction.split(";", 3);

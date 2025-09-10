@@ -188,8 +188,9 @@ public abstract class CountingObjective extends Objective {
          *                    {@link #toString()}
          * @param profile     the {@link Profile} to create the data for
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
+         * @throws QuestException when the instruction format is invalid
          */
-        public CountingData(final String instruction, final Profile profile, final ObjectiveID objID) {
+        public CountingData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
             this.log = BetonQuest.getInstance().getLoggerFactory().create(CountingObjective.CountingData.class);
             final String countingInstruction = instruction.split(";", 2)[0];
@@ -212,7 +213,7 @@ public abstract class CountingObjective extends Objective {
                     lastChange = new AtomicInteger(Integer.parseInt(instructionParts[3]));
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid instruction string: " + instruction);
+                    throw new QuestException("Invalid instruction string: " + instruction);
             }
         }
 
