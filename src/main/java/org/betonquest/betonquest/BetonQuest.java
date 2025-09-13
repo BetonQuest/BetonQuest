@@ -384,13 +384,13 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final ParsedSectionTextCreator textCreator = new ParsedSectionTextCreator(textParser, playerDataStorage,
                 this, coreQuestRegistry.variables());
         questRegistry = QuestRegistry.create(loggerFactory.create(QuestRegistry.class), loggerFactory, this,
-                coreQuestRegistry, featureRegistries, pluginMessage, textCreator, profileProvider, playerDataStorage);
+                coreQuestRegistry, featureRegistries, pluginMessage, textParser, textCreator, profileProvider, playerDataStorage);
 
         setupUpdater();
         registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                coreQuestRegistry, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
+                coreQuestRegistry, pluginMessage, textParser, coreQuestRegistry.variables(), globalData, playerDataStorage,
                 profileProvider, this)
                 .register(questTypeRegistries);
 
@@ -400,7 +400,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         fontRegistry = new FontRegistry(defaultkey);
         fontRegistry.registerFont(defaultkey, new DefaultFont());
 
-        new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, config, conversationColors, fontRegistry)
+        new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, config, conversationColors, textParser, fontRegistry)
                 .register(featureRegistries);
 
         try {
@@ -420,7 +420,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             compatibility.postHook();
             loadData();
-            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
+            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage, textParser);
 
             try {
                 playerHider = new PlayerHider(this, this, getVariableProcessor(), profileProvider);
@@ -480,23 +480,23 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), questManager, this, questRegistry),
-                new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
+                new QuestItemHandler(config, playerDataStorage, pluginMessage, textParser, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
-                        pluginMessage, profileProvider, updater)
+                        pluginMessage, textParser, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, profileProvider, pluginMessage, config, compatibility);
+                this, playerDataStorage, profileProvider, pluginMessage, textParser, config, compatibility);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
-        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, profileProvider));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, profileProvider));
-        getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, profileProvider));
-        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, this);
+        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, textParser, profileProvider));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, textParser, profileProvider));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, textParser, profileProvider));
+        getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, textParser, profileProvider));
+        final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, textParser, profileProvider, this);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
     }
@@ -588,7 +588,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
+        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles(), pluginMessage, textParser);
 
         if (playerHider != null) {
             playerHider.stop();

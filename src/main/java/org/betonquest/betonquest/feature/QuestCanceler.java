@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -69,6 +70,11 @@ public class QuestCanceler {
     private final PluginMessage pluginMessage;
 
     /**
+     * Text parser to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * Names to displaying in different languages.
      */
     private final Text names;
@@ -103,20 +109,23 @@ public class QuestCanceler {
      * @param cancelerID    the log identifier
      * @param featureApi    the Feature API
      * @param pluginMessage the {@link PluginMessage} instance
+     * @param textParser    the text parser to parse text
      * @param names         the names used for displaying in different languages
      * @param item          the custom item used for displaying
      * @param pack          the {@link QuestPackage} of the canceler
      * @param cancelData    the relevant data to cancel a quest
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCanceler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final PlayerDataStorage playerStorage,
                          final QuestCancelerID cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
-                         final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {
+                         final TextParser textParser, final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.playerStorage = playerStorage;
         this.cancelerID = cancelerID;
         this.featureApi = featureApi;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.names = names;
         this.item = item;
         this.data = cancelData;
@@ -193,7 +202,7 @@ public class QuestCanceler {
 
     private void removeEntries(final Profile profile, final PlayerData playerData) {
         try {
-            final Journal journal = playerData.getJournal(pluginMessage);
+            final Journal journal = playerData.getJournal(pluginMessage, textParser);
             for (final JournalEntryID entry : data.journal.getValue(profile)) {
                 log.debug(pack, "  Removing journal entry " + entry);
                 journal.removePointer(entry);

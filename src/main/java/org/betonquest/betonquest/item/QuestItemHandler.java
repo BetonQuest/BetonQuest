@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -60,6 +61,11 @@ public class QuestItemHandler implements Listener {
     private final PluginMessage pluginMessage;
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -70,13 +76,16 @@ public class QuestItemHandler implements Listener {
      * @param config          the config provider
      * @param dataStorage     the storage providing player data
      * @param pluginMessage   the plugin message instance
+     * @param textParser      the text parser used to parse text
      * @param profileProvider the profile provider instance
      */
     public QuestItemHandler(final FileConfigAccessor config, final PlayerDataStorage dataStorage,
-                            final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
+                            final PluginMessage pluginMessage, final TextParser textParser,
+                            final ProfileProvider profileProvider) {
         this.config = config;
         this.dataStorage = dataStorage;
         this.pluginMessage = pluginMessage;
+        this.textParser = textParser;
         this.profileProvider = profileProvider;
     }
 
@@ -273,7 +282,7 @@ public class QuestItemHandler implements Listener {
             }
         }
         if (config.getBoolean("journal.give_on_respawn")) {
-            dataStorage.get(profileProvider.getProfile(event.getPlayer())).getJournal(pluginMessage).addToInv();
+            dataStorage.get(profileProvider.getProfile(event.getPlayer())).getJournal(pluginMessage, textParser).addToInv();
         }
     }
 

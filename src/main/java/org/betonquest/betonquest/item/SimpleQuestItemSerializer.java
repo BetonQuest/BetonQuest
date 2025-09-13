@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -29,11 +31,14 @@ public class SimpleQuestItemSerializer implements QuestItemSerializer {
 
     /**
      * Constructs a new Simple Serializer with standard {@link ItemMetaHandler}s.
+     *
+     * @param textParser      the text parser used to parse text
+     * @param bookPageWrapper the book page wrapper used to split pages
      */
-    public SimpleQuestItemSerializer() {
+    public SimpleQuestItemSerializer(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
         this(List.of(
                 new DurabilityHandler(), new NameHandler(), new LoreHandler(), new EnchantmentsHandler(),
-                new BookHandler(), new PotionHandler(), new ColorHandler(), new HeadHandler(),
+                new BookHandler(textParser, bookPageWrapper), new PotionHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
         ));
     }

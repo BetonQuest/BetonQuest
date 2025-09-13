@@ -1,4 +1,45 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.18:
+  - type: VALUE_REPLACE
+    key: journal.format.color.date.day
+    oldValue: '9'
+    newValue: '@[minimessage]<blue>'
+  - type: VALUE_REPLACE
+    key: journal.format.color.date.hour
+    oldValue: '6'
+    newValue: '@[minimessage]<gold>'
+  - type: VALUE_REPLACE
+    key: journal.format.color.line
+    oldValue: '4'
+    newValue: '@[minimessage]<dark_red>'
+  - type: VALUE_REPLACE
+    key: journal.format.color.text
+    oldValue: '0'
+    newValue: '@[minimessage]<black>'
+  - type: VALUE_REPLACE
+    key: journal.format.separator
+    oldValue: '---------------'
+    newValue: '@[minimessage]---------------'
+  - type: KEY_RENAME
+    oldKey: journal.format.chars_per_line
+    newKey: journal.format.line_length
+  - type: KEY_RENAME
+    oldKey: journal.format.lines_per_page
+    newKey: journal.format.line_count
+  - type: VALUE_REPLACE
+    key: journal.format.line_length
+    oldValue: 19
+    newValue: 114
+  - type: TYPE_TRANSFORM
+    key: journal.format.line_length
+    newType: integer
+  - type: VALUE_REPLACE
+    key: journal.format.line_count
+    oldValue: 13
+    newValue: 14
+  - type: TYPE_TRANSFORM
+    key: journal.format.line_count
+    newType: integer
 3.0.0.17:
   - type: KEY_RENAME
     oldKey: conversation.io.menu.npc_name_seperator
