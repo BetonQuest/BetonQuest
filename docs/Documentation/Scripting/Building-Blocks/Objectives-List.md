@@ -595,6 +595,28 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 tame WOLF 2 events:wolfs_tamed
 ```
 
+## Track time: `timer`
+
+Tracks time in seconds from the start of the objective to the completion of the objective.
+If you simply want to have something like wait for 10 minutes, you can use the `amount` argument.
+If you don't define the amount, the objective will run indefinitely until you complete it with the [objective event](./Events-List.md#objective-objective).
+
+| Parameter  | Syntax          | Default Value | Explanation                                                                        |
+|------------|-----------------|---------------|------------------------------------------------------------------------------------|
+| _name_     | name:text       | Disabled      | A display name for the objective that can be accessed as property.                 |
+| _interval_ | interval:number | interval:20   | How often the objective checks the conditions and adds time, in seconds.           |
+| _amount_   | amount:number   | Disabled      | The amount of time in seconds to track before the objective is completed.          |
+| _done_     | done:events     | Disabled      | Events that will be executed when the objective is done, but before it is removed. |
+
+If you want to access the time tracked by this objective in seconds, you can use the `amount`, `left` and `total` properties. 
+They are only available while the objective is active, this is still the case in the `done` events, but not in the 
+normal `events` as they are executed after the objective is already removed.
+
+```YAML title="Example"
+objectives:
+	track: timer "name:This is the Display Name" interval:10 done:done_in events:done conditions:in_region
+```
+
 ## Player must Jump: `jump`
 
 To complete this objective the player must jump. The only argument is amount. You can use the `notify` keyword to display a
