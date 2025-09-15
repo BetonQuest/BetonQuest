@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
@@ -247,6 +248,11 @@ public class CoreQuestTypes {
     private final LanguageProvider languageProvider;
 
     /**
+     * Factory to create new Player Data.
+     */
+    private final PlayerDataFactory playerDataFactory;
+
+    /**
      * Create a new Core Quest Types class for registering.
      *
      * @param loggerFactory     used in factories
@@ -260,6 +266,7 @@ public class CoreQuestTypes {
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
      * @param languageProvider  the language provider to get the default language
+     * @param playerDataFactory the factory to create player data
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
@@ -267,7 +274,7 @@ public class CoreQuestTypes {
                           final QuestTypeApi questTypeApi, final PluginMessage pluginMessage,
                           final VariableProcessor variableProcessor, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
-                          final LanguageProvider languageProvider) {
+                          final LanguageProvider languageProvider, final PlayerDataFactory playerDataFactory) {
         this.loggerFactory = loggerFactory;
         this.server = server;
         this.betonQuest = betonQuest;
@@ -278,6 +285,7 @@ public class CoreQuestTypes {
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
         this.languageProvider = languageProvider;
+        this.playerDataFactory = playerDataFactory;
         this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
 
@@ -391,7 +399,7 @@ public class CoreQuestTypes {
         eventTypes.register("notify", new NotifyEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, languageProvider));
         eventTypes.registerCombined("notifyall", new NotifyAllEventFactory(loggerFactory, data, betonQuest.getTextParser(), dataStorage, profileProvider, languageProvider));
         eventTypes.registerCombined("npcteleport", new NpcTeleportEventFactory(betonQuest.getFeatureApi(), data));
-        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeApi));
+        eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeApi, playerDataFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeApi, profileProvider));
         eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(betonQuest.getQuestPackageManager(), questTypeApi));

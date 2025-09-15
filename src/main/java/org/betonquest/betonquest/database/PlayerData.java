@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.Objective;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
@@ -38,7 +38,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidSynchronizedStatement", "PMD.CouplingBetweenObjects"})
-@SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData, PointData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -54,6 +53,11 @@ public class PlayerData implements TagData, PointData {
      * The database saver for player data.
      */
     private final Saver saver;
+
+    /**
+     * Quest Type API.
+     */
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The profile this data belongs to.
@@ -111,12 +115,18 @@ public class PlayerData implements TagData, PointData {
     /**
      * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param profile the profile to load the data for
+     * @param log          the custom logger for this class
+     * @param packManager  the quest package manager to get quest packages from
+     * @param saver        the saver to persist data changes
+     * @param questTypeApi the Quest Type API
+     * @param profile      the profile to load the data for
      */
-    public PlayerData(final Profile profile) {
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
-        this.packManager = BetonQuest.getInstance().getQuestPackageManager();
-        this.saver = BetonQuest.getInstance().getSaver();
+    public PlayerData(final BetonQuestLogger log, final QuestPackageManager packManager, final Saver saver,
+                      final QuestTypeApi questTypeApi, final Profile profile) {
+        this.log = log;
+        this.packManager = packManager;
+        this.saver = saver;
+        this.questTypeApi = questTypeApi;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
         loadAllPlayerData();
@@ -335,7 +345,7 @@ public class PlayerData implements TagData, PointData {
             final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(packManager, null, objective);
-                BetonQuest.getInstance().getQuestTypeApi().resumeObjective(profile, objectiveID, entry.getValue());
+                questTypeApi.resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
@@ -362,7 +372,7 @@ public class PlayerData implements TagData, PointData {
     public void addNewRawObjective(final ObjectiveID objectiveID) {
         final Objective obj;
         try {
-            obj = BetonQuest.getInstance().getQuestTypeApi().getObjective(objectiveID);
+            obj = questTypeApi.getObjective(objectiveID);
         } catch (final QuestException e) {
             log.warn(objectiveID.getPackage(), "Cannot add objective to player data: " + e.getMessage(), e);
             return;
@@ -547,7 +557,7 @@ public class PlayerData implements TagData, PointData {
      * @param pluginMessage the plugin message to generate a new journal
      */
     public void purgePlayer(final PluginMessage pluginMessage) {
-        for (final Objective obj : BetonQuest.getInstance().getQuestTypeApi().getPlayerObjectives(profile)) {
+        for (final Objective obj : questTypeApi.getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
         // clear all lists

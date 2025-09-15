@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 
 import java.util.Collection;
@@ -36,6 +37,11 @@ public class PlayerDataStorage {
     private final ConfigAccessor config;
 
     /**
+     * Factory to create new Player Data.
+     */
+    private final PlayerDataFactory playerDataFactory;
+
+    /**
      * Objective processor to start (global) objectives.
      */
     private final ObjectiveProcessor objectives;
@@ -48,18 +54,20 @@ public class PlayerDataStorage {
     /**
      * Create a new Storage for Player Data.
      *
-     * @param loggerFactory   the logger factory to use in Conversation Resumer
-     * @param log             the logger for debug messages
-     * @param config          the plugin configuration file
-     * @param objectives      the objective processor to start (global) objectives
-     * @param profileProvider the profile provider to use
+     * @param loggerFactory     the logger factory to use in Conversation Resumer
+     * @param log               the logger for debug messages
+     * @param config            the plugin configuration file
+     * @param playerDataFactory the factory to create player data
+     * @param objectives        the objective processor to start (global) objectives
+     * @param profileProvider   the profile provider to use
      */
     public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                             final ConfigAccessor config, final ObjectiveProcessor objectives,
+                             final ConfigAccessor config, final PlayerDataFactory playerDataFactory, final ObjectiveProcessor objectives,
                              final ProfileProvider profileProvider) {
         this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;
+        this.playerDataFactory = playerDataFactory;
         this.objectives = objectives;
         this.playerDataMap = new ProfileKeyMap<>(profileProvider, new ConcurrentHashMap<>());
     }
@@ -72,8 +80,7 @@ public class PlayerDataStorage {
      */
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
-            final PlayerData playerData = new PlayerData(onlineProfile);
-            put(onlineProfile, playerData);
+            final PlayerData playerData = init(onlineProfile);
             playerData.startObjectives();
             playerData.getJournal(pluginMessage).update();
             if (playerData.getActiveConversation() != null) {
@@ -104,6 +111,19 @@ public class PlayerDataStorage {
             objectives.startAll(onlineProfile, this);
             playerData.getJournal(pluginMessage).update();
         }
+    }
+
+    /**
+     * Creates new PlayerData and {@link #put(Profile, PlayerData) puts} it into this storage.
+     *
+     * @param profile the {@link Profile} of the player
+     * @return the created PlayerData
+     */
+    public PlayerData init(final Profile profile) {
+        log.debug("Creating new data for " + profile);
+        final PlayerData playerData = playerDataFactory.createPlayerData(profile);
+        put(profile, playerData);
+        return playerData;
     }
 
     /**
@@ -141,8 +161,7 @@ public class PlayerDataStorage {
         PlayerData playerData = playerDataMap.get(profile);
         if (playerData == null) {
             if (profile.getOnlineProfile().isPresent()) {
-                playerData = new PlayerData(profile);
-                put(profile, playerData);
+                playerData = init(profile);
             } else {
                 throw new IllegalArgumentException("The profile has no online player!");
             }
@@ -162,7 +181,7 @@ public class PlayerDataStorage {
         if (profile.getOnlineProfile().isPresent()) {
             return get(profile);
         }
-        return new PlayerData(profile);
+        return playerDataFactory.createPlayerData(profile);
     }
 
     /**

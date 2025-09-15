@@ -34,6 +34,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -117,6 +118,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final ProfileProvider profileProvider;
 
     /**
+     * Factory to create new Player Data.
+     */
+    private final PlayerDataFactory playerDataFactory;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -157,6 +163,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param plugin                the BetonQuest plugin instance
      * @param dataStorage           the storage providing player data
      * @param profileProvider       the profile provider
+     * @param playerDataFactory     the factory to create player data
      * @param pluginMessage         the {@link PluginMessage} instance
      * @param config                the plugin configuration accessor
      * @param compatibility         the compatibility instance to use for compatibility checks
@@ -165,7 +172,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
-                        final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
+                        final PlayerDataStorage dataStorage, final ProfileProvider profileProvider, final PlayerDataFactory playerDataFactory,
                         final PluginMessage pluginMessage, final ConfigAccessor config, final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -175,6 +182,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.instance = plugin;
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
+        this.playerDataFactory = playerDataFactory;
         this.pluginMessage = pluginMessage;
         this.config = config;
         this.compatibility = compatibility;
@@ -501,7 +509,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return dataStorage.get(profile);
         } else {
             log.debug("Profile is offline, loading his data");
-            return new PlayerData(profile);
+            return playerDataFactory.createPlayerData(profile);
         }
     }
 
@@ -1062,7 +1070,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             playerData = dataStorage.get(profile);
         } else {
             log.debug("Profile is offline, loading his data");
-            playerData = new PlayerData(profile);
+            playerData = playerDataFactory.createPlayerData(profile);
         }
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {

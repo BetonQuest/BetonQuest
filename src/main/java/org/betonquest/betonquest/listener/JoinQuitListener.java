@@ -99,7 +99,7 @@ public class JoinQuitListener implements Listener {
             return;
         }
         final Profile profile = profileProvider.getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
-        playerDataStorage.put(profile, new PlayerData(profile));
+        playerDataStorage.init(profile);
     }
 
     /**

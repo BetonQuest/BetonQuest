@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
+import org.betonquest.betonquest.database.PlayerDataFactory;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,17 +38,24 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     private final QuestTypeApi questTypeApi;
 
     /**
+     * Factory to create new Player Data.
+     */
+    private final PlayerDataFactory playerDataFactory;
+
+    /**
      * Creates a new factory for {@link ObjectiveEvent}s.
      *
-     * @param betonQuest    the BetonQuest instance
-     * @param loggerFactory the logger factory to create a logger for the events
-     * @param questTypeApi  the Quest Type API
+     * @param betonQuest        the BetonQuest instance
+     * @param loggerFactory     the logger factory to create a logger for the events
+     * @param questTypeApi      the Quest Type API
+     * @param playerDataFactory the factory to create player data
      */
     public ObjectiveEventFactory(final BetonQuest betonQuest, final BetonQuestLoggerFactory loggerFactory,
-                                 final QuestTypeApi questTypeApi) {
+                                 final QuestTypeApi questTypeApi, final PlayerDataFactory playerDataFactory) {
         this.betonQuest = betonQuest;
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
+        this.playerDataFactory = playerDataFactory;
     }
 
     @Override
@@ -64,6 +72,6 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
         final String action = instruction.next().toLowerCase(Locale.ROOT);
         final Variable<List<ObjectiveID>> objectives = instruction.getList(ObjectiveID::new);
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
-                questTypeApi, instruction.getPackage(), objectives, action));
+                questTypeApi, instruction.getPackage(), objectives, playerDataFactory, action));
     }
 }
