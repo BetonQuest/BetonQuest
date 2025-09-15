@@ -67,7 +67,8 @@ public class PackageSeparator implements QuestMigration {
         replaceSeparatorSimple(config, "events", "(objective \\S+ )(\\S+)");
         replace(config, "events", value -> value.startsWith("party "),
                 value -> replaceSeparatorMultiple(value, "(party \\S+ )(\\S+)", "(party \\S+ \\S+ )(\\S+)"));
-        replaceSeparatorSimple(config, "events", "(pickrandom )(\\S+)");
+        replace(config, "events", value -> value.startsWith("pickrandom "),
+                this::replaceSeparatorPickRandom);
         replaceSeparatorSimple(config, "events", "(point )(\\S+)");
         replace(config, "events", value -> value.startsWith("runForAll "),
                 value -> replaceSeparatorMultiple(value, "( where:)(\\S+)", "( events:)(\\S+)"));
@@ -163,6 +164,17 @@ public class PackageSeparator implements QuestMigration {
         }
         matcher.appendTail(stringBuffer);
         return stringBuffer.toString();
+    }
+
+    private String replaceSeparatorPickRandom(final String listInput) {
+        final String[] valueParts = listInput.split(",", -1);
+        for (int i = 0; i < valueParts.length; i++) {
+            final String valuePart = valueParts[i];
+            if (!valuePart.contains("%")) {
+                valueParts[i] = valuePart.replaceFirst("~(.*)\\.", "~$1>");
+            }
+        }
+        return String.join(",", valueParts);
     }
 
     private void replaceSeparatorInList(final MultiConfiguration config, final String... selection) {
