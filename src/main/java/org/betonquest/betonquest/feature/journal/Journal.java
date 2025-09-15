@@ -226,7 +226,7 @@ public class Journal {
      */
     public List<String> getText() {
         final List<String> list;
-        if (Boolean.parseBoolean(config.getString("journal.format.reversed_order"))) {
+        if (config.getBoolean("journal.format.reversed_order")) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
@@ -244,7 +244,7 @@ public class Journal {
     public void generateTexts() {
         texts.clear();
         mainPage = generateMainPage();
-        final boolean displayDatePrefix = "false".equalsIgnoreCase(config.getString("journal.format.hide_date"));
+        final boolean displayDatePrefix = !config.getBoolean("journal.format.hide_date");
         for (final Pointer pointer : pointers) {
             final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
             final JournalEntryID entryID = pointer.pointer();
