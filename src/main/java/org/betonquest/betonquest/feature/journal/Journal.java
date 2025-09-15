@@ -50,7 +50,7 @@ import java.util.Set;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
 public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -162,11 +162,21 @@ public class Journal {
                 return false;
             }
             final Component journalTitle = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title");
-            return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE) && Objects.equals(item.getItemMeta().lore(), getJournalLore(onlineProfile));
+            return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE)
+                    && Objects.equals(compactList(item.getItemMeta().lore()), compactList(getJournalLore(onlineProfile)));
         } catch (final QuestException e) {
             LOG.warn("Failed to check if the journal's title is correct: " + e.getMessage(), e);
             return false;
         }
+    }
+
+    private static List<Component> compactList(@Nullable final List<Component> list) {
+        if (list == null) {
+            return List.of();
+        }
+        return list.stream()
+                .map(Component::compact)
+                .toList();
     }
 
     private static List<Component> getJournalLore(final Profile profile) throws QuestException {
@@ -402,7 +412,6 @@ public class Journal {
      * @return the journal ItemStack
      * @throws QuestException if the journal cannot be generated
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     public ItemStack getAsItem() throws QuestException {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 
@@ -420,13 +429,8 @@ public class Journal {
             }
             finalList.addAll(getText());
         } else {
-            final Component line;
-            if (config.getBoolean("journal.format.show_separator")) {
-                final Component separator = textParser.parse(config.getString("journal.format.separator"));
-                line = color.append(separator.append(Component.newline()));
-            } else {
-                line = Component.newline();
-            }
+            final Component separator = textParser.parse(config.getString("journal.format.separator"));
+            final Component line = color.append(separator.append(Component.newline()));
 
             final TextComponent.Builder stringBuilder = Component.text();
             if (mainPage != null) {

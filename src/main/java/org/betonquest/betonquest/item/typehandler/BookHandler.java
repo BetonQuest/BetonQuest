@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +30,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
      * The title.
      */
     @Nullable
-    private String title;
+    private Component title;
 
     /**
      * The required title existence.
@@ -41,7 +41,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
      * The author.
      */
     @Nullable
-    private String author;
+    private Component author;
 
     /**
      * The required author existence.
@@ -86,12 +86,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         final String title;
         final String text;
         if (bookMeta.hasAuthor()) {
-            author = " author:" + bookMeta.getAuthor().replace(" ", "_");
+            author = " \"author:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.author()) + "\"";
         } else {
             author = "";
         }
         if (bookMeta.hasTitle()) {
-            title = " title:" + bookMeta.getTitle().replace(" ", "_");
+            title = " \"title:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.title()) + "\"";
         } else {
             title = "";
         }
@@ -105,16 +105,10 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     private String buildPages(final BookMeta bookMeta) {
         if (bookMeta.hasPages()) {
             final StringBuilder builder = new StringBuilder();
-            for (final String page : bookMeta.getPages()) {
-                String processedPage = page;
-                if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
-                    processedPage = processedPage.substring(1, processedPage.length() - 1);
-                }
-                // this will remove black color code between lines
-                // Bukkit is adding it for some reason (probably to mess people's code)
-                builder.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
+            for (final Component page : bookMeta.pages()) {
+                builder.append(MiniMessage.miniMessage().serialize(page).replace("|", "\\|")).append('|');
             }
-            return " text:" + builder.substring(0, builder.length() - 1);
+            return " \"text:@[minimessage]" + builder.substring(0, builder.length() - 1) + "\"";
         }
         return "";
     }
@@ -131,33 +125,30 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     @Override
     public void populate(final BookMeta bookMeta) {
-        bookMeta.setTitle(title);
-        bookMeta.setAuthor(author);
-        bookMeta.pages(text);
+        bookMeta.title(title).author(author).pages(text);
     }
 
     @Override
     public boolean check(final BookMeta bookMeta) {
-        return checkExistence(titleE, title, bookMeta.getTitle())
-                && checkExistence(authorE, author, bookMeta.getAuthor())
+        return checkExistence(titleE, title, bookMeta.title())
+                && checkExistence(authorE, author, bookMeta.title())
                 && checkText(bookMeta.pages());
     }
 
-    private void setTitle(final String string) {
+    private void setTitle(final String string) throws QuestException {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             titleE = Existence.FORBIDDEN;
         } else {
-            title = string.replace('_', ' ');
-            title = ChatColor.translateAlternateColorCodes('&', title);
+            title = textParser.parse(string);
             titleE = Existence.REQUIRED;
         }
     }
 
-    private void setAuthor(final String string) {
+    private void setAuthor(final String string) throws QuestException {
         if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
             authorE = Existence.FORBIDDEN;
         } else {
-            author = string.replace("_", " ");
+            author = textParser.parse(string);
             authorE = Existence.REQUIRED;
         }
     }
@@ -172,11 +163,11 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         }
     }
 
-    private boolean checkExistence(final Existence existence, @Nullable final String present, @Nullable final String string) {
+    private boolean checkExistence(final Existence existence, @Nullable final Component present, @Nullable final Component string) {
         return switch (existence) {
             case WHATEVER -> true;
             case REQUIRED -> string != null && string.equals(present);
-            case FORBIDDEN -> string == null || string.isBlank();
+            case FORBIDDEN -> string == null || string.equals(Component.empty());
         };
     }
 

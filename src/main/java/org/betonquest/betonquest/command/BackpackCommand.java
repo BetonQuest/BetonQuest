@@ -44,8 +44,7 @@ public class BackpackCommand implements CommandExecutor {
      * @param pluginMessage   the {@link PluginMessage} instance
      * @param profileProvider the profile provider instance
      */
-    public BackpackCommand(final BetonQuestLogger log, final ConfigAccessor config, final PluginMessage pluginMessage,
-                           final ProfileProvider profileProvider) {
+    public BackpackCommand(final BetonQuestLogger log, final ConfigAccessor config, final PluginMessage pluginMessage, final ProfileProvider profileProvider) {
         this.log = log;
         this.config = config;
         this.pluginMessage = pluginMessage;

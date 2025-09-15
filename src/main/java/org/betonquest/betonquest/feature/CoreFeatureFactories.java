@@ -43,7 +43,7 @@ import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySched
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.text.parser.LegacyParser;
 import org.betonquest.betonquest.text.parser.MineDownParser;
-import org.betonquest.betonquest.text.parser.MiniTextParser;
+import org.betonquest.betonquest.text.parser.MiniMessageParser;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
@@ -170,7 +170,7 @@ public class CoreFeatureFactories {
                 .build();
         textParserRegistry.register("legacy", new LegacyParser(legacySerializer));
         final MiniMessage miniMessage = MiniMessage.miniMessage();
-        textParserRegistry.register("minimessage", new MiniTextParser(miniMessage));
+        textParserRegistry.register("minimessage", new MiniMessageParser(miniMessage));
         final MiniMessage legacyMiniMessage = MiniMessage.builder()
                 .preProcessor(input -> {
                     final TextComponent deserialize = legacySerializer.deserialize(ChatColor.translateAlternateColorCodes('&', input.replaceAll("(?<!\\\\)\\\\n", "\n")));
@@ -178,7 +178,7 @@ public class CoreFeatureFactories {
                     return serialize.replaceAll("\\\\<", "<");
                 })
                 .build();
-        textParserRegistry.register("legacyminimessage", new MiniTextParser(legacyMiniMessage));
+        textParserRegistry.register("legacyminimessage", new MiniMessageParser(legacyMiniMessage));
         textParserRegistry.register("minedown", new MineDownParser());
     }
 }

@@ -311,7 +311,7 @@ public class SQLite extends Database {
                 final FontRegistry fontRegistry = new FontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
                 final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager(),
-                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message), bookPageWrapper);
+                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")), bookPageWrapper);
 
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");

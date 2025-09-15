@@ -96,8 +96,8 @@ public record QuestRegistry(
     public static QuestRegistry create(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                        final BetonQuest plugin, final CoreQuestRegistry coreQuestRegistry,
                                        final FeatureRegistries otherRegistries, final PluginMessage pluginMessage,
-                                       final ParsedSectionTextCreator textCreator,
-                                       final ProfileProvider profileProvider, final PlayerDataStorage playerDataStorage) {
+                                       final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
+                                       final PlayerDataStorage playerDataStorage) {
         final VariableProcessor variables = coreQuestRegistry.variables();
         final QuestPackageManager packManager = plugin.getQuestPackageManager();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), packManager, otherRegistries.eventScheduling());

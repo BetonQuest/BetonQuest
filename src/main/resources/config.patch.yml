@@ -1,5 +1,7 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
 3.0.0.18:
+  - type: REMOVE
+    key: journal.format.show_separator
   - type: VALUE_REPLACE
     key: journal.format.color.date.day
     oldValue: '9'
@@ -19,7 +21,7 @@
   - type: VALUE_REPLACE
     key: journal.format.separator
     oldValue: '---------------'
-    newValue: '@[minimessage]---------------'
+    newValue: '@[minimessage]<newline>'
   - type: KEY_RENAME
     oldKey: journal.format.chars_per_line
     newKey: journal.format.line_length

@@ -104,8 +104,7 @@ journal:
     one_entry_per_page: false
     reversed_order: true
     full_main_page: false
-    separator: '@[minimessage]---------------'
-    show_separator: false
+    separator: '@[minimessage]<newline>'
     hide_date: false
     color:
       date:

@@ -281,10 +281,8 @@ The journal is a special item used to store quest entries and other information.
     * `full_main_page` - If set to `true`, the main page of the journal will always take a full page.
       If a lot of information is being displayed, it is advised to make this true.
       If you use the main page only for small notifications, set it to false, so the entries can follow immediately.
-    * `separator` - The separator between journal entries.
-      It is used to visually separate entries in the journal. 
-    * `show_separator` - If set to `true`, a separator will be shown between journal entries.
-      You can customize the separator with the `separator` setting.
+    * `separator` - The separator between journal entries if multiple entries are on one page.
+      It is used to visually separate entries in the journal.
     * `hide_date` - If set to `true`, the date of each entry will be hidden.
       Set it to true if you don't want this functionality.
     * `color`  
