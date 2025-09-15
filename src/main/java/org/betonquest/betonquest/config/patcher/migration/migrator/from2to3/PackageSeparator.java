@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.config.patcher.migration.migrator.from2to3;
 
+import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
@@ -109,8 +110,12 @@ public class PackageSeparator implements QuestMigration {
         replaceSeparatorInList(config, "conversations", "*", "player_options", "*", "conditions");
         replaceSeparatorInList(config, "conversations", "*", "player_options", "*", "events");
         replaceSeparatorInList(config, "conversations", "*", "first");
-        replaceSeparatorInList(config, "conversations", "*", "NPC_options", "*", "pointers");
-        replaceSeparatorInList(config, "conversations", "*", "player_options", "*", "pointers");
+        replaceSeparatorInList(config, value -> {
+            return StringUtils.countMatches(value, ".") == 2 ? replaceSeparatorInList(value) : value;
+        }, "conversations", "*", "NPC_options", "*", "pointers");
+        replaceSeparatorInList(config, value -> {
+            return StringUtils.countMatches(value, ".") == 2 ? replaceSeparatorInList(value) : value;
+        }, "conversations", "*", "player_options", "*", "pointers");
 
         replaceSeparatorInList(config, "holograms", "*", "conditions");
         replaceSeparatorInList(config, "npc_holograms", "*", "conditions");
