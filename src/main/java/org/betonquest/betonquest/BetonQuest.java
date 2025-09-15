@@ -45,6 +45,7 @@ import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Database;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.MySQL;
+import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.CoreFeatureFactories;
@@ -363,7 +364,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config, coreQuestRegistry.objectives(), profileProvider);
+        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, coreQuestRegistry);
+        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
+                playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
         featureRegistries = FeatureRegistries.create(loggerFactory);
 
@@ -391,7 +394,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
                 coreQuestRegistry, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
-                profileProvider, this)
+                profileProvider, this, playerDataFactory)
                 .register(questTypeRegistries);
 
         conversationColors = new ConversationColors(textParser, config);
@@ -413,7 +416,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         compatibility = new Compatibility(this, loggerFactory.create(Compatibility.class));
 
-        registerCommands(receiverSelector, debugHistoryHandler);
+        registerCommands(receiverSelector, debugHistoryHandler, playerDataFactory);
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
@@ -486,10 +489,11 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
-    private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler) {
+    private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler,
+                                  final PlayerDataFactory playerDataFactory) {
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, profileProvider, pluginMessage, config, compatibility);
+                this, playerDataStorage, profileProvider, playerDataFactory, pluginMessage, config, compatibility);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));
