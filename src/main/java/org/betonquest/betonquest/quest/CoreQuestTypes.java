@@ -162,6 +162,7 @@ import org.betonquest.betonquest.quest.objective.smelt.SmeltingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.stage.StageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.timer.TimerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
 import org.betonquest.betonquest.quest.variable.condition.ConditionVariableFactory;
 import org.betonquest.betonquest.quest.variable.constant.ConstantVariableFactory;
@@ -447,6 +448,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("stage", new StageObjectiveFactory());
         objectiveTypes.register("step", new StepObjectiveFactory());
         objectiveTypes.register("tame", new TameObjectiveFactory());
+        objectiveTypes.register("timer", new TimerObjectiveFactory(questTypeApi));
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", new EquipItemObjectiveFactory());
         objectiveTypes.register("jump", new JumpObjectiveFactory());
