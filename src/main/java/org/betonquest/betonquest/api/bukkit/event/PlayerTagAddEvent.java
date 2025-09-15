@@ -21,11 +21,12 @@ public class PlayerTagAddEvent extends ProfileEvent {
     /**
      * Creates a new PlayerTagAddEvent.
      *
-     * @param who the {@link Profile} whose tag has added
-     * @param tag added tag
+     * @param who     the {@link Profile} whose tag has added
+     * @param isAsync whether the event is async
+     * @param tag     added tag
      */
-    public PlayerTagAddEvent(final Profile who, final String tag) {
-        super(who);
+    public PlayerTagAddEvent(final Profile who, final boolean isAsync, final String tag) {
+        super(who, isAsync);
         this.tag = tag;
     }
 

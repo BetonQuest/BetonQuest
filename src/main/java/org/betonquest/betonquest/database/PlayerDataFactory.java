@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.bukkit.Server;
 
 /**
  * Factory to create PlayerData objects for profiles.
@@ -25,6 +26,11 @@ public class PlayerDataFactory {
     private final Saver saver;
 
     /**
+     * The server to determine if an event should be async.
+     */
+    private final Server server;
+
+    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -35,13 +41,15 @@ public class PlayerDataFactory {
      * @param loggerFactory the logger factory to create class specific logger
      * @param packManager   the quest package manager to get quest packages from
      * @param saver         the saver to persist data changes
+     * @param server        the server to determine if an event should be stated as async
      * @param questTypeApi  the Quest Type API
      */
     public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final Saver saver, final QuestTypeApi questTypeApi) {
+                             final Saver saver, final Server server, final QuestTypeApi questTypeApi) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.saver = saver;
+        this.server = server;
         this.questTypeApi = questTypeApi;
     }
 
@@ -52,6 +60,6 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, questTypeApi, profile);
+        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, server, questTypeApi, profile);
     }
 }

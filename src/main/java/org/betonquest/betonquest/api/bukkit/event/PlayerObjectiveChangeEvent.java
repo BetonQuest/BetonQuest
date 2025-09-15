@@ -40,14 +40,15 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      * Constructor of PlayerObjectiveChangeEvent.
      *
      * @param who           {@link Profile} who change this objective
+     * @param isAsync       whether the event is async
      * @param objective     objective which will be changed
      * @param objectiveID   the objective id
      * @param state         future state of this objective
      * @param previousState previous state of this objective
      */
-    public PlayerObjectiveChangeEvent(final Profile who, final Objective objective, final Identifier objectiveID,
+    public PlayerObjectiveChangeEvent(final Profile who, final boolean isAsync, final Objective objective, final Identifier objectiveID,
                                       final ObjectiveState state, final ObjectiveState previousState) {
-        super(who);
+        super(who, isAsync);
         this.objective = objective;
         this.objectiveID = objectiveID;
         this.state = state;

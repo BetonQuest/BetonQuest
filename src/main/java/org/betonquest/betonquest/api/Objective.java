@@ -344,8 +344,8 @@ public abstract class Objective {
     }
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
-        BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile, this, instruction.getID(), newState, previousState));
+        final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
+        new PlayerObjectiveChangeEvent(profile, isAsync, this, instruction.getID(), newState, previousState).callEvent();
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {

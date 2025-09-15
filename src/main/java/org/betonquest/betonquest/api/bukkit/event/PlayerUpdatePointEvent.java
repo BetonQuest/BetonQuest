@@ -26,11 +26,12 @@ public class PlayerUpdatePointEvent extends ProfileEvent {
      * Creates a new PlayerAddPointEvent.
      *
      * @param who      the {@link Profile} whose points was added
+     * @param isAsync  whether the event is async
      * @param category the category whose points were updated
      * @param newCount the updated total points count of the involved category
      */
-    public PlayerUpdatePointEvent(final Profile who, final String category, final int newCount) {
-        super(who);
+    public PlayerUpdatePointEvent(final Profile who, final boolean isAsync, final String category, final int newCount) {
+        super(who, isAsync);
         this.category = category;
         this.newCount = newCount;
     }

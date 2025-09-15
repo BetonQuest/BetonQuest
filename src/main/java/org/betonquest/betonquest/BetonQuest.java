@@ -92,7 +92,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
@@ -272,19 +271,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         return instance;
     }
 
-    /**
-     * Ensures that the given event is called on the main server thread.
-     *
-     * @param event the event to call
-     */
-    public void callSyncBukkitEvent(final Event event) {
-        if (getServer().isPrimaryThread()) {
-            event.callEvent();
-        } else {
-            getServer().getScheduler().runTask(this, event::callEvent);
-        }
-    }
-
     private <T> T registerAndGetService(final Class<T> clazz, final T service) {
         final ServicesManager servicesManager = getServer().getServicesManager();
         servicesManager.register(clazz, service, this, ServicePriority.Lowest);
@@ -364,7 +350,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
-        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, coreQuestRegistry);
+        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(), coreQuestRegistry);
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
