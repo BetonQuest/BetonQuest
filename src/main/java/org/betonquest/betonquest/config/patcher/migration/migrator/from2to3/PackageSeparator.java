@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
 
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +69,7 @@ public class PackageSeparator implements QuestMigration {
         replace(config, "events", value -> value.startsWith("party "),
                 value -> replaceSeparatorMultiple(value, "(party \\S+ )(\\S+)", "(party \\S+ \\S+ )(\\S+)"));
         replace(config, "events", value -> value.startsWith("pickrandom "),
-                this::replaceSeparatorPickRandom);
+                value -> replaceSeparatorInList(value, part -> part.replaceFirst("~(.*)\\.", "~$1>")));
         replaceSeparatorSimple(config, "events", "(point )(\\S+)");
         replace(config, "events", value -> value.startsWith("runForAll "),
                 value -> replaceSeparatorMultiple(value, "( where:)(\\S+)", "( events:)(\\S+)"));
@@ -166,18 +167,11 @@ public class PackageSeparator implements QuestMigration {
         return stringBuffer.toString();
     }
 
-    private String replaceSeparatorPickRandom(final String listInput) {
-        final String[] valueParts = listInput.split(",", -1);
-        for (int i = 0; i < valueParts.length; i++) {
-            final String valuePart = valueParts[i];
-            if (!valuePart.contains("%")) {
-                valueParts[i] = valuePart.replaceFirst("~(.*)\\.", "~$1>");
-            }
-        }
-        return String.join(",", valueParts);
+    private void replaceSeparatorInList(final MultiConfiguration config, final String... selection) {
+        replaceSeparatorInList(config, this::replaceSeparatorInList, selection);
     }
 
-    private void replaceSeparatorInList(final MultiConfiguration config, final String... selection) {
+    private void replaceSeparatorInList(final MultiConfiguration config, final Function<String, String> operation, final String... selection) {
         for (final String key : config.getKeys(true)) {
             if (!keyMatchesSelection(key.split("\\."), selection)) {
                 continue;
@@ -185,7 +179,7 @@ public class PackageSeparator implements QuestMigration {
             if (!config.isString(key)) {
                 continue;
             }
-            config.set(key, replaceSeparatorInList(config.getString(key, "")));
+            config.set(key, operation.apply(config.getString(key, "")));
         }
     }
 
@@ -204,11 +198,15 @@ public class PackageSeparator implements QuestMigration {
     }
 
     private String replaceSeparatorInList(final String listInput) {
+        return replaceSeparatorInList(listInput, value -> value.replaceFirst("\\.", ">"));
+    }
+
+    private String replaceSeparatorInList(final String listInput, final Function<String, String> operation) {
         final String[] valueParts = listInput.split(",", -1);
         for (int i = 0; i < valueParts.length; i++) {
             final String valuePart = valueParts[i];
             if (!valuePart.contains("%")) {
-                valueParts[i] = valuePart.replaceFirst("\\.", ">");
+                valueParts[i] = operation.apply(valuePart);
             }
         }
         return String.join(",", valueParts);
