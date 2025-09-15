@@ -59,6 +59,16 @@ public class Journal {
     private final PluginMessage pluginMessage;
 
     /**
+     * The Quest Type API.
+     */
+    private final QuestTypeApi questTypeApi;
+
+    /**
+     * The Feature API.
+     */
+    private final FeatureApi featureApi;
+
+    /**
      * The profile of the player whose journal is created.
      */
     private final Profile profile;
@@ -93,12 +103,17 @@ public class Journal {
      * Creates new Journal instance from List of Pointers.
      *
      * @param pluginMessage the {@link PluginMessage} instance
+     * @param questTypeApi  the Quest Type API
+     * @param featureApi    the Feature API
      * @param profile       the {@link OnlineProfile} of the player whose journal is created
      * @param list          list of pointers to journal entries
      * @param config        a {@link ConfigAccessor} that contains the plugin's configuration
      */
-    public Journal(final PluginMessage pluginMessage, final Profile profile, final List<Pointer> list, final ConfigAccessor config) {
+    public Journal(final PluginMessage pluginMessage, final QuestTypeApi questTypeApi, final FeatureApi featureApi, final Profile profile,
+                   final List<Pointer> list, final ConfigAccessor config) {
         this.pluginMessage = pluginMessage;
+        this.questTypeApi = questTypeApi;
+        this.featureApi = featureApi;
         this.profile = profile;
         this.pointers = list;
         this.config = config;
@@ -230,7 +245,6 @@ public class Journal {
         texts.clear();
         mainPage = generateMainPage();
         final boolean displayDatePrefix = "false".equalsIgnoreCase(config.getString("journal.format.hide_date"));
-        final FeatureApi featureApi = BetonQuest.getInstance().getFeatureApi();
         for (final Pointer pointer : pointers) {
             final String datePrefix = displayDatePrefix ? pointer.generateDatePrefix(config) + "\n" : "";
             final JournalEntryID entryID = pointer.pointer();
@@ -264,9 +278,6 @@ public class Journal {
     private String generateMainPage() {
         final Map<Integer, List<String>> lines = new HashMap<>(); // holds text lines with their priority
         final Set<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
-        final BetonQuest betonQuest = BetonQuest.getInstance();
-        final FeatureApi featureApi = betonQuest.getFeatureApi();
-        final QuestTypeApi questTypeApi = betonQuest.getQuestTypeApi();
         for (final Map.Entry<JournalMainPageID, JournalMainPageEntry> entry : featureApi.getJournalMainPages().entrySet()) {
             final JournalMainPageEntry mainPageEntry = entry.getValue();
             String text;

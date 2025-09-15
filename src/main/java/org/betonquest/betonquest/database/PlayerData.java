@@ -12,10 +12,10 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.feature.journal.Journal;
+import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.bukkit.Server;
@@ -64,6 +64,11 @@ public class PlayerData implements TagData, PointData {
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
+
+    /**
+     * Factory to create a new Journal.
+     */
+    private final JournalFactory journalFactory;
 
     /**
      * The profile this data belongs to.
@@ -121,20 +126,22 @@ public class PlayerData implements TagData, PointData {
     /**
      * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param log          the custom logger for this class
-     * @param packManager  the quest package manager to get quest packages from
-     * @param saver        the saver to persist data changes
-     * @param server       the server to determine if an event should be stated as async
-     * @param questTypeApi the Quest Type API
-     * @param profile      the profile to load the data for
+     * @param log            the custom logger for this class
+     * @param packManager    the quest package manager to get quest packages from
+     * @param saver          the saver to persist data changes
+     * @param server         the server to determine if an event should be stated as async
+     * @param questTypeApi   the Quest Type API
+     * @param journalFactory the factory to create a new journal
+     * @param profile        the profile to load the data for
      */
     public PlayerData(final BetonQuestLogger log, final QuestPackageManager packManager, final Saver saver,
-                      final Server server, final QuestTypeApi questTypeApi, final Profile profile) {
+                      final Server server, final QuestTypeApi questTypeApi, final JournalFactory journalFactory, final Profile profile) {
         this.log = log;
         this.packManager = packManager;
         this.saver = saver;
         this.server = server;
         this.questTypeApi = questTypeApi;
+        this.journalFactory = journalFactory;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
         loadAllPlayerData();
@@ -331,12 +338,11 @@ public class PlayerData implements TagData, PointData {
     /**
      * Returns a Journal instance or creates it if it does not exist.
      *
-     * @param pluginMessage the plugin message to generate a new journal
      * @return possible new Journal instance
      */
-    public Journal getJournal(final PluginMessage pluginMessage) {
+    public Journal getJournal() {
         if (journal == null) {
-            journal = new Journal(pluginMessage, profile, entries, BetonQuest.getInstance().getPluginConfig());
+            journal = journalFactory.createJournal(profile, entries);
         }
         return journal;
     }
@@ -560,9 +566,8 @@ public class PlayerData implements TagData, PointData {
     /**
      * Purges all profile's data from the database and from this object.
      *
-     * @param pluginMessage the plugin message to generate a new journal
      */
-    public void purgePlayer(final PluginMessage pluginMessage) {
+    public void purgePlayer() {
         for (final Objective obj : questTypeApi.getPlayerObjectives(profile)) {
             obj.cancelObjectiveForPlayer(profile);
         }
@@ -584,7 +589,7 @@ public class PlayerData implements TagData, PointData {
         saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         // update the journal so it's empty
         if (profile.getOnlineProfile().isPresent()) {
-            getJournal(pluginMessage).update();
+            getJournal().update();
         }
     }
 

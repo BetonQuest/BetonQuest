@@ -82,7 +82,7 @@ public class PlayerDataStorage {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = init(onlineProfile);
             playerData.startObjectives();
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
                 new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
             }
@@ -102,14 +102,13 @@ public class PlayerDataStorage {
      * Start global objectives and update journals.
      *
      * @param onlineProfiles the profiles to update
-     * @param pluginMessage  the plugin message to generate new journals
      */
-    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
+    public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             log.debug("Updating global objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
             objectives.startAll(onlineProfile, this);
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal().update();
         }
     }
 

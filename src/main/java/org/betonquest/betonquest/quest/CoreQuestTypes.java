@@ -383,7 +383,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
         eventTypes.registerCombined("first", new FirstEventFactory(questTypeApi));
         eventTypes.register("give", new GiveEventFactory(loggerFactory, data, dataStorage, pluginMessage));
-        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, pluginMessage, data));
+        eventTypes.register("givejournal", new GiveJournalEventFactory(loggerFactory, dataStorage, data));
         eventTypes.registerCombined("globaltag", new TagGlobalEventFactory(betonQuest));
         eventTypes.registerCombined("globalpoint", new GlobalPointEventFactory(globalData));
         eventTypes.register("hunger", new HungerEventFactory(loggerFactory, data));

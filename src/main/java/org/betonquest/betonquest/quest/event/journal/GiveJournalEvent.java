@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 
 import java.util.function.Function;
@@ -17,23 +16,16 @@ public class GiveJournalEvent implements OnlineEvent {
     private final Function<OnlineProfile, PlayerData> playerDataSource;
 
     /**
-     * Plugin Message instance to create the journal.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Creates a new GiveJournalEvent.
      *
      * @param playerDataSource source for the player data
-     * @param pluginMessage    the plugin message to create the journal
      */
-    public GiveJournalEvent(final Function<OnlineProfile, PlayerData> playerDataSource, final PluginMessage pluginMessage) {
+    public GiveJournalEvent(final Function<OnlineProfile, PlayerData> playerDataSource) {
         this.playerDataSource = playerDataSource;
-        this.pluginMessage = pluginMessage;
     }
 
     @Override
     public void execute(final OnlineProfile profile) {
-        playerDataSource.apply(profile).getJournal(pluginMessage).addToInv();
+        playerDataSource.apply(profile).getJournal().addToInv();
     }
 }

@@ -65,7 +65,7 @@ public class MagicIntegrator implements Integrator, Listener {
     public void onSpellInventoryEvent(final SpellInventoryEvent event) {
         if (!event.isOpening()) {
             final OnlineProfile onlineProfile = profileProvider.getProfile(event.getMage().getPlayer());
-            plugin.getPlayerDataStorage().get(onlineProfile).getJournal(plugin.getPluginMessage()).update();
+            plugin.getPlayerDataStorage().get(onlineProfile).getJournal().update();
         }
     }
 }

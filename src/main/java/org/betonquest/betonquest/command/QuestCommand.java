@@ -464,7 +464,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         log.debug("Purging player " + args[1]);
-        playerData.purgePlayer(pluginMessage);
+        playerData.purgePlayer();
         // done
         sendMessage(sender, "purged",
                 new VariableReplacement("player", Component.text(args[1])));
@@ -521,7 +521,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (playerData == null) {
             return;
         }
-        final Journal journal = playerData.getJournal(pluginMessage);
+        final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             log.debug("Listing journal pointers");
@@ -1291,7 +1291,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 instance.getFeatureApi().renameJournalEntry(oldEntryID, newEntryID);
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     final List<Pointer> journalPointers = new ArrayList<>();
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(oldEntryID)) {
@@ -1391,7 +1391,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 }
                 for (final OnlineProfile onlineProfile : onlineProfiles) {
-                    final Journal journal = dataStorage.get(onlineProfile).getJournal(pluginMessage);
+                    final Journal journal = dataStorage.get(onlineProfile).getJournal();
                     int count = 0;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.pointer().equals(entryID)) {

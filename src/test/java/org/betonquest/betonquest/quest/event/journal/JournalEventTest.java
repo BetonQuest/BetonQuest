@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.journal;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -27,13 +26,13 @@ class JournalEventTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testJournalEventChangesUpdatesAndNotifiesInOrder(
             @Mock final PlayerDataStorage dataStorage, @Mock final PlayerData data, @Mock final Journal journal,
-            @Mock final PluginMessage pluginMessage, @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {
+            @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {
         final ProfileProvider profileProvider = mock(ProfileProvider.class);
         final OnlineProfile onlineProfile = profileProvider.getProfile(mock(Player.class));
         when(dataStorage.getOffline(onlineProfile)).thenReturn(data);
-        when(data.getJournal(pluginMessage)).thenReturn(journal);
+        when(data.getJournal()).thenReturn(journal);
 
-        final JournalEvent event = new JournalEvent(dataStorage, pluginMessage, changer, sender);
+        final JournalEvent event = new JournalEvent(dataStorage, changer, sender);
 
         event.execute(onlineProfile);
 

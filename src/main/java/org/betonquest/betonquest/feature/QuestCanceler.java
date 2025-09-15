@@ -64,11 +64,6 @@ public class QuestCanceler {
     private final FeatureApi featureApi;
 
     /**
-     * The {@link PluginMessage} instance.
-     */
-    private final PluginMessage pluginMessage;
-
-    /**
      * Names to displaying in different languages.
      */
     private final Text names;
@@ -116,7 +111,6 @@ public class QuestCanceler {
         this.playerStorage = playerStorage;
         this.cancelerID = cancelerID;
         this.featureApi = featureApi;
-        this.pluginMessage = pluginMessage;
         this.names = names;
         this.item = item;
         this.data = cancelData;
@@ -193,7 +187,7 @@ public class QuestCanceler {
 
     private void removeEntries(final Profile profile, final PlayerData playerData) {
         try {
-            final Journal journal = playerData.getJournal(pluginMessage);
+            final Journal journal = playerData.getJournal();
             for (final JournalEntryID entry : data.journal.getValue(profile)) {
                 log.debug(pack, "  Removing journal entry " + entry);
                 journal.removePointer(entry);

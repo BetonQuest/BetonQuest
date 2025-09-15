@@ -117,7 +117,7 @@ public class JoinQuitListener implements Listener {
         checkResourcepack(player, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
-            playerData.getJournal(pluginMessage).update();
+            playerData.getJournal().update();
         }
         if (player.hasPermission("betonquest.admin")) {
             updater.sendUpdateNotification(player);
