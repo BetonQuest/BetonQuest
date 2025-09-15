@@ -2273,6 +2273,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#track-time-timer">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Track time: <code>timer</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#player-must-jump-jump">
     <span class="md-ellipsis">
 
@@ -5785,6 +5808,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#track-time-timer">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Track time: <code>timer</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#player-must-jump-jump">
     <span class="md-ellipsis">
 
@@ -7025,6 +7071,52 @@ notification interval after a colon.</p>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of animals already tamed,
 <code>left</code> is the amount of animals still needed to tame and <code>total</code> is the amount of animals initially required.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">tame WOLF 2 events:wolfs_tamed</span>
+</code></pre></div>
+<h2 id="track-time-timer">Track time: <code>timer</code><a class="headerlink" href="#track-time-timer" title="Permanent link">🔗</a></h2>
+<p>Tracks time in seconds from the start of the objective to the completion of the objective.
+If you simply want to have something like wait for 10 minutes, you can use the <code>amount</code> argument.
+If you don't define the amount, the objective will run indefinitely until you complete it with the <a href="../Events-List/#objective-objective">objective event</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>name</em></td>
+<td>name:text</td>
+<td>Disabled</td>
+<td>A display name for the objective that can be accessed as property.</td>
+</tr>
+<tr>
+<td><em>interval</em></td>
+<td>interval:number</td>
+<td>interval:20</td>
+<td>How often the objective checks the conditions and adds time, in seconds.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:number</td>
+<td>Disabled</td>
+<td>The amount of time in seconds to track before the objective is completed.</td>
+</tr>
+<tr>
+<td><em>done</em></td>
+<td>done:events</td>
+<td>Disabled</td>
+<td>Events that will be executed when the objective is done, but before it is removed.</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to access the time tracked by this objective in seconds, you can use the <code>amount</code>, <code>left</code> and <code>total</code> properties. 
+They are only available while the objective is active, this is still the case in the <code>done</code> events, but not in the 
+normal <code>events</code> as they are executed after the objective is already removed.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">track</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timer &quot;name:This is the Display Name&quot; interval:10 done:done_in events:done conditions:in_region</span>
 </code></pre></div>
 <h2 id="player-must-jump-jump">Player must Jump: <code>jump</code><a class="headerlink" href="#player-must-jump-jump" title="Permanent link">🔗</a></h2>
 <p>To complete this objective the player must jump. The only argument is amount. You can use the <code>notify</code> keyword to display a
