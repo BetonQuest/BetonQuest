@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.chat;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -35,7 +34,7 @@ public class ChatEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) {
         final String[] messages = String.join(" ", instruction.getValueParts()).split("\\|");
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new ChatEvent(messages),

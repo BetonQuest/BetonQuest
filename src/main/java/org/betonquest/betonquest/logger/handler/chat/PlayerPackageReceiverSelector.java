@@ -65,7 +65,6 @@ public class PlayerPackageReceiverSelector implements RecordReceiverSelector {
      *         otherwise only exactly the same package matches.
      *     </li>
      * </ol>
-     * A)
      *
      * @param receivers      players to select on match
      * @param minimumLevel   minimum level required for a match

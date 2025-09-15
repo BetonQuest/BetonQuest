@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 
@@ -24,7 +23,7 @@ public class UpdateVisibilityNowEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) {
         npcHider.applyVisibility(profile);
     }
 }

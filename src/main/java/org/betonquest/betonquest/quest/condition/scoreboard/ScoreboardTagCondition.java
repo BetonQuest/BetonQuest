@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
 /**
@@ -24,7 +23,7 @@ public class ScoreboardTagCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) {
         return profile.getPlayer().getScoreboardTags().contains(tag);
     }
 }

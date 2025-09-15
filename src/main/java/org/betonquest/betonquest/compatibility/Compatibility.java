@@ -142,11 +142,7 @@ public class Compatibility implements Listener {
                     }
                 });
         hologramProvider = new HologramProvider(hologramIntegrators);
-        try {
-            hologramProvider.hook();
-        } catch (final HookException e) {
-            log.warn("Error while enabling holograms: " + e.getMessage(), e);
-        }
+        hologramProvider.hook();
     }
 
     /**

@@ -53,7 +53,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
                 if (containsPlayer(onlineProfile)
                         && item.getValue(onlineProfile).matches(event.getCurrentItem(), onlineProfile)
                         && checkConditions(onlineProfile)) {
-                    final int taken = calculateTakeAmount(event);
+                    final int taken = calculateTakeAmount(event, event.getCurrentItem());
                     getCountingData(onlineProfile).progress(taken);
                     completeIfDoneOrNotify(onlineProfile);
                 }
@@ -71,8 +71,7 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ImplicitSwitchFallThrough"})
-    private int calculateTakeAmount(final InventoryClickEvent event) {
-        final ItemStack result = event.getCurrentItem();
+    private int calculateTakeAmount(final InventoryClickEvent event, final ItemStack result) {
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
         switch (event.getClick()) {
             case SHIFT_LEFT:

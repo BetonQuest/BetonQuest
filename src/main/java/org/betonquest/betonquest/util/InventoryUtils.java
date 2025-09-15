@@ -109,7 +109,7 @@ public final class InventoryUtils {
 
     /**
      * Calculate how many items will be crafted by simply clicking onto a crafting slot. It will take into consideration
-     * if and how much items of the result will still fit into the cursor.
+     * if and how many items of the result will still fit into the cursor.
      *
      * @param result the result of one craft action
      * @param cursor the item currently held in the cursor

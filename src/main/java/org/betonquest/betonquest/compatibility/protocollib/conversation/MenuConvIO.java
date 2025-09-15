@@ -57,6 +57,11 @@ import java.util.concurrent.locks.ReentrantLock;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
     /**
+     * The controls that are used in the conversation.
+     */
+    protected final Map<CONTROL, ACTION> controls;
+
+    /**
      * Thread safety.
      */
     private final Lock lock = new ReentrantLock();
@@ -83,11 +88,6 @@ public class MenuConvIO extends ChatConvIO {
     private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
-     * The controls that are used in the conversation.
-     */
-    protected Map<CONTROL, ACTION> controls;
-
-    /**
      * The current state of the conversation.
      */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
@@ -96,6 +96,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The packet adapter used to intercept packets.
      */
+    @Nullable
     protected PacketAdapter packetAdapter;
 
     /**

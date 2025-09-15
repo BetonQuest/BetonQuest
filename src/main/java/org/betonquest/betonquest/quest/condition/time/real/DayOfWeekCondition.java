@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 
 import java.time.DayOfWeek;
@@ -25,7 +24,7 @@ public class DayOfWeekCondition implements PlayerlessCondition {
     }
 
     @Override
-    public boolean check() throws QuestException {
+    public boolean check() {
         final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         day = day == 1 ? 7 : day - 1;

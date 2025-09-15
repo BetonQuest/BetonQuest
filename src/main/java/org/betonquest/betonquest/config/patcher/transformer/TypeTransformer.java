@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Locale;
 
 /**
- * Changes the data type of an existing value.
+ * Changes the data type of existing value.
  */
 public class TypeTransformer implements PatchTransformer {
 

@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.config.patcher.migration.QuestMigration;
 import org.betonquest.betonquest.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
  * Handles the pick random percentage migration.
@@ -17,7 +16,7 @@ public class PickRandomPercentage implements QuestMigration {
     }
 
     @Override
-    public void migrate(final Quest quest) throws InvalidConfigurationException {
+    public void migrate(final Quest quest) {
         final ConfigurationSection section = quest.getQuestConfig().getConfigurationSection("events");
         if (section == null) {
             return;

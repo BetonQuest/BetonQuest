@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -34,7 +33,7 @@ public class GiveJournalEvent implements OnlineEvent {
     }
 
     @Override
-    public void execute(final OnlineProfile profile) throws QuestException {
+    public void execute(final OnlineProfile profile) {
         playerDataSource.apply(profile).getJournal(pluginMessage).addToInv();
     }
 }

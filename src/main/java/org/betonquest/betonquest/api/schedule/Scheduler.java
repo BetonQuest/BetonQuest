@@ -107,7 +107,7 @@ public abstract class Scheduler<S extends Schedule, T> {
     /**
      * <p>
      * Stop the scheduler and unregister all schedules that belong to this scheduler.
-     * Typically this method is called on reload and server shutdown.
+     * Typically, this method is called on reload and server shutdown.
      * </p>
      * <p><b>
      * When overriding this method, make sure to call {@code super.stop()} at some point to clear the map of schedules.

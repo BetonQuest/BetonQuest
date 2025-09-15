@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
  */
 public class DebugHandlerConfig {
     /**
-     * Default value for the expire after minutes value.
+     * Default value for the expiration after minutes value.
      */
     private static final int EXPIRE_AFTER_DEFAULT = 10;
 

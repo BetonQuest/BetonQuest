@@ -514,21 +514,13 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            final ItemStack[] content;
-            try {
-                content = getContent(numberOfRows);
-            } catch (final QuestException e) {
-                log.warn("Could not load compass button: " + e.getMessage(), e);
-                onlineProfile.getPlayer().closeInventory();
-                return;
-            }
-            inv.setContents(content);
+            inv.setContents(getContent(numberOfRows));
             onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
         @SuppressWarnings("NullAway")
-        private ItemStack[] getContent(final int numberOfRows) throws QuestException {
+        private ItemStack[] getContent(final int numberOfRows) {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Map.Entry<Integer, QuestCompass> entry : compasses.entrySet()) {

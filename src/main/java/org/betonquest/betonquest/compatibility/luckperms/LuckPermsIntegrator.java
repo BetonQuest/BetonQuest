@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.luckperms;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ContextCalculator;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.luckperms.permission.LuckPermsEventFactory;
 import org.bukkit.Bukkit;
@@ -39,7 +38,7 @@ public class LuckPermsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook() {
         final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             luckPermsAPI = provider.getProvider();

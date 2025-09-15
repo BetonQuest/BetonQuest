@@ -101,7 +101,6 @@ public abstract class AbstractTakeEvent implements OnlineEvent {
      * @param profile the profile of the player
      * @param items   the items to take from
      * @return the remaining items after taking the desired amount
-     * @throws QuestException if an error occurs during the process
      */
-    protected abstract ItemStack[] takeDesiredAmount(Profile profile, ItemStack... items) throws QuestException;
+    protected abstract ItemStack[] takeDesiredAmount(Profile profile, ItemStack... items);
 }

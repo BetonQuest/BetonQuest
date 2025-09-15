@@ -51,6 +51,16 @@ public abstract class Objective {
     protected final boolean notify;
 
     /**
+     * Exception Handler to not spam the log.
+     */
+    protected final QuestExceptionHandler qeHandler = new QuestExceptionHandler();
+
+    /**
+     * Contains all data objects of the profiles with this objective active.
+     */
+    protected final Map<Profile, ObjectiveData> dataMap;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -61,34 +71,24 @@ public abstract class Objective {
     private final ObjectiveDataFactory templateFactory;
 
     /**
-     * Instruction of this.
-     */
-    protected Instruction instruction;
-
-    /**
      * Conditions to count progress.
      */
-    protected Variable<List<ConditionID>> conditions;
+    private final Variable<List<ConditionID>> conditions;
 
     /**
      * Events to fire on completion.
      */
-    protected Variable<List<EventID>> events;
+    private final Variable<List<EventID>> events;
 
     /**
      * If the objective should start again on completion.
      */
-    protected boolean persistent;
+    private final boolean persistent;
 
     /**
-     * Exception Handler to not spam the log.
+     * Instruction of this.
      */
-    protected QuestExceptionHandler qeHandler = new QuestExceptionHandler();
-
-    /**
-     * Contains all data objects of the profiles with this objective active.
-     */
-    protected Map<Profile, ObjectiveData> dataMap;
+    protected Instruction instruction;
 
     /**
      * Creates a new instance of the objective.

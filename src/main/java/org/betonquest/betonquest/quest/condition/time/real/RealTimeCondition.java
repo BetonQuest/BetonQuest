@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.time.Time;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
@@ -27,7 +26,7 @@ public class RealTimeCondition implements PlayerlessCondition {
     }
 
     @Override
-    public boolean check() throws QuestException {
+    public boolean check() {
         final LocalDateTime now = LocalDateTime.now();
         final Time currentTime = new Time(now.getHour(), now.getMinute());
         return timeFrame.isTimeBetween(currentTime);

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
@@ -25,7 +24,7 @@ public class AdvancementCondition implements OnlineCondition {
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) throws QuestException {
+    public boolean check(final OnlineProfile profile) {
         final AdvancementProgress progress = profile.getPlayer().getAdvancementProgress(advancement);
         return progress.isDone();
     }

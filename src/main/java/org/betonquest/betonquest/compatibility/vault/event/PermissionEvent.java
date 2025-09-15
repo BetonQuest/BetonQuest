@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.vault.event;
 
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +53,7 @@ public class PermissionEvent implements PlayerEvent {
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestException {
+    public void execute(final Profile profile) {
         if (add) {
             if (perm) {
                 vault.playerAdd(world, profile.getPlayer(), permission);
