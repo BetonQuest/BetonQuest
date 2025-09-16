@@ -5090,7 +5090,7 @@ continue with the next step!</p>
 Type <code>/bq reload</code> on your server after saving.</p>
 </div>
 <p>Running a command is the simplest way to accomplish this:</p>
-<p>Enter <code>/bq condition NAME tutorialQuest.isDay</code> on the server.
+<p>Enter <code>/bq condition NAME tutorialQuest&gt;isDay</code> on the server.
 This command will show you the result "false" or "true" depending on what time it is.
 During day time, the result will show true. In the nighttime it will be false.</p>
 <div class="admonition note">
@@ -5404,15 +5404,15 @@ For testing purposes, we will use a notify event:</p>
 if they have the tag. 
 Save, reload and execute the command in the game to test how it works!</p>
 <p>You can test it with this BetonQuest command:
-<div class="highlight"><pre><span></span><code>/bq event PLAYERNAME tutorialQuest.notifyPlayer
+<div class="highlight"><pre><span></span><code>/bq event PLAYERNAME tutorialQuest&gt;notifyPlayer
 </code></pre></div>
 Nothing should happen because the player doesn't have the <code>receiveNotify</code> tag.</p>
 <p>Now run the following command and then try the command from above again.
-<div class="highlight"><pre><span></span><code>/bq tag PLAYERNAME add tutorialQuest.receiveNotify
+<div class="highlight"><pre><span></span><code>/bq tag PLAYERNAME add tutorialQuest&gt;receiveNotify
 </code></pre></div>
 You should now see the notification on your screen!</p>
 <p>You can also manually delete a tag using 
-<div class="highlight"><pre><span></span><code>/bq tag PLAYERNAME del tutorialQuest.receiveNotify`.
+<div class="highlight"><pre><span></span><code>/bq tag PLAYERNAME del tutorialQuest&gt;receiveNotify`.
 </code></pre></div>
 This is very helpful when you are testing your quest and want to reset the player's progress.</p>
 <p>If you like, you could add the event to your blacksmith conversation. Make sure to remove the condition from the event's

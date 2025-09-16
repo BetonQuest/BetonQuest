@@ -5628,7 +5628,7 @@ If not, feel free to ask us in the
 <h2 id="can-i-assign-multiple-conversation-files-to-one-npc">Can I assign multiple conversation files to one NPC?<a class="headerlink" href="#can-i-assign-multiple-conversation-files-to-one-npc" title="Permanent link">🔗</a></h2>
 <p>No. You can use <a href="../Features/Conversations/#cross-conversation-pointers">cross-conversation-pointers</a> though.</p>
 <h2 id="can-i-delete-all-tags-from-a-player-at-once">Can I delete all tags from a player at once?<a class="headerlink" href="#can-i-delete-all-tags-from-a-player-at-once" title="Permanent link">🔗</a></h2>
-<p>No. You either need to run all <code>/q t del PLAYER PACKAGE.TAG</code> commands, or you can use <code>/q purge PLAYER</code> to reset an entire player profile.
+<p>No. You either need to run all <code>/q t del PLAYER PACKAGE&gt;TAG</code> commands, or you can use <code>/q purge PLAYER</code> to reset an entire player profile.
 If you want this as a scripted part of your quest however:
 Either use a folder event that holds all tag-deleting events.
 Or use a <code>run</code> event in which you specify all tag-deleting events at once.
@@ -5636,7 +5636,7 @@ Or use a <code>run</code> event in which you specify all tag-deleting events at 
 <h2 id="how-do-i-start-an-objective-from-a-conversation">How do I start an objective from a conversation?<a class="headerlink" href="#how-do-i-start-an-objective-from-a-conversation" title="Permanent link">🔗</a></h2>
 <p>Use the <a href="../Scripting/Building-Blocks/Events-List/#objective-objective">objective event</a>.</p>
 <h2 id="why-is-x-thing-not-working">Why is X thing not working?<a class="headerlink" href="#why-is-x-thing-not-working" title="Permanent link">🔗</a></h2>
-<p>If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
+<p>If something stopped working before asking for help please do <code>/q reload</code> and READ THE OUTPUT IN CONSOLE!
 You will be able to see which events etc. loaded and which didn't with the reasons why.
 You may be able to fix it yourself from this or use this information, so we can better help you!</p>
 <p>Also double check you saved your files and if needed re-upload them to your server.
@@ -5733,7 +5733,7 @@ It would look like this in the example:
 </ol>
 <h2 id="error-quester-is-not-defined">Error "Quester is not defined"<a class="headerlink" href="#error-quester-is-not-defined" title="Permanent link">🔗</a></h2>
 <p>You either actually did not define the <code>quester: someName</code> option at the top of your conversation, or your YAML syntax is invalid.
-YAML Syntax Errors are the HUGE red lines that you see when you do /q reload.
+YAML Syntax Errors are the HUGE red lines that you see when you do <code>/q reload</code>.
 They lead to the file not being properly read -&gt; All kinds of errors like "can't find quester etc."
 Copy your file into <a href="http://www.yamllint.com/">http://www.yamllint.com/</a> to confirm that it is actually a YAML error and fix your syntax.
 Best practise is to define all options like this: <code>myOptionName: "myData"</code> The double quotes prevent YAMl issues with e.g. <code>!</code>.</p>
