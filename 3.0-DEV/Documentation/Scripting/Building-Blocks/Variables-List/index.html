@@ -5511,11 +5511,18 @@ the <em>messages.yml</em> config.</p>
 </code></pre></div>
 <h3 id="constant-variable">Constant Variable<a class="headerlink" href="#constant-variable" title="Permanent link">🔗</a></h3>
 <p>Constants are a bit different from other variables, as you can freely define the values of them.
-They are defined in the <em>constants</em> section.</p>
+They are defined in the <em>constants</em> section like this:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">constants</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">village_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
 <span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
 </code></pre></div>
+<p>To use a <code>constant</code> variable, you must use <code>%constant.constantName%</code>:</p>
+<div class="highlight"><pre><span></span><code>%constant.village_location%
+%constant.village_name%
+</code></pre></div>
+<p>If you want to parse a variable from a different package,
+follow the same syntax as you would <a href="https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features">working across packages</a>.
+The proper syntax is <code>%questPackage&gt;constant.constantName%</code>.</p>
 <h2 id="betonquest-data-types">BetonQuest Data Types<a class="headerlink" href="#betonquest-data-types" title="Permanent link">🔗</a></h2>
 <h3 id="point-variable">Point Variable<a class="headerlink" href="#point-variable" title="Permanent link">🔗</a></h3>
 <p>This variable displays the amount of points you have in some category or amount of points you need to have to reach a
