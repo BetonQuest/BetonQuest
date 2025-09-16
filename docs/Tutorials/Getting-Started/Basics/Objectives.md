@@ -110,7 +110,7 @@ Now, `cod` is a defined item that can be utilized throughout the entire quest.
 Objectives must be started before they start watching the player's actions.
 The easiest way to do this is by running a command:
 
-Enter `/bq objective YOUR_NAME add tutorialQuest.fishingObj` on the server.
+Enter `/bq objective YOUR_NAME add tutorialQuest>fishingObj` on the server.
 This command will start the objective for the player.
 If you want to check if you have done it correctly, go to the defined location and fish 3 cod. After you caught 3 cod
 you should get a notification.
@@ -136,7 +136,7 @@ You can also run the `/bq objective NAME` to list all active objectives of a pla
  `/bq objective NAME` to list all active objectives of a player.
 
 To manually complete the objective for a player you need to type
-`/bq objective YOUR_NAME complete tutorialQuest.fishingObj`. After you send this command you should also get
+`/bq objective YOUR_NAME complete tutorialQuest>fishingObj`. After you send this command you should also get
 a notification about the completion of this objective.
 
 ## 5. Using events to start objectives

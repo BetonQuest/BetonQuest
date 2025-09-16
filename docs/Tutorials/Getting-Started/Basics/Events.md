@@ -118,7 +118,7 @@ You can also run events using commands.
  
 The easiest way to do this is by running a command:
 
-Enter `/bq event NAME tutorialQuest.giveFoodToPlayer` on the server.
+Enter `/bq event NAME tutorialQuest>giveFoodToPlayer` on the server.
 This command will give you the specified amount of steak if you've done everything right!
 
 | Command Part       | Meaning                                                                                                                           |
