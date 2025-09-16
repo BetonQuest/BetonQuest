@@ -37,13 +37,24 @@ the *messages.yml* config.
 ### Constant Variable
 
 Constants are a bit different from other variables, as you can freely define the values of them.
-They are defined in the *constants* section.
+They are defined in the *constants* section like this:
 
 ```YAML
 constants:
   village_location: 100;200;300;world
   village_name: Concrete
 ```
+
+To use a `constant` variable, you must use `%constant.constantName%`:
+
+```
+%constant.village_location%
+%constant.village_name%
+```
+
+If you want to parse a variable from a different package,
+follow the same syntax as you would [working across packages](https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/#defining-features).
+The proper syntax is `%questPackage>constant.constantName%`.
 
 ## BetonQuest Data Types
 
