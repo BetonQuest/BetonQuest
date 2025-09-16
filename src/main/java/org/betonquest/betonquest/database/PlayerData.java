@@ -18,6 +18,7 @@ import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.feature.journal.Pointer;
 import org.betonquest.betonquest.id.JournalEntryID;
+import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +54,11 @@ public class PlayerData implements TagData, PointData {
      * The database saver for player data.
      */
     private final Saver saver;
+
+    /**
+     * The server to determine if an event should be async.
+     */
+    private final Server server;
 
     /**
      * Quest Type API.
@@ -118,14 +124,16 @@ public class PlayerData implements TagData, PointData {
      * @param log          the custom logger for this class
      * @param packManager  the quest package manager to get quest packages from
      * @param saver        the saver to persist data changes
+     * @param server       the server to determine if an event should be stated as async
      * @param questTypeApi the Quest Type API
      * @param profile      the profile to load the data for
      */
     public PlayerData(final BetonQuestLogger log, final QuestPackageManager packManager, final Saver saver,
-                      final QuestTypeApi questTypeApi, final Profile profile) {
+                      final Server server, final QuestTypeApi questTypeApi, final Profile profile) {
         this.log = log;
         this.packManager = packManager;
         this.saver = saver;
+        this.server = server;
         this.questTypeApi = questTypeApi;
         this.profile = profile;
         this.profileID = profile.getProfileUUID().toString();
@@ -237,8 +245,7 @@ public class PlayerData implements TagData, PointData {
             if (!tags.contains(tag)) {
                 tags.add(tag);
                 saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
-                BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile, tag));
+                new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }
         }
     }
@@ -249,8 +256,7 @@ public class PlayerData implements TagData, PointData {
             if (tags.contains(tag)) {
                 tags.remove(tag);
                 saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
-                BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile, tag));
+                new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }
         }
     }
@@ -283,14 +289,14 @@ public class PlayerData implements TagData, PointData {
                     saver.add(new Record(UpdateType.ADD_POINTS,
                             profileID, category, String.valueOf(point.getCount() + count)));
                     point.addPoints(count);
-                    BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, point.getCount()));
+                    new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
                     return;
                 }
             }
             // if not then create new point category with given amount of points
             points.add(new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
-            BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, count));
+            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
         }
     }
 
@@ -301,7 +307,7 @@ public class PlayerData implements TagData, PointData {
             points.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
             points.add(new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
-            BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, count));
+            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
         }
     }
 
@@ -316,7 +322,7 @@ public class PlayerData implements TagData, PointData {
             }
             if (pointToRemove != null) {
                 points.remove(pointToRemove);
-                BetonQuest.getInstance().callSyncBukkitEvent(new PlayerUpdatePointEvent(profile, category, 0));
+                new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
             }
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
         }

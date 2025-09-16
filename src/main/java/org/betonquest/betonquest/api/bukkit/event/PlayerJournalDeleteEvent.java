@@ -29,11 +29,12 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
      * Constructor of PlayerJournalDeleteEvent.
      *
      * @param who     the {@link Profile} who was deleted journal
+     * @param isAsync whether the event is async
      * @param journal the journal of this profile
      * @param pointer the pointer for which journal entry was deleted for this profile
      */
-    public PlayerJournalDeleteEvent(final Profile who, final Journal journal, final Pointer pointer) {
-        super(who);
+    public PlayerJournalDeleteEvent(final Profile who, final boolean isAsync, final Journal journal, final Pointer pointer) {
+        super(who, isAsync);
         this.journal = journal;
         this.pointer = pointer;
     }

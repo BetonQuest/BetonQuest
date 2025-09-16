@@ -29,11 +29,12 @@ public class PlayerJournalAddEvent extends ProfileEvent {
      * Constructor of PlayerJournalAddEvent.
      *
      * @param who     the {@link Profile} who was added journal
+     * @param isAsync whether the event is async
      * @param journal the journal of this profile
      * @param pointer the pointer for which journal entry was added for this profile
      */
-    public PlayerJournalAddEvent(final Profile who, final Journal journal, final Pointer pointer) {
-        super(who);
+    public PlayerJournalAddEvent(final Profile who, final boolean isAsync, final Journal journal, final Pointer pointer) {
+        super(who, isAsync);
         this.journal = journal;
         this.pointer = pointer;
     }

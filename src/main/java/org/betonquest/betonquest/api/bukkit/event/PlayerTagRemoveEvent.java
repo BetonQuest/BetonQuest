@@ -21,11 +21,12 @@ public class PlayerTagRemoveEvent extends ProfileEvent {
     /**
      * Creates a new PlayerTagRemoveEvent.
      *
-     * @param who the {@link Profile} whose tag was removed
-     * @param tag removed tag
+     * @param who     the {@link Profile} whose tag was removed
+     * @param isAsync whether the event is async
+     * @param tag     removed tag
      */
-    public PlayerTagRemoveEvent(final Profile who, final String tag) {
-        super(who);
+    public PlayerTagRemoveEvent(final Profile who, final boolean isAsync, final String tag) {
+        super(who, isAsync);
         this.tag = tag;
     }
 

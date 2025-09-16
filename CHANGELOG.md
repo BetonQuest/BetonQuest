@@ -92,6 +92,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `npcmove` event - remove strange code effecting the end of a navigation to may return to a previous location in some cases
 - `npc_conversations` show the combat message only if there is a bound conversation
 - Addressing cross Packages now use `>` instead of `.` to solve conflicts in Variables
+- Bukkit API events are now called sync/async depending on the tread context they are called in
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
