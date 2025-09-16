@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import com.google.common.base.Suppliers;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
 import org.apache.logging.log4j.LogManager;
@@ -351,9 +352,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
-        final JournalFactory journalFactory = new JournalFactory(pluginMessage, coreQuestRegistry, questRegistry, config);
         final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(),
-                coreQuestRegistry, journalFactory);
+                coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(pluginMessage, coreQuestRegistry, questRegistry, config)));
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 

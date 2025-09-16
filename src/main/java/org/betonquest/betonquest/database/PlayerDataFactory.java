@@ -7,6 +7,8 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.bukkit.Server;
 
+import java.util.function.Supplier;
+
 /**
  * Factory to create PlayerData objects for profiles.
  */
@@ -39,7 +41,7 @@ public class PlayerDataFactory {
     /**
      * Factory to create a new Journal.
      */
-    private final JournalFactory journalFactory;
+    private final Supplier<JournalFactory> journalFactory;
 
     /**
      * Create a new Player Data Factory.
@@ -49,10 +51,11 @@ public class PlayerDataFactory {
      * @param saver          the saver to persist data changes
      * @param server         the server to determine if an event should be stated as async
      * @param questTypeApi   the Quest Type API
-     * @param journalFactory the factory to create a new journal
+     * @param journalFactory the supplier for the journal factory to use
      */
     public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final Saver saver, final Server server, final QuestTypeApi questTypeApi, final JournalFactory journalFactory) {
+                             final Saver saver, final Server server, final QuestTypeApi questTypeApi,
+                             final Supplier<JournalFactory> journalFactory) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.saver = saver;
@@ -68,6 +71,7 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, server, questTypeApi, journalFactory, profile);
+        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, server, questTypeApi,
+                journalFactory.get(), profile);
     }
 }
