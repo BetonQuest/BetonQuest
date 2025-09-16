@@ -9,7 +9,7 @@ This is an example of a basic menu that displays the progress of two quests.
 
 ## Usage
 You can copy and paste this example into any file in a package. 
-Then reload and execute the command `/q give YOUR_PACKAGE.openMenuItem` to get the item that opens the menu.
+Then reload and execute the command `/q give YOUR_PACKAGE>openMenuItem` to get the item that opens the menu.
 
 Read the related docs in the menu section to learn more about these configuration options.
   

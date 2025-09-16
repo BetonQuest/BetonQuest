@@ -18,7 +18,7 @@ Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integr
 No. You can use [cross-conversation-pointers](../Documentation/Features/Conversations.md#cross-conversation-pointers) though.
 
 ## Can I delete all tags from a player at once?
-No. You either need to run all `/q t del PLAYER PACKAGE.TAG` commands, or you can use `/q purge PLAYER` to reset an entire player profile.
+No. You either need to run all `/q t del PLAYER PACKAGE>TAG` commands, or you can use `/q purge PLAYER` to reset an entire player profile.
 If you want this as a scripted part of your quest however:
 Either use a folder event that holds all tag-deleting events.
 Or use a `run` event in which you specify all tag-deleting events at once.
@@ -28,7 +28,7 @@ Or use a `run` event in which you specify all tag-deleting events at once.
 Use the [objective event](../Documentation/Scripting/Building-Blocks/Events-List.md#objective-objective).
 
 ## Why is X thing not working?
-If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
+If something stopped working before asking for help please do `/q reload` and READ THE OUTPUT IN CONSOLE!
 You will be able to see which events etc. loaded and which didn't with the reasons why.
 You may be able to fix it yourself from this or use this information, so we can better help you!
 
@@ -131,7 +131,7 @@ conditions:
 
 ## Error "Quester is not defined"
 You either actually did not define the `quester: someName` option at the top of your conversation, or your YAML syntax is invalid.
-YAML Syntax Errors are the HUGE red lines that you see when you do /q reload.
+YAML Syntax Errors are the HUGE red lines that you see when you do `/q reload`.
 They lead to the file not being properly read -> All kinds of errors like "can't find quester etc."
 Copy your file into http://www.yamllint.com/ to confirm that it is actually a YAML error and fix your syntax.
 Best practise is to define all options like this: `myOptionName: "myData"` The double quotes prevent YAMl issues with e.g. `!`.

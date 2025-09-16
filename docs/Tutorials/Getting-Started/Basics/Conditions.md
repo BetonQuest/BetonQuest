@@ -76,7 +76,7 @@ You can check conditions if they are true or false in-game.
 
 Running a command is the simplest way to accomplish this:
 
-Enter `/bq condition NAME tutorialQuest.isDay` on the server.
+Enter `/bq condition NAME tutorialQuest>isDay` on the server.
 This command will show you the result "false" or "true" depending on what time it is.
 During day time, the result will show true. In the nighttime it will be false.
 
@@ -409,19 +409,19 @@ Save, reload and execute the command in the game to test how it works!
 
 You can test it with this BetonQuest command:
 ```
-/bq event PLAYERNAME tutorialQuest.notifyPlayer
+/bq event PLAYERNAME tutorialQuest>notifyPlayer
 ```
 Nothing should happen because the player doesn't have the `receiveNotify` tag.
 
 Now run the following command and then try the command from above again.
 ```
-/bq tag PLAYERNAME add tutorialQuest.receiveNotify
+/bq tag PLAYERNAME add tutorialQuest>receiveNotify
 ``` 
 You should now see the notification on your screen!
 
 You can also manually delete a tag using 
 ```
-/bq tag PLAYERNAME del tutorialQuest.receiveNotify`.
+/bq tag PLAYERNAME del tutorialQuest>receiveNotify`.
 ```
 This is very helpful when you are testing your quest and want to reset the player's progress.
 
