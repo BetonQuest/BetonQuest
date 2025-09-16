@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import com.google.common.base.Suppliers;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +50,7 @@ import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.database.SQLite;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.feature.CoreFeatureFactories;
+import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.kernel.processor.CoreQuestRegistry;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
@@ -350,7 +352,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
-        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(), coreQuestRegistry);
+        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(),
+                coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(pluginMessage, coreQuestRegistry, questRegistry, config)));
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
@@ -469,7 +472,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), questManager, this, questRegistry),
-                new QuestItemHandler(config, playerDataStorage, pluginMessage, profileProvider),
+                new QuestItemHandler(config, playerDataStorage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
@@ -482,7 +485,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 this, playerDataStorage, profileProvider, playerDataFactory, pluginMessage, config, compatibility);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
-        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, pluginMessage, profileProvider));
+        getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
         getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, profileProvider));
         getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, profileProvider));
         getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, profileProvider));
@@ -578,7 +581,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
+        playerDataStorage.reloadProfiles(profileProvider.getOnlineProfiles());
 
         if (playerHider != null) {
             playerHider.stop();

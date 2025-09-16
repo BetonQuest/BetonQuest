@@ -256,7 +256,7 @@ public class Backpack implements Listener {
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
                 try {
-                    backpackItems.add(0, playerData.getJournal(pluginMessage).getAsItem());
+                    backpackItems.add(0, playerData.getJournal().getAsItem());
                 } catch (final QuestException e) {
                     log.warn("Could not add journal to backpack: " + e.getMessage(), e);
                 }
@@ -337,7 +337,7 @@ public class Backpack implements Listener {
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
-                playerData.getJournal(pluginMessage).addToInv();
+                playerData.getJournal().addToInv();
                 display = new BackpackPage(page);
             } else if (slot < SLOT_CANCEL) {
                 final int slotId = pageOffset + slot;
@@ -396,7 +396,7 @@ public class Backpack implements Listener {
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
                     } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
-                        playerData.getJournal(pluginMessage).removeFromInv();
+                        playerData.getJournal().removeFromInv();
                     }
                     display = new BackpackPage(page);
                 }

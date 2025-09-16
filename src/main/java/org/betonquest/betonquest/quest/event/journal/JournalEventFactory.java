@@ -100,7 +100,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
@@ -108,17 +108,17 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(dataStorage, pluginMessage, journalChanger, notificationSender);
+        return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
-        return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, pluginMessage, entryID);
+        return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, entryID);
     }
 }

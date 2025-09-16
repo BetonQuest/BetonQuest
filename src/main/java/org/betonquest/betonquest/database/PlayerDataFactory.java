@@ -4,7 +4,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.bukkit.Server;
+
+import java.util.function.Supplier;
 
 /**
  * Factory to create PlayerData objects for profiles.
@@ -36,21 +39,29 @@ public class PlayerDataFactory {
     private final QuestTypeApi questTypeApi;
 
     /**
+     * Factory to create a new Journal.
+     */
+    private final Supplier<JournalFactory> journalFactory;
+
+    /**
      * Create a new Player Data Factory.
      *
-     * @param loggerFactory the logger factory to create class specific logger
-     * @param packManager   the quest package manager to get quest packages from
-     * @param saver         the saver to persist data changes
-     * @param server        the server to determine if an event should be stated as async
-     * @param questTypeApi  the Quest Type API
+     * @param loggerFactory  the logger factory to create class specific logger
+     * @param packManager    the quest package manager to get quest packages from
+     * @param saver          the saver to persist data changes
+     * @param server         the server to determine if an event should be stated as async
+     * @param questTypeApi   the Quest Type API
+     * @param journalFactory the supplier for the journal factory to use
      */
     public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final Saver saver, final Server server, final QuestTypeApi questTypeApi) {
+                             final Saver saver, final Server server, final QuestTypeApi questTypeApi,
+                             final Supplier<JournalFactory> journalFactory) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.saver = saver;
         this.server = server;
         this.questTypeApi = questTypeApi;
+        this.journalFactory = journalFactory;
     }
 
     /**
@@ -60,6 +71,7 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, server, questTypeApi, profile);
+        return new PlayerData(loggerFactory.create(PlayerData.class), packManager, saver, server, questTypeApi,
+                journalFactory.get(), profile);
     }
 }
