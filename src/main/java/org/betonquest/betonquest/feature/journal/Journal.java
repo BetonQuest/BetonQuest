@@ -422,13 +422,13 @@ public class Journal {
         meta.lore(getJournalLore(profile));
 
         final List<Component> finalList = new ArrayList<>();
-        final Component color = textParser.parse(config.getString("journal.format.color.line"));
         if (config.getBoolean("journal.format.one_entry_per_page")) {
             if (mainPage != null) {
                 finalList.addAll(bookWrapper.splitPages(mainPage));
             }
             finalList.addAll(getText());
         } else {
+            final Component color = textParser.parse(config.getString("journal.format.color.line"));
             final Component separator = textParser.parse(config.getString("journal.format.separator"));
             final Component line = color.append(separator.append(Component.newline()));
 
