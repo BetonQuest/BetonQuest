@@ -291,7 +291,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             sendMessage(sender, "offline");
                             break;
                         }
-                        Utils.backup(configAccessorFactory);
+                        Utils.backup(configAccessorFactory, instance);
                         break;
                     case "debug":
                         handleDebug(sender, args);
