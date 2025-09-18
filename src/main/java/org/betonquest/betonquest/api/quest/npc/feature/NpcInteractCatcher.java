@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -30,17 +30,17 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     /**
      * Processor to get Npc identifier from it.
      */
-    private final NpcTypeRegistry npcTypeRegistry;
+    private final NpcRegistry npcRegistry;
 
     /**
      * Create a new Interaction catcher.
      *
      * @param profileProvider the profile provider instance
-     * @param npcTypeRegistry the registry to identify the clicked Npc
+     * @param npcRegistry     the registry to identify the clicked Npc
      */
-    public NpcInteractCatcher(final ProfileProvider profileProvider, final NpcTypeRegistry npcTypeRegistry) {
+    public NpcInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry) {
         this.profileProvider = profileProvider;
-        this.npcTypeRegistry = npcTypeRegistry;
+        this.npcRegistry = npcRegistry;
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class NpcInteractCatcher<T> implements Listener {
     protected boolean interactLogic(final Player clicker, final Npc<T> npc, final Interaction interaction,
                                     final boolean cancelled, final boolean isAsync) {
         final OnlineProfile profile = profileProvider.getProfile(clicker);
-        final Set<NpcID> identifier = npcTypeRegistry.getIdentifier(npc, profile);
+        final Set<NpcID> identifier = npcRegistry.getIdentifier(npc, profile);
         final NpcInteractEvent npcInteractEvent = new NpcInteractEvent(profile, npc, identifier, interaction, isAsync);
         if (cancelled) {
             npcInteractEvent.setCancelled(true);

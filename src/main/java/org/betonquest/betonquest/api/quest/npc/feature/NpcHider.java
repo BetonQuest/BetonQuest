@@ -11,9 +11,9 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
+import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -65,7 +65,7 @@ public class NpcHider {
     /**
      * Npc types to get NpcIds from a Npc.
      */
-    private final NpcTypeRegistry npcTypes;
+    private final NpcRegistry npcTypes;
 
     /**
      * Npc ids mapped to their hide conditions.
@@ -90,7 +90,7 @@ public class NpcHider {
      * @param npcTypes          the Npc types to get NpcIds
      */
     public NpcHider(final BetonQuestLogger log, final QuestPackageManager packManager, final VariableProcessor variableProcessor, final NpcProcessor npcProcessor,
-                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final NpcTypeRegistry npcTypes) {
+                    final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final NpcRegistry npcTypes) {
         this.log = log;
         this.packManager = packManager;
         this.variableProcessor = variableProcessor;

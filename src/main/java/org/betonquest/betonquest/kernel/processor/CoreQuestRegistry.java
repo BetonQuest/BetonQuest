@@ -16,7 +16,7 @@ import org.betonquest.betonquest.kernel.processor.quest.ConditionProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.EventProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +50,7 @@ public record CoreQuestRegistry(
      * @param plugin              the plugin instance to associate registered listener with
      */
     public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final QuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
+                             final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
         this(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), packManager, questTypeRegistries.condition()),
                 new EventProcessor(loggerFactory.create(EventProcessor.class), packManager, questTypeRegistries.event()),

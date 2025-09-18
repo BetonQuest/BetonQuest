@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.kernel.registry;
 
+import org.betonquest.betonquest.api.kernel.CoreQuestRegistry;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
@@ -12,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <S> the playerless variant of the type
  * @param <A> the adapter structure to store {@link P} and {@link S} in one object
  */
-public abstract class QuestTypeRegistry<P, S, A> extends FactoryRegistry<TypeFactory<A>> {
+public abstract class QuestTypeRegistry<P, S, A> extends FactoryTypeRegistry<A> implements CoreQuestRegistry<P, S> {
 
     /**
      * Create a new type registry.
@@ -24,45 +26,22 @@ public abstract class QuestTypeRegistry<P, S, A> extends FactoryRegistry<TypeFac
         super(log, typeName);
     }
 
-    /**
-     * Registers a type that does not support playerless execution with its name
-     * and a player factory to create new player instances.
-     *
-     * @param name    the name of the type
-     * @param factory the player factory to create the type
-     */
+    @Override
     public void register(final String name, final PlayerQuestFactory<P> factory) {
         registerInternal(name, factory, null);
     }
 
-    /**
-     * Registers a type and a factory to create new playerless instances.
-     *
-     * @param name              the name of the type
-     * @param playerlessFactory the playerless factory to create the type
-     */
+    @Override
     public void register(final String name, final PlayerlessQuestFactory<S> playerlessFactory) {
         registerInternal(name, null, playerlessFactory);
     }
 
-    /**
-     * Registers a type with its name and a single factory to create both player and playerless instances.
-     *
-     * @param name    the name of the type
-     * @param factory the factory to create the player and playerless variant
-     * @param <C>     the type of factory that creates both normal and playerless instances of the type
-     */
+    @Override
     public <C extends PlayerQuestFactory<P> & PlayerlessQuestFactory<S>> void registerCombined(final String name, final C factory) {
         register(name, factory, factory);
     }
 
-    /**
-     * Registers a type with its name and two factories to create player and playerless instances.
-     *
-     * @param name              the name of the type
-     * @param playerFactory     the player factory to create the type
-     * @param playerlessFactory the playerless factory to create the type
-     */
+    @Override
     public void register(final String name, final PlayerQuestFactory<P> playerFactory, final PlayerlessQuestFactory<S> playerlessFactory) {
         registerInternal(name, playerFactory, playerlessFactory);
     }

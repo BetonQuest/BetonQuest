@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledClassConditionFactory;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledLevelConditionFactory;
-import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
@@ -29,9 +29,9 @@ public class FabledIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final ConditionTypeRegistry conditionTypes = plugin.getQuestRegistries().condition();
-        conditionTypes.register("fabledclass", new FabledClassConditionFactory(data));
-        conditionTypes.register("fabledlevel", new FabledLevelConditionFactory(data));
+        final ConditionRegistry conditionRegistry = plugin.getQuestRegistries().condition();
+        conditionRegistry.register("fabledclass", new FabledClassConditionFactory(data));
+        conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory(data));
         plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(plugin.getProfileProvider()), plugin);
     }
 

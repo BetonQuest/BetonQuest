@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.run;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -10,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
+import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
 import org.betonquest.betonquest.quest.event.eval.EvalEvent;
 
 import java.util.ArrayList;
@@ -25,12 +25,19 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
     private final QuestPackageManager packManager;
 
     /**
+     * The event type registry providing factories to parse the evaluated instruction.
+     */
+    private final EventTypeRegistry eventTypeRegistry;
+
+    /**
      * Create a run event factory with the given BetonQuest instance.
      *
-     * @param packManager the quest package manager to get quest packages from
+     * @param packManager       the quest package manager to get quest packages from
+     * @param eventTypeRegistry the event type registry providing factories to parse the evaluated instruction
      */
-    public RunEventFactory(final QuestPackageManager packManager) {
+    public RunEventFactory(final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry) {
         this.packManager = packManager;
+        this.eventTypeRegistry = eventTypeRegistry;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         for (final String part : parts) {
             if (part.startsWith("^")) {
                 if (!builder.isEmpty()) {
-                    events.add(EvalEvent.createEvent(packManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
+                    events.add(EvalEvent.createEvent(packManager, eventTypeRegistry, instruction.getPackage(), builder.toString().trim()));
                     builder = new StringBuilder();
                 }
                 builder.append(part.substring(1)).append(' ');
@@ -59,7 +66,7 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
             }
         }
         if (!builder.isEmpty()) {
-            events.add(EvalEvent.createEvent(packManager, BetonQuest.getInstance().getQuestRegistries().event(), instruction.getPackage(), builder.toString().trim()));
+            events.add(EvalEvent.createEvent(packManager, eventTypeRegistry, instruction.getPackage(), builder.toString().trim()));
         }
         return new NullableEventAdapter(new RunEvent(events));
     }

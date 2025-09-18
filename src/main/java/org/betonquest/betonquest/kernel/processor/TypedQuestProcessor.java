@@ -3,11 +3,11 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
-import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
-import org.betonquest.betonquest.kernel.registry.TypeFactory;
+import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
     /**
      * Available types.
      */
-    protected final FactoryRegistry<TypeFactory<T>> types;
+    protected final FactoryTypeRegistry<T> types;
 
     /**
      * Create a new QuestProcessor to store and execute type logic.
@@ -35,7 +35,7 @@ public abstract class TypedQuestProcessor<I extends InstructionIdentifier, T> ex
      * @param internal    the section name and/or bstats topic identifier
      */
     public TypedQuestProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                               final FactoryRegistry<TypeFactory<T>> types, final String readable, final String internal) {
+                               final FactoryTypeRegistry<T> types, final String readable, final String internal) {
         super(log, packManager, readable, internal);
         this.types = types;
     }

@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.auraskills;
 
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
+import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceEventFactory;
-import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
-import org.betonquest.betonquest.kernel.registry.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
@@ -37,9 +37,9 @@ public class AuraSkillsIntegrator implements Integrator {
 
         questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi, data));
 
-        final ConditionTypeRegistry conditionTypes = questRegistries.condition();
-        conditionTypes.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi, data));
-        conditionTypes.register("auraskillsstatslevel", new AuraSkillsStatsConditionFactory(auraSkillsApi, data));
+        final ConditionRegistry conditionRegistry = questRegistries.condition();
+        conditionRegistry.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi, data));
+        conditionRegistry.register("auraskillsstatslevel", new AuraSkillsStatsConditionFactory(auraSkillsApi, data));
     }
 
     @Override

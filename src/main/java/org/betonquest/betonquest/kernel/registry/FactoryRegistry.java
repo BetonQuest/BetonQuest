@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.registry;
 
+import org.betonquest.betonquest.api.kernel.FeatureRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 
@@ -13,7 +14,7 @@ import java.util.TreeMap;
  *
  * @param <F> the factory type to be stored
  */
-public class FactoryRegistry<F> {
+public class FactoryRegistry<F> implements FeatureRegistry<F> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -40,25 +41,13 @@ public class FactoryRegistry<F> {
         this.typeName = typeName;
     }
 
-    /**
-     * Registers a type that does not support playerless execution with its name
-     * and a player factory to create new player instances.
-     *
-     * @param name    the name of the type
-     * @param factory the player factory to create the type
-     */
+    @Override
     public void register(final String name, final F factory) {
         log.debug("Registering " + name + " " + typeName + " type");
         types.put(name, factory);
     }
 
-    /**
-     * Fetches the first registered factory from the given names.
-     *
-     * @param names the names of the type
-     * @return factory to create the first found type
-     * @throws QuestException when there is none factory registered
-     */
+    @Override
     public F getFactory(final List<String> names) throws QuestException {
         for (final String name : names) {
             final F factory = types.get(name);
@@ -70,13 +59,7 @@ public class FactoryRegistry<F> {
         throw new QuestException("No registered " + typeName + " found for: " + names);
     }
 
-    /**
-     * Fetches the stored {@link F} with the given name.
-     *
-     * @param name the name of the type
-     * @return a factory to create the type
-     * @throws QuestException when there is no stored type
-     */
+    @Override
     public F getFactory(final String name) throws QuestException {
         final F type = types.get(name);
         if (type == null) {
