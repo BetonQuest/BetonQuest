@@ -1,9 +1,9 @@
-package org.betonquest.betonquest.quest.condition;
+package org.betonquest.betonquest.api.quest.condition.thread;
 
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadType;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link PlayerlessCondition}s to be checked on the primary server thread.
  */
-public class PrimaryServerThreadPlayerlessCondition extends PrimaryServerThreadType<PlayerlessCondition, Boolean> implements PlayerlessCondition {
+public final class PrimaryServerThreadPlayerlessCondition extends PrimaryServerThreadType<PlayerlessCondition, Boolean> implements PlayerlessCondition {
     /**
      * Wrap the given {@link PlayerlessCondition} for action on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to

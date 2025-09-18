@@ -1,10 +1,10 @@
-package org.betonquest.betonquest.quest.condition;
+package org.betonquest.betonquest.api.quest.condition.thread;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadType;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link PlayerCondition}s to be checked on the primary server thread.
  */
-public class PrimaryServerThreadPlayerCondition extends PrimaryServerThreadType<PlayerCondition, Boolean> implements PlayerCondition {
+public final class PrimaryServerThreadPlayerCondition extends PrimaryServerThreadType<PlayerCondition, Boolean> implements PlayerCondition {
     /**
      * Wrap the given {@link PlayerCondition} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to

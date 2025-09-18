@@ -6,6 +6,7 @@ import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -13,7 +14,6 @@ import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeC
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceEventFactory;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
 /**

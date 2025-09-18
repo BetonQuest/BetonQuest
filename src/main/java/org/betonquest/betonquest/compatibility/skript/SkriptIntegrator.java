@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.skript;
 import ch.njol.skript.Skript;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
 /**

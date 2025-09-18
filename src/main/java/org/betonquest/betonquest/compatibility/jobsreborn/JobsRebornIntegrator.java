@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -23,7 +24,6 @@ import org.betonquest.betonquest.compatibility.jobsreborn.objective.JoinJobObjec
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.LeaveJobObjectiveFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.LevelUpObjectiveFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.PaymentObjectiveFactory;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
 /**

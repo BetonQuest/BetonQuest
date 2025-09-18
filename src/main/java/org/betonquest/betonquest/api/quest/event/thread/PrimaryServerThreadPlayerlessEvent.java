@@ -1,9 +1,9 @@
-package org.betonquest.betonquest.quest.event;
+package org.betonquest.betonquest.api.quest.event.thread;
 
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadType;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link PlayerlessEvent}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadPlayerlessEvent extends PrimaryServerThreadType<PlayerlessEvent, Void> implements PlayerlessEvent {
+public final class PrimaryServerThreadPlayerlessEvent extends PrimaryServerThreadType<PlayerlessEvent, Void> implements PlayerlessEvent {
     /**
      * Wrap the given {@link PlayerlessEvent} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
