@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.util;
 
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,10 +34,6 @@ import java.util.regex.PatternSyntaxException;
  */
 @SuppressWarnings("PMD.GodClass")
 public class BlockSelector {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
 
     /**
      * List of {@link Material}s that are used to match the {@link BlockData} of a {@link Block}.
@@ -145,14 +139,15 @@ public class BlockSelector {
      *
      * @param block        The block that is changed by the {@link BlockData}
      * @param applyPhysics If physics should be active for that block
+     * @throws QuestException when the block data could not be set
      */
-    public void setToBlock(final Block block, final boolean applyPhysics) {
+    public void setToBlock(final Block block, final boolean applyPhysics) throws QuestException {
         final BlockState state = block.getState();
 
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            log.error("Could not place block '" + this + "'! Probably the block has a invalid block-state: " + exception.getMessage(), exception);
+            throw new QuestException("Could not place block '" + this + "'! Probably the block has a invalid block-state: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);
