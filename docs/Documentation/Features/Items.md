@@ -87,22 +87,21 @@ flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE
 
 _This applies to a written book and a book and quill._
 
-- `title` - the title of a book. All underscores will be replaced with spaces and you can use `&` color codes.
-   If you want to specifically say that the book must not have any title, use `none` keyword.
+- `title` - the title of a book.  
+    If you want to specifically say that the book must not have any title, use `none` keyword.
 
-- `author` - the author of a book. All underscores will be replaced with spaces, you cannot use color codes here.
+- `author` - the author of a book.  
     If you want to specifically say that the book must not have any author, use `none` keyword.
 
-- `text` - the text of the book. All underscores will be replaced with spaces and you can use `&` color codes.
-    The text will wrap if amount of characters exceeds `journal.chars_per_line` and `journal.lines_per_page` setting in "_config.yml_".
-    If you want to manually wrap the page, use `|` character. To go to new line use `\n`.
-    Keep in mind that you can't use any spaces here, you must only use underscores (`_`).
-    This needs to be a single argument, even if it's really long. If you don't want the book to have any text, use `none` keyword instead.
+- `text` - the text of the book.  
+    The text will wrap if amount of characters exceeds `journal.line_length` and `journal.line_count` setting in "_config.yml_".
+    If you want to manually wrap the page, use `|` character.
+    If you don't want the book to have any text, use `none` keyword instead.
 
 ```YAML title="Examples"
-title:Malleus_Maleficarum
-author:&eGallus_Anonymus
-text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)
+"title:Malleus Maleficarum"
+"author:&eGallus Anonymus"
+"text:@[minimessage]Lorem ipsum dolor sit amet, <newline>consectetur adipiscing elit. |Pellentesque ligula urna(...)"
 ```
 
 ### Potions
