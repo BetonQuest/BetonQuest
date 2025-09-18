@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
@@ -40,7 +41,7 @@ public class VaultIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 

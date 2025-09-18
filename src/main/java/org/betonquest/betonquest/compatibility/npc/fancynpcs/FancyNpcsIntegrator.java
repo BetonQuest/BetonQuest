@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -22,7 +23,7 @@ public class FancyNpcsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final BetonQuest betonQuest = BetonQuest.getInstance();
         final NpcRegistry npcRegistry = betonQuest.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();

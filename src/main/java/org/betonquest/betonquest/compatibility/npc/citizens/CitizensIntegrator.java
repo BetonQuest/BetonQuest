@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureApi;
@@ -69,7 +70,7 @@ public class CitizensIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final NPCRegistry citizensNpcRegistry = CitizensAPI.getNPCRegistry();
         final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, citizensNpcRegistry);

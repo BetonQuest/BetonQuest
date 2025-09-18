@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
@@ -51,7 +52,7 @@ public class MythicMobsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook(final BetonQuestApi api) throws HookException {
         validateVersion();
 
         final BukkitAPIHelper apiHelper = new BukkitAPIHelper();

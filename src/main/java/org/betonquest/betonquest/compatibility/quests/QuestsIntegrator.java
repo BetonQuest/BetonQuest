@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -31,7 +32,7 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Quests questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         Objects.requireNonNull(questsInstance);
 

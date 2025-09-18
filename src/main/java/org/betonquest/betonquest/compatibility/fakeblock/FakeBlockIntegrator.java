@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
@@ -38,7 +39,7 @@ public class FakeBlockIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook(final BetonQuestApi api) throws HookException {
         checkRequiredVersion();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);

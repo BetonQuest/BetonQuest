@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.MMOItems;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -22,7 +23,7 @@ public class MMOItemsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final FeatureTypeRegistry<Objective> objectiveRegistry = plugin.getQuestRegistries().objective();
         objectiveRegistry.register("mmoitemupgrade", new MMOItemsUpgradeObjectiveFactory());

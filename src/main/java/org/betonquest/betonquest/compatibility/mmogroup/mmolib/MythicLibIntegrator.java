@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
@@ -24,7 +25,7 @@ public class MythicLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         plugin.getQuestRegistries().condition().register("mmostat", new MythicLibStatConditionFactory(data));

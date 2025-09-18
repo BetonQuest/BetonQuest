@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -26,7 +27,7 @@ public class ShopkeepersIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() throws HookException {
+    public void hook(final BetonQuestApi api) throws HookException {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);

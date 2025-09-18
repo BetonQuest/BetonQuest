@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -52,8 +53,8 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public void hook() throws HookException {
-        super.hook();
+    public void hook(final BetonQuestApi api) throws HookException {
+        super.hook(api);
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             log.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines "
                     + "without PlaceholderAPI plugin! Install it to use holograms with variables!");

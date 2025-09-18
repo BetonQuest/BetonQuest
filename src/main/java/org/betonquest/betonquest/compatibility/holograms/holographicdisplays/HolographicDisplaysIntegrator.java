@@ -4,6 +4,7 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -59,17 +60,17 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public void hook() throws HookException {
-        super.hook();
+    public void hook(final BetonQuestApi api) throws HookException {
+        super.hook(api);
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             log.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
                     + "Install it to use conditioned holograms.");
         }
-        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(plugin);
+        final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        api.registerIndividualPlaceholder("bq", new HologramPlaceholder(
+        holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
                 loggerFactory.create(HologramPlaceholder.class), plugin.getVariableProcessor()));
-        api.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
+        holoApi.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
                 loggerFactory.create(HologramGlobalPlaceholder.class), plugin.getVariableProcessor()));
     }
 
