@@ -3494,6 +3494,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-408-journal-entry-separator">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-408 - Journal entry separator <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5394,6 +5417,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-408-journal-entry-separator">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-408 - Journal entry separator <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5559,6 +5605,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-337-menu-conversation-io-components">3.0.0-DEV-337 - Menu Conversation IO line wrapping</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-365-menu-conversation-io-line-wrapping-rework">3.0.0-DEV-365 - Menu Conversation IO line wrapping rework</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code></a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
+<li><a href="#300-dev-408-journal-entry-separator">3.0.0-DEV-408 - Journal entry separator</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6169,6 +6216,33 @@ Some well known edge cases are:</p>
 <li>Constants are not migrated, as we don't know in which context they are used.</li>
 <li>Commands executed in other scripts are not migrated, as we don't have access to this content.</li>
 </ul>
+<h3 id="300-dev-408-journal-entry-separator">3.0.0-DEV-408 - Journal entry separator <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /><a class="headerlink" href="#300-dev-408-journal-entry-separator" title="Permanent link">🔗</a></h3>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The journal now does not have a <code>show_separator</code> option anymore. Instead only the <code>separator</code> setting is used.</p>
+<p>If <code>show_separator</code> was previously false the <code>separator</code> needs to contain a newline.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old config.yml</span><pre><span></span><code><span class="nt">journal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;---------------&quot;</span>
+<span class="w">  </span><span class="nt">show_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New config.yml</span><pre><span></span><code><span class="nt">journal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@[minimessage]&lt;newline&gt;&quot;</span>
+</code></pre></div>
+</div>
+<p>If the option was true, a newline needs to be added before the previous separator.</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old config.yml</span><pre><span></span><code><span class="nt">journal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;---------------&quot;</span>
+<span class="w">  </span><span class="nt">show_separator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New config.yml</span><pre><span></span><code><span class="nt">journal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;@[minimessage]&lt;newline&gt;---------------&quot;</span>
+</code></pre></div>
+</div>
+</details>
 
 
 

@@ -5054,24 +5054,23 @@ for example <code>none-knockback</code> means that the item must not have any kn
 <p><em>This applies to a written book and a book and quill.</em></p>
 <ul>
 <li>
-<p><code>title</code> - the title of a book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes.
-   If you want to specifically say that the book must not have any title, use <code>none</code> keyword.</p>
+<p><code>title</code> - the title of a book.<br />
+    If you want to specifically say that the book must not have any title, use <code>none</code> keyword.</p>
 </li>
 <li>
-<p><code>author</code> - the author of a book. All underscores will be replaced with spaces, you cannot use color codes here.
+<p><code>author</code> - the author of a book.<br />
     If you want to specifically say that the book must not have any author, use <code>none</code> keyword.</p>
 </li>
 <li>
-<p><code>text</code> - the text of the book. All underscores will be replaced with spaces and you can use <code>&amp;</code> color codes.
-    The text will wrap if amount of characters exceeds <code>journal.chars_per_line</code> and <code>journal.lines_per_page</code> setting in "<em>config.yml</em>".
-    If you want to manually wrap the page, use <code>|</code> character. To go to new line use <code>\n</code>.
-    Keep in mind that you can't use any spaces here, you must only use underscores (<code>_</code>).
-    This needs to be a single argument, even if it's really long. If you don't want the book to have any text, use <code>none</code> keyword instead.</p>
+<p><code>text</code> - the text of the book.<br />
+    The text will wrap if amount of characters exceeds <code>journal.line_length</code> and <code>journal.line_count</code> setting in "<em>config.yml</em>".
+    If you want to manually wrap the page, use <code>|</code> character.
+    If you don't want the book to have any text, use <code>none</code> keyword instead.</p>
 </li>
 </ul>
-<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">title:Malleus_Maleficarum</span>
-<span class="l l-Scalar l-Scalar-Plain">author:&amp;eGallus_Anonymus</span>
-<span class="l l-Scalar l-Scalar-Plain">text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="s">&quot;title:Malleus</span><span class="nv"> </span><span class="s">Maleficarum&quot;</span>
+<span class="s">&quot;author:&amp;eGallus</span><span class="nv"> </span><span class="s">Anonymus&quot;</span>
+<span class="s">&quot;text:@[minimessage]Lorem</span><span class="nv"> </span><span class="s">ipsum</span><span class="nv"> </span><span class="s">dolor</span><span class="nv"> </span><span class="s">sit</span><span class="nv"> </span><span class="s">amet,</span><span class="nv"> </span><span class="s">&lt;newline&gt;consectetur</span><span class="nv"> </span><span class="s">adipiscing</span><span class="nv"> </span><span class="s">elit.</span><span class="nv"> </span><span class="s">|Pellentesque</span><span class="nv"> </span><span class="s">ligula</span><span class="nv"> </span><span class="s">urna(...)&quot;</span>
 </code></pre></div>
 <h3 id="potions">Potions<a class="headerlink" href="#potions" title="Permanent link">🔗</a></h3>
 <p><em>This applies to potions, splash potions and lingering potions.</em></p>
