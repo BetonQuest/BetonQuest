@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 
 import java.util.Objects;
 
@@ -36,8 +35,7 @@ public class QuestsIntegrator implements Integrator {
         final Quests questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         Objects.requireNonNull(questsInstance);
 
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance, data));

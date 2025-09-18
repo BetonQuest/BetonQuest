@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
@@ -11,7 +10,6 @@ import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -34,10 +32,8 @@ public class ShopkeepersIntegrator implements Integrator {
         if (comparator.isOtherNewerThanCurrent(shopkeepersVersion, new Version("2.2.0"))) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
-        final BetonQuest plugin = BetonQuest.getInstance();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         questRegistries.condition().register("shopamount", new HavingShopConditionFactory(data));
         questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory(), data));
     }

@@ -57,9 +57,9 @@ public class MythicMobsIntegrator implements Integrator {
 
         final BukkitAPIHelper apiHelper = new BukkitAPIHelper();
 
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, apiHelper, data));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());

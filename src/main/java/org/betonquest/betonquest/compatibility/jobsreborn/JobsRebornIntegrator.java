@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
@@ -24,16 +23,11 @@ import org.betonquest.betonquest.compatibility.jobsreborn.objective.JoinJobObjec
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.LeaveJobObjectiveFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.LevelUpObjectiveFactory;
 import org.betonquest.betonquest.compatibility.jobsreborn.objective.PaymentObjectiveFactory;
-import org.bukkit.Server;
 
 /**
  * Integrator for JobsReborn.
  */
 public class JobsRebornIntegrator implements Integrator {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The BetonQuest plugin instance.
@@ -45,13 +39,11 @@ public class JobsRebornIntegrator implements Integrator {
      */
     public JobsRebornIntegrator() {
         plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(getClass());
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
@@ -59,7 +51,6 @@ public class JobsRebornIntegrator implements Integrator {
         conditionRegistry.register("nujobs_hasjob", new HasJobConditionFactory(data));
         conditionRegistry.register("nujobs_jobfull", new JobFullConditionFactory(data));
         conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory(data));
-        log.info("Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
 
         final EventRegistry eventRegistry = questRegistries.event();
         eventRegistry.register("nujobs_addexp", new AddExpEventFactory(data));
@@ -68,14 +59,12 @@ public class JobsRebornIntegrator implements Integrator {
         eventRegistry.register("nujobs_joinjob", new JoinJobEventFactory(data));
         eventRegistry.register("nujobs_leavejob", new LeaveJobEventFactory(data));
         eventRegistry.register("nujobs_setlevel", new SetLevelEventFactory(data));
-        log.info("Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 
         final FeatureTypeRegistry<Objective> objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("nujobs_joinjob", new JoinJobObjectiveFactory());
         objectiveRegistry.register("nujobs_leavejob", new LeaveJobObjectiveFactory());
         objectiveRegistry.register("nujobs_levelup", new LevelUpObjectiveFactory());
         objectiveRegistry.register("nujobs_payment", new PaymentObjectiveFactory(api.getLoggerFactory(), plugin.getPluginMessage()));
-        log.info("Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
     }
 
     @Override

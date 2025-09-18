@@ -42,7 +42,7 @@ public class MagicIntegrator implements Integrator, Listener {
         final Server server = plugin.getServer();
         final PluginManager manager = server.getPluginManager();
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) manager.getPlugin("Magic"));
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         api.getQuestRegistries().condition().register("wand", new WandConditionFactory(api.getLoggerFactory(), magicApi, data));
         manager.registerEvents(this, plugin);
     }

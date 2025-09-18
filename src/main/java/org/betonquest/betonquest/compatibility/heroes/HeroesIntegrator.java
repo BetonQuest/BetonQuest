@@ -14,7 +14,6 @@ import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeC
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceEventFactory;
-import org.bukkit.Server;
 
 /**
  * Integrator for Heroes.
@@ -34,9 +33,8 @@ public class HeroesIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
         final HeroClassManager classManager = Heroes.getInstance().getClassManager();
 

@@ -12,7 +12,6 @@ import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -44,8 +43,7 @@ public class ProtocolLibIntegrator implements Integrator {
                 plugin.getFontRegistry(), plugin.getPluginConfig(), plugin.getConversationColors()));
         api.getFeatureRegistries().interceptor().register("packet", new PacketInterceptorFactory());
 
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(api.getLoggerFactory(), data));
     }
 

@@ -13,7 +13,6 @@ import org.betonquest.betonquest.compatibility.vault.event.MoneyEventFactory;
 import org.betonquest.betonquest.compatibility.vault.event.PermissionEventFactory;
 import org.betonquest.betonquest.compatibility.vault.variable.MoneyVariableFactory;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 
@@ -37,8 +36,7 @@ public class VaultIntegrator implements Integrator {
     @Override
     public void hook(final BetonQuestApi api) {
         final BetonQuestLogger log = api.getLoggerFactory().create(VaultIntegrator.class);
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final ServicesManager servicesManager = Bukkit.getServer().getServicesManager();
         final RegisteredServiceProvider<Economy> economyProvider = servicesManager.getRegistration(Economy.class);

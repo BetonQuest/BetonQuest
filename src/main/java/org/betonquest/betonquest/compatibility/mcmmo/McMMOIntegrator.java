@@ -30,7 +30,7 @@ public class McMMOIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mcmmolevel", new McMMOSkillLevelConditionFactory(loggerFactory, data));
