@@ -99,20 +99,19 @@ journal:
   give_on_respawn: false
   custom_model_data: -1
   format:
-    chars_per_line: 19
-    lines_per_page: 13
+    line_length: 114
+    line_count: 14
     one_entry_per_page: false
     reversed_order: true
     full_main_page: false
-    separator: ---------------
-    show_separator: false
+    separator: '@[minimessage]<newline>'
     hide_date: false
     color:
       date:
-        day: 9
-        hour: 6
-      line: 4
-      text: 0
+        day: '@[minimessage]<blue>'
+        hour: '@[minimessage]<gold>'
+      line: '@[minimessage]<dark_red>'
+      text: '@[minimessage]<black>'
 menu:
   default_close: true
 hook:

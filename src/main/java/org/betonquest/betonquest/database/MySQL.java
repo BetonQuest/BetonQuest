@@ -1,7 +1,11 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
@@ -55,7 +59,7 @@ public class MySQL extends Database {
     private final String hostname;
 
     /**
-     * Creates a new MySQL instance
+     * Creates a new MySQL instance.
      *
      * @param log      the logger that will be used for logging
      * @param plugin   Plugin instance
@@ -300,6 +304,13 @@ public class MySQL extends Database {
             try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + prefix + "backpack");
                  PreparedStatement preparedStatement = connection.prepareStatement(
                          "INSERT INTO " + prefix + "backpack_tmp (id, profileID, serialized, amount) VALUES (?, ?, ?, ?)")) {
+
+                final Key defaultkey = Key.key("default");
+                final FontRegistry fontRegistry = new FontRegistry(defaultkey);
+                final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager(),
+                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")), bookPageWrapper);
+
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");
                     final String profileId = resultSet.getString("profileID");
@@ -307,7 +318,7 @@ public class MySQL extends Database {
                     final int amount = resultSet.getInt("amount");
                     final byte[] bytes;
                     try {
-                        bytes = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager()).parseInstruction(instruction).generate(1).serializeAsBytes();
+                        bytes = itemFactory.parseInstruction(instruction).generate(1).serializeAsBytes();
                     } catch (final QuestException e) {
                         log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
                         continue;

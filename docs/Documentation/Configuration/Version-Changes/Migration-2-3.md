@@ -51,6 +51,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-337 - Menu Conversation IO line wrapping](#300-dev-337-menu-conversation-io-components) :white_sun_cloud:
 - [3.0.0-DEV-365 - Menu Conversation IO line wrapping rework](#300-dev-365-menu-conversation-io-line-wrapping-rework) :sun:
 - [3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.`](#300-dev-394-cross-packages-are-now-referenced-with-instead-of) :thunder_cloud_rain:
+- [3.0.0-DEV-408 - Journal entry separator](#300-dev-408-journal-entry-separator) :white_sun_cloud:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -776,3 +777,46 @@ Some well known edge cases are:
       It is necessary to escape the `>` with a backslash `\>` inside those variables.
 - Constants are not migrated, as we don't know in which context they are used.
 - Commands executed in other scripts are not migrated, as we don't have access to this content.
+
+### 3.0.0-DEV-408 - Journal entry separator :white_sun_cloud:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    The journal now does not have a `show_separator` option anymore. Instead only the `separator` setting is used.
+    
+    If `show_separator` was previously false the `separator` needs to contain a newline.
+
+    <div class="grid" markdown>
+    
+    ```YAML title="Old config.yml"
+    journal:
+      separator: "---------------"
+      show_separator: false
+    ```
+    
+    ```YAML title="New config.yml"
+    journal:
+      separator: "@[minimessage]<newline>"
+    ```
+    
+    </div>
+
+    If the option was true, a newline needs to be added before the previous separator.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old config.yml"
+    journal:
+      separator: "---------------"
+      show_separator: true
+    ```
+    
+    ```YAML title="New config.yml"
+    journal:
+      separator: "@[minimessage]<newline>---------------"
+    ```
+    
+    </div>

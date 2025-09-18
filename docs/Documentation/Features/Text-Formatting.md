@@ -9,10 +9,10 @@ icon: material/message-cog
     
     - Notify and NotifyAll Event
     - Compass Names
+    - Conversation
+    - Journal
     - NPC Name Variable (limited)
-    - Journal (limited)
     - Quest Cancler (limited)
-    - Conversation (limited)
     - Plugin Messages / Translations (limited)
 
 Every string in BetonQuest can be formatted with a formatter.

@@ -6,7 +6,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -15,7 +14,6 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.config.Zipper;
 import org.betonquest.betonquest.database.Backup;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -24,11 +22,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -113,68 +109,6 @@ public final class Utils {
         // done
         LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
         LOG.info("Done, you can find the backup in 'Backups' directory.");
-    }
-
-    /**
-     * Converts string to a list of pages for a book.
-     *
-     * @param string text to convert
-     * @return the list of pages for a book
-     */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public static List<String> pagesFromString(final String string) {
-        final List<String> pages = new ArrayList<>();
-        final String[] bigPages = string.split("\\|");
-        final ConfigAccessor config = BetonQuest.getInstance().getPluginConfig();
-        final int linesPerPage = config.getInt("journal.format.lines_per_page");
-        final int charsPerLine = config.getInt("journal.format.chars_per_line");
-        for (final String bigPage : bigPages) {
-            StringBuilder page = new StringBuilder();
-            int lines = 0;
-            for (final String line : bigPage.split("((?<!\\\\)\\\\n|\n)")) {
-                StringBuilder lineBuilder = new StringBuilder();
-                if (getStringLength(line) <= charsPerLine) {
-                    lines++;
-                    if (lines > linesPerPage) {
-                        pages.add(page.toString());
-                        lines = 1;
-                        page = new StringBuilder();
-                    }
-                    page.append(line).append('\n');
-                    continue;
-                }
-                for (final String word : line.split(" ")) {
-                    final int stringLength = getStringLength(word);
-                    final int lineBuilderLength = getStringLength(lineBuilder.toString());
-                    if (lineBuilderLength + stringLength > charsPerLine) {
-                        lines++;
-                        if (lines > linesPerPage) {
-                            pages.add(page.toString());
-                            lines = 1;
-                            page = new StringBuilder();
-                        }
-                        page.append(lineBuilder.toString().stripTrailing()).append('\n');
-                        lineBuilder = new StringBuilder();
-                    }
-                    lineBuilder.append(word).append(' ');
-                }
-                lines++;
-                if (lines > linesPerPage) {
-                    pages.add(page.toString());
-                    lines = 1;
-                    page = new StringBuilder();
-                }
-                page.append(lineBuilder.toString().stripTrailing()).append('\n');
-            }
-            if (!page.isEmpty()) {
-                pages.add(page.toString());
-            }
-        }
-        return pages;
-    }
-
-    private static int getStringLength(final String string) {
-        return string.replaceAll("[&§][0-9A-Fa-fK-Ok-oRrXx]", "").replaceAll("((?<!\\\\)\\\\n|\n)", "").length();
     }
 
     /**
@@ -266,44 +200,6 @@ public final class Utils {
             // string was a number, but incorrect
             throw new QuestException("Incorrect RGB code: " + string, e);
         }
-    }
-
-    /**
-     * Resets any color resets to def. Also ensures any new lines copy the colors and format from the previous line
-     *
-     * @param pages multiple pages to process
-     * @param def   default color code to use instead of resetting; use null for regular reset code
-     * @return the colorful pages ready to split into multiple lines
-     */
-    public static List<String> multiLineColorCodes(final List<String> pages, final String def) {
-        String lastCodes = "";
-        final ListIterator<String> iterator = pages.listIterator();
-        final List<String> result = new ArrayList<>();
-
-        while (iterator.hasNext()) {
-            final String line = iterator.next();
-            result.add(lastCodes + replaceReset(line, def));
-            lastCodes = ChatColor.getLastColors(line);
-        }
-
-        return result;
-    }
-
-    private static String replaceReset(final String string, final String color) {
-        return string.replace(ChatColor.RESET.toString(), ChatColor.RESET + color);
-    }
-
-    /**
-     * Formats the string by replacing {@code \\n} with {@code \n} and resolving alternate color codes with {@code &}.
-     *
-     * @param string the input string
-     * @return a formatted version of the input string
-     */
-    public static String format(final String string) {
-        String input = string;
-        input = ChatColor.translateAlternateColorCodes('&', input);
-        input = input.replaceAll("(?<!\\\\)\\\\n", "\n");
-        return input;
     }
 
     /**
