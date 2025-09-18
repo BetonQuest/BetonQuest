@@ -34,7 +34,7 @@ public class AuraSkillsIntegrator implements Integrator {
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
         final AuraSkillsApi auraSkillsApi = AuraSkillsApi.get();
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
 
         questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi, data));
 

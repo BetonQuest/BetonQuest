@@ -40,13 +40,13 @@ public class ProtocolLibIntegrator implements Integrator {
             throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-636");
         }
 
-        plugin.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(plugin, plugin.getTextParser(),
+        api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(plugin, plugin.getTextParser(),
                 plugin.getFontRegistry(), plugin.getPluginConfig(), plugin.getConversationColors()));
-        plugin.getFeatureRegistries().interceptor().register("packet", new PacketInterceptorFactory());
+        api.getFeatureRegistries().interceptor().register("packet", new PacketInterceptorFactory());
 
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        plugin.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin.getLoggerFactory(), data));
+        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(api.getLoggerFactory(), data));
     }
 
     @Override

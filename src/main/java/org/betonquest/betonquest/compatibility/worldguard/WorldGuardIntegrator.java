@@ -58,10 +58,10 @@ public class WorldGuardIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.condition().register("region", new RegionConditionFactory(plugin.getLoggerFactory(), data));
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
+        questRegistries.condition().register("region", new RegionConditionFactory(api.getLoggerFactory(), data));
         questRegistries.objective().register("region", new RegionObjectiveFactory());
-        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(plugin.getFeatureApi(), data));
+        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(api.getFeatureApi(), data));
     }
 
     @Override

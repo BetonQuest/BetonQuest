@@ -36,8 +36,8 @@ public class BreweryIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final EventRegistry eventRegistry = questRegistries.event();
         eventRegistry.register("givebrew", new GiveBrewEventFactory(loggerFactory, data));
         eventRegistry.register("takebrew", new TakeBrewEventFactory(loggerFactory, data));

@@ -53,7 +53,7 @@ public class JobsRebornIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final QuestTypeRegistries questRegistries = BetonQuest.getInstance().getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("nujobs_canlevel", new CanLevelConditionFactory(data));
         conditionRegistry.register("nujobs_hasjob", new HasJobConditionFactory(data));
@@ -74,7 +74,7 @@ public class JobsRebornIntegrator implements Integrator {
         objectiveRegistry.register("nujobs_joinjob", new JoinJobObjectiveFactory());
         objectiveRegistry.register("nujobs_leavejob", new LeaveJobObjectiveFactory());
         objectiveRegistry.register("nujobs_levelup", new LevelUpObjectiveFactory());
-        objectiveRegistry.register("nujobs_payment", new PaymentObjectiveFactory(plugin.getLoggerFactory(), plugin.getPluginMessage()));
+        objectiveRegistry.register("nujobs_payment", new PaymentObjectiveFactory(api.getLoggerFactory(), plugin.getPluginMessage()));
         log.info("Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
     }
 

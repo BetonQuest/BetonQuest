@@ -40,7 +40,7 @@ public class HeroesIntegrator implements Integrator {
         final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
         final HeroClassManager classManager = Heroes.getInstance().getClassManager();
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("heroesattribute", new HeroesAttributeConditionFactory(loggerFactory, data, characterManager));
         conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, data, characterManager, classManager));

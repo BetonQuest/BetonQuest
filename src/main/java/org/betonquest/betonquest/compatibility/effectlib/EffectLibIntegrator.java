@@ -41,7 +41,7 @@ public class EffectLibIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
-        plugin.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
+        api.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
     }
 
     @Override

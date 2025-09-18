@@ -30,7 +30,7 @@ public class FabledIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final ConditionRegistry conditionRegistry = plugin.getQuestRegistries().condition();
+        final ConditionRegistry conditionRegistry = api.getQuestRegistries().condition();
         conditionRegistry.register("fabledclass", new FabledClassConditionFactory(data));
         conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory(data));
         plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(plugin.getProfileProvider()), plugin);

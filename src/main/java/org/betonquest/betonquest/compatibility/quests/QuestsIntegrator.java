@@ -39,17 +39,17 @@ public class QuestsIntegrator implements Integrator {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance, data));
         questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
 
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        final QuestTypeApi questTypeApi = plugin.getQuestTypeApi();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
+        final QuestTypeApi questTypeApi = api.getQuestTypeApi();
         final ProfileProvider profileProvider = plugin.getProfileProvider();
         questsInstance.getCustomRewards().add(new EventReward(
-                loggerFactory.create(EventReward.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
+                loggerFactory.create(EventReward.class), api.getQuestPackageManager(), questTypeApi, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
-                loggerFactory.create(ConditionRequirement.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
+                loggerFactory.create(ConditionRequirement.class), api.getQuestPackageManager(), questTypeApi, profileProvider));
     }
 
     @Override

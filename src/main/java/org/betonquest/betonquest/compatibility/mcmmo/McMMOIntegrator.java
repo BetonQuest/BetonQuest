@@ -13,10 +13,6 @@ import org.bukkit.Server;
  * Integrator for McMMO.
  */
 public class McMMOIntegrator implements Integrator {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * The BetonQuest plugin instance.
@@ -28,18 +24,18 @@ public class McMMOIntegrator implements Integrator {
      */
     public McMMOIntegrator() {
         plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(getClass());
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mcmmolevel", new McMMOSkillLevelConditionFactory(loggerFactory, data));
         questRegistries.event().register("mcmmoexp", new McMMOAddExpEventFactory(loggerFactory, data));
+        final BetonQuestLogger log = api.getLoggerFactory().create(McMMOIntegrator.class);
         try {
             server.getPluginManager().registerEvents(new MCMMOQuestItemHandler(plugin.getProfileProvider()), plugin);
             log.debug("Enabled MCMMO QuestItemHandler");

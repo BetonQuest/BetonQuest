@@ -39,7 +39,7 @@ public class MMOCoreIntegrator implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory(data));
         conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory(data));

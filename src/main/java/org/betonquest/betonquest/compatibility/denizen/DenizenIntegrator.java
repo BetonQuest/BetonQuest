@@ -27,7 +27,7 @@ public class DenizenIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        plugin.getQuestRegistries().event().register("script", new DenizenTaskScriptEventFactory(data));
+        api.getQuestRegistries().event().register("script", new DenizenTaskScriptEventFactory(data));
     }
 
     @Override

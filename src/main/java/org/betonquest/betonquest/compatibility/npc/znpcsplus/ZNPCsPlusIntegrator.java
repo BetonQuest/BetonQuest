@@ -34,10 +34,10 @@ public class ZNPCsPlusIntegrator implements Integrator {
     public void hook(final BetonQuestApi api) throws HookException {
         validateVersion();
         final BetonQuest betonQuest = BetonQuest.getInstance();
-        final NpcRegistry npcRegistry = betonQuest.getFeatureRegistries().npc();
+        final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = betonQuest.getProfileProvider();
         Bukkit.getPluginManager().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry), betonQuest);
-        final ZNPCsPlusHider hider = new ZNPCsPlusHider(betonQuest.getFeatureApi().getNpcHider());
+        final ZNPCsPlusHider hider = new ZNPCsPlusHider(api.getFeatureApi().getNpcHider());
         Bukkit.getPluginManager().registerEvents(hider, betonQuest);
         npcRegistry.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcRegistry.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));

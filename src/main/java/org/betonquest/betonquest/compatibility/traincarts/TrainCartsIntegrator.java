@@ -29,14 +29,14 @@ public class TrainCartsIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final FeatureTypeRegistry<Objective> objectiveRegistry = plugin.getQuestRegistries().objective();
+        final FeatureTypeRegistry<Objective> objectiveRegistry = api.getQuestRegistries().objective();
         objectiveRegistry.register("traincartslocation", new TrainCartsLocationObjectiveFactory());
         objectiveRegistry.register("traincartsride", new TrainCartsRideObjectiveFactory());
         objectiveRegistry.register("traincartsexit", new TrainCartsExitObjectiveFactory());
 
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
-        plugin.getQuestRegistries().condition().register("traincartsride",
-                new TrainCartsRideConditionFactory(plugin.getLoggerFactory(), data));
+        api.getQuestRegistries().condition().register("traincartsride",
+                new TrainCartsRideConditionFactory(api.getLoggerFactory(), data));
     }
 
     @Override

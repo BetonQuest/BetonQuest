@@ -67,7 +67,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                     + "Install it to use conditioned holograms.");
         }
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
                 loggerFactory.create(HologramPlaceholder.class), plugin.getVariableProcessor()));
         holoApi.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(

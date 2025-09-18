@@ -35,11 +35,11 @@ public class ShopkeepersIntegrator implements Integrator {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         final BetonQuest plugin = BetonQuest.getInstance();
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
         questRegistries.condition().register("shopamount", new HavingShopConditionFactory(data));
-        questRegistries.event().register("shopkeeper", new OpenShopEventFactory(plugin.getLoggerFactory(), data));
+        questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory(), data));
     }
 
     @Override

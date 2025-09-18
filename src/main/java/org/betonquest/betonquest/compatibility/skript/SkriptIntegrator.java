@@ -29,7 +29,7 @@ public class SkriptIntegrator implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        plugin.getQuestRegistries().event().register("skript", new BQEventSkriptFactory(data));
+        api.getQuestRegistries().event().register("skript", new BQEventSkriptFactory(data));
     }
 
     @Override
