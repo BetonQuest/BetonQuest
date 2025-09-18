@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 
@@ -46,4 +47,11 @@ public interface BetonQuestApi {
      * @return the Feature API instance
      */
     FeatureApi getFeatureApi();
+
+    /**
+     * Gets the BetonQuest Logger factory to create new class specific loggers.
+     *
+     * @return the logger factory.
+     */
+    BetonQuestLoggerFactory getLoggerFactory();
 }

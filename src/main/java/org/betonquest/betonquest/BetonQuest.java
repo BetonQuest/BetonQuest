@@ -644,11 +644,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         questRegistry.additional().add(processor);
     }
 
-    /**
-     * Get the BetonQuest logger factory.
-     *
-     * @return The logger factory.
-     */
+    @Override
     public BetonQuestLoggerFactory getLoggerFactory() {
         return loggerFactory;
     }
