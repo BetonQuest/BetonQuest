@@ -2,8 +2,7 @@ package org.betonquest.betonquest.compatibility.traincarts;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.traincarts.conditions.TrainCartsRideConditionFactory;
 import org.betonquest.betonquest.compatibility.traincarts.objectives.TrainCartsExitObjectiveFactory;
@@ -29,7 +28,7 @@ public class TrainCartsIntegrator implements Integrator {
 
     @Override
     public void hook() {
-        final FeatureRegistry<TypeFactory<Objective>> objectiveRegistry = plugin.getQuestRegistries().objective();
+        final FeatureTypeRegistry<Objective> objectiveRegistry = plugin.getQuestRegistries().objective();
         objectiveRegistry.register("traincartslocation", new TrainCartsLocationObjectiveFactory());
         objectiveRegistry.register("traincartsride", new TrainCartsRideObjectiveFactory());
         objectiveRegistry.register("traincartsexit", new TrainCartsExitObjectiveFactory());

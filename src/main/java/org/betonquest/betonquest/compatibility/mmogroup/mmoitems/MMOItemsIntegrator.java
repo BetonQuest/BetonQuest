@@ -3,8 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 import net.Indyuce.mmoitems.MMOItems;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsApplyGemObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsUpgradeObjectiveFactory;
@@ -25,7 +24,7 @@ public class MMOItemsIntegrator implements Integrator {
     @Override
     public void hook() {
         final BetonQuest plugin = BetonQuest.getInstance();
-        final FeatureRegistry<TypeFactory<Objective>> objectiveRegistry = plugin.getQuestRegistries().objective();
+        final FeatureTypeRegistry<Objective> objectiveRegistry = plugin.getQuestRegistries().objective();
         objectiveRegistry.register("mmoitemupgrade", new MMOItemsUpgradeObjectiveFactory());
         objectiveRegistry.register("mmoitemapplygem", new MMOItemsApplyGemObjectiveFactory());
 

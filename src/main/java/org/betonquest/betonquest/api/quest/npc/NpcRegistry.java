@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.quest.npc;
 
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +9,7 @@ import java.util.Set;
 /**
  * Stores the npc factories and identifier.
  */
-public interface NpcRegistry extends FeatureRegistry<TypeFactory<NpcWrapper<?>>> {
+public interface NpcRegistry extends FeatureTypeRegistry<NpcWrapper<?>> {
     /**
      * Registers a reverse-identifier to allow matching npcs to their in BQ used IDs.
      *

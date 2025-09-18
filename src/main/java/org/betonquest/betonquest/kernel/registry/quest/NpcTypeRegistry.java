@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.registry.quest;
 
-import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -8,7 +7,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcReverseIdentifier;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
-import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
+import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.Set;
 /**
  * Stores the npc types that can be used in BetonQuest.
  */
-public class NpcTypeRegistry extends FactoryRegistry<TypeFactory<NpcWrapper<?>>> implements NpcRegistry {
+public class NpcTypeRegistry extends FactoryTypeRegistry<NpcWrapper<?>> implements NpcRegistry {
     /**
      * Identifier to get {@link NpcID}s from a specific Npc.
      */

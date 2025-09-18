@@ -2,10 +2,9 @@ package org.betonquest.betonquest.kernel.registry.quest;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
-import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
+import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
 
 /**
  * Registry for quest core elements.
@@ -18,7 +17,7 @@ import org.betonquest.betonquest.kernel.registry.FactoryRegistry;
 public record BaseQuestTypeRegistries(
         ConditionTypeRegistry condition,
         EventTypeRegistry event,
-        FactoryRegistry<TypeFactory<Objective>> objective,
+        FactoryTypeRegistry<Objective> objective,
         VariableTypeRegistry variable
 ) implements QuestTypeRegistries {
 

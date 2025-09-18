@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <S> the playerless variant of the type
  * @param <A> the adapter structure to store {@link P} and {@link S} in one object
  */
-public abstract class QuestTypeRegistry<P, S, A> extends FactoryRegistry<TypeFactory<A>> implements CoreQuestRegistry<P, S> {
+public abstract class QuestTypeRegistry<P, S, A> extends FactoryTypeRegistry<A> implements CoreQuestRegistry<P, S> {
 
     /**
      * Create a new type registry.

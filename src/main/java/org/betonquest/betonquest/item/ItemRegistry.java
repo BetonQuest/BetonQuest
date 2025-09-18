@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item;
 
-import org.betonquest.betonquest.api.kernel.FeatureRegistry;
-import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.QuestException;
 
 import java.util.Set;
@@ -9,7 +8,7 @@ import java.util.Set;
 /**
  * Stores the item factories and serializer.
  */
-public interface ItemRegistry extends FeatureRegistry<TypeFactory<QuestItemWrapper>> {
+public interface ItemRegistry extends FeatureTypeRegistry<QuestItemWrapper> {
     /**
      * Registers a {@link QuestItemSerializer} to allow parsing an ItemStack to instruction string.
      *

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import java.util.List;
 
 /**
- * Stores the implementation factories for Quest Types.
+ * Stores implementation factories for features.
  *
  * @param <F> the factory type to be stored
  */
