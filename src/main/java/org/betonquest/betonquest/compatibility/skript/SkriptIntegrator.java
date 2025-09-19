@@ -1,11 +1,8 @@
 package org.betonquest.betonquest.compatibility.skript;
 
 import ch.njol.skript.Skript;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.bukkit.Server;
 
 /**
  * Integrator for the Skript plugin.
@@ -16,7 +13,6 @@ public class SkriptIntegrator implements Integrator {
      * The default constructor.
      */
     public SkriptIntegrator() {
-
     }
 
     @Override
@@ -26,10 +22,7 @@ public class SkriptIntegrator implements Integrator {
         Skript.registerEvent("betonquest", SkriptEventBQ.class, BQEventSkript.CustomEventForSkript.class,
                 "[betonquest] event %string%");
 
-        final BetonQuest plugin = BetonQuest.getInstance();
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        api.getQuestRegistries().event().register("skript", new BQEventSkriptFactory(data));
+        api.getQuestRegistries().event().register("skript", new BQEventSkriptFactory(api.getPrimaryServerThreadData()));
     }
 
     @Override

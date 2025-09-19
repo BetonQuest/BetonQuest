@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -13,28 +12,21 @@ import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityCon
 import org.betonquest.betonquest.compatibility.brewery.condition.HasBrewConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewEventFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewEventFactory;
-import org.bukkit.Server;
 
 /**
  * Integrator for the Brewery plugin.
  */
 public class BreweryIntegrator implements Integrator {
-    /**
-     * The {@link BetonQuest} plugin instance.
-     */
-    private final BetonQuest plugin;
 
     /**
      * Create a new Brewery Integrator.
      */
     public BreweryIntegrator() {
-        plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();

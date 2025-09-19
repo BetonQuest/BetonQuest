@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.auraskills;
 
 import dev.aurelium.auraskills.api.AuraSkillsApi;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
@@ -10,28 +9,21 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLevelConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsStatsConditionFactory;
 import org.betonquest.betonquest.compatibility.auraskills.event.AuraSkillsExperienceEventFactory;
-import org.bukkit.Server;
 
 /**
  * Integrator for <a href="https://github.com/Archy-X/AuraSkills">AuraSkills</a>.
  */
 public class AuraSkillsIntegrator implements Integrator {
-    /**
-     * The {@link BetonQuest} plugin instance.
-     */
-    private final BetonQuest plugin;
 
     /**
      * The default constructor.
      */
     public AuraSkillsIntegrator() {
-        this.plugin = BetonQuest.getInstance();
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final AuraSkillsApi auraSkillsApi = AuraSkillsApi.get();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();

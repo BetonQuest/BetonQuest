@@ -27,7 +27,6 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Integrator for Citizens.
@@ -83,8 +82,7 @@ public class CitizensIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(citizensNpcRegistry));
 
-        final BukkitScheduler scheduler = server.getScheduler();
-        final PrimaryServerThreadData data = new PrimaryServerThreadData(server, scheduler, plugin);
+        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final PluginManager manager = server.getPluginManager();
         manager.registerEvents(citizensMoveController, plugin);

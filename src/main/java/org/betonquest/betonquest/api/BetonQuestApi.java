@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 
@@ -54,4 +55,11 @@ public interface BetonQuestApi {
      * @return the logger factory.
      */
     BetonQuestLoggerFactory getLoggerFactory();
+
+    /**
+     * Gets the data required to run tasks on the Bukkit main thread.
+     *
+     * @return the data
+     */
+    PrimaryServerThreadData getPrimaryServerThreadData();
 }
