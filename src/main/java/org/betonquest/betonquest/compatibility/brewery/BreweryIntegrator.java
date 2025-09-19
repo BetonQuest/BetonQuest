@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.brewery;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.compatibility.brewery.condition.DrunkQualityCon
 import org.betonquest.betonquest.compatibility.brewery.condition.HasBrewConditionFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.GiveBrewEventFactory;
 import org.betonquest.betonquest.compatibility.brewery.event.TakeBrewEventFactory;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.bukkit.Server;
 
 /**

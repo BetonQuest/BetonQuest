@@ -4,9 +4,9 @@ import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.effectlib.event.ParticleEventFactory;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.jetbrains.annotations.Nullable;
 
 /**

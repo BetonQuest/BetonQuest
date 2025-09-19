@@ -2,12 +2,12 @@ package org.betonquest.betonquest.compatibility.protocollib;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIOFactory;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptorFactory;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;

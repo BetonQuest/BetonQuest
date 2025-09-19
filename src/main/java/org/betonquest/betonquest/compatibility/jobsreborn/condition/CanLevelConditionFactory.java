@@ -3,12 +3,12 @@ package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.condition.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory to create {@link CanLevelCondition}s from {@link Instruction}s.

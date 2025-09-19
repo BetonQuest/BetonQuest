@@ -1,10 +1,10 @@
-package org.betonquest.betonquest.quest.event;
+package org.betonquest.betonquest.api.quest.event.thread;
 
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
+import org.betonquest.betonquest.api.quest.PrimaryServerThreadType;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
-import org.betonquest.betonquest.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.quest.PrimaryServerThreadType;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Wrapper for {@link PlayerEvent}s to be executed on the primary server thread.
  */
-public class PrimaryServerThreadEvent extends PrimaryServerThreadType<PlayerEvent, Void> implements PlayerEvent {
+public final class PrimaryServerThreadEvent extends PrimaryServerThreadType<PlayerEvent, Void> implements PlayerEvent {
 
     /**
      * Wrap the given {@link PlayerEvent} for execution on the primary server thread.

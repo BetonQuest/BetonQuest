@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest;
+package org.betonquest.betonquest.api.quest;
 
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
