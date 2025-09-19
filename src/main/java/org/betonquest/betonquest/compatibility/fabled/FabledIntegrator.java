@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.fabled;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.fabled.condition.FabledClassConditionFactory;
@@ -25,11 +26,11 @@ public class FabledIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final ConditionRegistry conditionRegistry = plugin.getQuestRegistries().condition();
+        final ConditionRegistry conditionRegistry = api.getQuestRegistries().condition();
         conditionRegistry.register("fabledclass", new FabledClassConditionFactory(data));
         conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory(data));
         plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(plugin.getProfileProvider()), plugin);

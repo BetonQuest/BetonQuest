@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.vault;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
@@ -21,10 +21,6 @@ import org.bukkit.plugin.ServicesManager;
  * Integrator for <a href="https://github.com/MilkBowl/VaultAPI">Vault</a>.
  */
 public class VaultIntegrator implements Integrator {
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
 
     /**
      * BetonQuest Plugin for registering.
@@ -36,11 +32,11 @@ public class VaultIntegrator implements Integrator {
      */
     public VaultIntegrator() {
         plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(getClass());
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
+        final BetonQuestLogger log = api.getLoggerFactory().create(VaultIntegrator.class);
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
@@ -50,10 +46,9 @@ public class VaultIntegrator implements Integrator {
             log.warn("There is no economy plugin on the server!");
         } else {
             final Economy economy = economyProvider.getProvider();
-            final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-            final QuestTypeRegistries registries = plugin.getQuestRegistries();
+            final QuestTypeRegistries registries = api.getQuestRegistries();
 
-            registries.event().register("money", new MoneyEventFactory(economy, loggerFactory, data,
+            registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(), data,
                     plugin.getPluginMessage(), plugin.getVariableProcessor()));
             registries.condition().register("money", new MoneyConditionFactory(economy, data));
             registries.variable().register("money", new MoneyVariableFactory(economy));
@@ -64,7 +59,7 @@ public class VaultIntegrator implements Integrator {
             log.warn("Could not get permission provider!");
         } else {
             final Permission permission = permissionProvider.getProvider();
-            plugin.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission, data));
+            api.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission, data));
         }
     }
 

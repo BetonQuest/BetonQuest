@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -99,7 +100,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     public abstract BetonHologram createHologram(Location location);
 
     @Override
-    public void hook() throws HookException {
+    public void hook(final BetonQuestApi api) throws HookException {
         plugin = Bukkit.getPluginManager().getPlugin(pluginName);
         if (plugin != null) {
             final Version version = new Version(plugin.getDescription().getVersion());

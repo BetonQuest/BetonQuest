@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.effectlib.event.ParticleEventFactory;
@@ -37,10 +38,10 @@ public class EffectLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
         final PrimaryServerThreadData data = new PrimaryServerThreadData(plugin.getServer(), plugin.getServer().getScheduler(), plugin);
-        plugin.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
+        api.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
     }
 
     @Override

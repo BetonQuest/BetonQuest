@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -31,24 +32,24 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Quests questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         Objects.requireNonNull(questsInstance);
 
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
 
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance, data));
         questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
 
-        final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-        final QuestTypeApi questTypeApi = plugin.getQuestTypeApi();
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
+        final QuestTypeApi questTypeApi = api.getQuestTypeApi();
         final ProfileProvider profileProvider = plugin.getProfileProvider();
         questsInstance.getCustomRewards().add(new EventReward(
-                loggerFactory.create(EventReward.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
+                loggerFactory.create(EventReward.class), api.getQuestPackageManager(), questTypeApi, profileProvider));
         questsInstance.getCustomRequirements().add(new ConditionRequirement(
-                loggerFactory.create(ConditionRequirement.class), plugin.getQuestPackageManager(), questTypeApi, profileProvider));
+                loggerFactory.create(ConditionRequirement.class), api.getQuestPackageManager(), questTypeApi, profileProvider));
     }
 
     @Override

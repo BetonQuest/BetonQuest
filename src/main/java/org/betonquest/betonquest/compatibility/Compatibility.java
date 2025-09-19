@@ -142,7 +142,7 @@ public class Compatibility implements Listener {
                     }
                 });
         hologramProvider = new HologramProvider(hologramIntegrators);
-        hologramProvider.hook();
+        hologramProvider.hook(betonQuest);
     }
 
     /**
@@ -205,7 +205,7 @@ public class Compatibility implements Listener {
         log.info("Hooking into " + name);
 
         try {
-            integrator.hook();
+            integrator.hook(betonQuest);
             integrators.get(name).setValue(integrator);
         } catch (final HookException exception) {
             final String message = String.format("Could not hook into %s %s! %s",

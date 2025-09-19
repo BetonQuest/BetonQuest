@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
+
 /**
  * Integrator object performs integration with other plugins.
  */
@@ -8,9 +10,10 @@ public interface Integrator {
     /**
      * Integrate with another plugin.
      *
+     * @param api the BetonQuest API
      * @throws HookException Is thrown, if the hooking was not successful
      */
-    void hook() throws HookException;
+    void hook(BetonQuestApi api) throws HookException;
 
     /**
      * After all integrations are successfully hooked,

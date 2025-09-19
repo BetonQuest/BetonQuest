@@ -6,6 +6,7 @@ import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.worldguard.npc.NpcRegionConditionFactory;
@@ -54,13 +55,13 @@ public class WorldGuardIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final BetonQuestApi api) {
         final Server server = plugin.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), plugin);
-        final QuestTypeRegistries questRegistries = plugin.getQuestRegistries();
-        questRegistries.condition().register("region", new RegionConditionFactory(plugin.getLoggerFactory(), data));
+        final QuestTypeRegistries questRegistries = api.getQuestRegistries();
+        questRegistries.condition().register("region", new RegionConditionFactory(api.getLoggerFactory(), data));
         questRegistries.objective().register("region", new RegionObjectiveFactory());
-        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(plugin.getFeatureApi(), data));
+        questRegistries.condition().registerCombined("npcregion", new NpcRegionConditionFactory(api.getFeatureApi(), data));
     }
 
     @Override
