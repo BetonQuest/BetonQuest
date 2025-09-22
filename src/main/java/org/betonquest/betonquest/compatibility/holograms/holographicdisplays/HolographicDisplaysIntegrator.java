@@ -69,7 +69,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
-                loggerFactory.create(HologramPlaceholder.class), plugin.getVariableProcessor()));
+                loggerFactory.create(HologramPlaceholder.class), plugin.getVariableProcessor(), api.getProfileProvider()));
         holoApi.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder(
                 loggerFactory.create(HologramGlobalPlaceholder.class), plugin.getVariableProcessor()));
     }

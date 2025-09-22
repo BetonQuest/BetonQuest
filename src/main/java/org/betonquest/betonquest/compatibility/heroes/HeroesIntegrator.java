@@ -46,7 +46,7 @@ public class HeroesIntegrator implements Integrator {
 
         questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, data, characterManager));
 
-        plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(api.getProfileProvider()), plugin);
     }
 
     @Override
