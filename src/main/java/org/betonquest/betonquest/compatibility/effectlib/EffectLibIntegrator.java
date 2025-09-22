@@ -25,12 +25,6 @@ public class EffectLibIntegrator implements Integrator {
     private EffectManager manager;
 
     /**
-     * Particle Manager displaying effects on NPCs.
-     */
-    @Nullable
-    private EffectLibParticleManager particleManager;
-
-    /**
      * The default Constructor.
      */
     public EffectLibIntegrator() {
@@ -40,24 +34,18 @@ public class EffectLibIntegrator implements Integrator {
     @Override
     public void hook(final BetonQuestApi api) {
         manager = new EffectManager(plugin);
+        final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-        api.getQuestRegistries().event().register("particle", new ParticleEventFactory(plugin.getLoggerFactory(), data, manager));
-    }
+        api.getQuestRegistries().event().register("particle", new ParticleEventFactory(loggerFactory, data, manager));
 
-    @Override
-    public void postHook() {
-        if (manager != null) {
-            final BetonQuestLoggerFactory loggerFactory = plugin.getLoggerFactory();
-            particleManager = new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
-                    plugin.getQuestTypeApi(), plugin.getFeatureApi(), plugin.getProfileProvider(), plugin.getVariableProcessor(), manager);
-        }
+        plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
+                api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), plugin.getProfileProvider(),
+                plugin.getVariableProcessor(), manager, plugin));
     }
 
     @Override
     public void reload() {
-        if (particleManager != null) {
-            particleManager.reload();
-        }
+        // Empty
     }
 
     @Override

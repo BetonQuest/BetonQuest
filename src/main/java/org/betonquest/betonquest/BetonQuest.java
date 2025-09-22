@@ -408,7 +408,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             return;
         }
 
-        compatibility = new Compatibility(this, loggerFactory.create(Compatibility.class));
+        compatibility = new Compatibility(loggerFactory.create(Compatibility.class), this, config, version);
+        Bukkit.getPluginManager().registerEvents(compatibility, this);
 
         registerCommands(receiverSelector, debugHistoryHandler, playerDataFactory);
 
