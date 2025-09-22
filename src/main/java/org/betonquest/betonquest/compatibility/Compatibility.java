@@ -2,7 +2,8 @@ package org.betonquest.betonquest.compatibility;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
@@ -43,7 +44,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -57,15 +57,26 @@ import java.util.TreeMap;
  * Loads compatibility with other plugins.
  */
 public class Compatibility implements Listener {
-    /**
-     * BetonQuest plugin instance for tasks and configs.
-     */
-    private final BetonQuest betonQuest;
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * BetonQuest API.
+     */
+    private final BetonQuestApi betonQuestApi;
+
+    /**
+     * Config for checking if an Integrator should be activated.
+     */
+    private final ConfigAccessor config;
+
+    /**
+     * Version to use when a hook error message.
+     */
+    private final String version;
 
     /**
      * A map of all integrators.
@@ -83,32 +94,24 @@ public class Compatibility implements Listener {
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
      *
-     * @param betonQuest the BetonQuest plugin instance for tasks and configs
-     * @param log        the custom logger for this class
+     * @param log           the custom logger for this class
+     * @param config        the config to check if an Integrator should be activated/hooked
+     * @param betonQuestApi the BetonQuest API used to hook plugins
+     * @param version       the plugin version used in error messages
      */
-    public Compatibility(final BetonQuest betonQuest, final BetonQuestLogger log) {
-        this.betonQuest = betonQuest;
+    public Compatibility(final BetonQuestLogger log, final BetonQuestApi betonQuestApi, final ConfigAccessor config,
+                         final String version) {
         this.log = log;
+        this.betonQuestApi = betonQuestApi;
+        this.config = config;
+        this.version = version;
 
         registerCompatiblePlugins();
-
-        Bukkit.getPluginManager().registerEvents(this, betonQuest);
 
         // Integrate already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
-
-        //Delay after server start to finish all hooking first
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                final String hooks = buildHookedPluginsMessage();
-                if (!hooks.isEmpty()) {
-                    log.info("Enabled compatibility for " + hooks + "!");
-                }
-            }
-        }.runTask(betonQuest);
     }
 
     /**
@@ -126,6 +129,10 @@ public class Compatibility implements Listener {
      * this method can be called to activate cross compatibility features.
      */
     public void postHook() {
+        final String hooks = String.join(", ", getHooked());
+        if (!hooks.isEmpty()) {
+            log.info("Enabled compatibility for " + hooks + "!");
+        }
         final List<HologramIntegrator> hologramIntegrators = new ArrayList<>();
         integrators.values().stream()
                 .filter(pair -> pair.getRight() != null)
@@ -142,7 +149,7 @@ public class Compatibility implements Listener {
                     }
                 });
         hologramProvider = new HologramProvider(hologramIntegrators);
-        hologramProvider.hook(betonQuest);
+        hologramProvider.hook(betonQuestApi);
     }
 
     /**
@@ -171,10 +178,6 @@ public class Compatibility implements Listener {
         }
     }
 
-    private String buildHookedPluginsMessage() {
-        return String.join(", ", getHooked());
-    }
-
     /**
      * Triggers the integration of a plugin.
      *
@@ -195,7 +198,7 @@ public class Compatibility implements Listener {
             return;
         }
 
-        final boolean isEnabled = betonQuest.getPluginConfig().getBoolean("hook." + name.toLowerCase(Locale.ROOT));
+        final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
             log.debug("Did not hook " + name + " because it is disabled");
             return;
@@ -205,7 +208,7 @@ public class Compatibility implements Listener {
         log.info("Hooking into " + name);
 
         try {
-            integrator.hook(betonQuest);
+            integrator.hook(betonQuestApi);
             integrators.get(name).setValue(integrator);
         } catch (final HookException exception) {
             final String message = String.format("Could not hook into %s %s! %s",
@@ -220,7 +223,7 @@ public class Compatibility implements Listener {
             final String message = String.format("There was an unexpected error while hooking into %s %s (BetonQuest %s, Server %s)! %s",
                     hookedPlugin.getName(),
                     hookedPlugin.getDescription().getVersion(),
-                    betonQuest.getDescription().getVersion(),
+                    version,
                     Bukkit.getVersion(),
                     exception.getMessage());
             log.error(message, exception);
@@ -256,8 +259,8 @@ public class Compatibility implements Listener {
         register("Jobs", new JobsRebornIntegratorFactory());
         register("LuckPerms", new LuckPermsIntegratorFactory());
         register("AuraSkills", new AuraSkillsIntegratorFactory());
-        register("DecentHolograms", new DecentHologramsIntegratorFactory(betonQuest.getQuestPackageManager()));
-        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(betonQuest.getQuestPackageManager()));
+        register("DecentHolograms", new DecentHologramsIntegratorFactory(betonQuestApi.getQuestPackageManager()));
+        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(betonQuestApi.getQuestPackageManager()));
         register("fake-block", new FakeBlockIntegratorFactory());
         register("RedisChat", new RedisChatIntegratorFactory());
         register("Train_Carts", new TrainCartsIntegratorFactory());
