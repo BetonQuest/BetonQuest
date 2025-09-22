@@ -3517,6 +3517,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-416-simple-item-textparser">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-416 - Simple Item TextParser <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5440,6 +5463,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-416-simple-item-textparser">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-416 - Simple Item TextParser <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5606,6 +5652,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-365-menu-conversation-io-line-wrapping-rework">3.0.0-DEV-365 - Menu Conversation IO line wrapping rework</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2600.svg" title=":sun:" /></li>
 <li><a href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code></a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-408-journal-entry-separator">3.0.0-DEV-408 - Journal entry separator</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
+<li><a href="#300-dev-416-simple-item-textparser">3.0.0-DEV-416 - Simple Item TextParser</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6243,6 +6290,27 @@ Some well known edge cases are:</p>
 </code></pre></div>
 </div>
 </details>
+<h3 id="300-dev-416-simple-item-textparser">3.0.0-DEV-416 - Simple Item TextParser <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-416-simple-item-textparser" title="Permanent link">🔗</a></h3>
+<p>The <code>simple</code> items now use the text parser for the <code>name</code> and <code>lore</code> as well as for books the <code>title</code>, <code>author</code> and <code>text</code>.
+With that underscores won't be replaced anymore, instead you have to use quoting.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old items.yml</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">holySword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">name:&amp;4Sword_made_of_Holy_Concrete</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">lore:&amp;cOnly_this_sword_can_kill_the_Lord_Ruler</span>
+<span class="w">  </span><span class="nt">book</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple WRITTEN_BOOK</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">title:Malleus_Maleficarum author:&amp;eGallus_Anonymus</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New items.yml</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">holySword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;name:&amp;4Sword made of Holy Concrete&quot;</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;lore:&lt;red&gt;Only this sword can kill the Lord Ruler&quot;</span>
+<span class="w">  </span><span class="nt">book</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple WRITTEN_BOOK</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;title:Malleus Maleficarum&quot; &quot;author:&amp;eGallus Anonymus&quot;</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;text:Lorem ipsum dolor sit amet, &lt;newline&gt;consectetur adipiscing elit. |Pellentesque ligula urna(...)&quot;</span>
+</code></pre></div>
+</div>
 
 
 

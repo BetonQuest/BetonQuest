@@ -4987,13 +4987,11 @@ You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.</p
 <p>These are arguments that can be applied to every item:</p>
 <ul>
 <li>
-<p><code>name</code> - the display name of the item. Underscores will be replaced with spaces.
-You can escape them with <code>\_</code> and you can also escape the <code>\</code> with <code>\\_</code>. You can also use <code>&amp;</code> color codes. 
+<p><code>name</code> - the display name of the item.
 If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
 </li>
 <li>
 <p><code>lore</code> - text under the item's name. Default styling of lore is purple and italic. 
-You can escape them with <code>\_</code> and you can also escape the <code>\</code> with <code>\\_</code>. You can also use <code>&amp;</code> color codes.
 To make a new line use <code>;</code> character. If you require the item not to have a lore at all, use <code>none</code> keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
@@ -5037,9 +5035,9 @@ for example <code>none-knockback</code> means that the item must not have any kn
 </ul>
 </li>
 </ul>
-<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">name:&amp;4Sword_made_of_Holy_Concrete</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="s">&quot;name:&amp;4Sword</span><span class="nv"> </span><span class="s">made</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Holy</span><span class="nv"> </span><span class="s">Concrete&quot;</span>
 <span class="l l-Scalar l-Scalar-Plain">name:none</span>
-<span class="l l-Scalar l-Scalar-Plain">lore:&amp;cOnly_this_sword_can_kill_the_Lord_Ruler</span>
+<span class="l l-Scalar l-Scalar-Plain">&quot;lore:&lt;red&gt;Only this sword can kill the Lord Ruler&quot;</span>
 <span class="l l-Scalar l-Scalar-Plain">lore:&amp;2Quest_Item lore-containing</span>
 <span class="l l-Scalar l-Scalar-Plain">lore:none</span>
 <span class="l l-Scalar l-Scalar-Plain">enchants:damage_all:3+,none-knockback</span>
@@ -5115,7 +5113,7 @@ Now if you want to make sure the potion doesn't contain a specific effect, prefi
 <h3 id="heads">Heads<a class="headerlink" href="#heads" title="Permanent link">🔗</a></h3>
 <h4 id="player-heads">Player Heads<a class="headerlink" href="#player-heads" title="Permanent link">🔗</a></h4>
 <ul>
-<li><code>owner</code> - this is the name of the head owner. It will <strong>not</strong> use color codes nor replace underscores with spaces.
+<li><code>owner</code> - this is the name of the head owner. It will <strong>not</strong> use formatting.
     If you want to check for heads without any owner, use <code>none</code> keyword.</li>
 <li>Use <code>owner:</code> to get the current players head. You need to quote the whole instruction when using that.</li>
 </ul>
@@ -5187,10 +5185,11 @@ To match the item which must not have an effect, prefix the effect name with <co
 <h2 id="backpack">Backpack<a class="headerlink" href="#backpack" title="Permanent link">🔗</a></h2>
 <p>Sometimes you'll want some items to be persistent over death. The quest could be broken if the player loses them.
 Such an item wouldn't be dropped (on death), instead it would be placed in the player's backpack.</p>
-<p>You can add a specific line to an item's lore to make it persistent. It's <code>&amp;2Quest_Item</code> (<code>_</code> is a space in an item's definition) if your default language is english.
-The translation of the line can be found in <em>messages.yml</em> if a different default language is configured. It's also possible to change the translation. </p>
+<p>You can add a specific line to an item's lore to make it persistent. It's <code>&amp;2Quest Item</code> (you need to use quotes) if your default language is english.
+The translation of the line can be found in the lang files if a different default language is configured. It's also possible to change the translation. </p>
 <p>Note that this must be an entirely new line in the lore!    </p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">important_sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">DIAMOND_SWORD</span><span class="nv"> </span><span class="s">name:Sword_for_destroying__The_Concrete</span><span class="nv"> </span><span class="s">lore:Made_of_pure_Mithril;&amp;2Quest_Item&quot;</span>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">important_sword</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple</span><span class="nv"> </span><span class="s">DIAMOND_SWORD</span><span class="nv"> </span><span class="s">\&quot;name:Sword</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">destroying</span><span class="nv">  </span><span class="s">The</span><span class="nv"> </span><span class="s">Concrete\&quot;</span>
+<span class="w">  </span><span class="s">\&quot;lore:Made</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">pure</span><span class="nv"> </span><span class="s">Mithril;&amp;2Quest</span><span class="nv"> </span><span class="s">Item\&quot;&quot;</span>
 </code></pre></div>
 <p>The backpack can be opened with the <strong>/backpack</strong> command. The inventory window will open, displaying your stored items.
 The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them.
