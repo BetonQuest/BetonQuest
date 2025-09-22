@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.api.Type;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -42,15 +43,15 @@ public class MMOQuestItem implements QuestItem {
     }
 
     @Override
-    public String getName() {
+    public Component getName() {
         final ItemMeta itemMeta = resolvedItem.getItemMeta();
-        return itemMeta.hasDisplayName() ? itemMeta.getDisplayName() : itemID;
+        return itemMeta.hasDisplayName() ? itemMeta.displayName() : Component.text(itemID);
     }
 
     @Override
-    public List<String> getLore() {
+    public List<Component> getLore() {
         final ItemMeta itemMeta = resolvedItem.getItemMeta();
-        return itemMeta.hasLore() ? itemMeta.getLore() : List.of();
+        return itemMeta.hasLore() ? itemMeta.lore() : List.of();
     }
 
     @Override

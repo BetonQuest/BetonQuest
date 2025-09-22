@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -15,14 +16,14 @@ public interface QuestItem {
      *
      * @return the name to display
      */
-    String getName();
+    Component getName();
 
     /**
      * Gets the lore.
      *
      * @return the list of lore lines, can be empty
      */
-    List<String> getLore();
+    List<Component> getLore();
 
     /**
      * Generates this quest item as ItemStack with given amount.

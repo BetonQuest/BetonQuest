@@ -79,8 +79,8 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     private QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
         final BlockSelector selector = new BlockSelector(material);
 
-        final NameHandler name = new NameHandler();
-        final LoreHandler lore = new LoreHandler();
+        final NameHandler name = new NameHandler(textParser);
+        final LoreHandler lore = new LoreHandler(textParser);
 
         final List<ItemMetaHandler<?>> handlers = List.of(
                 new DurabilityHandler(),

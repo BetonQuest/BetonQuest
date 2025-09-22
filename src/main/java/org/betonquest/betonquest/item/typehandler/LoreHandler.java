@@ -1,6 +1,9 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,9 +17,14 @@ import java.util.Set;
 public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     /**
+     * The text parser used to parse text.
+     */
+    private final TextParser textParser;
+
+    /**
      * The lore.
      */
-    private final List<String> lore = new LinkedList<>();
+    private final List<Component> lore = new LinkedList<>();
 
     /**
      * The required existence.
@@ -29,9 +37,12 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     private boolean exact = true;
 
     /**
-     * The empty default Constructor.
+     * Creates an empty LoreHandler.
+     *
+     * @param textParser the text parser used to parse text
      */
-    public LoreHandler() {
+    public LoreHandler(final TextParser textParser) {
+        this.textParser = textParser;
     }
 
     @Override
@@ -49,10 +60,10 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     public String serializeToString(final ItemMeta meta) {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
-            for (final String line : meta.getLore()) {
-                string.append(line).append(';');
+            for (final Component line : meta.lore()) {
+                string.append(MiniMessage.miniMessage().serialize(line)).append(';');
             }
-            return "lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
+            return "\"lore:@[minimessage]" + string.substring(0, string.length() - 1) + "\"";
         }
         return null;
     }
@@ -66,7 +77,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
                 } else {
                     existence = Existence.REQUIRED;
                     for (final String line : data.split(";")) {
-                        this.lore.add(NameHandler.replaceUnderscore(line).replaceAll("&", "§"));
+                        this.lore.add(textParser.parse(line));
                     }
                 }
             }
@@ -77,12 +88,12 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
 
     @Override
     public void populate(final ItemMeta meta) {
-        meta.setLore(get());
+        meta.lore(get());
     }
 
     @Override
     public boolean check(final ItemMeta meta) {
-        final List<String> lore = meta.getLore();
+        final List<Component> lore = meta.lore();
         return switch (existence) {
             case WHATEVER -> true;
             case REQUIRED -> checkRequired(lore);
@@ -95,11 +106,11 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @return the list of lore lines, can be empty
      */
-    public List<String> get() {
+    public List<Component> get() {
         return lore;
     }
 
-    private boolean checkRequired(@Nullable final List<String> lore) {
+    private boolean checkRequired(@Nullable final List<Component> lore) {
         if (lore == null) {
             return false;
         }
@@ -118,10 +129,10 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
         return true;
     }
 
-    private boolean checkNonExact(final List<String> lore) {
-        for (final String line : this.lore) {
+    private boolean checkNonExact(final List<Component> lore) {
+        for (final Component line : this.lore) {
             boolean has = false;
-            for (final String itemLine : lore) {
+            for (final Component itemLine : lore) {
                 if (itemLine.equals(line)) {
                     has = true;
                     break;

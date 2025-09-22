@@ -59,7 +59,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     private Existence textE = Existence.WHATEVER;
 
     /**
-     * The empty default Constructor.
+     * Creates an empty BookHandler.
      *
      * @param textParser      the text parser used to parse text
      * @param bookPageWrapper the book wrapper used to split pages

@@ -52,6 +52,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-365 - Menu Conversation IO line wrapping rework](#300-dev-365-menu-conversation-io-line-wrapping-rework) :sun:
 - [3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.`](#300-dev-394-cross-packages-are-now-referenced-with-instead-of) :thunder_cloud_rain:
 - [3.0.0-DEV-408 - Journal entry separator](#300-dev-408-journal-entry-separator) :white_sun_cloud:
+- [3.0.0-DEV-416 - Simple Item TextParser](#300-dev-416-simple-item-textparser) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -820,3 +821,32 @@ Some well known edge cases are:
     ```
     
     </div>
+
+### 3.0.0-DEV-416 - Simple Item TextParser :thunder_cloud_rain:
+
+The `simple` items now use the text parser for the `name` and `lore` as well as for books the `title`, `author` and `text`.
+With that underscores won't be replaced anymore, instead you have to use quoting.
+
+<div class="grid" markdown>
+
+```YAML title="Old items.yml"
+items:
+  holySword: simple DIAMOND_SWORD
+    name:&4Sword_made_of_Holy_Concrete
+    lore:&cOnly_this_sword_can_kill_the_Lord_Ruler
+  book: simple WRITTEN_BOOK
+    title:Malleus_Maleficarum author:&eGallus_Anonymus
+    text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)
+```
+
+```YAML title="New items.yml"
+items:
+  holySword: simple DIAMOND_SWORD
+    "name:&4Sword made of Holy Concrete"
+    "lore:<red>Only this sword can kill the Lord Ruler"
+  book: simple WRITTEN_BOOK
+    "title:Malleus Maleficarum" "author:&eGallus Anonymus"
+    "text:Lorem ipsum dolor sit amet, <newline>consectetur adipiscing elit. |Pellentesque ligula urna(...)"
+```
+
+</div>

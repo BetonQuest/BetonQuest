@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Plugin Messages / Translations
     - Menu Items & Title
     - Mob Names for `interact` objective, `spawn` event, `removeentity` event and `entiry` condition
+    - `simple` items
 - `region` and `wand` conditions now supports variables
 - `JobsReborn`, `Quests`, `McMMO` now supports variables
 - notification categories `conversation_start` and `conversation_end`
@@ -64,6 +65,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `mobkill` objective - name
     - `password` objective - password
     - `interact` objective - custom name and real name
+    - `simple` items
 - `items` now have a type like events
 - renamed list keys from singular to plural
     - objectives - `event` and `condition` are now `events` and `conditions`

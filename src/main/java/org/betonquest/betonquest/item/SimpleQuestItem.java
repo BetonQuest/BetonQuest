@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
@@ -101,16 +102,16 @@ public class SimpleQuestItem implements QuestItem {
     }
 
     @Override
-    public String getName() {
-        final String name = this.name.get();
+    public Component getName() {
+        final Component name = this.name.get();
         if (name != null) {
             return name;
         }
-        return selector.getRandomMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ");
+        return Component.text(selector.getRandomMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " "));
     }
 
     @Override
-    public List<String> getLore() {
+    public List<Component> getLore() {
         return lore.get();
     }
 }
