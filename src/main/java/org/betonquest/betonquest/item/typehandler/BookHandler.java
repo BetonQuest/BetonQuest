@@ -86,12 +86,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         final String title;
         final String text;
         if (bookMeta.hasAuthor()) {
-            author = " \"author:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.author()) + "\"";
+            author = " " + HandlerUtil.toKeyValue("author", bookMeta.author());
         } else {
             author = "";
         }
         if (bookMeta.hasTitle()) {
-            title = " \"title:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.title()) + "\"";
+            title = " " + HandlerUtil.toKeyValue("title", bookMeta.title());
         } else {
             title = "";
         }
