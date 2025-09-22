@@ -81,7 +81,7 @@ public class GiveEvent implements OnlineEvent {
             final int amount = item.getAmount().getValue(profile).intValue();
             giveItems(profile, player, questItem, amount);
             itemsGivenSender.sendNotification(profile,
-                    new VariableReplacement("item", Component.text(questItem.getName())),
+                    new VariableReplacement("item", questItem.getName()),
                     new VariableReplacement("amount", Component.text(amount)));
         }
     }

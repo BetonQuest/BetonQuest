@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.quest.variable.item;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -8,7 +11,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.item.QuestItem;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -105,13 +107,13 @@ public class ItemVariable implements NullableVariable {
         return itemAmount;
     }
 
-    private String conditionalRaw(@Nullable final String string) {
-        if (string == null) {
+    private String conditionalRaw(@Nullable final Component component) {
+        if (component == null) {
             return "";
         }
         if (raw) {
-            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string));
+            return PlainTextComponentSerializer.plainText().serialize(component);
         }
-        return string;
+        return LegacyComponentSerializer.legacySection().serialize(component);
     }
 }

@@ -59,7 +59,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     private Existence textE = Existence.WHATEVER;
 
     /**
-     * The empty default Constructor.
+     * Creates an empty BookHandler.
      *
      * @param textParser      the text parser used to parse text
      * @param bookPageWrapper the book wrapper used to split pages
@@ -86,12 +86,12 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
         final String title;
         final String text;
         if (bookMeta.hasAuthor()) {
-            author = " \"author:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.author()) + "\"";
+            author = " " + HandlerUtil.toKeyValue("author", bookMeta.author());
         } else {
             author = "";
         }
         if (bookMeta.hasTitle()) {
-            title = " \"title:@[minimessage]" + MiniMessage.miniMessage().serialize(bookMeta.title()) + "\"";
+            title = " " + HandlerUtil.toKeyValue("title", bookMeta.title());
         } else {
             title = "";
         }

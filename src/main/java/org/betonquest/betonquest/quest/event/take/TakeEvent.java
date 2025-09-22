@@ -54,7 +54,7 @@ public class TakeEvent extends AbstractTakeEvent {
 
             checkSelectedTypes(profile);
             notificationSender.sendNotification(profile,
-                    new VariableReplacement("item", Component.text(questItem.getName())),
+                    new VariableReplacement("item", questItem.getName()),
                     new VariableReplacement("amount", Component.text(deleteAmount - neededDeletions.get(profile.getProfileUUID()).getRight())));
         }
     }

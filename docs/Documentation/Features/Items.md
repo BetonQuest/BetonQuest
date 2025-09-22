@@ -24,12 +24,10 @@ You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.
 
 These are arguments that can be applied to every item:
 
-- `name` - the display name of the item. Underscores will be replaced with spaces.
-You can escape them with `\_` and you can also escape the `\` with `\\_`. You can also use `&` color codes. 
+- `name` - the display name of the item.
 If you want to specifically say that the item must not have any name, use `none` keyword.
 
 - `lore` - text under the item's name. Default styling of lore is purple and italic. 
-You can escape them with `\_` and you can also escape the `\` with `\\_`. You can also use `&` color codes.
 To make a new line use `;` character. If you require the item not to have a lore at all, use `none` keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
@@ -68,9 +66,9 @@ add `lore-containing` argument to the instruction string.
     - HIDE_DYE: Hide the dye labels on colored leather armor
 
 ```YAML title="Examples"
-name:&4Sword_made_of_Holy_Concrete
+"name:&4Sword made of Holy Concrete"
 name:none
-lore:&cOnly_this_sword_can_kill_the_Lord_Ruler
+"lore:<red>Only this sword can kill the Lord Ruler"
 lore:&2Quest_Item lore-containing
 lore:none
 enchants:damage_all:3+,none-knockback
@@ -149,7 +147,7 @@ effects:none-weakness,invisibility:?:? effects-containing
 
 #### Player Heads
 
-- `owner` - this is the name of the head owner. It will **not** use color codes nor replace underscores with spaces.
+- `owner` - this is the name of the head owner. It will **not** use formatting.
     If you want to check for heads without any owner, use `none` keyword.
   - Use `owner:` to get the current players head. You need to quote the whole instruction when using that.
 
@@ -238,13 +236,14 @@ _This applies to firework charges._
 Sometimes you'll want some items to be persistent over death. The quest could be broken if the player loses them.
 Such an item wouldn't be dropped (on death), instead it would be placed in the player's backpack.
 
-You can add a specific line to an item's lore to make it persistent. It's `&2Quest_Item` (`_` is a space in an item's definition) if your default language is english.
-The translation of the line can be found in *messages.yml* if a different default language is configured. It's also possible to change the translation. 
+You can add a specific line to an item's lore to make it persistent. It's `&2Quest Item` (you need to use quotes) if your default language is english.
+The translation of the line can be found in the lang files if a different default language is configured. It's also possible to change the translation. 
 
 Note that this must be an entirely new line in the lore!    
 
 ```YAML title="Example" 
-important_sword: "simple DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item"
+important_sword: "simple DIAMOND_SWORD \"name:Sword for destroying  The Concrete\"
+  \"lore:Made of pure Mithril;&2Quest Item\""
 ```
 
 The backpack can be opened with the **/backpack** command. The inventory window will open, displaying your stored items.

@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.intellij.lang.annotations.Language;
@@ -77,5 +79,19 @@ public final class HandlerUtil {
             return Map.entry(Number.EQUAL, getNotBelowZero(part, messagePart));
         }
         return Map.entry(number, getNotBelowZero(part.substring(0, part.length() - 1), messagePart));
+    }
+
+    /**
+     * Serializes a component and quotes it to a key in the Instruction format.
+     * <p>
+     * It will be serialized into MiniMessage format and prefixed with {@code @[minimessage]}
+     * as used in the DecidingMessageParser standard implementation.
+     *
+     * @param key   the instruction key
+     * @param value the component to serialize
+     * @return the ready to parse key value pair
+     */
+    public static String toKeyValue(final String key, final Component value) {
+        return "\"" + key + ":@[minimessage]" + MiniMessage.miniMessage().serialize(value) + "\"";
     }
 }
