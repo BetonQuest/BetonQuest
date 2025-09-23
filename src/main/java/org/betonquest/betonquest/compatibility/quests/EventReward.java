@@ -55,7 +55,7 @@ public class EventReward extends BukkitCustomReward {
         this.profileProvider = profileProvider;
         setName("BetonQuest event");
         setAuthor("BetonQuest");
-        addStringPrompt("Event", "Specify BetonQuest event name (with the package, like: package.event)", null);
+        addStringPrompt("Event", "Specify BetonQuest event with the package and the name", null);
     }
 
     @Override
