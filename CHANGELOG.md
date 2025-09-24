@@ -96,6 +96,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `npc_conversations` show the combat message only if there is a bound conversation
 - Addressing cross Packages now use `>` instead of `.` to solve conflicts in Variables
 - Bukkit API events are now called sync/async depending on the tread context they are called in
+- `variable` command allows setting and getting data now for offline players
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
