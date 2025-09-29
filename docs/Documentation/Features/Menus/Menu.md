@@ -4,7 +4,7 @@ icon: material/television-guide
 
 # Menus
 BetonQuest allows the creation of fully custom GUIs using the events and items system.  
-Nearly everything can be done with these, from guis listing open quests over simple warp systems to
+Nearly everything can be done with these, from GUIs listing open quests over simple warp systems to
 information GUIs that display player stats.
 
 <span class="centered">![Menu example](../../../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
@@ -131,8 +131,8 @@ You can define one or multiple events (separated by `,`) that are run whenever t
 ``` YAML title="Example"
 items:
   skeletonQuestDone:
-    item: "simple questDoneItem"
-    click: "simple startQuest,closeMenu"
+    item: "questDoneItem"
+    click: "startQuest,closeMenu"
 ```
 
 #### Click Types
