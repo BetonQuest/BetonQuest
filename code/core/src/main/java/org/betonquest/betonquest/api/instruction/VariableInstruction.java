@@ -16,11 +16,6 @@ public class VariableInstruction extends Instruction {
     private static final Tokenizer DOT_TOKENIZER = (instruction) -> instruction.split("\\.");
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
      * @param packManager the quest package manager to get quest packages from
@@ -33,19 +28,16 @@ public class VariableInstruction extends Instruction {
     public VariableInstruction(final QuestPackageManager packManager, final QuestPackage pack,
                                final Identifier identifier, final String instruction) throws QuestException {
         super(packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
-        this.packManager = packManager;
     }
 
     /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param packManager the quest package manager to get quest packages from
      * @param instruction The raw instruction string for this variable.
      * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final QuestPackageManager packManager, final VariableInstruction instruction, final Identifier identifier) {
-        super(packManager, instruction, identifier);
-        this.packManager = packManager;
+    public VariableInstruction(final VariableInstruction instruction, final Identifier identifier) {
+        super(instruction, identifier);
     }
 
     private static String cleanInstruction(final String instruction) throws QuestException {
@@ -62,6 +54,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final Identifier newID) {
-        return new VariableInstruction(packManager, this, newID);
+        return new VariableInstruction(this, newID);
     }
 }
