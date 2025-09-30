@@ -2,82 +2,146 @@
 icon: material/sword
 ---
 ## Item Basics  
-Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similarly to events, conditions etc.
+Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similar to events, conditions etc.
 
-BetonQuest provides the `simple` item type, which this page describes.
-Basic syntax is very simple:
+BetonQuest provides the `simple` item type, to which this page will outline the creation process. _Item type_ here 
+refers to the "source" of the item (A bit like when you specify the [namespace](https://minecraft.fandom.com/wiki/Resource_location) in `/give` commands). 
 
+Here is the basic syntax:
 ```YAML
-item: simple BLOCK_SELECTOR other arguments...
+items:
+  itemExample: simple BLOCK_SELECTOR other arguments... #(1)!
 ```
 
-[BLOCK_SELECTOR](../Scripting/Data-Formats.md#block-selectors) is a type of the item. It doesn't have to be all in uppercase.
-Other arguments specify data like name of the item, lore, enchantments or potion effects.
-There are two categories of these arguments: the ones you can apply to every item and type specific arguments.
-Examples would be `name` (for every item type) and `text` (only in books).
+1. Consider [YAML multiline syntax](../Scripting/Quoting-&-YAML.md) for 
+long item 
+strings.
 
-Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction.
-The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that.
-Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether.
-You can also accept an item only if some value (like enchantment level) is greater/less than _x_.
-You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.
+[BLOCK_SELECTOR](../Scripting/Data-Formats.md#block-selectors) specifies the type of item you are creating. At its 
+most basic, it is the item material. It doesn't have to be all in uppercase.
+
+
+`Other arguments` is for additional data like the name of the item, lore, enchantments or potion effects.
+There are two categories for these arguments: The ones you can apply to every item and type-specific arguments.
+Examples would be `name` (for every item type) and `text` (only for books).
+
+
+Every argument is used in two ways: When creating an item and when checking if some existing item matches the 
+instruction.
+
+The first case is pretty straightforward - BetonQuest takes all the data you specified and creates an item. You would 
+give it to your players using events. 
+The second case is more complicated. You can require certain properties of the item to exist, others to not exist, or 
+skip some property checks altogether. You would use these items in conditions.
+
 
 These are arguments that can be applied to every item:
+!!! info inline end
+    As of version [3.0.0-DEV-416](/Documentation/Configuration/Version-Changes/Migration-2-3/#300-dev-416-simple-item-textparser)
+    , you no 
+    longer require underscores
+    and need to quote the `name` and `lore` arguments.
 
-- `name` - the display name of the item.
-If you want to specifically say that the item must not have any name, use `none` keyword.
+<div class="annotate" markdown>
+- `name`
+The display name of the item. If you want to specifically say that the item must not have any name, use `none` 
+keyword. Default styling is italic.(1)
 
-- `lore` - text under the item's name. Default styling of lore is purple and italic. 
-To make a new line use `;` character. If you require the item not to have a lore at all, use `none` keyword.
+</div>
+
+1. If you do not want italics, you must append `<!i>` before the name text. See [Minimessage Formatting](https://docs.advntr.dev/minimessage/format.html#decoration) for more information. 
+
+<div class="annotate" markdown>
+* `lore` - Text under the item's name. Default styling of lore is purple and italic. 
+To make a new line, use `;` character. If you require the item to not have lore at all, use `none` keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
-add `lore-containing` argument to the instruction string.
+add `lore-containing` argument to the instruction string. (1)
 
-- `enchants` - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:
+</div>
+
+1. If you do not want the default styling, you must append `<!i><colorValue>` before the text in your `lore` argument.
+
+<div class="annotate" markdown>
+* `enchants` - a list of enchantments and their levels. You can require the item to not have any enchantments by 
+using `none` keyword.
+ Each enchantment consists of these things, separated by 
+colons(1):
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
-    - level (only positive numbers, including zero)
-    
-    For example `damage_all:3` is _Sharpness III_. You can specify additional enchantments by separating them with commas.
-    
-    You can require the item not to have any enchantments by using `none` keyword.
-    You can also add `+`/`-` character to the enchantment level to make the check require levels greater/less (and equal) than specified.
-    If you don't care about the level, replace the number with a question mark.
-    
-    By default, all specified enchantments are required.
-    If you want to check if the item contains a matching enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string.
-    Each specified enchantment will be required on the item by default unless you prefix its name with `none-`,
-    for example `none-knockback` means that the item must not have any knockback enchantment.
-    **Do not use `none-` prefix unless you're using `enchants-containing` argument**, it doesn't make any sense and will break the check!
+    - level (only positive numbers, including zero) (2)
 
-- `unbreakable` - this makes the item unbreakable.
-   You can specify it either as `unbreakable` or `unbreakable:true` to require an item to be unbreakable.
+      * By default, all specified enchantments are required. If you want to check if the item contains a matching 
+      enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each 
+      specified enchantment will be required on the item by default unless you prefix its name with `none-`(3). 
+!!! warning
+    **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it doesn't make any sense 
+    and will break the check!
+
+* `unbreakable` - This makes the item unbreakable.
+   You can specify it as either `unbreakable` or `unbreakable:true` to require an item to be unbreakable.
    If you want to check if the item is breakable, use `unbreakable:false`.
 
-- `custom-model-data` - set the custom model data of the item. You have to specify the data value: `custom-model-data:3`.
+
+* `custom-model-data` - Set the custom model data of the item. You have to specify the data value: 
+`custom-model-data:3`.
    To check that an item does not have custom model data set `no-custom-model-data`.
 
-- `flags` - item flags that govern the visibility of some item info (comma delimited) including:
-    - HIDE_ENCHANTS: Hide the item's enchants
-    - HIDE_ATTRIBUTES: Hide attributes like damage
-    - HIDE_UNBREAKABLE: Hide the unbreakable of the item state
-    - HIDE_DESTROYS: Hide what the item can break or destroy
-    - HIDE_PLACED_ON: Hide where the item can be placed
-    - HIDE_POTION_EFFECTS: Hide potion effects, book and firework info, map tool tips, banner patters, and enchantments
-    - HIDE_DYE: Hide the dye labels on colored leather armor
 
-```YAML title="Examples"
-"name:&4Sword made of Holy Concrete"
-name:none
-"lore:<red>Only this sword can kill the Lord Ruler"
-lore:&2Quest_Item lore-containing
-lore:none
-enchants:damage_all:3+,none-knockback
-enchants:power:? enchants-containing
-enchants:none
-unbreakable
-unbreakable:false
-flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE
-```
+* `flags` - Item flags that govern the visibility of some item info (comma delimited) including:
+    - HIDE_ENCHANTS: Hides the item's enchants
+    - HIDE_ATTRIBUTES: Hides attributes like damage
+    - HIDE_UNBREAKABLE: Hides the unbreakable tag
+    - HIDE_DESTROYS: Hides what the item can break or destroy
+    - HIDE_PLACED_ON: Hides where the item can be placed
+    - HIDE_POTION_EFFECTS: Hides potion effects, book and firework info, map tool tips, banner patters, and enchantments
+    - HIDE_DYE: Hides the dye labels on colored leather armor
+
+</div>
+
+1. You can specify additional enchantments by separating them with commas. 
+2. You can also add `+`/`-` characters to the 
+enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about 
+the level, replace the number with `?`.
+3. For example `none-knockback` means that the item must not have any knockback enchantment.
+
+
+
+??? example "Item Creation Examples" 
+    === "Basic Item Example"
+        ```YAML 
+        holySword: simple stone_sword "name:&4Sword made of Holy Concrete" "lore:Blessed by the Emperor!" #(1)!
+        ```
+        
+        1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleSimple.PNG)
+  
+    === "Complex Item Example With Multiline Syntax"
+        ```YAML
+        holierSword: >-
+        simple stone_sword 
+        "name:<!i><red>An Even Better Sword" 
+        "lore:<#FF1CA4>Sharp as can be!"
+        enchants:damage_all:3
+        unbreakable
+        flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE #(1)!
+        ```
+        
+        1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleComplexMltLine.png)
+??? example "Item Matching Examples:material-information-outline:{ title="For when you want to parse specific parts of your items." }"
+    === "Lore Matching Example"
+        ```YAML
+        newSword: simple stone_sword "name:Excellent Sword" "lore-containing:Sharper than most!" #(1)!"
+        ```
+        
+        1.  Will match all stone swords containing a lore-line `Sharper than most!"`
+    === "Enchantment Matching Examples"
+        ```YAML
+        sharpSword: simple stone_sword "name:Sharp Sword" enchants-containing:damage_all:? #(1)!
+        bluntSword: simple stone_sword name:none enchants-containing:none-damage_all #(2)!
+        ```
+        
+        1. Will match all stone swords with any `damage_all` enchantment.
+        2. Will only match with stone swords that do *not* have a `damage_all` enchantment.
+
 
 ## Special Item Types
 
