@@ -92,12 +92,11 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     /**
      * Copies an instruction using the given instruction and a new identifier.
      *
-     * @param packManager the quest package manager to get quest packages from
      * @param instruction instruction to copy
      * @param identifier  identifier of the new instruction
      */
-    public Instruction(final QuestPackageManager packManager, final Instruction instruction, final Identifier identifier) {
-        this.packManager = packManager;
+    public Instruction(final Instruction instruction, final Identifier identifier) {
+        this.packManager = instruction.packManager;
         this.pack = instruction.pack;
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
@@ -189,7 +188,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @return copy of this instruction with the new ID
      */
     public Instruction copy(final Identifier newID) {
-        return new Instruction(packManager, this, newID);
+        return new Instruction(this, newID);
     }
 
     @Override
