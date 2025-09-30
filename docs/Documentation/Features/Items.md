@@ -87,7 +87,7 @@ colons(1):
    To check that an item does not have custom model data set `no-custom-model-data`.
 
 
-* `flags` - Item flags that govern the visibility of some item info (comma delimited) including:
+* `flags` - Item flags that govern the visibility of some item info (comma-delimited) including:
     - HIDE_ENCHANTS: Hides the item's enchants
     - HIDE_ATTRIBUTES: Hides attributes like damage
     - HIDE_UNBREAKABLE: Hides the unbreakable tag
@@ -129,14 +129,15 @@ the level, replace the number with `?`.
 ??? example "Item Matching Examples:material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
-        newSword: simple stone_sword "name:Excellent Sword" "lore-containing:Sharper than most!" #(1)!"
+        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!"
         ```
         
-        1.  Will match all stone swords containing a lore-line `Sharper than most!"`
+        1.  Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
+        item but mainly used for `item` condition checks.
     === "Enchantment Matching Examples"
         ```YAML
-        sharpSword: simple stone_sword "name:Sharp Sword" enchants-containing:damage_all:? #(1)!
-        bluntSword: simple stone_sword name:none enchants-containing:none-damage_all #(2)!
+        sharpSword: simple stone_sword "name:Sharp Sword" enchants:damage_all:? enchants-containing #(1)!
+        bluntSword: simple stone_sword name:none enchants:none-damage_all enchants-containing #(2)!
         ```
         
         1. Will match all stone swords with any `damage_all` enchantment.
