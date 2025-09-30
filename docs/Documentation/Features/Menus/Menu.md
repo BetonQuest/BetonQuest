@@ -4,7 +4,7 @@ icon: material/television-guide
 
 # Menus
 BetonQuest allows the creation of fully custom GUIs using the events and items system.  
-Nearly everything can be done with these, from guis listing open quests over simple warp systems to
+Nearly everything can be done with these, from GUIs listing open quests over simple warp systems to
 information GUIs that display player stats.
 
 <span class="centered">![Menu example](../../../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
