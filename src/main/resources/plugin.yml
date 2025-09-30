@@ -70,6 +70,9 @@ commands:
     usage: /<command>
     permission: betonquest.admin
     aliases: [ q, bq, bquest, bquests, betonquests, quest, quests ]
+  betonquestanswer:
+    description: Selects an answer in a conversation
+    usage: No manual usage
 permissions:
   betonquest.admin:
     default: op

@@ -498,6 +498,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, this);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);
+        getCommand("betonquestanswer").setTabCompleter((sender, command, label, args) -> List.of());
     }
 
     private void migrate() {

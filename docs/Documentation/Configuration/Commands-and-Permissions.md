@@ -43,6 +43,7 @@ Arguments referring to a package are prefixed in the format `package>` and marke
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
 * `/rpgmenu open <menu(ID)> [player]` - Opens a menu for you or another player.
   [Open conditions](../Features/Menus/Menu.md#general-menu-settings) will be ignored when using this command.
+* `/betonquestanswer` - Selects an answer in a conversation, can not be used manually
 
 The filter only works on the list and will match all objectives/tags/points that start with the filter. 
 Please note, that the names are a composition of the package name and the name of the objective/tag/point.
