@@ -207,7 +207,7 @@ public class ConversationData {
     public ResolvedOption resolveOption(final ConversationOptionID conversationOptionID, final ConversationData.OptionType optionType) throws QuestException {
         final String conversationName = conversationOptionID.getConversationName();
         final String optionName = conversationOptionID.getOptionName();
-        final ConversationID targetConversationID = conversationName == null ? publicData.conversationID : new ConversationID(packManager, getPack(), conversationName);
+        final ConversationID targetConversationID = conversationName == null ? publicData.conversationID : new ConversationID(packManager, conversationOptionID.getPackage(), conversationName);
 
         final ConversationData newData = featureApi.getConversation(targetConversationID);
         return new ResolvedOption(newData, optionType, optionName);
