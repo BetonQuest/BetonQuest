@@ -610,7 +610,7 @@ Can only effect loaded entities!
 | _entity(s)_ | `entity,entity`                                                              | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                                                                                              |
 | _location_  | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | Required. The center location of the target entity's.                                                                                       |
 | _radius_    | Number                                                                       | :octicons-x-circle-16: | Required. The radius around the location. Can be a variable.                                                                                |
-| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity. All `_` will be replaced with spaces.                                                                                   |
+| _name_      | `name:name`                                                                  | :octicons-x-circle-16: | Name of the entity.                                                                                                                         |
 | _marked_    | `marked:mark`                                                                | :octicons-x-circle-16: | Mark of the entity (from the [spawn event](../../Scripting/Building-Blocks/Events-List.md#spawn-mob-spawn) for example). Can be a variable. |
 | _kill_      | `kill`                                                                       | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).                                                                                |
 
@@ -761,7 +761,7 @@ events:
 
 **persistent**, **static**
 
-Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. All `_` characters will be replaced with spaces. You can also mark the spawned mob with a keyword using `marked:` argument supporting variables. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
+Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. You can also mark the spawned mob with a keyword using `marked:` argument supporting variables. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
 
 You can specify armor which the mob will wear and items it will hold with `h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments. These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
 

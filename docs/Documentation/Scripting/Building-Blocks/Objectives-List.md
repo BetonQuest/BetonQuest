@@ -649,7 +649,7 @@ The second required argument is a list of events to execute when the objective i
 
 ```YAML title="Example"
 command "/warp %player% farms" events:event1,event2
-command //replace_oak\_wood events:event1,event2
+command "//replace oak_wood" events:event1,event2
 ```
 
 With this configuration, the command objective requires the player to execute `/warp MyName farms` to be completed. The
