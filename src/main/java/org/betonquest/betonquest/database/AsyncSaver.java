@@ -1,11 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.AvoidSynchronizedStatement"})
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
-public class AsyncSaver extends Thread implements Listener, Saver {
+public class AsyncSaver extends Thread implements Saver {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -55,7 +52,6 @@ public class AsyncSaver extends Thread implements Listener, Saver {
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
         this.reconnectInterval = config.getLong("mysql.reconnect_interval");
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override

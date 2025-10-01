@@ -133,6 +133,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `interact` objective now blocks the interaction with an item frame properly if cancel is set
 - `brewery` null pointer exception when a brew has no recipe
 - `npcrange` objective did count player without it valid for `outside` action
+- `global objective` error on join when it was added with the command or the tag got removed
 ### Security
 
 ## [2.2.1] - 2025-01-12
