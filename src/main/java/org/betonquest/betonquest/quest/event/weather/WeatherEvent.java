@@ -16,7 +16,7 @@ public class WeatherEvent implements NullableEvent {
     /**
      * The weather that will be set when the event is executed.
      */
-    private final Weather weather;
+    private final Variable<Weather> weather;
 
     /**
      * The selector to get the world for that the weather should be set.
@@ -35,7 +35,7 @@ public class WeatherEvent implements NullableEvent {
      * @param worldSelector to get the world that should be affected
      * @param duration      how long the weather will not change - values &lt;= 0 won't set a duration
      */
-    public WeatherEvent(final Weather weather, final Selector<World> worldSelector, final Variable<Number> duration) {
+    public WeatherEvent(final Variable<Weather> weather, final Selector<World> worldSelector, final Variable<Number> duration) {
         this.weather = weather;
         this.worldSelector = worldSelector;
         this.duration = duration;
@@ -44,6 +44,6 @@ public class WeatherEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final World world = worldSelector.selectFor(profile);
-        weather.applyTo(world, duration.getValue(profile).intValue());
+        weather.getValue(profile).applyTo(world, duration.getValue(profile).intValue());
     }
 }

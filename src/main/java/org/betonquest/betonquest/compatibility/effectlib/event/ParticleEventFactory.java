@@ -49,10 +49,11 @@ public class ParticleEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String string = instruction.next();
+        final String string = instruction.get(Argument.STRING).getValue(null);
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");
-        final String effectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
+        final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
+        final String effectClass = instruction.get(rawEffectClass, Argument.STRING).getValue(null);
         final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
