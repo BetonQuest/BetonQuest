@@ -46,7 +46,7 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {
             case "on" -> createOpenDoorEvent(location);
             case "off" -> createCloseDoorEvent(location);

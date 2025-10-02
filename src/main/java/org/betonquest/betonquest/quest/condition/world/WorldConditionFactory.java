@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.World;
 
 /**
@@ -30,26 +29,19 @@ public class WorldConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Processor to create new variables.
-     */
-    private final VariableProcessor variableProcessor;
-
-    /**
      * Create the test for block condition factory.
      *
-     * @param loggerFactory     the logger factory to create a logger for the conditions
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the processor to create new variables
+     * @param loggerFactory the logger factory to create a logger for the conditions
+     * @param data          the data used for checking the condition on the main thread
      */
-    public WorldConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public WorldConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
-        this.variableProcessor = variableProcessor;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), instruction.next(), Argument.WORLD);
+        final Variable<World> world = instruction.get(Argument.WORLD);
         final BetonQuestLogger logger = loggerFactory.create(WorldCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new WorldCondition(world), logger, instruction.getPackage()), data);

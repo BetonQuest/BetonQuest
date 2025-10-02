@@ -43,8 +43,8 @@ public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     private NullableEventAdapter createExplosionEvent(final Instruction instruction) throws QuestException {
-        final boolean setsFire = "1".equals(instruction.next());
-        final boolean breaksBlocks = "1".equals(instruction.next());
+        final Variable<Boolean> setsFire = instruction.get("1"::equals);
+        final Variable<Boolean> breaksBlocks = instruction.get("1"::equals);
         final Variable<Number> power = instruction.get(Argument.NUMBER);
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         return new NullableEventAdapter(new ExplosionEvent(location, power, setsFire, breaksBlocks));

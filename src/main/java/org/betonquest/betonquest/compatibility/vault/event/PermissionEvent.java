@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.compatibility.vault.event;
 
 import net.milkbowl.vault.permission.Permission;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,22 +20,22 @@ public class PermissionEvent implements PlayerEvent {
      * World to restrict permission to it.
      */
     @Nullable
-    private final String world;
+    private final Variable<String> world;
 
     /**
      * Permission to modify.
      */
-    private final String permission;
+    private final Variable<String> permission;
 
     /**
      * If the permission should be added. When not it will be removed.
      */
-    private final boolean add;
+    private final Variable<Boolean> add;
 
     /**
      * If the permission should be interpreted as permission. When not it is interpreted as group.
      */
-    private final boolean perm;
+    private final Variable<Boolean> perm;
 
     /**
      * Create a new Vault Permission event.
@@ -44,7 +46,8 @@ public class PermissionEvent implements PlayerEvent {
      * @param add               if the permission should be added or removed
      * @param perm              if the permission should be interpreted as permission or group
      */
-    public PermissionEvent(final Permission permissionService, final String permission, @Nullable final String world, final boolean add, final boolean perm) {
+    public PermissionEvent(final Permission permissionService, final Variable<String> permission,
+                           @Nullable final Variable<String> world, final Variable<Boolean> add, final Variable<Boolean> perm) {
         this.vault = permissionService;
         this.permission = permission;
         this.world = world;
@@ -53,7 +56,11 @@ public class PermissionEvent implements PlayerEvent {
     }
 
     @Override
-    public void execute(final Profile profile) {
+    public void execute(final Profile profile) throws QuestException {
+        final boolean add = this.add.getValue(profile);
+        final boolean perm = this.perm.getValue(profile);
+        final String world = this.world == null ? null : this.world.getValue(profile);
+        final String permission = this.permission.getValue(profile);
         if (add) {
             if (perm) {
                 vault.playerAdd(world, profile.getPlayer(), permission);

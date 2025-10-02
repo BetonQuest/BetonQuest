@@ -16,7 +16,7 @@ public class WeatherCondition implements NullableCondition {
     /**
      * The weather to check for.
      */
-    private final Weather weather;
+    private final Variable<Weather> weather;
 
     /**
      * The world to check the weather in.
@@ -29,7 +29,7 @@ public class WeatherCondition implements NullableCondition {
      * @param weather the weather to check for
      * @param world   the world to check the weather in
      */
-    public WeatherCondition(final Weather weather, final Variable<World> world) {
+    public WeatherCondition(final Variable<Weather> weather, final Variable<World> world) {
         this.weather = weather;
         this.variableWorld = world;
     }
@@ -37,6 +37,6 @@ public class WeatherCondition implements NullableCondition {
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final World world = variableWorld.getValue(profile);
-        return weather.isInWorld(world);
+        return weather.getValue(profile).isInWorld(world);
     }
 }
