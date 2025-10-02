@@ -31,7 +31,7 @@ public class FabledIntegrator implements Integrator {
         final ConditionRegistry conditionRegistry = api.getQuestRegistries().condition();
         conditionRegistry.register("fabledclass", new FabledClassConditionFactory(data));
         conditionRegistry.register("fabledlevel", new FabledLevelConditionFactory(data));
-        plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(plugin.getProfileProvider()), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new FabledKillListener(api.getProfileProvider()), plugin);
     }
 
     @Override
