@@ -5,15 +5,14 @@ tags:
 ---
 
 NPCs are an essential part of every RPG for player ingame interaction.
-In BetonQuest NPCs can be used to start conversations or interact with them otherwise,
-as shown in the `Scripting` and `Visual Effects` section of the documentation.
-
-!!! info
-    This NPC is not related to the NPC/Quester in [Conversations](Conversations.md)
+In BetonQuest NPCs can be used to start conversations or act as a means for player interactions in various ways,
+as shown in the [`Scripting`](../../Documentation/Scripting/About-Scripting.md) and [`Visual Effects`](/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/) 
+section of the 
+documentation.
 
 ## Provided Integrations
 
-BetonQuest provides Integrations for the following Npc plugins:
+BetonQuest provides integrations for the following NPC plugins:
 
 - [Citizens](../Scripting/Building-Blocks/Integration-List.md#citizens)
 - [MythicMobs](../Scripting/Building-Blocks/Integration-List.md#mythicmobs)
@@ -22,52 +21,59 @@ BetonQuest provides Integrations for the following Npc plugins:
 
 ## Referring an NPC
 
-Npcs are defined in the `npcs` section.
+NPCs are defined in the `npcs` section.
+
+```YAML title="NPC Referencing Syntax"
+betonQuestNPCID: NPCSelector NPCID
+```
+You would then use the `betonQUestNPCID` for all NPC references within BetonQuest.
+
 !!! note ""
     === "Citizens"
-        ```YAML title="Example"
+        ```YAML title="Example NPCs section"
         npcs:
           innkeeper: citizens 0
           mayorHans: citizens 4
           guard: citizens Guard byName
         ```
        
-        You simply use the Citizens NPC id as argument.
-        To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
+        Use `Citizens` for the NPC selectror argument.
+        To acquire the NPC's ID, select the NPC using `/npc select`, then run `/npc id`.
      
-        You can also get a NPC by its name with the `byName` argument.
-        That is useful when you have many NPCs with the same name which should all start the same conversation
+        You can also get an NPC by its name with the `byName` argument.
+        This is useful when you have multiple NPCs with the same name who should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "MythicMobs"
-        ```YAML title="Example"
+        ```YAML title="Example NPCs section"
         npcs:
           mayorHans: mythicmobs UUID b18af0c3-5db7-4878-9693-05fe1b2c5a2f
           innkeeper: mythicmobs MYTHIC_MOB inkeeper
           guard: mythicmobs FACTION guards
         ```
-       
-        You simply use the Entity UUID as argument.
-        To acquire the NPCs UUID use the `/mm listactive` command and copy the `UUID` from the NPC info.
-        As alternative you can look at the NPC and use the `/data get entity ` command to auto complete the UUID.
+        Use `mythicmobs` for the NPC selector argument.
+        Use `Entity UUIDs` for the NPC ID argument.
+        To acquire the NPCs UUID, use the `/mm listactive` command and copy the `UUID` from the NPC info.
+        Alternatively, you can look at the NPC and use the `/data get entity ` command to auto complete the UUID.
      
-        You can also get a NPC by its `mythic mob` type or `faction`.
-        That is useful when you have many NPCs which should all start the same conversation
+        You can also get an NPC by its MythicMob [`Internal_Name`](https://git.mythiccraft.
+        io/mythiccraft/MythicMobs/-/wikis/Mobs/Mobs#internal_name) or [`Faction`](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/Mobs/Mobs#faction).
+        This is useful when you have multiple NPCs who should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "FancyNpcs"
-        ```YAML title="Example"
+        ```YAML title="Example NPCs section"
         npcs:
           innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
           mayorHans: FancyNpcs 72910823-c0c3-499d-adcc-d31cb75963c0
           guard: FancyNpcs Guard byName
         ```
         
-        You simply use the FancyNpcs NPC id as argument.
-        To acquire the NPCs ID use the `/npc nearby` command and copy the `UUID` from the NPC info.
+        Use`FancyNpcs` for the NPC selector argument.
+        To acquire the NPCs ID, use the `/npc nearby` command and copy the `UUID` from the NPC info.
         
-        You can also get a NPC by its name with the `byName` argument.
-        That is useful when you have many NPCs with the same name which should all start the same conversation
+        You can also get an NPC by its name with the `byName` argument.
+        That is useful when you have multiple NPCs with the same name who should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "ZNPCsPlus"
@@ -77,12 +83,12 @@ Npcs are defined in the `npcs` section.
           guard: ZNPCsPlus Guard10
         ```
         
-        You simply use the ZNPCsPlus NPC ID as argument.
-        To acquire the NPCs ID use the `/npc near 5` command and copy the `ID` from the NPC info.
+        Use `ZNPCsPlus` for the NPC selector argument.
+        To acquire the NPCs ID, use the `/npc near 5` command and copy the `ID` from the NPC info.
 
-!!! warning
-    If there are more NPCs than one NPC with the same name, and you select multiple NPCs by name (like by using 
-    Citizens `byName` option) certain events like `npcteleport` or objectives like `npcrange` might throw an exception.
+!!! warning "Multiple NPCs with the same name"
+    If there is more than one NPC with the same name and you select multiple NPCs by name (such as when using 
+    Citizens `byName` option), certain events like `npcteleport` or objectives like `npcrange` might throw an exception.
 ## Conversations
 
 You can start [Conversations](Conversations.md) with NPC interaction by assigning them in the
