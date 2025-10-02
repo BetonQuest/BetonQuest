@@ -76,7 +76,7 @@ markdown_extensions:
   - codehilite:
       linenums: true
   - footnotes
-  - markdown.extensions.md_in_html
+  - md_in_html
   - meta
   - pymdownx.highlight
   - pymdownx.arithmatex:

@@ -180,7 +180,11 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
             if (objective == null || data.hasTag(tag)) {
                 continue;
             }
-            objective.newPlayer(profile);
+            if (objective.containsPlayer(profile)) {
+                log.debug(id.getPackage(), profile + " already has the " + id + " objective, adding tag");
+            } else {
+                objective.newPlayer(profile);
+            }
             data.addTag(tag);
         }
     }
