@@ -4,8 +4,8 @@ tags:
   - Npcs
 ---
 
-NPCs are an essential part of every RPG for player ingame interaction.
-In BetonQuest NPCs can be used to start conversations or act as a means for player interactions in various ways,
+NPCs are an essential part of every RPG for player ingame interactions.
+In BetonQuest, NPCs can be used to start conversations or act as a means for player interactions in various ways,
 as shown in the [`Scripting`](../../Documentation/Scripting/About-Scripting.md) and [`Visual Effects`](/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/) 
 section of the 
 documentation.
@@ -91,7 +91,7 @@ You would then use the `betonQUestNPCID` for all NPC references within BetonQues
     Citizens `byName` option), certain events like `npcteleport` or objectives like `npcrange` might throw an exception.
 ## Conversations
 
-You can start [Conversations](Conversations.md) with NPC interaction by assigning them in the
+You can start [Conversations](Conversations.md) through NPC interactions from players by assigning them in the
 [`npc_conversations` section](Conversations.md#binding-conversations-to-npcs) of a quest package.
 
 ## NPC Hiding: `hide_npcs`
