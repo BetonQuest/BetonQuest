@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
 /**
@@ -11,19 +13,19 @@ public class ScoreboardTagCondition implements OnlineCondition {
     /**
      * The tag to check for.
      */
-    private final String tag;
+    private final Variable<String> tag;
 
     /**
      * Constructor for the tag condition.
      *
      * @param tag the tag to check for
      */
-    public ScoreboardTagCondition(final String tag) {
+    public ScoreboardTagCondition(final Variable<String> tag) {
         this.tag = tag;
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) {
-        return profile.getPlayer().getScoreboardTags().contains(tag);
+    public boolean check(final OnlineProfile profile) throws QuestException {
+        return profile.getPlayer().getScoreboardTags().contains(tag.getValue(profile));
     }
 }

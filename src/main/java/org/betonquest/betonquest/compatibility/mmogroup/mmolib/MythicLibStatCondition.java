@@ -14,7 +14,7 @@ public class MythicLibStatCondition implements PlayerCondition {
     /**
      * The name of the stat to check.
      */
-    private final String statName;
+    private final Variable<String> statName;
 
     /**
      * The required minimum target level of the stat.
@@ -33,7 +33,7 @@ public class MythicLibStatCondition implements PlayerCondition {
      * @param targetLevel the required level
      * @param equal       whether the level should be equal
      */
-    public MythicLibStatCondition(final String stat, final Variable<Number> targetLevel, final boolean equal) {
+    public MythicLibStatCondition(final Variable<String> stat, final Variable<Number> targetLevel, final boolean equal) {
         this.statName = stat;
         this.targetLevel = targetLevel;
         this.mustBeEqual = equal;
@@ -43,7 +43,7 @@ public class MythicLibStatCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
         final double requiredLevel = targetLevel.getValue(profile).doubleValue();
-        final double actualLevel = data.getStatMap().getStat(statName);
+        final double actualLevel = data.getStatMap().getStat(statName.getValue(profile));
         return mustBeEqual ? actualLevel == requiredLevel : actualLevel >= requiredLevel;
     }
 }

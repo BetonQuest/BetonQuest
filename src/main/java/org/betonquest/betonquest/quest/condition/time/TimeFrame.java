@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.quest.condition.time;
 
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A time frame with a start and end time.
+ *
+ * @param startTime the start time
+ * @param endTime   the end time
  */
 public record TimeFrame(Time startTime, Time endTime) {
 
@@ -15,7 +17,6 @@ public record TimeFrame(Time startTime, Time endTime) {
      * @return the parsed time frame
      * @throws QuestException if the input is invalid
      */
-    @NotNull
     public static TimeFrame parse(final String input) throws QuestException {
         final String[] parts = input.split("-");
         final int expectedLength = 2;

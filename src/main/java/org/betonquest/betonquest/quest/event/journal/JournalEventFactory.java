@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -77,7 +78,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
             case "add" -> createJournalAddEvent(instruction);
@@ -88,7 +89,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update", "add" -> new DoNothingPlayerlessEvent();
             case "delete" -> createStaticJournalDeleteEvent(instruction);

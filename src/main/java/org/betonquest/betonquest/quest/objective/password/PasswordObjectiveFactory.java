@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.objective.password;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -23,7 +24,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String pattern = instruction.next();
+        final String pattern = instruction.get(Argument.STRING).getValue(null);
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         final Pattern regex = Pattern.compile(pattern, regexFlags);
         final String prefix = instruction.getValue("prefix");

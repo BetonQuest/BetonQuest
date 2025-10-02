@@ -355,10 +355,10 @@ public class CoreQuestTypes {
         conditionTypes.register("stage", new StageConditionFactory(questTypeApi));
         conditionTypes.register("tag", new TagConditionFactory(dataStorage));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory(data));
-        conditionTypes.registerCombined("time", new TimeConditionFactory(data, variableProcessor));
+        conditionTypes.registerCombined("time", new TimeConditionFactory(data));
         conditionTypes.registerCombined("variable", new VariableConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("weather", new WeatherConditionFactory(data, variableProcessor));
-        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data, variableProcessor));
+        conditionTypes.register("world", new WorldConditionFactory(loggerFactory, data));
     }
 
     private void registerEvents(final EventTypeRegistry eventTypes) {
