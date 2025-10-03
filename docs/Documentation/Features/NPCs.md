@@ -7,8 +7,7 @@ tags:
 NPCs are an essential part of every RPG for player ingame interactions.
 In BetonQuest, NPCs can be used to start conversations or act as a means for player interactions in various ways,
 as shown in the [`Scripting`](../../Documentation/Scripting/About-Scripting.md) and [`Visual Effects`](/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/) 
-section of the 
-documentation.
+section of the documentation.
 
 ## Provided Integrations
 
