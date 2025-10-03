@@ -57,7 +57,7 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
         final Variable<List<String>> groupNames = instruction.getList(Argument.STRING, checkForNotExistingGroups());
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);

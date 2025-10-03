@@ -39,7 +39,7 @@ public class EffectEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final PotionEffectType effect = PotionEffectType.getByName(instruction.next());
+        final PotionEffectType effect = PotionEffectType.getByName(instruction.get(Argument.STRING).getValue(null));
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }

@@ -2,6 +2,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -17,9 +19,9 @@ public class MMOItemsApplyGemObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String itemType = instruction.next();
-        final String itemID = instruction.next();
-        final String gemID = instruction.next();
+        final Variable<String> itemType = instruction.get(Argument.STRING);
+        final Variable<String> itemID = instruction.get(Argument.STRING);
+        final Variable<String> gemID = instruction.get(Argument.STRING);
         return new MMOItemsApplyGemObjective(instruction, itemType, itemID, gemID);
     }
 }

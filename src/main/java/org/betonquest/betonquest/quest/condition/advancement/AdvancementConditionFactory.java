@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -45,7 +46,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String advancementString = instruction.next();
+        final String advancementString = instruction.get(Argument.STRING).getValue(null);
         final String[] split = advancementString.split(":");
         if (split.length != ADVANCEMENT_LENGTH) {
             throw new QuestException("The advancement '" + advancementString + "' is missing a namespace!");

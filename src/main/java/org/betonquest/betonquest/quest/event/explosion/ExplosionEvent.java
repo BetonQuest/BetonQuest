@@ -24,12 +24,12 @@ public class ExplosionEvent implements NullableEvent {
     /**
      * Whether the explosion should set fire.
      */
-    private final boolean setsFire;
+    private final Variable<Boolean> setsFire;
 
     /**
      * Whether the explosion should break blocks.
      */
-    private final boolean breaksBlocks;
+    private final Variable<Boolean> breaksBlocks;
 
     /**
      * Creates a new explosion event.
@@ -39,7 +39,7 @@ public class ExplosionEvent implements NullableEvent {
      * @param setsFire     whether the explosion should set fire
      * @param breaksBlocks whether the explosion should break blocks
      */
-    public ExplosionEvent(final Variable<Location> location, final Variable<Number> power, final boolean setsFire, final boolean breaksBlocks) {
+    public ExplosionEvent(final Variable<Location> location, final Variable<Number> power, final Variable<Boolean> setsFire, final Variable<Boolean> breaksBlocks) {
         this.location = location;
         this.power = power;
         this.setsFire = setsFire;
@@ -50,6 +50,6 @@ public class ExplosionEvent implements NullableEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location resolvedLocation = location.getValue(profile);
         resolvedLocation.getWorld().createExplosion(resolvedLocation,
-                power.getValue(profile).floatValue(), setsFire, breaksBlocks);
+                power.getValue(profile).floatValue(), setsFire.getValue(profile), breaksBlocks.getValue(profile));
     }
 }
