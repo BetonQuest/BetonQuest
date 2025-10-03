@@ -37,7 +37,7 @@ You would then use the `betonQUestNPCID` for all NPC references within BetonQues
           guard: citizens Guard byName
         ```
        
-        Use `Citizens` for the NPC selectror argument.
+        Use `citizens` for the NPC selector argument.
         To acquire the NPC's ID, select the NPC using `/npc select`, then run `/npc id`.
      
         You can also get an NPC by its name with the `byName` argument.
