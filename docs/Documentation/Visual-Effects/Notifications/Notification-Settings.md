@@ -28,7 +28,7 @@ to sending a notice about a new changelog to an admin.
 
 For example:    
 When BetonQuest fails to add a quest item to a player's inventory, it will send `&e*&bYour inventory is full!&e*`.    
-This message,for English-speaking users, is defined in `en-US.yml` along with other default plugin messages.
+This message, for English-speaking users, is defined in `en-US.yml` along with other default plugin messages.
 You can redefine them to your liking.
 
 The Notify System can do much more than just changing messages, though:
