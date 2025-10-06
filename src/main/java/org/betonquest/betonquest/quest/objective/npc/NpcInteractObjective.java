@@ -58,14 +58,18 @@ public class NpcInteractObjective extends Objective implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCLeftClick(final NpcInteractEvent event) {
+        final Profile profile = event.getProfile();
+        if (!containsPlayer(profile)) {
+            return;
+        }
+
         qeHandler.handle(() -> {
-            final Profile profile = event.getProfile();
             if (event.getInteraction() != ANY && event.getInteraction() != interactionType.getValue(profile)) {
                 return;
             }
 
             if (event.getNpcIdentifier().contains(npcId.getValue(profile))
-                    && containsPlayer(profile) && checkConditions(profile)) {
+                    && checkConditions(profile)) {
                 if (cancel) {
                     event.setCancelled(true);
                 }
