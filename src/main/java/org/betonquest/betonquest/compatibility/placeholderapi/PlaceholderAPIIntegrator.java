@@ -27,7 +27,7 @@ public class PlaceholderAPIIntegrator implements Integrator {
         api.getQuestRegistries().variable().registerCombined("ph", new PlaceholderVariableFactory());
         final PluginDescriptionFile description = plugin.getDescription();
         new BetonQuestPlaceholder(api.getLoggerFactory().create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration"),
-                plugin.getProfileProvider(), plugin.getVariableProcessor(), description.getAuthors().toString(), description.getVersion()).register();
+                api.getProfileProvider(), plugin.getVariableProcessor(), description.getAuthors().toString(), description.getVersion()).register();
     }
 
     @Override

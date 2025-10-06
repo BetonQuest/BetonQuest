@@ -100,7 +100,7 @@ public class HologramProvider implements Integrator {
                 plugin.getQuestPackageManager(), plugin, plugin.getVariableProcessor(), this,
                 api.getFeatureApi(), api.getFeatureRegistries().npc());
         plugin.addProcessor(npcHologramLoop);
-        plugin.getServer().getPluginManager().registerEvents(new HologramListener(plugin.getProfileProvider()), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);
     }
 
     @Override

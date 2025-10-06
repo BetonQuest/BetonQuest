@@ -65,7 +65,7 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
         questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory, apiHelper, data, compatibility));
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
-        server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(plugin.getProfileProvider(), npcRegistry, apiHelper), plugin);
+        server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, apiHelper), plugin);
         npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(MythicBukkit.inst().getMobManager()));
         npcRegistry.registerIdentifier(new MythicMobsReverseIdentifier());
     }

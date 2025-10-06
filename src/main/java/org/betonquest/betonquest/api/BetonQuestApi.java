@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
@@ -13,6 +14,14 @@ import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
  * This interface allows interaction with the quest system and features of BetonQuest.
  */
 public interface BetonQuestApi {
+
+    /**
+     * Gets the profile provider to get profiles for players.
+     *
+     * @return the currently used Profile Provider instance
+     */
+    ProfileProvider getProfileProvider();
+
     /**
      * Gets the {@link QuestPackageManager} which provides access to the
      * {@link org.betonquest.betonquest.api.config.quest.QuestPackage}s.
