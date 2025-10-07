@@ -17,7 +17,7 @@ public class TimeCondition implements NullableCondition {
     /**
      * The time frame in which the time should be.
      */
-    private final TimeFrame timeFrame;
+    private final Variable<TimeFrame> timeFrame;
 
     /**
      * The variable world.
@@ -30,14 +30,14 @@ public class TimeCondition implements NullableCondition {
      * @param timeFrame     the time frame
      * @param variableWorld the variable world
      */
-    public TimeCondition(final TimeFrame timeFrame, final Variable<World> variableWorld) {
+    public TimeCondition(final Variable<TimeFrame> timeFrame, final Variable<World> variableWorld) {
         this.timeFrame = timeFrame;
         this.variableWorld = variableWorld;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        return timeFrame.isTimeBetween(currentTime(variableWorld.getValue(profile)));
+        return timeFrame.getValue(profile).isTimeBetween(currentTime(variableWorld.getValue(profile)));
     }
 
     private Time currentTime(final World world) {

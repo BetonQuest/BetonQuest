@@ -13,7 +13,7 @@ public class ScoreboardTagEvent implements OnlineEvent {
     /**
      * The tag to add or remove.
      */
-    private final String tag;
+    private final Variable<String> tag;
 
     /**
      * Whether to add or remove the tag.
@@ -26,13 +26,13 @@ public class ScoreboardTagEvent implements OnlineEvent {
      * @param tag    the tag to add or remove
      * @param action whether to add or remove the tag
      */
-    public ScoreboardTagEvent(final String tag, final Variable<ScoreboardTagAction> action) {
+    public ScoreboardTagEvent(final Variable<String> tag, final Variable<ScoreboardTagAction> action) {
         this.tag = tag;
         this.action = action;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        action.getValue(profile).execute(profile, tag);
+        action.getValue(profile).execute(profile, tag.getValue(profile));
     }
 }

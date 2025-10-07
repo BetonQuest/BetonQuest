@@ -4,6 +4,7 @@ import net.Indyuce.mmoitems.api.event.item.ApplyGemStoneEvent;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -17,17 +18,17 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
     /**
      * The ID of the item to be upgraded.
      */
-    private final String itemID;
+    private final Variable<String> itemID;
 
     /**
      * The type of the item to be upgraded.
      */
-    private final String itemType;
+    private final Variable<String> itemType;
 
     /**
      * The ID of the gem to be applied.
      */
-    private final String gemID;
+    private final Variable<String> gemID;
 
     /**
      * Constructor for the MMOItemsApplyGemObjective.
@@ -38,7 +39,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
      * @param gemID       the ID of the gem to be applied
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsApplyGemObjective(final Instruction instruction, final String itemID, final String itemType, final String gemID) throws QuestException {
+    public MMOItemsApplyGemObjective(final Instruction instruction, final Variable<String> itemID, final Variable<String> itemType, final Variable<String> gemID) throws QuestException {
         super(instruction);
         this.itemID = itemID;
         this.itemType = itemType;
@@ -52,19 +53,22 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onApplyGem(final ApplyGemStoneEvent event) {
-        final MMOItem upgradedItem = event.getTargetItem();
-        if (!upgradedItem.getId().equals(itemID) || !upgradedItem.getType().getId().equals(itemType)) {
-            return;
-        }
-        final MMOItem gemStone = event.getGemStone();
-        if (!gemStone.getId().equals(gemID)) {
-            return;
-        }
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
-        completeObjective(onlineProfile);
+        qeHandler.handle(() -> {
+            final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
+            final MMOItem upgradedItem = event.getTargetItem();
+            if (!upgradedItem.getId().equals(itemID.getValue(profile))
+                    || !upgradedItem.getType().getId().equals(itemType.getValue(profile))) {
+                return;
+            }
+            final MMOItem gemStone = event.getGemStone();
+            if (!gemStone.getId().equals(gemID.getValue(profile))) {
+                return;
+            }
+            if (!containsPlayer(profile) || !checkConditions(profile)) {
+                return;
+            }
+            completeObjective(profile);
+        });
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
     /**
      * The name of the objective.
      */
-    private final String objective;
+    private final Variable<String> objective;
 
     /**
      * The number to modify the score by.
@@ -35,7 +35,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
      * @param count             the number to modify the score by
      * @param scoreModification the modification to apply to the score
      */
-    public ScoreboardObjectiveEvent(final String objective, final Variable<Number> count, final ScoreModification scoreModification) {
+    public ScoreboardObjectiveEvent(final Variable<String> objective, final Variable<Number> count, final ScoreModification scoreModification) {
         this.objective = objective;
         this.count = count;
         this.scoreModification = scoreModification;
@@ -43,6 +43,7 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
 
     @Override
     public void execute(final Profile profile) throws QuestException {
+        final String objective = this.objective.getValue(profile);
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {

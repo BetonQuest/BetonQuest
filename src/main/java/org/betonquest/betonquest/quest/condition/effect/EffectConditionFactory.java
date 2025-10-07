@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -40,7 +41,7 @@ public class EffectConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String string = instruction.next();
+        final String string = instruction.get(Argument.STRING).getValue(null);
         final PotionEffectType type = Utils.getNN(PotionEffectType.getByName(string), "Effect " + string + " does not exist");
         final BetonQuestLogger log = loggerFactory.create(EffectCondition.class);
         return new PrimaryServerThreadPlayerCondition(
