@@ -35,10 +35,8 @@ skip some property checks altogether. You would use these items in conditions.
 
 These are arguments that can be applied to every item:
 !!! info inline end
-    As of version [3.0.0-DEV-416](/Documentation/Configuration/Version-Changes/Migration-2-3/#300-dev-416-simple-item-textparser)
-    , you no 
-    longer require underscores
-    and need to quote the `name` and `lore` arguments.
+    As of version [3.0.0-DEV-416](../Configuration/Version-Changes/Migration-2-3.md#300-dev-416-simple-item-textparser),
+    you no longer require underscores and need to quote when you want to use spaces.
 
 <div class="annotate" markdown>
 - `name`
