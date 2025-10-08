@@ -69,7 +69,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
 ??? info inline end "Additional Information"
     Information on the `npcs` section, where you define the NPCs that BetonQuest can use/reference, can be found 
     [here](../../Features/NPCs.md#provided-integrations).
-    Information on the `conditions` section can be found [here](/Documentation/Scripting/About-Scripting/#conditions).
+    Information on the `conditions` section can be found [here](../../Scripting/About-Scripting.md#conditions).
 
 
 The interval in which conditions are checked can be configured with the [`npc_update_interval`](../../Configuration/Plugin-Config.md#npc-npc-settings) setting.
