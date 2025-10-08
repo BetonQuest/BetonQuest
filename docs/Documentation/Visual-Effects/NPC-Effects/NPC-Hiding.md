@@ -56,7 +56,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
 === "ZNPCsPlus"
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
-        tag `inkeeperIsTired`
+        tag `inkeeperIsTired`.
     ```YAML title="Example"
     npcs:
       innkeeper: ZNPCsPlus innkeeper
