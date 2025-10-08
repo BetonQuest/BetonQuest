@@ -251,7 +251,7 @@ icon and play the `entity.item.pickup` sound without you having to define all th
 !!! warning 
     The only thing you must be careful with is the name of your custom categories. You could end up using a 
     reserved name
-    - these stem from BetonQuest's built-in notification categories. Changing these are a [different feature] (#built-in-categories).
+    - these stem from BetonQuest's built-in notification categories. Changing these are a [different feature](#built-in-categories).
     A full list of all reserved names can be found below.
 
 ### Built-in Categories
