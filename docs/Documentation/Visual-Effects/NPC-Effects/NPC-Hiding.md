@@ -25,8 +25,6 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     hide_npcs:
       innkeeper: hidden
     ```
-
-        
     @snippet:integrations:protocollib@
 === "MythicMobs"
     !!! tip inline end "Explanation"
