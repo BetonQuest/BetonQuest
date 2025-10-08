@@ -201,7 +201,6 @@ as the `soundlocation` option. This option can be a number or a vector. (1)
     @snippet:general:relativeAxisExplanation@
 
 
-
     ??? info "Video Example"
         blue line = direction the player is looking in    
         🟢 = soundlocation argument    
