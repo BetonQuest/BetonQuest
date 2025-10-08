@@ -31,7 +31,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
 === "MythicMobs"
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
-        tag `inkeeperIsTired`
+        tag `inkeeperIsTired`.
     ```YAML title="Example"
     npcs:
       innkeeper: mythicmobs UUID 60b0144d-2c55-457a-aeb8-15fbf244f3b7
