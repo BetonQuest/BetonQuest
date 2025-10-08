@@ -14,7 +14,7 @@ of all NotifyIO's:
     All NotifyIO's support any setting from the [`SoundIO`](#sound) type.
     Therefore, you can play a sound whenever a notification is shown. (1)
     
- 1. This is because every NotifyIO has an internal `SoundIO` configuration option. 
+ 1. In other words, every NotifyIO also supports every option from `SoundIO`. 
 
 
 Most NotifyIO's have unique settings that somehow change how a notification is displayed. The actual message is 
@@ -245,7 +245,7 @@ notifications:
 1. Category name
 2. Sets the NotifyIO type to be used
 3. An option of the bossbarIO
-4. Now, any `notify` event with `money` as its category will use the `advancement` io, with a `gold_ingot` for its 
+Now, any `notify` event with `money` as its category will use the `advancement` io, with a `gold_ingot` for its 
 icon and play the `entity.item.pickup` sound without you having to define all the options multiple times.    
 
 !!! warning 
@@ -273,15 +273,15 @@ notifications:
     io: actionbar #(2)!
 ``` 
 
-1.  Wouldn't actually change anything as `chat` is the default IO type.
-2.  Any message using the `error` category will now be displayed through the actionbar rather than chat.
+1. Wouldn't actually change anything as `chat` is the default IO type.
+2. Any message using the `error` category will now be displayed through the actionbar rather than chat.
 
 You can override the settings from the `info`/`error` category for any specific notification by adding it to the 
 `notifications` section.
 When you create a category with a name that matches a `notification message` name, BetonQuest then defaults to that option
 over `error`/`info`
- Example:
-```YAML
+
+```YAML title="Example"
 notifications:
   info:
     io: actionbar
@@ -291,7 +291,7 @@ notifications:
     io: subtitle #(1)!
 ```
 
-1. Since `new_journal_entry notification` is now defined, the `info` category settings are overridden because the first
+1. Since `new_journal_entry` notification is now defined, the `info` category settings are overridden because the first
    existent category (from left to right) will be used.
 <div class="grid" markdown>
 
