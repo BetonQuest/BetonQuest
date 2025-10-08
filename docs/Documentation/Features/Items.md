@@ -58,21 +58,20 @@ add `lore-containing` argument to the instruction string. (1)
 
 1. If you do not want the default styling, you must append `<!i><colorValue>` before the text in your `lore` argument.
 
-!!! warning inline end
-    **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it doesn't make any sense 
-    and will break the check!
 <div class="annotate" markdown>
+!!! warning inline end
+    By default, all specified enchantments are required. If you want to check if the item contains a matching 
+    enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each 
+    specified enchantment will be required on the item by default unless you prefix its name with `none-`(3). 
 * `enchants` - a list of enchantments and their levels. You can require the item to not have any enchantments by 
 using `none` keyword.
  Each enchantment consists of these things, separated by 
 colons(1):
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
     - level (only positive numbers, including zero) (2)
-
-      * By default, all specified enchantments are required. If you want to check if the item contains a matching 
-      enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each 
-      specified enchantment will be required on the item by default unless you prefix its name with `none-`(3). 
-
+!!! warning 
+    **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it doesn't make any sense 
+    and will break the check!
 
 * `unbreakable` - This makes the item unbreakable.
    You can specify it as either `unbreakable` or `unbreakable:true` to require an item to be unbreakable.
