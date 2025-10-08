@@ -63,7 +63,7 @@ add `lore-containing` argument to the instruction string. (1)
     By default, all specified enchantments are required. Each specified enchantment will be required on the item by 
     default unless you prefix its name with `none-`(1).
     ??? warning 
-        **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else will break the check!
+        **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it will break the check!
 * `enchants` - a list of enchantments and their levels. You can require the item to not have any enchantments by 
 using `none` keyword. To check the item contains a matching enchantment instead of all, add `enchants-containing` 
 argument to the instruction string.
