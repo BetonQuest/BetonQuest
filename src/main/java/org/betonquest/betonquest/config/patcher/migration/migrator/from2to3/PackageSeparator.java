@@ -148,6 +148,8 @@ public class PackageSeparator implements QuestMigration {
         replaceSeparatorInList(config, "schedules", "*", "events");
 
         replaceSeparatorInList(config, "compass", "*", "item");
+
+        replaceSeparatorInList(config, "journal_main_page", "*", "conditions");
     }
 
     private void replaceSeparatorSimple(final MultiConfiguration config, final String sectionName, final String pattern) {
