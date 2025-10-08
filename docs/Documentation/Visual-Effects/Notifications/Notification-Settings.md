@@ -77,7 +77,7 @@ The values for these notifications look a bit strange:
 ```YAML
 blocks_to_break: '@[legacy]&2{amount} blocks left to break'
 ```
-`@[legacy]` is a [text formatter](/../Documentation/Features/Text-Formatting/).  
+`@[legacy]` is a [text formatter](../../Features/Text-Formatting.md).
 `{amount}` is just an internal variable (similar to the color codes) that will be replaced with a number based on the
 player's progression.
 
