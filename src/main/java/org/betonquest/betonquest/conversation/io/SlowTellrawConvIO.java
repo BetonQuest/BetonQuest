@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation.io;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.conversation.ConversationColors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -23,6 +23,11 @@ public class SlowTellrawConvIO extends TellrawConvIO {
      * The delay in ticks between messages sent in the conversation.
      */
     private final int messageDelay;
+
+    /**
+     * Plugin instance to start tasks.
+     */
+    private final Plugin plugin;
 
     /**
      * The component line wrapper used for the conversation.
@@ -42,15 +47,17 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     /**
      * Creates a new SlowTellrawConvIO instance.
      *
+     * @param plugin               the plugin to start tasks
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param messageDelay         the delay in ticks between messages sent in the conversation
      * @param componentLineWrapper the component line wrapper used for formatting conversation messages
      * @param colors               the colors used in the conversation
      */
-    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile,
+    public SlowTellrawConvIO(final Plugin plugin, final Conversation conv, final OnlineProfile onlineProfile,
                              final int messageDelay, final FixedComponentLineWrapper componentLineWrapper, final ConversationColors colors) {
         super(conv, onlineProfile, colors);
+        this.plugin = plugin;
         this.componentLineWrapper = componentLineWrapper;
         this.messageDelay = messageDelay;
         this.canReply = false;
@@ -94,7 +101,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                 }
                 conv.sendMessage(linesToPrint.remove(0));
             }
-        }.runTaskTimer(BetonQuest.getInstance(), 0, messageDelay);
+        }.runTaskTimer(plugin, 0, messageDelay);
     }
 
     @Override
@@ -110,7 +117,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(BetonQuest.getInstance(), 1, 1);
+            }.runTaskTimer(plugin, 1, 1);
         }
     }
 }

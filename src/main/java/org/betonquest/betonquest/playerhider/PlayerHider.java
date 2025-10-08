@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.playerhider;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -59,9 +59,11 @@ public class PlayerHider {
      * @param api               the BetonQuest API instance
      * @param variableProcessor the variable processor to resolve variables
      * @param profileProvider   the profile provider instance
+     * @param config            the config to load from
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final Plugin plugin, final BetonQuest api, final VariableProcessor variableProcessor, final ProfileProvider profileProvider) throws QuestException {
+    public PlayerHider(final Plugin plugin, final BetonQuestApi api, final VariableProcessor variableProcessor,
+                       final ProfileProvider profileProvider, final ConfigAccessor config) throws QuestException {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
         hiders = new HashMap<>();
@@ -80,7 +82,7 @@ public class PlayerHider {
             }
         }
 
-        final long period = api.getPluginConfig().getLong("hider.player_update_interval", 20);
+        final long period = config.getLong("hider.player_update_interval", 20);
         bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateVisibility, 1, period);
     }
 

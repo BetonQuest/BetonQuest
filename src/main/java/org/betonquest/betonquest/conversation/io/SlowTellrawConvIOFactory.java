@@ -37,11 +37,12 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
     @Override
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) {
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 320);
-        int messageDelay = BetonQuest.getInstance().getPluginConfig().getInt("conversation.io.slowtellraw.message_delay", 10);
+        final BetonQuest betonQuest = BetonQuest.getInstance();
+        int messageDelay = betonQuest.getPluginConfig().getInt("conversation.io.slowtellraw.message_delay", 10);
         if (messageDelay <= 0) {
-            BetonQuest.getInstance().getLogger().warning("Invalid message delay of " + messageDelay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
+            betonQuest.getLogger().warning("Invalid message delay of " + messageDelay + " for SlowTellraw Conversation IO, using default value of 10 ticks");
             messageDelay = 10;
         }
-        return new SlowTellrawConvIO(conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
+        return new SlowTellrawConvIO(betonQuest, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
     }
 }

@@ -104,7 +104,7 @@ public class ObjectiveEvent implements NullableEvent {
 
     private void handleStatic(final ObjectiveID objectiveID, final Objective objective) {
         if ("delete".equals(action) || "remove".equals(action)) {
-            final ProfileProvider profileProvider = BetonQuest.getInstance().getProfileProvider();
+            final ProfileProvider profileProvider = betonQuest.getProfileProvider();
             profileProvider.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objectiveID, objective));
             betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objectiveID.toString()));
         } else {
