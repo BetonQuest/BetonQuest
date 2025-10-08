@@ -293,7 +293,7 @@ notifications:
 ```
 
 1. Since `new_journal_entry notification` is now defined, the `info` category settings are overridden because the first
-   existent category (from left to right) will be used. ``
+   existent category (from left to right) will be used.
 <div class="grid" markdown>
 
 | Notifications           | Categories                                       | 
