@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.bukkit.Server;
+import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -19,32 +19,21 @@ import java.util.Objects;
  * Integrator for the Magic plugin.
  */
 public class MagicIntegrator implements Integrator, Listener {
-    /**
-     * The BetonQuest plugin instance.
-     */
-    private final BetonQuest plugin;
-
-    /**
-     * The profile provider instance.
-     */
-    private final ProfileProvider profileProvider;
 
     /**
      * The default constructor.
      */
     public MagicIntegrator() {
-        plugin = BetonQuest.getInstance();
-        profileProvider = plugin.getProfileProvider();
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
-        final PluginManager manager = server.getPluginManager();
+        final BetonQuest plugin = BetonQuest.getInstance();
+        final PluginManager manager = plugin.getServer().getPluginManager();
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) manager.getPlugin("Magic"));
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         api.getQuestRegistries().condition().register("wand", new WandConditionFactory(api.getLoggerFactory(), magicApi, data));
-        manager.registerEvents(this, plugin);
+        manager.registerEvents(new InventoryListener(plugin.getPlayerDataStorage(), api.getProfileProvider()), plugin);
     }
 
     @Override
@@ -58,15 +47,27 @@ public class MagicIntegrator implements Integrator, Listener {
     }
 
     /**
-     * Updates the player's journal when the spell inventory closes.
+     * Updates quest status on Magic interaction.
      *
-     * @param event the even to listen
+     * @param playerDataStorage The BetonQuest plugin instance.
+     * @param profileProvider   The profile provider instance.
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onSpellInventoryEvent(final SpellInventoryEvent event) {
-        if (!event.isOpening()) {
-            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getMage().getPlayer());
-            plugin.getPlayerDataStorage().get(onlineProfile).getJournal().update();
+    private record InventoryListener(
+            PlayerDataStorage playerDataStorage,
+            ProfileProvider profileProvider
+    ) implements Listener {
+
+        /**
+         * Updates the player's journal when the spell inventory closes.
+         *
+         * @param event the even to listen
+         */
+        @EventHandler(ignoreCancelled = true)
+        public void onSpellInventoryEvent(final SpellInventoryEvent event) {
+            if (!event.isOpening() && event.getMage().getPlayer() != null) {
+                final OnlineProfile onlineProfile = profileProvider.getProfile(event.getMage().getPlayer());
+                playerDataStorage.get(onlineProfile).getJournal().update();
+            }
         }
     }
 }

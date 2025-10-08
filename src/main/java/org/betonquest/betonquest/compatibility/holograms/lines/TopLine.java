@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
  */
 public class TopLine extends AbstractLine {
     /**
-     * Name of point. Must follow formatting <code>package.name</code>.
+     * Name of point with package.
      */
     private final String category;
 
@@ -33,7 +33,7 @@ public class TopLine extends AbstractLine {
      * Creates a new instance of ItemLine. Automatically creates and stores {@link TopXObject} from received data.
      *
      * @param loggerFactory logger factory to use
-     * @param category      name of point as <code>package.name</code>
+     * @param category      name of point with package
      * @param orderType     direction of order
      * @param limit         maximum number of lines displayed
      * @param colors        color codes for individual parts of display (#, name, dash, and score)

@@ -55,7 +55,7 @@ public class ConditionRequirement extends BukkitCustomRequirement {
         this.profileProvider = profileProvider;
         setName("BetonQuest condition");
         setAuthor("BetonQuest");
-        addStringPrompt("Condition", "Specify BetonQuest condition name (with the package, like: package.condition)", null);
+        addStringPrompt("Condition", "Specify BetonQuest condition with the package and the name", null);
     }
 
     @Override

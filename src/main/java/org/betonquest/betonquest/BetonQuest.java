@@ -702,11 +702,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         return pluginMessage;
     }
 
-    /**
-     * Get the profile provider.
-     *
-     * @return The profile provider.
-     */
+    @Override
     public ProfileProvider getProfileProvider() {
         return profileProvider;
     }
