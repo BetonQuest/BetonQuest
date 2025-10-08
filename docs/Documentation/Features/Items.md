@@ -60,18 +60,17 @@ add `lore-containing` argument to the instruction string. (1)
 
 <div class="annotate" markdown>
 !!! warning inline end
-    By default, all specified enchantments are required. If you want to check if the item contains a matching 
-    enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each 
-    specified enchantment will be required on the item by default unless you prefix its name with `none-`(3). 
+    By default, all specified enchantments are required. Each specified enchantment will be required on the item by 
+    default unless you prefix its name with `none-`(1).
+    ??? warning 
+        **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else will break the check!
 * `enchants` - a list of enchantments and their levels. You can require the item to not have any enchantments by 
-using `none` keyword.
+using `none` keyword. To check the item contains a matching enchantment instead of all, add `enchants-containing` 
+argument to the instruction string.
  Each enchantment consists of these things, separated by 
-colons(1):
+colons(2):
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
-    - level (only positive numbers, including zero) (2)
-!!! warning 
-    **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it doesn't make any sense 
-    and will break the check!
+    - level (only positive numbers, including zero) (3)
 
 * `unbreakable` - This makes the item unbreakable.
    You can specify it as either `unbreakable` or `unbreakable:true` to require an item to be unbreakable.
@@ -94,11 +93,12 @@ colons(1):
 
 </div>
 
-1. You can specify additional enchantments by separating them with commas. 
-2. You can also add `+`/`-` characters to the 
+1. For example `none-knockback` means that the item must not have any knockback enchantment.
+2. You can specify additional enchantments by separating them with commas. 
+3. You can also add `+`/`-` characters to the 
 enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about 
 the level, replace the number with `?`.
-3. For example `none-knockback` means that the item must not have any knockback enchantment.
+
 
 
 
@@ -125,15 +125,15 @@ the level, replace the number with `?`.
 ??? example "Item Matching Examples:material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
-        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!"
+        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most! lore-containing" #(1)!"
         ```
         
         1.  Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
         item but mainly used for `item` condition checks.
     === "Enchantment Matching Examples"
         ```YAML
-        sharpSword: simple stone_sword "name:Sharp Sword" enchants:damage_all:? enchants-containing #(1)!
-        bluntSword: simple stone_sword name:none enchants:none-damage_all enchants-containing #(2)!
+        sharpSword: simple stone_sword "name:Sharp Sword" "enchants:damage_all:? enchants-containing" #(1)!
+        bluntSword: simple stone_sword name:none "enchants:none-damage_all enchants-containing" #(2)!
         ```
         
         1. Will match all stone swords with any `damage_all` enchantment.
