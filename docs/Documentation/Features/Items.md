@@ -13,9 +13,7 @@ items:
   itemExample: simple BLOCK_SELECTOR other arguments... #(1)!
 ```
 
-1. Consider [YAML multiline syntax](../Scripting/Quoting-&-YAML.md) for 
-long item 
-strings.
+1. Consider [YAML multiline syntax](../Scripting/Quoting-&-YAML.md) for long item strings.
 
 [BLOCK_SELECTOR](../Scripting/Data-Formats.md#block-selectors) specifies the type of item you are creating. At its 
 most basic, it is the item material. It doesn't have to be all in uppercase.
