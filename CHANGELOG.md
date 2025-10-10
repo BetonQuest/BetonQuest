@@ -47,6 +47,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `debug dump` command to only dump the history to the log file
 - `brew` event/condition `mode` parameter to select by name or id
 - `timer` objective to track ingame time
+- `mcast` event to cast a Mythic(Mobs) skill for a player
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
