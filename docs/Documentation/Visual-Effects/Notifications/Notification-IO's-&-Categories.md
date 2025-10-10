@@ -153,7 +153,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 as the `soundlocation` option. This option can be a number or a vector. (1)
 { .annotate }
 
-1. For more information about how BetonQuest processes location data, see [Unified location formatting](/Documentation/Scripting/Data-Formats/).
+1. For more information about how BetonQuest processes location data, see [Unified location formatting](../../Scripting/Data-Formats.md).
 
 === "Number" 
     !!! tip inline end "Example Usage"
