@@ -25,7 +25,7 @@ NPCs are defined in the `npcs` section.
 ```YAML title="NPC Referencing Syntax"
 betonQuestNPCID: NPCSelector NPCID
 ```
-You would then use the `betonQUestNPCID` for all NPC references within BetonQuest.
+You would then use the `betonQuestNPCID` for all NPC references within BetonQuest.
 
 !!! note ""
     === "Citizens"
