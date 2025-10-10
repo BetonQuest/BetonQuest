@@ -4556,11 +4556,19 @@
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">🔗</a></h2>
 <p>Hide NPCs if specified conditions are met!
 You can do that by adding a <code>hide_npcs</code> section in your package. 
-It allows you to assign conditions to specific BQ NpcIDs like so:</p>
+<div class="highlight"><span class="filename">Syntax</span><pre><span></span><code><span class="nt">hide_npcs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">betonQuest_NPCID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conditionID(s)</span>
+</code></pre></div>
+It allows you to assign conditions to specific BQ NPCIDs like so:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Citizens</label><label for="__tabbed_1_2">MythicMobs</label><label for="__tabbed_1_3">FancyNpcs</label><label for="__tabbed_1_4">ZNPCsPlus</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<div class="admonition tip inline end">
+<p class="admonition-title">Explanation</p>
+<p>The NPC <code>inkeeper</code> (which is the BetonQuestNPCID and <strong>not</strong> the NPCID itself) will be hidden if the player has the 
+tag <code>inkeeperIsTired</code>. </p>
+</div>
+<div class="highlight"><span class="filename">NPC Hider Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">citizens 0</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag innkeeperIsTired</span>
@@ -4573,7 +4581,12 @@ It allows you to assign conditions to specific BQ NpcIDs like so:</p>
 </div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<div class="admonition tip inline end">
+<p class="admonition-title">Explanation</p>
+<p>The NPC <code>inkeeper</code> (which is the BetonQuestNPCID and <strong>not</strong> the NPCID itself) will be hidden if the player has the 
+tag <code>inkeeperIsTired</code>.</p>
+</div>
+<div class="highlight"><span class="filename">NPC Hider Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythicmobs UUID 60b0144d-2c55-457a-aeb8-15fbf244f3b7</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag innkeeperIsTired</span>
@@ -4586,7 +4599,12 @@ It allows you to assign conditions to specific BQ NpcIDs like so:</p>
 </div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<div class="admonition tip inline end">
+<p class="admonition-title">Explanation</p>
+<p>The NPC <code>inkeeper</code> (which is the BetonQuestNPCID and <strong>not</strong> the NPCID itself) will be hidden if the player has the 
+tag <code>inkeeperIsTired</code>.</p>
+</div>
+<div class="highlight"><span class="filename">NPC Hider Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FancyNpcs dc8f2889-ed79-455e-944b-115dae978737</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag innkeeperIsTired</span>
@@ -4595,7 +4613,12 @@ It allows you to assign conditions to specific BQ NpcIDs like so:</p>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
+<div class="admonition tip inline end">
+<p class="admonition-title">Explanation</p>
+<p>The NPC <code>inkeeper</code> (which is the BetonQuestNPCID and <strong>not</strong> the NPCID itself) will be hidden if the player has the 
+tag <code>inkeeperIsTired</code>.</p>
+</div>
+<div class="highlight"><span class="filename">NPC Hider Example</span><pre><span></span><code><span class="nt">npcs</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">innkeeper</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZNPCsPlus innkeeper</span>
 <span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag innkeeperIsTired</span>
@@ -4605,11 +4628,16 @@ It allows you to assign conditions to specific BQ NpcIDs like so:</p>
 </div>
 </div>
 </div>
-<p>Where NpcID is declared when you register the NPC which is described <a href="../../../Features/NPCs/#provided-integrations">here</a>.</p>
-<p>The interval the conditions are checked in can be configured with the <a href="../../../Configuration/Plugin-Config/#npc-npc-settings"><code>npc_update_interval</code></a> setting.</p>
+<details class="info inline end">
+<summary>Additional Information</summary>
+<p>Information on the <code>npcs</code> section, where you define the NPCs that BetonQuest can use/reference, can be found 
+<a href="../../../Features/NPCs/#provided-integrations">here</a>.
+Information on the <code>conditions</code> section can be found <a href="../../../Scripting/About-Scripting/#conditions">here</a>.</p>
+</details>
+<p>The interval in which conditions are checked can be configured with the <a href="../../../Configuration/Plugin-Config/#npc-npc-settings"><code>npc_update_interval</code></a> setting.</p>
 <h3 id="force-visibility-update">Force Visibility Update<a class="headerlink" href="#force-visibility-update" title="Permanent link">🔗</a></h3>
 <p>You can run the <code>updatevisibility</code> event to manually update the visibility. This is useful for performance optimizations
-if used with the <a href="../../../Configuration/Plugin-Config/#npc-npc-settings">npc hider interval</a> set to high values.</p>
+if used when the <a href="../../../Configuration/Plugin-Config/#npc-npc-settings">npc hider interval</a> is set to high values.</p>
 
 
 
