@@ -30,7 +30,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
         tag `inkeeperIsTired`.
-    ```YAML title="Example"
+    ```YAML title="NPC Hider Example"
     npcs:
       innkeeper: mythicmobs UUID 60b0144d-2c55-457a-aeb8-15fbf244f3b7
     conditions:
@@ -43,7 +43,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
         tag `inkeeperIsTired`.
-    ```YAML title="Example"
+    ```YAML title="NPC Hider Example"
     npcs:
       innkeeper: FancyNpcs dc8f2889-ed79-455e-944b-115dae978737
     conditions:
@@ -55,7 +55,7 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
         tag `inkeeperIsTired`.
-    ```YAML title="Example"
+    ```YAML title="NPC Hider Example"
     npcs:
       innkeeper: ZNPCsPlus innkeeper
     conditions:
