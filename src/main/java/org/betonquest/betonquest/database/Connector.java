@@ -122,6 +122,10 @@ public class Connector {
         }
     }
 
+    /* default */ Database getDatabase() {
+        return database;
+    }
+
     /**
      * Resolver for variables in prepared statements.
      */
