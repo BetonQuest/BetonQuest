@@ -26,6 +26,11 @@ you can set the fallback IO that will be used if no specific IO is set.
 The default is already `chat`, but you can also choose another one from the ones
 listed on the [IO's & Categories](../Visual-Effects/Notifications/Notification-IO%27s-%26-Categories.md) page.
 
+## `join_item_updater` - Update Quest Items
+If the inventory should be checked for Quest Items identified by Lore should get the new identifier tag set.
+Only useful when there was BetonQuest used before.
+When there are no such items or a check is not wanted just disable it.
+
 ## `updater` - The updater settings
 The updater section controls the plugin's Auto-Updater.
 

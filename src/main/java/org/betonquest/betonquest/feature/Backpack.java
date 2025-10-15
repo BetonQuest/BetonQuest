@@ -395,7 +395,7 @@ public class Backpack implements Listener {
                             item.setAmount(item.getAmount() - amount);
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
-                    } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
+                    } else if (!lockJournalSlot && Journal.isJournal(item)) {
                         playerData.getJournal().removeFromInv();
                     }
                     display = new BackpackPage(page);
