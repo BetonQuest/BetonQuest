@@ -16,7 +16,7 @@ import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.CompassID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.util.Utils;
+import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -376,7 +376,7 @@ public class Backpack implements Listener {
                 if (item != null) {
                     final boolean lockJournalSlot = config.getBoolean("journal.lock_default_journal_slot");
                     // if the item exists continue
-                    if (Utils.isQuestItem(item)) {
+                    if (QuestHandler.isQuestItem(item)) {
                         int amount = 0;
                         switch (click) {
                             case LEFT:
@@ -395,7 +395,7 @@ public class Backpack implements Listener {
                             item.setAmount(item.getAmount() - amount);
                             onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
-                    } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
+                    } else if (!lockJournalSlot && Journal.isJournal(item)) {
                         playerData.getJournal().removeFromInv();
                     }
                     display = new BackpackPage(page);

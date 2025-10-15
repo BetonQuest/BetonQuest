@@ -65,6 +65,7 @@ import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.listener.CustomDropListener;
 import org.betonquest.betonquest.listener.JoinQuitListener;
 import org.betonquest.betonquest.listener.MobKillListener;
+import org.betonquest.betonquest.listener.QuestItemConvertListener;
 import org.betonquest.betonquest.logger.DefaultBetonQuestLoggerFactory;
 import org.betonquest.betonquest.logger.HandlerFactory;
 import org.betonquest.betonquest.logger.PlayerLogWatcher;
@@ -333,7 +334,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"), config);
         saver.start();
-        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, instance.getDataFolder(), new Connector())
+        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, getDataFolder(), new Connector())
                 .loadDatabaseFromBackup();
 
         globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver);
@@ -358,8 +359,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 getServer().getPluginManager(), this);
 
         final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(),
-                coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(pluginMessage, coreQuestRegistry, questRegistry,
-                config, textParser, fontRegistry)));
+                coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(loggerFactory, pluginMessage,
+                coreQuestRegistry, questRegistry, config, textParser, fontRegistry)));
         playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
@@ -481,6 +482,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 new MobKillListener(profileProvider),
                 new CustomDropListener(loggerFactory.create(CustomDropListener.class), questManager, this, questRegistry),
                 new QuestItemHandler(config, playerDataStorage, profileProvider),
+                new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
+                        () -> config.getBoolean("item.quest.update_legacy_on_join"), pluginMessage, profileProvider),
                 new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
                         pluginMessage, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));

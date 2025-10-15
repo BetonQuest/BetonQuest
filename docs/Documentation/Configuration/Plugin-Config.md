@@ -250,6 +250,11 @@ Different item settings that are used in BetonQuest.
       Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule 
       checking, so it is up to you to decide.  
       Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.
+    * `update_legacy_on_join` - Update Quest Items
+      If the inventory should be checked for Quest Items identified by Lore should get the new identifier tag set.
+      Only useful when there was BetonQuest used before.
+      When there are no such items or a check is not wanted just disable it.
+
 * `backpack`  
   Configuration of items, that are shown in the backpack. You reference them with a full path to an item in a package.
   For example `my_package.my_button`.

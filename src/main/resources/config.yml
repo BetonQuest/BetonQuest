@@ -87,6 +87,7 @@ item:
   quest:
     unbreakable: true
     remove_after_respawn: true
+    update_legacy_on_join: false
   backpack:
     previous_button: ''
     next_button: ''
