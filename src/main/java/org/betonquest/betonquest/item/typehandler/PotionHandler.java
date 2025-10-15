@@ -200,22 +200,12 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         switch (key) {
             case "type" -> setType(data);
             case EXTENDED -> {
-                if (EXTENDED.equals(data)) {
-                    extendedE = Existence.REQUIRED;
-                    this.extended = true;
-                } else {
-                    extendedE = Existence.REQUIRED;
-                    this.extended = Boolean.parseBoolean(data);
-                }
+                extendedE = Existence.REQUIRED;
+                this.extended = HandlerUtil.isKeyOrTrue(EXTENDED, data);
             }
             case UPGRADED -> {
-                if (UPGRADED.equals(data)) {
-                    upgradedE = Existence.REQUIRED;
-                    this.upgraded = true;
-                } else {
-                    upgradedE = Existence.REQUIRED;
-                    this.upgraded = Boolean.parseBoolean(data);
-                }
+                upgradedE = Existence.REQUIRED;
+                this.upgraded = HandlerUtil.isKeyOrTrue(UPGRADED, data);
             }
             case "effects" -> setCustom(data);
             case "effects-containing" -> exact = false;

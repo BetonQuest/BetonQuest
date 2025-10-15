@@ -51,7 +51,7 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
         if (!UNBREAKABLE.equals(key)) {
             throw new QuestException("Unknown unbreakable key: " + key);
         }
-        if (UNBREAKABLE.equals(data) || Boolean.parseBoolean(data)) {
+        if (HandlerUtil.isKeyOrTrue(UNBREAKABLE, data)) {
             unbreakable = Existence.REQUIRED;
         } else {
             unbreakable = Existence.FORBIDDEN;
