@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,24 +28,14 @@ public final class HologramRunner {
     /**
      * Times the periodic execution of content and visibility refresh.
      */
-    private final BukkitTask task;
+    @Nullable
+    private BukkitTask task;
 
     /**
-     * Creates a new instance of the HologramRunner with the specified interval.
+     * The empty default constructor.
      *
-     * @param interval Interval in ticks
      */
-    private HologramRunner(final Plugin plugin, final int interval) {
-        final BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (final HologramWrapper h : holograms) {
-                    h.updateContent();
-                    h.updateVisibility();
-                }
-            }
-        };
-        task = runnable.runTaskTimer(plugin, 1, interval);
+    private HologramRunner() {
     }
 
     /**
@@ -53,13 +44,34 @@ public final class HologramRunner {
      *
      * @param hologram Hologram to be added.
      */
-    static /* default */ void addHologram(final Plugin plugin, final HologramWrapper hologram) {
-        RUNNERS.computeIfAbsent(hologram.interval(),
-                        k -> new HologramRunner(plugin, hologram.interval()))
+    static /* default */ void addHologram(final HologramWrapper hologram) {
+        RUNNERS.computeIfAbsent(hologram.interval(), k -> new HologramRunner())
                 .addRunnerHologram(hologram);
-        hologram.initialiseContent();
-        hologram.holograms().forEach(BetonHologram::showAll);
-        hologram.updateVisibility();
+    }
+
+    /**
+     * Creates the run task instances of the HologramRunners.
+     *
+     * @param plugin the plugin to start tasks
+     */
+    static /* default */ void start(final Plugin plugin) {
+        for (final Map.Entry<Integer, HologramRunner> entry : RUNNERS.entrySet()) {
+            final HologramRunner runner = entry.getValue();
+            runner.task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (final HologramWrapper h : runner.holograms) {
+                        h.updateContent();
+                        h.updateVisibility();
+                    }
+                }
+            }.runTaskTimer(plugin, 0, entry.getKey());
+            for (final HologramWrapper hologram : runner.holograms) {
+                hologram.initialiseContent();
+                hologram.holograms().forEach(BetonHologram::showAll);
+                hologram.updateVisibility();
+            }
+        }
     }
 
     /**
@@ -104,7 +116,9 @@ public final class HologramRunner {
     }
 
     private void cancelRunner() {
-        task.cancel();
+        if (task != null) {
+            task.cancel();
+        }
         for (final HologramWrapper hologramWrapper : holograms) {
             for (final BetonHologram betonHologram : hologramWrapper.holograms()) {
                 betonHologram.hideAll();

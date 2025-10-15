@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
@@ -7,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Hides and shows holograms to players, based on conditions at a fixed location.
  */
-public class LocationHologramLoop extends HologramLoop {
+public class LocationHologramLoop extends HologramLoop implements StartTask {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
@@ -48,5 +50,10 @@ public class LocationHologramLoop extends HologramLoop {
         } else {
             return new Variable<>(variableProcessor, pack, rawLocation, Argument.LOCATION).getValue(null);
         }
+    }
+
+    @Override
+    public void startAll() {
+        HologramRunner.start(BetonQuest.getInstance());
     }
 }
