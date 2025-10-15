@@ -6,25 +6,19 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.config.Zipper;
-import org.betonquest.betonquest.database.Backup;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,7 +30,6 @@ import java.util.stream.Stream;
 /**
  * Various utilities.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class Utils {
 
     /**
@@ -75,42 +68,6 @@ public final class Utils {
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Utils.class);
 
     private Utils() {
-    }
-
-    /**
-     * Does a full configuration backup.
-     *
-     * @param configAccessorFactory the factory that will be used to create
-     *                              {@link org.betonquest.betonquest.api.config.ConfigAccessor}s
-     * @param plugin                the plugin to back up
-     */
-    public static void backup(final ConfigAccessorFactory configAccessorFactory, final Plugin plugin) {
-        LOG.info("Backing up!");
-        final long time = new Date().getTime();
-        final File root = plugin.getDataFolder();
-        if (!Backup.backupDatabase(configAccessorFactory, new File(root, "database-backup.yml"))) {
-            LOG.warn("There was an error during backing up the database! This does not affect"
-                    + " the configuration backup, nor damage your database. You should backup"
-                    + " the database manually if you want to be extra safe, but it's not necessary if"
-                    + " you don't want to downgrade later.");
-        }
-        // create Backups folder if it does not exist
-        final File backupFolder = new File(root, "Backups");
-        if (!backupFolder.isDirectory() && !backupFolder.mkdir()) {
-            LOG.error("Could not create backup folder!");
-        }
-        // zip all the files
-        final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
-                + plugin.getDescription().getVersion();
-
-        Zipper.zip(root, outputPath, "^backup.*", "^database\\.db$", "^logs$");
-        // delete database backup so it doesn't make a mess later on
-        if (!new File(root, "database-backup.yml").delete()) {
-            LOG.warn("Could not delete database backup file!");
-        }
-        // done
-        LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
-        LOG.info("Done, you can find the backup in 'Backups' directory.");
     }
 
     /**

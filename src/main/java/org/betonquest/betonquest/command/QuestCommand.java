@@ -32,6 +32,8 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.database.Backup;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -50,7 +52,6 @@ import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.give.GiveEvent;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjective;
-import org.betonquest.betonquest.util.Utils;
 import org.betonquest.betonquest.web.downloader.DownloadFailedException;
 import org.betonquest.betonquest.web.downloader.Downloader;
 import org.betonquest.betonquest.web.updater.Updater;
@@ -291,7 +292,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             sendMessage(sender, "offline");
                             break;
                         }
-                        Utils.backup(configAccessorFactory, instance);
+                        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, instance.getDataFolder(),
+                                new Connector()).backup(instance.getDescription().getVersion());
                         break;
                     case "debug":
                         handleDebug(sender, args);

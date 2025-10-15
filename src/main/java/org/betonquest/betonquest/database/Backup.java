@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.config.Zipper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,27 +28,112 @@ public final class Backup {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Backup.class);
+    private final BetonQuestLogger log;
 
     /**
-     * Private constructor to hide the implicit public one.
+     * Factory that will be used to create {@link ConfigAccessor}s.
      */
-    private Backup() {
+    private final ConfigAccessorFactory configAccessorFactory;
+
+    /**
+     * Folder to back up its contents.
+     */
+    private final File root;
+
+    /**
+     * Connector to access database.
+     */
+    private final Connector con;
+
+    /**
+     * Single file to store a database backup to.
+     */
+    private final File databaseBackupFile;
+
+    /**
+     * Folder to store a full backup to.
+     */
+    private final File backupFolder;
+
+    /**
+     * Creates a new Object to store and load backups.
+     * It will use the "database-backup.yml" for a single database backup and the "Backups" folder for a full backup
+     * inside the given root folder.
+     *
+     * @param log                   the custom {@link BetonQuestLogger} instance for this class
+     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * @param root                  the directory to back up and load to
+     * @param connector             the connector used for database access
+     */
+    public Backup(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+                  final Connector connector) {
+        this(log, configAccessorFactory, root, connector, new File(root, "database-backup.yml"), new File(root, "Backups"));
     }
 
     /**
-     * Backs the database up to a specified .yml file (it should not exist)
+     * Creates a new Object to store and load backups.
      *
+     * @param log                   the custom {@link BetonQuestLogger} instance for this class
      * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
-     * @param databaseBackupFile    non-existent file where the database should be dumped
+     * @param root                  the directory to back up and load to
+     * @param connector             the connector used for database access
+     * @param databaseBackupFile    the file to store/load a single database backup
+     * @param backupFolder          the folder to store/load the full backup
+     */
+    public Backup(final BetonQuestLogger log, final ConfigAccessorFactory configAccessorFactory, final File root,
+                  final Connector connector, final File databaseBackupFile, final File backupFolder) {
+        this.log = log;
+        this.configAccessorFactory = configAccessorFactory;
+        this.root = root;
+        this.con = connector;
+        this.databaseBackupFile = databaseBackupFile;
+        this.backupFolder = backupFolder;
+    }
+
+    /**
+     * Does a full configuration backup.
+     * The backup folder and file are not allowed to exist.
+     *
+     * @param version the version string to use for the backup zip name
+     */
+    public void backup(final String version) {
+        log.info("Backing up!");
+        final long time = new Date().getTime();
+        if (!backupDatabase()) {
+            log.warn("There was an error during backing up the database! This does not affect"
+                    + " the configuration backup, nor damage your database. You should backup"
+                    + " the database manually if you want to be extra safe, but it's not necessary if"
+                    + " you don't want to downgrade later.");
+        }
+
+        if (!backupFolder.isDirectory() && !backupFolder.mkdir()) {
+            log.error("Could not create backup folder!");
+        }
+
+        final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-" + version;
+        Zipper.zip(root, outputPath, "^backup.*", "^database\\.db$", "^logs$");
+        if (!databaseBackupFile.delete()) {
+            log.warn("Could not delete database backup file!");
+        }
+
+        log.debug("Done in " + (new Date().getTime() - time) + "ms");
+        log.info("Done, you can find the backup in 'Backups' directory.");
+    }
+
+    /**
+     * Backs the database up to the {@code databaseBackupFile} if that file does not exist.
+     *
      * @return true if the backup was successful, false if there was an error
      */
+    public boolean backupDatabase() {
+        return backupDatabase(databaseBackupFile);
+    }
+
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
-    public static boolean backupDatabase(final ConfigAccessorFactory configAccessorFactory, final File databaseBackupFile) {
-        final BetonQuest instance = BetonQuest.getInstance();
+    private boolean backupDatabase(final File databaseBackupFile) {
         try {
             if (!databaseBackupFile.createNewFile()) {
-                LOG.warn("Could not create the backup file!");
+                log.warn("Could not create the backup file!");
                 return false;
             }
             boolean done = true;
@@ -57,26 +143,25 @@ public final class Backup {
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
                     "global_tags", "migration", "player_profile", "profile"};
             // open database connection
-            final Connector database = new Connector();
             // load resultsets into the map
             for (final String table : tables) {
-                LOG.debug("Loading " + table);
+                log.debug("Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
-                map.put(table, database.querySQL(QueryType.valueOf(enumName)));
+                map.put(table, con.querySQL(QueryType.valueOf(enumName)));
             }
             // extract data from resultsets into the config file
             for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {
-                LOG.debug("Saving " + entry.getKey() + " to the backup file");
+                log.debug("Saving " + entry.getKey() + " to the backup file");
                 // prepare resultset and meta
                 try (ResultSet res = entry.getValue()) {
                     final ResultSetMetaData result = res.getMetaData();
                     // get the list of column names
                     final List<String> columns = new ArrayList<>();
                     final int columnCount = result.getColumnCount();
-                    LOG.debug("  There are " + columnCount + " columns in this ResultSet");
+                    log.debug("  There are " + columnCount + " columns in this ResultSet");
                     for (int i = 1; i <= result.getColumnCount(); i++) {
                         final String columnName = result.getColumnName(i);
-                        LOG.debug("    Adding column " + columnName);
+                        log.debug("    Adding column " + columnName);
                         columns.add(columnName);
                     }
                     // counter for counting rows
@@ -88,7 +173,7 @@ public final class Backup {
                                 final String value = res.getString(columnName);
                                 config.set(entry.getKey() + "." + counter + "." + columnName, value);
                             } catch (final SQLException e) {
-                                LOG.warn("Could not read SQL: " + e.getMessage(), e);
+                                log.warn("Could not read SQL: " + e.getMessage(), e);
                                 done = false;
                                 // do nothing, as there can be nothing done
                                 // error while loading the string means the
@@ -97,40 +182,33 @@ public final class Backup {
                         }
                         counter++;
                     }
-                    LOG.debug("  Saved " + (counter + 1) + " rows");
+                    log.debug("  Saved " + (counter + 1) + " rows");
                 }
             }
             // save the config at the end
             config.save();
             return done;
         } catch (final IOException | SQLException | InvalidConfigurationException e) {
-            LOG.warn("There was an error during database backup: " + e.getMessage(), e);
-            final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
-            if (brokenFile.exists() && !brokenFile.delete()) {
-                LOG.warn("Could not delete the broken backup file!");
+            log.warn("There was an error during database backup: " + e.getMessage(), e);
+            if (databaseBackupFile.exists() && !databaseBackupFile.delete()) {
+                log.warn("Could not delete the broken backup file!");
             }
             return false;
         }
     }
 
     /**
-     * If the database backup file exists, loads it into the database.
-     *
-     * @param configAccessorFactory the factory that will be used to create {@link ConfigAccessor}s
+     * Loads an existing {@code databaseBackupFile} into the database.
+     * The existing database is saved into the {@code backupFolder}.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
-    public static void loadDatabaseFromBackup(final ConfigAccessorFactory configAccessorFactory) {
-        final BetonQuest instance = BetonQuest.getInstance();
-        final File file = new File(instance.getDataFolder(), "database-backup.yml");
-        // if the backup doesn't exist then there is nothing to load, return
-        if (!file.exists()) {
+    public void loadDatabaseFromBackup() {
+        if (!databaseBackupFile.exists()) {
             return;
         }
-        LOG.info("Loading database backup!");
-        // backup the database
-        final File backupFolder = new File(instance.getDataFolder(), "Backups");
+        log.info("Loading database backup!");
+
         if (!backupFolder.isDirectory() && !backupFolder.mkdirs()) {
-            LOG.warn("Could not create the backup folder!");
+            log.warn("Could not create the backup folder!");
             return;
         }
         int backupNumber = 0;
@@ -138,27 +216,25 @@ public final class Backup {
             backupNumber++;
         }
         final String filename = "old-database-" + backupNumber + ".yml";
-        LOG.info("Backing up old database!");
-        if (!backupDatabase(configAccessorFactory, new File(backupFolder, filename))) {
-            LOG.warn("There was an error during old database backup process. This means that"
+        log.info("Backing up old database!");
+        if (!backupDatabase(new File(backupFolder, filename))) {
+            log.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
             return;
         }
         final ConfigAccessor config;
         try {
-            config = configAccessorFactory.create(file);
+            config = configAccessorFactory.create(databaseBackupFile);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
             return;
         }
-        final Database database = instance.getDB();
         // create tables if they don't exist, so we can be 100% sure
         // that we can drop them without an error (should've been done
         // in a different way...)
-        database.createTables();
+        con.getDatabase().createTables();
         // drop all tables
-        final Connector con = new Connector();
         con.updateSQL(UpdateType.DROP_OBJECTIVES);
         con.updateSQL(UpdateType.DROP_TAGS);
         con.updateSQL(UpdateType.DROP_POINTS);
@@ -170,8 +246,13 @@ public final class Backup {
         con.updateSQL(UpdateType.DROP_PLAYER_PROFILE);
         con.updateSQL(UpdateType.DROP_PLAYER);
         con.updateSQL(UpdateType.DROP_PROFILE);
-        // create new tables
-        database.createTables();
+
+        loadDatabaseFromBackup0(config);
+    }
+
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity", "PMD.AvoidDuplicateLiterals"})
+    private void loadDatabaseFromBackup0(final ConfigAccessor config) {
+        con.getDatabase().createTables();
 
         final ConfigurationSection profile = config.getConfigurationSection("profile");
         if (profile != null) {
@@ -260,8 +341,8 @@ public final class Backup {
                         globalTags.getString(key + ".tag"));
             }
         }
-        if (!file.delete()) {
-            LOG.warn("Could not delete the backup file!");
+        if (!databaseBackupFile.delete()) {
+            log.warn("Could not delete the backup file!");
         }
     }
 }
