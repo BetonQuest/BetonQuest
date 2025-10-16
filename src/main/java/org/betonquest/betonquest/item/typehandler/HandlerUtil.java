@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.intellij.lang.annotations.Language;
@@ -93,5 +94,19 @@ public final class HandlerUtil {
      */
     public static String toKeyValue(final String key, final Component value) {
         return "\"" + key + ":@[minimessage]" + MiniMessage.miniMessage().serialize(value) + "\"";
+    }
+
+    /**
+     * Checks if the data parses to {@code true} or equals the key.
+     * <p>
+     * Used for keywords which may be denied.
+     *
+     * @param key  the key to check for similarity of the data
+     * @param data the data to parse
+     * @return if the data is true or the key
+     * @throws QuestException when the data is neither the key nor "true" or "false"
+     */
+    public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
+        return key.equals(data) || BooleanParser.BOOLEAN.apply(data);
     }
 }
