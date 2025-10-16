@@ -16,7 +16,7 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
     /**
      * The objective to check.
      */
-    private final String objective;
+    private final Variable<String> objective;
 
     /**
      * The count to check.
@@ -29,13 +29,14 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
      * @param objective the objective to check
      * @param count     the count to check
      */
-    public ScoreboardObjectiveCondition(final String objective, final Variable<Number> count) {
+    public ScoreboardObjectiveCondition(final Variable<String> objective, final Variable<Number> count) {
         this.objective = objective;
         this.count = count;
     }
 
     @Override
     public boolean check(final Profile profile) throws QuestException {
+        final String objective = this.objective.getValue(profile);
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {

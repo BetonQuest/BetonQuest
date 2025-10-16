@@ -36,7 +36,7 @@ public class StageEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);
             case "increase" -> createIncreaseEvent(instruction, objectiveID);

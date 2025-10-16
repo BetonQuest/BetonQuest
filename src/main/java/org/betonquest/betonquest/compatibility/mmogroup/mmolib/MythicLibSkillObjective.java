@@ -4,6 +4,7 @@ import io.lumine.mythic.lib.api.event.skill.SkillCastEvent;
 import io.lumine.mythic.lib.skill.trigger.TriggerType;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -20,7 +21,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
     /**
      * The name of the skill to activate.
      */
-    private final String skillId;
+    private final Variable<String> skillId;
 
     /**
      * Whether the skill must be "cast" by the player.
@@ -36,7 +37,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final Instruction instruction, final String skillId, final List<TriggerType> triggerTypes) throws QuestException {
+    public MythicLibSkillObjective(final Instruction instruction, final Variable<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
         super(instruction);
         this.skillId = skillId;
         this.triggerTypes = triggerTypes;
@@ -49,20 +50,23 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onSkillCast(final SkillCastEvent event) {
-        final String skillName = event.getCast().getHandler().getId();
-        if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
-            return;
-        }
+        qeHandler.handle(() -> {
 
-        if (!triggerTypes.contains(event.getCast().getTrigger())) {
-            return;
-        }
+            final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
+            final String skillName = event.getCast().getHandler().getId();
+            if (!skillId.getValue(onlineProfile).equalsIgnoreCase(skillName) || !event.getResult().isSuccessful()) {
+                return;
+            }
 
-        final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
-        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
-            return;
-        }
-        completeObjective(onlineProfile);
+            if (!triggerTypes.contains(event.getCast().getTrigger())) {
+                return;
+            }
+
+            if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
+                return;
+            }
+            completeObjective(onlineProfile);
+        });
     }
 
     @Override

@@ -35,7 +35,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.next();
+        final String action = instruction.get(Argument.STRING).getValue(null);
 
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "addpermission" ->

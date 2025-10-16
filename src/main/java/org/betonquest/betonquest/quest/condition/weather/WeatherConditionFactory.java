@@ -45,7 +45,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Weather weather = Weather.parseWeather(instruction.next());
+        final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"), Argument.WORLD);
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
@@ -57,7 +57,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Weather weather = Weather.parseWeather(instruction.next());
+        final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
