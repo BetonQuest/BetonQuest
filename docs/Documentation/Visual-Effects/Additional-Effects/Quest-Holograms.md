@@ -13,7 +13,8 @@ Installing either of these plugins will enable you to create hidden holograms, w
 In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section
 and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines
 of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard
-format, like in `teleport` event. If `max_range` is specified, the hologram will only be visible in this range, if not, the default value from the connected hologram plugin will be used. 
+format, like in `teleport` event. If `max_range` is specified, the hologram will only be visible in this range, if not,
+the default value from the connected hologram plugin will be used.
 An example of such hologram definition:
 
 ```YAML
@@ -24,7 +25,7 @@ holograms:
     - '&2Top questers this month'
     - 'top:completed_quests;desc;10;&a;§6;2;&6'
     - '&2Your amount: &6%point.completed_quests.amount%'
-    - '&Total amount: &6%azerothquests.globalpoint.total_completed_quests.amount%'
+    - '&Total amount: &6%azerothquests>globalpoint.total_completed_quests.amount%'
     conditions: has_some_quest,!finished_some_quest    
     location: 100;200;300;world
     # How often to check conditions (optional)
@@ -61,4 +62,5 @@ The hologram's conditions are checked every 10 seconds, meaning a hologram will 
 every 10 seconds. If you want to make it faster, decrease `hologram.update_interval` option in "_config.yml_" file and set it to a
 number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 
-Keep in mind that each hologram plugin also updates its holograms on a timer individually, meaning that hologram variables will refresh at a much quicker rate than the above.
+Keep in mind that each hologram plugin also updates its holograms on a timer individually,
+meaning that hologram variables will refresh at a much quicker rate than the above.

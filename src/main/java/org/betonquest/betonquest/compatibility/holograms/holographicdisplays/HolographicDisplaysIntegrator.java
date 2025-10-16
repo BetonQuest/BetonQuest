@@ -76,7 +76,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
 
     @Override
     public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable such as "%pack:objective.kills.left%" to
+        /* We must convert a normal BetonQuest variable with package to
            "{bq:pack:objective.kills.left}" which is parsed by HolographicDisplays as a custom API placeholder. */
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {

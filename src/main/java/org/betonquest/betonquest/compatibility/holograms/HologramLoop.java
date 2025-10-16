@@ -136,7 +136,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
                 cleanedLines,
                 pack,
                 maxRange);
-        HologramRunner.addHologram(BetonQuest.getInstance(), hologramWrapper);
+        HologramRunner.addHologram(hologramWrapper);
         return hologramWrapper;
     }
 
