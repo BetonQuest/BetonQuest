@@ -755,6 +755,17 @@ events:
 !!! info "Private & Target Arguments"
     The `private` and `target` arguments are ignored when the event is used in a static context like [Schedules](../Schedules.md).
 
+#### Cast Mythic Skill: `mcast`
+
+| Parameter | Syntax | Default Value          | Explanation            |
+|-----------|--------|------------------------|------------------------|
+| _name_    | Name   | :octicons-x-circle-16: | Name of Skill to cast. |
+
+```YAML title="Example"
+events:
+  castPoison: mcast AngrySludgePoison
+```
+
 ## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 
 If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.

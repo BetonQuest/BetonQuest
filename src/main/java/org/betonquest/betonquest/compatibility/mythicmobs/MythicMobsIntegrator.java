@@ -13,6 +13,7 @@ import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.mythicmobs.condition.MythicMobDistanceConditionFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicCastSkillEventFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicSpawnMobEventFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteractCatcher;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
@@ -64,6 +65,7 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, apiHelper, data));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
         questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory, apiHelper, data, compatibility));
+        questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, apiHelper), plugin);
         npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(MythicBukkit.inst().getMobManager()));
