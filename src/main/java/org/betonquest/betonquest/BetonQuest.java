@@ -398,8 +398,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         fontRegistry = new FontRegistry(defaultkey);
         fontRegistry.registerFont(defaultkey, new DefaultFont());
 
-        new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, config, conversationColors,
-                textParser, fontRegistry)
+        new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.variables(),
+                config, conversationColors, textParser, fontRegistry)
                 .register(featureRegistries);
 
         try {

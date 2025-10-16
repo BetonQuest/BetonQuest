@@ -3,11 +3,15 @@ package org.betonquest.betonquest.api.schedule;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -20,6 +24,12 @@ import static org.mockito.Mockito.*;
 public abstract class AbstractScheduleTest {
 
     /**
+     * VariableProcessor to create new Variables.
+     */
+    @Mock
+    protected VariableProcessor variableProcessor;
+
+    /**
      * The quest package manager to get quest packages from.
      */
     @Mock
@@ -30,6 +40,12 @@ public abstract class AbstractScheduleTest {
      */
     @Mock
     protected ScheduleID scheduleID;
+
+    /**
+     * Events of the schedule to test.
+     */
+    @Mock
+    protected List<EventID> events;
 
     /**
      * Quest package of the schedule to test.
@@ -53,7 +69,7 @@ public abstract class AbstractScheduleTest {
     }
 
     /**
-     * Method that creates a schedule instance with the provided ScheduleID and QuestPackage
+     * Method that creates a schedule instance with the provided ScheduleID and QuestPackage.
      *
      * @return the new created schedule instance
      * @throws QuestException if parsing the schedule from the config failed
