@@ -51,7 +51,7 @@ public class VariableObjective extends Objective {
      */
     public boolean store(final Profile profile, final String key, @Nullable final String value) {
         if (containsPlayer(profile)) {
-            getVariableData(profile).add(key.toLowerCase(Locale.ROOT), value);
+            getVariableData(profile).add(key, value);
             return true;
         }
         return false;
@@ -64,8 +64,7 @@ public class VariableObjective extends Objective {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        final String key = name.toLowerCase(Locale.ROOT);
-        final String value = getVariableData(profile).get(key);
+        final String value = getVariableData(profile).get(name);
         return value == null ? "" : value;
     }
 
@@ -193,7 +192,7 @@ public class VariableObjective extends Objective {
          */
         @Nullable
         public String get(final String key) {
-            return variables.get(key);
+            return variables.get(key.toLowerCase(Locale.ROOT));
         }
 
         /**
@@ -204,9 +203,9 @@ public class VariableObjective extends Objective {
          */
         public void add(final String key, @Nullable final String value) {
             if (value == null || value.isEmpty()) {
-                variables.remove(key);
+                variables.remove(key.toLowerCase(Locale.ROOT));
             } else {
-                variables.put(key, value);
+                variables.put(key.toLowerCase(Locale.ROOT), value);
             }
             update();
         }

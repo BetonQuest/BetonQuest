@@ -71,6 +71,8 @@ public class ObjectiveData {
         saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID.getFull(), toString()));
         final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
         plugin.getServer().getScheduler().runTask(plugin, event::callEvent);
-        plugin.getPlayerDataStorage().get(profile).getJournal().update();
+        if (profile.getOnlineProfile().isPresent()) {
+            plugin.getPlayerDataStorage().get(profile).getJournal().update();
+        }
     }
 }
