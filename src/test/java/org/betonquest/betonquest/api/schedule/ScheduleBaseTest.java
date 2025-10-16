@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
+import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -20,8 +21,15 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
     protected Schedule createSchedule() throws QuestException {
-        return new Schedule(mock(QuestPackageManager.class), scheduleID, section) {
-        };
+        return new BaseScheduleFactory<>(variableProcessor, packManager) {
+            @Override
+            public Schedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config)
+                    throws QuestException {
+                final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+                return new Schedule(scheduleID, scheduleData.events(), scheduleData.catchup()) {
+                };
+            }
+        }.createNewInstance(scheduleID, section);
     }
 
     @Override
@@ -49,7 +57,6 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     public void testScheduleValidLoad() throws QuestException {
         final Schedule schedule = createSchedule();
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
-        assertEquals("22:00", schedule.getTime(), "Returned time should be correct");
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
         assertEquals("bell_ring", schedule.getEvents().get(0).get(), "Returned events should contain 1st event");
         assertEquals("notify_goodNight", schedule.getEvents().get(1).get(), "Returned events should contain 2nd event");
@@ -80,7 +87,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     void testInvalidCatchup() {
         when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
-        assertEquals("There is no such catchup strategy: NotExistingCatchupStrategy", exception.getMessage(), "QuestException should have correct reason message");
+        assertEquals("Invalid enum value: NOTEXISTINGCATCHUPSTRATEGY", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test

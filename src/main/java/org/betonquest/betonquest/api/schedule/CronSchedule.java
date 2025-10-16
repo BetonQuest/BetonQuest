@@ -6,9 +6,10 @@ import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.bukkit.configuration.ConfigurationSection;
+import org.betonquest.betonquest.api.quest.event.EventID;
+
+import java.util.List;
 
 /**
  * A schedule using <a href="https://crontab.guru/">cron syntax</a> for defining time instructions.
@@ -58,46 +59,60 @@ public abstract class CronSchedule extends Schedule {
     protected final ExecutionTime executionTime;
 
     /**
-     * Creates new instance of the schedule.
-     * It should parse all options from the configuration section.
-     * If anything goes wrong, throw {@link QuestException} with an error message describing the problem.
+     * Creates new instance of the Cron schedule.
      *
-     * @param packManager the quest package manager to get quest packages from
-     * @param scheduleId  id of the new schedule
-     * @param instruction config defining the schedule
-     * @throws QuestException if parsing the config failed
+     * @param scheduleID the schedule id
+     * @param events     the events to execute
+     * @param catchup    the catchup strategy
+     * @param expression the expression string to parse as default cron
+     * @throws QuestException when the expression is invalid for the cron definition
      */
-    public CronSchedule(final QuestPackageManager packManager, final ScheduleID scheduleId,
-                        final ConfigurationSection instruction) throws QuestException {
-        this(packManager, scheduleId, instruction, DEFAULT_CRON_DEFINITION);
+    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+                        final String expression) throws QuestException {
+        this(scheduleID, events, catchup, DEFAULT_CRON_DEFINITION, expression);
     }
 
     /**
-     * Alternative constructor that provides a way to use a custom cron syntax for this schedule.
-     * <b>Make sure to create a constructor with the following two arguments when extending this class:</b>
-     * {@code ScheduleID id, ConfigurationSection instruction}
+     * Creates new instance of the Cron schedule.
      *
-     * @param packManager    the quest package manager to get quest packages from
-     * @param scheduleID     id of the new schedule
-     * @param instruction    config defining the schedule
+     * @param scheduleID     the schedule id
+     * @param events         the events to execute
+     * @param catchup        the catchup strategy
      * @param cronDefinition a custom cron syntax, you may use {@link #DEFAULT_CRON_DEFINITION}
-     * @throws QuestException if parsing the config failed
+     * @param expression     the expression string to parse as default cron
+     * @throws QuestException when the expression is invalid for the cron definition
      */
-    protected CronSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
-                           final ConfigurationSection instruction, final CronDefinition cronDefinition) throws QuestException {
-        super(packManager, scheduleID, instruction);
+    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+                        final CronDefinition cronDefinition, final String expression) throws QuestException {
+        super(scheduleID, events, catchup);
         try {
-            this.timeCron = new CronParser(cronDefinition).parse(super.time).validate();
+            this.timeCron = new CronParser(cronDefinition).parse(expression).validate();
             this.executionTime = ExecutionTime.forCron(timeCron);
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Time is no valid cron syntax: '" + super.time + "'", e);
+            throw new QuestException("Time is no valid cron syntax: '" + expression + "'", e);
         }
+    }
+
+    /**
+     * Creates new instance of the Cron schedule.
+     *
+     * @param scheduleID    the schedule id
+     * @param events        the events to execute
+     * @param catchup       the catchup strategy
+     * @param timeCron      the Cron to schedule execution
+     * @param executionTime the time when the schedule should be executed
+     */
+    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+                        final Cron timeCron, final ExecutionTime executionTime) {
+        super(scheduleID, events, catchup);
+        this.timeCron = timeCron;
+        this.executionTime = executionTime;
     }
 
     /**
      * Get the cron expression that defines when the events from this schedule shall run.
      *
-     * @return cron expression parsed from {@link #getTime()} string
+     * @return parsed cron expression
      */
     public Cron getTimeCron() {
         return timeCron;

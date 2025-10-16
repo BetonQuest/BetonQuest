@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.model.Cron;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
@@ -13,15 +14,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for {@link CronSchedule} that support reboot and custom nicknames
+ * Test for {@link CronSchedule} that support reboot and custom nicknames.
  */
 @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
 public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronSchedule(mock(QuestPackageManager.class), scheduleID, section, REBOOT_CRON_DEFINITION) {
-        };
+        return new BaseScheduleFactory<>(variableProcessor, packManager) {
+            @Override
+            public CronSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
+                final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+                return new CronSchedule(scheduleID, scheduleData.events(), scheduleData.catchup(), REBOOT_CRON_DEFINITION, scheduleData.time()) {
+                };
+            }
+        }.createNewInstance(scheduleID, section);
     }
 
     @Test
