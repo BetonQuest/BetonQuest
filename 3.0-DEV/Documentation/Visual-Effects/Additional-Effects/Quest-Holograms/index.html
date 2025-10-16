@@ -4692,7 +4692,8 @@ with custom model data instead of the BetonQuest syntax.</p>
 <p>In order to create a hologram, you have to add a <code>holograms</code> section. Add a node named as your hologram to this section
 and define <code>lines</code>, <code>conditions</code> and <code>location</code> subnodes. The first one should be a list of texts - these will be the lines
 of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard
-format, like in <code>teleport</code> event. If <code>max_range</code> is specified, the hologram will only be visible in this range, if not, the default value from the connected hologram plugin will be used. 
+format, like in <code>teleport</code> event. If <code>max_range</code> is specified, the hologram will only be visible in this range, if not,
+the default value from the connected hologram plugin will be used.
 An example of such hologram definition:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">holograms</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
@@ -4701,7 +4702,7 @@ An example of such hologram definition:</p>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;2Top</span><span class="nv"> </span><span class="s">questers</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">month&#39;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;top:completed_quests;desc;10;&amp;a;§6;2;&amp;6&#39;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;2Your</span><span class="nv"> </span><span class="s">amount:</span><span class="nv"> </span><span class="s">&amp;6%point.completed_quests.amount%&#39;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;Total</span><span class="nv"> </span><span class="s">amount:</span><span class="nv"> </span><span class="s">&amp;6%azerothquests.globalpoint.total_completed_quests.amount%&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;Total</span><span class="nv"> </span><span class="s">amount:</span><span class="nv"> </span><span class="s">&amp;6%azerothquests&gt;globalpoint.total_completed_quests.amount%&#39;</span>
 <span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_some_quest,!finished_some_quest</span><span class="w">    </span>
 <span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
 <span class="w">    </span><span class="c1"># How often to check conditions (optional)</span>
@@ -4734,7 +4735,8 @@ for each player individually. If you are using HolographicDisplays, to save reso
 <p>The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or un-met
 every 10 seconds. If you want to make it faster, decrease <code>hologram.update_interval</code> option in "<em>config.yml</em>" file and set it to a
 number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.</p>
-<p>Keep in mind that each hologram plugin also updates its holograms on a timer individually, meaning that hologram variables will refresh at a much quicker rate than the above.</p>
+<p>Keep in mind that each hologram plugin also updates its holograms on a timer individually,
+meaning that hologram variables will refresh at a much quicker rate than the above.</p>
 
 
 
