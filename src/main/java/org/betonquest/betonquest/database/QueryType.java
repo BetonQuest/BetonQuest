@@ -5,6 +5,7 @@ import java.util.function.Function;
 /**
  * Type of the query.
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public enum QueryType {
     /**
      * Get the objectives of a profile. ProfileID.
@@ -32,13 +33,58 @@ public enum QueryType {
     SELECT_PLAYER(prefix -> "SELECT language, conversation FROM " + prefix + "player WHERE playerID = ?;"),
 
     /**
+     * Get all objectives.
+     */
+    LOAD_ALL_OBJECTIVES(prefix -> "SELECT * FROM " + prefix + "objectives;"),
+
+    /**
+     * Get all tags.
+     */
+    LOAD_ALL_TAGS(prefix -> "SELECT * FROM " + prefix + "tags;"),
+
+    /**
+     * Get all points.
+     */
+    LOAD_ALL_POINTS(prefix -> "SELECT * FROM " + prefix + "points;"),
+
+    /**
+     * Get all journal entries.
+     */
+    LOAD_ALL_JOURNALS(prefix -> "SELECT * FROM " + prefix + "journal;"),
+
+    /**
+     * Get all backpacks.
+     */
+    LOAD_ALL_BACKPACK(prefix -> "SELECT * FROM " + prefix + "backpack;"),
+
+    /**
+     * Get all players.
+     */
+    LOAD_ALL_PLAYER(prefix -> "SELECT * FROM " + prefix + "player;"),
+
+    /**
+     * Get all done migrations.
+     */
+    LOAD_ALL_MIGRATION(prefix -> "SELECT * FROM " + prefix + "migration;"),
+
+    /**
+     * Get all active set profiles.
+     */
+    LOAD_ALL_PLAYER_PROFILE(prefix -> "SELECT * FROM " + prefix + "player_profile;"),
+
+    /**
+     * Get all profiles.
+     */
+    LOAD_ALL_PROFILE(prefix -> "SELECT * FROM " + prefix + "profile;"),
+
+    /**
      * Get all global tags.
      */
-    LOAD_ALL_GLOBAL_TAGS(prefix -> "SELECT * FROM " + prefix + "global_tags"),
+    LOAD_ALL_GLOBAL_TAGS(prefix -> "SELECT * FROM " + prefix + "global_tags;"),
     /**
      * Get all global points.
      */
-    LOAD_ALL_GLOBAL_POINTS(prefix -> "SELECT * FROM " + prefix + "global_points"),
+    LOAD_ALL_GLOBAL_POINTS(prefix -> "SELECT * FROM " + prefix + "global_points;"),
 
     /**
      * Get all points of a category ordered ascending with a limit. Category, limit.
