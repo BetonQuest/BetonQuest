@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegratorFactory;
@@ -234,6 +235,7 @@ public class Compatibility implements Listener {
     }
 
     private void registerCompatiblePlugins() {
+        final BetonQuestLoggerFactory loggerFactory = betonQuestApi.getLoggerFactory();
         register("MythicMobs", new MythicMobsIntegratorFactory(this));
         register("Citizens", new CitizensIntegratorFactory(this));
         register("Vault", new VaultIntegratorFactory());
@@ -259,8 +261,8 @@ public class Compatibility implements Listener {
         register("Jobs", new JobsRebornIntegratorFactory());
         register("LuckPerms", new LuckPermsIntegratorFactory());
         register("AuraSkills", new AuraSkillsIntegratorFactory());
-        register("DecentHolograms", new DecentHologramsIntegratorFactory(betonQuestApi.getQuestPackageManager()));
-        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(betonQuestApi.getQuestPackageManager()));
+        register("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
+        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
         register("fake-block", new FakeBlockIntegratorFactory());
         register("RedisChat", new RedisChatIntegratorFactory());
         register("Train_Carts", new TrainCartsIntegratorFactory());

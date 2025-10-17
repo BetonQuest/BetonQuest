@@ -60,6 +60,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     protected final boolean printMessages;
 
+    private final BetonQuest betonQuest;
+
     private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
@@ -135,7 +137,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.printMessages = printMessages;
         this.endCallback = null;
 
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        this.betonQuest = BetonQuest.getInstance();
+        Bukkit.getPluginManager().registerEvents(this, betonQuest);
     }
 
     @Override
@@ -150,7 +153,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final String item = properties.getString("item");
         try {
             final Variable<ItemID> variableItem = item == null ? null
-                    : new Variable<>(BetonQuest.getInstance().getVariableProcessor(), conv.getPackage(), item,
+                    : new Variable<>(betonQuest.getVariableProcessor(), conv.getPackage(), item,
                     (value) -> new ItemID(packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
         } catch (final QuestException e) {
@@ -167,11 +170,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         }
         if (profile.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> profile.getPlayer().closeInventory());
+            Bukkit.getScheduler().runTask(betonQuest, () -> profile.getPlayer().closeInventory());
             final Interceptor interceptor = conv.getInterceptor();
             if (interceptor != null) {
                 try {
-                    interceptor.sendMessage(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "conversation_spectator"));
+                    interceptor.sendMessage(betonQuest.getPluginMessage().getMessage(profile, "conversation_spectator"));
                 } catch (final QuestException e) {
                     log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
                 }
@@ -193,7 +196,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             conv.sendMessage(colors.getText().append(colors.getNpc().append(npcName)).append(Component.text(": ")).append(response));
         }
 
-        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(betonQuest, () -> {
             inv.setContents(buttons);
             switching = true;
             profile.getPlayer().openInventory(inv);
@@ -224,7 +227,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             ItemStack item;
             try {
                 item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
-                        : BetonQuest.getInstance().getFeatureApi().getItem(itemID.getValue(profile), profile).generate(1);
+                        : betonQuest.getFeatureApi().getItem(itemID.getValue(profile), profile).generate(1);
             } catch (final QuestException e) {
                 log.warn("Failed to generate item: " + e.getMessage(), e);
                 item = new ItemStack(Material.ENDER_PEARL);
@@ -265,10 +268,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
             final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();
             npcMeta.displayName(colors.getNpc().append(npcName));
             npcHead.setItemMeta(npcMeta);
-            Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
                 try {
                     npcHead.setItemMeta(updateSkullMeta((SkullMeta) npcHead.getItemMeta(), plainTextNpcName));
-                    Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(betonQuest, () -> {
                         SKULL_CACHE.put(plainTextNpcName, npcHead);
                         inv.setItem(0, npcHead);
                     });
@@ -364,7 +367,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         if (conv.isMovementBlock()) {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            Bukkit.getScheduler().runTask(betonQuest, () -> {
                 profile.getPlayer().teleport(loc);
                 profile.getPlayer().openInventory(inv);
             });
@@ -385,7 +388,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     @EventHandler
     public void onConsume(final PlayerItemConsumeEvent event) {
-        final Profile profile = BetonQuest.getInstance().getProfileProvider().getProfile(event.getPlayer());
+        final Profile profile = betonQuest.getProfileProvider().getProfile(event.getPlayer());
         if (Conversation.containsPlayer(profile)) {
             event.setCancelled(true);
         }
@@ -404,7 +407,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (conv.hasNextNPCOption()) {
             endCallback = callback;
         } else {
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            Bukkit.getScheduler().runTask(betonQuest, () -> {
                 profile.getPlayer().closeInventory();
                 callback.run();
             });

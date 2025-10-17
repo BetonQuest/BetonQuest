@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
@@ -12,6 +11,7 @@ import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,11 @@ import java.util.List;
  */
 public class LocationHologramLoop extends HologramLoop implements StartTask {
     /**
+     * Plugin to start tasks.
+     */
+    private final Plugin plugin;
+
+    /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      *
      * @param loggerFactory     logger factory to use
@@ -28,11 +33,13 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
      * @param packManager       the quest package manager to get quest packages from
      * @param variableProcessor the {@link VariableProcessor} to use
      * @param hologramProvider  the hologram provider to create new holograms
+     * @param plugin            the plugin to start tasks
      */
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                                 final QuestPackageManager packManager, final VariableProcessor variableProcessor,
-                                final HologramProvider hologramProvider) {
+                                final HologramProvider hologramProvider, final Plugin plugin) {
         super(loggerFactory, log, packManager, variableProcessor, hologramProvider, "Hologram", "holograms");
+        this.plugin = plugin;
     }
 
     @Override
@@ -54,6 +61,6 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
 
     @Override
     public void startAll() {
-        HologramRunner.start(BetonQuest.getInstance());
+        HologramRunner.start(plugin);
     }
 }

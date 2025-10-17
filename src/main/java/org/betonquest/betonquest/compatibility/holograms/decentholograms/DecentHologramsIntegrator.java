@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -37,12 +36,13 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
+     * @param log         the custom logger for this class
      * @param packManager the quest package manager to get quest packages from
      */
-    public DecentHologramsIntegrator(final QuestPackageManager packManager) {
+    public DecentHologramsIntegrator(final BetonQuestLogger log, final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");
+        this.log = log;
         this.packManager = packManager;
-        this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
     }
 
     @Override
