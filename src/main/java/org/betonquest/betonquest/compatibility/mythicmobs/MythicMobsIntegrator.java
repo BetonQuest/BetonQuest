@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.items.ItemExecutor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -15,11 +16,14 @@ import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
 import org.betonquest.betonquest.compatibility.mythicmobs.condition.MythicMobDistanceConditionFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicCastSkillEventFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.event.MythicSpawnMobEventFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.item.MythicItemFactory;
+import org.betonquest.betonquest.compatibility.mythicmobs.item.MythicQuestItemSerializer;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteractCatcher;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
+import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
@@ -52,11 +56,13 @@ public class MythicMobsIntegrator implements Integrator {
         plugin = BetonQuest.getInstance();
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         validateVersion();
 
-        final BukkitAPIHelper apiHelper = new BukkitAPIHelper();
+        final MythicBukkit mythicBukkit = MythicBukkit.inst();
+        final BukkitAPIHelper apiHelper = mythicBukkit.getAPIHelper();
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final Server server = plugin.getServer();
@@ -68,8 +74,13 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         server.getPluginManager().registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, apiHelper), plugin);
-        npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(MythicBukkit.inst().getMobManager()));
+        npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(mythicBukkit.getMobManager()));
         npcRegistry.registerIdentifier(new MythicMobsReverseIdentifier());
+
+        final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
+        final ItemExecutor itemManager = mythicBukkit.getItemManager();
+        itemRegistry.register("mythic", new MythicItemFactory(itemManager));
+        itemRegistry.registerSerializer("mythic", new MythicQuestItemSerializer(itemManager));
     }
 
     /**
