@@ -686,6 +686,20 @@ mmocoreattributereallocationpoints 1
 !!! info
     MythicMobs integration supports all [BetonQuest NPC](../../Features/NPCs.md) features.
 
+### Items
+
+Mythic(Mobs) items are integrated to the [BetonQuest Items](../../Features/Items.md) system.
+
+```YAML linenums="1" title="Example"
+items:
+  crown: mythic KingsCrown
+  sword: mythic SkeletonKingSword
+conditions:
+  hasCrown: armor crown
+events:
+  giveSword: give sword
+```
+
 ### Objectives
 
 #### MobKill: `mmobkill`
