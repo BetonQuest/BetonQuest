@@ -2252,6 +2252,10 @@
       
       
       
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -5992,6 +5996,10 @@
       
       
       
+      
+      
+      
+      
     </ul>
   </nav>
   
@@ -7212,6 +7220,22 @@ is optional and would convert the amount to levels instead of XP points.
 <p class="admonition-title">Info</p>
 <p>MythicMobs integration supports all <a href="../../../Features/NPCs/">BetonQuest NPC</a> features.</p>
 </div>
+<h3 id="items_1">Items<a class="headerlink" href="#items_1" title="Permanent link">🔗</a></h3>
+<p>Mythic(Mobs) items are integrated to the <a href="../../../Features/Items/">BetonQuest Items</a> system.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Example</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">crown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythic KingsCrown</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mythic SkeletonKingSword</span>
+<span class="nt">conditions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hasCrown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">armor crown</span>
+<span class="nt">events</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">giveSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">give sword</span>
+</code></pre></div></td></tr></table></div>
 <h3 id="objectives_3">Objectives<a class="headerlink" href="#objectives_3" title="Permanent link">🔗</a></h3>
 <h4 id="mobkill-mmobkill">MobKill: <code>mmobkill</code><a class="headerlink" href="#mobkill-mmobkill" title="Permanent link">🔗</a></h4>
 <p>You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
