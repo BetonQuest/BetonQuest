@@ -35,7 +35,7 @@ skip some property checks altogether. You would use these items in conditions.
 
 These are arguments that can be applied to every item:
 !!! info inline end
-    You no longer require underscores and need to  the argument when you want to use spaces in it.
+    You no longer require underscores for spaces and now need to quote the argument when you want to use spaces in it. See examples below.
 
 <div class="annotate" markdown>
 - `name`
