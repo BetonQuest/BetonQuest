@@ -98,6 +98,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Addressing cross Packages now use `>` instead of `.` to solve conflicts in Variables
 - Bukkit API events are now called sync/async depending on the tread context they are called in
 - `variable` command allows setting and getting data now for offline players
+- `mmobkill` objective now uses the killer (if present) to resolve names and distances
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -93,13 +94,14 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @throws QuestException if a variable could not be resolved
      */
     @EventHandler(ignoreCancelled = true)
-    public void onBossKill(final MythicMobDeathEvent event) throws QuestException {
-        if (!names.getValue(null).contains(event.getMobType().getInternalName())
+    public void onKill(final MythicMobDeathEvent event) throws QuestException {
+        final Profile resolver = event.getKiller() instanceof Player killer ? profileProvider.getProfile(killer) : null;
+        if (!names.getValue(resolver).contains(event.getMobType().getInternalName())
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;
         }
-        final double deathRadius = deathRadiusAllPlayers.getValue(null).doubleValue();
-        final double neutralDeathRadius = neutralDeathRadiusAllPlayers.getValue(null).doubleValue();
+        final double deathRadius = deathRadiusAllPlayers.getValue(resolver).doubleValue();
+        final double neutralDeathRadius = neutralDeathRadiusAllPlayers.getValue(resolver).doubleValue();
         final double deathRadiusAllPlayers = deathRadius * deathRadius;
         final double neutralDeathRadiusAllPlayers = neutralDeathRadius * neutralDeathRadius;
         if (deathRadiusAllPlayers > 0) {
