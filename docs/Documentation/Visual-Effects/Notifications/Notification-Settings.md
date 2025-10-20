@@ -73,12 +73,13 @@ If you do so, the objective will send a notification to the player if they progr
 You can also add an interval (`notify:5`) - in this case the player will get a notification every 5 steps
 towards the completion of the objective.
 
-The values for these notifications look a bit strange:
-```YAML
+!!! inline end
+    `@[legacy]` is a [text formatter](../../Features/Text-Formatting.md).
+    `{amount}` is just an internal variable that will be replaced with a number based on the
+    player's progression.
+```YAML title="Built-in Notification Example"
 blocks_to_break: '@[legacy]&2{amount} blocks left to break'
 ```
-`@[legacy]` is a [text formatter](../../Features/Text-Formatting.md).
-`{amount}` is just an internal variable (similar to the color codes) that will be replaced with a number based on the
-player's progression.
 
-You can customize how these notifications are displayed using exactly the same method as for other built-in notifications.
+
+You can customize how these notifications are displayed by using [categories](./Notification-IO's-&-Categories.md#categories)
