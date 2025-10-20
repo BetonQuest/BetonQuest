@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
-import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
@@ -16,26 +16,21 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobDoubleParser;
+import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.bukkit.Location;
+
+import java.util.Map;
 
 /**
  * Factory to create {@link MythicSpawnMobEvent}s from {@link Instruction}s.
  */
 public class MythicSpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
-    /**
-     * Expected format: {@code identifier:amount}.
-     */
-    private static final int MOB_FORMAT_LENGTH = 2;
 
     /**
      * Factory to create new class specific loggers.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * API Helper for getting MythicMobs.
-     */
-    private final BukkitAPIHelper apiHelper;
 
     /**
      * Data required for primary server thread access.
@@ -48,17 +43,23 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     private final Compatibility compatibility;
 
     /**
+     *
+     * Parses valid {@link MythicMob} from string.
+     */
+    private final MythicMobDoubleParser mythicMobParser;
+
+    /**
      * Create a new factory for {@link MythicSpawnMobEvent}s.
      *
-     * @param loggerFactory the logger factory to create class specific logger
-     * @param apiHelper     the api helper used get MythicMobs
-     * @param data          the primary server thread data required for main thread checking
-     * @param compatibility the compatibility instance to check for other hooks
+     * @param loggerFactory   the logger factory to create class specific logger
+     * @param mythicMobParser the parser for the mob type
+     * @param data            the primary server thread data required for main thread checking
+     * @param compatibility   the compatibility instance to check for other hooks
      */
-    public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data,
+    public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final MythicMobDoubleParser mythicMobParser, final PrimaryServerThreadData data,
                                       final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
-        this.apiHelper = apiHelper;
+        this.mythicMobParser = mythicMobParser;
         this.data = data;
         this.compatibility = compatibility;
     }
@@ -66,23 +67,21 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
-        final String[] mobParts = instruction.next().split(":");
-        if (mobParts.length != MOB_FORMAT_LENGTH) {
-            throw new QuestException("Wrong mob format");
-        }
-        final String mob = mobParts[0];
-        final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
+        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
-        final boolean privateMob;
-        if (compatibility.getHooked().contains("ProtocolLib")) {
-            privateMob = instruction.hasArgument("private");
+        final MythicHider privateMob;
+        if (compatibility.getHooked().contains("ProtocolLib") && instruction.hasArgument("private")) {
+            privateMob = MythicHider.getInstance();
+            if (privateMob == null) {
+                throw new QuestException("Can't spawn MythicMob private: There is no hider!");
+            }
         } else {
-            privateMob = false;
+            privateMob = null;
         }
         final boolean targetPlayer = instruction.hasArgument("target");
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new MythicSpawnMobEvent(apiHelper, data.plugin(), loc, mob, level, amount, privateMob, targetPlayer, marked),
+                new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, privateMob, targetPlayer, marked),
                 loggerFactory.create(MythicSpawnMobEvent.class),
                 instruction.getPackage()
         ), data);
@@ -91,14 +90,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
-        final String[] mobParts = instruction.next().split(":");
-        if (mobParts.length != MOB_FORMAT_LENGTH) {
-            throw new QuestException("Wrong mob format");
-        }
-        final String mob = mobParts[0];
-        final Variable<Number> level = instruction.get(mobParts[1], Argument.NUMBER);
+        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(apiHelper, data.plugin(), loc, mob, level, amount, false, false, marked), data);
+        return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, null, false, marked), data);
     }
 }
