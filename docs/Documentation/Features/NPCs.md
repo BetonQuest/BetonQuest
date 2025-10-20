@@ -73,7 +73,7 @@ You would then use the `betonQuestNPCID` for all NPC references within BetonQues
         To acquire the NPCs ID, use the `/npc nearby` command and copy the `UUID` from the NPC info.
         
         You can also get an NPC by its name with the `byName` argument.
-        That is useful when you have multiple NPCs with the same name who should all start the same conversation
+        This is useful when you have multiple NPCs who should all start the same conversation
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "ZNPCsPlus"
