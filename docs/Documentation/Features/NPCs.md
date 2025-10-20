@@ -50,6 +50,7 @@ You would then use the `betonQuestNPCID` for all NPC references within BetonQues
           innkeeper: mythicmobs MYTHIC_MOB inkeeper
           guard: mythicmobs FACTION guards
         ```
+        
         Use `mythicmobs` for the NPC selector argument.
         Use `Entity UUIDs` for the NPC ID argument.
         To acquire the NPCs UUID, use the `/mm listactive` command and copy the `UUID` from the NPC info.
@@ -76,7 +77,7 @@ You would then use the `betonQuestNPCID` for all NPC references within BetonQues
         or count together in the `npcinteract` and `npckill` objectives.
             
     === "ZNPCsPlus"
-        ```YAML title="Example"
+        ```YAML title="Example ZNPCsPlus section"
         npcs:
           bernhard: ZNPCsPlus bernhard
           guard: ZNPCsPlus Guard10
