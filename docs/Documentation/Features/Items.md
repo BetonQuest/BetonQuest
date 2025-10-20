@@ -35,8 +35,7 @@ skip some property checks altogether. You would use these items in conditions.
 
 These are arguments that can be applied to every item:
 !!! info inline end
-    As of version [3.0.0-DEV-416](../Configuration/Version-Changes/Migration-2-3.md#300-dev-416-simple-item-textparser),
-    you no longer require underscores and need to quote when you want to use spaces.
+    You no longer require underscores and need to  the argument when you want to use spaces in it.
 
 <div class="annotate" markdown>
 - `name`
@@ -125,15 +124,15 @@ the level, replace the number with `?`.
 ??? example "Item Matching Examples:material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
-        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most! lore-containing" #(1)!"
+        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!"
         ```
         
         1.  Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
         item but mainly used for `item` condition checks.
     === "Enchantment Matching Examples"
         ```YAML
-        sharpSword: simple stone_sword "name:Sharp Sword" "enchants:damage_all:? enchants-containing" #(1)!
-        bluntSword: simple stone_sword name:none "enchants:none-damage_all enchants-containing" #(2)!
+        sharpSword: simple stone_sword "name:Sharp Sword" "enchants:damage_all:?" enchants-containing #(1)!
+        bluntSword: simple stone_sword name:none "enchants:none-damage_all" enchants-containing #(2)!
         ```
         
         1. Will match all stone swords with any `damage_all` enchantment.
