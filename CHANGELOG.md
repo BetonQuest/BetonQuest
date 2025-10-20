@@ -120,6 +120,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - old maven artifact repository nexus `https://nexus.betonquest.org/repository/betonquest/` replaced with reposilite available at `https://repo.betonquest.org/betonquest/`
 - `menu` io based on packetevents renamed to `packetevents`
 - config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
+- `hologram` `top:` line to customizable format
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

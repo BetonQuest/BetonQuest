@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -79,12 +80,13 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param hologramProvider the hologram provider to create new holograms
      * @param featureApi       the Feature API to get NPC instances
      * @param npcRegistry      the registry to create identifier strings from Npcs
+     * @param textParser        the text parser used to parse text and colors
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final Variables variables, final QuestPackageManager packManager, final Plugin plugin,
                            final HologramProvider hologramProvider,
-                           final FeatureApi featureApi, final NpcRegistry npcRegistry) {
-        super(loggerFactory, log, variables, packManager, hologramProvider, "Npc Hologram", "npc_holograms");
+                           final FeatureApi featureApi, final NpcRegistry npcRegistry, final TextParser textParser) {
+        super(loggerFactory, log, variables, packManager, hologramProvider, "Npc Hologram", "npc_holograms", textParser);
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;

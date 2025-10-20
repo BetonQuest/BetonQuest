@@ -23,7 +23,7 @@ holograms:
     lines:
     - 'item:custom_item'
     - '&2Top questers this month'
-    - 'top:completed_quests;desc;10;&a;§6;2;&6'
+    - 'top:completed_quests;desc;10;§a{place}. §6{name}§2 - §6{score}'
     - '&2Your amount: &6%point.completed_quests.amount%'
     - '&Total amount: &6%azerothquests>globalpoint.total_completed_quests.amount%'
     conditions: has_some_quest,!finished_some_quest    
@@ -41,17 +41,28 @@ A line can also represent a floating item. To do so enter the line as 'item:`cus
 #### Ranking Holograms
 Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
 Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.
-Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified
-`point` must be located inside the package the hologram is declared in. To use a point from another package, put `package.point`
-instead. The `order` is either 'desc' for descending or 'asc' for ascending. If something other is specified, descending will
-be used by default. The limit should be a positive number. In the short declaration, the whole line will be white. To color
-each of the four elements of a line (place, name, dash and score), the definition syntax can be extended to
-'top:`point`;`order`;`limit`;`c1`;`c2`;`c3`;`c4`'. The color codes can be prefixed with either `§` or `&`, but do not have
-to be. If for example `c2` is left blank (two following semicolons), it is treated as an 'f' (color code for white).
 
-Each BetonQuest variable can be displayed on a hologram in a text line. These variables use the same definition syntax as
-in conversations such that; '`%package.variable%`'. Where the `package` part is optional if the hologram is defined in the
-same package as the variable. If you wish to refer to a variable that is *not* in the same package as the hologram, then you
+A top line is defined with 'top:`point`;`order`;`limit`;`<formattingString>`'.
+`point` is just a point from a package. The `order` is either 'desc' for descending or 'asc' for ascending.
+The `limit` is just the number of entries to show.
+You can freely define the formatting of the displayed hologram, only the placeholders for the place, player and score are required.
+
+```yaml title="Example"
+honorRank:
+  lines:
+    - Most honorable players!
+    - top:honor;DESC;10;{place}. {name} - {score}
+  location: 100;198;300;world
+colorfulHonorRank:
+  lines:
+    - Most <gold>honorable</gold> players!
+    - top:honor;DESC;10;<light_purple>{name}</light_purple> has <dark_green>{score}</dark_green> 
+      points on the <yellow>{place}.</yellow> place!
+  location: 100;202;300;world
+```
+
+Each BetonQuest variable can be displayed on a hologram in a text line.
+If you wish to refer to a variable that is *not* in the same package as the hologram, then you
 must specify a [package](../../Scripting/Packages-&-Templates.md) before the `variable`.
 
 !!! warning "Potential lags"

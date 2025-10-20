@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -94,12 +95,13 @@ public class HologramProvider implements Integrator {
     public void hook(final BetonQuestApi api) {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
+        final TextParser textParser = plugin.getTextParser();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.getQuestTypeApi().variables(), api.getQuestPackageManager(), this, plugin);
+                api.getQuestTypeApi().variables(), api.getQuestPackageManager(), this, plugin, textParser);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
                 api.getQuestTypeApi().variables(), plugin.getQuestPackageManager(), plugin, this,
-                api.getFeatureApi(), api.getFeatureRegistries().npc());
+                api.getFeatureApi(), api.getFeatureRegistries().npc(), textParser);
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);
     }

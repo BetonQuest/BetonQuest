@@ -3,6 +3,8 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.HologramLines;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -38,8 +40,8 @@ public class HolographicDisplaysHologram implements BetonHologram {
     }
 
     @Override
-    public void appendLine(final String text) {
-        hologram.getLines().appendText(text);
+    public void appendLine(final Component text) {
+        hologram.getLines().appendText(translate(text));
     }
 
     @Override
@@ -50,10 +52,14 @@ public class HolographicDisplaysHologram implements BetonHologram {
     }
 
     @Override
-    public void setLine(final int index, final String text) {
+    public void setLine(final int index, final Component text) {
         final HologramLines lines = hologram.getLines();
         lines.remove(index);
-        lines.insertText(index, text);
+        lines.insertText(index, translate(text));
+    }
+
+    private String translate(final Component text) {
+        return LegacyComponentSerializer.legacySection().serialize(text);
     }
 
     @Override

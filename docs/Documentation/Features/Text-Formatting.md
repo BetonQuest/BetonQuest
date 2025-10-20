@@ -2,19 +2,6 @@
 icon: material/message-cog
 ---
 
-!!! warning "Work in Progress"
-    This feature is still in development and does not work for every feature at the moment.
-    Some features are marked as limited, that means that things like hover and click events are not supported.
-    Currently supported are:
-    
-    - Notify and NotifyAll Event
-    - Compass Names
-    - Conversation
-    - Journal
-    - NPC Name Variable (limited)
-    - Quest Cancler (limited)
-    - Plugin Messages / Translations (limited)
-
 Every string in BetonQuest can be formatted with a formatter.
 A formatter is a way to format a string with colors, styles, and more, while each formatter has its own syntax.
 

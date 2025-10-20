@@ -2,26 +2,26 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
+import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,14 +37,10 @@ import java.util.regex.Pattern;
 public abstract class HologramLoop extends SectionProcessor<HologramLoop.HologramID, HologramWrapper> {
 
     /**
-     * The regex for one color.
-     */
-    private static final String COLOR_REGEX = ";?([&§]?[0-9a-f])?";
-
-    /**
      * Pattern to match the correct syntax for the top line content.
      */
-    private static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+)" + COLOR_REGEX + COLOR_REGEX + COLOR_REGEX + COLOR_REGEX + "$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^([\\w>]+);(\\w+);(\\d+);(.+)$",
+            Pattern.CASE_INSENSITIVE);
 
     /**
      * The string to match the descending order.
@@ -67,6 +63,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The text parser used to parse text and colors.
+     */
+    private final TextParser textParser;
+
+    /**
+     * Parser for the item line.
+     */
+    private final ItemParser itemParser;
+
+    /**
      * Default refresh Interval for Holograms.
      */
     private int defaultInterval = 10 * 20;
@@ -81,13 +87,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
      * @param hologramProvider the hologram provider to create new holograms
      * @param readable         the type name used for logging, with the first letter in upper case
      * @param internal         the section name and/or bstats topic identifier
+     * @param textParser       the text parser used to parse text and colors
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final Variables variables, final QuestPackageManager packManager,
-                        final HologramProvider hologramProvider, final String readable, final String internal) {
+                        final HologramProvider hologramProvider, final String readable, final String internal, final TextParser textParser) {
         super(log, variables, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
+        this.textParser = textParser;
+        this.itemParser = new ItemParser(BetonQuest.getInstance().getFeatureApi());
     }
 
     @Override
@@ -100,7 +109,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
         final Variable<Number> checkInterval = new Variable<>(variables, pack, checkIntervalString, Argument.NUMBER);
-        final Variable<Number> maxRange = new Variable<>(variables, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
+        final Variable<Number> maxRange = new Variable<>(variables, pack, section.getString("max_range", "0"), Argument.NUMBER);
 
         final List<String> lines = section.getStringList("lines");
         final List<ConditionID> conditions = new VariableList<>(variables, pack, section.getString("conditions", ""),
@@ -109,11 +118,11 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
             if (line.startsWith("item:")) {
-                cleanedLines.add(parseItemLine(pack, line));
+                cleanedLines.add(parseItemLine(pack, line.substring("item:".length())));
             } else if (line.startsWith("top:")) {
-                cleanedLines.add(parseTopLine(pack, line));
+                cleanedLines.add(parseTopLine(pack, line.substring("top:".length()), section.getName()));
             } else {
-                cleanedLines.add(parseTextLine(pack, line.replace('&', '§')));
+                cleanedLines.add(parseTextLine(pack, line));
             }
         }
         final List<BetonHologram> holograms = getHologramsFor(pack, section);
@@ -151,70 +160,53 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
 
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
-            final String[] args = line.substring(5).split(":");
-            final ItemID itemID = new ItemID(variables, packManager, pack, args[0]);
-            int stackSize;
-            try {
-                stackSize = Integer.parseInt(args[1]);
-            } catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                stackSize = 1;
-            }
-            return new ItemLine(BetonQuest.getInstance().getFeatureApi().getItem(itemID, null).generate(stackSize));
+            return new ItemLine(itemParser.apply(variables, packManager, pack, line).generate(null));
         } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }
     }
 
-    private TopLine parseTopLine(final QuestPackage pack, final String line) throws QuestException {
+    private TopLine parseTopLine(final QuestPackage pack, final String line, final String name) throws QuestException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
-            throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
+            throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.");
         }
 
         final String pointName = PackageArgument.IDENTIFIER.apply(pack, validator.group(1));
-
-        final TopXObject.OrderType orderType;
-        if (ORDER_DESC.equalsIgnoreCase(validator.group(2))) {
-            orderType = TopXObject.OrderType.DESCENDING;
-        } else if (ORDER_ASC.equalsIgnoreCase(validator.group(2))) {
-            orderType = TopXObject.OrderType.ASCENDING;
-        } else {
-            throw new QuestException("Top list order type '" + validator.group(2) + "' unknown! Expected 'asc' or 'desc'.");
-        }
+        final TopXObject.OrderType orderType = orderType(validator.group(2));
 
         final int limit;
         try {
             limit = Integer.parseInt(validator.group(3));
         } catch (final NumberFormatException e) {
-            throw new QuestException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.", e);
+            throw new QuestException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.", e);
         }
-        final ChatColor colorPlace = getColorCodes(validator.group(4));
-        final ChatColor colorName = getColorCodes(validator.group(5));
-        final ChatColor colorDash = getColorCodes(validator.group(6));
-        final ChatColor colorScore = getColorCodes(validator.group(7));
-        return new TopLine(loggerFactory, pointName, orderType, limit, new TopLine.FormatColors(colorPlace, colorName, colorDash, colorScore));
-    }
 
-    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-    private ChatColor getColorCodes(@Nullable final String color) {
-        if (color != null) {
-            final int length = color.length();
-            if (length == 1 || length == 2) {
-                final char colorChar = color.charAt(length - 1);
-                final ChatColor byChar = ChatColor.getByChar(colorChar);
-                if (byChar != null) {
-                    return byChar;
-                }
+        final String formattingGroup = validator.group(4);
+        for (final String placeholder : List.of("{place}", "{name}", "{score}")) {
+            if (!formattingGroup.contains(placeholder)) {
+                log.debug(pack, "Hologram '" + name + "' in pack '" + pack + "' does not contain placeholder '" + placeholder + "'.");
             }
         }
-        return ChatColor.WHITE;
+        return new TopLine(loggerFactory, pointName, orderType, limit, new VariableComponent(textParser.parse(formattingGroup)));
     }
 
-    private TextLine parseTextLine(final QuestPackage pack, final String line) {
+    private TopXObject.OrderType orderType(final String type) throws QuestException {
+        if (ORDER_DESC.equalsIgnoreCase(type)) {
+            return TopXObject.OrderType.DESCENDING;
+        } else if (ORDER_ASC.equalsIgnoreCase(type)) {
+            return TopXObject.OrderType.ASCENDING;
+        } else {
+            throw new QuestException("Top list order type '" + type + "' unknown! Expected 'asc' or 'desc'.");
+        }
+    }
+
+    private TextLine parseTextLine(final QuestPackage pack, final String line) throws QuestException {
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(line);
-        return new TextLine(matcher.find()
+        final String text = matcher.find()
                 ? hologramProvider.parseVariable(pack, line)
-                : line);
+                : line;
+        return new TextLine(textParser.parse(text));
     }
 
     @Override

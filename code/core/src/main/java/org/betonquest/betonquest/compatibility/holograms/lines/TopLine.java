@@ -1,13 +1,18 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.VariableComponent;
+import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
-import org.bukkit.ChatColor;
+
+import static net.kyori.adventure.text.Component.text;
 
 /**
  * Creates a new instance for TopLine.
  */
 public class TopLine extends AbstractLine {
+
     /**
      * Name of point with package.
      */
@@ -19,10 +24,9 @@ public class TopLine extends AbstractLine {
     private final TopXObject.OrderType orderType;
 
     /**
-     * Color codes for individual elements of the displayed line in the exact order: <br>
-     * <code>{#.} {name} {-} {score}</code>
+     * Formatted top line string to display.
      */
-    private final FormatColors colors;
+    private final VariableComponent formatted;
 
     /**
      * Storage for rank data.
@@ -36,18 +40,15 @@ public class TopLine extends AbstractLine {
      * @param category      name of point with package
      * @param orderType     direction of order
      * @param limit         maximum number of lines displayed
-     * @param colors        color codes for individual parts of display (#, name, dash, and score)
+     * @param formatted     formatted top line string to display
      */
-    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType, final int limit, final FormatColors colors) {
+    public TopLine(final BetonQuestLoggerFactory loggerFactory, final String category, final TopXObject.OrderType orderType,
+                   final int limit, final VariableComponent formatted) {
         super(false, limit);
         this.category = category;
         this.orderType = orderType;
-        this.colors = colors;
-
-        topXObject = new TopXObject(
-                loggerFactory.create(TopXObject.class), limit,
-                category,
-                orderType);
+        this.formatted = formatted;
+        this.topXObject = new TopXObject(loggerFactory.create(TopXObject.class), limit, category, orderType);
     }
 
     /**
@@ -56,17 +57,21 @@ public class TopLine extends AbstractLine {
      *
      * @return Formatted lines ready for display on a hologram
      */
-    public String[] getLines() {
+    public Component[] getLines() {
         topXObject.queryDB();
 
-        final String[] lines = new String[linesAdded];
+        final Component[] lines = new Component[linesAdded];
         for (int i = 0; i < linesAdded; i++) {
             if (i >= topXObject.getLineCount()) {
-                lines[i] = "";
+                lines[i] = Component.empty();
                 continue;
             }
             final TopXLine line = topXObject.getEntries().get(i);
-            lines[i] = colors.place.toString() + (i + 1) + ". " + colors.name + line.playerName() + colors.dash + " - " + colors.score + line.count();
+            lines[i] = formatted.resolve(
+                    new VariableReplacement("place", text(i + 1)),
+                    new VariableReplacement("name", text(line.playerName())),
+                    new VariableReplacement("score", text(line.count()))
+            );
         }
         return lines;
     }
@@ -77,26 +82,15 @@ public class TopLine extends AbstractLine {
                 + "category='" + category + '\''
                 + ", orderType=" + orderType
                 + ", linesAdded=" + linesAdded
-                + ", colors=" + colors
+                + ", formatted=" + formatted
                 + '}';
     }
 
     @Override
     public void setLine(final BetonHologram hologram, final int index) {
-        final String[] lines = getLines();
+        final Component[] lines = getLines();
         for (int i = 0; i < lines.length; i++) {
             hologram.setLine(index + i, lines[i]);
         }
-    }
-
-    /**
-     * The Color code for individual elements of the displayed line.
-     *
-     * @param place color for place number
-     * @param name  color for player name
-     * @param dash  color for dash
-     * @param score color for score
-     */
-    public record FormatColors(ChatColor place, ChatColor name, ChatColor dash, ChatColor score) {
     }
 }
