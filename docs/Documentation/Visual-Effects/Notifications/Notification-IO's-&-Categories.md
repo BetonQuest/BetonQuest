@@ -242,9 +242,10 @@ notifications:
    sound: entity.item.pickup #(4)!
 ```
 
-1. Category name
-2. Sets the NotifyIO type to be used
-3. An option of the bossbarIO
+1. Category .
+2. Sets the NotifyIO type to be used.
+3. An option of the advancementIO.
+4. An option of the soundIO.
 Now, any `notify` event with `money` as its category will use the `advancement` io, with a `gold_ingot` for its 
 icon and play the `entity.item.pickup` sound without you having to define all the options multiple times.    
 
