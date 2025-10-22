@@ -138,6 +138,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `npcrange` objective did count player without it valid for `outside` action
 - `global objective` error on join when it was added with the command or the tag got removed
 - `tellraw` conversation IO showed pop-up for unknown command
+- `simple` item `flags` crashed plugin when invalid
 ### Security
 
 ## [2.2.1] - 2025-01-12
