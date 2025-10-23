@@ -54,7 +54,12 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
         if (!"flags".equals(key)) {
             throw new QuestException("Invalid flag key: " + key);
         }
-        final Set<ItemFlag> flags = Arrays.stream(data.split(",")).map(ItemFlag::valueOf).collect(Collectors.toSet());
+        final Set<ItemFlag> flags;
+        try {
+            flags = Arrays.stream(data.split(",")).map(ItemFlag::valueOf).collect(Collectors.toSet());
+        } catch (final IllegalArgumentException e) {
+            throw new QuestException("Invalid flag : " + e.getMessage(), e);
+        }
         if (flags.isEmpty()) {
             this.itemFlags = Set.of();
             this.existence = Existence.FORBIDDEN;
