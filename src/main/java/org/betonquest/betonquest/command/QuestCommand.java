@@ -1226,7 +1226,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 // rename objective in the file
                 final MultiConfiguration configuration = nameID.getPackage().getConfig();
-                final String newPath = "objectives." + rename.split("\\.")[1];
+                final String newPath = "objectives." + rename.split(Identifier.SEPARATOR)[1];
                 configuration.set(newPath, nameID.getInstruction().toString());
                 try {
                     final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.get());
