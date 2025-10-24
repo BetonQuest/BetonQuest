@@ -242,7 +242,7 @@ notifications:
    sound: entity.item.pickup #(4)!
 ```
 
-1. Category .
+1. ID of the category.
 2. Sets the NotifyIO type to be used.
 3. An option of the advancementIO.
 4. An option of the soundIO.
