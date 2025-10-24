@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +64,11 @@ public final class Utils {
     };
 
     /**
+     * Key indicating an ItemStack should be treated as "Quest Item".
+     */
+    public static final NamespacedKey QUEST_ITEM_KEY = new NamespacedKey("betonquest", "quest_item");
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Utils.class);
@@ -77,20 +83,10 @@ public final class Utils {
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
     public static boolean isQuestItem(@Nullable final ItemStack item) {
-        if (item == null || item.getType().isAir()) {
+        if (item == null || item.getType().isAir() || !item.hasItemMeta()) {
             return false;
         }
-        final List<Component> lore = item.getItemMeta().lore();
-        if (lore == null) {
-            return false;
-        }
-        try {
-            final Component questItemLore = BetonQuest.getInstance().getPluginMessage().getMessage(null, "quest_item");
-            return lore.stream().anyMatch(line -> line.contains(questItemLore, COMPONENT_BI_PREDICATE));
-        } catch (final QuestException e) {
-            LOG.warn("Failed to get quest item message: " + e.getMessage(), e);
-            return false;
-        }
+        return item.getItemMeta().getPersistentDataContainer().has(QUEST_ITEM_KEY);
     }
 
     /**

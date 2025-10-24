@@ -3,6 +3,7 @@ language: en-US
 text_parser: legacyminimessage
 date_format: dd.MM.yyyy HH:mm
 default_notify_io: chat
+join_item_updater: false
 updater:
   enabled: true
   strategy: MINOR

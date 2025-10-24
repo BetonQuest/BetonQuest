@@ -28,8 +28,12 @@ class ConfigPatcherIT extends QuestFixture {
     private static Stream<Arguments> configsToCheck() {
         return Stream.of(
                 Arguments.of("config.yml", (Consumer<ConfigurationSection>) section -> {
-                    assertEquals(section.get("conversation.default_io"), "menu,chest", "For old config, conversation.default_io should be menu,chest");
+                    assertEquals("menu,chest", section.get("conversation.default_io"),
+                            "For old config, conversation.default_io should be menu,chest");
                     section.set("conversation.default_io", "menu,tellraw");
+                    assertTrue(section.getBoolean("join_item_updater"),
+                            "For old config, join_item_updater should be true");
+                    section.set("join_item_updater", false);
                 }),
                 Arguments.of("lang/de-DE.yml", null),
                 Arguments.of("lang/en-US.yml", null),

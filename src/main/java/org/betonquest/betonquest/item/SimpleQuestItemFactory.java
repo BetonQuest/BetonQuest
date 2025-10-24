@@ -20,6 +20,7 @@ import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
+import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.betonquest.betonquest.util.Utils;
@@ -83,6 +84,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final LoreHandler lore = new LoreHandler(textParser);
 
         final List<ItemMetaHandler<?>> handlers = List.of(
+                new QuestHandler(),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
