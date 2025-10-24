@@ -4640,7 +4640,7 @@
 
   <h1>Settings</h1>
 
-<p>BetonQuest features a powerful notify system that allows you to display any information to your players.
+<p>BetonQuest features a powerful notification system that allows you to display any information to your players.
 You can freely choose between many NotifyIO's like simple chat output, (sub)titles, advancements or sounds. They all come
 with unique options that allow you to customize them. Just take a look at this example configuration:</p>
 <video controls loop src="../../../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
@@ -4648,20 +4648,24 @@ with unique options that allow you to customize them. Just take a look at this e
 </video>
 
 <h2 id="sending-custom-notifications">Sending custom notifications<a class="headerlink" href="#sending-custom-notifications" title="Permanent link">🔗</a></h2>
-<p>A truly custom notification can be sent using the <a href="../../../Scripting/Building-Blocks/Events-List/#sending-notifications-notify"><code>notify</code></a> event at any time.
-Check out the <a href="../../../Scripting/Building-Blocks/Events-List/#sending-notifications-notify">events documentation</a> to learn how.</p>
+<p>A truly custom notification can be sent using the <a href="../../../Scripting/Building-Blocks/Events-List/#sending-notifications-notify"><code>notify</code></a> event at any time.</p>
 <h2 id="changing-betonquests-built-in-notifications">Changing BetonQuest's built-in notifications<a class="headerlink" href="#changing-betonquests-built-in-notifications" title="Permanent link">🔗</a></h2>
+<p>Almost every notification built into BetonQuest is customizable in some way. A list of the notifications can be found in
+the <em>lang</em> directory. BQ natively supports <a href="../../../Configuration/Plugin-Config/#language-default-plugin-language">a number of languages</a>.
+Within the <em>lang</em> directory, you can find BetonQuest's built-in notifications in the appropriate language's file. They can have
+their text changed, formatted or even sounds added to them. </p>
 <h3 id="general-notifications">General notifications<a class="headerlink" href="#general-notifications" title="Permanent link">🔗</a></h3>
-<p>These can be anything from BetonQuest notifying a player that their language has been changed
+<p>General notifications can be anything from BetonQuest notifying a player that their language has been changed
 to sending a notice about a new changelog to an admin.</p>
 <p>For example:  <br />
-When BetonQuest fails to add a quest item to a player's inventory it will send <code>&amp;e*&amp;bYour inventory is full!&amp;e*</code>.  <br />
-This message is defined in <em>messages.yml</em> along with other default plugin messages. You can redefine them to your liking.</p>
+When BetonQuest fails to add a quest item to a player's inventory, it will send <code>&amp;e*&amp;bYour inventory is full!&amp;e*</code>.  <br />
+This message, for English-speaking users, is defined in <code>en-US.yml</code> along with other default plugin messages.
+You can redefine them to your liking.</p>
 <p>The Notify System can do much more than just changing messages, though:</p>
-<p>All notifications will be displayed using the ChatIO and without a sound by default. You need to use
+<p>By default, all notifications will be displayed using the ChatIO, without a sound. You need to use
 <a href="../Notification-IO%27s-%26-Categories/#categories">notification categories</a> to change this behaviour.
 These categories are pretty much just pre-defined <a href="../Notification-IO%27s-%26-Categories/#available-notifyios">NotifyIO settings</a>.  <br />
-Each notification in <em>messages.yml</em> has a special category with a reserved name assigned to it.</p>
+Every notification in <em>en-US.yml</em> has a unique category with a reserved name assigned to it.</p>
 <p>For example, If you would like to have the "language_changed" notification displayed as an actionbar message, you define the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">notifications</span><span class="p">:</span><span class="w">        </span><span class="c1">#General header for all notification settings</span>
 <span class="w">  </span><span class="nt">language_changed</span><span class="p">:</span><span class="w">   </span><span class="c1">#Name of the category, same as in messages.yml</span>
@@ -4682,19 +4686,22 @@ Therefore, you should probably create just one <code>notifications</code> sectio
 <span class="w">    </span><span class="nt">sound</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">entity.experience_orb.pickup</span><span class="w">      </span>
 </code></pre></div>
 A full list of all reserved names can be found on the <a href="../Notification-IO%27s-%26-Categories/#built-in-categories">IO's &amp; Categories</a> page.</p>
-<p>This feature can be used to disable build-in notifications:  <br />
-Just set <code>io:</code> to <a href="../Notification-IO%27s-%26-Categories/#suppress"><code>supress</code></a> for any notification that you want to remove.</p>
+<p>This feature can also be used to disable built-in notifications:  <br />
+Just set <code>io:</code> to <a href="../Notification-IO%27s-%26-Categories/#suppress"><code>suppress</code></a> for any notification that you want to remove.</p>
 <h3 id="objective-notifications">Objective notifications<a class="headerlink" href="#objective-notifications" title="Permanent link">🔗</a></h3>
 <p>Some objectives have a <code>notify</code> argument that can be added to their instruction.
 If you do so, the objective will send a notification to the player if they progress in the objective.
 You can also add an interval (<code>notify:5</code>) - in this case the player will get a notification every 5 steps
 towards the completion of the objective.</p>
-<p>The messages.yml values of these notifications look a bit strange:
-<div class="highlight"><pre><span></span><code><span class="nt">blocks_to_break</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&amp;2{1}</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">left</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">break&#39;</span>
-</code></pre></div>
-<code>{1}</code> is just an internal variable (similar to the color codes) that will be replaced with a number based on the
+<div class="admonition inline end">
+<p class="admonition-title">Inline</p>
+<p><code>@[legacy]</code> is a <a href="../../../Features/Text-Formatting/">text formatter</a>.
+<code>{amount}</code> is just an internal variable that will be replaced with a number based on the
 player's progression.</p>
-<p>You can customize how these notifications are displayed using exactly the same method as for other built-in notifications.</p>
+</div>
+<div class="highlight"><span class="filename">Built-in Notification Example</span><pre><span></span><code><span class="nt">blocks_to_break</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;@[legacy]&amp;2{amount}</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">left</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">break&#39;</span>
+</code></pre></div>
+<p>You can customize how these notifications are displayed by using <a href="../Notification-IO%27s-%26-Categories/#categories">categories</a>.</p>
 
 
 
