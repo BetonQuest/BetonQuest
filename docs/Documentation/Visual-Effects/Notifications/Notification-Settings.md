@@ -81,5 +81,4 @@ towards the completion of the objective.
 blocks_to_break: '@[legacy]&2{amount} blocks left to break'
 ```
 
-
-You can customize how these notifications are displayed by using [categories](./Notification-IO's-&-Categories.md#categories)
+You can customize how these notifications are displayed by using [categories](./Notification-IO's-&-Categories.md#categories).
