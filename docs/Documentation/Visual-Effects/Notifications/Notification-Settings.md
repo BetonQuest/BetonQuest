@@ -1,7 +1,7 @@
 ---
 icon: material/volume-high
 ---
-BetonQuest features a powerful notify system that allows you to display any information to your players.
+BetonQuest features a powerful notification system that allows you to display any information to your players.
 You can freely choose between many NotifyIO's like simple chat output, (sub)titles, advancements or sounds. They all come
 with unique options that allow you to customize them. Just take a look at this example configuration:
 
@@ -13,24 +13,30 @@ with unique options that allow you to customize them. Just take a look at this e
 ## Sending custom notifications
 
 A truly custom notification can be sent using the [`notify`](../../Scripting/Building-Blocks/Events-List.md#sending-notifications-notify) event at any time.
-Check out the [events documentation](../../Scripting/Building-Blocks/Events-List.md#sending-notifications-notify) to learn how.
+
 
 ## Changing BetonQuest's built-in notifications
+Almost every notification built into BetonQuest is customizable in some way. A list of the notifications can be found in
+the *lang* directory. BQ natively supports [a number of languages](../../Configuration/Plugin-Config.md#language-default-plugin-language).
+Within the *lang* directory, you can find BetonQuest's built-in notifications in the appropriate language's file. They can have
+their text changed, formatted or even sounds added to them. 
   
 ### General notifications
-These can be anything from BetonQuest notifying a player that their language has been changed
+
+General notifications can be anything from BetonQuest notifying a player that their language has been changed
 to sending a notice about a new changelog to an admin.
 
 For example:    
-When BetonQuest fails to add a quest item to a player's inventory it will send `&e*&bYour inventory is full!&e*`.    
-This message is defined in *messages.yml* along with other default plugin messages. You can redefine them to your liking.
+When BetonQuest fails to add a quest item to a player's inventory, it will send `&e*&bYour inventory is full!&e*`.    
+This message, for English-speaking users, is defined in `en-US.yml` along with other default plugin messages.
+You can redefine them to your liking.
 
 The Notify System can do much more than just changing messages, though:
 
-All notifications will be displayed using the ChatIO and without a sound by default. You need to use
+By default, all notifications will be displayed using the ChatIO, without a sound. You need to use
 [notification categories](./Notification-IO's-&-Categories.md#categories) to change this behaviour.
 These categories are pretty much just pre-defined [NotifyIO settings](./Notification-IO's-&-Categories.md#available-notifyios).    
-Each notification in *messages.yml* has a special category with a reserved name assigned to it.
+Every notification in *en-US.yml* has a unique category with a reserved name assigned to it.
 
 For example, If you would like to have the "language_changed" notification displayed as an actionbar message, you define the following:
 
@@ -57,8 +63,8 @@ notifications:
 ```
 A full list of all reserved names can be found on the [IO's & Categories](./Notification-IO's-&-Categories.md#built-in-categories) page.
 
-This feature can be used to disable build-in notifications:    
-Just set `io:` to [`supress`](./Notification-IO's-&-Categories.md#suppress) for any notification that you want to remove.
+This feature can also be used to disable built-in notifications:    
+Just set `io:` to [`suppress`](./Notification-IO's-&-Categories.md#suppress) for any notification that you want to remove.
 
 
 ###Objective notifications
@@ -67,11 +73,12 @@ If you do so, the objective will send a notification to the player if they progr
 You can also add an interval (`notify:5`) - in this case the player will get a notification every 5 steps
 towards the completion of the objective.
 
-The messages.yml values of these notifications look a bit strange:
-```YAML
-blocks_to_break: '&2{1} blocks left to break'
+!!! inline end
+    `@[legacy]` is a [text formatter](../../Features/Text-Formatting.md).
+    `{amount}` is just an internal variable that will be replaced with a number based on the
+    player's progression.
+```YAML title="Built-in Notification Example"
+blocks_to_break: '@[legacy]&2{amount} blocks left to break'
 ```
-`{1}` is just an internal variable (similar to the color codes) that will be replaced with a number based on the
-player's progression.
 
-You can customize how these notifications are displayed using exactly the same method as for other built-in notifications.
+You can customize how these notifications are displayed by using [categories](./Notification-IO's-&-Categories.md#categories).
