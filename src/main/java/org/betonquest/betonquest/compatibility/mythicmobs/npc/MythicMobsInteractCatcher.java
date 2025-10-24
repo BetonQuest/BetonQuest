@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.npc;
 
-import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicMobDespawnEvent;
 import io.lumine.mythic.bukkit.events.MythicMobInteractEvent;
 import io.lumine.mythic.core.mobs.ActiveMob;
+import io.lumine.mythic.core.mobs.MobExecutor;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -21,21 +21,21 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  */
 public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     /**
-     * API Helper for getting MythicMobs.
+     * Executor for getting MythicMobs.
      */
-    private final BukkitAPIHelper apiHelper;
+    private final MobExecutor mobExecutor;
 
     /**
      * Initializes the interact catcher.
      *
      * @param profileProvider the profile provider instance
      * @param npcRegistry     the registry to identify the clicked Npc
-     * @param apiHelper       the api helper used get MythicMobs
+     * @param mobExecutor     the executor used get MythicMobs
      */
     public MythicMobsInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
-                                     final BukkitAPIHelper apiHelper) {
+                                     final MobExecutor mobExecutor) {
         super(profileProvider, npcRegistry);
-        this.apiHelper = apiHelper;
+        this.mobExecutor = mobExecutor;
     }
 
     /**
@@ -45,7 +45,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLeft(final EntityDamageByEntityEvent event) {
-        final ActiveMob activeMob = apiHelper.getMythicMobInstance(event.getEntity());
+        final ActiveMob activeMob = mobExecutor.getMythicMobInstance(event.getEntity());
         if (activeMob != null && event.getDamager() instanceof Player player
                 && interactLogic(player, new MythicMobsNpcAdapter(activeMob), Interaction.LEFT,
                 event.isCancelled(), event.isAsynchronous())) {
@@ -73,7 +73,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMove(final EntityMoveEvent event) {
-        final ActiveMob activeMob = apiHelper.getMythicMobInstance(event.getEntity());
+        final ActiveMob activeMob = mobExecutor.getMythicMobInstance(event.getEntity());
         if (activeMob != null) {
             updateHolo(activeMob);
         }
