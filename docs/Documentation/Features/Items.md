@@ -131,8 +131,8 @@ the level, replace the number with `?`.
         item but mainly used for `item` condition checks.
     === "Enchantment Matching Examples"
         ```YAML
-        sharpSword: simple stone_sword "name:Sharp Sword" "enchants:damage_all:?" enchants-containing #(1)!
-        bluntSword: simple stone_sword name:none "enchants:none-damage_all" enchants-containing #(2)!
+        sharpSword: simple stone_sword "name:Sharp Sword" enchants:damage_all:? enchants-containing #(1)!
+        bluntSword: simple stone_sword name:none enchants:none-damage_all enchants-containing #(2)!
         ```
         
         1. Will match all stone swords with any `damage_all` enchantment.
