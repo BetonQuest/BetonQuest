@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
@@ -46,20 +45,14 @@ public record PlayerConversationState(ConversationID currentConversation, String
             return Optional.empty();
         }
         final String fullID = mainParts[0];
-        final String[] splitID = fullID.split("\\.");
-        final String packName = splitID[0];
         final QuestPackageManager packManager = BetonQuest.getInstance().getQuestPackageManager();
-        final QuestPackage questPackage = packManager.getPackages().get(packName);
-        if (questPackage == null) {
-            throw new QuestException("The package " + packName + " does not exist!");
-        }
-        final String identifier = splitID[1];
-        final ConversationID currentConversation = new ConversationID(packManager, questPackage, identifier);
+        final ConversationID currentConversation = new ConversationID(packManager, null, fullID);
 
         final String optionName = mainParts[1];
 
         final String[] locationString = mainParts[2].split(";");
-        final Location location = new Location(Bukkit.getWorld(locationString[3]), Double.parseDouble(locationString[0]), Double.parseDouble(locationString[1]), Double.parseDouble(locationString[2]));
+        final Location location = new Location(Bukkit.getWorld(locationString[3]), Double.parseDouble(locationString[0]),
+                Double.parseDouble(locationString[1]), Double.parseDouble(locationString[2]));
 
         return Optional.of(new PlayerConversationState(currentConversation, optionName, location));
     }
@@ -73,6 +66,7 @@ public record PlayerConversationState(ConversationID currentConversation, String
      */
     @Override
     public String toString() {
-        return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s".formatted(center.getX(), center.getY(), center.getZ(), center.getWorld().getName());
+        return currentConversation + " " + currentOption + " " + "%s;%s;%s;%s"
+                .formatted(center.getX(), center.getY(), center.getZ(), center.getWorld().getName());
     }
 }
