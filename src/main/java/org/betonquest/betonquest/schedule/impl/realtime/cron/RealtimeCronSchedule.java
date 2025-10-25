@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
-import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.List;
 
 /**
  * Schedules events to occur at a specific real time, using cron syntax.
@@ -12,15 +14,16 @@ import org.bukkit.configuration.ConfigurationSection;
 public class RealtimeCronSchedule extends CronSchedule {
 
     /**
-     * Creates a new instance of the schedule.
+     * Creates new instance of the Cron schedule with the {@link #REBOOT_CRON_DEFINITION}.
      *
-     * @param packManager the quest package manager to get quest packages from
-     * @param scheduleID  id of the new schedule
-     * @param instruction config defining the schedule
-     * @throws QuestException if parsing the config failed
+     * @param scheduleID the schedule id
+     * @param events     the events to execute
+     * @param catchup    the catchup strategy
+     * @param expression the expression string to parse as default cron
+     * @throws QuestException when the expression is invalid for the cron definition
      */
-    public RealtimeCronSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
-                                final ConfigurationSection instruction) throws QuestException {
-        super(packManager, scheduleID, instruction, REBOOT_CRON_DEFINITION);
+    public RealtimeCronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+                                final String expression) throws QuestException {
+        super(scheduleID, events, catchup, REBOOT_CRON_DEFINITION, expression);
     }
 }
