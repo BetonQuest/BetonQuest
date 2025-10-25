@@ -2,9 +2,9 @@ package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
+import com.cronutils.model.definition.CronDefinition;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
-import org.bukkit.configuration.ConfigurationSection;
+import org.betonquest.betonquest.schedule.impl.realtime.cron.CronScheduleFactory;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
@@ -24,13 +24,10 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new BaseScheduleFactory<>(variableProcessor, packManager) {
+        return new CronScheduleFactory(variableProcessor, packManager) {
             @Override
-            public CronSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config)
-                    throws QuestException {
-                final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
-                return new CronSchedule(scheduleID, scheduleData.events(), scheduleData.catchup(), scheduleData.time()) {
-                };
+            protected CronDefinition parseCronDefinition() {
+                return DEFAULT_CRON_DEFINITION;
             }
         }.createNewInstance(scheduleID, section);
     }

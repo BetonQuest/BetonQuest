@@ -5,8 +5,6 @@ import com.cronutils.model.RebootCron;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 /**
  * A schedule using <a href="https://crontab.guru/">cron syntax</a> for defining time instructions.
  */
-public abstract class CronSchedule extends Schedule {
+public class CronSchedule extends Schedule {
 
     /**
      * The unix cron syntax shall be used by default.
@@ -57,41 +55,6 @@ public abstract class CronSchedule extends Schedule {
      * Provides information when the events from this schedule shall be executed.
      */
     protected final ExecutionTime executionTime;
-
-    /**
-     * Creates new instance of the Cron schedule.
-     *
-     * @param scheduleID the schedule id
-     * @param events     the events to execute
-     * @param catchup    the catchup strategy
-     * @param expression the expression string to parse as default cron
-     * @throws QuestException when the expression is invalid for the cron definition
-     */
-    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
-                        final String expression) throws QuestException {
-        this(scheduleID, events, catchup, DEFAULT_CRON_DEFINITION, expression);
-    }
-
-    /**
-     * Creates new instance of the Cron schedule.
-     *
-     * @param scheduleID     the schedule id
-     * @param events         the events to execute
-     * @param catchup        the catchup strategy
-     * @param cronDefinition a custom cron syntax, you may use {@link #DEFAULT_CRON_DEFINITION}
-     * @param expression     the expression string to parse as default cron
-     * @throws QuestException when the expression is invalid for the cron definition
-     */
-    public CronSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
-                        final CronDefinition cronDefinition, final String expression) throws QuestException {
-        super(scheduleID, events, catchup);
-        try {
-            this.timeCron = new CronParser(cronDefinition).parse(expression).validate();
-            this.executionTime = ExecutionTime.forCron(timeCron);
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Time is no valid cron syntax: '" + expression + "'", e);
-        }
-    }
 
     /**
      * Creates new instance of the Cron schedule.

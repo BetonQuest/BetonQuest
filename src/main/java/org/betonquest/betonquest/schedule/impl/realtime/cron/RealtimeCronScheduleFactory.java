@@ -1,16 +1,14 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
+import com.cronutils.model.definition.CronDefinition;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.schedule.ScheduleID;
+import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
-import org.bukkit.configuration.ConfigurationSection;
 
 /**
- * Factory to create {@link RealtimeCronSchedule}s.
+ * Factory to create {@link CronSchedule}s with the {@link CronSchedule#REBOOT_CRON_DEFINITION}.
  */
-public class RealtimeCronScheduleFactory extends BaseScheduleFactory<RealtimeCronSchedule> {
+public class RealtimeCronScheduleFactory extends CronScheduleFactory {
 
     /**
      * Create a new Realtime Schedule Factory.
@@ -23,9 +21,7 @@ public class RealtimeCronScheduleFactory extends BaseScheduleFactory<RealtimeCro
     }
 
     @Override
-    public RealtimeCronSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection instruction)
-            throws QuestException {
-        final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), instruction);
-        return new RealtimeCronSchedule(scheduleID, scheduleData.events(), scheduleData.catchup(), scheduleData.time());
+    protected CronDefinition parseCronDefinition() {
+        return CronSchedule.REBOOT_CRON_DEFINITION;
     }
 }
