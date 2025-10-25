@@ -4,12 +4,16 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
+import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,6 +32,13 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class ScheduleTypeTest {
+
+    /**
+     * VariableProcessor to create new Variables.
+     */
+    @Mock
+    private VariableProcessor variableProcessor;
+
     /**
      * The quest package manager to get quest packages from.
      */
@@ -77,30 +90,31 @@ class ScheduleTypeTest {
     @Test
     void testCreate() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
-        assertDoesNotThrow(() -> type.newScheduleInstance(packManager, scheduleID, section), "");
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
+        assertDoesNotThrow(() -> type.newScheduleInstance(scheduleID, section), "");
     }
 
     @Test
     void testCreateThrowingUnchecked() {
         final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type = new ScheduleType<>(ThrowingUncheckedSchedule::new, scheduler);
-        assertThrows(IllegalArgumentException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
+        final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type =
+                new ScheduleType<>(new ThrowingUncheckedScheduleFactory(), scheduler);
+        assertThrows(IllegalArgumentException.class, () -> type.newScheduleInstance(scheduleID, section));
     }
 
     @Test
     void testCreateInvalidInstruction() {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
-        assertThrows(QuestException.class, () -> type.newScheduleInstance(packManager, scheduleID, section));
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
+        assertThrows(QuestException.class, () -> type.newScheduleInstance(scheduleID, section));
     }
 
     @Test
     void testAddSchedule() {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
-        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(MockedSchedule::new, scheduler);
-        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(packManager, scheduleID, section));
+        final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
+        assertDoesNotThrow(() -> type.createAndScheduleNewInstance(scheduleID, section));
         verify(scheduler).addSchedule(any());
     }
 
@@ -112,13 +126,12 @@ class ScheduleTypeTest {
         /**
          * Creates new instance of the schedule.
          *
-         * @param packManager the quest package manager to get quest packages from
-         * @param scheduleID  id of the new schedule
-         * @param instruction config defining the schedule
-         * @throws QuestException if parsing the config failed
+         * @param scheduleID the schedule id
+         * @param events     the events to execute
+         * @param catchup    the catchup strategy
          */
-        public MockedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection instruction) throws QuestException {
-            super(packManager, scheduleID, instruction);
+        public MockedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
+            super(scheduleID, events, catchup);
         }
     }
 
@@ -130,15 +143,45 @@ class ScheduleTypeTest {
         /**
          * Creates new instance of the schedule.
          *
-         * @param packManager the quest package manager to get quest packages from
-         * @param scheduleID  id of the new schedule
-         * @param instruction config defining the schedule
-         * @throws QuestException if parsing the config failed
+         * @param scheduleID the schedule id
+         * @param events     the events to execute
+         * @param catchup    the catchup strategy
          */
-        public ThrowingUncheckedSchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
-                                         final ConfigurationSection instruction) throws QuestException {
-            super(packManager, scheduleID, instruction);
+        public ThrowingUncheckedSchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup) {
+            super(scheduleID, events, catchup);
             throw new IllegalArgumentException("unchecked");
+        }
+    }
+
+    /**
+     * Factory to create a Mocked Schedule.
+     */
+    private final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
+
+        private MockedScheduleFactory() {
+            super(variableProcessor, packManager);
+        }
+
+        @Override
+        public MockedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
+            final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+            return new MockedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
+        }
+    }
+
+    /**
+     * Factory to create a Throwing Unchecked Schedule.
+     */
+    private final class ThrowingUncheckedScheduleFactory extends BaseScheduleFactory<ThrowingUncheckedSchedule> {
+
+        private ThrowingUncheckedScheduleFactory() {
+            super(variableProcessor, packManager);
+        }
+
+        @Override
+        public ThrowingUncheckedSchedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config) throws QuestException {
+            final ScheduleData scheduleData = parseScheduleData(scheduleID.getPackage(), config);
+            return new ThrowingUncheckedSchedule(scheduleID, scheduleData.events(), scheduleData.catchup());
         }
     }
 }

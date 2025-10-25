@@ -47,7 +47,7 @@ public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
             throw new QuestException("Unknown schedule type: " + type);
         }
         try {
-            scheduleType.createAndScheduleNewInstance(packManager, scheduleID, new UnmodifiableConfigurationSection(section));
+            scheduleType.createAndScheduleNewInstance(scheduleID, new UnmodifiableConfigurationSection(section));
         } catch (final IllegalArgumentException e) {
             throw new QuestException(e);
         }
@@ -97,14 +97,14 @@ public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
      * @param <S>             type of the schedule.
      */
     public record ScheduleType<S extends Schedule, T>(ScheduleFactory<S> scheduleFactory, Scheduler<S, T> scheduler) {
-        /* default */ S newScheduleInstance(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws QuestException {
-            return scheduleFactory.createNewInstance(packManager, scheduleID, scheduleConfig);
+            return scheduleFactory.createNewInstance(scheduleID, scheduleConfig);
         }
 
-        /* default */ void createAndScheduleNewInstance(final QuestPackageManager packManager, final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        /* default */ void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws QuestException {
-            scheduler.addSchedule(newScheduleInstance(packManager, scheduleID, scheduleConfig));
+            scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
         }
     }
 }

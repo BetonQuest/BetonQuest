@@ -21,6 +21,7 @@ import org.betonquest.betonquest.conversation.io.SlowTellrawConvIOFactory;
 import org.betonquest.betonquest.conversation.io.TellrawConvIOFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
@@ -37,9 +38,9 @@ import org.betonquest.betonquest.notify.io.SubTitleNotifyIOFactory;
 import org.betonquest.betonquest.notify.io.TitleNotifyIOFactory;
 import org.betonquest.betonquest.notify.io.TotemNotifyIOFactory;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
-import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronSchedule;
+import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronScheduleFactory;
 import org.betonquest.betonquest.schedule.impl.realtime.cron.RealtimeCronScheduler;
-import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailySchedule;
+import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduleFactory;
 import org.betonquest.betonquest.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.text.parser.LegacyParser;
 import org.betonquest.betonquest.text.parser.MineDownParser;
@@ -50,6 +51,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Registers the stuff that is not built from Instructions.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class CoreFeatureFactories {
     /**
      * Factory to create new class specific loggers.
@@ -70,6 +72,11 @@ public class CoreFeatureFactories {
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
+
+    /**
+     * Variable processor to create variables.
+     */
+    private final VariableProcessor variableProcessor;
 
     /**
      * The Config.
@@ -98,6 +105,7 @@ public class CoreFeatureFactories {
      * @param packManager        the quest package manager to get quest packages from
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeApi       the class for executing events
+     * @param variableProcessor  the variable processor to create variables
      * @param config             the config
      * @param colors             the colors to use for the conversation
      * @param textParser         the text parser to use for parsing text
@@ -105,12 +113,14 @@ public class CoreFeatureFactories {
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                 final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
+                                final VariableProcessor variableProcessor,
                                 final ConfigAccessor config, final ConversationColors colors,
                                 final TextParser textParser, final FontRegistry fontRegistry) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeApi = questTypeApi;
+        this.variableProcessor = variableProcessor;
         this.config = config;
         this.colors = colors;
         this.textParser = textParser;
@@ -153,10 +163,12 @@ public class CoreFeatureFactories {
         notifyIOTypes.register("sound", new SoundIOFactory());
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", RealtimeDailySchedule::new, new RealtimeDailyScheduler(
-                loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
-        eventSchedulingTypes.register("realtime-cron", RealtimeCronSchedule::new, new RealtimeCronScheduler(
-                loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache));
+        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(variableProcessor, packManager),
+                new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
+        );
+        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(variableProcessor, packManager),
+                new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
+        );
 
         final TextParserRegistry textParserRegistry = registries.textParser();
         registerTextParsers(textParserRegistry);

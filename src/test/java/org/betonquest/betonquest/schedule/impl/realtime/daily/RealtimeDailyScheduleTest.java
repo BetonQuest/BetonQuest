@@ -28,7 +28,8 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
 
     @Override
     protected RealtimeDailySchedule createSchedule() throws QuestException {
-        return new RealtimeDailySchedule(packManager, scheduleID, section);
+        return new RealtimeDailyScheduleFactory(variableProcessor, packManager)
+                .createNewInstance(scheduleID, section);
     }
 
     @Override
@@ -49,7 +50,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     @Test
     void testScheduleInvalidLoad() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
-        final QuestException exception = assertThrows(QuestException.class, () -> new RealtimeDailySchedule(packManager, scheduleID, section), "Schedule should throw instruction parse exception for invalid time format");
+        final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time format");
         final String expected = "Unable to parse time '0 22 * * * *': ";
         assertTrue(exception.getMessage().startsWith(expected), "QuestException should have correct reason message");
     }
@@ -58,7 +59,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     void testScheduleNextExecutionIn1H() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(1).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
-        final RealtimeDailySchedule schedule = new RealtimeDailySchedule(packManager, scheduleID, section);
+        final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
         final OffsetDateTime now = OffsetDateTime.now();
         final Instant expected = targetTime.toInstant(now.getOffset());
@@ -69,7 +70,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     void testScheduleNextExecutionIn23H() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(23).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
-        final RealtimeDailySchedule schedule = new RealtimeDailySchedule(packManager, scheduleID, section);
+        final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
         final OffsetDateTime now = OffsetDateTime.now();
         final Instant expected = targetTime.toInstant(now.getOffset());

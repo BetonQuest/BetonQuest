@@ -2,6 +2,7 @@ package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.schedule.CronRebootScheduleTest;
+import org.betonquest.betonquest.api.schedule.CronSchedule;
 
 /**
  * Tests for realtime cron schedule.
@@ -10,7 +11,7 @@ import org.betonquest.betonquest.api.schedule.CronRebootScheduleTest;
 public class RealtimeCronScheduleTest extends CronRebootScheduleTest {
 
     @Override
-    protected RealtimeCronSchedule createSchedule() throws QuestException {
-        return new RealtimeCronSchedule(packManager, scheduleID, section);
+    protected CronSchedule createSchedule() throws QuestException {
+        return new RealtimeCronScheduleFactory(variableProcessor, packManager).createNewInstance(scheduleID, section);
     }
 }
