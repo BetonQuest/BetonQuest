@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.condition;
 
-import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.api.mobs.MythicMob;
+import io.lumine.mythic.core.mobs.ActiveMob;
+import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -12,14 +14,14 @@ import org.bukkit.entity.Player;
  */
 public class MythicMobDistanceCondition implements OnlineCondition {
     /**
-     * The BukkitAPIHelper used to interact with MythicMobs.
+     * The Mob Executor used to get MythicMobs.
      */
-    private final BukkitAPIHelper apiHelper;
+    private final MobExecutor mobExecutor;
 
     /**
      * The internal name of the MythicMob to check for.
      */
-    private final String mythicMobInternalName;
+    private final Variable<MythicMob> mobType;
 
     /**
      * The distance within which the MythicMob should be checked.
@@ -29,13 +31,13 @@ public class MythicMobDistanceCondition implements OnlineCondition {
     /**
      * Constructs a new MythicMobDistanceCondition.
      *
-     * @param apiHelper             the BukkitAPIHelper to use for checking MythicMobs
-     * @param mythicMobInternalName the internal name of the MythicMob to check for
-     * @param distance              the distance within which the MythicMob should be checked
+     * @param mobExecutor the mob executor used to get MythicMobs
+     * @param mobType     the MythicMob to check for
+     * @param distance    the distance within which the MythicMob should be checked
      */
-    public MythicMobDistanceCondition(final BukkitAPIHelper apiHelper, final String mythicMobInternalName, final Variable<Number> distance) {
-        this.apiHelper = apiHelper;
-        this.mythicMobInternalName = mythicMobInternalName;
+    public MythicMobDistanceCondition(final MobExecutor mobExecutor, final Variable<MythicMob> mobType, final Variable<Number> distance) {
+        this.mobExecutor = mobExecutor;
+        this.mobType = mobType;
         this.distance = distance;
     }
 
@@ -43,10 +45,11 @@ public class MythicMobDistanceCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         final double dist = distance.getValue(profile).doubleValue();
-
+        final MythicMob mob = mobType.getValue(profile);
         return player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist)
-                .stream().anyMatch(entity -> entity != null
-                        && apiHelper.isMythicMob(entity)
-                        && apiHelper.getMythicMobInstance(entity).getType().getInternalName().equals(mythicMobInternalName));
+                .stream().anyMatch(entity -> {
+                    final ActiveMob activeMob = mobExecutor.getMythicMobInstance(entity);
+                    return activeMob != null && activeMob.getType().equals(mob);
+                });
     }
 }
