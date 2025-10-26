@@ -151,47 +151,44 @@ public class PlayerData implements TagData, PointData {
      * Loads all data for the profile and puts it in appropriate lists.
      */
     public final void loadAllPlayerData() {
-        try {
-            final Connector con = new Connector();
+        final Connector con = new Connector();
+        try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileID);
+             ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileID);
+             ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
+             ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
+             ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
+             ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
 
-            try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileID);
-                 ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileID);
-                 ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
-                 ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
-                 ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
-                 ResultSet profileResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
-
-                while (objectiveResults.next()) {
-                    objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
-                }
-
-                while (tagResults.next()) {
-                    tags.add(tagResults.getString("tag"));
-                }
-
-                while (journalResults.next()) {
-                    loadJournalPointer(journalResults.getString("pointer"), journalResults.getTimestamp("date").getTime());
-                }
-
-                while (pointResults.next()) {
-                    points.add(new Point(pointResults.getString("category"), pointResults.getInt("count")));
-                }
-
-                while (backpackResults.next()) {
-                    addItemToBackpack(backpackResults);
-                }
-
-                if (profileResult.next()) {
-                    profileLanguage = profileResult.getString("language");
-                    loadActiveConversation(profileResult);
-                } else {
-                    setupProfile();
-                }
-
-                log.debug("Loaded " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
-                        + " points, " + entries.size() + " journal entries and " + backpack.size()
-                        + " items for " + profile);
+            while (objectiveResults.next()) {
+                objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
             }
+
+            while (tagResults.next()) {
+                tags.add(tagResults.getString("tag"));
+            }
+
+            while (journalResults.next()) {
+                loadJournalPointer(journalResults.getString("pointer"), journalResults.getTimestamp("date").getTime());
+            }
+
+            while (pointResults.next()) {
+                points.add(new Point(pointResults.getString("category"), pointResults.getInt("count")));
+            }
+
+            while (backpackResults.next()) {
+                addItemToBackpack(backpackResults);
+            }
+
+            if (profileResult.next()) {
+                profileLanguage = profileResult.getString("language");
+                loadActiveConversation(profileResult);
+            } else {
+                setupProfile();
+            }
+
+            log.debug("Loaded " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                    + " points, " + entries.size() + " journal entries and " + backpack.size()
+                    + " items for " + profile);
         } catch (final SQLException e) {
             log.error("There was an exception with SQL", e);
         }

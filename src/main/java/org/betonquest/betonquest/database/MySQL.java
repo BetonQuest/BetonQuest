@@ -134,7 +134,7 @@ public class MySQL extends Database {
 
     @Override
     protected void markMigrationExecuted(final Connection connection, final MigrationKey migrationKey) throws SQLException {
-        try (PreparedStatement statement = getConnection().prepareStatement("INSERT INTO " + prefix + "migration (namespace, migration_id) VALUES (?,?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO " + prefix + "migration (namespace, migration_id) VALUES (?,?)")) {
             statement.setString(1, migrationKey.namespace());
             statement.setInt(2, migrationKey.version());
             statement.executeUpdate();
