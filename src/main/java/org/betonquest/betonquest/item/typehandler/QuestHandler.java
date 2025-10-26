@@ -1,12 +1,18 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,14 +30,23 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     private static final String QUEST = "quest-item";
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    @Nullable
+    private final PluginMessage pluginMessage;
+
+    /**
      * If the item is a "Quest Item".
      */
     private Existence questItem = Existence.WHATEVER;
 
     /**
-     * The empty default constructor.
+     * The constructor.
+     *
+     * @param pluginMessage the plugin message instance if the "quest item" lore line should be added
      */
-    public QuestHandler() {
+    public QuestHandler(@Nullable final PluginMessage pluginMessage) {
+        this.pluginMessage = pluginMessage;
     }
 
     /**
@@ -78,10 +93,26 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
         }
     }
 
+    @Contract("_ -> fail")
     @Override
     public void populate(final ItemMeta meta) {
+        throw new UnsupportedOperationException("Use #populate(ItemMeta, Profile) instead");
+    }
+
+    @Override
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (questItem == Existence.REQUIRED) {
             meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+            if (pluginMessage != null) {
+                final Component loreLine = pluginMessage.getMessage(profile, "quest_item");
+                if (meta.hasLore()) {
+                    final List<Component> lore = new ArrayList<>(meta.lore());
+                    lore.add(loreLine);
+                    meta.lore(lore);
+                } else {
+                    meta.lore(List.of(loreLine));
+                }
+            }
         }
     }
 

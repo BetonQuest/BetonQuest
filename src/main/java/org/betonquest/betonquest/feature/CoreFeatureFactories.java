@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.interceptor.NonInterceptingInterceptorFactory;
 import org.betonquest.betonquest.conversation.interceptor.SimpleInterceptorFactory;
@@ -99,6 +100,11 @@ public class CoreFeatureFactories {
     private final FontRegistry fontRegistry;
 
     /**
+     * The {@link PluginMessage} instance.
+     */
+    private final PluginMessage pluginMessage;
+
+    /**
      * Create a new Core Other Factories class for registering.
      *
      * @param loggerFactory      the factory to create new class specific loggers
@@ -110,12 +116,13 @@ public class CoreFeatureFactories {
      * @param colors             the colors to use for the conversation
      * @param textParser         the text parser to use for parsing text
      * @param fontRegistry       the font registry to use for the conversation
+     * @param pluginMessage      the {@link PluginMessage} instance
      */
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                 final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
                                 final VariableProcessor variableProcessor,
                                 final ConfigAccessor config, final ConversationColors colors,
-                                final TextParser textParser, final FontRegistry fontRegistry) {
+                                final TextParser textParser, final FontRegistry fontRegistry, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.lastExecutionCache = lastExecutionCache;
@@ -125,6 +132,7 @@ public class CoreFeatureFactories {
         this.colors = colors;
         this.textParser = textParser;
         this.fontRegistry = fontRegistry;
+        this.pluginMessage = pluginMessage;
     }
 
     /**
@@ -147,7 +155,8 @@ public class CoreFeatureFactories {
 
         final ItemTypeRegistry itemTypes = registries.item();
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemTypes.register("simple", new SimpleQuestItemFactory(packManager, textParser, bookPageWrapper));
+        itemTypes.register("simple", new SimpleQuestItemFactory(packManager, textParser, bookPageWrapper,
+                () -> config.getBoolean("item.quest.lore") ? pluginMessage : null));
         itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final Plugin plugin = BetonQuest.getInstance();

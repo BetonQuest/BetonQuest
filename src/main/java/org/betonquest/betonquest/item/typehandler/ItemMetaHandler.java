@@ -77,8 +77,9 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      *
      * @param meta    the meta to populate
      * @param profile the optional profile for customized population
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    default void populate(final M meta, @Nullable final Profile profile) {
+    default void populate(final M meta, @Nullable final Profile profile) throws QuestException {
         populate(meta);
     }
 
@@ -89,9 +90,10 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      *
      * @param meta    the meta to populate
      * @param profile the profile for customized population
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     @SuppressWarnings("unchecked")
-    default void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
+    default void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (metaClass().isInstance(meta)) {
             populate((M) meta, profile);
         }

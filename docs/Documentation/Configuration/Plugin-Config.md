@@ -237,10 +237,12 @@ Different item settings that are used in BetonQuest.
 
 * `quest`  
   Controls the quest item settings.
-    * `unbreakable` - If set to `true`, quest items will be unbreakable. 
+    * `lore` - If set to `true`, the `quest-item` option will also add the "Quest Item" lore.  
+      This will add the `quest_item` line in the player's language at the end of lore in a new line.
+    * `unbreakable` - If set to `true`, quest items will be unbreakable.  
       This was used in the past when the `unbreakable` tag couldn't be added to items.
       Turn it off and make your quest items unbreakable by vanilla means.
-    * `remove_after_respawn` - If set to `true`, quest items will be removed from the player's inventory after they respawn.
+    * `remove_after_respawn` - If set to `true`, quest items will be removed from the player's inventory after they respawn.  
       This option should be turned on if "keepInventory" gamerule is not being used. 
       It prevents other plugins from duplicating quest items after death.  
       When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
@@ -250,7 +252,7 @@ Different item settings that are used in BetonQuest.
       Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule 
       checking, so it is up to you to decide.  
       Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.
-    * `update_legacy_on_join` - Update Quest Items
+    * `update_legacy_on_join` - If set to `true`, Quest Items will be updated on join.  
       If the inventory should be checked for Quest Items identified by Lore should get the new identifier tag set.
       Only useful when there was BetonQuest used before.
       When there are no such items or a check is not wanted just disable it.

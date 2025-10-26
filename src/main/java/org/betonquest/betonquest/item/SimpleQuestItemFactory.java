@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
 import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
@@ -51,16 +53,24 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     private final BookPageWrapper bookPageWrapper;
 
     /**
+     * Supplier for the PluginMessage.
+     */
+    private final Supplier<PluginMessage> questItemLoreSupplier;
+
+    /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param packManager     the quest package manager to get quest packages from
-     * @param textParser      the text parser used to parse text
-     * @param bookPageWrapper the book page wrapper used to split pages
+     * @param packManager           the quest package manager to get quest packages from
+     * @param textParser            the text parser used to parse text
+     * @param bookPageWrapper       the book page wrapper used to split pages
+     * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
      */
-    public SimpleQuestItemFactory(final QuestPackageManager packManager, final TextParser textParser, final BookPageWrapper bookPageWrapper) {
+    public SimpleQuestItemFactory(final QuestPackageManager packManager, final TextParser textParser,
+                                  final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
         this.packManager = packManager;
         this.textParser = textParser;
         this.bookPageWrapper = bookPageWrapper;
+        this.questItemLoreSupplier = questItemLoreSupplier;
     }
 
     /**
@@ -84,7 +94,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final LoreHandler lore = new LoreHandler(textParser);
 
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(),
+                new QuestHandler(questItemLoreSupplier.get()),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
