@@ -33,7 +33,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Consumer to use when the item to generate is a quest item.
      */
-    private final QuestBiConsumer<ItemMeta, Profile> questItemLore;
+    private final LoreConsumer questItemLore;
 
     /**
      * If the item is a "Quest Item".
@@ -45,7 +45,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @param questItemLore the consumer to use when the item to generate is a quest item
      */
-    public QuestHandler(final QuestBiConsumer<ItemMeta, Profile> questItemLore) {
+    public QuestHandler(final LoreConsumer questItemLore) {
         this.questItemLore = questItemLore;
     }
 
@@ -117,14 +117,29 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     /**
+     * A BiConsumer on ItemMeta and nullable Profile.
+     */
+    @FunctionalInterface
+    public interface LoreConsumer extends QuestBiConsumer<ItemMeta, Profile> {
+        /**
+         * Consumer that does nothing.
+         */
+        LoreConsumer EMPTY = (meta, profile) -> {
+        };
+
+        @Override
+        void accept(ItemMeta meta, @Nullable Profile profile) throws QuestException;
+    }
+
+    /**
      * Adds the quest item lore to the item meta.
      *
      * @param pluginMessage the plugin message instance to get the lore line
      */
-    public record Lore(PluginMessage pluginMessage) implements QuestBiConsumer<ItemMeta, Profile> {
+    public record Lore(PluginMessage pluginMessage) implements LoreConsumer {
 
         @Override
-        public void accept(final ItemMeta meta, final Profile profile) throws QuestException {
+        public void accept(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
             final Component loreLine = pluginMessage.getMessage(profile, "quest_item");
             if (meta.hasLore()) {
                 final List<Component> lore = new ArrayList<>(meta.lore());

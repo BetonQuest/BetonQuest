@@ -95,8 +95,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
         final PluginMessage pluginMessage = questItemLoreSupplier.get();
         final List<ItemMetaHandler<?>> handlers = List.of(
-                new QuestHandler(pluginMessage == null ? (one, two) -> {
-                } : new QuestHandler.Lore(pluginMessage)),
+                new QuestHandler(pluginMessage == null ? QuestHandler.LoreConsumer.EMPTY : new QuestHandler.Lore(pluginMessage)),
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
