@@ -99,7 +99,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bukkit API events are now called sync/async depending on the tread context they are called in
 - `variable` command allows setting and getting data now for offline players
 - `mmobkill` objective now uses the killer (if present) to resolve names and distances
-- `Journal` and `Quest Item` are now checked with PersistentDataContainer instead of lore
+- `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

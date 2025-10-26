@@ -236,14 +236,14 @@ _This applies to firework charges._
 Sometimes you'll want some items to be persistent over death. The quest could be broken if the player loses them.
 Such an item wouldn't be dropped (on death), instead it would be placed in the player's backpack.
 
-You can add a specific tag an item to make it persistent. For the `simple` item it's the `quest-item` keyword.
+You can add a specific tag to an item to make it persistent. For the `simple` item it's the `quest-item` keyword.
 To require an item to not be a Quest Item you simply use `quest-item:false`.
 
 A "Quest item" line will be added at the end of the lore when you have set the `item.quest.lore` setting in "_config.yml_" enabled.
 
 ```YAML title="Example" 
-important_sword: "simple DIAMOND_SWORD \"name:Sword for destroying  The Concrete\"
-  \"lore:Made of pure Mithril\" quest-item"
+important_sword: 'simple DIAMOND_SWORD "name:Sword for destroying  The Concrete"
+  "lore:Made of pure Mithril" quest-item'
 ```
 
 The backpack can be opened with the **/backpack** command. The inventory window will open, displaying your stored items.

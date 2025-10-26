@@ -857,7 +857,7 @@ items:
 The way to identify "QuestItems" which can be stored in the backpack has been changed.
 
 For the `simple` Item that means the `quest-item` tag is used instead of the lore.
-That option also adds the lore line in the player's language now if you enable `item.quest.lore` in the '_config.yml_'.
+That option also adds the lore line in the player's language if you enable `item.quest.lore` in the '_config.yml_'.
 
 All QuestItems in the backpack are migrated automatically and Items in player's inventories will also be migrated
 with `item.quest.update_legacy_on_join` enabled in the '_config.yml_'.

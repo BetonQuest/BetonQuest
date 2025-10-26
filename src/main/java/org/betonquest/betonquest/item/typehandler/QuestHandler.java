@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.function.QuestBiConsumer;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -30,10 +31,9 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     private static final String QUEST = "quest-item";
 
     /**
-     * The {@link PluginMessage} instance.
+     * Consumer to use when the item to generate is a quest item.
      */
-    @Nullable
-    private final PluginMessage pluginMessage;
+    private final QuestBiConsumer<ItemMeta, Profile> questItemLore;
 
     /**
      * If the item is a "Quest Item".
@@ -43,10 +43,10 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The constructor.
      *
-     * @param pluginMessage the plugin message instance if the "quest item" lore line should be added
+     * @param questItemLore the consumer to use when the item to generate is a quest item
      */
-    public QuestHandler(@Nullable final PluginMessage pluginMessage) {
-        this.pluginMessage = pluginMessage;
+    public QuestHandler(final QuestBiConsumer<ItemMeta, Profile> questItemLore) {
+        this.questItemLore = questItemLore;
     }
 
     /**
@@ -103,16 +103,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (questItem == Existence.REQUIRED) {
             meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-            if (pluginMessage != null) {
-                final Component loreLine = pluginMessage.getMessage(profile, "quest_item");
-                if (meta.hasLore()) {
-                    final List<Component> lore = new ArrayList<>(meta.lore());
-                    lore.add(loreLine);
-                    meta.lore(lore);
-                } else {
-                    meta.lore(List.of(loreLine));
-                }
-            }
+            questItemLore.accept(meta, profile);
         }
     }
 
@@ -123,5 +114,25 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
             case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
             case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
         };
+    }
+
+    /**
+     * Adds the quest item lore to the item meta.
+     *
+     * @param pluginMessage the plugin message instance to get the lore line
+     */
+    public record Lore(PluginMessage pluginMessage) implements QuestBiConsumer<ItemMeta, Profile> {
+
+        @Override
+        public void accept(final ItemMeta meta, final Profile profile) throws QuestException {
+            final Component loreLine = pluginMessage.getMessage(profile, "quest_item");
+            if (meta.hasLore()) {
+                final List<Component> lore = new ArrayList<>(meta.lore());
+                lore.add(loreLine);
+                meta.lore(lore);
+            } else {
+                meta.lore(List.of(loreLine));
+            }
+        }
     }
 }
