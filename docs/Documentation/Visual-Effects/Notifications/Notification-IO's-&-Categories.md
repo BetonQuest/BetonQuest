@@ -30,7 +30,7 @@ There are a bunch of notify IOs available. Below is a list of all available noti
     ```YAML
     events:
       notifyExample: notify <message> io:<NotifyIO_Type> <option_1>:<option_1_value> <option_2>:<option_2_value> 
-      <category>:<category_Name>
+        <category>:<category_Name>
     ```
 
 
