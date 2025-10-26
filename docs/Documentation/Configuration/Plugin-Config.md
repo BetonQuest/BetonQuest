@@ -31,15 +31,15 @@ The updater section controls the plugin's Auto-Updater.
 
 * `enabled` - If set to `false`, it is not possible to update with the updater and no version checks are executed.
 * `strategy` - The update strategy is the most important feature of the Auto-Updater.
-  An explanation is available [here](Version-Changes/Updating.md#choose-an-update-strategy).
+  An explanation is available [here](./Version-Changes/Updating.md#choose-an-update-strategy).
 * `automatic` - If true the updater will download new Versions automatically.
   Otherwise, the updater will only download new versions when the update command is executed.
-  Advice is available [here](Version-Changes/Updating.md#enable-or-disable-automatic-updates).
+  Advice is available [here](./Version-Changes/Updating.md#enable-or-disable-automatic-updates).
 * `ingame_notification` - If true players with `betonquest.admin` permission will be notified on join
   when a new version is available. They will only be notified once a day without a server restart.
 
 ## `downloader` - The downloader settings
-The command [`/q download`](Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
+The command [`/q download`](./Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
 This is mainly used by betonquest to download tutorial files.
 
 * `pull_request` - Define if pull requests are allowed to be downloaded.  
@@ -258,7 +258,7 @@ Different item settings that are used in BetonQuest.
       When there are no such items or a check is not wanted just disable it.
 * `backpack`  
   Configuration of items, that are shown in the backpack. You reference them with a full path to an item in a package.
-  For example `my_package.my_button`.
+  For example `my_package>my_button`.
     * `previous_button` - The item that is used to go to the previous backpack page, let it empty to use the default one.
     * `next_button` - The item that is used to go to the next backpack page, let it empty to use the default one.
     * `close_button` - The item that is used to close the backpack, let it empty to disable the close button.
