@@ -3540,6 +3540,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-444-simple-item-questitem">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-444 - Simple Item QuestItem <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5486,6 +5509,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-444-simple-item-questitem">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-444 - Simple Item QuestItem <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5653,6 +5699,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-394-cross-packages-are-now-referenced-with-instead-of">3.0.0-DEV-394 - Cross packages are now referenced with <code>&gt;</code> instead of <code>.</code></a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-408-journal-entry-separator">3.0.0-DEV-408 - Journal entry separator</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-416-simple-item-textparser">3.0.0-DEV-416 - Simple Item TextParser</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
+<li><a href="#300-dev-444-simple-item-questitem">3.0.0-DEV-444 - Simple Item QuestItem</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6232,7 +6279,7 @@ This migration is actually automated, but there are so many edge cases that it i
 migrated correctly. Most cases should bring up a warning or error in the console, you can fix them manually.
 But there are also some edge cases that are not detected, you may need to check all cross package references manually.</p>
 <div class="grid">
-<div class="highlight"><span class="filename">Old package.yml</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Old package</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myObjective</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage.myCondition</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">events:OtherPackage.myEvent</span>
@@ -6240,7 +6287,7 @@ But there are also some edge cases that are not detected, you may need to check 
 <span class="w">  </span><span class="nt">myEvent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify Test</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage.myCondition</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">New package.yml</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">New package</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myObjective</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">login</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">conditions:OtherPackage&gt;myCondition</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">events:OtherPackage&gt;myEvent</span>
@@ -6294,7 +6341,7 @@ Some well known edge cases are:</p>
 <p>The <code>simple</code> items now use the text parser for the <code>name</code> and <code>lore</code> as well as for books the <code>title</code>, <code>author</code> and <code>text</code>.
 With that underscores won't be replaced anymore, instead you have to use quoting.</p>
 <div class="grid">
-<div class="highlight"><span class="filename">Old items.yml</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Old items</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">holySword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">name:&amp;4Sword_made_of_Holy_Concrete</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">lore:&amp;cOnly_this_sword_can_kill_the_Lord_Ruler</span>
@@ -6302,13 +6349,27 @@ With that underscores won't be replaced anymore, instead you have to use quoting
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">title:Malleus_Maleficarum author:&amp;eGallus_Anonymus</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">New items.yml</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<div class="highlight"><span class="filename">New items</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">holySword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;name:&amp;4Sword made of Holy Concrete&quot;</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;lore:&lt;red&gt;Only this sword can kill the Lord Ruler&quot;</span>
 <span class="w">  </span><span class="nt">book</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple WRITTEN_BOOK</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;title:Malleus Maleficarum&quot; &quot;author:&amp;eGallus Anonymus&quot;</span>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">&quot;text:Lorem ipsum dolor sit amet, &lt;newline&gt;consectetur adipiscing elit. |Pellentesque ligula urna(...)&quot;</span>
+</code></pre></div>
+</div>
+<h3 id="300-dev-444-simple-item-questitem">3.0.0-DEV-444 - Simple Item QuestItem <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-444-simple-item-questitem" title="Permanent link">🔗</a></h3>
+<p>The way to identify "QuestItems" which can be stored in the backpack has been changed.</p>
+<p>For the <code>simple</code> Item that means the <code>quest-item</code> tag is used instead of the lore.
+That option also adds the lore line in the player's language if you enable <code>item.quest.lore</code> in the '<em>config.yml</em>'.</p>
+<p>All QuestItems in the backpack are migrated automatically and Items in player's inventories will also be migrated
+with <code>item.quest.update_legacy_on_join</code> enabled in the '<em>config.yml</em>'.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old items (in english)</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD &quot;lore:&amp;2Quest Item&quot;</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New items</span><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD quest-item</span>
 </code></pre></div>
 </div>
 

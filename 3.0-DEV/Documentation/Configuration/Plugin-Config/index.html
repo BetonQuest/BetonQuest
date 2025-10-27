@@ -5593,10 +5593,12 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <ul>
 <li><code>quest</code><br />
   Controls the quest item settings.<ul>
-<li><code>unbreakable</code> - If set to <code>true</code>, quest items will be unbreakable. 
+<li><code>lore</code> - If set to <code>true</code>, the <code>quest-item</code> option will also add the "Quest Item" lore.<br />
+  This will add the <code>quest_item</code> line in the player's language at the end of lore in a new line.</li>
+<li><code>unbreakable</code> - If set to <code>true</code>, quest items will be unbreakable.<br />
   This was used in the past when the <code>unbreakable</code> tag couldn't be added to items.
   Turn it off and make your quest items unbreakable by vanilla means.</li>
-<li><code>remove_after_respawn</code> - If set to <code>true</code>, quest items will be removed from the player's inventory after they respawn.
+<li><code>remove_after_respawn</code> - If set to <code>true</code>, quest items will be removed from the player's inventory after they respawn.<br />
   This option should be turned on if "keepInventory" gamerule is not being used. 
   It prevents other plugins from duplicating quest items after death.<br />
   When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
@@ -5606,6 +5608,10 @@ Currently, there is no way to switch between profiles, as the feature is still i
   Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule 
   checking, so it is up to you to decide.<br />
   Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.</li>
+<li><code>update_legacy_on_join</code> - If set to <code>true</code>, Quest Items will be updated on join.<br />
+  If the inventory should be checked for Quest Items identified by Lore should get the new identifier tag set.
+  Only useful when there was BetonQuest used before.
+  When there are no such items or a check is not wanted just disable it.</li>
 </ul>
 </li>
 <li><code>backpack</code><br />
