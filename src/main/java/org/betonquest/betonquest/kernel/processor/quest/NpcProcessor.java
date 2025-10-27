@@ -33,7 +33,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -196,7 +195,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         final UUID playerUUID = profile.getPlayerUUID();
 
         final Long lastClick = npcInteractionLimiter.get(playerUUID);
-        final long currentClick = new Date().getTime();
+        final long currentClick = System.currentTimeMillis();
         if (lastClick != null && lastClick + interactionLimit >= currentClick) {
             return false;
         }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -64,7 +65,7 @@ public class TransformersFixture {
      */
     protected FileConfigAccessor createConfigAccessorFromString(final Path tempDir, final String fileName, final String configString) throws IOException, InvalidConfigurationException {
         final Path configFile = tempDir.resolve(fileName);
-        Files.write(configFile, configString.getBytes());
+        Files.writeString(configFile, configString, StandardCharsets.UTF_8);
         return new StandardConfigAccessor(configFile.toFile(), null, null);
     }
 }

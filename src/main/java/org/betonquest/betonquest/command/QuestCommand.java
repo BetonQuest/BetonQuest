@@ -71,10 +71,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -532,8 +534,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             journal.getPointers().stream()
                     .filter(shouldDisplay)
                     .forEach(pointer -> {
-                        final String date = new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
-                                .format(new Date(pointer.timestamp()));
+                        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config.getString("date_format", ""), Locale.ROOT);
+                        final String date = Instant.ofEpochMilli(pointer.timestamp())
+                                .atZone(ZoneId.systemDefault())
+                                .format(formatter);
                         sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
                     });
             return;
@@ -563,7 +567,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 final Pointer pointer;
                 if (args.length < 5) {
-                    final long timestamp = new Date().getTime();
+                    final long timestamp = System.currentTimeMillis();
                     log.debug("Adding pointer with current date: " + timestamp);
                     pointer = new Pointer(entryID, timestamp);
                 } else {
@@ -1623,7 +1627,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AssignmentInOperand"})
     private void handleDownload(final CommandSender sender, final String... args) {
         if (args.length < 5) {
             sendMessage(sender, "arguments");
