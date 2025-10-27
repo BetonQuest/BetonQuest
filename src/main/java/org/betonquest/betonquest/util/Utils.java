@@ -15,7 +15,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -68,29 +67,6 @@ public final class Utils {
     private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Utils.class);
 
     private Utils() {
-    }
-
-    /**
-     * Checks if the ItemStack is a quest item.
-     *
-     * @param item ItemStack to check
-     * @return true if the supplied ItemStack is a quest item, false otherwise
-     */
-    public static boolean isQuestItem(@Nullable final ItemStack item) {
-        if (item == null || item.getType().isAir()) {
-            return false;
-        }
-        final List<Component> lore = item.getItemMeta().lore();
-        if (lore == null) {
-            return false;
-        }
-        try {
-            final Component questItemLore = BetonQuest.getInstance().getPluginMessage().getMessage(null, "quest_item");
-            return lore.stream().anyMatch(line -> line.contains(questItemLore, COMPONENT_BI_PREDICATE));
-        } catch (final QuestException e) {
-            LOG.warn("Failed to get quest item message: " + e.getMessage(), e);
-            return false;
-        }
     }
 
     /**

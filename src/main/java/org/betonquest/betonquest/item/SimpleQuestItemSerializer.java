@@ -14,6 +14,7 @@ import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
+import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,7 +40,8 @@ public class SimpleQuestItemSerializer implements QuestItemSerializer {
         this(List.of(
                 new DurabilityHandler(), new NameHandler(textParser), new LoreHandler(textParser), new EnchantmentsHandler(),
                 new BookHandler(textParser, bookPageWrapper), new PotionHandler(), new ColorHandler(), new HeadHandler(),
-                new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler()
+                new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
+                new QuestHandler(QuestHandler.LoreConsumer.EMPTY)
         ));
     }
 

@@ -9,6 +9,8 @@ import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +26,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static org.betonquest.betonquest.item.typehandler.QuestHandler.QUEST_ITEM_KEY;
+
 /**
- * Connects to and uses a SQLite database
+ * Connects to and uses a SQLite database.
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class SQLite extends Database {
@@ -89,6 +93,7 @@ public class SQLite extends Database {
         migrations.put(new MigrationKey("betonquest", 3), this::migration3);
         migrations.put(new MigrationKey("betonquest", 4), this::migration4);
         migrations.put(new MigrationKey("betonquest", 5), this::migration5);
+        migrations.put(new MigrationKey("betonquest", 6), this::migration6);
         return migrations;
     }
 
@@ -311,7 +316,8 @@ public class SQLite extends Database {
                 final FontRegistry fontRegistry = new FontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
                 final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager(),
-                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")), bookPageWrapper);
+                        (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")),
+                        bookPageWrapper, () -> null);
 
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");
@@ -347,6 +353,26 @@ public class SQLite extends Database {
             statement.executeUpdate("UPDATE " + prefix + "global_points SET category = REPLACE(category, '.', '>')");
             statement.executeUpdate("UPDATE " + prefix + "journal SET pointer = REPLACE(pointer, '.', '>')");
             statement.executeUpdate("UPDATE " + prefix + "objectives SET objective = REPLACE(objective, '.', '>')");
+        }
+    }
+
+    @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
+    private void migration6(final Connection connection) throws SQLException {
+        try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT id, serialized FROM " + prefix + "backpack");
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE " + prefix + "backpack SET serialized = ? WHERE id = ?")) {
+            while (resultSet.next()) {
+                final int rowId = resultSet.getInt("id");
+                final byte[] bytes = Base64.getDecoder().decode(resultSet.getString("serialized"));
+                final ItemStack stack = ItemStack.deserializeBytes(bytes);
+                stack.editMeta(meta ->
+                        meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1));
+                final String serialized = Base64.getEncoder().encodeToString(stack.serializeAsBytes());
+                preparedStatement.setString(1, serialized);
+                preparedStatement.setInt(2, rowId);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
         }
     }
 }

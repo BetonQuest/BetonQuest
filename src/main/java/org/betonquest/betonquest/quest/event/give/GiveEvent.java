@@ -9,8 +9,8 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.quest.event.NotificationSender;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -109,7 +109,7 @@ public class GiveEvent implements OnlineEvent {
                     fullInventory = true;
                 }
             }
-            if (Utils.isQuestItem(itemStack)) {
+            if (QuestHandler.isQuestItem(itemStack)) {
                 giveToBackpack(profile, itemStack);
                 if (fullInventory) {
                     itemsInBackpackSender.sendNotification(profile);

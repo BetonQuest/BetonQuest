@@ -27,12 +27,13 @@ import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
@@ -44,18 +45,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "PMD.GodClass"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class Journal {
+    /**
+     * Key that an ItemStack is the Journal.
+     */
+    public static final NamespacedKey JOURNAL_KEY = new NamespacedKey("betonquest", "journal");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuest.getInstance().getLoggerFactory().create(Journal.class);
+    private final BetonQuestLogger log;
 
     /**
      * The plugin message instance used for getting messages.
@@ -116,6 +121,7 @@ public class Journal {
     /**
      * Creates new Journal instance from List of Pointers.
      *
+     * @param log           the custom {@link BetonQuestLogger} instance for this class
      * @param pluginMessage the {@link PluginMessage} instance
      * @param questTypeApi  the Quest Type API
      * @param featureApi    the Feature API
@@ -125,9 +131,10 @@ public class Journal {
      * @param list          list of pointers to journal entries
      * @param config        a {@link ConfigAccessor} that contains the plugin's configuration
      */
-    public Journal(final PluginMessage pluginMessage, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
-                   final TextParser textParser, final FontRegistry fontRegistry,
+    public Journal(final BetonQuestLogger log, final PluginMessage pluginMessage, final QuestTypeApi questTypeApi,
+                   final FeatureApi featureApi, final TextParser textParser, final FontRegistry fontRegistry,
                    final Profile profile, final List<Pointer> list, final ConfigAccessor config) {
+        this.log = log;
         this.pluginMessage = pluginMessage;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
@@ -137,50 +144,21 @@ public class Journal {
         this.profile = profile;
         this.pointers = list;
         this.config = config;
-        this.inventoryFullBackpackSender = new IngameNotificationSender(LOG, pluginMessage, null,
+        this.inventoryFullBackpackSender = new IngameNotificationSender(log, pluginMessage, null,
                 "Journal", NotificationLevel.ERROR, "inventory_full_backpack");
     }
 
     /**
      * Checks if the item is the journal.
      *
-     * @param onlineProfile the {@link OnlineProfile} of the player
-     * @param item          ItemStack to check against being the journal
+     * @param item ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
-    public static boolean isJournal(final OnlineProfile onlineProfile, @Nullable final ItemStack item) {
-        if (item == null) {
+    public static boolean isJournal(@Nullable final ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
             return false;
         }
-        try {
-            if (!(item.getItemMeta() instanceof final BookMeta bookMeta)) {
-                return false;
-            }
-            final Component title = bookMeta.title();
-            final List<Component> lore = bookMeta.lore();
-            if (title == null || lore == null) {
-                return false;
-            }
-            final Component journalTitle = BetonQuest.getInstance().getPluginMessage().getMessage(onlineProfile, "journal_title");
-            return title.contains(journalTitle, Utils.COMPONENT_BI_PREDICATE)
-                    && Objects.equals(compactList(item.getItemMeta().lore()), compactList(getJournalLore(onlineProfile)));
-        } catch (final QuestException e) {
-            LOG.warn("Failed to check if the journal's title is correct: " + e.getMessage(), e);
-            return false;
-        }
-    }
-
-    private static List<Component> compactList(@Nullable final List<Component> list) {
-        if (list == null) {
-            return List.of();
-        }
-        return list.stream()
-                .map(Component::compact)
-                .toList();
-    }
-
-    private static List<Component> getJournalLore(final Profile profile) throws QuestException {
-        return ComponentLineWrapper.splitNewLine(BetonQuest.getInstance().getPluginMessage().getMessage(profile, "journal_lore"));
+        return item.getItemMeta().getPersistentDataContainer().has(JOURNAL_KEY);
     }
 
     /**
@@ -193,7 +171,7 @@ public class Journal {
     public static boolean hasJournal(final OnlineProfile onlineProfile) {
         final Player player = onlineProfile.getPlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (isJournal(onlineProfile, item)) {
+            if (isJournal(item)) {
                 return true;
             }
         }
@@ -256,7 +234,7 @@ public class Journal {
         if (config.getBoolean("journal.format.reversed_order")) {
             list = Lists.reverse(texts);
         } else {
-            list = new ArrayList<>(texts);
+            list = texts;
         }
         final List<Component> pagesList = new ArrayList<>();
         for (final Component entry : list) {
@@ -281,7 +259,7 @@ public class Journal {
             try {
                 journalEntry = featureApi.getJournalEntry(entryID);
             } catch (final QuestException e) {
-                LOG.warn(entryID.getPackage(), "Cannot add journal entry to " + profile + ": " + e.getMessage(), e);
+                log.warn(entryID.getPackage(), "Cannot add journal entry to " + profile + ": " + e.getMessage(), e);
                 continue;
             }
 
@@ -289,7 +267,7 @@ public class Journal {
             try {
                 text = journalEntry.asComponent(profile);
             } catch (final QuestException e) {
-                LOG.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
+                log.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = Component.text("error");
             }
@@ -317,7 +295,7 @@ public class Journal {
                 }
                 text = mainPageEntry.entry().asComponent(profile);
             } catch (final QuestException e) {
-                LOG.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
+                log.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = Component.text("error");
             }
@@ -366,10 +344,13 @@ public class Journal {
      * Adds journal to player inventory.
      */
     public void addToInv() {
+        if (profile.getOnlineProfile().isEmpty()) {
+            return;
+        }
         try {
             generateTexts();
         } catch (final QuestException e) {
-            LOG.warn("Failed to generate texts for journal: " + e.getMessage(), e);
+            log.warn("Failed to generate texts for journal: " + e.getMessage(), e);
             return;
         }
         final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
@@ -377,7 +358,7 @@ public class Journal {
         try {
             item = getAsItem();
         } catch (final QuestException e) {
-            LOG.warn("Failed to get journal as item: " + e.getMessage(), e);
+            log.warn("Failed to get journal as item: " + e.getMessage(), e);
             return;
         }
         final int targetSlot = getJournalSlot();
@@ -416,10 +397,11 @@ public class Journal {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 
         final BookMeta meta = (BookMeta) item.getItemMeta();
+        meta.getPersistentDataContainer().set(JOURNAL_KEY, PersistentDataType.BYTE, (byte) 1);
         meta.title(pluginMessage.getMessage(profile, "journal_title"));
         meta.setAuthor(profile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
-        meta.lore(getJournalLore(profile));
+        meta.lore(ComponentLineWrapper.splitNewLine(pluginMessage.getMessage(profile, "journal_lore")));
 
         final List<Component> finalList = new ArrayList<>();
         if (config.getBoolean("journal.format.one_entry_per_page")) {
@@ -458,6 +440,9 @@ public class Journal {
      * Updates journal by removing it and adding it again.
      */
     public void update() {
+        if (profile.getOnlineProfile().isEmpty()) {
+            return;
+        }
         if (hasJournal(profile.getOnlineProfile().get())) {
             addToInv();
         }
@@ -469,10 +454,13 @@ public class Journal {
      * @return the slot from which the journal was removed
      */
     public int removeFromInv() {
+        if (profile.getOnlineProfile().isEmpty()) {
+            return -1;
+        }
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Inventory inventory = onlineProfile.getPlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (isJournal(onlineProfile, inventory.getItem(i))) {
+            if (isJournal(inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));
                 return i;
             }

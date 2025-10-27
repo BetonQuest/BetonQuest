@@ -53,6 +53,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-394 - Cross packages are now referenced with `>` instead of `.`](#300-dev-394-cross-packages-are-now-referenced-with-instead-of) :thunder_cloud_rain:
 - [3.0.0-DEV-408 - Journal entry separator](#300-dev-408-journal-entry-separator) :white_sun_cloud:
 - [3.0.0-DEV-416 - Simple Item TextParser](#300-dev-416-simple-item-textparser) :thunder_cloud_rain:
+- [3.0.0-DEV-444 - Simple Item QuestItem](#300-dev-444-simple-item-questitem) :thunder_cloud_rain:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -745,7 +746,7 @@ But there are also some edge cases that are not detected, you may need to check 
 
 <div class="grid" markdown>
 
-```YAML title="Old package.yml"
+```YAML title="Old package"
 objectives:
   myObjective: login
     conditions:OtherPackage.myCondition
@@ -755,7 +756,7 @@ events:
     conditions:OtherPackage.myCondition
 ```
 
-```YAML title="New package.yml"
+```YAML title="New package"
 objectives:
   myObjective: login
     conditions:OtherPackage>myCondition
@@ -829,7 +830,7 @@ With that underscores won't be replaced anymore, instead you have to use quoting
 
 <div class="grid" markdown>
 
-```YAML title="Old items.yml"
+```YAML title="Old items"
 items:
   holySword: simple DIAMOND_SWORD
     name:&4Sword_made_of_Holy_Concrete
@@ -839,7 +840,7 @@ items:
     text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligula_urna(...)
 ```
 
-```YAML title="New items.yml"
+```YAML title="New items"
 items:
   holySword: simple DIAMOND_SWORD
     "name:&4Sword made of Holy Concrete"
@@ -847,6 +848,30 @@ items:
   book: simple WRITTEN_BOOK
     "title:Malleus Maleficarum" "author:&eGallus Anonymus"
     "text:Lorem ipsum dolor sit amet, <newline>consectetur adipiscing elit. |Pellentesque ligula urna(...)"
+```
+
+</div>
+
+### 3.0.0-DEV-444 - Simple Item QuestItem :thunder_cloud_rain:
+
+The way to identify "QuestItems" which can be stored in the backpack has been changed.
+
+For the `simple` Item that means the `quest-item` tag is used instead of the lore.
+That option also adds the lore line in the player's language if you enable `item.quest.lore` in the '_config.yml_'.
+
+All QuestItems in the backpack are migrated automatically and Items in player's inventories will also be migrated
+with `item.quest.update_legacy_on_join` enabled in the '_config.yml_'.
+
+<div class="grid" markdown>
+
+```YAML title="Old items (in english)"
+items:
+  sword: simple DIAMOND_SWORD "lore:&2Quest Item"
+```
+
+```YAML title="New items"
+items:
+  sword: simple DIAMOND_SWORD quest-item
 ```
 
 </div>

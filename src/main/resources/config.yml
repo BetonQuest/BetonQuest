@@ -85,8 +85,10 @@ hider:
   npc_update_interval: 100
 item:
   quest:
+    lore: true
     unbreakable: true
     remove_after_respawn: true
+    update_legacy_on_join: false
   backpack:
     previous_button: ''
     next_button: ''

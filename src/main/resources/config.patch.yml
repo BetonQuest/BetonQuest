@@ -1,4 +1,11 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.19:
+  - type: SET
+    key: item.quest.lore
+    value: true
+  - type: SET
+    key: item.quest.update_legacy_on_join
+    value: true
 3.0.0.18:
   - type: REMOVE
     key: journal.format.show_separator

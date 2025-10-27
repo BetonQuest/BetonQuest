@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,8 +31,9 @@ public interface QuestItem {
      *
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    default ItemStack generate(final int stackSize) {
+    default ItemStack generate(final int stackSize) throws QuestException {
         return generate(stackSize, null);
     }
 
@@ -41,8 +43,9 @@ public interface QuestItem {
      * @param stackSize size of generated stack
      * @param profile   profile parameter
      * @return the ItemStack equal to this quest item
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    ItemStack generate(int stackSize, @Nullable Profile profile);
+    ItemStack generate(int stackSize, @Nullable Profile profile) throws QuestException;
 
     /**
      * Compares ItemStack to the quest item.
