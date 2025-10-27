@@ -36,10 +36,11 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -197,7 +198,8 @@ public class Journal {
         new PlayerJournalAddEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
         pointers.add(pointer);
         final String date = betonQuest.isMySQLUsed()
-                ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
+                ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
+                .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                 : Long.toString(pointer.timestamp());
         betonQuest.getSaver().add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(),
                 pointer.pointer().getFull(), date));
@@ -214,7 +216,8 @@ public class Journal {
                 final BetonQuest betonQuest = BetonQuest.getInstance();
                 new PlayerJournalDeleteEvent(profile, !betonQuest.getServer().isPrimaryThread(), this, pointer).callEvent();
                 final String date = betonQuest.isMySQLUsed()
-                        ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.timestamp()))
+                        ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
+                        .format(Instant.ofEpochMilli(pointer.timestamp()).atZone(ZoneId.systemDefault()))
                         : Long.toString(pointer.timestamp());
                 betonQuest.getSaver().add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(),
                         pointer.pointer().getFull(), date));

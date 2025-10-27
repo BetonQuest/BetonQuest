@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.time.real;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -44,27 +44,16 @@ public class PartialDateCondition implements PlayerlessCondition {
 
     @Override
     public boolean check() {
-        final Calendar current = Calendar.getInstance();
-        if (dayOfMonth != null) {
-            final int day = current.get(Calendar.DAY_OF_MONTH);
-            if (this.dayOfMonth.stream().noneMatch(interval -> interval.isWithin(day))) {
-                return false;
-            }
-            //if day is not one of the given ones return false
+        final LocalDate localDate = LocalDate.now();
+        if (dayOfMonth != null
+                && this.dayOfMonth.stream().noneMatch(interval -> interval.isWithin(localDate.getDayOfMonth()))) {
+            return false;
         }
-        if (month != null) {
-            final int month = current.get(Calendar.MONTH) + 1;
-            //Don't ask why +1: java.util.Calendar is a complete mess (january is 0, december is 11,...)
-            if (this.month.stream().noneMatch(interval -> interval.isWithin(month))) {
-                return false;
-            }
-            //if month is not one of the given ones return false
+        if (month != null
+                && this.month.stream().noneMatch(interval -> interval.isWithin(localDate.getMonthValue()))) {
+            return false;
         }
-        if (year != null) {
-            final int year = current.get(Calendar.YEAR);
-            return this.year.stream().anyMatch(interval -> interval.isWithin(year));
-            //if year is not one of the given ones return false
-        }
-        return true;
+        return year == null
+                || this.year.stream().anyMatch(interval -> interval.isWithin(localDate.getYear()));
     }
 }

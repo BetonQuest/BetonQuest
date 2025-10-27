@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -98,7 +97,7 @@ public final class Backup {
      */
     public void backup(final String version) {
         log.info("Backing up!");
-        final long time = new Date().getTime();
+        final long time = System.currentTimeMillis();
         if (!backupDatabase()) {
             log.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
@@ -116,7 +115,7 @@ public final class Backup {
             log.warn("Could not delete database backup file!");
         }
 
-        log.debug("Done in " + (new Date().getTime() - time) + "ms");
+        log.debug("Done in " + (System.currentTimeMillis() - time) + "ms");
         log.info("Done, you can find the backup in 'Backups' directory.");
     }
 

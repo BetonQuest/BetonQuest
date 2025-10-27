@@ -122,10 +122,10 @@ public class EntityHider implements Listener {
         this.manager = ProtocolLibrary.getProtocolManager();
 
         // Register events and packet listener
-        plugin.getServer().getPluginManager().registerEvents(
-                bukkitListener = constructBukkit(), plugin);
-        manager.addPacketListener(
-                protocolListener = constructProtocol(plugin));
+        bukkitListener = constructBukkit();
+        plugin.getServer().getPluginManager().registerEvents(bukkitListener, plugin);
+        protocolListener = constructProtocol(plugin);
+        manager.addPacketListener(protocolListener);
     }
 
     /**
