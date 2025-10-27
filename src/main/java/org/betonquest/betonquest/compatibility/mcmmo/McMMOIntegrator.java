@@ -37,7 +37,7 @@ public class McMMOIntegrator implements Integrator {
         questRegistries.event().register("mcmmoexp", new McMMOAddExpEventFactory(loggerFactory, data));
         final BetonQuestLogger log = api.getLoggerFactory().create(McMMOIntegrator.class);
         try {
-            server.getPluginManager().registerEvents(new MCMMOQuestItemHandler(api.getProfileProvider()), plugin);
+            server.getPluginManager().registerEvents(new MCMMOQuestItemHandler(), plugin);
             log.debug("Enabled MCMMO QuestItemHandler");
         } catch (final LinkageError e) {
             log.warn("MCMMO version is not compatible with the QuestItemHandler.", e);

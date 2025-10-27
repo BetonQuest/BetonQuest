@@ -2,8 +2,9 @@ package org.betonquest.betonquest.api.schedule;
 
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import com.cronutils.model.definition.CronDefinition;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.schedule.impl.realtime.cron.CronScheduleFactory;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
@@ -23,8 +24,12 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronSchedule(mock(QuestPackageManager.class), scheduleID, section) {
-        };
+        return new CronScheduleFactory(variableProcessor, packManager) {
+            @Override
+            protected CronDefinition parseCronDefinition() {
+                return DEFAULT_CRON_DEFINITION;
+            }
+        }.createNewInstance(scheduleID, section);
     }
 
     @Override
@@ -39,7 +44,6 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     public void testScheduleValidLoad() throws QuestException {
         final CronSchedule schedule = createSchedule();
-        assertEquals("0 22 * * *", schedule.getTime(), "Returned time should be correct");
 
         final Cron cron = schedule.getTimeCron();
         assertNotNull(cron, "time cron should not be null");

@@ -31,15 +31,15 @@ The updater section controls the plugin's Auto-Updater.
 
 * `enabled` - If set to `false`, it is not possible to update with the updater and no version checks are executed.
 * `strategy` - The update strategy is the most important feature of the Auto-Updater.
-  An explanation is available [here](Version-Changes/Updating.md#choose-an-update-strategy).
+  An explanation is available [here](./Version-Changes/Updating.md#choose-an-update-strategy).
 * `automatic` - If true the updater will download new Versions automatically.
   Otherwise, the updater will only download new versions when the update command is executed.
-  Advice is available [here](Version-Changes/Updating.md#enable-or-disable-automatic-updates).
+  Advice is available [here](./Version-Changes/Updating.md#enable-or-disable-automatic-updates).
 * `ingame_notification` - If true players with `betonquest.admin` permission will be notified on join
   when a new version is available. They will only be notified once a day without a server restart.
 
 ## `downloader` - The downloader settings
-The command [`/q download`](Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
+The command [`/q download`](./Commands-and-Permissions.md) can be used to download quest files from GitHub repositories.
 This is mainly used by betonquest to download tutorial files.
 
 * `pull_request` - Define if pull requests are allowed to be downloaded.  
@@ -237,10 +237,12 @@ Different item settings that are used in BetonQuest.
 
 * `quest`  
   Controls the quest item settings.
-    * `unbreakable` - If set to `true`, quest items will be unbreakable. 
+    * `lore` - If set to `true`, the `quest-item` option will also add the "Quest Item" lore.  
+      This will add the `quest_item` line in the player's language at the end of lore in a new line.
+    * `unbreakable` - If set to `true`, quest items will be unbreakable.  
       This was used in the past when the `unbreakable` tag couldn't be added to items.
       Turn it off and make your quest items unbreakable by vanilla means.
-    * `remove_after_respawn` - If set to `true`, quest items will be removed from the player's inventory after they respawn.
+    * `remove_after_respawn` - If set to `true`, quest items will be removed from the player's inventory after they respawn.  
       This option should be turned on if "keepInventory" gamerule is not being used. 
       It prevents other plugins from duplicating quest items after death.  
       When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
@@ -250,9 +252,13 @@ Different item settings that are used in BetonQuest.
       Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule 
       checking, so it is up to you to decide.  
       Once again, if you have "keepInventory" gamerule true, this setting has to be false and vice versa.
+    * `update_legacy_on_join` - If set to `true`, Quest Items will be updated on join.  
+      If the inventory should be checked for Quest Items identified by Lore should get the new identifier tag set.
+      Only useful when there was BetonQuest used before.
+      When there are no such items or a check is not wanted just disable it.
 * `backpack`  
   Configuration of items, that are shown in the backpack. You reference them with a full path to an item in a package.
-  For example `my_package.my_button`.
+  For example `my_package>my_button`.
     * `previous_button` - The item that is used to go to the previous backpack page, let it empty to use the default one.
     * `next_button` - The item that is used to go to the next backpack page, let it empty to use the default one.
     * `close_button` - The item that is used to close the backpack, let it empty to disable the close button.

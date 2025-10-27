@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
@@ -84,7 +85,7 @@ public class SimpleQuestItem implements QuestItem {
     }
 
     @Override
-    public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
+    public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
         final Material material = selector.getRandomMaterial();
 
         final ItemStack item = new ItemStack(material, stackSize);

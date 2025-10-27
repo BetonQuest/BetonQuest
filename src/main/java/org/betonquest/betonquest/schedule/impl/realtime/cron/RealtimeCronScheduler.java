@@ -21,10 +21,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
- * The scheduler for {@link RealtimeCronSchedule}.
+ * The scheduler for {@link CronSchedule} with an {@link Instant}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule, Instant> {
+public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule, Instant> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -90,7 +90,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      */
     private void runRebootSchedules() {
         log.debug("Collecting reboot schedules...");
-        final List<RealtimeCronSchedule> rebootSchedules = schedules.values().stream()
+        final List<CronSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
         log.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
         rebootSchedules.forEach(this::executeEvents);
@@ -103,11 +103,11 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param now The Instant of now
      */
     private void catchupMissedSchedules(final Instant now) {
-        final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules(now);
+        final List<CronSchedule> missedSchedules = listMissedSchedules(now);
         log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             log.debug("Running missed schedules to catch up...");
-            for (final RealtimeCronSchedule missed : missedSchedules) {
+            for (final CronSchedule missed : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(now, missed.getId());
                 executeEvents(missed);
             }
@@ -137,8 +137,8 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param now The Instant of now
      * @return list of schedules that should be run to catch up any missed schedules
      */
-    private List<RealtimeCronSchedule> listMissedSchedules(final Instant now) {
-        final List<RealtimeCronSchedule> missed = new ArrayList<>();
+    private List<CronSchedule> listMissedSchedules(final Instant now) {
+        final List<CronSchedule> missed = new ArrayList<>();
 
         final Queue<MissedRun> missedRuns = oldestMissedRuns(now);
 
@@ -174,7 +174,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      */
     private Queue<MissedRun> oldestMissedRuns(final Instant now) {
         final Queue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
-        for (final RealtimeCronSchedule schedule : schedules.values()) {
+        for (final CronSchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<ZonedDateTime> cachedExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId())
                         .map(cachedTime -> cachedTime.atZone(ZoneId.systemDefault()));
@@ -189,7 +189,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     }
 
     @Override
-    protected void schedule(final Instant now, final RealtimeCronSchedule schedule) {
+    protected void schedule(final Instant now, final CronSchedule schedule) {
         schedule.getExecutionTime().timeToNextExecution(ZonedDateTime.ofInstant(now, ZoneId.systemDefault())).ifPresent(durationToNextRun ->
                 executor.schedule(() -> {
                     final Instant nextExecution = now.plus(durationToNextRun);
@@ -205,6 +205,6 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
      * @param schedule the schedule to which the missed run belongs
      * @param runTime  the time when the missed run should have taken place.
      */
-    /* default */ record MissedRun(RealtimeCronSchedule schedule, ZonedDateTime runTime) {
+    /* default */ record MissedRun(CronSchedule schedule, ZonedDateTime runTime) {
     }
 }

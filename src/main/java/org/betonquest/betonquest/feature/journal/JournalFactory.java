@@ -3,6 +3,8 @@ package org.betonquest.betonquest.feature.journal;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -14,6 +16,12 @@ import java.util.List;
  * Factory to create Journal objects for profiles.
  */
 public class JournalFactory {
+
+    /**
+     * Logger Factory to create new class specific logger.
+     */
+    private final BetonQuestLoggerFactory loggerFactory;
+
     /**
      * The {@link PluginMessage} instance.
      */
@@ -47,6 +55,7 @@ public class JournalFactory {
     /**
      * Create a new Factory for Journals.
      *
+     * @param loggerFactory the logger Factory to create new class specific logger
      * @param pluginMessage the {@link PluginMessage} instance
      * @param questTypeApi  the Quest Type API
      * @param featureApi    the Feature API
@@ -54,8 +63,10 @@ public class JournalFactory {
      * @param textParser    the text parser to use for parsing text
      * @param fontRegistry  the font registry to get the width of the characters
      */
-    public JournalFactory(final PluginMessage pluginMessage, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
+    public JournalFactory(final BetonQuestLoggerFactory loggerFactory, final PluginMessage pluginMessage,
+                          final QuestTypeApi questTypeApi, final FeatureApi featureApi,
                           final ConfigAccessor config, final TextParser textParser, final FontRegistry fontRegistry) {
+        this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
@@ -72,6 +83,7 @@ public class JournalFactory {
      * @return the newly created journal
      */
     public Journal createJournal(final Profile profile, final List<Pointer> pointers) {
-        return new Journal(pluginMessage, questTypeApi, featureApi, textParser, fontRegistry, profile, pointers, config);
+        final BetonQuestLogger log = loggerFactory.create(Journal.class);
+        return new Journal(log, pluginMessage, questTypeApi, featureApi, textParser, fontRegistry, profile, pointers, config);
     }
 }

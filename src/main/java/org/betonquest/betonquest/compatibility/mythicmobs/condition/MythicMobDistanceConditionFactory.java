@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.condition;
 
-import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.api.mobs.MythicMob;
+import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -22,9 +23,14 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * API Helper for getting MythicMobs.
+     * The Mob Executor used to get MythicMobs.
      */
-    private final BukkitAPIHelper apiHelper;
+    private final MobExecutor mobExecutor;
+
+    /**
+     * The parser for the mythic mob type.
+     */
+    private final Argument<MythicMob> mobArgument;
 
     /**
      * Data required for primary server thread access.
@@ -35,25 +41,24 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
      * Create a new factory for {@link MythicMobDistanceCondition}s.
      *
      * @param loggerFactory the logger factory to create class specific logger
-     * @param apiHelper     the api helper used get MythicMobs
+     * @param mobExecutor   the mob executor used to get MythicMobs
+     * @param mobArgument   the parser for the mythic mob type
      * @param data          the primary server thread data required for main thread checking
      */
-    public MythicMobDistanceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final BukkitAPIHelper apiHelper, final PrimaryServerThreadData data) {
+    public MythicMobDistanceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final MobExecutor mobExecutor,
+                                             final Argument<MythicMob> mobArgument, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
-        this.apiHelper = apiHelper;
+        this.mobExecutor = mobExecutor;
+        this.mobArgument = mobArgument;
         this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String internalName = instruction.next();
-        if (apiHelper.getMythicMob(internalName) == null) {
-            throw new QuestException("MythicMob with internal name '" + internalName + "' does not exist");
-        }
-
+        final Variable<MythicMob> mobType = instruction.get(mobArgument);
         final Variable<Number> distance = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new MythicMobDistanceCondition(apiHelper, internalName, distance),
+                new MythicMobDistanceCondition(mobExecutor, mobType, distance),
                 loggerFactory.create(MythicMobDistanceCondition.class),
                 instruction.getPackage()
         ), data);

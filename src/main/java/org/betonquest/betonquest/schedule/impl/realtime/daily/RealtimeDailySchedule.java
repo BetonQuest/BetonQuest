@@ -1,17 +1,15 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.event.EventID;
+import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.List;
 
 /**
  * A schedule that mimics the functionality and style of the old static event system.
@@ -21,11 +19,6 @@ import java.time.format.DateTimeParseException;
 public class RealtimeDailySchedule extends Schedule {
 
     /**
-     * The DateTimeFormatter used for parsing the time strings.
-     */
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
-
-    /**
      * Parsed time of day when the events should run.
      */
     private final LocalTime timeToRun;
@@ -33,19 +26,15 @@ public class RealtimeDailySchedule extends Schedule {
     /**
      * Creates new instance of the schedule.
      *
-     * @param packManager the quest package manager to get quest packages from
-     * @param scheduleID  id of the new schedule
-     * @param instruction config defining the schedule
-     * @throws QuestException if parsing the config failed
+     * @param scheduleID the schedule id
+     * @param events     the events to execute
+     * @param catchup    the catchup strategy
+     * @param timeToRun  the resolved time to run the schedule
      */
-    public RealtimeDailySchedule(final QuestPackageManager packManager, final ScheduleID scheduleID,
-                                 final ConfigurationSection instruction) throws QuestException {
-        super(packManager, scheduleID, instruction);
-        try {
-            this.timeToRun = LocalTime.parse(super.time, TIME_FORMAT);
-        } catch (final DateTimeParseException e) {
-            throw new QuestException("Unable to parse time '" + super.time + "': " + e.getMessage(), e);
-        }
+    public RealtimeDailySchedule(final ScheduleID scheduleID, final List<EventID> events, final CatchupStrategy catchup,
+                                 final LocalTime timeToRun) {
+        super(scheduleID, events, catchup);
+        this.timeToRun = timeToRun;
     }
 
     /**
