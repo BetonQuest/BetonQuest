@@ -121,7 +121,7 @@ the level, replace the number with `?`.
         ```
         
         1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleComplexMltLine.png)
-??? example "Item Matching Examples:material-information-outline:{ title="For when you want to parse specific parts of your items." }"
+??? example "Item Matching Examples :material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
         newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!"
