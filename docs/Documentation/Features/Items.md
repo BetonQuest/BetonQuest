@@ -40,7 +40,7 @@ These are arguments that can be applied to every item:
 <div class="annotate" markdown>
 - `name`
 The display name of the item. If you want to specifically say that the item must not have any name, use `none` 
-keyword. Default styling is italic.(1)
+keyword. Default styling is italic. (1)
 
 </div>
 
@@ -60,14 +60,14 @@ add `lore-containing` argument to the instruction string. (1)
 <div class="annotate" markdown>
 !!! warning inline end
     By default, all specified enchantments are required. Each specified enchantment will be required on the item by 
-    default unless you prefix its name with `none-`(1).
+    default unless you prefix its name with `none-`. (1)
     ??? warning 
         **Do not use `none-` prefix unless you're using `enchants-containing` argument**, or else it will break the check!
 * `enchants` - a list of enchantments and their levels. You can require the item to not have any enchantments by 
 using `none` keyword. To check the item contains a matching enchantment instead of all, add `enchants-containing` 
 argument to the instruction string.
  Each enchantment consists of these things, separated by 
-colons(2):
+colons: (2)
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
     - level (only positive numbers, including zero) (3)
 
@@ -121,7 +121,7 @@ the level, replace the number with `?`.
 ??? example "Item Matching Examples :material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
-        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!"
+        newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!
         ```
         
         1.  Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
