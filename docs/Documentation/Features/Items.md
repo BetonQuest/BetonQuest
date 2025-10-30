@@ -104,10 +104,8 @@ the level, replace the number with `?`.
 ??? example "Item Creation Examples" 
     === "Basic Item Example"
         ```YAML 
-        holySword: simple stone_sword "name:&4Sword made of Holy Concrete" "lore:Blessed by the Emperor!" #(1)!
+        holySword: simple stone_sword "name:&4Sword made of Holy Concrete" "lore:Blessed by the Emperor!"
         ```
-        
-        1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleSimple.PNG)
   
     === "Complex Item Example With Multiline Syntax"
         ```YAML
@@ -117,10 +115,9 @@ the level, replace the number with `?`.
           "lore:<#FF1CA4>Sharp as can be!"
           enchants:damage_all:3
           unbreakable
-          flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE #(1)!
+          flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE
         ```
         
-        1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleComplexMltLine.png)
 ??? example "Item Matching Examples :material-information-outline:{ title="For when you want to parse specific parts of your items." }"
     === "Lore Matching Example"
         ```YAML
