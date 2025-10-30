@@ -113,11 +113,11 @@ the level, replace the number with `?`.
         ```YAML
         holierSword: >-
         simple stone_sword 
-        "name:<!i><red>An Even Better Sword" 
-        "lore:<#FF1CA4>Sharp as can be!"
-        enchants:damage_all:3
-        unbreakable
-        flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE #(1)!
+          "name:<!i><red>An Even Better Sword" 
+          "lore:<#FF1CA4>Sharp as can be!"
+          enchants:damage_all:3
+          unbreakable
+          flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE #(1)!
         ```
         
         1. ![folder button](../../../_media/content/Documentation/Features/BasicItemExampleComplexMltLine.png)
