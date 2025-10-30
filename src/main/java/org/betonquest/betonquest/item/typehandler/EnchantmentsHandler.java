@@ -73,6 +73,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         return "enchants:" + string.substring(0, string.length() - 1);
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

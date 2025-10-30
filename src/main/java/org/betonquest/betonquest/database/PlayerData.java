@@ -204,6 +204,7 @@ public class PlayerData implements TagData, PointData {
         }
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand")
     private void loadActiveConversation(final ResultSet playerResult) throws SQLException {
         final String fullInstruction = playerResult.getString("conversation");
 

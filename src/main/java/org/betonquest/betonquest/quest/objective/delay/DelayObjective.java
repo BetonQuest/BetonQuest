@@ -17,12 +17,11 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -66,7 +65,7 @@ public class DelayObjective extends Objective {
             @Override
             public void run() {
                 final List<Profile> players = new LinkedList<>();
-                final long time = new Date().getTime();
+                final long time = System.currentTimeMillis();
                 for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
                     final Profile profile = entry.getKey();
                     final DelayData playerData = (DelayData) entry.getValue();
@@ -108,7 +107,7 @@ public class DelayObjective extends Objective {
     public String getDefaultDataInstruction(final Profile profile) {
         return qeHandler.handle(() -> {
             final double millis = timeToMilliSeconds(delay.getValue(profile).doubleValue());
-            return Double.toString(new Date().getTime() + millis);
+            return Double.toString(System.currentTimeMillis() + millis);
         }, "");
     }
 
@@ -160,12 +159,14 @@ public class DelayObjective extends Objective {
     }
 
     private String parseVariableDate(final Profile profile) {
-        return new SimpleDateFormat(BetonQuest.getInstance().getPluginConfig().getString("date_format", ""), Locale.ROOT)
-                .format(new Date((long) getDelayData(profile).getTime()));
+        final String pattern = BetonQuest.getInstance().getPluginConfig().getString("date_format", "");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
+        final long millis = (long) getDelayData(profile).getTime();
+        return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).format(formatter);
     }
 
     private String parseVariableRawSeconds(final Profile profile) {
-        final double timeLeft = getDelayData(profile).getTime() - new Date().getTime();
+        final double timeLeft = getDelayData(profile).getTime() - System.currentTimeMillis();
         return String.valueOf(timeLeft / 1000);
     }
 

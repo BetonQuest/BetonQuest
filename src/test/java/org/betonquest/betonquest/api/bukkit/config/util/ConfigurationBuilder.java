@@ -253,6 +253,7 @@ public class ConfigurationBuilder {
      *
      * @return The {@link ConfigurationBuilder} for chaining
      */
+    @SuppressWarnings("PMD.UselessPureMethodCall")
     public ConfigurationBuilder setupItem() {
         final ItemStack value = spy(new ItemStack(Material.BONE, 42));
         doReturn("ItemStack {type=BONE, amount=42}").when(value).toString();

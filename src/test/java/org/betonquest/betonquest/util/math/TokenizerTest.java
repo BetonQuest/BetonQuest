@@ -1098,14 +1098,5 @@ class TokenizerTest {
      * @param value The variable value.
      */
     private record ProtoVariable(String key, String value) {
-
-        /**
-         * Create a variable prototype used by {@link #withVariables(ProtoVariable...)}
-         *
-         * @param key   variable name
-         * @param value variable content
-         */
-        private ProtoVariable {
-        }
     }
 }

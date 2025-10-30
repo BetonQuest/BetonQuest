@@ -127,6 +127,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

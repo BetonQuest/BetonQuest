@@ -2,7 +2,11 @@ package org.betonquest.betonquest.logger.format;
 
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -13,9 +17,9 @@ import java.util.logging.LogRecord;
 public final class LogfileFormatter extends Formatter {
 
     /**
-     * The log report's timestamp.
+     * The formatter for the logs timestamp.
      */
-    private final Date date = new Date();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm:ss", Locale.ROOT);
 
     /**
      * Default constructor.
@@ -26,7 +30,9 @@ public final class LogfileFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        date.setTime(record.getMillis());
+        final ZonedDateTime time = Instant.ofEpochMilli(record.getMillis()).atZone(ZoneId.systemDefault());
+        final String formattedTime = FORMATTER.format(time);
+
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
         final String plugin = "[" + betonRecord.map(BetonQuestLogRecord::getPlugin).orElse("?") + "] ";
         final String questPackage = betonRecord
@@ -36,9 +42,7 @@ public final class LogfileFormatter extends Formatter {
         final String message = formatMessage(record);
         final String throwable = record.getThrown() == null ? "" : FormatterUtils.formatThrowable(record.getThrown());
 
-        return String.format("[%1$ty.%1$tm.%1$td %tT %2$s]: %3$s%4$s%5$s%6$s%n",
-                date, record.getLevel().getName(),
-                plugin, questPackage, message,
-                throwable);
+        return String.format("[%s %s]: %s%s%s%s%n",
+                formattedTime, record.getLevel().getName(), plugin, questPackage, message, throwable);
     }
 }

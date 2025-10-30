@@ -195,6 +195,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return key.asString();
     }
 
+    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

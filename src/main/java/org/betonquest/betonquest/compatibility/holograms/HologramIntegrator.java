@@ -14,6 +14,9 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Support for Hologram plugins should come from implementation this abstract class. There may be multiple
  * HologramIntegrator objects loaded at once, hence reload(), and close() should not do anything.
@@ -136,5 +139,21 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     @Override
     public int compareTo(final HologramIntegrator integrator) {
         return Integer.compare(integrator.getPriority(), this.getPriority());
+    }
+
+    @Override
+    public boolean equals(final Object object) {
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        final HologramIntegrator that = (HologramIntegrator) object;
+        return Objects.equals(pluginName, that.pluginName)
+                && Objects.equals(requiredVersion, that.requiredVersion)
+                && Objects.deepEquals(qualifiers, that.qualifiers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pluginName, requiredVersion, Arrays.hashCode(qualifiers));
     }
 }

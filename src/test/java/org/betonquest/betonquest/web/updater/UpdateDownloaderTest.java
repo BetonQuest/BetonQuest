@@ -63,7 +63,7 @@ class UpdateDownloaderTest {
         final DownloadSource downloadSource = mock(DownloadSource.class);
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, file);
 
-        doReturn(updateFolder).when(file).getParentFile();
+        when(file.getParentFile()).thenReturn(updateFolder);
         doReturn(false).when(updateFolder).mkdirs();
 
         final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestException");

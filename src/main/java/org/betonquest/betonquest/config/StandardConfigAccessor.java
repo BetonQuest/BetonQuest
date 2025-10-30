@@ -74,7 +74,6 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         load(configurationFile, false, configurationFile.getPath());
     }
 
-    @SuppressWarnings("PMD.AvoidRethrowingException")
     private void readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         try (InputStream stream = plugin.getResource(resourceFile)) {
             if (stream == null) {
