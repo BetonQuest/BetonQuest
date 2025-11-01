@@ -37,8 +37,9 @@ public class ConversationOptionEvent extends ProfileEvent {
      * @param selectedPlayerOption the option chosen by the player
      * @param nextNPCOption        the option which is NPC's response
      */
-    public ConversationOptionEvent(final Profile profile, final Conversation conv, final ResolvedOption selectedPlayerOption, final ResolvedOption nextNPCOption) {
-        super(profile);
+    public ConversationOptionEvent(final Profile profile, final Conversation conv,
+                                   final ResolvedOption selectedPlayerOption, final ResolvedOption nextNPCOption) {
+        super(profile, true);
         this.conv = conv;
         this.selectedOption = selectedPlayerOption;
         this.nextNPCOption = nextNPCOption;

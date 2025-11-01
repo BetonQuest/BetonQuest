@@ -43,7 +43,6 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -431,13 +430,7 @@ public class Conversation implements Listener {
                 // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 HandlerList.unregisterAll(this);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        new PlayerConversationEndEvent(onlineProfile, Conversation.this).callEvent();
-                    }
-                }.runTask(plugin);
+                new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
             });
         } finally {
             lock.writeLock().unlock();
@@ -581,14 +574,7 @@ public class Conversation implements Listener {
             // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
-
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    new PlayerConversationEndEvent(onlineProfile, Conversation.this).callEvent();
-                }
-            }.runTask(plugin);
+            new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
             lock.readLock().unlock();
         }
@@ -649,9 +635,8 @@ public class Conversation implements Listener {
     }
 
     /**
-     * Starts the conversation, should be called asynchronously.
+     * Starts the conversation, has to be called asynchronously.
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private class Starter extends BukkitRunnable {
 
         /**
@@ -688,25 +673,7 @@ public class Conversation implements Listener {
                     return;
                 }
                 state = ConversationState.ACTIVE;
-                // the conversation start event must be run on next tick
-                final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, Conversation.this);
-                final Future<Void> eventDispatcherTask = Bukkit.getServer().getScheduler().callSyncMethod(plugin, () -> {
-                    event.callEvent();
-                    return null;
-                });
-
-                try {
-                    eventDispatcherTask.get(1, TimeUnit.SECONDS);
-                } catch (InterruptedException | TimeoutException exception) {
-                    log.warn(pack, "Calling PlayerConversationStartEvent took too long.", exception);
-                } catch (final ExecutionException exception) {
-                    log.error(pack, "Error while calling PlayerConversationStartEvent.", exception);
-                    ACTIVE_CONVERSATIONS.remove(onlineProfile);
-                    return;
-                }
-
-                // stop the conversation if it's canceled
-                if (event.isCancelled()) {
+                if (!new PlayerConversationStartEvent(onlineProfile, Conversation.this).callEvent()) {
                     log.debug(pack, "Conversation '" + identifier + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
@@ -751,16 +718,8 @@ public class Conversation implements Listener {
                 }
 
                 printNPCText();
-                final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent optionEvent = new ConversationOptionEvent(profile, Conversation.this, nextNPCOption, Conversation.this.nextNPCOption);
-
-                new BukkitRunnable() {
-
-                    @Override
-                    public void run() {
-                        optionEvent.callEvent();
-                    }
-                }.runTask(plugin);
+                new ConversationOptionEvent(onlineProfile, Conversation.this, nextNPCOption,
+                        Conversation.this.nextNPCOption).callEvent();
             } finally {
                 lock.writeLock().unlock();
             }
@@ -864,15 +823,8 @@ public class Conversation implements Listener {
                 selectOption(resolvePointers(playerOption), false);
                 printNPCText();
 
-                final OnlineProfile profile = plugin.getProfileProvider().getProfile(player);
-                final ConversationOptionEvent event = new ConversationOptionEvent(profile, Conversation.this, playerOption, Conversation.this.nextNPCOption);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        event.callEvent();
-                    }
-                }.runTask(plugin);
+                new ConversationOptionEvent(onlineProfile, Conversation.this, playerOption,
+                        Conversation.this.nextNPCOption).callEvent();
             } catch (final QuestException e) {
                 log.reportException(pack, e);
                 throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
