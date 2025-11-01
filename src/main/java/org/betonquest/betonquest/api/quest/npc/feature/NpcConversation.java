@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.quest.npc.feature;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -28,9 +29,10 @@ public class NpcConversation<T> extends Conversation {
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
      * @param npc            the Npc used for this conversation
+     * @throws QuestException when required conversation objects could not be created
      */
     public NpcConversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                           final Location center, final Npc<T> npc) {
+                           final Location center, final Npc<T> npc) throws QuestException {
         super(log, pluginMessage, onlineProfile, conversationID, center);
         this.npc = npc;
     }

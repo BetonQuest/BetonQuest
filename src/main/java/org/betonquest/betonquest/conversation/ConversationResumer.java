@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -82,7 +83,13 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(state.center().getWorld()) && event.getTo().distanceSquared(state.center()) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-            new Conversation(loggerFactory.create(Conversation.class), pluginMessage, onlineProfile, state.currentConversation(), state.center(), state.currentOption());
+
+            try {
+                new Conversation(loggerFactory.create(Conversation.class), pluginMessage, onlineProfile, state.currentConversation(), state.center(), state.currentOption());
+            } catch (final QuestException e) {
+                loggerFactory.create(ConversationResumer.class).error(state.currentConversation().getPackage(),
+                        "Cannot start conversation '" + state.currentConversation() + "': " + e.getMessage(), e);
+            }
         }
     }
 
