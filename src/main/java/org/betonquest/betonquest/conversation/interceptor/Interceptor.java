@@ -9,6 +9,11 @@ import net.kyori.adventure.text.Component;
 public interface Interceptor {
 
     /**
+     * Starts the work of this interceptor.
+     */
+    void begin();
+
+    /**
      * Send a message to player bypassing Interceptor.
      *
      * @param message the message
