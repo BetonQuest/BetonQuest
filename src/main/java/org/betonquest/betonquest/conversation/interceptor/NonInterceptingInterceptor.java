@@ -24,6 +24,11 @@ public class NonInterceptingInterceptor implements Interceptor {
     }
 
     @Override
+    public void begin() {
+        // Empty
+    }
+
+    @Override
     public void sendMessage(final Component message) {
         player.sendMessage(message);
     }

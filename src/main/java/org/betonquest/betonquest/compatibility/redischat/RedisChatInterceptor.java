@@ -32,6 +32,10 @@ public class RedisChatInterceptor implements Interceptor {
     public RedisChatInterceptor(final OnlineProfile onlineProfile, final RedisChatAPI api) {
         this.player = onlineProfile.getPlayer();
         this.api = api;
+    }
+
+    @Override
+    public void begin() {
         api.pauseChat(player);
     }
 
