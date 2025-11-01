@@ -31,7 +31,7 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
      * @param conversation conversation which is about to start
      */
     public PlayerConversationStartEvent(final Profile who, final Conversation conversation) {
-        super(who);
+        super(who, true);
         this.conversation = conversation;
     }
 

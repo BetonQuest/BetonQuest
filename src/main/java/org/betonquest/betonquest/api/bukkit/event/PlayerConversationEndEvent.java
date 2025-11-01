@@ -22,10 +22,11 @@ public class PlayerConversationEndEvent extends ProfileEvent {
      * Creates new conversation end event.
      *
      * @param who          the {@link Profile} who ended the conversation
+     * @param isAsync      whether the event is async
      * @param conversation conversation which has been ended
      */
-    public PlayerConversationEndEvent(final Profile who, final Conversation conversation) {
-        super(who);
+    public PlayerConversationEndEvent(final Profile who, final boolean isAsync, final Conversation conversation) {
+        super(who, isAsync);
         this.conversation = conversation;
     }
 
