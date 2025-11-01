@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation.display;
+package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
 
 /**
  * A cursor that can be toggled on and off.

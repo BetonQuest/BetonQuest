@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation.display;
+package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
 
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;

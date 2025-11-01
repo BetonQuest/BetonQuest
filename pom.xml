@@ -172,6 +172,12 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.github.retrooper</groupId>
+      <artifactId>packetevents-spigot</artifactId>
+      <version>2.10.0</version>
+      <scope>provided</scope>
+    </dependency>
 
     <!-- from neetgames repository -->
     <dependency>
@@ -189,26 +195,6 @@
       <version>2.11.6</version>
       <scope>provided</scope>
       <optional>true</optional>
-    </dependency>
-
-    <!-- from dmulloy2 repository -->
-    <dependency>
-      <groupId>com.comphenix.protocol</groupId>
-      <artifactId>ProtocolLib</artifactId>
-      <version>5.3.0</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>net.bytebuddy</groupId>
-          <artifactId>byte-buddy</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.comphenix.packetwrapper</groupId>
-      <artifactId>PacketWrapper</artifactId>
-      <version>1.13-R0.1-SNAPSHOT</version>
     </dependency>
 
     <!-- from githubusercontent-Shopkeepers repository -->
@@ -275,6 +261,12 @@
       <version>v2.0.0</version>
       <scope>provided</scope>
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.comphenix.protocol</groupId>
+          <artifactId>ProtocolLib</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.github.Emibergo02</groupId>
@@ -459,10 +451,6 @@
       <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
     <repository>
-      <id>betonquest-dmulloy2-repo</id>
-      <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-    </repository>
-    <repository>
       <id>betonquest-githubusercontent-Shopkeepers-repo</id>
       <url>https://raw.githubusercontent.com/Shopkeepers/Repository/main/releases/</url>
     </repository>
@@ -546,6 +534,7 @@
                   <excludes>
                     <exclude>org.spigotmc</exclude>
                     <exclude>org.bukkit</exclude>
+                    <exclude>com.comphenix.protocol:ProtocolLib</exclude>
                   </excludes>
                 </bannedDependencies>
               </rules>
@@ -572,7 +561,6 @@
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
-                  <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
                   <include>de.themoep:minedown-adventure</include>
@@ -584,12 +572,6 @@
                   <includes>
                     <include>org/bstats/**</include>
                   </includes>
-                </filter>
-                <filter>
-                  <artifact>com.comphenix.packetwrapper</artifact>
-                  <excludes>
-                    <exclude>plugin.yml</exclude>
-                  </excludes>
                 </filter>
               </filters>
               <relocations>
@@ -613,11 +595,6 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.comphenix.packetwrapper</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.comphenix.packetwrapper
-                  </shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>io.papermc.lib</pattern>

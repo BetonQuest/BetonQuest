@@ -29,7 +29,7 @@ profile:
 conversation:
   default_io: menu,tellraw
   interceptor:
-    default: redischat,packet,simple
+    default: redischat,packetevents,simple
     display_missed: true
   damage:
     combat_delay: 10
@@ -149,3 +149,4 @@ hook:
   train_carts: true
   fancynpcs: true
   znpcsplus: true
+  packetevents: true
