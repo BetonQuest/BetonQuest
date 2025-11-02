@@ -15,9 +15,8 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
-import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobDoubleParser;
-import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.bukkit.Location;
 
 import java.util.Map;
@@ -38,9 +37,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     private final PrimaryServerThreadData data;
 
     /**
-     * Compatibility instance to check for other hooks.
+     * Mythic Hider instance.
      */
-    private final Compatibility compatibility;
+    private final MythicHider mythicHider;
 
     /**
      *
@@ -54,14 +53,14 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
      * @param loggerFactory   the logger factory to create class specific logger
      * @param mythicMobParser the parser for the mob type
      * @param data            the primary server thread data required for main thread checking
-     * @param compatibility   the compatibility instance to check for other hooks
+     * @param mythicHider     the mythic hider instance for the spawned mobs
      */
-    public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final MythicMobDoubleParser mythicMobParser, final PrimaryServerThreadData data,
-                                      final Compatibility compatibility) {
+    public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final MythicMobDoubleParser mythicMobParser,
+                                      final PrimaryServerThreadData data, final MythicHider mythicHider) {
         this.loggerFactory = loggerFactory;
         this.mythicMobParser = mythicMobParser;
         this.data = data;
-        this.compatibility = compatibility;
+        this.mythicHider = mythicHider;
     }
 
     @Override
@@ -69,15 +68,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
-        final MythicHider privateMob;
-        if (compatibility.getHooked().contains("ProtocolLib") && instruction.hasArgument("private")) {
-            privateMob = MythicHider.getInstance();
-            if (privateMob == null) {
-                throw new QuestException("Can't spawn MythicMob private: There is no hider!");
-            }
-        } else {
-            privateMob = null;
-        }
+        final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
         final boolean targetPlayer = instruction.hasArgument("target");
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(

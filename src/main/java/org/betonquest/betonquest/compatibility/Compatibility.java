@@ -236,7 +236,7 @@ public class Compatibility implements Listener {
 
     private void registerCompatiblePlugins() {
         final BetonQuestLoggerFactory loggerFactory = betonQuestApi.getLoggerFactory();
-        register("MythicMobs", new MythicMobsIntegratorFactory(this));
+        register("MythicMobs", new MythicMobsIntegratorFactory());
         register("Citizens", new CitizensIntegratorFactory());
         register("Vault", new VaultIntegratorFactory());
         register("Skript", new SkriptIntegratorFactory());

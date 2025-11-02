@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -25,7 +26,8 @@ public enum Type {
      */
     MYTHIC_MOB {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
+                                              final MobExecutor mobExecutor) throws QuestException {
             final Variable<MythicMob> mythicMobVariable = instruction.get(string -> {
                 final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
                 if (mythicMob.isPresent()) {
@@ -33,7 +35,7 @@ public enum Type {
                 }
                 throw new QuestException("There exists no MythicMob type '" + string + "'");
             });
-            return new TypeWrapper(mythicMobVariable, mobExecutor);
+            return new TypeWrapper(mythicMobVariable, mythicHider, mobExecutor);
         }
 
         @Override
@@ -46,9 +48,10 @@ public enum Type {
      */
     UUID {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
+                                              final MobExecutor mobExecutor) throws QuestException {
             try {
-                return new UUIDWrapper(instruction.get(Argument.UUID), mobExecutor);
+                return new UUIDWrapper(instruction.get(Argument.UUID), mythicHider, mobExecutor);
             } catch (final IllegalArgumentException exception) {
                 throw new QuestException(exception);
             }
@@ -64,8 +67,9 @@ public enum Type {
      */
     FACTION {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MobExecutor mobExecutor) throws QuestException {
-            return new FactionWrapper(instruction.get(Argument.STRING), mobExecutor);
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
+                                              final MobExecutor mobExecutor) throws QuestException {
+            return new FactionWrapper(instruction.get(Argument.STRING), mythicHider, mobExecutor);
         }
 
         @Override
@@ -78,11 +82,13 @@ public enum Type {
      * Gets the Wrapper representing the instruction.
      *
      * @param instruction the instruction with already consumed type parameter
+     * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get MythicMobs from
      * @return a new validated wrapper
      * @throws QuestException if the instruction cannot be parsed or there is no valid target for it
      */
-    protected abstract NpcWrapper<ActiveMob> parse(Instruction instruction, MobExecutor mobExecutor) throws QuestException;
+    protected abstract NpcWrapper<ActiveMob> parse(Instruction instruction, MythicHider mythicHider,
+                                                   MobExecutor mobExecutor) throws QuestException;
 
     /**
      * Gets the instruction string which parsing would result in getting that mob.
@@ -96,15 +102,17 @@ public enum Type {
      * Gets the Mob Npc by {@link UUID}.
      *
      * @param uuid        the identifying uuid
+     * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record UUIDWrapper(Variable<UUID> uuid, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+    private record UUIDWrapper(Variable<UUID> uuid, MythicHider mythicHider,
+                               MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final UUID uuid = this.uuid.getValue(profile);
             final Optional<ActiveMob> activeMob = mobExecutor.getActiveMob(uuid);
             if (activeMob.isPresent()) {
-                return new MythicMobsNpcAdapter(activeMob.get());
+                return new MythicMobsNpcAdapter(activeMob.get(), mythicHider);
             }
             throw new QuestException("Could not find entity '" + uuid + "' for MythicMob Npc");
         }
@@ -114,21 +122,23 @@ public enum Type {
      * Gets the Mob Npc by their {@link MythicMob} definition.
      *
      * @param type        the identifying type
+     * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record TypeWrapper(Variable<MythicMob> type, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+    private record TypeWrapper(Variable<MythicMob> type, MythicHider mythicHider,
+                               MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final MythicMob type = this.type.getValue(profile);
             final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(mob -> type.equals(mob.getType()));
             if (activeMobs.isEmpty()) {
-                return new WrappingMMNpcAdapter(type);
+                return new WrappingMMNpcAdapter(type, mythicHider);
             }
             final int one = 1;
             if (activeMobs.size() != one) {
                 throw new QuestException("There exists multiple MythicMobs with type '" + type + "', can't determine!");
             }
-            return new MythicMobsNpcAdapter(activeMobs.iterator().next());
+            return new MythicMobsNpcAdapter(activeMobs.iterator().next(), mythicHider);
         }
     }
 
@@ -136,9 +146,11 @@ public enum Type {
      * Gets the Mob Npc by their {@link ActiveMob#getFaction()}.
      *
      * @param faction     the identifying faction
+     * @param mythicHider the hider for mobs
      * @param mobExecutor the instance to get the mob from
      */
-    private record FactionWrapper(Variable<String> faction, MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+    private record FactionWrapper(Variable<String> faction, MythicHider mythicHider,
+                                  MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final String faction = this.faction.getValue(profile);
@@ -150,7 +162,7 @@ public enum Type {
             if (activeMobs.size() != one) {
                 throw new QuestException("There exists multiple MythicMobs with faction '" + faction + "', can't determine!");
             }
-            return new MythicMobsNpcAdapter(activeMobs.iterator().next());
+            return new MythicMobsNpcAdapter(activeMobs.iterator().next(), mythicHider);
         }
     }
 }

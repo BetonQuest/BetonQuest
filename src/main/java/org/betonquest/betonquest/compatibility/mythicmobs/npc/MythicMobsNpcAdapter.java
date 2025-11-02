@@ -4,7 +4,7 @@ import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
-import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -15,9 +15,10 @@ import java.util.Optional;
 /**
  * MythicMobs {@link Npc} Adapter.
  *
- * @param activeMob The ActiveMob instance.
+ * @param activeMob   The ActiveMob instance.
+ * @param mythicHider the hider for mobs
  */
-public record MythicMobsNpcAdapter(ActiveMob activeMob) implements Npc<ActiveMob> {
+public record MythicMobsNpcAdapter(ActiveMob activeMob, MythicHider mythicHider) implements Npc<ActiveMob> {
     @Override
     public ActiveMob getOriginal() {
         return activeMob;
@@ -75,13 +76,11 @@ public record MythicMobsNpcAdapter(ActiveMob activeMob) implements Npc<ActiveMob
 
     @Override
     public void show(final OnlineProfile onlineProfile) {
-        Optional.ofNullable(MythicHider.getInstance()).ifPresent(hider ->
-                hider.show(onlineProfile, activeMob.getEntity().getBukkitEntity()));
+        mythicHider.show(onlineProfile, activeMob.getEntity().getBukkitEntity());
     }
 
     @Override
     public void hide(final OnlineProfile onlineProfile) {
-        Optional.ofNullable(MythicHider.getInstance()).ifPresent(hider ->
-                hider.hide(onlineProfile, activeMob.getEntity().getBukkitEntity()));
+        mythicHider.hide(onlineProfile, activeMob.getEntity().getBukkitEntity());
     }
 }
