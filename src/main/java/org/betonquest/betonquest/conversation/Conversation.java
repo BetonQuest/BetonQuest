@@ -434,7 +434,7 @@ public class Conversation implements Listener {
                 // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 HandlerList.unregisterAll(this);
-                new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
+                new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
             });
         } finally {
             lock.writeLock().unlock();
@@ -571,7 +571,7 @@ public class Conversation implements Listener {
             // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
-            new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
+            new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
             lock.readLock().unlock();
         }
