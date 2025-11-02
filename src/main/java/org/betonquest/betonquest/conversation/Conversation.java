@@ -731,6 +731,7 @@ public class Conversation implements Listener {
                 if (messagesDelaying) {
                     try {
                         Conversation.this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
+                        Conversation.this.interceptor.begin();
                     } catch (final QuestException e) {
                         log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
                         return;

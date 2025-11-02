@@ -102,8 +102,6 @@ public class PacketInterceptor implements Interceptor, Listener {
                 messages.add(packet);
             }
         };
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 
     private static List<PacketType> getPacketTypes() {
@@ -119,9 +117,13 @@ public class PacketInterceptor implements Interceptor, Listener {
     }
 
     @Override
+    public void begin() {
+        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
+    }
+
+    @Override
     public void sendMessage(final Component message) {
-        final net.kyori.adventure.text.TextComponent component = Component.text(MESSAGE_PASSTHROUGH_TAG).append(message);
-        player.sendMessage(component);
+        player.sendMessage(Component.text(MESSAGE_PASSTHROUGH_TAG).append(message));
     }
 
     @Override

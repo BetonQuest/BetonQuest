@@ -35,6 +35,10 @@ public class SimpleInterceptor implements Interceptor, Listener {
      */
     public SimpleInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
+    }
+
+    @Override
+    public void begin() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
