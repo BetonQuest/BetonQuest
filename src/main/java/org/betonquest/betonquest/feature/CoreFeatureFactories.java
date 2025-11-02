@@ -167,7 +167,7 @@ public class CoreFeatureFactories {
         notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
         notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(plugin));
         notifyIOTypes.register("title", new TitleNotifyIOFactory());
-        notifyIOTypes.register("totem", new TotemNotifyIOFactory(plugin));
+        notifyIOTypes.register("totem", new TotemNotifyIOFactory());
         notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory());
         notifyIOTypes.register("sound", new SoundIOFactory());
 
