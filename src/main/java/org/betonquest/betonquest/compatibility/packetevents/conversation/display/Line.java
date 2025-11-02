@@ -17,14 +17,30 @@ public interface Line {
      *
      * @return the Component represented by this line
      */
-    Component line();
+    Component getLine();
 
     /**
      * A fixed line that does not change.
-     *
-     * @param line The line to be displayed.
      */
-    record Fixed(Component line) implements Line {
+    class Fixed implements Line {
+        /**
+         * The line to be displayed.
+         */
+        private final Component line;
+
+        /**
+         * Creates a new fixed line.
+         *
+         * @param line the Component to be displayed as a fixed line
+         */
+        public Fixed(final Component line) {
+            this.line = line;
+        }
+
+        @Override
+        public Component getLine() {
+            return line;
+        }
     }
 
     /**
@@ -60,7 +76,7 @@ public interface Line {
         }
 
         @Override
-        public Component line() {
+        public Component getLine() {
             if (isSelected()) {
                 return selected;
             } else {

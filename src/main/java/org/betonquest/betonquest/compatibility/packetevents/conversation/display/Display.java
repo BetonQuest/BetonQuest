@@ -170,7 +170,7 @@ public class Display {
         if (scroll != Scroll.NONE) {
             checkNewSelect(scroll, lines);
         }
-        final List<Component> displayLines = lines.stream().map(Line::line).toList();
+        final List<Component> displayLines = lines.stream().map(Line::getLine).toList();
         return Component.join(JoinConfiguration.newlines(), displayLines);
     }
 
