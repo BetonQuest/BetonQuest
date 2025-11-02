@@ -25,13 +25,6 @@ public interface Line {
      * @param line The line to be displayed.
      */
     record Fixed(Component line) implements Line {
-        /**
-         * Creates a new fixed line.
-         *
-         * @param line the Component to be displayed as a fixed line
-         */
-        public Fixed {
-        }
     }
 
     /**
