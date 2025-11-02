@@ -230,7 +230,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
                 + "' and started conversation '" + conversationID + "'.");
         final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
-        new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
+        try {
+            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
+        } catch (final QuestException e) {
+            log.error(conversationID.getPackage(), "Cannot start conversation '" + conversationID + "': " + e.getMessage(), e);
+        }
         return true;
     }
 

@@ -148,6 +148,17 @@ public class Conversation implements Listener {
     private final IngameNotificationSender endSender;
 
     /**
+     * The {@link ConversationIO} used to display this conversation.
+     */
+    private final ConversationIO inOut;
+
+    /**
+     * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
+     */
+    @Nullable
+    private final Interceptor interceptor;
+
+    /**
      * The current conversation state.
      */
     @SuppressWarnings("PMD.AvoidUsingVolatile")
@@ -165,18 +176,6 @@ public class Conversation implements Listener {
     private ConversationData data;
 
     /**
-     * The {@link ConversationIO} used to display this conversation.
-     */
-    @Nullable
-    private ConversationIO inOut;
-
-    /**
-     * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
-     */
-    @Nullable
-    private Interceptor interceptor;
-
-    /**
      * Starts a new conversation between player and npc at given location. It uses
      * starting options to determine where to start.
      *
@@ -185,8 +184,10 @@ public class Conversation implements Listener {
      * @param onlineProfile  the {@link OnlineProfile} of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
+     * @throws QuestException when required conversation objects could not be created
      */
-    public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center) {
+    public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile,
+                        final ConversationID conversationID, final Location center) throws QuestException {
         this(log, pluginMessage, onlineProfile, conversationID, center, null);
     }
 
@@ -201,9 +202,10 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
      * @param startingOption name of the option which the conversation should start at
+     * @throws QuestException when required conversation objects could not be created
      */
     public Conversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                        final Location center, @Nullable final String startingOption) {
+                        final Location center, @Nullable final String startingOption) throws QuestException {
         this.log = log;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
@@ -217,12 +219,14 @@ public class Conversation implements Listener {
         this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
-        try {
-            this.data = plugin.getFeatureApi().getConversation(conversationID);
-        } catch (final QuestException e) {
-            log.error(pack, "Cannot start conversation '" + conversationID + "': " + e.getMessage(), e);
-            return;
+        this.data = plugin.getFeatureApi().getConversation(conversationID);
+        this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(this, onlineProfile);
+        if (messagesDelaying) {
+            this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
+        } else {
+            this.interceptor = null;
         }
+
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
@@ -430,7 +434,7 @@ public class Conversation implements Listener {
                 // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 HandlerList.unregisterAll(this);
-                new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
+                new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
             });
         } finally {
             lock.writeLock().unlock();
@@ -552,13 +556,6 @@ public class Conversation implements Listener {
             if (state.isInactive()) {
                 return;
             }
-            if (inOut == null) {
-                log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
-                        + onlineProfile.getProfileName());
-                ACTIVE_CONVERSATIONS.remove(onlineProfile);
-                HandlerList.unregisterAll(this);
-                return;
-            }
             inOut.end(() -> {
             });
 
@@ -574,7 +571,7 @@ public class Conversation implements Listener {
             // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
-            new PlayerConversationEndEvent(onlineProfile, plugin.getServer().isPrimaryThread(), this).callEvent();
+            new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
             lock.readLock().unlock();
         }
@@ -680,29 +677,10 @@ public class Conversation implements Listener {
                     return;
                 }
 
-                // now the conversation should start no matter what;
-                // the inOut can be safely instantiated; doing it before
-                // would leave it active while the conversation is not
-                // started, causing it to display "null" all the time
-                try {
-                    Conversation.this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(Conversation.this, onlineProfile);
-                } catch (final QuestException e) {
-                    log.warn(pack, "Error when loading conversation IO: " + e.getMessage(), e);
-                    return;
-                }
-
-                // register listener for immunity and blocking commands
                 Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
-                // start interceptor if needed
-                if (messagesDelaying) {
-                    try {
-                        Conversation.this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
-                        Conversation.this.interceptor.begin();
-                    } catch (final QuestException e) {
-                        log.warn(pack, "Error when loading interceptor: " + e.getMessage(), e);
-                        return;
-                    }
+                if (interceptor != null) {
+                    interceptor.begin();
                 }
 
                 if (startingOptions.isEmpty()) {
