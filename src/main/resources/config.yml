@@ -135,7 +135,7 @@ hook:
   decentholograms: true
   worldedit: true
   fastasyncworldedit: true
-  protocollib: true
+  packetevents: true
   brewery: true
   breweryx: true
   jobs: true

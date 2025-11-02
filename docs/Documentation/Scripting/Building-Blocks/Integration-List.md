@@ -11,7 +11,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus._
 
 ## Provided by other plugins
@@ -784,6 +784,24 @@ events:
   castPoison: mcast AngrySludgePoison
 ```
 
+## PacketEvents[](https://www.spigotmc.org/resources/80279/)
+
+### Events
+
+#### Freeze players: 'freeze'
+This event allows you to freeze player for the given amount of ticks:
+```YAML
+freezeMe: "freeze 100" #Freezes the player for 5 seconds
+```
+
+### Chat Interceptor
+
+#### Packet interceptor: `packetevents`
+This interceptor works on network package level and is thus much more reliable than the `simple` interceptor
+when working with advanced Chat plugins.
+It can also reprint the history of the chat after the conversation,
+so the conversation can not be seen in the chat history.
+
 ## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 
 If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
@@ -810,22 +828,7 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 !!! example
     ```YAML
     %ph.player_item_in_hand%
-    ```
-
-## ProtocolLib[](https://www.spigotmc.org/resources/1997/)
-
-### Events
-
-#### Freeze players: 'freeze'
-This event allows you to freeze player for the given amount of ticks:
-```YAML
-freezeMe: "freeze 100" #Freezes the player for 5 seconds
-```
-
-### Chat Interceptor
-
-#### Packet interceptor: `packet`
-This interceptor works on network package level and is thus much more reliable than the `simple` interceptor when working with advanced Chat plugins. 
+    ``` 
 
 ## Quests[](https://www.spigotmc.org/resources/3711/)
 

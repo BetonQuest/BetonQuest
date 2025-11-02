@@ -7,6 +7,11 @@
     key: conversation.interceptor.default
     oldValue: 'packet'
     newValue: 'packetevents'
+  - type: REMOVE
+    key: hook.protocollib
+  - type: SET
+    key: hook.packetevents
+    value: true
 3.0.0.19:
   - type: SET
     key: item.quest.lore

@@ -25,10 +25,8 @@ This page will guide you through the installation process for all plugins that a
    Just give the first paragraph of their Spigot page a good read, and you will find the link to the free download.
    Also put the "_Citizens.jar_" file in your server's "_plugins_" folder.
 
-3. You also need [ProtocolLib](https://www.spigotmc.org/resources/1997/) for this
-   tutorial. Put the "_ProtocolLib.jar_" file in your server's "_plugins_" folder as well.    
-   You do have to be a bit careful with ProtocolLib. Often, the current release on Spigot may not support the latest version
-   of Minecraft. You might have to download the latest dev build from their [dev build site](https://ci.dmulloy2.net/job/ProtocolLib/).
+3. You also need [PacketEvents](https://www.spigotmc.org/resources/80279/) for this
+   tutorial. Put the "_packetevents.jar_" file in your server's "_plugins_" folder as well.
 
 **Once you have installed these, restart your server!**
 
