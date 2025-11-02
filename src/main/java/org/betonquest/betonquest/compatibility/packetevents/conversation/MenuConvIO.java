@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.compatibility.packetevents.conversation;
 
-import com.github.retrooper.packetevents.PacketEventsAPI;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Display;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Scroll;
-import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassenger;
-import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationInput;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 
 /**
  * An {@link ChatConvIO} implementation that use player ingame movements to control the conversation.
@@ -72,7 +72,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The fake armor stand used to mount the player.
      */
-    private final FakeArmorStandPassengerController armorStand;
+    private final ConversationInput input;
 
     /**
      * The current state of the conversation.
@@ -95,7 +95,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * Creates a new MenuConvIO instance.
      *
-     * @param packetEventsAPI      the PacketEvents API instance
+     * @param inputFunction        the function to create the input object with actions
      * @param conv                 the conversation this IO is part of
      * @param onlineProfile        the online profile of the player participating in the conversation
      * @param colors               the colors used in the conversation
@@ -104,8 +104,7 @@ public class MenuConvIO extends ChatConvIO {
      * @param plugin               the plugin instance to run tasks
      * @param controls             the used controls
      */
-    @SuppressWarnings("NullAway.Init")
-    public MenuConvIO(final PacketEventsAPI<?> packetEventsAPI, final Conversation conv,
+    public MenuConvIO(final BiFunction<Player, ConversationAction, ConversationInput> inputFunction, final Conversation conv,
                       final OnlineProfile onlineProfile, final ConversationColors colors,
                       final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper,
                       final Plugin plugin, final Map<CONTROL, ACTION> controls) {
@@ -114,8 +113,7 @@ public class MenuConvIO extends ChatConvIO {
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;
         this.controls = controls;
-        this.armorStand = new FakeArmorStandPassengerController(packetEventsAPI, onlineProfile.getPlayer(),
-                getPassengerController());
+        this.input = inputFunction.apply(onlineProfile.getPlayer(), new MenuConversationAction());
     }
 
     private void start() {
@@ -207,7 +205,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
             state = ConversationState.ENDED;
-            armorStand.unmount();
+            input.end();
 
             if (displayRunnable != null) {
                 displayRunnable.cancel();
@@ -218,82 +216,6 @@ public class MenuConvIO extends ChatConvIO {
         } finally {
             lock.unlock();
         }
-    }
-
-    private FakeArmorStandPassengerController.SteeringControl getPassengerController() {
-        return new FakeArmorStandPassengerController.SteeringControl() {
-            @Override
-            public void unmount() {
-                if (controls.containsKey(CONTROL.SNEAK)) {
-                    switch (controls.get(CONTROL.SNEAK)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            break;
-                        case SELECT:
-                            lock.lock();
-                            try {
-                                if (!isOnCooldown()) {
-                                    passPlayerAnswer();
-                                }
-                            } finally {
-                                lock.unlock();
-                            }
-                            break;
-                        case MOVE:
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public void jump() {
-                if (controls.containsKey(CONTROL.JUMP)) {
-                    switch (controls.get(CONTROL.JUMP)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            break;
-                        case SELECT:
-                            lock.lock();
-                            try {
-                                passPlayerAnswer();
-                            } finally {
-                                lock.unlock();
-                            }
-                            break;
-                        case MOVE:
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            public void forward() {
-                if (controls.containsKey(CONTROL.MOVE)) {
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MenuConvIO.this.updateDisplay(Scroll.UP));
-                }
-            }
-
-            @Override
-            public void back() {
-                if (controls.containsKey(CONTROL.MOVE)) {
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MenuConvIO.this.updateDisplay(Scroll.DOWN));
-                }
-            }
-
-            @Override
-            public void left() {
-                // Empty
-            }
-
-            @Override
-            public void right() {
-                // Empty
-            }
-        };
     }
 
     private void passPlayerAnswer() {
@@ -311,17 +233,13 @@ public class MenuConvIO extends ChatConvIO {
     @SuppressWarnings("PMD.CollapsibleIfStatements")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
-        if (state.isInactive()) {
+        if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
 
         lock.lock();
         try {
             if (state.isInactive()) {
-                return;
-            }
-
-            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -345,17 +263,13 @@ public class MenuConvIO extends ChatConvIO {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
-        if (state.isInactive()) {
+        if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
             return;
         }
 
         lock.lock();
         try {
             if (state.isInactive()) {
-                return;
-            }
-
-            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -376,17 +290,13 @@ public class MenuConvIO extends ChatConvIO {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void entityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
-        if (state.isInactive()) {
+        if (state.isInactive() || !event.getDamager().equals(onlineProfile.getPlayer())) {
             return;
         }
 
         lock.lock();
         try {
             if (state.isInactive()) {
-                return;
-            }
-
-            if (!event.getDamager().equals(onlineProfile.getPlayer())) {
                 return;
             }
 
@@ -435,21 +345,16 @@ public class MenuConvIO extends ChatConvIO {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerItemHeldEvent(final PlayerItemHeldEvent event) {
-        if (state.isInactive()) {
+        if (state.isInactive() || !event.getPlayer().equals(onlineProfile.getPlayer())) {
+            return;
+        }
+        if (!controls.containsKey(CONTROL.SCROLL)) {
             return;
         }
 
         lock.lock();
         try {
             if (state.isInactive()) {
-                return;
-            }
-
-            if (!event.getPlayer().equals(onlineProfile.getPlayer())) {
-                return;
-            }
-
-            if (!controls.containsKey(CONTROL.SCROLL)) {
                 return;
             }
 
@@ -523,5 +428,88 @@ public class MenuConvIO extends ChatConvIO {
          * The player left-clicked.
          */
         LEFT_CLICK
+    }
+
+    /**
+     * Menu specific controls.
+     */
+    private class MenuConversationAction implements ConversationAction {
+        /**
+         * The empty default constructor.
+         */
+        public MenuConversationAction() {
+        }
+
+        @Override
+        public void unmount() {
+            if (controls.containsKey(CONTROL.SNEAK)) {
+                switch (controls.get(CONTROL.SNEAK)) {
+                    case CANCEL:
+                        if (!conv.isMovementBlock()) {
+                            conv.endConversation();
+                        }
+                        break;
+                    case SELECT:
+                        lock.lock();
+                        try {
+                            if (!isOnCooldown()) {
+                                passPlayerAnswer();
+                            }
+                        } finally {
+                            lock.unlock();
+                        }
+                        break;
+                    case MOVE:
+                        break;
+                }
+            }
+        }
+
+        @Override
+        public void jump() {
+            if (controls.containsKey(CONTROL.JUMP)) {
+                switch (controls.get(CONTROL.JUMP)) {
+                    case CANCEL:
+                        if (!conv.isMovementBlock()) {
+                            conv.endConversation();
+                        }
+                        break;
+                    case SELECT:
+                        lock.lock();
+                        try {
+                            passPlayerAnswer();
+                        } finally {
+                            lock.unlock();
+                        }
+                        break;
+                    case MOVE:
+                        break;
+                }
+            }
+        }
+
+        @Override
+        public void forward() {
+            if (controls.containsKey(CONTROL.MOVE)) {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> updateDisplay(Scroll.UP));
+            }
+        }
+
+        @Override
+        public void back() {
+            if (controls.containsKey(CONTROL.MOVE)) {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> updateDisplay(Scroll.DOWN));
+            }
+        }
+
+        @Override
+        public void left() {
+            // Empty
+        }
+
+        @Override
+        public void right() {
+            // Empty
+        }
     }
 }

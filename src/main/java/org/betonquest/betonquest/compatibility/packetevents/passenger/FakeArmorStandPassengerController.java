@@ -8,18 +8,19 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A FakeArmorStandPassenger that listens to steering input packets and delegates the inputs to a SteeringControl implementation.
+ * A FakeArmorStandPassenger that listens to steering input packets and delegates the inputs to a Conversation.
  */
 public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements PacketListener {
     /**
-     * The steering control implementation.
+     * The conversation control to call.
      */
-    private final SteeringControl control;
+    private final ConversationAction action;
 
     /**
      * The registered packet listener.
@@ -32,11 +33,11 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
      *
      * @param packetEventsAPI the PacketEvents API instance
      * @param player          the player to mount
-     * @param control         the steering control implementation
+     * @param action          the steering control implementation
      */
-    public FakeArmorStandPassengerController(final PacketEventsAPI<?> packetEventsAPI, final Player player, final SteeringControl control) {
+    public FakeArmorStandPassengerController(final PacketEventsAPI<?> packetEventsAPI, final Player player, final ConversationAction action) {
         super(packetEventsAPI, player);
-        this.control = control;
+        this.action = action;
     }
 
     @Override
@@ -70,79 +71,44 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     private void steer(final PacketReceiveEvent event) {
         final WrapperPlayClientSteerVehicle steerVehicle = new WrapperPlayClientSteerVehicle(event);
         if (steerVehicle.isUnmount()) {
-            control.unmount();
+            action.unmount();
         }
         if (steerVehicle.isJump()) {
-            control.jump();
+            action.jump();
         }
         if (steerVehicle.getForward() > 0) {
-            control.forward();
+            action.forward();
         }
         if (steerVehicle.getForward() < 0) {
-            control.back();
+            action.back();
         }
         if (steerVehicle.getSideways() < 0) {
-            control.left();
+            action.left();
         }
         if (steerVehicle.getSideways() > 0) {
-            control.right();
+            action.right();
         }
     }
 
     private void playerInput(final PacketReceiveEvent event) {
         final WrapperPlayClientPlayerInput playerInput = new WrapperPlayClientPlayerInput(event);
         if (playerInput.isShift()) {
-            control.unmount();
+            action.unmount();
         }
         if (playerInput.isJump()) {
-            control.jump();
+            action.jump();
         }
         if (playerInput.isForward()) {
-            control.forward();
+            action.forward();
         }
         if (playerInput.isBackward()) {
-            control.back();
+            action.back();
         }
         if (playerInput.isLeft()) {
-            control.left();
+            action.left();
         }
         if (playerInput.isRight()) {
-            control.right();
+            action.right();
         }
-    }
-
-    /**
-     * Interface for steering control inputs.
-     */
-    public interface SteeringControl {
-        /**
-         * Processes the unmount input.
-         */
-        void unmount();
-
-        /**
-         * Processes the jump input.
-         */
-        void jump();
-
-        /**
-         * Processes the forward input.
-         */
-        void forward();
-
-        /**
-         * Processes the backwards input.
-         */
-        void back();
-
-        /**
-         * Processes the left input.
-         */
-        void left();
-
-        /**
-         * Processes the right input.
-         */
-        void right();
     }
 }

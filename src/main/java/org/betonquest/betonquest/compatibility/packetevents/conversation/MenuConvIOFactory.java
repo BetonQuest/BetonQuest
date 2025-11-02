@@ -7,10 +7,14 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationInput;
+import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
@@ -18,6 +22,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Menu conversation output.
@@ -77,7 +82,9 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
-        return new MenuConvIO(packetEventsAPI, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
+        final BiFunction<Player, ConversationAction, ConversationInput> inputFunction = (player, control) ->
+                new FakeArmorStandPassengerController(packetEventsAPI, player, control);
+        return new MenuConvIO(inputFunction, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
     }
 
     private Map<MenuConvIO.CONTROL, MenuConvIO.ACTION> getControls(final MenuConvIOSettings settings) throws QuestException {

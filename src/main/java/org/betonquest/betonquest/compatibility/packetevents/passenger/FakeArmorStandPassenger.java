@@ -11,6 +11,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationInput;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,7 +28,7 @@ import java.util.Set;
 /**
  * Created a fake armor stand amd mounts the player on it.
  */
-public class FakeArmorStandPassenger {
+public class FakeArmorStandPassenger implements ConversationInput {
     /**
      * The PacketEvents API instance.
      */
@@ -114,6 +115,11 @@ public class FakeArmorStandPassenger {
         return blocks;
     }
 
+    @Override
+    public final void begin() {
+        mount(getBlockBelowPlayer(player));
+    }
+
     /**
      * Spawns a fake armor stand and mounts the player on it.
      *
@@ -140,6 +146,11 @@ public class FakeArmorStandPassenger {
         packetEventsAPI.getPlayerManager().sendPacket(player, standPassengersPacket);
 
         player.sendActionBar(Component.empty());
+    }
+
+    @Override
+    public final void end() {
+        unmount();
     }
 
     /**
