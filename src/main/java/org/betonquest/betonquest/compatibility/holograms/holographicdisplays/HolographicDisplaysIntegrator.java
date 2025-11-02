@@ -17,7 +17,6 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -71,10 +70,6 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         super.hook(api);
-        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            log.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
-                    + "Install it to use conditioned holograms.");
-        }
         final HolographicDisplaysAPI holoApi = HolographicDisplaysAPI.get(plugin);
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         holoApi.registerIndividualPlaceholder("bq", new HologramPlaceholder(
