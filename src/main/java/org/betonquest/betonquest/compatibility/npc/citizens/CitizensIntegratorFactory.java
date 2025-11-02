@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.IntegratorFactory;
 
@@ -9,21 +8,13 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  */
 public class CitizensIntegratorFactory implements IntegratorFactory {
     /**
-     * The compatibility instance to use for checking other hooks.
-     */
-    private final Compatibility compatibility;
-
-    /**
      * Creates a new Citizens integrator factory.
-     *
-     * @param compatibility the compatibility instance to use for checking other hooks
      */
-    public CitizensIntegratorFactory(final Compatibility compatibility) {
-        this.compatibility = compatibility;
+    public CitizensIntegratorFactory() {
     }
 
     @Override
     public Integrator getIntegrator() {
-        return new CitizensIntegrator(compatibility);
+        return new CitizensIntegrator();
     }
 }

@@ -7,12 +7,18 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Citizens wrapper to get a Npc.
  */
 class CitizensWrapper implements NpcWrapper<NPC> {
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
     /**
      * Source Registry of NPCs to use.
      */
@@ -26,10 +32,12 @@ class CitizensWrapper implements NpcWrapper<NPC> {
     /**
      * Create a new Citizens Npc Wrapper.
      *
+     * @param plugin   the plugin instance
      * @param registry the registry of NPCs to use
      * @param npcId    the id of the Npc, greater or equals to zero
      */
-    public CitizensWrapper(final NPCRegistry registry, final Variable<Number> npcId) {
+    public CitizensWrapper(final Plugin plugin, final NPCRegistry registry, final Variable<Number> npcId) {
+        this.plugin = plugin;
         this.registry = registry;
         this.npcId = npcId;
     }
@@ -41,6 +49,6 @@ class CitizensWrapper implements NpcWrapper<NPC> {
         if (npc == null) {
             throw new QuestException("NPC with ID " + npcId + " not found");
         }
-        return new CitizensAdapter(npc);
+        return new CitizensAdapter(plugin, npc);
     }
 }
