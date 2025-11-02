@@ -6,6 +6,7 @@ import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +24,11 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
     private final MythicMob type;
 
     /**
+     * Hider for Mobs.
+     */
+    private final MythicHider mythicHider;
+
+    /**
      * Spawned Mob instance.
      */
     @Nullable
@@ -31,10 +37,12 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
     /**
      * Creates a new empty Adapter with a Mob Type.
      *
-     * @param type mob type to spawn
+     * @param type        mob type to spawn
+     * @param mythicHider the hider for mobs
      */
-    public WrappingMMNpcAdapter(final MythicMob type) {
+    public WrappingMMNpcAdapter(final MythicMob type, final MythicHider mythicHider) {
         this.type = type;
+        this.mythicHider = mythicHider;
     }
 
     @Override
@@ -90,7 +98,7 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
                 return;
             }
             final ActiveMob targetMob = apiHelper.getMythicMobInstance(entity);
-            spawned = new MythicMobsNpcAdapter(targetMob);
+            spawned = new MythicMobsNpcAdapter(targetMob, mythicHider);
         }
     }
 

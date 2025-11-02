@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
@@ -23,13 +22,15 @@ import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsInteract
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsNpcFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.npc.MythicMobsReverseIdentifier;
 import org.betonquest.betonquest.compatibility.mythicmobs.objective.MythicMobKillObjectiveFactory;
-import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Integrator for MythicMobs.
@@ -42,17 +43,16 @@ public class MythicMobsIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     /**
-     * The compatibility instance to use for checking other hooks.
+     * Active MythicHider instance.
      */
-    private final Compatibility compatibility;
+    @Nullable
+    private MythicHider mythicHider;
 
     /**
      * The default constructor.
      *
-     * @param compatibility the compatibility instance to use for checking other hooks
      */
-    public MythicMobsIntegrator(final Compatibility compatibility) {
-        this.compatibility = compatibility;
+    public MythicMobsIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
@@ -65,17 +65,23 @@ public class MythicMobsIntegrator implements Integrator {
         final BukkitAPIHelper apiHelper = mythicBukkit.getAPIHelper();
         final MobExecutor mobExecutor = mythicBukkit.getMobManager();
 
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+        mythicHider = new MythicHider(api.getProfileProvider(), plugin);
+        mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
+        pluginManager.registerEvents(mythicHider, plugin);
+
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor), data));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
-        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory, new MythicMobDoubleParser(mobExecutor), data, compatibility));
+        questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory,
+                new MythicMobDoubleParser(mobExecutor), data, mythicHider));
         questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
 
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
-        plugin.getServer().getPluginManager().registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor), plugin);
-        npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(mobExecutor));
+        pluginManager.registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor, mythicHider), plugin);
+        npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(mobExecutor, mythicHider));
         npcRegistry.registerIdentifier(new MythicMobsReverseIdentifier());
 
         final ItemRegistry itemRegistry = api.getFeatureRegistries().item();
@@ -101,21 +107,17 @@ public class MythicMobsIntegrator implements Integrator {
     }
 
     @Override
-    public void postHook() {
-        if (compatibility.getHooked().contains("ProtocolLib")) {
-            MythicHider.start();
-        }
-    }
-
-    @Override
     public void reload() {
-        if (MythicHider.getInstance() != null) {
-            MythicHider.start();
+        if (mythicHider != null) {
+            mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
         }
     }
 
     @Override
     public void close() {
-        // Empty
+        if (mythicHider != null) {
+            mythicHider.stop();
+            HandlerList.unregisterAll(mythicHider);
+        }
     }
 }

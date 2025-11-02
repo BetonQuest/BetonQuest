@@ -1,18 +1,16 @@
-package org.betonquest.betonquest.compatibility.protocollib.hider;
+package org.betonquest.betonquest.compatibility.mythicmobs;
 
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicMobDespawnEvent;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -24,14 +22,7 @@ import java.util.UUID;
 /**
  * Hides MythicMobs from the spawn event and NPCs.
  */
-@SuppressWarnings("PMD.TooManyMethods")
-public final class MythicHider extends BukkitRunnable implements Listener {
-
-    /**
-     * Active Hider instance.
-     */
-    @Nullable
-    private static MythicHider instance;
+public final class MythicHider implements Listener {
 
     /**
      * The profile provider instance.
@@ -39,68 +30,57 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     private final ProfileProvider profileProvider;
 
     /**
-     * Protocol level hider for an entity.
+     * Plugin instance to hide.
      */
-    private final EntityHider hider;
+    private final Plugin plugin;
 
     /**
      * Mobs with a list of player uuids who are allowed to see them.
      */
     private final Map<Entity, Set<UUID>> mythicmobs;
 
-    private MythicHider() {
-        super();
-        final BetonQuest plugin = BetonQuest.getInstance();
-        this.profileProvider = plugin.getProfileProvider();
-        mythicmobs = new HashMap<>();
-        final int updateInterval = plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20);
-        hider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
-        runTaskTimer(plugin, 0, updateInterval);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
     /**
-     * Starts (or restarts) the NPCHider. It loads the current configuration for hidden NPCs
-     */
-    public static void start() {
-        if (instance != null) {
-            instance.stop();
-        }
-        instance = new MythicHider();
-    }
-
-    /**
-     * Gets the active Hider.
-     *
-     * @return the currently used NPCHider instance
+     * The currently active hide loop.
      */
     @Nullable
-    public static MythicHider getInstance() {
-        return instance;
-    }
+    private BukkitTask loop;
 
-    @Override
-    public void run() {
-        applyVisibility();
+    /**
+     * Creates a new mythic mobs hider.
+     *
+     * @param profileProvider the profile provider
+     * @param plugin          the plugin to start the loop
+     */
+    public MythicHider(final ProfileProvider profileProvider, final Plugin plugin) {
+        super();
+        this.profileProvider = profileProvider;
+        this.plugin = plugin;
+        mythicmobs = new HashMap<>();
     }
 
     /**
-     * Stops the NPCHider, cleaning up all listeners, runnables etc.
+     * Re-/Loads the hide loop.
+     *
+     * @param updateInterval the interval to update stored mobs visibility
+     */
+    public void reload(final int updateInterval) {
+        stop();
+        loop = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
+                for (final Entity mob : mythicmobs.keySet()) {
+                    applyVisibility(onlineProfile, mob);
+                }
+            }
+        }, 0, updateInterval);
+    }
+
+    /**
+     * Stops the NPCHider, cleaning up all runnables.
      */
     public void stop() {
-        hider.close();
-        cancel();
-        HandlerList.unregisterAll(this);
-    }
-
-    /**
-     * Updates the visibility of tracked mobs for all players.
-     */
-    public void applyVisibility() {
-        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            for (final Entity mob : mythicmobs.keySet()) {
-                applyVisibility(onlineProfile, mob);
-            }
+        if (loop != null) {
+            loop.cancel();
+            loop = null;
         }
     }
 
@@ -112,7 +92,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     public void applyVisibility(final OnlineProfile onlineProfile) {
         for (final Map.Entry<Entity, Set<UUID>> mythic : mythicmobs.entrySet()) {
             if (!mythic.getValue().contains(onlineProfile.getProfileUUID())) {
-                hider.hideEntity(onlineProfile, mythic.getKey());
+                onlineProfile.getPlayer().hideEntity(plugin, mythic.getKey());
             }
         }
     }
@@ -126,18 +106,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     public void applyVisibility(final OnlineProfile onlineProfile, final Entity mythicMob) {
         final Set<UUID> uuids = mythicmobs.get(mythicMob);
         if (uuids != null && !uuids.contains(onlineProfile.getProfileUUID())) {
-            hider.hideEntity(onlineProfile, mythicMob);
-        }
-    }
-
-    /**
-     * Updates the visibility of this MythicMob for all players.
-     *
-     * @param mythicMob the mob to update the visibility for
-     */
-    public void applyVisibility(final Entity mythicMob) {
-        for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-            applyVisibility(onlineProfile, mythicMob);
+            onlineProfile.getPlayer().hideEntity(plugin, mythicMob);
         }
     }
 
@@ -159,17 +128,6 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Checks whether the MythicMob is visible to the player.
-     *
-     * @param onlineProfile the onlinePlayer of the player who you want to check
-     * @param mythicMob     ID of the NPC
-     * @return true if the NPC is visible to that player, false otherwise
-     */
-    public boolean isInvisible(final OnlineProfile onlineProfile, @Nullable final Entity mythicMob) {
-        return mythicMob != null && !hider.isVisible(onlineProfile, mythicMob.getEntityId());
-    }
-
-    /**
      * Hides the mob from the player.
      *
      * @param onlineProfile the onlinePlayer of the player
@@ -180,7 +138,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
         if (uuids != null) {
             uuids.remove(onlineProfile.getPlayerUUID());
         }
-        hider.hideEntity(onlineProfile, mythicMob);
+        onlineProfile.getPlayer().hideEntity(plugin, mythicMob);
     }
 
     /**
@@ -194,7 +152,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
         if (uuids != null) {
             uuids.add(onlineProfile.getPlayerUUID());
         }
-        hider.showEntity(onlineProfile, mythicMob);
+        onlineProfile.getPlayer().showEntity(plugin, mythicMob);
     }
 
     /**

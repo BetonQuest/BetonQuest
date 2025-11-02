@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
+import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,16 +27,23 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     private final MobExecutor mobExecutor;
 
     /**
+     * Hider for Mobs.
+     */
+    private final MythicHider mythicHider;
+
+    /**
      * Initializes the interact catcher.
      *
      * @param profileProvider the profile provider instance
      * @param npcRegistry     the registry to identify the clicked Npc
      * @param mobExecutor     the executor used get MythicMobs
+     * @param mythicHider     the hider for mobs
      */
     public MythicMobsInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
-                                     final MobExecutor mobExecutor) {
+                                     final MobExecutor mobExecutor, final MythicHider mythicHider) {
         super(profileProvider, npcRegistry);
         this.mobExecutor = mobExecutor;
+        this.mythicHider = mythicHider;
     }
 
     /**
@@ -47,7 +55,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     public void onLeft(final EntityDamageByEntityEvent event) {
         final ActiveMob activeMob = mobExecutor.getMythicMobInstance(event.getEntity());
         if (activeMob != null && event.getDamager() instanceof Player player
-                && interactLogic(player, new MythicMobsNpcAdapter(activeMob), Interaction.LEFT,
+                && interactLogic(player, new MythicMobsNpcAdapter(activeMob, mythicHider), Interaction.LEFT,
                 event.isCancelled(), event.isAsynchronous())) {
             event.setCancelled(true);
         }
@@ -60,7 +68,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onRight(final MythicMobInteractEvent event) {
-        if (interactLogic(event.getPlayer(), new MythicMobsNpcAdapter(event.getActiveMob()), Interaction.RIGHT,
+        if (interactLogic(event.getPlayer(), new MythicMobsNpcAdapter(event.getActiveMob(), mythicHider), Interaction.RIGHT,
                 event.isCancelled(), event.isAsynchronous())) {
             event.setCancelled();
         }
@@ -100,6 +108,6 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     }
 
     private void updateHolo(final ActiveMob activeMob) {
-        new NpcVisibilityUpdateEvent(new MythicMobsNpcAdapter(activeMob)).callEvent();
+        new NpcVisibilityUpdateEvent(new MythicMobsNpcAdapter(activeMob, mythicHider)).callEvent();
     }
 }
