@@ -8,11 +8,17 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Creates validated Npc Wrapper for Citizens Npcs.
  */
 public class CitizensNpcFactory implements NpcFactory {
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
     /**
      * Source Registry of NPCs to use.
      */
@@ -21,18 +27,20 @@ public class CitizensNpcFactory implements NpcFactory {
     /**
      * Create a new Npc Factory with a specific registry.
      *
+     * @param plugin   the plugin instance
      * @param registry the registry of NPCs to use
      */
-    public CitizensNpcFactory(final NPCRegistry registry) {
+    public CitizensNpcFactory(final Plugin plugin, final NPCRegistry registry) {
+        this.plugin = plugin;
         this.registry = registry;
     }
 
     @Override
     public NpcWrapper<NPC> parseInstruction(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument("byName")) {
-            return new CitizensNameWrapper(registry, instruction.get(Argument.STRING));
+            return new CitizensNameWrapper(plugin, registry, instruction.get(Argument.STRING));
         }
         final Variable<Number> npcId = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
-        return new CitizensWrapper(registry, npcId);
+        return new CitizensWrapper(plugin, registry, npcId);
     }
 }

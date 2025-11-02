@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.quest.npc.feature.NpcInteractCatcher;
 import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.Plugin;
 
 import java.util.function.Predicate;
 
@@ -23,6 +24,11 @@ import java.util.function.Predicate;
  * Catches Citizens NPC interactions and adapts them into the BetonQuest event.
  */
 public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
     /**
      * Source Registry of NPCs to consider.
      */
@@ -36,15 +42,17 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
     /**
      * Initializes the catcher for Citizens.
      *
+     * @param plugin          the plugin instance
      * @param profileProvider the profile provider instance
      * @param npcRegistry     the registry to identify the clicked Npc
      * @param registry        the registry of NPCs to notice interactions
      * @param cancelPredicate the move predicate to check if the NPC currently blocks conversations
      *                        if the predicate test yields 'true' the adapted event will be fired cancelled
      */
-    public CitizensInteractCatcher(final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
+    public CitizensInteractCatcher(final Plugin plugin, final ProfileProvider profileProvider, final NpcRegistry npcRegistry,
                                    final NPCRegistry registry, final Predicate<NPC> cancelPredicate) {
         super(profileProvider, npcRegistry);
+        this.plugin = plugin;
         this.registry = registry;
         this.cancelPredicate = cancelPredicate;
     }
@@ -54,7 +62,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
         if (!npc.getOwningRegistry().equals(registry)) {
             return;
         }
-        if (super.interactLogic(event.getClicker(), new CitizensAdapter(npc), interaction,
+        if (super.interactLogic(event.getClicker(), new CitizensAdapter(plugin, npc), interaction,
                 cancelPredicate.test(npc), event.isAsynchronous())) {
             event.setCancelled(true);
         }
@@ -122,7 +130,7 @@ public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
 
     private void updateHologram(final NPC npc) {
         if (npc.getOwningRegistry().equals(registry)) {
-            new NpcVisibilityUpdateEvent(new CitizensAdapter(npc)).callEvent();
+            new NpcVisibilityUpdateEvent(new CitizensAdapter(plugin, npc)).callEvent();
         }
     }
 }

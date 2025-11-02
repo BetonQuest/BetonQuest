@@ -14,14 +14,12 @@ import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveController;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEvent;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensMoveEventFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensStopEventFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
-import org.betonquest.betonquest.compatibility.protocollib.hider.CitizensHider;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.bukkit.Server;
@@ -45,17 +43,9 @@ public class CitizensIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     /**
-     * The compatibility instance to use for checking other hooks.
-     */
-    private final Compatibility compatibility;
-
-    /**
      * The default Constructor.
-     *
-     * @param compatibility the compatibility instance to use for checking other hooks
      */
-    public CitizensIntegrator(final Compatibility compatibility) {
-        this.compatibility = compatibility;
+    public CitizensIntegrator() {
         plugin = BetonQuest.getInstance();
     }
 
@@ -103,27 +93,15 @@ public class CitizensIntegrator implements Integrator {
                 api.getQuestPackageManager(), fontRegistry, colors, pluginConfig, true));
 
         final NpcRegistry npcRegistry = featureRegistries.npc();
-        manager.registerEvents(new CitizensInteractCatcher(plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
+        manager.registerEvents(new CitizensInteractCatcher(plugin, plugin.getProfileProvider(), npcRegistry, citizensNpcRegistry,
                 citizensMoveController), plugin);
-        npcRegistry.register("citizens", new CitizensNpcFactory(citizensNpcRegistry));
+        npcRegistry.register("citizens", new CitizensNpcFactory(plugin, citizensNpcRegistry));
         npcRegistry.registerIdentifier(new CitizensReverseIdentifier(citizensNpcRegistry));
     }
 
     @Override
-    public void postHook() {
-        if (compatibility.getHooked().contains("ProtocolLib")) {
-            CitizensHider.start(plugin);
-        } else {
-            plugin.getLoggerFactory().create(CitizensIntegrator.class)
-                    .warn("ProtocolLib Integration not found! Hiding Citizens NPCs won't be available.");
-        }
-    }
-
-    @Override
     public void reload() {
-        if (CitizensHider.getInstance() != null) {
-            CitizensHider.start(plugin);
-        }
+        // Empty
     }
 
     @Override
