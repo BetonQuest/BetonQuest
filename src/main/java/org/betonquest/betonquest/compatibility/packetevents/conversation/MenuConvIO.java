@@ -176,7 +176,7 @@ public class MenuConvIO extends ChatConvIO {
 
     /**
      * Clears the data. Should be called before the cycle begins to ensure
-     * nothing is left from previous one.
+     * nothing is left from the previous one.
      */
     @Override
     public void clear() {
@@ -333,7 +333,7 @@ public class MenuConvIO extends ChatConvIO {
             return true;
         } else {
             selectionCooldowns.add(player);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> selectionCooldowns.remove(player), settings.rateLimit());
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> selectionCooldowns.remove(player), settings.rateLimit());
         }
         return false;
     }
@@ -395,7 +395,7 @@ public class MenuConvIO extends ChatConvIO {
          */
         SELECT,
         /**
-         * The player cancelled the conversation.
+         * The player canceled the conversation.
          */
         CANCEL,
         /**

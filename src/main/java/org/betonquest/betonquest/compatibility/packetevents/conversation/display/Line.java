@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 /**
  * Represents a line in a conversation display.
- * This interface allows for different types of lines, to enable flexibility in how lines are displayed.
+ * This interface allows for different types of lines to enable flexibility in how lines are displayed.
  */
 @SuppressWarnings("PMD.ShortClassName")
 @FunctionalInterface
@@ -17,29 +17,20 @@ public interface Line {
      *
      * @return the Component represented by this line
      */
-    Component getLine();
+    Component line();
 
     /**
      * A fixed line that does not change.
+     *
+     * @param line The line to be displayed.
      */
-    class Fixed implements Line {
-        /**
-         * The line to be displayed.
-         */
-        private final Component line;
-
+    record Fixed(Component line) implements Line {
         /**
          * Creates a new fixed line.
          *
          * @param line the Component to be displayed as a fixed line
          */
-        public Fixed(final Component line) {
-            this.line = line;
-        }
-
-        @Override
-        public Component getLine() {
-            return line;
+        public Fixed {
         }
     }
 
@@ -76,7 +67,7 @@ public interface Line {
         }
 
         @Override
-        public Component getLine() {
+        public Component line() {
             if (isSelected()) {
                 return selected;
             } else {
