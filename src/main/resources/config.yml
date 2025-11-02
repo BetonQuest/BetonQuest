@@ -149,4 +149,3 @@ hook:
   train_carts: true
   fancynpcs: true
   znpcsplus: true
-  packetevents: true

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.packetevents.conversation.input;
 
 /**
- * Handles the player state while in the conversation.
+ * Handles the player session while in the conversation.
  */
-public interface ConversationInput {
+public interface ConversationSession {
     /**
      * Adds the conversation modifications to the player.
      */

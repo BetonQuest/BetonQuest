@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationInput;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -82,7 +82,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
-        final BiFunction<Player, ConversationAction, ConversationInput> inputFunction = (player, control) ->
+        final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
                 new FakeArmorStandPassengerController(packetEventsAPI, player, control);
         return new MenuConvIO(inputFunction, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
     }

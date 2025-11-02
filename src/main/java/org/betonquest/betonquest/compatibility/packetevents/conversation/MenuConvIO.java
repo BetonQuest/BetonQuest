@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Display;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Scroll;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationInput;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -72,7 +72,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * The fake armor stand used to mount the player.
      */
-    private final ConversationInput input;
+    private final ConversationSession input;
 
     /**
      * The current state of the conversation.
@@ -104,7 +104,7 @@ public class MenuConvIO extends ChatConvIO {
      * @param plugin               the plugin instance to run tasks
      * @param controls             the used controls
      */
-    public MenuConvIO(final BiFunction<Player, ConversationAction, ConversationInput> inputFunction, final Conversation conv,
+    public MenuConvIO(final BiFunction<Player, ConversationAction, ConversationSession> inputFunction, final Conversation conv,
                       final OnlineProfile onlineProfile, final ConversationColors colors,
                       final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper,
                       final Plugin plugin, final Map<CONTROL, ACTION> controls) {
