@@ -37,8 +37,8 @@ public class PacketEventsIntegrator implements Integrator {
         final Plugin packetEvents = pluginManager.getPlugin("packetevents");
         final Version packetEventsVersion = new Version(packetEvents.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOtherNewerThanCurrent(packetEventsVersion, new Version("2.10.0"))) {
-            throw new UnsupportedVersionException(packetEvents, "2.10.0");
+        if (comparator.isOtherNewerThanCurrent(packetEventsVersion, new Version("2.9.5"))) {
+            throw new UnsupportedVersionException(packetEvents, "2.9.5");
         }
 
         final PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
