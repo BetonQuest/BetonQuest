@@ -120,17 +120,19 @@ All conversation related settings.
       available third party plugin integrations) is used.
       See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
     * `display_history` - If set to `true`, the interceptor will display all previous messages in the chat after
-      the conversation ends, like there was no conversation.
+      the conversation ends, like there was no conversation.  
+      **This option needs a server restart to take effect when changed!**
     * `display_missed` - If set to `true`, the interceptor will display all missed messages in the chat after
       the conversation ends.
 * `damage`  
   All damage related settings.
-    * `combat_delay` - A delay (in seconds) the player must wait before starting a conversation after the last combat.
+    * `combat_delay` - A delay (in seconds) the player must wait before starting a conversation after the last combat.  
+      **This option needs a server restart to take effect when changed!**
     * `invincible` - If set to `false` players can get damage from entities when in a conversation.
 * `stop`  
   Controls the behavior of the `stop` option in conversations.
     * `distance` - The distance you need to walk away from the NPC for the conversation to end (in the case of using
-                   chat-based conversation interface).
+      chat-based conversation interface).
     * `notify` - Whether to display a message that the player is still in a conversation every time the player is 
       pulled back in the radius of the distance by the `stop` option in conversations.
 * `cmd_blacklist` - A list of commands that cannot be used during a conversation.
