@@ -9,6 +9,9 @@
     key: conversation.interceptor.default
     oldValue: 'packet'
     newValue: 'packetevents'
+  - type: SET
+    key: conversation.interceptor.display_history
+    value: true
 3.0.0.19:
   - type: SET
     key: item.quest.lore

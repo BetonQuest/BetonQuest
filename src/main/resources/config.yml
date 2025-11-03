@@ -30,6 +30,7 @@ conversation:
   default_io: menu,tellraw
   interceptor:
     default: redischat,packetevents,simple
+    display_history: true
     display_missed: true
   damage:
     combat_delay: 10

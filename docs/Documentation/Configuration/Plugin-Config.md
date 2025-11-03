@@ -119,6 +119,8 @@ All conversation related settings.
     * `default` - A comma-separated list of chat interceptors. The first one that is loaded (depending on the 
       available third party plugin integrations) is used.
       See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
+    * `display_history` - If set to `true`, the interceptor will display all previous messages in the chat after
+      the conversation ends, like there was no conversation.
     * `display_missed` - If set to `true`, the interceptor will display all missed messages in the chat after
       the conversation ends.
 * `damage`  

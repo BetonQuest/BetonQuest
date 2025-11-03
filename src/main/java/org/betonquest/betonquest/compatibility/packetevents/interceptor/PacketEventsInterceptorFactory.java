@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.packetevents.interceptor;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 
