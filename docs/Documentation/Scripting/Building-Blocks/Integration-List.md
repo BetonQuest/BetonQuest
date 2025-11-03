@@ -512,10 +512,12 @@ This event adds experience points in a specified skill. The first argument is th
 
 MMOItems usage is integrated to the [Items](../../Features/Items.md) system and thus used for events and conditions.
 
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
 ```YAML linenums="1" title="Example"
 items:
   crown: mmoitem ARMOR SKELETON_CROWN
-  gem: mmoitem GEMS SPEED_GEM
+  gem: mmoitem GEMS SPEED_GEM quest-item
 conditions:
   hasCrown: hand crown
 events:
@@ -690,10 +692,12 @@ mmocoreattributereallocationpoints 1
 
 Mythic(Mobs) items are integrated to the [BetonQuest Items](../../Features/Items.md) system.
 
+In addition, you can also add `quest-item` argument to tag them as "QuestItem".
+
 ```YAML linenums="1" title="Example"
 items:
   crown: mythic KingsCrown
-  sword: mythic SkeletonKingSword
+  sword: mythic SkeletonKingSword quest-item
 conditions:
   hasCrown: armor crown
 events:
