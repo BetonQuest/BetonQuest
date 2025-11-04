@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_16
 import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_19;
 import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_19_1;
 import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_19_3;
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisguisedChat;
 import net.kyori.adventure.text.Component;
@@ -37,17 +38,18 @@ public class FunctionWrapperPlayServerChatMessage implements PacketWrapperFuncti
     }
 
     @Override
-    public WrapperPlayServerDisguisedChat transform(final WrapperPlayServerChatMessage packetWrapper) {
+    public PacketWrapper<?> transform(final WrapperPlayServerChatMessage packetWrapper) {
         final ChatMessage message = packetWrapper.getMessage();
         final ChatType.Bound bound;
         if (message instanceof final ChatMessage_v1_19_3 dotThree) {
-            bound = dotThree.getChatFormatting();
+            bound = dotThree.getChatFormatting(); // Disguise does not exist in older versions
         } else if (message instanceof final ChatMessage_v1_19_1 dotOne) {
             bound = dotOne.getChatFormatting();
         } else if (message instanceof final ChatMessage_v1_19 dotNot) {
             bound = new ChatType.Bound(message.getType(), dotNot.getSenderDisplayName(), null);
         } else {
-            bound = new ChatType.Bound(message.getType(), Component.text("From: " + ((ChatMessage_v1_16) message).getSenderUUID()), null);
+            return new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message.getChatContent(), message.getType(),
+                    ((ChatMessage_v1_16) message).getSenderUUID()));
         }
         return new WrapperPlayServerDisguisedChat(message.getChatContent(), bound);
     }
