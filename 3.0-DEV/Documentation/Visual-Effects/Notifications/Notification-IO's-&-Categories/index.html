@@ -5318,7 +5318,7 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <td><em>category</em></td>
 <td><code>category:info</code></td>
 <td>None</td>
-<td>Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used.</td>
+<td>Will load all settings from that Notification Category. Can be a comma-separated list. The first existent category will be used.</td>
 </tr>
 <tr>
 <td><em>io</em></td>
@@ -5360,13 +5360,13 @@ Advanced users may also use <a href="../../Documentation/Visual-Effects/Notifica
 <span class="nt">myEvent3</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">Another</span><span class="nv"> </span><span class="s">message!</span><span class="nv"> </span><span class="s">category:info</span><span class="nv"> </span><span class="s">io:advancement</span><span class="nv"> </span><span class="s">frame:challenge&quot;</span>
 
 <span class="c1">#Use multiple languages:</span>
-<span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
+<span class="nt">multilanguage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">english</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{de-de}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">german</span><span class="nv"> </span><span class="s">person!</span><span class="nv"> </span><span class="s">{es-ES}</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">spanish</span><span class="nv"> </span><span class="s">person!&quot;</span>
 </code></pre></div></p>
 <h3 id="translations">Translations<a class="headerlink" href="#translations" title="Permanent link">🔗</a></h3>
 <p>Notifications can be translated with this syntax: 
-<div class="highlight"><pre><span></span><code><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en}</span><span class="nv"> </span><span class="s">ABC</span><span class="nv"> </span><span class="s">{de}</span><span class="nv"> </span><span class="s">DEF&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;notify</span><span class="nv"> </span><span class="s">{en-US}</span><span class="nv"> </span><span class="s">ABC</span><span class="nv"> </span><span class="s">{de-DE}</span><span class="nv"> </span><span class="s">DEF&quot;</span>
 </code></pre></div>
-The value in <code>{}</code> is a language key from messages.yml. Any text after the language key until the next language key
+The value in <code>{}</code> is a language key from lang folder. Any text after the language key until the next language key
 belongs to the specified language. There must be a space between the language key and the message.
 In this example, english users would see <code>ABC</code> and german ones would see <code>DEF</code>.</p>
 <h3 id="broadcasts">Broadcasts<a class="headerlink" href="#broadcasts" title="Permanent link">🔗</a></h3>
