@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.betonquest.betonquest.config.PluginMessage.LANG_KEY;
+
 /**
  * Factory for {@link NotifyEvent}.
  */
@@ -31,11 +33,6 @@ public class NotifyEventFactory implements PlayerEventFactory {
      * A pattern for the notation of notifyIO options.
      */
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
-
-    /**
-     * The pattern for a language key.
-     */
-    private static final String LANG_KEY = "[a-z]{2,3}-[0-9a-zA-Z-]{2,}";
 
     /**
      * A pattern for the notation of multiple translations in a single event.

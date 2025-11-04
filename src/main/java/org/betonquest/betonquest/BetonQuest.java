@@ -369,11 +369,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final String defaultParser = config.getString("text_parser", "legacyminimessage");
         textParser = new DecidingTextParser(featureRegistries.textParser(), new TagTextParserDecider(defaultParser));
         try {
-            pluginMessage = new PluginMessage(this, coreQuestRegistry.variables(), playerDataStorage,
+            pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), this, coreQuestRegistry.variables(), playerDataStorage,
                     textParser, configAccessorFactory, this);
-            for (final String language : pluginMessage.getLanguages()) {
-                log.debug("Loaded " + language + " language");
-            }
         } catch (final QuestException e) {
             log.error("Could not load the plugin messages!", e);
             getServer().getPluginManager().disablePlugin(this);
