@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 
 /**
@@ -31,6 +32,10 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Type> itemType = instruction.get(MMOItemsUtils::getMMOItemType);
         final Variable<String> itemId = instruction.get(Argument.STRING);
-        return new MMOQuestItemWrapper(mmoPlugin, itemType, itemId);
+        final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId);
+        if (instruction.hasArgument("quest-item")) {
+            return new QuestItemTagAdapterWrapper(mmoQuestItemWrapper);
+        }
+        return mmoQuestItemWrapper;
     }
 }
