@@ -103,8 +103,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmobkill` objective now uses the killer (if present) to resolve names and distances
 - `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
 - `ProtocolLib` was removed and replaced with `PacketEvents` that now needs to be installed instead
-  - `packet` chat interceptor was renamed to `packetevents`
-  - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation 
+    - `packet` chat interceptor was renamed to `packetevents`
+    - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation 
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
