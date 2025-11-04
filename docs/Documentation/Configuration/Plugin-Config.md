@@ -9,6 +9,8 @@ There is also additional information about backups, updates, and database transf
 The language option sets the default language of BetonQuest.  
 It is used for all players that do not have a specific language set or as fallback language just in case.  
 You can see all available languages in the `lang` folder, and you can add your own language files there.
+The language consists of a 2 to 3 character language key (a-z in lowercase), followed by a dash and at least
+2 characters from a-z, A-Z, numbers and dashes. 
 
 ## `text_parser` - Default text parser
 Set the default parser used to format all text in betonquest.

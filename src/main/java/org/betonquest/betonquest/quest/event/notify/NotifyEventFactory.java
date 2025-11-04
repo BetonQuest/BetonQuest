@@ -33,9 +33,14 @@ public class NotifyEventFactory implements PlayerEventFactory {
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
 
     /**
+     * The pattern for a language key.
+     */
+    private static final String LANG_KEY = "[a-z]{2,3}-[0-9a-zA-Z-]{2,}";
+
+    /**
      * A pattern for the notation of multiple translations in a single event.
      */
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})}\\s(?<text>.*?)(?=\\s+\\{[a-z-]{2,5}}\\s|$)");
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>" + LANG_KEY + ")}\\s(?<text>.*?)(?=\\s+\\{" + LANG_KEY + "}\\s|$)");
 
     /**
      * Logger factory to create a logger for the events.
