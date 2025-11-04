@@ -294,7 +294,7 @@ This condition is fulfilled as long as the player has one of the specified langu
 
 !!! example
     ```YAML
-    language en,de,fr
+    language en-US,de-DE,fr-FR
     ```
 
 ## Location: `location`

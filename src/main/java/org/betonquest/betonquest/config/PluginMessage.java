@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.Text;
@@ -52,6 +53,16 @@ public class PluginMessage {
     public static final String SCHEME_JAR = "jar";
 
     /**
+     * The pattern for a language key.
+     */
+    public static final String LANG_KEY = "[a-z]{2,3}-[0-9a-zA-Z-]{2,}";
+
+    /**
+     * Logger for invalid file names.
+     */
+    private final BetonQuestLogger log;
+
+    /**
      * The {@link VariableProcessor} instance.
      */
     private final VariableProcessor variableProcessor;
@@ -89,6 +100,7 @@ public class PluginMessage {
     /**
      * Creates a new instance of the PluginMessage handler.
      *
+     * @param log                   the logger for invalid file names
      * @param instance              the BetonQuest instance
      * @param variableProcessor     the {@link VariableProcessor} instance
      * @param playerDataStorage     the {@link PlayerDataStorage} instance
@@ -97,10 +109,11 @@ public class PluginMessage {
      * @param languageProvider      the {@link LanguageProvider} instance
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuest instance, final VariableProcessor variableProcessor,
+    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance, final VariableProcessor variableProcessor,
                          final PlayerDataStorage playerDataStorage, final TextParser textParser,
                          final ConfigAccessorFactory configAccessorFactory, final LanguageProvider languageProvider)
             throws QuestException {
+        this.log = log;
         this.variableProcessor = variableProcessor;
         this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
@@ -113,6 +126,10 @@ public class PluginMessage {
             throw new QuestException("Failed to load messages", e);
         }
         loadedMessages = loadMessages();
+
+        for (final String language : getLanguages()) {
+            log.debug("Loaded " + language + " language");
+        }
     }
 
     private Map<String, FileConfigAccessor> loadMessageFiles(final Plugin plugin, final ConfigAccessorFactory configAccessorFactory) throws URISyntaxException, IOException, InvalidConfigurationException {
@@ -122,8 +139,13 @@ public class PluginMessage {
             messages.put(entry.getKey(), configAccessorFactory.createPatching(new File(root, entry.getValue()), plugin, entry.getValue()));
         }
         for (final Map.Entry<String, String> file : loadMessageFiles(root).entrySet()) {
-            if (!messages.containsKey(file.getKey())) {
-                messages.put(file.getKey(), configAccessorFactory.create(new File(root, file.getValue())));
+            final String langKey = file.getKey();
+            if (!langKey.matches(LANG_KEY)) {
+                log.warn("Could not load '" + langKey + "' language file because the name is invalid! It has to be in the pattern: " + LANG_KEY);
+                continue;
+            }
+            if (!messages.containsKey(langKey)) {
+                messages.put(langKey, configAccessorFactory.create(new File(root, file.getValue())));
             }
         }
         return messages;
