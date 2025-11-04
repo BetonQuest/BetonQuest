@@ -15,6 +15,7 @@ public class NoneChatHistory implements ChatHistory {
 
     @Override
     public void sendHistory(final Player player) {
+        // Empty
     }
 
     @Override
