@@ -35,7 +35,7 @@ notify: |-
   | Parameter                  | Syntax                | Default Value          | Explanation                                                                                                                      |
   |----------------------------|-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------|
   | _message_                  | Any text with spaces! | :octicons-x-circle-16: | The message that will be displayed. Supports variables and translations. *Must be first*                                         |
-  | _category_                 | `category:info`       | None                   | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. |
+  | _category_                 | `category:info`       | None                   | Will load all settings from that Notification Category. Can be a comma-separated list. The first existent category will be used. |
   | _io_                       | `io:bossbar`          | io:chat                | Any NotifyIO Overrides the "category". settings.                                                                                 |
   | _any io specific settings_ | `setting:value`       | None                   | Some notifyIO's provide specific settings. Can be used multiple times. Overrides the "category" settings.                        |
 
@@ -67,15 +67,15 @@ notify: |-
   myEvent3: "notify Another message! category:info io:advancement frame:challenge"
 
   #Use multiple languages:
-  multilanguage: "notify {en} Hello english person! {de} Hello german person! {es} Hello spanish person!"
+  multilanguage: "notify {en-US} Hello english person! {de-de} Hello german person! {es-ES} Hello spanish person!"
   ```
   ### Translations
 
   Notifications can be translated with this syntax: 
   ```YAML
-  example: "notify {en} ABC {de} DEF"
+  example: "notify {en-US} ABC {de-DE} DEF"
   ```
-  The value in `{}` is a language key from messages.yml. Any text after the language key until the next language key
+  The value in `{}` is a language key from lang folder. Any text after the language key until the next language key
   belongs to the specified language. There must be a space between the language key and the message.
   In this example, english users would see `ABC` and german ones would see `DEF`.
 

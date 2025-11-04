@@ -78,9 +78,15 @@ This event works the same as `take` event, but it takes items from a chest at sp
 
 ## Compass: `compass`
 
-When you run this event, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well. When a destination is added the player will be able to select a specified location as a target of his compass. To select the target the player must open his backpack and click on the compass icon. The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section. Note that if you set a target the player will not automatically have it added to their choices.
+When you run this event, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
+When a destination is added the player will be able to select a specified location as a target of his compass.
+To select the target the player must open his backpack and click on the compass icon.
+The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section.
+Note that if you set a target the player will not automatically have it added to their choices.
 
-The destination must be defined in `compass` section. You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items_ section) to be displayed in the backpack. Example of a compass target:
+The destination must be defined in `compass` section.
+You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items_ section) to be displayed in the backpack.
+Example of a compass target:
 
 ```YAML
 compass:
@@ -452,7 +458,7 @@ This event changes player's language to the specified one. There is only one arg
 
 !!! example
     ```YAML
-    language en
+    language en-US
     ```
 
 ## Lever: `lever`
