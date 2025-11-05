@@ -608,6 +608,22 @@ formatted like `X: 100, Y: 200, Z:300`.
 step 100;200;300;world events:done
 ```
 
+## Getting a tag: `tag`
+
+To complete this objective player must get a tag.
+The only argument is the tag to receive.
+
+If the player is not online the objective is completed on the player's next login.
+
+```YAML title="Example"
+objectives:
+  finish: tag finishedTag
+```
+
+<h5> Variable Properties </h5>
+
+The property of the objective is the tag to receive.
+
 ## Taming: `tame`
 
 To complete this objective player must tame some amount of mobs. First argument is type, second is amount. The mob must

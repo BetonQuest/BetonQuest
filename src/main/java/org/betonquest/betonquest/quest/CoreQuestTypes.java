@@ -142,6 +142,7 @@ import org.betonquest.betonquest.quest.objective.command.CommandObjectiveFactory
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.data.PointObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.data.TagObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.delay.DelayObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.die.DieObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
@@ -459,6 +460,7 @@ public class CoreQuestTypes {
         objectiveTypes.register("smelt", new SmeltingObjectiveFactory());
         objectiveTypes.register("stage", new StageObjectiveFactory());
         objectiveTypes.register("step", new StepObjectiveFactory());
+        objectiveTypes.register("tag", new TagObjectiveFactory(betonQuest.getPlayerDataStorage()));
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("timer", new TimerObjectiveFactory(questTypeApi));
         objectiveTypes.register("variable", new VariableObjectiveFactory());
