@@ -66,7 +66,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     public void sendHistory(final Player player) {
         final User user = packetEventsAPI.getPlayerManager().getUser(player);
         final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
-        user.sendMessage(Component.text(Component.newline().content().repeat(cacheSize - history.size())));
+        user.sendMessage(addBypass(Component.text(Component.newline().content().repeat(cacheSize - history.size()))));
         for (final PacketWrapper<?> packetWrapper : history) {
             user.sendPacket(packetWrapper);
         }
