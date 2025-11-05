@@ -50,6 +50,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mcast` event to cast a Mythic(Mobs) skill for a player
 - `mythic`(mobs) item integration
 - `quest-item` argument for Mythic(-Mobs) and MMOItems item types
+- `point` objective
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

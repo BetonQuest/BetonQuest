@@ -179,7 +179,7 @@ public abstract class Objective {
      *                to extract additional information
      * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
-     * @throws QuestException when the property cannot e resolved
+     * @throws QuestException when the property cannot be resolved
      */
     public abstract String getProperty(String name, Profile profile) throws QuestException;
 

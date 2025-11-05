@@ -88,16 +88,16 @@ public abstract class CountingObjective extends Objective {
 
     @Override
     public String getProperty(final String name, final Profile profile) throws QuestException {
-        final Integer data = switch (name.toLowerCase(Locale.ROOT)) {
+        final int data = switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> getCountingData(profile).getCompletedAmount();
             case "left" -> getCountingData(profile).getAmountLeft();
             case "total" -> getCountingData(profile).getTargetAmount();
             case "absoluteamount" -> Math.abs(getCountingData(profile).getCompletedAmount());
             case "absoluteleft" -> Math.abs(getCountingData(profile).getAmountLeft());
             case "absolutetotal" -> Math.abs(getCountingData(profile).getTargetAmount());
-            default -> null;
+            default -> throw new QuestException("Unknown property: " + name);
         };
-        return data == null ? "" : data.toString();
+        return Integer.toString(data);
     }
 
     /**
