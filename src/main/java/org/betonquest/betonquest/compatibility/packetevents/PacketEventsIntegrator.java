@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.packetevents;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -51,7 +52,7 @@ public class PacketEventsIntegrator implements Integrator {
         api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(packetEventsAPI, plugin, plugin.getTextParser(),
                 plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
 
-        final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
+        final boolean displayHistory = PaperLib.isVersion(21, 5) && pluginConfig.getBoolean("conversation.interceptor.display_history");
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
         api.getFeatureRegistries().interceptor().register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
