@@ -273,7 +273,8 @@ public abstract class Objective {
             try {
                 final ObjectiveData data = templateFactory.create(instructionString, profile, (ObjectiveID) instruction.getID());
                 runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
-                activateObjective(profile, data);
+                dataMap.put(profile, data);
+                start(profile);
             } catch (final QuestException exception) {
                 log.warn(instruction.getPackage(), "Error while loading " + instruction.getID() + " objective data for "
                         + profile + ": " + exception.getMessage(), exception);
@@ -328,23 +329,14 @@ public abstract class Objective {
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
             runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-            deactivateObjective(profile);
+            stop(profile);
+            dataMap.remove(profile);
         }
     }
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, this, instruction.getID(), newState, previousState).callEvent();
-    }
-
-    private void activateObjective(final Profile profile, final ObjectiveData data) {
-        dataMap.put(profile, data);
-        start(profile);
-    }
-
-    private void deactivateObjective(final Profile profile) {
-        stop(profile);
-        dataMap.remove(profile);
     }
 
     /**
