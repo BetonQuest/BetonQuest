@@ -182,18 +182,16 @@ public abstract class Objective {
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
-        playerData.removeRawObjective((ObjectiveID) instruction.getID());
+        final ObjectiveID objectiveID = (ObjectiveID) instruction.getID();
+        playerData.removeRawObjective(objectiveID);
         if (persistent) {
-            playerData.addNewRawObjective((ObjectiveID) instruction.getID());
-            createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
+            final String defaultDataInstruction = getDefaultDataInstruction(profile);
+            playerData.addRawObjective(objectiveID, defaultDataInstruction);
+            playerData.addObjToDB(objectiveID, defaultDataInstruction);
+            createObjectiveForPlayer(profile, defaultDataInstruction);
         }
         log.debug(instruction.getPackage(),
-                "Objective '" + instruction.getID() + "' has been completed for "
-                        + profile + ", firing events.");
-        // fire all events
-        log.debug(instruction.getPackage(),
-                "Firing events in objective '" + instruction.getID() + "' for "
-                        + profile + " finished");
+                "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");
         try {
             for (final EventID event : events.getValue(profile)) {
                 BetonQuest.getInstance().getQuestTypeApi().event(profile, event);
@@ -202,6 +200,8 @@ public abstract class Objective {
             log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID()
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
+        log.debug(instruction.getPackage(),
+                "Firing events in objective '" + instruction.getID() + "' for " + profile + " finished");
     }
 
     /**
@@ -234,7 +234,7 @@ public abstract class Objective {
     public final void newPlayer(final Profile profile) {
         final String defaultInstruction = getDefaultDataInstruction(profile);
         createObjectiveForPlayer(profile, defaultInstruction);
-        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(instruction.getID().getFull(), defaultInstruction);
+        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB((ObjectiveID) instruction.getID(), defaultInstruction);
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class Objective {
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
             stop(profile);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFull(),
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective((ObjectiveID) instruction.getID(),
                     entry.getValue().toString());
         }
     }

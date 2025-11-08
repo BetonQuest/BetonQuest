@@ -370,7 +370,7 @@ public class PlayerData implements TagData, PointData {
             return;
         }
         final String data = obj.getDefaultDataInstruction(profile);
-        if (addRawObjective(objectiveID.toString(), data)) {
+        if (addRawObjective(objectiveID, data)) {
             saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
         }
     }
@@ -385,11 +385,12 @@ public class PlayerData implements TagData, PointData {
      * @return true if the objective was successfully added, false if it was
      * already there
      */
-    public boolean addRawObjective(final String objectiveID, final String data) {
-        if (objectives.containsKey(objectiveID)) {
+    public boolean addRawObjective(final ObjectiveID objectiveID, final String data) {
+        final String idString = objectiveID.toString();
+        if (objectives.containsKey(idString)) {
             return false;
         }
-        objectives.put(objectiveID, data);
+        objectives.put(idString, data);
         return true;
     }
 
@@ -409,8 +410,8 @@ public class PlayerData implements TagData, PointData {
      * @param objectiveID the ID of the objective
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
-    public void addObjToDB(final String objectiveID, final String data) {
-        saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID, data));
+    public void addObjToDB(final ObjectiveID objectiveID, final String data) {
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
     }
 
     /**
