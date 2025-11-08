@@ -141,6 +141,8 @@ import org.betonquest.betonquest.quest.objective.chestput.ChestPutObjectiveFacto
 import org.betonquest.betonquest.quest.objective.command.CommandObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.consume.ConsumeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.crafting.CraftingObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.data.PointObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.data.TagObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.delay.DelayObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.die.DieObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.enchant.EnchantObjectiveFactory;
@@ -192,7 +194,7 @@ import java.time.InstantSource;
 /**
  * Registers the Conditions, Events, Objectives and Variables that come with BetonQuest.
  */
-@SuppressWarnings("PMD.NcssCount")
+@SuppressWarnings({"PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
 public class CoreQuestTypes {
     /**
      * Logger Factory to create new custom Logger from.
@@ -452,11 +454,13 @@ public class CoreQuestTypes {
         objectiveTypes.register("npcrange", new NpcRangeObjectiveFactory());
         objectiveTypes.register("password", new PasswordObjectiveFactory());
         objectiveTypes.register("pickup", new PickupObjectiveFactory());
+        objectiveTypes.register("point", new PointObjectiveFactory(betonQuest.getPlayerDataStorage()));
         objectiveTypes.register("ride", new RideObjectiveFactory());
         objectiveTypes.register("shear", new ShearObjectiveFactory());
         objectiveTypes.register("smelt", new SmeltingObjectiveFactory());
         objectiveTypes.register("stage", new StageObjectiveFactory());
         objectiveTypes.register("step", new StepObjectiveFactory());
+        objectiveTypes.register("tag", new TagObjectiveFactory(betonQuest.getPlayerDataStorage()));
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("timer", new TimerObjectiveFactory(questTypeApi));
         objectiveTypes.register("variable", new VariableObjectiveFactory());

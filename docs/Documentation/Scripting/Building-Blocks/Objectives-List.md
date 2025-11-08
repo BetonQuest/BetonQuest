@@ -452,6 +452,33 @@ pickup emerald amount:3 events:reward notify
 pickup emerald,diamond amount:6 events:reward notify
 ```
 
+## Point: `point`
+
+The player must have a specific amount of points in a category.
+
+If the player is not online the objective is completed on the player's next login.
+
+| Parameter   | Syntax           | Default Value          | Explanation                                                                                                                            |
+|-------------|------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| _category_  | category         | :octicons-x-circle-16: | The category to have the points in.                                                                                                    |
+| _amount_    | Number           | :octicons-x-circle-16: | The required amount of points.                                                                                                         |
+| _mode_      | mode:mode        | ABSOLUTE               | How the amount should be interpreted. Either `ABSOLUTE` or `RELATIVE`. With relative the current points are added to the target value. |
+| _operation_ | operation:symbol | Greater or Equals (>=) | How the actual value is compared to the wanted. The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.                             |
+
+```YAML title="Example"
+objectives:
+  reach100: point counter 100
+  punish: point reputation -100 operation:<
+  progressFive: point reputation 5 mode:relative
+```
+
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                              |
+|----------|----------------|----------------------------------------------------------|
+| _amount_ | 100            | Shows the amount of points to reach.                     |
+| _left_   | 8              | Shows the amount of points that still need to be gained. |
+
 ## :material-skull: Entity Kill: `mobkill`
 
 The player must kill the specified amount of entities (living creatures).
@@ -580,6 +607,22 @@ formatted like `X: 100, Y: 200, Z:300`.
 ```YAML title="Example"
 step 100;200;300;world events:done
 ```
+
+## Getting a tag: `tag`
+
+To complete this objective player must get a tag.
+The only argument is the tag to receive.
+
+If the player is not online the objective is completed on the player's next login.
+
+```YAML title="Example"
+objectives:
+  finish: tag finishedTag
+```
+
+<h5> Variable Properties </h5>
+
+The property of the objective is the tag to receive.
 
 ## Taming: `tame`
 
