@@ -79,11 +79,6 @@ public class PointObjective extends Objective implements Listener {
     }
 
     @Override
-    public final String getDefaultDataInstruction() {
-        return targetAmount.toString();
-    }
-
-    @Override
     public String getDefaultDataInstruction(final Profile profile) {
         return qeHandler.handle(() -> {
             final long targetValue = this.targetAmount.getValue(profile).intValue();

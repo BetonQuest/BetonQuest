@@ -77,11 +77,6 @@ public abstract class CountingObjective extends Objective {
     }
 
     @Override
-    public final String getDefaultDataInstruction() {
-        return targetAmount.toString();
-    }
-
-    @Override
     public String getDefaultDataInstruction(final Profile profile) {
         return qeHandler.handle(() -> String.valueOf(targetAmount.getValue(profile).intValue()), "0");
     }

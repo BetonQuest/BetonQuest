@@ -49,7 +49,7 @@ public class StageObjective extends Objective {
     }
 
     @Override
-    public String getDefaultDataInstruction() {
+    public String getDefaultDataInstruction(final Profile profile) {
         return qeHandler.handle(() -> stageMap.getStage(0), "");
     }
 

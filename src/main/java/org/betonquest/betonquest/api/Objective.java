@@ -151,21 +151,10 @@ public abstract class Objective {
      * This method should return the default data instruction for the objective,
      * ready to be parsed by the ObjectiveData class.
      *
-     * @return the default data instruction string
-     */
-    public abstract String getDefaultDataInstruction();
-
-    /**
-     * This method should return the default data instruction for the objective,
-     * ready to be parsed by the ObjectiveData class.
-     * Reimplement this method if you need profile context (e.g. for variable parsing) when creating the data instruction.
-     *
      * @param profile the {@link Profile} to parse the instruction for
      * @return the default data instruction string
      */
-    public String getDefaultDataInstruction(final Profile profile) {
-        return getDefaultDataInstruction();
-    }
+    public abstract String getDefaultDataInstruction(Profile profile);
 
     /**
      * This method should return various properties of the objective, formatted

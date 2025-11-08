@@ -40,7 +40,7 @@ public class TrainCartsLocationObjective extends AbstractLocationObjective imple
     }
 
     @Override
-    public String getDefaultDataInstruction() {
+    public String getDefaultDataInstruction(final Profile profile) {
         return "";
     }
 

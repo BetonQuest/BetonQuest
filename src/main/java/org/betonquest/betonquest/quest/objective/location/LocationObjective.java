@@ -51,7 +51,7 @@ public class LocationObjective extends AbstractLocationObjective {
     }
 
     @Override
-    public String getDefaultDataInstruction() {
+    public String getDefaultDataInstruction(final Profile profile) {
         return "";
     }
 

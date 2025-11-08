@@ -99,11 +99,6 @@ public class DelayObjective extends Objective {
     }
 
     @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
-
-    @Override
     public String getDefaultDataInstruction(final Profile profile) {
         return qeHandler.handle(() -> {
             final double millis = timeToMilliSeconds(delay.getValue(profile).doubleValue());
