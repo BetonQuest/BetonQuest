@@ -2112,6 +2112,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#point-point">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Point: <code>point</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#entity-kill-mobkill">
     <span class="md-ellipsis">
 
@@ -2234,6 +2257,29 @@
       
         <span class="md-typeset">
           Step on pressure plate: <code>step</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#getting-a-tag-tag">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Getting a tag: <code>tag</code>
         </span>
 
       
@@ -5647,6 +5693,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#point-point">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Point: <code>point</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#entity-kill-mobkill">
     <span class="md-ellipsis">
 
@@ -5769,6 +5838,29 @@
       
         <span class="md-typeset">
           Step on pressure plate: <code>step</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#getting-a-tag-tag">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Getting a tag: <code>tag</code>
         </span>
 
       
@@ -6870,6 +6962,73 @@ display a message each time the player advances the objective, optionally with t
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">pickup emerald amount:3 events:reward notify</span>
 <span class="l l-Scalar l-Scalar-Plain">pickup emerald,diamond amount:6 events:reward notify</span>
 </code></pre></div>
+<h2 id="point-point">Point: <code>point</code><a class="headerlink" href="#point-point" title="Permanent link">🔗</a></h2>
+<p>The player must have a specific amount of points in a category.</p>
+<p>If the player is not online the objective is completed on the player's next login.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>category</em></td>
+<td>category</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The category to have the points in.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>Number</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>The required amount of points.</td>
+</tr>
+<tr>
+<td><em>mode</em></td>
+<td>mode:mode</td>
+<td>ABSOLUTE</td>
+<td>How the amount should be interpreted. Either <code>ABSOLUTE</code> or <code>RELATIVE</code>. With relative the current points are added to the target value.</td>
+</tr>
+<tr>
+<td><em>operation</em></td>
+<td>operation:symbol</td>
+<td>Greater or Equals (&gt;=)</td>
+<td>How the actual value is compared to the wanted. The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>, <code>!=</code>, <code>&gt;=</code>, <code>&gt;</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">reach100</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point counter 100</span>
+<span class="w">  </span><span class="nt">punish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point reputation -100 operation:&lt;</span>
+<span class="w">  </span><span class="nt">progressFive</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">point reputation 5 mode:relative</span>
+</code></pre></div>
+<h5> Variable Properties </h5>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Example Output</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>amount</em></td>
+<td>100</td>
+<td>Shows the amount of points to reach.</td>
+</tr>
+<tr>
+<td><em>left</em></td>
+<td>8</td>
+<td>Shows the amount of points that still need to be gained.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="entity-kill-mobkill"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9 8.99 8.99 0 0 0 4 7.47V22h2v-3h2v3h2v-3h2v3h2v-3.54c2.47-1.65 4-4.46 4-7.46a9 9 0 0 0-9-9m-4 9a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m-4 3 1.5 3h-3z"/></svg></span> Entity Kill: <code>mobkill</code><a class="headerlink" href="#entity-kill-mobkill" title="Permanent link">🔗</a></h2>
 <p>The player must kill the specified amount of entities (living creatures).
 All entities work, make sure to use their <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">correct types</a>.</p>
@@ -7063,6 +7222,16 @@ objective will not be completable and will log errors in the console.</p>
 formatted like <code>X: 100, Y: 200, Z:300</code>.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">step 100;200;300;world events:done</span>
 </code></pre></div>
+<h2 id="getting-a-tag-tag">Getting a tag: <code>tag</code><a class="headerlink" href="#getting-a-tag-tag" title="Permanent link">🔗</a></h2>
+<p>To complete this objective player must get a tag.
+The only argument is the tag to receive.</p>
+<p>If the player is not online the objective is completed on the player's next login.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">finish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tag finishedTag</span>
+</code></pre></div>
+<h5> Variable Properties </h5>
+
+<p>The property of the objective is the tag to receive.</p>
 <h2 id="taming-tame">Taming: <code>tame</code><a class="headerlink" href="#taming-tame" title="Permanent link">🔗</a></h2>
 <p>To complete this objective player must tame some amount of mobs. First argument is type, second is amount. The mob must
 be tamable for the objective to be valid, e.g.: <code>CAT</code>, <code>DONKEY</code>, <code>HORSE</code>, <code>LLAMA</code>, <code>PARROT</code> or <code>WOLF</code>. You
