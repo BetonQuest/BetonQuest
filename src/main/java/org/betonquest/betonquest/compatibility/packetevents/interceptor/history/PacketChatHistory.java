@@ -89,9 +89,6 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
             final PacketSendEvent event
     ) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        if (packetWrapper == null) {
-            return;
-        }
         if (TAGGER.acceptIfTagged(packetWrapperFunction.getMessage(packetWrapper),
                 untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))) {
             return;
