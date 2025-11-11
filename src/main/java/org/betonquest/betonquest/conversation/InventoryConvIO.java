@@ -138,6 +138,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         this.endCallback = null;
 
         this.betonQuest = BetonQuest.getInstance();
+    }
+
+    @Override
+    public void begin() {
         Bukkit.getPluginManager().registerEvents(this, betonQuest);
     }
 

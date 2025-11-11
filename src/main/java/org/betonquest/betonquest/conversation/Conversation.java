@@ -679,6 +679,7 @@ public class Conversation implements Listener {
 
                 Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
+                inOut.begin();
                 if (interceptor != null) {
                     interceptor.begin();
                 }
