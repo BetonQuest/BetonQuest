@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.packetevents.interceptor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -53,7 +54,11 @@ public class ComponentTagger {
      * @return the untagged component
      */
     public Component removeTag(final Component component) {
-        return component.children().get(0);
+        final List<Component> children = component.children();
+        if (children.isEmpty()) {
+            return Component.empty();
+        }
+        return children.get(0);
     }
 
     /**
