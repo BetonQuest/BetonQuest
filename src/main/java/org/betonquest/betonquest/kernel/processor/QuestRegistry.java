@@ -104,7 +104,7 @@ public record QuestRegistry(
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, coreQuestRegistry, playerDataStorage);
         final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), packManager, variables, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
-                textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables);
+                textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables, pluginMessage);
         final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), packManager, otherRegistries.item());
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), packManager, textCreator);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), packManager, variables, textCreator);

@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
@@ -28,6 +29,7 @@ import java.util.Objects;
 /**
  * Stores Conversation Data and validates it.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> {
     /**
      * Factory to create class specific logger.
@@ -60,6 +62,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final ParsedSectionTextCreator textCreator;
 
     /**
+     * Listener for interactions in a conversation.
+     */
+    private final ConversationListener listener;
+
+    /**
      * Create a new Conversation Data Processor to load and process conversation data.
      *
      * @param log                 the custom logger for this class
@@ -69,11 +76,12 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
      * @param convIORegistry      the registry for available ConversationIOs
      * @param interceptorRegistry the registry for available Interceptors
      * @param variableProcessor   the variable processor to create new variables
+     * @param pluginMessage       the plugin message instance to use for ingame notifications
      */
     public ConversationProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
-                                 final VariableProcessor variableProcessor) {
+                                 final VariableProcessor variableProcessor, final PluginMessage pluginMessage) {
         super(log, plugin.getQuestPackageManager(), "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.plugin = plugin;
@@ -81,6 +89,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
         this.variableProcessor = variableProcessor;
+        this.listener = new ConversationListener(loggerFactory.create(ConversationListener.class), plugin.getProfileProvider(),
+                pluginMessage, plugin.getPluginConfig());
+        plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        listener.reload();
     }
 
     @Override
