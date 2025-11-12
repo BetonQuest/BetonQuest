@@ -93,7 +93,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
                 untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))) {
             return;
         }
-        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper));
+        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper, this::addBypass));
     }
 
     /**

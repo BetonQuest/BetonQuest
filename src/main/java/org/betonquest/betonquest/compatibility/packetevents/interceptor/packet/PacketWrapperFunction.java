@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import net.kyori.adventure.text.Component;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A function interface for handling different packet wrappers related to chat messages.
@@ -50,8 +51,9 @@ public interface PacketWrapperFunction<T extends PacketWrapper<?>> {
     /**
      * Transforms the given packet wrapper, potentially into a different type, that can be sent to the player.
      *
-     * @param packetWrapper the packet wrapper to transform
+     * @param packetWrapper      the packet wrapper to transform
+     * @param messageTransformer a function to transform the message component
      * @return the transformed packet wrapper
      */
-    PacketWrapper<?> transform(T packetWrapper);
+    PacketWrapper<?> transform(T packetWrapper, Function<Component, Component> messageTransformer);
 }
