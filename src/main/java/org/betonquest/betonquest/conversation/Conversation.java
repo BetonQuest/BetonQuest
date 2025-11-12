@@ -122,11 +122,6 @@ public class Conversation implements Listener {
     private final Map<Integer, ResolvedOption> availablePlayerOptions = new HashMap<>();
 
     /**
-     * If an interceptor should delay non-conversation messages.
-     */
-    private final boolean messagesDelaying;
-
-    /**
      * Notification sender when commands are blocked in a conversation.
      */
     private final IngameNotificationSender blockedSender;
@@ -208,14 +203,13 @@ public class Conversation implements Listener {
         this.pack = conversationID.getPackage();
         this.center = center;
         this.blacklist = plugin.getPluginConfig().getStringList("conversation.cmd_blacklist");
-        this.messagesDelaying = plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed");
         this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.ERROR, "command_blocked");
         this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
         this.data = plugin.getFeatureApi().getConversation(conversationID);
         this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(this, onlineProfile);
-        if (messagesDelaying) {
+        if (plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed")) {
             this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
         } else {
             this.interceptor = null;
@@ -228,15 +222,14 @@ public class Conversation implements Listener {
 
         ACTIVE_CONVERSATIONS.put(onlineProfile, this);
 
+        log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
         if (startingOption == null) {
-            log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
             new Starter().runTaskAsynchronously(plugin);
         } else {
             String firstOption = startingOption;
             if (!startingOption.contains(OPTIONS_SEPARATOR)) {
                 firstOption = conversationID.get() + OPTIONS_SEPARATOR + startingOption;
             }
-            log.debug(pack, "Starting conversation '" + conversationID + FOR + onlineProfile + "'.");
             new Starter(firstOption).runTaskAsynchronously(plugin);
         }
     }
@@ -551,6 +544,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the conversation center.
+     *
      * @return the location where the conversation has been started
      */
     public Location getCenter() {
@@ -558,6 +553,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the used conversation io.
+     *
      * @return the ConversationIO object used by this conversation
      */
     public ConversationIO getIO() {
@@ -565,6 +562,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the current conversation data. It may change when using cross conversation pointers.
+     *
      * @return the data of the conversation
      */
     public ConversationData getData() {
@@ -572,6 +571,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the conversation source package.
+     *
      * @return the package containing this conversation
      */
     public QuestPackage getPackage() {
@@ -579,6 +580,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the conversation id.
+     *
      * @return the ID of the conversation
      */
     public ConversationID getID() {
@@ -586,6 +589,8 @@ public class Conversation implements Listener {
     }
 
     /**
+     * Gets the used interceptor, if present.
+     *
      * @return the interceptor of the conversation
      */
     @Nullable
