@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.ConversationOptionEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
@@ -39,12 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -338,40 +332,19 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final List<ResolvedOption> options) {
-        final List<Pair<ResolvedOption, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
-        for (final ResolvedOption option : options) {
-            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
-                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> plugin.getQuestTypeApi().condition(onlineProfile, conditionID));
-                conditions.add(future);
-            }
-            futuresOptions.add(Pair.of(option, conditions));
-        }
-
         int optionsCount = 0;
-        option:
-        for (final Pair<ResolvedOption, List<CompletableFuture<Boolean>>> future : futuresOptions) {
-            try {
-                for (final CompletableFuture<Boolean> completableFuture : future.getValue()) {
-                    if (!completableFuture.get(1, TimeUnit.SECONDS)) {
-                        continue option;
-                    }
-                }
-            } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
-                log.reportException(pack, e);
-                continue;
-            }
-            final ResolvedOption option = future.getKey();
-            optionsCount++;
-            availablePlayerOptions.put(optionsCount, option);
+        for (final ResolvedOption option : options) {
+            final List<ConditionID> conditionIDs = option.conversationData().getConditionIDs(option.name(), option.type());
+            if (plugin.getQuestTypeApi().conditions(onlineProfile, conditionIDs)) {
+                optionsCount++;
+                availablePlayerOptions.put(optionsCount, option);
 
-            try {
-                inOut.addPlayerOption(data.getText(onlineProfile, option), data.getProperties(onlineProfile, option));
-            } catch (final QuestException e) {
-                log.warn(pack, "Error while adding option '" + option.name() + "': " + e.getMessage(), e);
+                try {
+                    inOut.addPlayerOption(data.getText(onlineProfile, option), data.getProperties(onlineProfile, option));
+                } catch (final QuestException e) {
+                    log.warn(pack, "Error while adding option '" + option.name() + "': " + e.getMessage(), e);
+                }
             }
         }
         new BukkitRunnable() {
