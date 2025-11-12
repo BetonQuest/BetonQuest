@@ -647,7 +647,6 @@ public class Conversation implements Listener {
                 if (state.isStarted()) {
                     return;
                 }
-                state = ConversationState.ACTIVE;
                 if (!new PlayerConversationStartEvent(onlineProfile, Conversation.this).callEvent()) {
                     log.debug(pack, "Conversation '" + identifier + FOR + player.getPlayerProfile() + "' has been "
                             + "canceled because it's PlayerConversationStartEvent has been canceled.");
@@ -655,6 +654,7 @@ public class Conversation implements Listener {
                     return;
                 }
 
+                state = ConversationState.ACTIVE;
                 Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
                 inOut.begin();
