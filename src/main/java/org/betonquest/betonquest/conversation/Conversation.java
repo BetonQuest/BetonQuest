@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileKeyMap;
-import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -23,15 +22,8 @@ import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,7 +48,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Handles the conversation flow based on {@link ConversationData}.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects", "NullAway"})
-public class Conversation implements Listener {
+public class Conversation {
 
     /**
      * The option separator.
@@ -115,11 +107,6 @@ public class Conversation implements Listener {
     private final ConversationID identifier;
 
     /**
-     * List of blocked commands while in conversation.
-     */
-    private final List<String> blacklist;
-
-    /**
      * A map of options that the player can currently choose.
      * The key is the number of the option, the value is the option itself.
      * <br>
@@ -131,11 +118,6 @@ public class Conversation implements Listener {
      * If an interceptor should delay non-conversation messages.
      */
     private final boolean messagesDelaying;
-
-    /**
-     * Notification sender when commands are blocked in a conversation.
-     */
-    private final IngameNotificationSender blockedSender;
 
     /**
      * Notification sender when conversation starts.
@@ -213,9 +195,7 @@ public class Conversation implements Listener {
         this.identifier = conversationID;
         this.pack = conversationID.getPackage();
         this.center = center;
-        this.blacklist = plugin.getPluginConfig().getStringList("conversation.cmd_blacklist");
         this.messagesDelaying = plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed");
-        this.blockedSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.ERROR, "command_blocked");
         this.startSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, pluginMessage, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
@@ -433,7 +413,6 @@ public class Conversation implements Listener {
 
                 // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
-                HandlerList.unregisterAll(this);
                 new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
             });
         } finally {
@@ -492,57 +471,6 @@ public class Conversation implements Listener {
     }
 
     /**
-     * Blocks blacklisted commands.
-     *
-     * @param event the preprocess event to eventually cancel
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onCommand(final PlayerCommandPreprocessEvent event) {
-        if (!event.getPlayer().equals(player)) {
-            return;
-        }
-        final String cmdName = event.getMessage().split(" ")[0].substring(1);
-        if (blacklist.contains(cmdName)) {
-            event.setCancelled(true);
-            blockedSender.sendNotification(onlineProfile);
-        }
-    }
-
-    /**
-     * Prevent damage to (or from) player while in conversation.
-     *
-     * @param event the damage event to cancel
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onDamage(final EntityDamageByEntityEvent event) {
-        if (!data.getPublicData().invincible()) {
-            return;
-        }
-        final ProfileProvider profileProvider = plugin.getProfileProvider();
-        if (event.getEntity() instanceof final Player playerEntity && profileProvider.getProfile(playerEntity).equals(onlineProfile)
-                || event.getDamager() instanceof final Player playerDamager
-                && profileProvider.getProfile(playerDamager).equals(onlineProfile)) {
-            event.setCancelled(true);
-        }
-    }
-
-    /**
-     * End conversation if player quits (why keep listeners running?).
-     *
-     * @param event the quit event
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onQuit(final PlayerQuitEvent event) {
-        if (event.getPlayer().equals(player)) {
-            if (isMovementBlock()) {
-                suspend();
-            } else {
-                endConversation();
-            }
-        }
-    }
-
-    /**
      * Instead of ending the conversation it saves it to the database, from
      * where it will be resumed after the player logs in again.
      */
@@ -570,7 +498,6 @@ public class Conversation implements Listener {
 
             // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
-            HandlerList.unregisterAll(this);
             new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
             lock.readLock().unlock();
@@ -676,8 +603,6 @@ public class Conversation implements Listener {
                     ACTIVE_CONVERSATIONS.remove(onlineProfile);
                     return;
                 }
-
-                Bukkit.getPluginManager().registerEvents(Conversation.this, plugin);
 
                 inOut.begin();
                 if (interceptor != null) {
