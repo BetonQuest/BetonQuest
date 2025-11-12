@@ -10,6 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
 public interface ConversationIO {
 
     /**
+     * Starts the io.
+     */
+    void begin();
+
+    /**
      * Set the text of response chosen by the NPC. Should be called once per
      * conversation cycle.
      *

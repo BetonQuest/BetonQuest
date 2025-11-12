@@ -65,8 +65,12 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         this.onlineProfile = onlineProfile;
         this.colors = colors;
 
-        Bukkit.getPluginManager().registerEvents(this, plugin);
         maxNpcDistance = plugin.getPluginConfig().getDouble("conversation.stop.distance");
+    }
+
+    @Override
+    public void begin() {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**

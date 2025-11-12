@@ -178,8 +178,6 @@ public class MenuConvIO extends ChatConvIO {
             // Intercept Packets
             packetAdapter = getPacketAdapter();
             ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
-
-            Bukkit.getPluginManager().registerEvents(this, plugin);
         } finally {
             lock.unlock();
         }
