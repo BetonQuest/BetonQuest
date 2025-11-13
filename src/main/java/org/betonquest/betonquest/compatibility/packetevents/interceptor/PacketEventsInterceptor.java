@@ -136,9 +136,8 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         try {
             ended.set(true);
             final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
-            chatHistory.sendHistory(onlineProfile.getPlayer());
             messages.forEach(user::sendPacket);
-
+            chatHistory.sendHistory(onlineProfile.getPlayer());
             if (packetListenerCommon != null) {
                 new BukkitRunnable() {
                     @Override
