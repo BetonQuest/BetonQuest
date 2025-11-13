@@ -4970,83 +4970,152 @@
   <h1>Quest Items</h1>
 
 <h2 id="item-basics">Item Basics<a class="headerlink" href="#item-basics" title="Permanent link">🔗</a></h2>
-<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similarly to events, conditions etc.</p>
-<p>BetonQuest provides the <code>simple</code> item type, which this page describes.
-Basic syntax is very simple:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple BLOCK_SELECTOR other arguments...</span>
-</code></pre></div>
-<p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> is a type of the item. It doesn't have to be all in uppercase.
-Other arguments specify data like name of the item, lore, enchantments or potion effects.
-There are two categories of these arguments: the ones you can apply to every item and type specific arguments.
-Examples would be <code>name</code> (for every item type) and <code>text</code> (only in books).</p>
-<p>Every argument is used in two ways: when creating an item and when checking if some existing item matches the instruction.
-The first case is pretty straightforward - BetonQuest takes all data you specified and creates an item, simple as that.
-Second case is more complicated. You can require some property of the item to exist, other not to exist, or skip this property check altogether.
-You can also accept an item only if some value (like enchantment level) is greater/less than <em>x</em>.
-You can use wildcards in the BLOCK_SELECTOR to match multiple types of items.</p>
+<p>Items in BetonQuest are defined in the <em>items</em> section. Each item has an instruction string, similar to events, conditions etc.</p>
+<p>BetonQuest provides the <code>simple</code> item type, to which this page will outline the creation process. <em>Item type</em> here 
+refers to the "source" of the item (A bit like when you specify the <a href="https://minecraft.fandom.com/wiki/Resource_location">namespace</a> in <code>/give</code> commands). </p>
+<p>Here is the basic syntax:
+<div class="highlight"><pre><span></span><code><span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">itemExample</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple BLOCK_SELECTOR other arguments...</span><span class="w"> </span><span class="c1">#(1)!</span>
+</code></pre></div></p>
+<ol>
+<li>Consider <a href="../../Scripting/Quoting-%26-YAML/">YAML multiline syntax</a> for long item strings.</li>
+</ol>
+<p><a href="../../Scripting/Data-Formats/#block-selectors">BLOCK_SELECTOR</a> specifies the type of item you are creating. At its 
+most basic, it is the item material. It doesn't have to be all in uppercase.</p>
+<p><code>Other arguments</code> is for additional data like the name of the item, lore, enchantments or potion effects.
+There are two categories for these arguments: The ones you can apply to every item and type-specific arguments.
+Examples would be <code>name</code> (for every item type) and <code>text</code> (only for books).</p>
+<p>Every argument is used in two ways: When creating an item and when checking if some existing item matches the 
+instruction.</p>
+<p>The first case is pretty straightforward - BetonQuest takes all the data you specified and creates an item. You would 
+give it to your players using events. 
+The second case is more complicated. You can require certain properties of the item to exist, others to not exist, or 
+skip some property checks altogether. You would use these items in conditions.</p>
 <p>These are arguments that can be applied to every item:</p>
+<div class="admonition info inline end">
+<p class="admonition-title">Info</p>
+<p>You no longer require underscores for spaces and now need to quote the argument when you want to use spaces in it. See examples below.</p>
+</div>
+<div class="annotate">
 <ul>
-<li>
-<p><code>name</code> - the display name of the item.
-If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
-</li>
-<li>
-<p><code>lore</code> - text under the item's name. Default styling of lore is purple and italic. 
-To make a new line use <code>;</code> character. If you require the item not to have a lore at all, use <code>none</code> keyword.
+<li><code>name</code>
+The display name of the item. If you want to specifically say that the item must not have any name, use <code>none</code> 
+keyword. Default styling is italic. (1)</li>
+</ul>
+</div>
+<ol>
+<li>If you do not want italics, you must append <code>&lt;!i&gt;</code> before the name text. See <a href="https://docs.advntr.dev/minimessage/format.html#decoration">Minimessage Formatting</a> for more information. </li>
+</ol>
+<div class="annotate">
+<ul>
+<li><code>lore</code> - Text under the item's name. Default styling of lore is purple and italic. 
+To make a new line, use <code>;</code> character. If you require the item to not have lore at all, use <code>none</code> keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
-add <code>lore-containing</code> argument to the instruction string.</p>
-</li>
+add <code>lore-containing</code> argument to the instruction string. (1)</li>
+</ul>
+</div>
+<ol>
+<li>If you do not want the default styling, you must append <code>&lt;!i&gt;&lt;colorValue&gt;</code> before the text in your <code>lore</code> argument.</li>
+</ol>
+<div class="annotate">
+<div class="admonition warning inline end">
+<p class="admonition-title">Warning</p>
+<p>By default, all specified enchantments are required. Each specified enchantment will be required on the item by 
+default unless you prefix its name with <code>none-</code>. (1)</p>
+<details class="warning">
+<summary>Warning</summary>
+<p><strong>Do not use <code>none-</code> prefix unless you're using <code>enchants-containing</code> argument</strong>, or else it will break the check!</p>
+</details>
+</div>
+<ul>
 <li>
-<p><code>enchants</code> - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:</p>
+<p><code>enchants</code> - a list of enchantments and their levels. You can require the item to not have any enchantments by 
+using <code>none</code> keyword. To check the item contains a matching enchantment instead of all, add <code>enchants-containing</code> 
+argument to the instruction string.
+ Each enchantment consists of these things, separated by 
+colons: (2)</p>
 <ul>
 <li><a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html">name</a></li>
-<li>level (only positive numbers, including zero)</li>
+<li>level (only positive numbers, including zero) (3)</li>
 </ul>
-<p>For example <code>damage_all:3</code> is <em>Sharpness III</em>. You can specify additional enchantments by separating them with commas.</p>
-<p>You can require the item not to have any enchantments by using <code>none</code> keyword.
-You can also add <code>+</code>/<code>-</code> character to the enchantment level to make the check require levels greater/less (and equal) than specified.
-If you don't care about the level, replace the number with a question mark.</p>
-<p>By default, all specified enchantments are required.
-If you want to check if the item contains a matching enchantment (and/or more enchants), add <code>enchants-containing</code> argument to the instruction string.
-Each specified enchantment will be required on the item by default unless you prefix its name with <code>none-</code>,
-for example <code>none-knockback</code> means that the item must not have any knockback enchantment.
-<strong>Do not use <code>none-</code> prefix unless you're using <code>enchants-containing</code> argument</strong>, it doesn't make any sense and will break the check!</p>
 </li>
 <li>
-<p><code>unbreakable</code> - this makes the item unbreakable.
-   You can specify it either as <code>unbreakable</code> or <code>unbreakable:true</code> to require an item to be unbreakable.
+<p><code>unbreakable</code> - This makes the item unbreakable.
+   You can specify it as either <code>unbreakable</code> or <code>unbreakable:true</code> to require an item to be unbreakable.
    If you want to check if the item is breakable, use <code>unbreakable:false</code>.</p>
 </li>
 <li>
-<p><code>custom-model-data</code> - set the custom model data of the item. You have to specify the data value: <code>custom-model-data:3</code>.
+<p><code>custom-model-data</code> - Set the custom model data of the item. You have to specify the data value: 
+<code>custom-model-data:3</code>.
    To check that an item does not have custom model data set <code>no-custom-model-data</code>.</p>
 </li>
 <li>
-<p><code>flags</code> - item flags that govern the visibility of some item info (comma delimited) including:</p>
+<p><code>flags</code> - Item flags that govern the visibility of some item info (comma-delimited) including:</p>
 <ul>
-<li>HIDE_ENCHANTS: Hide the item's enchants</li>
-<li>HIDE_ATTRIBUTES: Hide attributes like damage</li>
-<li>HIDE_UNBREAKABLE: Hide the unbreakable of the item state</li>
-<li>HIDE_DESTROYS: Hide what the item can break or destroy</li>
-<li>HIDE_PLACED_ON: Hide where the item can be placed</li>
-<li>HIDE_POTION_EFFECTS: Hide potion effects, book and firework info, map tool tips, banner patters, and enchantments</li>
-<li>HIDE_DYE: Hide the dye labels on colored leather armor</li>
+<li>HIDE_ENCHANTS: Hides the item's enchants</li>
+<li>HIDE_ATTRIBUTES: Hides attributes like damage</li>
+<li>HIDE_UNBREAKABLE: Hides the unbreakable tag</li>
+<li>HIDE_DESTROYS: Hides what the item can break or destroy</li>
+<li>HIDE_PLACED_ON: Hides where the item can be placed</li>
+<li>HIDE_POTION_EFFECTS: Hides potion effects, book and firework info, map tool tips, banner patters, and enchantments</li>
+<li>HIDE_DYE: Hides the dye labels on colored leather armor</li>
 </ul>
 </li>
 </ul>
-<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="s">&quot;name:&amp;4Sword</span><span class="nv"> </span><span class="s">made</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Holy</span><span class="nv"> </span><span class="s">Concrete&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">name:none</span>
-<span class="l l-Scalar l-Scalar-Plain">&quot;lore:&lt;red&gt;Only this sword can kill the Lord Ruler&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">lore:&amp;2Quest_Item lore-containing</span>
-<span class="l l-Scalar l-Scalar-Plain">lore:none</span>
-<span class="l l-Scalar l-Scalar-Plain">enchants:damage_all:3+,none-knockback</span>
-<span class="l l-Scalar l-Scalar-Plain">enchants:power:? enchants-containing</span>
-<span class="l l-Scalar l-Scalar-Plain">enchants:none</span>
-<span class="l l-Scalar l-Scalar-Plain">unbreakable</span>
-<span class="l l-Scalar l-Scalar-Plain">unbreakable:false</span>
-<span class="l l-Scalar l-Scalar-Plain">flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</span>
+</div>
+<ol>
+<li>For example <code>none-knockback</code> means that the item must not have any knockback enchantment.</li>
+<li>You can specify additional enchantments by separating them with commas. </li>
+<li>You can also add <code>+</code>/<code>-</code> characters to the 
+enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about 
+the level, replace the number with <code>?</code>.</li>
+</ol>
+<details class="example">
+<summary>Item Creation Examples</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Basic Item Example</label><label for="__tabbed_1_2">Complex Item Example With Multiline Syntax</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">holySword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple stone_sword &quot;name:&amp;4Sword made of Holy Concrete&quot; &quot;lore:Blessed by the Emperor!&quot;</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">holierSword</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">  </span><span class="no">simple stone_sword </span>
+<span class="w">  </span><span class="no">&quot;name:&lt;!i&gt;&lt;red&gt;An Even Better Sword&quot; </span>
+<span class="w">  </span><span class="no">&quot;lore:&lt;#FF1CA4&gt;Sharp as can be!&quot;</span>
+<span class="w">  </span><span class="no">enchants:damage_all:3</span>
+<span class="w">  </span><span class="no">unbreakable</span>
+<span class="w">  </span><span class="no">flags:HIDE_ENCHANTS,HIDE_ATTRIBUTES,HIDE_UNBREAKABLE</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="example">
+<summary>Item Matching Examples <span class="twemoji" title="For when you want to parse specific parts of your items."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9h2V7h-2m1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m-1 15h2v-6h-2z"/></svg></span></summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Lore Matching Example</label><label for="__tabbed_2_2">Enchantment Matching Examples</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">newSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple stone_sword &quot;name:Excellent Sword&quot; &quot;lore:Sharper than most!&quot; lore-containing</span><span class="w"> </span><span class="c1">#(1)!</span>
+</code></pre></div>
+<ol>
+<li>Will match all stone swords containing a lore-line <code>Sharper than most!</code>. Can still be used as a regular 
+item but mainly used for <code>item</code> condition checks.</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">sharpSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple stone_sword &quot;name:Sharp Sword&quot; enchants:damage_all:? enchants-containing</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="nt">bluntSword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple stone_sword name:none enchants:none-damage_all enchants-containing</span><span class="w"> </span><span class="c1">#(2)!</span>
+</code></pre></div>
+<ol>
+<li>Will match all stone swords with any <code>damage_all</code> enchantment.</li>
+<li>Will only match with stone swords that do <em>not</em> have a <code>damage_all</code> enchantment.</li>
+</ol>
+</div>
+</div>
+</div>
+</details>
 <h2 id="special-item-types">Special Item Types<a class="headerlink" href="#special-item-types" title="Permanent link">🔗</a></h2>
 <h3 id="books">Books<a class="headerlink" href="#books" title="Permanent link">🔗</a></h3>
 <p><em>This applies to a written book and a book and quill.</em></p>

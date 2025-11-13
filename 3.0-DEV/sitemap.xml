@@ -2,306 +2,306 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://betonquest.org/3.0-DEV/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/BukkitConfigurations/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Configuration-Files/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Events/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Instruction/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Legacy-API/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Logging/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Obtaining-API/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Overview/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Schedules/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/API/Writing-Implementations/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/CHANGELOG/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Frequently-Asked-Questions/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Overview/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Commands-and-Permissions/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Plugin-Config/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Migration-1-2/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Migration-2-3/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Configuration/Version-Changes/Updating/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Conversations/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Items/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Journal/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/NPCs/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Quest-Cancelers/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Text-Formatting/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Elements/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Example/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Features/Menus/Menu/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/About-Scripting/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Data-Formats/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Packages-%26-Templates/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Parties/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Quoting-%26-YAML/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Schedules/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Conditions-List/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Events-List/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Integration-List/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Objectives-List/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Scripting/Building-Blocks/Variables-List/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Additional-Effects/Player-Hider/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Additional-Effects/Quest-Holograms/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/NPC-Effects/NPC-Hiding/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/NPC-Effects/NPC-Holograms/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Notifications/Notification-IO%27s-%26-Categories/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Documentation/Visual-Effects/Notifications/Notification-Settings/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Downloads/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Donating-Money/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Overview/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Setup-Project/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Misc/Versioning-and-Releasing/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Create-a-new-Branch/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Maintaining-the-Changelog/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Submitting-Changes/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Adding-a-new-Dependency/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Checking-Requirements/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Workflow/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Code/Writing-JUnit-Tests/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Customizations/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Guidelines/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Principles/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Workflow/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Participate/Process/Docs/Writing-Tutorials/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Overview/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Features/Tracking-Quest-Progress/Overview/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Features/Tracking-Quest-Progress/Tags/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/About/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conditions/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Conversations/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Events/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/Objectives/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Basics/YAML-Basics/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Setting-up-VSCode/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Getting-Started/Setup-Guide/Setting-up-a-Test-Server/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Syntax/Quest-Packages/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
     <url>
          <loc>https://betonquest.org/3.0-DEV/Tutorials/Tools/YAML-Errors/</loc>
-         <lastmod>2025-11-12</lastmod>
+         <lastmod>2025-11-13</lastmod>
     </url>
 </urlset>
