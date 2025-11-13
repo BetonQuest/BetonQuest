@@ -124,7 +124,7 @@ the level, replace the number with `?`.
         newSword: simple stone_sword "name:Excellent Sword" "lore:Sharper than most!" lore-containing #(1)!
         ```
         
-        1.  Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
+        1. Will match all stone swords containing a lore-line `Sharper than most!`. Can still be used as a regular 
         item but mainly used for `item` condition checks.
     === "Enchantment Matching Examples"
         ```YAML
