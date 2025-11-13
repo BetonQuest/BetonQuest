@@ -127,7 +127,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
             state = ConversationState.ACTIVE;
-            armorStand.mount(FakeArmorStandPassenger.getBlockBelowPlayer(onlineProfile.getPlayer()));
+            input.begin();
         } finally {
             lock.unlock();
         }
