@@ -110,7 +110,7 @@ the level, replace the number with `?`.
     === "Complex Item Example With Multiline Syntax"
         ```YAML
         holierSword: >-
-        simple stone_sword 
+          simple stone_sword 
           "name:<!i><red>An Even Better Sword" 
           "lore:<#FF1CA4>Sharp as can be!"
           enchants:damage_all:3
