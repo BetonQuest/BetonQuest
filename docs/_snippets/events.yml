@@ -1,7 +1,7 @@
 cancel: |-
   ## Cancel a quest: `cancel`
 
-  This event works in the same way as a [quest canceler in the backpack](Documentation/Features/Quest-Cancelers.md).
+  This event works in the same way as a [quest canceler in the backpack](/Documentation/Features/Quest-Cancelers.md).
 
   Running this event is equal to the player canceling a quest using the backpack.
 
@@ -42,7 +42,7 @@ notify: |-
   ### Usage Examples
 
   Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
-  Advanced users may also use [Notify Categories](Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
+  Advanced users may also use [Notify Categories](/Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
   ```YAML
   #The simplest of all notify events. Just a chat message:
   customEvent: "notify Hello %player%!"  
