@@ -153,8 +153,9 @@ public abstract class Objective {
      *
      * @param profile the {@link Profile} to parse the instruction for
      * @return the default data instruction string
+     * @throws QuestException when values could not be resolved for the profile
      */
-    public abstract String getDefaultDataInstruction(Profile profile);
+    public abstract String getDefaultDataInstruction(Profile profile) throws QuestException;
 
     /**
      * This method should return various properties of the objective, formatted
@@ -185,10 +186,15 @@ public abstract class Objective {
         final ObjectiveID objectiveID = (ObjectiveID) instruction.getID();
         playerData.removeRawObjective(objectiveID);
         if (persistent) {
-            final String defaultDataInstruction = getDefaultDataInstruction(profile);
-            playerData.addRawObjective(objectiveID, defaultDataInstruction);
-            playerData.addObjToDB(objectiveID, defaultDataInstruction);
-            createObjectiveForPlayer(profile, defaultDataInstruction);
+            try {
+                final String defaultDataInstruction = getDefaultDataInstruction(profile);
+                playerData.addRawObjective(objectiveID, defaultDataInstruction);
+                playerData.addObjToDB(objectiveID, defaultDataInstruction);
+                createObjectiveForPlayer(profile, defaultDataInstruction);
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Could not re-create persistent Objective for '" + instruction.getID()
+                        + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+            }
         }
         log.debug(instruction.getPackage(),
                 "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");
@@ -232,9 +238,14 @@ public abstract class Objective {
      * @param profile the {@link Profile} for which the objective is to be added
      */
     public final void newPlayer(final Profile profile) {
-        final String defaultInstruction = getDefaultDataInstruction(profile);
-        createObjectiveForPlayer(profile, defaultInstruction);
-        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB((ObjectiveID) instruction.getID(), defaultInstruction);
+        try {
+            final String defaultInstruction = getDefaultDataInstruction(profile);
+            createObjectiveForPlayer(profile, defaultInstruction);
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB((ObjectiveID) instruction.getID(), defaultInstruction);
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Could not create new Objective for '" + instruction.getID()
+                    + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+        }
     }
 
     /**

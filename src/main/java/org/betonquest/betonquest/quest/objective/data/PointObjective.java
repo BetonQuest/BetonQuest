@@ -79,16 +79,14 @@ public class PointObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return qeHandler.handle(() -> {
-            final long targetValue = this.targetAmount.getValue(profile).intValue();
-            final CountingMode value = mode.getValue(profile);
-            if (value == CountingMode.TOTAL) {
-                return String.valueOf(targetValue);
-            }
-            final Optional<Integer> points = playerDataStorage.getOffline(profile).getPointsFromCategory(category.getValue(profile));
-            return String.valueOf(targetValue + points.orElse(0));
-        }, "0");
+    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+        final long targetValue = this.targetAmount.getValue(profile).intValue();
+        final CountingMode value = mode.getValue(profile);
+        if (value == CountingMode.TOTAL) {
+            return String.valueOf(targetValue);
+        }
+        final Optional<Integer> points = playerDataStorage.getOffline(profile).getPointsFromCategory(category.getValue(profile));
+        return String.valueOf(targetValue + points.orElse(0));
     }
 
     @Override

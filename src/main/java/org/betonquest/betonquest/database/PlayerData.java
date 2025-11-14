@@ -369,7 +369,14 @@ public class PlayerData implements TagData, PointData {
             log.warn(objectiveID.getPackage(), "Cannot add objective to player data: " + e.getMessage(), e);
             return;
         }
-        final String data = obj.getDefaultDataInstruction(profile);
+        final String data;
+        try {
+            data = obj.getDefaultDataInstruction(profile);
+        } catch (final QuestException e) {
+            log.warn(objectiveID.getPackage(), "Cannot add objective to player data: Could Not get resolved instruction: "
+                    + e.getMessage(), e);
+            return;
+        }
         if (addRawObjective(objectiveID, data)) {
             saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
         }
