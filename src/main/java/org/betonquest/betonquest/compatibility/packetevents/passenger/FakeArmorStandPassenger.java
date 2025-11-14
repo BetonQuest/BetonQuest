@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.packetevents.passenger;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
@@ -9,6 +10,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
@@ -135,6 +137,9 @@ public class FakeArmorStandPassenger implements ConversationSession {
                 Optional.empty(), EntityTypes.ARMOR_STAND, position, 0, 0, 0, 0,
                 Optional.empty());
 
+        final WrapperPlayServerUpdateAttributes standAttributesPacket = new WrapperPlayServerUpdateAttributes(armorStandId,
+                List.of(new WrapperPlayServerUpdateAttributes.Property(Attributes.MAX_HEALTH, 0.0, List.of())));
+
         final WrapperPlayServerEntityMetadata standMetadataPacket = new WrapperPlayServerEntityMetadata(armorStandId,
                 List.of(new EntityData<>(0, EntityDataTypes.BYTE, (byte) 0x20)));
 
@@ -142,6 +147,7 @@ public class FakeArmorStandPassenger implements ConversationSession {
                 armorStandId, new int[]{player.getEntityId()});
 
         packetEventsAPI.getPlayerManager().sendPacket(player, standSpawnPacket);
+        packetEventsAPI.getPlayerManager().sendPacket(player, standAttributesPacket);
         packetEventsAPI.getPlayerManager().sendPacket(player, standMetadataPacket);
         packetEventsAPI.getPlayerManager().sendPacket(player, standPassengersPacket);
 
