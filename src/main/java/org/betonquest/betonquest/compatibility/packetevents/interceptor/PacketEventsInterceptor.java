@@ -32,7 +32,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     /**
      * A prefix that marks messages to be ignored by this interceptor.
      */
-    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-Passthrough-Tag");
+    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-Interceptor-Passthrough-Tag");
 
     /**
      * The PacketEvents API instance.
@@ -82,7 +82,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         this.chatHistory = chatHistory;
         this.onlineProfile = onlineProfile;
         this.messages = new ArrayList<>();
-        this.lock = new ReentrantReadWriteLock();
+        this.lock = new ReentrantReadWriteLock(true);
         this.ended = new AtomicBoolean(false);
     }
 
@@ -103,9 +103,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     }
 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
-            final PacketWrapperFunction<T> packetWrapperFunction,
-            final PacketSendEvent event
-    ) {
+            final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
         lock.readLock().lock();
         try {
@@ -137,7 +135,12 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
             ended.set(true);
             final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
             messages.forEach(user::sendPacket);
-            chatHistory.sendHistory(onlineProfile.getPlayer());
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    chatHistory.sendHistory(onlineProfile.getPlayer());
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 1);
             if (packetListenerCommon != null) {
                 new BukkitRunnable() {
                     @Override

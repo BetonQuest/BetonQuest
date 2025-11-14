@@ -28,7 +28,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     /**
      * A prefix that marks messages to be ignored by this history.
      */
-    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-Bypass-Tag");
+    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-History-Bypass-Tag");
 
     /**
      * The PacketEvents API instance.
@@ -85,9 +85,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     }
 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
-            final PacketWrapperFunction<T> packetWrapperFunction,
-            final PacketSendEvent event
-    ) {
+            final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
         if (TAGGER.acceptIfTagged(packetWrapperFunction.getMessage(packetWrapper),
                 untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))) {
