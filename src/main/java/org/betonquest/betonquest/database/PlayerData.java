@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -83,7 +84,7 @@ public class PlayerData implements TagData, PointData {
     /**
      * List of tags the player has.
      */
-    private final List<String> tags = new CopyOnWriteArrayList<>();
+    private final Set<String> tags = ConcurrentHashMap.newKeySet();
 
     /**
      * List of journal entries the player has.
@@ -236,8 +237,8 @@ public class PlayerData implements TagData, PointData {
     }
 
     @Override
-    public List<String> getTags() {
-        return Collections.unmodifiableList(tags);
+    public Set<String> getTags() {
+        return Collections.unmodifiableSet(tags);
     }
 
     @Override
@@ -248,8 +249,7 @@ public class PlayerData implements TagData, PointData {
     @Override
     public void addTag(final String tag) {
         synchronized (tags) {
-            if (!tags.contains(tag)) {
-                tags.add(tag);
+            if (tags.add(tag)) {
                 saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
                 new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }

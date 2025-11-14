@@ -1,17 +1,17 @@
 package org.betonquest.betonquest.database;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Provides the ability to have tags.
  */
 public interface TagData {
     /**
-     * Provide list of all defined tags.
+     * Provide set of all defined tags.
      *
      * @return Defined tags
      */
-    List<String> getTags();
+    Set<String> getTags();
 
     /**
      * Check if a specific tag is added.

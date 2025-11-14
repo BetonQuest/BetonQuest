@@ -6,11 +6,12 @@ import org.betonquest.betonquest.database.Saver.Record;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -30,7 +31,7 @@ public class GlobalData implements TagData, PointData {
     /**
      * The set global tags.
      */
-    private final List<String> globalTags = new ArrayList<>();
+    private final Set<String> globalTags = new HashSet<>();
 
     /**
      * The set global points.
@@ -71,7 +72,7 @@ public class GlobalData implements TagData, PointData {
     }
 
     @Override
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return globalTags;
     }
 
@@ -82,8 +83,7 @@ public class GlobalData implements TagData, PointData {
 
     @Override
     public void addTag(final String tag) {
-        if (!globalTags.contains(tag)) {
-            globalTags.add(tag);
+        if (globalTags.add(tag)) {
             saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
         }
     }
