@@ -2,8 +2,8 @@ package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.Point;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Provides the ability to have points.
@@ -14,7 +14,7 @@ public interface PointData {
      *
      * @return Defined points
      */
-    List<Point> getPoints();
+    Set<Point> getPoints();
 
     /**
      * Returns the amount of point in specified category.

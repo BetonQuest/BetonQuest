@@ -268,8 +268,8 @@ public class PlayerData implements TagData, PointData {
     }
 
     @Override
-    public List<Point> getPoints() {
-        return List.copyOf(points.values());
+    public Set<Point> getPoints() {
+        return Set.copyOf(points.values());
     }
 
     @Override

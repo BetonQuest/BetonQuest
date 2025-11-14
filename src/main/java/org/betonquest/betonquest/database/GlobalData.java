@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -95,8 +94,8 @@ public class GlobalData implements TagData, PointData {
     }
 
     @Override
-    public List<Point> getPoints() {
-        return List.copyOf(globalPoints.values());
+    public Set<Point> getPoints() {
+        return Set.copyOf(globalPoints.values());
     }
 
     @Override
