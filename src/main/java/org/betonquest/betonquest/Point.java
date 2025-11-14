@@ -50,6 +50,6 @@ public class Point {
      * @param add amount of the points to add
      */
     public void addPoints(final int add) {
-        this.count = this.count + add;
+        this.count += add;
     }
 }
