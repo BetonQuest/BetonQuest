@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
@@ -57,7 +58,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     /**
      * The read-write lock for thread-safe when sending messages and ending interception.
      */
-    private final ReentrantReadWriteLock lock;
+    private final ReadWriteLock lock;
 
     /**
      * Indicates whether the interception has ended.
@@ -134,21 +135,24 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         try {
             ended.set(true);
             final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
-            messages.forEach(user::sendPacket);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     chatHistory.sendHistory(onlineProfile.getPlayer());
                 }
             }.runTaskLater(BetonQuest.getInstance(), 1);
-            if (packetListenerCommon != null) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
-                    }
-                }.runTaskLater(BetonQuest.getInstance(), 20);
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    messages.forEach(user::sendPacket);
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 2);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
+                }
+            }.runTaskLater(BetonQuest.getInstance(), 20);
         } finally {
             lock.writeLock().unlock();
         }
