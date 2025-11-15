@@ -82,7 +82,7 @@ public class MenuObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getDefaultDataInstruction() {
+    public String getDefaultDataInstruction(final Profile profile) {
         return "";
     }
 

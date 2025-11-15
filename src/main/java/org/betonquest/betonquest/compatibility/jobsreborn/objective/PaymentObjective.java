@@ -77,13 +77,8 @@ public class PaymentObjective extends Objective implements Listener {
     }
 
     @Override
-    public final String getDefaultDataInstruction() {
-        return targetAmount.toString();
-    }
-
-    @Override
-    public String getDefaultDataInstruction(final Profile profile) {
-        return qeHandler.handle(() -> String.valueOf(targetAmount.getValue(profile).doubleValue()), "1");
+    public String getDefaultDataInstruction(final Profile profile) throws QuestException {
+        return String.valueOf(targetAmount.getValue(profile).doubleValue());
     }
 
     @Override

@@ -168,7 +168,7 @@ public class NpcRangeObjective extends Objective {
     }
 
     @Override
-    public String getDefaultDataInstruction() {
+    public String getDefaultDataInstruction(final Profile profile) {
         return "";
     }
 

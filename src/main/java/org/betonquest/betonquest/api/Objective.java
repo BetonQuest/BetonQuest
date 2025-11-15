@@ -151,21 +151,11 @@ public abstract class Objective {
      * This method should return the default data instruction for the objective,
      * ready to be parsed by the ObjectiveData class.
      *
-     * @return the default data instruction string
-     */
-    public abstract String getDefaultDataInstruction();
-
-    /**
-     * This method should return the default data instruction for the objective,
-     * ready to be parsed by the ObjectiveData class.
-     * Reimplement this method if you need profile context (e.g. for variable parsing) when creating the data instruction.
-     *
      * @param profile the {@link Profile} to parse the instruction for
      * @return the default data instruction string
+     * @throws QuestException when values could not be resolved for the profile
      */
-    public String getDefaultDataInstruction(final Profile profile) {
-        return getDefaultDataInstruction();
-    }
+    public abstract String getDefaultDataInstruction(Profile profile) throws QuestException;
 
     /**
      * This method should return various properties of the objective, formatted
@@ -193,18 +183,21 @@ public abstract class Objective {
     public final void completeObjective(final Profile profile) {
         completeObjectiveForPlayer(profile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
-        playerData.removeRawObjective((ObjectiveID) instruction.getID());
+        final ObjectiveID objectiveID = (ObjectiveID) instruction.getID();
+        playerData.removeRawObjective(objectiveID);
         if (persistent) {
-            playerData.addNewRawObjective((ObjectiveID) instruction.getID());
-            createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
+            try {
+                final String defaultDataInstruction = getDefaultDataInstruction(profile);
+                playerData.addRawObjective(objectiveID, defaultDataInstruction);
+                playerData.addObjToDB(objectiveID, defaultDataInstruction);
+                createObjectiveForPlayer(profile, defaultDataInstruction);
+            } catch (final QuestException e) {
+                log.warn(instruction.getPackage(), "Could not re-create persistent Objective for '" + instruction.getID()
+                        + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+            }
         }
         log.debug(instruction.getPackage(),
-                "Objective '" + instruction.getID() + "' has been completed for "
-                        + profile + ", firing events.");
-        // fire all events
-        log.debug(instruction.getPackage(),
-                "Firing events in objective '" + instruction.getID() + "' for "
-                        + profile + " finished");
+                "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");
         try {
             for (final EventID event : events.getValue(profile)) {
                 BetonQuest.getInstance().getQuestTypeApi().event(profile, event);
@@ -213,6 +206,8 @@ public abstract class Objective {
             log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID()
                     + "' for " + profile + ": " + e.getMessage(), e);
         }
+        log.debug(instruction.getPackage(),
+                "Firing events in objective '" + instruction.getID() + "' for " + profile + " finished");
     }
 
     /**
@@ -243,9 +238,14 @@ public abstract class Objective {
      * @param profile the {@link Profile} for which the objective is to be added
      */
     public final void newPlayer(final Profile profile) {
-        final String defaultInstruction = getDefaultDataInstruction(profile);
-        createObjectiveForPlayer(profile, defaultInstruction);
-        BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB(instruction.getID().getFull(), defaultInstruction);
+        try {
+            final String defaultInstruction = getDefaultDataInstruction(profile);
+            createObjectiveForPlayer(profile, defaultInstruction);
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addObjToDB((ObjectiveID) instruction.getID(), defaultInstruction);
+        } catch (final QuestException e) {
+            log.warn(instruction.getPackage(), "Could not create new Objective for '" + instruction.getID()
+                    + "' for '" + profile + "' objective: The Objective Instruction could not be resolved: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -284,7 +284,8 @@ public abstract class Objective {
             try {
                 final ObjectiveData data = templateFactory.create(instructionString, profile, (ObjectiveID) instruction.getID());
                 runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
-                activateObjective(profile, data);
+                dataMap.put(profile, data);
+                start(profile);
             } catch (final QuestException exception) {
                 log.warn(instruction.getPackage(), "Error while loading " + instruction.getID() + " objective data for "
                         + profile + ": " + exception.getMessage(), exception);
@@ -339,23 +340,14 @@ public abstract class Objective {
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
             runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
-            deactivateObjective(profile);
+            stop(profile);
+            dataMap.remove(profile);
         }
     }
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         final boolean isAsync = !BetonQuest.getInstance().getServer().isPrimaryThread();
         new PlayerObjectiveChangeEvent(profile, isAsync, this, instruction.getID(), newState, previousState).callEvent();
-    }
-
-    private void activateObjective(final Profile profile, final ObjectiveData data) {
-        dataMap.put(profile, data);
-        start(profile);
-    }
-
-    private void deactivateObjective(final Profile profile) {
-        stop(profile);
-        dataMap.remove(profile);
     }
 
     /**
@@ -411,7 +403,7 @@ public abstract class Objective {
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
             final Profile profile = entry.getKey();
             stop(profile);
-            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective(instruction.getID().getFull(),
+            BetonQuest.getInstance().getPlayerDataStorage().get(profile).addRawObjective((ObjectiveID) instruction.getID(),
                     entry.getValue().toString());
         }
     }

@@ -1127,15 +1127,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 sendMessage(sender, "objective_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug(
-                        "Deleting objective " + objectiveID + " for " + profile);
+                log.debug("Deleting objective " + objectiveID + " for " + profile);
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
             }
             case "complete", "c" -> {
-                log.debug(
-                        "Completing objective " + objectiveID + " for " + profile);
+                log.debug("Completing objective " + objectiveID + " for " + profile);
                 if (isOnline) {
                     objective.completeObjective(profile);
                 } else {
