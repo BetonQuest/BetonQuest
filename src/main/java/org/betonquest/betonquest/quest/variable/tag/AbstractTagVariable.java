@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * An abstract class for creating Tag variables.
@@ -68,7 +68,7 @@ public abstract class AbstractTagVariable<T> {
      * @return the value of the variable
      * @throws QuestException if the papiMode is enabled and the message could not be resolved
      */
-    public String getValueFor(@Nullable final Profile profile, final List<String> tags) throws QuestException {
+    public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
         if (tags.contains(PackageArgument.IDENTIFIER.apply(questPackage, tagName))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(pluginMessage.getMessage(profile, "condition_variable_met")) : "true";
         }

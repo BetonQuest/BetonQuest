@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.database.PlayerData;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Provides all per-player tags and all global tags as LuckPerms
@@ -37,7 +37,7 @@ public final class TagCalculatorUtils {
                 data.getTags().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
             }
 
-            final List<String> globalData = BetonQuest.getInstance().getGlobalData().getTags();
+            final Set<String> globalData = BetonQuest.getInstance().getGlobalData().getTags();
             globalData.forEach(tag -> contextConsumer.accept(KEY_GLOBAL + tag, "true"));
         };
     }

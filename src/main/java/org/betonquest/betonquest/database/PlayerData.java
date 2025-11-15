@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -83,7 +84,7 @@ public class PlayerData implements TagData, PointData {
     /**
      * List of tags the player has.
      */
-    private final List<String> tags = new CopyOnWriteArrayList<>();
+    private final Set<String> tags = ConcurrentHashMap.newKeySet();
 
     /**
      * List of journal entries the player has.
@@ -93,7 +94,7 @@ public class PlayerData implements TagData, PointData {
     /**
      * List of points the player has.
      */
-    private final List<Point> points = new CopyOnWriteArrayList<>();
+    private final Map<String, Point> points = new ConcurrentHashMap<>();
 
     /**
      * List of not loaded objectiveIDs and their data instructions.
@@ -172,7 +173,8 @@ public class PlayerData implements TagData, PointData {
             }
 
             while (pointResults.next()) {
-                points.add(new Point(pointResults.getString("category"), pointResults.getInt("count")));
+                final String category = pointResults.getString("category");
+                points.put(category, new Point(category, pointResults.getInt("count")));
             }
 
             while (backpackResults.next()) {
@@ -235,8 +237,8 @@ public class PlayerData implements TagData, PointData {
     }
 
     @Override
-    public List<String> getTags() {
-        return Collections.unmodifiableList(tags);
+    public Set<String> getTags() {
+        return Collections.unmodifiableSet(tags);
     }
 
     @Override
@@ -247,8 +249,7 @@ public class PlayerData implements TagData, PointData {
     @Override
     public void addTag(final String tag) {
         synchronized (tags) {
-            if (!tags.contains(tag)) {
-                tags.add(tag);
+            if (tags.add(tag)) {
                 saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
                 new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
             }
@@ -267,17 +268,16 @@ public class PlayerData implements TagData, PointData {
     }
 
     @Override
-    public List<Point> getPoints() {
-        return Collections.unmodifiableList(points);
+    public Set<Point> getPoints() {
+        return Set.copyOf(points.values());
     }
 
     @Override
     public Optional<Integer> getPointsFromCategory(final String category) {
         synchronized (points) {
-            for (final Point p : points) {
-                if (p.getCategory().equals(category)) {
-                    return Optional.of(p.getCount());
-                }
+            final Point point = points.get(category);
+            if (point != null) {
+                return Optional.of(point.getCount());
             }
             return Optional.empty();
         }
@@ -287,21 +287,10 @@ public class PlayerData implements TagData, PointData {
     public void modifyPoints(final String category, final int count) {
         synchronized (points) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            // check if the category already exists
-            for (final Point point : points) {
-                if (point.getCategory().equalsIgnoreCase(category)) {
-                    // if it does, add points to it
-                    saver.add(new Record(UpdateType.ADD_POINTS,
-                            profileID, category, String.valueOf(point.getCount() + count)));
-                    point.addPoints(count);
-                    new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
-                    return;
-                }
-            }
-            // if not then create new point category with given amount of points
-            points.add(new Point(category, count));
-            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
-            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
+            final Point point = points.computeIfAbsent(category, cat -> new Point(cat, 0));
+            point.addPoints(count);
+            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(point.getCount())));
+            new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, point.getCount()).callEvent();
         }
     }
 
@@ -309,8 +298,7 @@ public class PlayerData implements TagData, PointData {
     public void setPoints(final String category, final int count) {
         synchronized (points) {
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
-            points.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
-            points.add(new Point(category, count));
+            points.put(category, new Point(category, count));
             saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
             new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, count).callEvent();
         }
@@ -319,14 +307,8 @@ public class PlayerData implements TagData, PointData {
     @Override
     public void removePointsCategory(final String category) {
         synchronized (points) {
-            Point pointToRemove = null;
-            for (final Point point : points) {
-                if (point.getCategory().equalsIgnoreCase(category)) {
-                    pointToRemove = point;
-                }
-            }
-            if (pointToRemove != null) {
-                points.remove(pointToRemove);
+            final Point removed = points.remove(category);
+            if (removed != null) {
                 new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();
             }
             saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
