@@ -101,7 +101,7 @@ purpose, have a look at
 BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.
 
-BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
+BetonQuest uses the `menu` style by default. If PacketEvents is not installed, the `tellraw` style will be used.
 You can change this setting globally by changing the [`default_io`](../Configuration/Plugin-Config.md#conversation-conversation-settings) option in the "_config.yml_" file.
 
 It is also possible to override this setting per conversation. Add a `conversationIO:
@@ -113,7 +113,7 @@ In both cases, you can choose from the following conversation styles:
     === "`menu`"
         A modern conversation style that works with some of Minecraft's native controls.
         
-        **Requires [ProtocolLib](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/)**
+        **Requires [PacketEvents](https://www.spigotmc.org/resources/80279/)**
             
         ??? "Customizing the Menu Style"
             The formatting of this style can be configured with the [`menu` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).
@@ -226,14 +226,14 @@ A chat interceptor provides a method of intercepting those messages and then sen
 You can specify the default chat interceptor by setting `default_interceptor` inside the "_config.yml_".
 Additionally, you can overwrite the default for each conversation by setting the `interceptor` key inside your conversation file.
 
-The default configuration of BetonQuest sets the `default_interceptor` option to `packet,simple`.
-This means that it first tries to use the `packet` interceptor. If that fails it falls back to using the `simple` interceptor.
+The default configuration of BetonQuest sets the `default_interceptor` option to `packetevents,simple`.
+This means that it first tries to use the `packetevents` interceptor. If that fails it falls back to using the `simple` interceptor.
 
-BetonQuest adds following interceptors: `simple`, `packet` and `none`:
+BetonQuest adds following interceptors: `simple`, `packetevents` and `none`:
   
 The `simple` interceptor works with every server but only supports very basic functionality and may not work with plugins like Herochat.
 
-The `packet` interceptor requires the ProtocolLib plugin to be installed. It will work well in any kind of situation.
+The `packetevents` interceptor requires the PacketEvents plugin to be installed. It will work well in any kind of situation.
 
 The `none` interceptor is an interceptor that won't intercept messages. That sounds useless until you have a conversation
 that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.

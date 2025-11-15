@@ -1,10 +1,10 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation.display;
+package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIOSettings;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.MenuConvIOSettings;
 
 import java.util.ArrayList;
 import java.util.HashSet;

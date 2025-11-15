@@ -25,7 +25,6 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     hide_npcs:
       innkeeper: hidden
     ```
-    @snippet:integrations:protocollib@
 === "MythicMobs"
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 
@@ -38,7 +37,6 @@ It allows you to assign conditions to specific BQ NPCIDs like so:
     hide_npcs:
       innkeeper: hidden
     ```
-    @snippet:integrations:protocollib@
 === "FancyNpcs"
     !!! tip inline end "Explanation"
         The NPC `inkeeper` (which is the BetonQuestNPCID and **not** the NPCID itself) will be hidden if the player has the 

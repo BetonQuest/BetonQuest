@@ -28,7 +28,7 @@ softdepend:
   - PlaceholderAPI
   - HolographicDisplays
   - DecentHolograms
-  - ProtocolLib
+  - packetevents
   - Brewery
   - BreweryX
   - Jobs
