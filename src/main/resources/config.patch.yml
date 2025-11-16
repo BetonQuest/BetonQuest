@@ -12,6 +12,8 @@
   - type: SET
     key: conversation.interceptor.display_history
     value: true
+  - type: REMOVE
+    key: conversation.interceptor.display_missed
 3.0.0.19:
   - type: SET
     key: item.quest.lore

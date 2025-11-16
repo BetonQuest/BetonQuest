@@ -116,6 +116,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `journal.chars_per_page` was deleted from the config.yml 
 - undocumented way of addressing packages in some variables
 - `journal.show_separator` option deleted
+- `display_missed` config option, as the `none` interceptor should be used instead
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

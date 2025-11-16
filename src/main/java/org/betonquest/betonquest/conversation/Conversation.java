@@ -132,7 +132,6 @@ public class Conversation {
     /**
      * The {@link Interceptor} used to hide unrelated messages while the player is in this conversation.
      */
-    @Nullable
     private final Interceptor interceptor;
 
     /**
@@ -195,11 +194,7 @@ public class Conversation {
 
         this.data = plugin.getFeatureApi().getConversation(conversationID);
         this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(this, onlineProfile);
-        if (plugin.getPluginConfig().getBoolean("conversation.interceptor.display_missed")) {
-            this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
-        } else {
-            this.interceptor = null;
-        }
+        this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
 
         if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             log.debug(pack, onlineProfile + " is in conversation right now, returning.");
@@ -395,9 +390,7 @@ public class Conversation {
                 endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
                 // End interceptor after a second
-                if (interceptor != null) {
-                    interceptor.end();
-                }
+                interceptor.end();
 
                 // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
@@ -413,10 +406,10 @@ public class Conversation {
      *
      * @return whenever this conversation has already ended
      */
-    public boolean isEnded() {
+    public boolean isActive() {
         lock.readLock().lock();
         try {
-            return state.isEnded();
+            return state.isActive();
         } finally {
             lock.readLock().unlock();
         }
@@ -428,10 +421,10 @@ public class Conversation {
      * @param message The message to send
      */
     public void sendMessage(final Component message) {
-        if (interceptor == null || isEnded()) {
-            player.sendMessage(message);
-        } else {
+        if (state.isActive() && isActive()) {
             interceptor.sendMessage(message);
+        } else {
+            player.sendMessage(message);
         }
     }
 
@@ -480,9 +473,7 @@ public class Conversation {
             plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
             // End interceptor
-            if (interceptor != null) {
-                interceptor.end();
-            }
+            interceptor.end();
 
             // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
@@ -535,16 +526,6 @@ public class Conversation {
      */
     public ConversationID getID() {
         return identifier;
-    }
-
-    /**
-     * Gets the used interceptor, if present.
-     *
-     * @return the interceptor of the conversation
-     */
-    @Nullable
-    public Interceptor getInterceptor() {
-        return interceptor;
     }
 
     private List<ResolvedOption> resolvePointers(final ResolvedOption option) throws QuestException {
@@ -603,12 +584,11 @@ public class Conversation {
                     return;
                 }
 
+                startSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                 state = ConversationState.ACTIVE;
 
                 inOut.begin();
-                if (interceptor != null) {
-                    interceptor.begin();
-                }
+                interceptor.begin();
 
                 if (startingOptions.isEmpty()) {
                     startingOptions = data.getStartingOptions();
@@ -616,7 +596,6 @@ public class Conversation {
                     // first select the option before sending message, so it
                     // knows which is used
                     selectOption(resolvedOptions, false);
-                    startSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
                 } else {
                     final List<ResolvedOption> resolvedOptions = resolveOptions(startingOptions);
                     selectOption(resolvedOptions, true);
