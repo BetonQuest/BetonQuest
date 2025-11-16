@@ -5436,20 +5436,22 @@ Currently, there is no way to switch between profiles, as the feature is still i
 <li><code>default</code> - A comma-separated list of chat interceptors. The first one that is loaded (depending on the 
   available third party plugin integrations) is used.
   See <a href="../../Features/Conversations/#chat-interceptors">chat interceptors</a> for supported chat interceptors.</li>
-<li><code>display_missed</code> - If set to <code>true</code>, the interceptor will display all missed messages in the chat after
-  the conversation ends.</li>
+<li><code>display_history</code> - If set to <code>true</code>, the interceptor will display all previous messages in the chat after
+  the conversation ends, like there was no conversation. This is only supported by some interceptors.
+  <strong>This option needs a server restart to take effect when changed!</strong></li>
 </ul>
 </li>
 <li><code>damage</code><br />
   All damage related settings.<ul>
-<li><code>combat_delay</code> - A delay (in seconds) the player must wait before starting a conversation after the last combat.</li>
+<li><code>combat_delay</code> - A delay (in seconds) the player must wait before starting a conversation after the last combat.<br />
+<strong>This option needs a server restart to take effect when changed!</strong></li>
 <li><code>invincible</code> - If set to <code>false</code> players can get damage from entities when in a conversation.</li>
 </ul>
 </li>
 <li><code>stop</code><br />
   Controls the behavior of the <code>stop</code> option in conversations.<ul>
 <li><code>distance</code> - The distance you need to walk away from the NPC for the conversation to end (in the case of using
-               chat-based conversation interface).</li>
+  chat-based conversation interface).</li>
 <li><code>notify</code> - Whether to display a message that the player is still in a conversation every time the player is 
   pulled back in the radius of the distance by the <code>stop</code> option in conversations.</li>
 </ul>

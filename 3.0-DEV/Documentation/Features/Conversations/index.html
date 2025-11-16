@@ -4865,7 +4865,7 @@ purpose, have a look at
 <h2 id="conversation-displaying">Conversation displaying<a class="headerlink" href="#conversation-displaying" title="Permanent link">🔗</a></h2>
 <p>BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.</p>
-<p>BetonQuest uses the <code>menu</code> style by default. If ProtocolLib is not installed, the <code>chest</code> style will be used.
+<p>BetonQuest uses the <code>menu</code> style by default. If PacketEvents is not installed, the <code>tellraw</code> style will be used.
 You can change this setting globally by changing the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>default_io</code></a> option in the "<em>config.yml</em>" file.</p>
 <p>It is also possible to override this setting per conversation. Add a <code>conversationIO:
 &lt;type&gt;</code> setting to the conversation file at the top of the YAML hierarchy (which is the same level as <code>quester</code> or <code>first</code> options).</p>
@@ -4876,7 +4876,7 @@ You can change this setting globally by changing the <a href="../../Configuratio
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>A modern conversation style that works with some of Minecraft's native controls.</p>
-<p><strong>Requires <a href="https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/">ProtocolLib</a></strong></p>
+<p><strong>Requires <a href="https://www.spigotmc.org/resources/80279/">PacketEvents</a></strong></p>
 <details>
 <summary>Customizing the Menu Style</summary>
 <p>The formatting of this style can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>menu</code> config option</a>.</p>
@@ -4989,11 +4989,11 @@ Check the <a href="../../Scripting/Building-Blocks/Variables-List/">variables li
 A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.</p>
 <p>You can specify the default chat interceptor by setting <code>default_interceptor</code> inside the "<em>config.yml</em>".
 Additionally, you can overwrite the default for each conversation by setting the <code>interceptor</code> key inside your conversation file.</p>
-<p>The default configuration of BetonQuest sets the <code>default_interceptor</code> option to <code>packet,simple</code>.
-This means that it first tries to use the <code>packet</code> interceptor. If that fails it falls back to using the <code>simple</code> interceptor.</p>
-<p>BetonQuest adds following interceptors: <code>simple</code>, <code>packet</code> and <code>none</code>:</p>
+<p>The default configuration of BetonQuest sets the <code>default_interceptor</code> option to <code>packetevents,simple</code>.
+This means that it first tries to use the <code>packetevents</code> interceptor. If that fails it falls back to using the <code>simple</code> interceptor.</p>
+<p>BetonQuest adds following interceptors: <code>simple</code>, <code>packetevents</code> and <code>none</code>:</p>
 <p>The <code>simple</code> interceptor works with every server but only supports very basic functionality and may not work with plugins like Herochat.</p>
-<p>The <code>packet</code> interceptor requires the ProtocolLib plugin to be installed. It will work well in any kind of situation.</p>
+<p>The <code>packetevents</code> interceptor requires the PacketEvents plugin to be installed. It will work well in any kind of situation.</p>
 <p>The <code>none</code> interceptor is an interceptor that won't intercept messages. That sounds useless until you have a conversation
 that you want to be excluded from interception. In this case you can just set <code>interceptor: none</code> inside your conversation file.</p>
 <h2 id="advanced-extends">Advanced: Extends<a class="headerlink" href="#advanced-extends" title="Permanent link">🔗</a></h2>

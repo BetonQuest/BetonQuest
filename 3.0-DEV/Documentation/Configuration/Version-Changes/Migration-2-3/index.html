@@ -3563,6 +3563,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-465-packetevents-instead-of-protocollib">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-465 - PacketEvents instead of ProtocolLib <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5532,6 +5555,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-465-packetevents-instead-of-protocollib">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-465 - PacketEvents instead of ProtocolLib <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5700,6 +5746,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-408-journal-entry-separator">3.0.0-DEV-408 - Journal entry separator</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-416-simple-item-textparser">3.0.0-DEV-416 - Simple Item TextParser</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-444-simple-item-questitem">3.0.0-DEV-444 - Simple Item QuestItem</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
+<li><a href="#300-dev-465-packetevents-instead-of-protocollib">3.0.0-DEV-465 - PacketEvents instead of ProtocolLib</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6372,6 +6419,20 @@ with <code>item.quest.update_legacy_on_join</code> enabled in the '<em>config.ym
 <span class="w">  </span><span class="nt">sword</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple DIAMOND_SWORD quest-item</span>
 </code></pre></div>
 </div>
+<h3 id="300-dev-465-packetevents-instead-of-protocollib">3.0.0-DEV-465 - PacketEvents instead of ProtocolLib <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f325.svg" title=":white_sun_cloud:" /><a class="headerlink" href="#300-dev-465-packetevents-instead-of-protocollib" title="Permanent link">🔗</a></h3>
+<p>The usage of ProtocolLib was replaced with PacketEvents.
+This means you now need to install PacketEvents on your server to use the same features as before.</p>
+<p>If you previously disabled the interceptor with the <code>display_missed</code> config option that is now removed,
+you now need to set the interceptor to <code>none</code>.</p>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<ul>
+<li><code>packet</code> interceptor was renamed to <code>packetevents</code></li>
+<li>new config option <code>display_history</code> defaults to <code>true</code>, and only works with packetevents interceptor</li>
+</ul>
+</details>
 
 
 

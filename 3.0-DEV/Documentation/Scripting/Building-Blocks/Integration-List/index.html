@@ -2268,13 +2268,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholderapi">
+  <a class="md-nav__link" href="#packetevents">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a>
+          PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a>
         </span>
 
       
@@ -2284,7 +2284,7 @@
 
   
   
-  <nav aria-label="PlaceholderAPI" class="md-nav">
+  <nav aria-label="PacketEvents" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -2308,13 +2308,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#protocollib">
+  <a class="md-nav__link" href="#placeholderapi">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          ProtocolLib<a href="https://www.spigotmc.org/resources/1997/"></a>
+          PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a>
         </span>
 
       
@@ -2324,7 +2324,7 @@
 
   
   
-  <nav aria-label="ProtocolLib" class="md-nav">
+  <nav aria-label="PlaceholderAPI" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -6012,13 +6012,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#placeholderapi">
+  <a class="md-nav__link" href="#packetevents">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a>
+          PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a>
         </span>
 
       
@@ -6028,7 +6028,7 @@
 
   
   
-  <nav aria-label="PlaceholderAPI" class="md-nav">
+  <nav aria-label="PacketEvents" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -6052,13 +6052,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#protocollib">
+  <a class="md-nav__link" href="#placeholderapi">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          ProtocolLib<a href="https://www.spigotmc.org/resources/1997/"></a>
+          PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a>
         </span>
 
       
@@ -6068,7 +6068,7 @@
 
   
   
-  <nav aria-label="ProtocolLib" class="md-nav">
+  <nav aria-label="PlaceholderAPI" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -6571,7 +6571,7 @@ In total 41 plugins have dedicated support for BetonQuest.</p>
 <h2 id="provided-by-betonquest">Provided by BetonQuest<a class="headerlink" href="#provided-by-betonquest" title="Permanent link">🔗</a></h2>
 <p>BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.<br />
 <em>AuraSkills, Brewery, BreweryX, Citizens, DecentHolograms, Denizen, EffectLib, FancyNpcs, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PacketEvents, PlaceholderAPI, Quests, RedisChat, Shopkeepers, TrainCarts, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit, WorldGuard and ZNPCsPlus.</em></p>
 <h2 id="provided-by-other-plugins">Provided by other plugins<a class="headerlink" href="#provided-by-other-plugins" title="Permanent link">🔗</a></h2>
 <p>Some plugins also hook into BetonQuest and provide support by themselves:<br />
@@ -7357,6 +7357,19 @@ Additionally, the mob should be configured to never change its AI target using M
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">castPoison</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mcast AngrySludgePoison</span>
 </code></pre></div>
+<h2 id="packetevents">PacketEvents<a href="https://www.spigotmc.org/resources/80279/"></a><a class="headerlink" href="#packetevents" title="Permanent link">🔗</a></h2>
+<h3 id="events_11">Events<a class="headerlink" href="#events_11" title="Permanent link">🔗</a></h3>
+<h4 id="freeze-players-freeze">Freeze players: 'freeze'<a class="headerlink" href="#freeze-players-freeze" title="Permanent link">🔗</a></h4>
+<p>This event allows you to freeze player for the given amount of ticks:
+<div class="highlight"><pre><span></span><code><span class="nt">freezeMe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;freeze</span><span class="nv"> </span><span class="s">100&quot;</span><span class="w"> </span><span class="c1">#Freezes the player for 5 seconds</span>
+</code></pre></div></p>
+<h3 id="chat-interceptor">Chat Interceptor<a class="headerlink" href="#chat-interceptor" title="Permanent link">🔗</a></h3>
+<h4 id="packet-interceptor-packetevents">Packet interceptor: <code>packetevents</code><a class="headerlink" href="#packet-interceptor-packetevents" title="Permanent link">🔗</a></h4>
+<p>This interceptor works on network package level and is thus much more reliable than the <code>simple</code> interceptor
+when working with advanced Chat plugins.
+It can also reprint the history of the chat after the conversation,
+so the conversation can not be seen in the chat history,
+see <a href="../../../Configuration/Plugin-Config/#conversation-conversation-settings">Plugin Configuration</a> for more information.</p>
 <h2 id="placeholderapi">PlaceholderAPI<a href="https://www.spigotmc.org/resources/6245/"></a><a class="headerlink" href="#placeholderapi" title="Permanent link">🔗</a></h2>
 <p>If you have this plugin, BetonQuest will add a <code>betonquest</code> placeholder to it and you will be able to use <code>ph</code> variable in your conversations.</p>
 <h3 id="placeholder-betonquest">Placeholder: <code>betonquest</code><a class="headerlink" href="#placeholder-betonquest" title="Permanent link">🔗</a></h3>
@@ -7376,15 +7389,6 @@ The <code>variable</code> part is just a <a href="../Variables-List/">BetonQuest
 <div class="highlight"><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">ph.player_item_in_hand%</span>
 </code></pre></div>
 </div>
-<h2 id="protocollib">ProtocolLib<a href="https://www.spigotmc.org/resources/1997/"></a><a class="headerlink" href="#protocollib" title="Permanent link">🔗</a></h2>
-<h3 id="events_11">Events<a class="headerlink" href="#events_11" title="Permanent link">🔗</a></h3>
-<h4 id="freeze-players-freeze">Freeze players: 'freeze'<a class="headerlink" href="#freeze-players-freeze" title="Permanent link">🔗</a></h4>
-<p>This event allows you to freeze player for the given amount of ticks:
-<div class="highlight"><pre><span></span><code><span class="nt">freezeMe</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;freeze</span><span class="nv"> </span><span class="s">100&quot;</span><span class="w"> </span><span class="c1">#Freezes the player for 5 seconds</span>
-</code></pre></div></p>
-<h3 id="chat-interceptor">Chat Interceptor<a class="headerlink" href="#chat-interceptor" title="Permanent link">🔗</a></h3>
-<h4 id="packet-interceptor-packet">Packet interceptor: <code>packet</code><a class="headerlink" href="#packet-interceptor-packet" title="Permanent link">🔗</a></h4>
-<p>This interceptor works on network package level and is thus much more reliable than the <code>simple</code> interceptor when working with advanced Chat plugins. </p>
 <h2 id="quests">Quests<a href="https://www.spigotmc.org/resources/3711/"></a><a class="headerlink" href="#quests" title="Permanent link">🔗</a></h2>
 <p>Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use <code>quest</code> event and <code>quest</code> condition.</p>
 <h3 id="condition-requirement-quests">Condition Requirement (Quests)<a class="headerlink" href="#condition-requirement-quests" title="Permanent link">🔗</a></h3>
