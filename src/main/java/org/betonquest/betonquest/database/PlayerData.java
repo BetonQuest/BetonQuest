@@ -151,7 +151,7 @@ public class PlayerData implements TagData, PointData {
      * Loads all data for the profile and puts it in appropriate lists.
      */
     public final void loadAllPlayerData() {
-        final Connector con = new Connector();
+        final Connector con = BetonQuest.getInstance().getDBConnector();
         try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileID);
              ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileID);
              ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);

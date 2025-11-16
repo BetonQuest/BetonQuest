@@ -39,22 +39,24 @@ public class GlobalData implements TagData, PointData {
     /**
      * Loads all global data from the database.
      *
-     * @param log   the custom logger for this class
-     * @param saver the saver for player data
+     * @param log       the custom logger for this class
+     * @param saver     the saver for player data
+     * @param connector the connector for database access
      */
-    public GlobalData(final BetonQuestLogger log, final Saver saver) {
+    public GlobalData(final BetonQuestLogger log, final Saver saver, final Connector connector) {
         this.log = log;
         this.saver = saver;
-        loadAllGlobalData();
+        loadAllGlobalData(connector);
     }
 
     /**
      * Loads all data for the player and puts it in appropriate lists.
+     *
+     * @param connector the connector for database access
      */
-    public final void loadAllGlobalData() {
-        final Connector con = new Connector();
-        try (ResultSet globalTags = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
-             ResultSet globalPoints = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
+    public final void loadAllGlobalData(final Connector connector) {
+        try (ResultSet globalTags = connector.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
+             ResultSet globalPoints = connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
             while (globalTags.next()) {
                 this.globalTags.add(globalTags.getString("tag"));
             }

@@ -197,9 +197,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private PluginMessage pluginMessage;
 
     /**
-     * The used Database.
+     * The used Connector for the Database.
      */
-    private Database database;
+    private Connector connector;
 
     /**
      * If MySQL is used.
@@ -332,12 +332,12 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         setupDatabase();
 
-        saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"), config);
+        saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "Database"), config.getLong("mysql.reconnect_interval"), connector);
         saver.start();
-        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, getDataFolder(), new Connector())
+        new Backup(loggerFactory.create(Backup.class), configAccessorFactory, getDataFolder(), connector)
                 .loadDatabaseFromBackup();
 
-        globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver);
+        globalData = new GlobalData(loggerFactory.create(GlobalData.class), saver, connector);
 
         final FileConfigAccessor cache;
         try {
@@ -447,21 +447,26 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
     private void setupDatabase() {
         final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
+        Database database = null;
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
-            this.database = new MySQL(loggerFactory.create(MySQL.class, "Database"), this,
+            final Database mySql = new MySQL(loggerFactory.create(MySQL.class, "Database"), this,
                     config.getString("mysql.host"),
                     config.getString("mysql.port"),
                     config.getString("mysql.base"),
                     config.getString("mysql.user"),
                     config.getString("mysql.pass"));
-            if (database.getConnection() != null) {
+            try {
+                mySql.getConnection();
+                database = mySql;
                 usesMySQL = true;
                 log.info("Successfully connected to MySQL database!");
+            } catch (final IllegalStateException e) {
+                log.warn("MySQL: " + e.getMessage(), e);
             }
         }
-        if (!mySQLEnabled || !usesMySQL) {
-            this.database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
+        if (database == null) {
+            database = new SQLite(loggerFactory.create(SQLite.class, "Database"), this, "database.db");
             if (mySQLEnabled) {
                 log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
@@ -470,6 +475,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         }
 
         database.createTables();
+        this.connector = new Connector(loggerFactory.create(Connector.class), config.getString("mysql.prefix"), database);
     }
 
     private void registerListener(final CoreQuestRegistry coreQuestRegistry) {
@@ -625,8 +631,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         if (compatibility != null) {
             compatibility.disable();
         }
-        if (database != null) {
-            database.closeConnection();
+        if (connector != null) {
+            connector.getDatabase().closeConnection();
         }
         if (playerHider != null) {
             playerHider.stop();
@@ -725,12 +731,12 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     }
 
     /**
-     * Returns the database instance.
+     * Returns the connector for the database.
      *
-     * @return Database instance
+     * @return Connector instance
      */
-    public Database getDB() {
-        return database;
+    public Connector getDBConnector() {
+        return connector;
     }
 
     /**

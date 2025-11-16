@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.QueryType;
@@ -69,7 +70,7 @@ public class TopXObject {
      */
     public void queryDB() {
         entries.clear();
-        final Connector con = new Connector();
+        final Connector con = BetonQuest.getInstance().getDBConnector();
 
         try (ResultSet resultSet = con.querySQL(orderType.getType(), statement -> {
             statement.setString(1, category);
