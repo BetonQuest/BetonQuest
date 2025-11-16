@@ -30,7 +30,7 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
 public class PacketEventsInterceptor implements Interceptor, PacketListener {
 
     /**
-     * A prefix that marks messages to be ignored by this history.
+     * The tagger used to mark messages which should not be intercepted.
      */
     private static final ComponentTagger TAGGER = new PrefixComponentTagger(" BetonQuest-Interceptor-Bypass-Tag ");
 
@@ -60,7 +60,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     private final AtomicBoolean ended;
 
     /**
-     * The registered packet listener common.
+     * The registered active packet listener instance.
      */
     @Nullable
     private PacketListenerCommon packetListenerCommon;

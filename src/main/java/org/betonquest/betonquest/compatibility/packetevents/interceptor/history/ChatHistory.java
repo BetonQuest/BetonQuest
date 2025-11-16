@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public interface ChatHistory {
     /**
      * Sends the chat history to the specified player.
-     * If the history is smaller than the cache size, it fills the rest with new lines.
+     * It tries the best to mimic the original sending as closely as possible.
      *
      * @param player the player to send the chat history to
      */

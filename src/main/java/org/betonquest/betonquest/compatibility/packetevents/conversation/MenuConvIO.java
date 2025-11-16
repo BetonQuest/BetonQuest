@@ -70,7 +70,7 @@ public class MenuConvIO extends ChatConvIO {
     private final FixedComponentLineWrapper componentLineWrapper;
 
     /**
-     * The fake armor stand used to mount the player.
+     * The input object triggering actions.
      */
     private final ConversationSession input;
 

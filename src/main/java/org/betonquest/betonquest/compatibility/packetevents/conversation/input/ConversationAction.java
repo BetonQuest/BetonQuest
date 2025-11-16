@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.packetevents.conversation.input;
 
 /**
- * Interface for steering control inputs.
+ * Interface for processing control inputs.
  */
 public interface ConversationAction {
     /**

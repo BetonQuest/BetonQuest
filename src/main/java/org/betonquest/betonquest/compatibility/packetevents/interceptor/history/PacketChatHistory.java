@@ -27,7 +27,7 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
  */
 public class PacketChatHistory implements PacketListener, Listener, ChatHistory {
     /**
-     * A prefix that marks messages to be ignored by this history.
+     * The tagger used to mark messages which should not be stored in the history.
      */
     private static final ComponentTagger TAGGER = new PrefixComponentTagger(" BetonQuest-Message-History-Bypass-Tag ");
 
@@ -37,7 +37,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     private final PacketEventsAPI<?> packetEventsAPI;
 
     /**
-     * The size of the cache for each player, this is usually the number of messages that can be seen in chat.
+     * The size of the cache.
      */
     private final int cacheSize;
 

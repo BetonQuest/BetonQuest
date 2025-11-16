@@ -9,16 +9,16 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.bukkit.Location;
+import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A FakeArmorStandPassenger that listens to steering input packets and delegates the inputs to a Conversation.
+ * A FakeArmorStandPassenger that listens to input packets and delegates the inputs to a Conversation.
  */
-public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements PacketListener {
+public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements ConversationSession, PacketListener {
     /**
-     * The conversation control to call.
+     * The conversation action to call.
      */
     private final ConversationAction action;
 
@@ -29,11 +29,11 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     private PacketListenerCommon registeredListener;
 
     /**
-     * Constructs a new FakeArmorStandPassenger that also created a new entity ID for the armor stand.
+     * Constructs a new FakeArmorStandPassenger that also catches control packets for the armor stand.
      *
      * @param packetEventsAPI the PacketEvents API instance
      * @param player          the player to mount
-     * @param action          the steering control implementation
+     * @param action          the conversation action to call on input
      */
     public FakeArmorStandPassengerController(final PacketEventsAPI<?> packetEventsAPI, final Player player, final ConversationAction action) {
         super(packetEventsAPI, player);
@@ -41,17 +41,17 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     }
 
     @Override
-    public void mount(final Location location) {
-        super.mount(location);
+    public void begin() {
+        mount(getBlockBelowPlayer(player));
         this.registeredListener = packetEventsAPI.getEventManager().registerListener(this, PacketListenerPriority.NORMAL);
     }
 
     @Override
-    public void unmount() {
+    public void end() {
         if (registeredListener != null) {
             packetEventsAPI.getEventManager().unregisterListener(registeredListener);
         }
-        super.unmount();
+        unmount();
     }
 
     @Override

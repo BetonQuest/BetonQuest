@@ -1,19 +1,21 @@
 package org.betonquest.betonquest.api.common.component.tagger;
 
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Contract;
 
 import java.util.function.Consumer;
 
 /**
- * An interface for tagging components with a specific prefix or marker.
+ * An interface for tagging components with a specific marker.
  */
 public interface ComponentTagger {
     /**
-     * Prefixes the given component with the tag.
+     * Tags the given component.
      *
      * @param original the original component to be tagged
      * @return the tagged component
      */
+    @Contract(pure = true)
     Component tag(Component original);
 
     /**
@@ -30,6 +32,7 @@ public interface ComponentTagger {
      * @param component the tagged component
      * @return the untagged component
      */
+    @Contract(pure = true)
     Component removeTag(Component component);
 
     /**

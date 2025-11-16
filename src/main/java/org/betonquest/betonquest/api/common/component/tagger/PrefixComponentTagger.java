@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A utility class for tagging and untagging text components.
+ * A ComponentTagger that prefixes messages with a specific component.
  */
 public class PrefixComponentTagger implements ComponentTagger {
     /**
