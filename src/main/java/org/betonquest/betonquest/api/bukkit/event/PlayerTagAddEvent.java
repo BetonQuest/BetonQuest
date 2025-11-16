@@ -48,11 +48,6 @@ public class PlayerTagAddEvent extends ProfileEvent {
         return tag;
     }
 
-    /**
-     * Gets the HandlerList of this event.
-     *
-     * @return the HandlerList
-     */
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;

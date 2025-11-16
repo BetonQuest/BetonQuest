@@ -59,63 +59,31 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         this.version = version;
     }
 
-    /**
-     * Persist through reloads.
-     *
-     * @return true to persist through reloads
-     */
     @Override
     public boolean persist() {
         return true;
     }
 
-    /**
-     * We can always register.
-     *
-     * @return Always true since it's an internal class.
-     */
     @Override
     public boolean canRegister() {
         return true;
     }
 
-    /**
-     * Name of person who created the expansion.
-     *
-     * @return The name of the author as a String.
-     */
     @Override
     public String getAuthor() {
         return authors;
     }
 
-    /**
-     * The identifier for PlaceHolderAPI to link to this expansion.
-     *
-     * @return The identifier in {@code %<identifier>_<value>%} as String.
-     */
     @Override
     public String getIdentifier() {
         return "betonquest";
     }
 
-    /**
-     * Version of the expansion.
-     *
-     * @return The version as a String.
-     */
     @Override
     public String getVersion() {
         return version;
     }
 
-    /**
-     * A placeholder request has occurred and needs a value.
-     *
-     * @param player     A potentially null {@link org.bukkit.entity.Player Player}.
-     * @param identifier A String containing the identifier/value.
-     * @return possibly-null String of the requested identifier.
-     */
     @Override
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
         final Profile profile = player == null ? null : profileProvider.getProfile(player);

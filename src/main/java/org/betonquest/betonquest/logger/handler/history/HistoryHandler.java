@@ -73,11 +73,6 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         this.publishLock = new ReentrantLock(true);
     }
 
-    /**
-     * Logs a LogRecord to the history or the target handler.
-     *
-     * @param record The {@link LogRecord} to log
-     */
     @Override
     public void publish(final LogRecord record) {
         if (!isLoggable(record)) {
@@ -105,11 +100,6 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         target.close();
     }
 
-    /**
-     * Get the {@link LogPublishingController} related to this {@link HistoryHandler}.
-     *
-     * @return a {@link LogPublishingController} instance
-     */
     @Override
     public boolean isLogging() {
         return logging.get();

@@ -14,7 +14,6 @@ import java.util.Set;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class GlobalData implements TagData, PointData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -127,18 +126,6 @@ public class GlobalData implements TagData, PointData {
     public void removePointsCategory(final String category) {
         globalPoints.remove(category);
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
-    }
-
-    /**
-     * Purges all global data from the database and from this object.
-     */
-    public void purge() {
-        // clear all lists
-        globalTags.clear();
-        globalPoints.clear();
-        // clear the database
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS));
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_TAGS));
     }
 
     /**

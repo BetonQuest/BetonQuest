@@ -30,11 +30,6 @@ public class TopicLogger extends Logger {
         this.topic = topic == null ? "" : "(" + topic + ") ";
     }
 
-    /**
-     * Logs a LogRecord to the log with the topic.
-     *
-     * @param logRecord The record to log.
-     */
     @Override
     public void log(final LogRecord logRecord) {
         logRecord.setMessage(topic + logRecord.getMessage());
