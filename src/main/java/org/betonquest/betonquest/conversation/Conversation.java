@@ -428,7 +428,7 @@ public class Conversation {
      * @param message The message to send
      */
     public void sendMessage(final Component message) {
-        if (interceptor == null) {
+        if (interceptor == null || isEnded()) {
             player.sendMessage(message);
         } else {
             interceptor.sendMessage(message);
