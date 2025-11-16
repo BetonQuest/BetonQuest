@@ -102,6 +102,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `variable` command allows setting and getting data now for offline players
 - `mmobkill` objective now uses the killer (if present) to resolve names and distances
 - `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
+- `ProtocolLib` was removed and replaced with `PacketEvents` that now needs to be installed instead
+    - `packet` chat interceptor was renamed to `packetevents`
+    - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation 
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -113,6 +116,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `journal.chars_per_page` was deleted from the config.yml 
 - undocumented way of addressing packages in some variables
 - `journal.show_separator` option deleted
+- `display_missed` config option, as the `none` interceptor should be used instead
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1

@@ -29,8 +29,8 @@ profile:
 conversation:
   default_io: menu,tellraw
   interceptor:
-    default: redischat,packet,simple
-    display_missed: true
+    default: redischat,packetevents,simple
+    display_history: true
   damage:
     combat_delay: 10
     invincible: true
@@ -135,7 +135,7 @@ hook:
   decentholograms: true
   worldedit: true
   fastasyncworldedit: true
-  protocollib: true
+  packetevents: true
   brewery: true
   breweryx: true
   jobs: true

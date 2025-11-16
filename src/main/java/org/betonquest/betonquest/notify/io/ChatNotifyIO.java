@@ -29,10 +29,10 @@ public class ChatNotifyIO extends NotifyIO {
     @Override
     protected void notifyPlayer(final Component message, final OnlineProfile onlineProfile) {
         final Conversation conversation = Conversation.getConversation(onlineProfile);
-        if (conversation == null || conversation.getInterceptor() == null) {
+        if (conversation == null) {
             onlineProfile.getPlayer().sendMessage(message);
         } else {
-            conversation.getInterceptor().sendMessage(message);
+            conversation.sendMessage(message);
         }
     }
 }

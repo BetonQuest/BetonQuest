@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation.display;
+package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
 
 import net.kyori.adventure.text.Component;
 
@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 /**
  * Represents a line in a conversation display.
- * This interface allows for different types of lines, to enable flexibility in how lines are displayed.
+ * This interface allows for different types of lines to enable flexibility in how lines are displayed.
  */
 @SuppressWarnings("PMD.ShortClassName")
 @FunctionalInterface

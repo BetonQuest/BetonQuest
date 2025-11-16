@@ -30,8 +30,8 @@ import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
 import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegratorFactory;
+import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegratorFactory;
-import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegratorFactory;
 import org.betonquest.betonquest.compatibility.quests.QuestsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegratorFactory;
 import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegratorFactory;
@@ -255,7 +255,7 @@ public class Compatibility implements Listener {
         register("Quests", new QuestsIntegratorFactory());
         register("Shopkeepers", new ShopkeepersIntegratorFactory());
         register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory());
-        register("ProtocolLib", new ProtocolLibIntegratorFactory());
+        register("packetevents", new PacketEventsIntegratorFactory());
         register("Brewery", new BreweryIntegratorFactory());
         register("BreweryX", new BreweryIntegratorFactory());
         register("Jobs", new JobsRebornIntegratorFactory());

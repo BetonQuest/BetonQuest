@@ -1,4 +1,19 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.20:
+  - type: REMOVE
+    key: hook.protocollib
+  - type: SET
+    key: hook.packetevents
+    value: true
+  - type: VALUE_REPLACE
+    key: conversation.interceptor.default
+    oldValue: 'packet'
+    newValue: 'packetevents'
+  - type: SET
+    key: conversation.interceptor.display_history
+    value: true
+  - type: REMOVE
+    key: conversation.interceptor.display_missed
 3.0.0.19:
   - type: SET
     key: item.quest.lore

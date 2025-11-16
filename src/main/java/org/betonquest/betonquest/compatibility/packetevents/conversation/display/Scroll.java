@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation.display;
+package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
 
 /**
  * Direction of a scroll in the menu io.

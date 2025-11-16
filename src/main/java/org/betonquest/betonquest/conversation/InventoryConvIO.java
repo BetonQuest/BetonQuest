@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.betonquest.betonquest.id.ItemID;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -169,19 +168,16 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @SuppressWarnings("PMD.UnusedAssignment")
     @Override
     public void display() {
-        if (conv.isEnded()) {
+        if (!conv.isActive()) {
             return;
         }
         if (profile.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
             Bukkit.getScheduler().runTask(betonQuest, () -> profile.getPlayer().closeInventory());
-            final Interceptor interceptor = conv.getInterceptor();
-            if (interceptor != null) {
-                try {
-                    interceptor.sendMessage(betonQuest.getPluginMessage().getMessage(profile, "conversation_spectator"));
-                } catch (final QuestException e) {
-                    log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
-                }
+            try {
+                conv.sendMessage(betonQuest.getPluginMessage().getMessage(profile, "conversation_spectator"));
+            } catch (final QuestException e) {
+                log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
             }
             return;
         }

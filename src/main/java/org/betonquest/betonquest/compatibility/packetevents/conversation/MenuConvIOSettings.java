@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.protocollib.conversation;
+package org.betonquest.betonquest.compatibility.packetevents.conversation;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
