@@ -54,6 +54,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-408 - Journal entry separator](#300-dev-408-journal-entry-separator) :white_sun_cloud:
 - [3.0.0-DEV-416 - Simple Item TextParser](#300-dev-416-simple-item-textparser) :thunder_cloud_rain:
 - [3.0.0-DEV-444 - Simple Item QuestItem](#300-dev-444-simple-item-questitem) :thunder_cloud_rain:
+- [3.0.0-DEV-465 - PacketEvents instead of ProtocolLib](#300-dev-465-packetevents-instead-of-protocollib) :white_sun_cloud:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -875,3 +876,19 @@ items:
 ```
 
 </div>
+
+### 3.0.0-DEV-465 - PacketEvents instead of ProtocolLib :white_sun_cloud:
+
+The usage of ProtocolLib was replaced with PacketEvents.
+This means you now need to install PacketEvents on your server to use the same features as before.
+
+If you previously disabled the interceptor with the `display_missed` config option that is now removed,
+you now need to set the interceptor to `none`.
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    - `packet` interceptor was renamed to `packetevents`
+    - new config option `display_history` defaults to `true`, and only works with packetevents interceptor
