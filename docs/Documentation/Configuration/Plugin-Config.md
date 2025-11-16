@@ -120,7 +120,7 @@ All conversation related settings.
       available third party plugin integrations) is used.
       See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
     * `display_history` - If set to `true`, the interceptor will display all previous messages in the chat after
-      the conversation ends, like there was no conversation.
+      the conversation ends, like there was no conversation. This is only supported by some interceptors.
       **This option needs a server restart to take effect when changed!**
 * `damage`  
   All damage related settings.
