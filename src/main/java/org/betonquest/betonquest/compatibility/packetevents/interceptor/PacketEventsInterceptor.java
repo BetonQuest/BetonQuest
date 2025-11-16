@@ -32,7 +32,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     /**
      * A prefix that marks messages to be ignored by this history.
      */
-    private static final ComponentTagger TAGGER = new PrefixComponentTagger("BetonQuest-Interceptor-Bypass-Tag");
+    private static final ComponentTagger TAGGER = new PrefixComponentTagger(" BetonQuest-Interceptor-Bypass-Tag ");
 
     /**
      * The PacketEvents API instance.

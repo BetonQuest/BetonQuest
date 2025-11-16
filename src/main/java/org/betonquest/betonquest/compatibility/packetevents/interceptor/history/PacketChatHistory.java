@@ -29,7 +29,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     /**
      * A prefix that marks messages to be ignored by this history.
      */
-    private static final ComponentTagger TAGGER = new PrefixComponentTagger("BetonQuest-Message-History-Bypass-Tag");
+    private static final ComponentTagger TAGGER = new PrefixComponentTagger(" BetonQuest-Message-History-Bypass-Tag ");
 
     /**
      * The PacketEvents API instance.
