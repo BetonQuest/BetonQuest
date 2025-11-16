@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.point.Point;
+import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Random;
@@ -43,7 +43,7 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
-        final Variable<Point> operation = instruction.get(Argument.ENUM(Point.class));
+        final Variable<PointType> operation = instruction.get(Argument.ENUM(PointType.class));
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
         final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");

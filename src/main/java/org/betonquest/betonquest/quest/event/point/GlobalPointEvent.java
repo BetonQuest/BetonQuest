@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.database.GlobalData;
+import org.betonquest.betonquest.database.Point;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class GlobalPointEvent implements NullableEvent {
     /**
      * The point type, how the points should be modified.
      */
-    private final Point pointType;
+    private final PointType pointType;
 
     /**
      * Creates a new global point event.
@@ -41,7 +42,7 @@ public class GlobalPointEvent implements NullableEvent {
      * @param count      the count
      * @param pointType  the point type
      */
-    public GlobalPointEvent(final GlobalData globalData, final Variable<String> category, final Variable<Number> count, final Point pointType) {
+    public GlobalPointEvent(final GlobalData globalData, final Variable<String> category, final Variable<Number> count, final PointType pointType) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;
@@ -51,10 +52,10 @@ public class GlobalPointEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final String category = this.category.getValue(profile);
-        final Optional<org.betonquest.betonquest.database.Point> globalPoint = globalData.getPoints().stream()
+        final Optional<Point> globalPoint = globalData.getPoints().stream()
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();
         globalData.setPoints(category, pointType.modify(
-                globalPoint.map(org.betonquest.betonquest.database.Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
+                globalPoint.map(Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
     }
 }

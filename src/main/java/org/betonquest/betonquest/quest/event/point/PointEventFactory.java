@@ -54,10 +54,10 @@ public class PointEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.getValue("action");
-        Point type = Point.ADD;
+        PointType type = PointType.ADD;
         if (action != null) {
             try {
-                type = Point.valueOf(action.toUpperCase(Locale.ROOT));
+                type = PointType.valueOf(action.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
                 throw new QuestException("Unknown modification action: " + action, e);
             }
@@ -65,11 +65,11 @@ public class PointEventFactory implements PlayerEventFactory {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         String number = instruction.next();
         if (!number.isEmpty() && number.charAt(0) == '*') {
-            type = Point.MULTIPLY;
+            type = PointType.MULTIPLY;
             number = number.replace("*", "");
         }
         if (number.isEmpty() || number.charAt(0) == '-') {
-            type = Point.SUBTRACT;
+            type = PointType.SUBTRACT;
             number = number.replace("-", "");
         }
 
