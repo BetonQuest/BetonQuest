@@ -51,10 +51,10 @@ public class GlobalPointEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final String category = this.category.getValue(profile);
-        final Optional<org.betonquest.betonquest.Point> globalPoint = globalData.getPoints().stream()
+        final Optional<org.betonquest.betonquest.database.Point> globalPoint = globalData.getPoints().stream()
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();
         globalData.setPoints(category, pointType.modify(
-                globalPoint.map(org.betonquest.betonquest.Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
+                globalPoint.map(org.betonquest.betonquest.database.Point::getCount).orElse(0), count.getValue(profile).doubleValue()));
     }
 }

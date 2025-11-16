@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.database;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerTagRemoveEvent;

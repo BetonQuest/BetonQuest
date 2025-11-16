@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.Point;
-
 import java.util.Optional;
 import java.util.Set;
 
