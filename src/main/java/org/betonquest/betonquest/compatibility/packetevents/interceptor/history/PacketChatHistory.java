@@ -7,7 +7,8 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.google.common.collect.EvictingQueue;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.compatibility.packetevents.interceptor.ComponentTagger;
+import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
+import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     /**
      * A prefix that marks messages to be ignored by this history.
      */
-    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-History-Bypass-Tag");
+    private static final ComponentTagger TAGGER = new PrefixComponentTagger("BetonQuest-Message-History-Bypass-Tag");
 
     /**
      * The PacketEvents API instance.
@@ -66,7 +67,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     public void sendHistory(final Player player) {
         final User user = packetEventsAPI.getPlayerManager().getUser(player);
         final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
-        user.sendMessage(addBypass(Component.text(Component.newline().content().repeat(cacheSize - history.size()))));
+        user.sendMessage(TAGGER.tag(Component.text(Component.newline().content().repeat(cacheSize - history.size()))));
         history.forEach(user::sendPacket);
     }
 
@@ -89,7 +90,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
                 untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))) {
             return;
         }
-        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper, this::addBypass));
+        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper, TAGGER::tag));
     }
 
     /**
@@ -103,7 +104,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     }
 
     @Override
-    public Component addBypass(final Component component) {
-        return TAGGER.tag(component);
+    public ComponentTagger getTagger() {
+        return TAGGER;
     }
 }

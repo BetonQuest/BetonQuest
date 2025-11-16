@@ -35,4 +35,9 @@ public class FunctionWrapperPlayServerDisguisedChat implements PacketWrapperFunc
     public WrapperPlayServerDisguisedChat transform(final WrapperPlayServerDisguisedChat packetWrapper, final Function<Component, Component> messageTransformer) {
         return new WrapperPlayServerDisguisedChat(messageTransformer.apply(getMessage(packetWrapper)), packetWrapper.getChatFormatting());
     }
+
+    @Override
+    public WrapperPlayServerDisguisedChat copy(final WrapperPlayServerDisguisedChat packetWrapper) {
+        return new WrapperPlayServerDisguisedChat(getMessage(packetWrapper), packetWrapper.getChatFormatting());
+    }
 }

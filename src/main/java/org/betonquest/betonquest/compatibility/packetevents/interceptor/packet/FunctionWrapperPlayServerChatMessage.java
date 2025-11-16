@@ -10,6 +10,7 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisguisedChat;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.function.Function;
 
@@ -30,12 +31,28 @@ public class FunctionWrapperPlayServerChatMessage implements PacketWrapperFuncti
 
     @Override
     public Component getMessage(final WrapperPlayServerChatMessage packetWrapper) {
+        final ChatMessage chatMessage = packetWrapper.getMessage();
+        if (chatMessage instanceof final ChatMessage_v1_19_3 dotThree) {
+            return dotThree.getUnsignedChatContent().orElse(dotThree.getChatContent());
+        } else if (chatMessage instanceof final ChatMessage_v1_19_1 dotOne) {
+            final Component unsignedChatContent = dotOne.getUnsignedChatContent();
+            return unsignedChatContent == null ? dotOne.getChatContent() : unsignedChatContent;
+        } else if (chatMessage instanceof final ChatMessage_v1_19 dotNot) {
+            final Component unsignedChatContent = dotNot.getUnsignedChatContent();
+            return unsignedChatContent == null ? dotNot.getChatContent() : unsignedChatContent;
+        }
         return packetWrapper.getMessage().getChatContent();
     }
 
     @Override
     public void setMessage(final WrapperPlayServerChatMessage packetWrapper, final Component message) {
-        packetWrapper.getMessage().setChatContent(message);
+        final ChatMessage chatMessage = packetWrapper.getMessage();
+        if (chatMessage instanceof final ChatMessage_v1_19_3 dotThree) {
+            dotThree.setPlainContent(PlainTextComponentSerializer.plainText().serialize(message));
+            dotThree.setUnsignedChatContent(message);
+            return;
+        }
+        chatMessage.setChatContent(message);
     }
 
     @Override
@@ -56,5 +73,10 @@ public class FunctionWrapperPlayServerChatMessage implements PacketWrapperFuncti
             toSend = new ChatMessage_v1_16(transformed, message.getType(), ((ChatMessage_v1_16) message).getSenderUUID());
         }
         return new WrapperPlayServerChatMessage(toSend);
+    }
+
+    @Override
+    public WrapperPlayServerChatMessage copy(final WrapperPlayServerChatMessage packetWrapper) {
+        return new WrapperPlayServerChatMessage(packetWrapper.getMessage());
     }
 }

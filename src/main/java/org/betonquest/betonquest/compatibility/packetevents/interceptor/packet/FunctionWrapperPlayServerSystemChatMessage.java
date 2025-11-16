@@ -35,4 +35,9 @@ public class FunctionWrapperPlayServerSystemChatMessage implements PacketWrapper
     public WrapperPlayServerSystemChatMessage transform(final WrapperPlayServerSystemChatMessage packetWrapper, final Function<Component, Component> messageTransformer) {
         return new WrapperPlayServerSystemChatMessage(packetWrapper.isOverlay(), messageTransformer.apply(getMessage(packetWrapper)));
     }
+
+    @Override
+    public WrapperPlayServerSystemChatMessage copy(final WrapperPlayServerSystemChatMessage packetWrapper) {
+        return new WrapperPlayServerSystemChatMessage(packetWrapper.isOverlay(), getMessage(packetWrapper));
+    }
 }

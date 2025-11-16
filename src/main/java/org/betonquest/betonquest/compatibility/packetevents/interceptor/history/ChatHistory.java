@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.packetevents.interceptor.history;
 
-import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
 import org.bukkit.entity.Player;
 
 /**
@@ -16,10 +16,9 @@ public interface ChatHistory {
     void sendHistory(Player player);
 
     /**
-     * Adds a bypass tag to the given component to prevent it from being recorded in chat history.
+     * Get the component tagger used to mark messages that should bypass the history.
      *
-     * @param component the component to tag
-     * @return the tagged component
+     * @return the component tagger
      */
-    Component addBypass(Component component);
+    ComponentTagger getTagger();
 }

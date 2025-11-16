@@ -56,4 +56,12 @@ public interface PacketWrapperFunction<T extends PacketWrapper<?>> {
      * @return the transformed packet wrapper
      */
     PacketWrapper<?> transform(T packetWrapper, Function<Component, Component> messageTransformer);
+
+    /**
+     * Creates a copy of the given packet wrapper.
+     *
+     * @param packetWrapper the packet wrapper to copy
+     * @return the copied packet wrapper
+     */
+    T copy(T packetWrapper);
 }

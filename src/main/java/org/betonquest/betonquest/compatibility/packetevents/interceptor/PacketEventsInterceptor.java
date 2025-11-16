@@ -8,20 +8,18 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
+import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -30,10 +28,11 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
  * based on PacketEvents.
  */
 public class PacketEventsInterceptor implements Interceptor, PacketListener {
+
     /**
-     * A prefix that marks messages to be ignored by this interceptor.
+     * A prefix that marks messages to be ignored by this history.
      */
-    private static final ComponentTagger TAGGER = new ComponentTagger("BetonQuest-Message-Interceptor-Passthrough-Tag");
+    private static final ComponentTagger TAGGER = new PrefixComponentTagger("BetonQuest-Interceptor-Bypass-Tag");
 
     /**
      * The PacketEvents API instance.
@@ -53,12 +52,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     /**
      * The list of intercepted messages.
      */
-    private final List<PacketWrapper<?>> messages;
-
-    /**
-     * The read-write lock for thread-safe when sending messages and ending interception.
-     */
-    private final ReadWriteLock lock;
+    private final Queue<PacketWrapper<?>> messages;
 
     /**
      * Indicates whether the interception has ended.
@@ -82,8 +76,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         this.packetEventsAPI = packetEventsAPI;
         this.chatHistory = chatHistory;
         this.onlineProfile = onlineProfile;
-        this.messages = new ArrayList<>();
-        this.lock = new ReentrantReadWriteLock(true);
+        this.messages = new ConcurrentLinkedQueue<>();
         this.ended = new AtomicBoolean(false);
     }
 
@@ -106,17 +99,15 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
             final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        lock.readLock().lock();
-        try {
-            if (TAGGER.acceptIfTagged(packetWrapperFunction.getMessage(packetWrapper),
-                    untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged)) || ended.get()) {
-                return;
-            }
-            event.setCancelled(true);
-            messages.add(packetWrapper);
-        } finally {
-            lock.readLock().unlock();
+        if (TAGGER.acceptIfTagged(packetWrapperFunction.getMessage(packetWrapper),
+                untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))
+                || chatHistory.getTagger().isTagged(packetWrapperFunction.getMessage(packetWrapper)) || ended.get()) {
+            return;
         }
+        event.setCancelled(true);
+        final T packetWrapperCopy = packetWrapperFunction.copy(packetWrapper);
+        packetWrapperFunction.setMessage(packetWrapperCopy, TAGGER.tag(packetWrapperFunction.getMessage(packetWrapperCopy)));
+        messages.offer(packetWrapperCopy);
     }
 
     @Override
@@ -126,35 +117,17 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
 
     @Override
     public void sendMessage(final Component component) {
-        onlineProfile.getPlayer().sendMessage(TAGGER.tag(chatHistory.addBypass(component)));
+        onlineProfile.getPlayer().sendMessage(TAGGER.tag(chatHistory.getTagger().tag(component)));
     }
 
     @Override
     public void end() {
-        lock.writeLock().lock();
-        try {
-            ended.set(true);
-            final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    chatHistory.sendHistory(onlineProfile.getPlayer());
-                }
-            }.runTaskLater(BetonQuest.getInstance(), 1);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    messages.forEach(user::sendPacket);
-                }
-            }.runTaskLater(BetonQuest.getInstance(), 2);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
-                }
-            }.runTaskLater(BetonQuest.getInstance(), 20);
-        } finally {
-            lock.writeLock().unlock();
+        final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
+        chatHistory.sendHistory(onlineProfile.getPlayer());
+        while (!messages.isEmpty()) {
+            user.sendPacket(messages.poll());
         }
+        ended.set(true);
+        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
     }
 }
