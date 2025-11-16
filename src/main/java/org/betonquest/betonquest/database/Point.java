@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.database;
 
 /**
  * Represents the point category.

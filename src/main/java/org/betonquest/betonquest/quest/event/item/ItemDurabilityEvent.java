@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
-import org.betonquest.betonquest.quest.event.point.Point;
+import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -30,7 +30,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
     /**
      * The point type, how the durability should be modified.
      */
-    private final Variable<Point> modification;
+    private final Variable<PointType> modification;
 
     /**
      * The amount of the modification.
@@ -62,7 +62,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
      * @param ignoreEvents      whether the bukkit events should be ignored or called
      * @param random            to use for the durability calculation
      */
-    public ItemDurabilityEvent(final Variable<EquipmentSlot> slot, final Variable<Point> modification,
+    public ItemDurabilityEvent(final Variable<EquipmentSlot> slot, final Variable<PointType> modification,
                                final Variable<Number> amount, final boolean ignoreUnbreakable,
                                final boolean ignoreEvents, final Random random) {
         this.slot = slot;
@@ -84,10 +84,10 @@ public class ItemDurabilityEvent implements OnlineEvent {
         if (damageable.isUnbreakable() && !ignoreUnbreakable) {
             return;
         }
-        final Point resolvedModification = modification.getValue(profile);
+        final PointType resolvedModification = modification.getValue(profile);
         final double value = amount.getValue(profile).doubleValue();
         if (value == 0) {
-            if (resolvedModification == Point.SET || resolvedModification == Point.MULTIPLY) {
+            if (resolvedModification == PointType.SET || resolvedModification == PointType.MULTIPLY) {
                 processBreak(player, itemStack, damageable);
             }
             return;
@@ -96,7 +96,7 @@ public class ItemDurabilityEvent implements OnlineEvent {
     }
 
     private void processDamage(final Player player, final ItemStack itemStack, final Damageable damageable,
-                               final double value, final Point resolvedModification) {
+                               final double value, final PointType resolvedModification) {
         final int maxDurability = itemStack.getType().getMaxDurability();
         final int oldDamage = damageable.getDamage();
         final int actualDurability = maxDurability - oldDamage;

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.point;
 /**
  * The type of point modification.
  */
-public enum Point {
+public enum PointType {
 
     /**
      * Adds the count to the current value.
@@ -32,7 +32,7 @@ public enum Point {
      */
     private final String notifyCategory;
 
-    Point(final Calculator calculator, final String notifyCategory) {
+    PointType(final Calculator calculator, final String notifyCategory) {
         this.calculator = calculator;
         this.notifyCategory = notifyCategory;
     }

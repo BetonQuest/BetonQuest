@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
 

@@ -33,7 +33,7 @@ public class PointEvent implements PlayerEvent {
     /**
      * The point type, how the points should be modified.
      */
-    private final Point pointType;
+    private final PointType pointType;
 
     /**
      * Storage for player data.
@@ -50,7 +50,7 @@ public class PointEvent implements PlayerEvent {
      * @param dataStorage the storage providing player data
      */
     public PointEvent(final NotificationSender pointSender, final Variable<String> category, final Variable<Number> count,
-                      final Point pointType, final PlayerDataStorage dataStorage) {
+                      final PointType pointType, final PlayerDataStorage dataStorage) {
         this.pointSender = pointSender;
         this.category = category;
         this.count = count;
