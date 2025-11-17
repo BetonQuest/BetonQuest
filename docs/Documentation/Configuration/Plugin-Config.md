@@ -70,6 +70,8 @@ It mainly brings limited support for cross-server support.
 In general, MySQL has a lot of advantages over SQLite, such as better performance.  
 To use a MySQL Database for saving all the data, you need to fill out the mysql config section.
 
+**This option needs a server restart to take effect when changed!**
+
 ``` YAML linenums="1"
 mysql:
   enabled: true              #(1)!
