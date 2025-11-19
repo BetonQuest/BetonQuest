@@ -5356,7 +5356,7 @@ listed on the <a href="../../Visual-Effects/Notifications/Notification-IO%27s-%2
 This is mainly used by betonquest to download tutorial files.</p>
 <ul>
 <li><code>pull_request</code> - Define if pull requests are allowed to be downloaded.<br />
-<strong>Only enable this if you really know what you are doing!</strong>
+<strong>Only enable this if you really know what you are doing!</strong><br />
   Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
   will make your server vulnerable to attacks.</li>
 <li><code>repo_whitelist</code> - A list of trusted GitHub repositories from which quests and templates can be downloaded.<br />
@@ -5379,7 +5379,8 @@ The debug log contains a lot of additional information about the plugin's activi
 <p>You don't need to configure a mysql database, but it brings some advantages.<br />
 It mainly brings limited support for cross-server support.
 In general, MySQL has a lot of advantages over SQLite, such as better performance.<br />
-To use a MySQL Database for saving all the data, you need to fill out the mysql config section.</p>
+To use a MySQL Database for saving all the data, you need to fill out the mysql config section.<br />
+<strong>This option needs a server restart to take effect when changed!</strong></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -5437,8 +5438,8 @@ Currently, there is no way to switch between profiles, as the feature is still i
   available third party plugin integrations) is used.
   See <a href="../../Features/Conversations/#chat-interceptors">chat interceptors</a> for supported chat interceptors.</li>
 <li><code>display_history</code> - If set to <code>true</code>, the interceptor will display all previous messages in the chat after
-  the conversation ends, like there was no conversation. This is only supported by some interceptors.
-  <strong>This option needs a server restart to take effect when changed!</strong></li>
+  the conversation ends, like there was no conversation. This is only supported by some interceptors.<br />
+<strong>This option needs a server restart to take effect when changed!</strong></li>
 </ul>
 </li>
 <li><code>damage</code><br />
