@@ -8,6 +8,7 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
 import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -15,6 +16,7 @@ import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Queue;
@@ -128,6 +130,11 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
             user.sendPacket(messages.poll());
         }
         ended.set(true);
-        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
+            }
+        }.runTaskLater(BetonQuest.getInstance(), 20L);
     }
 }
