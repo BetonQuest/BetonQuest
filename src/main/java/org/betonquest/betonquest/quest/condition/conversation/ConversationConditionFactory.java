@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.conversation;
 
-import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -14,22 +14,22 @@ import org.betonquest.betonquest.conversation.ConversationID;
 public class ConversationConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Feature API.
+     * Conversation API.
      */
-    private final FeatureApi featureApi;
+    private final ConversationApi conversationApi;
 
     /**
      * Creates a new ConversationConditionFactory.
      *
-     * @param featureApi the feature API
+     * @param conversationApi the Conversation API
      */
-    public ConversationConditionFactory(final FeatureApi featureApi) {
-        this.featureApi = featureApi;
+    public ConversationConditionFactory(final ConversationApi conversationApi) {
+        this.conversationApi = conversationApi;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<ConversationID> conversationID = instruction.get(ConversationID::new);
-        return new ConversationCondition(featureApi, conversationID);
+        return new ConversationCondition(conversationApi, conversationID);
     }
 }

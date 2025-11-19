@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfi
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -67,9 +67,9 @@ public class ConversationData {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Feature API.
+     * Conversation API.
      */
-    private final FeatureApi featureApi;
+    private final ConversationApi conversationApi;
 
     /**
      * Text creator to parse text.
@@ -105,7 +105,7 @@ public class ConversationData {
      * @param packManager       the quest package manager to get quest packages from
      * @param variableProcessor the variable processor to resolve variables
      * @param questTypeApi      the quest type api
-     * @param featureApi        the feature api
+     * @param conversationApi   the Conversation API
      * @param textCreator       the text creator to parse text
      * @param convSection       the configuration section of the conversation
      * @param publicData        the external used data
@@ -114,13 +114,13 @@ public class ConversationData {
      */
     public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
                             final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi,
-                            final FeatureApi featureApi, final ParsedSectionTextCreator textCreator,
+                            final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
         this.variableProcessor = variableProcessor;
         this.questTypeApi = questTypeApi;
-        this.featureApi = featureApi;
+        this.conversationApi = conversationApi;
         this.publicData = publicData;
         this.textCreator = textCreator;
 
@@ -165,7 +165,7 @@ public class ConversationData {
 
             final ConversationData conv;
             try {
-                conv = featureApi.getConversation(targetConv);
+                conv = conversationApi.getData(targetConv);
             } catch (final QuestException e) {
                 log.warn(getPack(), "Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
                         + sourceOption + " points to the '" + targetConv.get()
@@ -209,7 +209,7 @@ public class ConversationData {
         final String optionName = conversationOptionID.getOptionName();
         final ConversationID targetConversationID = conversationName == null ? publicData.conversationID : new ConversationID(packManager, conversationOptionID.getPackage(), conversationName);
 
-        final ConversationData newData = featureApi.getConversation(targetConversationID);
+        final ConversationData newData = conversationApi.getData(targetConversationID);
         return new ResolvedOption(newData, optionType, optionName);
     }
 

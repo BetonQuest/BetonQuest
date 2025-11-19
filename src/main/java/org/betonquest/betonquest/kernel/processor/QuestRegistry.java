@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -16,8 +17,6 @@ import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
@@ -108,7 +107,8 @@ public record QuestRegistry(
         final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), packManager, otherRegistries.item());
         final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), packManager, textCreator);
         final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), packManager, variables, textCreator);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, packManager, variables, otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, packManager, variables,
+                otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry, conversations.getStarter());
         return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }
 
@@ -179,8 +179,8 @@ public record QuestRegistry(
     }
 
     @Override
-    public ConversationData getConversation(final ConversationID conversationID) throws QuestException {
-        return conversations().get(conversationID);
+    public ConversationApi conversationApi() {
+        return conversations;
     }
 
     @Override

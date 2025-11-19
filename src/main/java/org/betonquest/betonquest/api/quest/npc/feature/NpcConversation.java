@@ -28,12 +28,13 @@ public class NpcConversation<T> extends Conversation {
      * @param onlineProfile  the profile of the player
      * @param conversationID ID of the conversation
      * @param center         location where the conversation has been started
+     * @param endCallable    the callable that removes the conversation from the active ones
      * @param npc            the Npc used for this conversation
      * @throws QuestException when required conversation objects could not be created
      */
     public NpcConversation(final BetonQuestLogger log, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final ConversationID conversationID,
-                           final Location center, final Npc<T> npc) throws QuestException {
-        super(log, pluginMessage, onlineProfile, conversationID, center);
+                           final Location center, final Runnable endCallable, final Npc<T> npc) throws QuestException {
+        super(log, pluginMessage, onlineProfile, conversationID, center, endCallable);
         this.npc = npc;
     }
 

@@ -2,12 +2,10 @@ package org.betonquest.betonquest.listener;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -30,10 +28,6 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  * Listener which handles data loading/saving when players are joining/quitting.
  */
 public class JoinQuitListener implements Listener {
-    /**
-     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The plugin configuration file.
@@ -51,9 +45,9 @@ public class JoinQuitListener implements Listener {
     private final PlayerDataStorage playerDataStorage;
 
     /**
-     * The {@link PluginMessage} instance.
+     * Conversation API.
      */
-    private final PluginMessage pluginMessage;
+    private final ConversationApi conversationApi;
 
     /**
      * The profile provider instance.
@@ -68,22 +62,20 @@ public class JoinQuitListener implements Listener {
     /**
      * Creates new listener, which will handle the data loading/saving.
      *
-     * @param loggerFactory     used for logger creation in ConversationResumer
      * @param config            the plugin configuration file
      * @param questTypeApi      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
-     * @param pluginMessage     the {@link PluginMessage} instance
+     * @param conversationApi   the Conversation API
      * @param profileProvider   the profile provider instance
      * @param updater           the updater to notify players
      */
-    public JoinQuitListener(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config,
+    public JoinQuitListener(final ConfigAccessor config,
                             final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
-                            final PluginMessage pluginMessage, final ProfileProvider profileProvider, final Updater updater) {
-        this.loggerFactory = loggerFactory;
+                            final ConversationApi conversationApi, final ProfileProvider profileProvider, final Updater updater) {
         this.config = config;
         this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
-        this.pluginMessage = pluginMessage;
+        this.conversationApi = conversationApi;
         this.profileProvider = profileProvider;
         this.updater = updater;
     }
@@ -123,7 +115,7 @@ public class JoinQuitListener implements Listener {
             updater.sendUpdateNotification(player);
         }
         if (playerData.getActiveConversation() != null) {
-            new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
+            new ConversationResumer(config, conversationApi, onlineProfile, playerData.getActiveConversation());
         }
     }
 

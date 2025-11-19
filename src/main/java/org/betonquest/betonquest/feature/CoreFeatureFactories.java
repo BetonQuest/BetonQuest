@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -80,6 +81,11 @@ public class CoreFeatureFactories {
     private final VariableProcessor variableProcessor;
 
     /**
+     * Feature API.
+     */
+    private final FeatureApi featureApi;
+
+    /**
      * The Config.
      */
     private final ConfigAccessor config;
@@ -112,15 +118,17 @@ public class CoreFeatureFactories {
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeApi       the class for executing events
      * @param variableProcessor  the variable processor to create variables
+     * @param featureApi         the Feature API
      * @param config             the config
      * @param colors             the colors to use for the conversation
      * @param textParser         the text parser to use for parsing text
      * @param fontRegistry       the font registry to use for the conversation
      * @param pluginMessage      the {@link PluginMessage} instance
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                 final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
-                                final VariableProcessor variableProcessor,
+                                final VariableProcessor variableProcessor, final FeatureApi featureApi,
                                 final ConfigAccessor config, final ConversationColors colors,
                                 final TextParser textParser, final FontRegistry fontRegistry, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
@@ -128,6 +136,7 @@ public class CoreFeatureFactories {
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeApi = questTypeApi;
         this.variableProcessor = variableProcessor;
+        this.featureApi = featureApi;
         this.config = config;
         this.colors = colors;
         this.textParser = textParser;
@@ -162,7 +171,7 @@ public class CoreFeatureFactories {
         final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());
-        notifyIOTypes.register("chat", new ChatNotifyIOFactory());
+        notifyIOTypes.register("chat", new ChatNotifyIOFactory(featureApi.conversationApi()));
         notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(plugin));
         notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
         notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(plugin));

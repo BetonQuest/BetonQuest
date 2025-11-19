@@ -2,15 +2,20 @@ package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.config.PluginMessage;
+import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
@@ -20,21 +25,29 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Stores Conversation Data and validates it.
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> {
+public class ConversationProcessor extends SectionProcessor<ConversationID, ConversationData> implements ConversationApi {
     /**
      * Factory to create class specific logger.
      */
     private final BetonQuestLoggerFactory loggerFactory;
+
+    /**
+     * The map of all active conversations.
+     */
+    private final Map<Profile, Conversation> activeConversations;
 
     /**
      * Plugin instance used for new Conversation Data.
@@ -62,6 +75,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final ParsedSectionTextCreator textCreator;
 
     /**
+     * Starter for conversations.
+     */
+    private final ConversationStarter starter;
+
+    /**
      * Listener for interactions in a conversation.
      */
     private final ConversationListener listener;
@@ -84,12 +102,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
                                  final VariableProcessor variableProcessor, final PluginMessage pluginMessage) {
         super(log, plugin.getQuestPackageManager(), "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
+        this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
+        this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
+                activeConversations, plugin, pluginMessage);
         this.plugin = plugin;
         this.textCreator = textCreator;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
         this.variableProcessor = variableProcessor;
-        this.listener = new ConversationListener(loggerFactory.create(ConversationListener.class), plugin.getProfileProvider(),
+        this.listener = new ConversationListener(loggerFactory.create(ConversationListener.class), this, plugin.getProfileProvider(),
                 pluginMessage, plugin.getPluginConfig());
         plugin.getServer().getPluginManager().registerEvents(listener, plugin);
     }
@@ -115,7 +136,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
-                variableProcessor, plugin.getQuestTypeApi(), plugin.getFeatureApi(), textCreator, section, publicData);
+                variableProcessor, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
     }
 
     @Override
@@ -142,6 +163,36 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             }
             return false;
         });
+    }
+
+    @Override
+    public ConversationData getData(final ConversationID conversationID) throws QuestException {
+        return get(conversationID);
+    }
+
+    @Override
+    public void start(final OnlineProfile onlineProfile, final ConversationID conversationID, final Location center, @Nullable final String startingOption) {
+        starter.startConversation(onlineProfile, conversationID, center, startingOption);
+    }
+
+    @Override
+    public boolean hasActive(final Profile profile) {
+        return activeConversations.containsKey(profile);
+    }
+
+    @Override
+    @Nullable
+    public Conversation getActive(final Profile profile) {
+        return activeConversations.get(profile);
+    }
+
+    /**
+     * Gets the object that actually starts conversations.
+     *
+     * @return the conversation starter
+     */
+    public ConversationStarter getStarter() {
+        return starter;
     }
 
     /**
