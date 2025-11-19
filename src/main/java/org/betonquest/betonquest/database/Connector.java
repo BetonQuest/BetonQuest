@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,12 +37,15 @@ public class Connector {
 
     /**
      * Opens a new connection to the database.
+     *
+     * @param log      the custom logger for logging errors
+     * @param prefix   the database table prefix
+     * @param database the database to connect to
      */
-    public Connector() {
-        final BetonQuest plugin = BetonQuest.getInstance();
-        this.log = plugin.getLoggerFactory().create(Connector.class);
-        prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
-        database = plugin.getDB();
+    public Connector(final BetonQuestLogger log, final String prefix, final Database database) {
+        this.log = log;
+        this.prefix = prefix;
+        this.database = database;
         connection = database.getConnection();
     }
 
@@ -122,7 +124,12 @@ public class Connector {
         }
     }
 
-    /* default */ Database getDatabase() {
+    /**
+     * Gets the database.
+     *
+     * @return the database used for connections
+     */
+    public Database getDatabase() {
         return database;
     }
 

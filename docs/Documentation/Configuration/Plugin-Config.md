@@ -45,7 +45,7 @@ The command [`/q download`](./Commands-and-Permissions.md) can be used to downlo
 This is mainly used by betonquest to download tutorial files.
 
 * `pull_request` - Define if pull requests are allowed to be downloaded.  
-  **Only enable this if you really know what you are doing!**
+  **Only enable this if you really know what you are doing!**  
   Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
   will make your server vulnerable to attacks.
 * `repo_whitelist` - A list of trusted GitHub repositories from which quests and templates can be downloaded.  
@@ -68,7 +68,8 @@ The debug log contains a lot of additional information about the plugin's activi
 You don't need to configure a mysql database, but it brings some advantages.  
 It mainly brings limited support for cross-server support.
 In general, MySQL has a lot of advantages over SQLite, such as better performance.  
-To use a MySQL Database for saving all the data, you need to fill out the mysql config section.
+To use a MySQL Database for saving all the data, you need to fill out the mysql config section.  
+**This option needs a server restart to take effect when changed!**
 
 ``` YAML linenums="1"
 mysql:
@@ -120,7 +121,7 @@ All conversation related settings.
       available third party plugin integrations) is used.
       See [chat interceptors](../Features/Conversations.md#chat-interceptors) for supported chat interceptors.
     * `display_history` - If set to `true`, the interceptor will display all previous messages in the chat after
-      the conversation ends, like there was no conversation. This is only supported by some interceptors.
+      the conversation ends, like there was no conversation. This is only supported by some interceptors.  
       **This option needs a server restart to take effect when changed!**
 * `damage`  
   All damage related settings.

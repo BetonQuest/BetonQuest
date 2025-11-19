@@ -133,10 +133,6 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    /**
-     * Displays all data to the player. Should be called after setting all
-     * options.
-     */
     @Override
     public void display() {
         if (Component.empty().equals(npcText) && options.isEmpty()) {
@@ -174,10 +170,6 @@ public class MenuConvIO extends ChatConvIO {
         // Empty
     }
 
-    /**
-     * Clears the data. Should be called before the cycle begins to ensure
-     * nothing is left from the previous one.
-     */
     @Override
     public void clear() {
         if (displayRunnable != null) {
@@ -190,10 +182,6 @@ public class MenuConvIO extends ChatConvIO {
         super.clear();
     }
 
-    /**
-     * Ends the work of this conversation IO. Should be called when the
-     * conversation ends.
-     */
     @Override
     public void end(final Runnable callback) {
         if (state.isEnded()) {

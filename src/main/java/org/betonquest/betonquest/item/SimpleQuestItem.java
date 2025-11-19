@@ -87,6 +87,9 @@ public class SimpleQuestItem implements QuestItem {
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
         final Material material = selector.getRandomMaterial();
+        if (!material.isItem()) {
+            throw new QuestException(material + " is not a valid item!");
+        }
 
         final ItemStack item = new ItemStack(material, stackSize);
         final ItemMeta meta = item.getItemMeta();

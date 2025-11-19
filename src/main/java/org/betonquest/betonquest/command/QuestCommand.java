@@ -32,7 +32,6 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.Backup;
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -295,7 +294,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                             break;
                         }
                         new Backup(loggerFactory.create(Backup.class), configAccessorFactory, instance.getDataFolder(),
-                                new Connector()).backup(instance.getDescription().getVersion());
+                                instance.getDBConnector()).backup(instance.getDescription().getVersion());
                         break;
                     case "debug":
                         handleDebug(sender, args);

@@ -100,11 +100,6 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
         return previousState;
     }
 
-    /**
-     * Get the HandlerList of this event.
-     *
-     * @return the HandlerList
-     */
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;

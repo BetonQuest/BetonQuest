@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.util.Queue;
@@ -42,16 +41,17 @@ public class AsyncSaver extends Thread implements Saver {
     /**
      * Creates new database saver thread.
      *
-     * @param log    the logger that will be used for logging
-     * @param config the plugin configuration file
+     * @param log               the logger that will be used for logging
+     * @param reconnectInterval the interval for trying reconnecting to the database
+     * @param connector         the connector for database access
      */
-    public AsyncSaver(final BetonQuestLogger log, final ConfigAccessor config) {
+    public AsyncSaver(final BetonQuestLogger log, final long reconnectInterval, final Connector connector) {
         super();
         this.log = log;
-        this.con = new Connector();
+        this.reconnectInterval = reconnectInterval;
+        this.con = connector;
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
-        this.reconnectInterval = config.getLong("mysql.reconnect_interval");
     }
 
     @Override
