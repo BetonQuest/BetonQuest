@@ -8,7 +8,6 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
 import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -16,7 +15,6 @@ import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Queue;
@@ -108,7 +106,6 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         }
         event.setCancelled(true);
         final T packetWrapperCopy = packetWrapperFunction.copy(packetWrapper);
-        packetWrapperFunction.setMessage(packetWrapperCopy, TAGGER.tag(packetWrapperFunction.getMessage(packetWrapperCopy)));
         messages.offer(packetWrapperCopy);
     }
 
@@ -127,14 +124,9 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
         chatHistory.sendHistory(onlineProfile.getPlayer());
         while (!messages.isEmpty()) {
-            user.sendPacket(messages.poll());
+            user.sendPacketSilently(messages.poll());
         }
         ended.set(true);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
-            }
-        }.runTaskLater(BetonQuest.getInstance(), 20L);
+        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
     }
 }
