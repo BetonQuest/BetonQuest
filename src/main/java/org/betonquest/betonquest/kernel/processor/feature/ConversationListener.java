@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.feature;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -22,6 +23,11 @@ import java.util.List;
  * Blocks specific actions and ends/suspends the conversation on logout.
  */
 public class ConversationListener implements Listener {
+
+    /**
+     * Map of Profiles with their active conversation.
+     */
+    private final ConversationApi conversationApi;
 
     /**
      * The profile provider instance.
@@ -47,12 +53,15 @@ public class ConversationListener implements Listener {
      * Create a new Listener for Conversation interactions.
      *
      * @param log             the custom logger to use for error logging
+     * @param conversationApi the Conversation API to get active conversations
      * @param profileProvider the profile provider instance
      * @param pluginMessage   the plugin message instance to use for ingame notifications
      * @param config          the config to load values from
      */
-    public ConversationListener(final BetonQuestLogger log, final ProfileProvider profileProvider, final PluginMessage pluginMessage,
+    public ConversationListener(final BetonQuestLogger log, final ConversationApi conversationApi,
+                                final ProfileProvider profileProvider, final PluginMessage pluginMessage,
                                 final ConfigAccessor config) {
+        this.conversationApi = conversationApi;
         this.profileProvider = profileProvider;
         this.config = config;
         this.blockedSender = new IngameNotificationSender(log, pluginMessage, null,
@@ -74,7 +83,7 @@ public class ConversationListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
-        final Conversation active = Conversation.getConversation(profile);
+        final Conversation active = conversationApi.getActive(profile);
         if (active == null) {
             return;
         }
@@ -92,17 +101,17 @@ public class ConversationListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof final Player player) {
             final OnlineProfile profile = profileProvider.getProfile(player);
-            final Conversation active = Conversation.getConversation(profile);
+            final Conversation active = conversationApi.getActive(profile);
             if (active != null && active.getData().getPublicData().invincible()) {
                 event.setCancelled(true);
                 return;
             }
         }
-        if (event.getDamager() instanceof Player player) {
+        if (event.getDamager() instanceof final Player player) {
             final OnlineProfile profile = profileProvider.getProfile(player);
-            final Conversation active = Conversation.getConversation(profile);
+            final Conversation active = conversationApi.getActive(profile);
             if (active != null && active.getData().getPublicData().invincible()) {
                 event.setCancelled(true);
             }
@@ -117,7 +126,7 @@ public class ConversationListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
-        final Conversation active = Conversation.getConversation(profile);
+        final Conversation active = conversationApi.getActive(profile);
         if (active == null) {
             return;
         }

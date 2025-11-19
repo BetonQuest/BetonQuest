@@ -2,11 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.bukkit.Bukkit;
@@ -21,10 +18,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * Resumes the conversation for a disconnected or "fleeing" player.
  */
 public class ConversationResumer implements Listener {
-    /**
-     * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * The state to resume from.
@@ -37,9 +30,9 @@ public class ConversationResumer implements Listener {
     private final Player player;
 
     /**
-     * The {@link PluginMessage} instance.
+     * Conversation API.
      */
-    private final PluginMessage pluginMessage;
+    private final ConversationApi conversationApi;
 
     /**
      * The profile to resume the conversation for.
@@ -54,15 +47,14 @@ public class ConversationResumer implements Listener {
     /**
      * Creates a new ConversationResumer for a profile and a conversation state.
      *
-     * @param loggerFactory the logger factory to use for creating loggers
-     * @param config        the plugin configuration file
-     * @param pluginMessage the {@link PluginMessage} instance
-     * @param onlineProfile the profile to resume the conversation for
-     * @param state         the state of a suspended conversation
+     * @param config          the plugin configuration file
+     * @param conversationApi the Conversation API
+     * @param onlineProfile   the profile to resume the conversation for
+     * @param state           the state of a suspended conversation
      */
-    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final ConfigAccessor config, final PluginMessage pluginMessage, final OnlineProfile onlineProfile, final PlayerConversationState state) {
-        this.loggerFactory = loggerFactory;
-        this.pluginMessage = pluginMessage;
+    public ConversationResumer(final ConfigAccessor config, final ConversationApi conversationApi,
+                               final OnlineProfile onlineProfile, final PlayerConversationState state) {
+        this.conversationApi = conversationApi;
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
         this.state = state;
@@ -83,13 +75,7 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(state.center().getWorld()) && event.getTo().distanceSquared(state.center()) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-
-            try {
-                new Conversation(loggerFactory.create(Conversation.class), pluginMessage, onlineProfile, state.currentConversation(), state.center(), state.currentOption());
-            } catch (final QuestException e) {
-                loggerFactory.create(ConversationResumer.class).error(state.currentConversation().getPackage(),
-                        "Cannot start conversation '" + state.currentConversation() + "': " + e.getMessage(), e);
-            }
+            conversationApi.start(onlineProfile, state.currentConversation(), state.center(), state.currentOption());
         }
     }
 

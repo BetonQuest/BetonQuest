@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.data;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
@@ -21,10 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Stores loaded {@link PlayerData}.
  */
 public class PlayerDataStorage {
-    /**
-     * LoggerFactory to create new custom logger.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
 
     /**
      * Custom logger for debug messages.
@@ -54,17 +49,15 @@ public class PlayerDataStorage {
     /**
      * Create a new Storage for Player Data.
      *
-     * @param loggerFactory     the logger factory to use in Conversation Resumer
      * @param log               the logger for debug messages
      * @param config            the plugin configuration file
      * @param playerDataFactory the factory to create player data
      * @param objectives        the objective processor to start (global) objectives
      * @param profileProvider   the profile provider to use
      */
-    public PlayerDataStorage(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
+    public PlayerDataStorage(final BetonQuestLogger log,
                              final ConfigAccessor config, final PlayerDataFactory playerDataFactory, final ObjectiveProcessor objectives,
                              final ProfileProvider profileProvider) {
-        this.loggerFactory = loggerFactory;
         this.log = log;
         this.config = config;
         this.playerDataFactory = playerDataFactory;
@@ -75,16 +68,16 @@ public class PlayerDataStorage {
     /**
      * Creates PlayerData for the online profiles, stores them and starts their objectives.
      *
-     * @param onlineProfiles the profiles to initialize
-     * @param pluginMessage  the plugin message for journals and conversations
+     * @param onlineProfiles  the profiles to initialize
+     * @param conversationApi the Conversation API
      */
-    public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final PluginMessage pluginMessage) {
+    public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final ConversationApi conversationApi) {
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = init(onlineProfile);
             playerData.startObjectives();
             playerData.getJournal().update();
             if (playerData.getActiveConversation() != null) {
-                new ConversationResumer(loggerFactory, config, pluginMessage, onlineProfile, playerData.getActiveConversation());
+                new ConversationResumer(config, conversationApi, onlineProfile, playerData.getActiveConversation());
             }
         }
     }

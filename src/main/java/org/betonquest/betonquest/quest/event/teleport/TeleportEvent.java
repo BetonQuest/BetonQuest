@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.teleport;
 
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -12,6 +13,11 @@ import org.bukkit.Location;
  */
 public class TeleportEvent implements OnlineEvent {
     /**
+     * Conversation API.
+     */
+    private final ConversationApi conversationApi;
+
+    /**
      * Location to teleport to.
      */
     private final Variable<Location> location;
@@ -19,15 +25,17 @@ public class TeleportEvent implements OnlineEvent {
     /**
      * Create a new teleport event that teleports the player to the given location.
      *
-     * @param location location to teleport to
+     * @param conversationApi the Conversation API
+     * @param location        location to teleport to
      */
-    public TeleportEvent(final Variable<Location> location) {
+    public TeleportEvent(final ConversationApi conversationApi, final Variable<Location> location) {
+        this.conversationApi = conversationApi;
         this.location = location;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        final Conversation conv = Conversation.getConversation(profile);
+        final Conversation conv = conversationApi.getActive(profile);
         if (conv != null) {
             conv.endConversation();
         }

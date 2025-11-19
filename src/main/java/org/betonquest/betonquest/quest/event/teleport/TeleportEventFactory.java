@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.teleport;
 
+import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -22,6 +23,11 @@ public class TeleportEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * Conversation API.
+     */
+    private final ConversationApi conversationApi;
+
+    /**
      * Data for primary server thread access.
      */
     private final PrimaryServerThreadData data;
@@ -29,11 +35,13 @@ public class TeleportEventFactory implements PlayerEventFactory {
     /**
      * Create the teleport event factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
+     * @param loggerFactory   the logger factory to create a logger for the events
+     * @param conversationApi the Conversation API
+     * @param data            the data for primary server thread access
      */
-    public TeleportEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public TeleportEventFactory(final BetonQuestLoggerFactory loggerFactory, final ConversationApi conversationApi, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
+        this.conversationApi = conversationApi;
         this.data = data;
     }
 
@@ -41,7 +49,7 @@ public class TeleportEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new TeleportEvent(location),
+                new TeleportEvent(conversationApi, location),
                 loggerFactory.create(TeleportEvent.class),
                 instruction.getPackage()
         ), data);

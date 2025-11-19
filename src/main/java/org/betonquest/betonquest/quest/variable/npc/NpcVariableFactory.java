@@ -56,7 +56,7 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
 
     private NullableVariable parseInstruction(final Instruction instruction) throws QuestException {
         if (!instruction.hasNext() || instruction.size() == 2 && "conversation".equals(instruction.getPart(1))) {
-            final QuesterVariable questerVariable = new QuesterVariable();
+            final QuesterVariable questerVariable = new QuesterVariable(featureApi.conversationApi());
             return profile -> {
                 if (profile == null) {
                     throw new QuestException("Profile can't be null for conversation!");

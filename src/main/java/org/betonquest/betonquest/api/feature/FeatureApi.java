@@ -6,8 +6,6 @@ import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.conversation.ConversationData;
-import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.feature.QuestCanceler;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
@@ -26,13 +24,11 @@ import java.util.Map;
  */
 public interface FeatureApi {
     /**
-     * Gets stored Conversation Data.
+     * Get the Api for Conversation interaction.
      *
-     * @param conversationID the id of the conversation
-     * @return the loaded ConversationData
-     * @throws QuestException if no ConversationData is loaded for the ID
+     * @return conversation api
      */
-    ConversationData getConversation(ConversationID conversationID) throws QuestException;
+    ConversationApi conversationApi();
 
     /**
      * Get the loaded Quest Canceler.

@@ -361,7 +361,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(),
                 coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(loggerFactory, pluginMessage,
                 coreQuestRegistry, questRegistry, config, textParser, fontRegistry)));
-        playerDataStorage = new PlayerDataStorage(loggerFactory, loggerFactory.create(PlayerDataStorage.class), config,
+        playerDataStorage = new PlayerDataStorage(loggerFactory.create(PlayerDataStorage.class), config,
                 playerDataFactory, coreQuestRegistry.objectives(), profileProvider);
 
         featureRegistries = BaseFeatureRegistries.create(loggerFactory);
@@ -386,7 +386,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         registerListener(coreQuestRegistry);
 
         new CoreQuestTypes(loggerFactory, getServer(), getServer().getScheduler(), this,
-                coreQuestRegistry, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
+                coreQuestRegistry, questRegistry, pluginMessage, coreQuestRegistry.variables(), globalData, playerDataStorage,
                 profileProvider, this, playerDataFactory)
                 .register(questTypeRegistries);
 
@@ -397,7 +397,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         fontRegistry.registerFont(defaultkey, new DefaultFont());
 
         new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.variables(),
-                config, conversationColors, textParser, fontRegistry, pluginMessage)
+                questRegistry, config, conversationColors, textParser, fontRegistry, pluginMessage)
                 .register(featureRegistries);
 
         try {
@@ -418,7 +418,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             compatibility.postHook();
             loadData();
-            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), pluginMessage);
+            playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), getFeatureApi().conversationApi());
 
             try {
                 playerHider = new PlayerHider(this, this, getVariableProcessor(), profileProvider, config);
@@ -487,8 +487,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 new QuestItemHandler(config, playerDataStorage, profileProvider),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), pluginMessage, profileProvider),
-                new JoinQuitListener(loggerFactory, config, coreQuestRegistry.objectives(), playerDataStorage,
-                        pluginMessage, profileProvider, updater)
+                new JoinQuitListener(config, coreQuestRegistry.objectives(), playerDataStorage,
+                        getFeatureApi().conversationApi(), profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, this));
     }
 
@@ -609,7 +609,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     }
 
     @Override
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void onDisable() {
         if (questRegistry != null) {
             questRegistry.eventScheduling().clear();
@@ -617,7 +617,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         // suspend all conversations
         if (profileProvider != null) {
             for (final OnlineProfile onlineProfile : profileProvider.getOnlineProfiles()) {
-                final Conversation conv = Conversation.getConversation(onlineProfile);
+                final Conversation conv = questRegistry == null ? null : questRegistry.conversations().getActive(onlineProfile);
                 if (conv != null) {
                     conv.suspend();
                 }

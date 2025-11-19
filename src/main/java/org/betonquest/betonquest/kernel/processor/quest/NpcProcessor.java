@@ -21,6 +21,7 @@ import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.ConversationID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
+import org.betonquest.betonquest.kernel.processor.feature.ConversationStarter;
 import org.betonquest.betonquest.kernel.registry.quest.NpcTypeRegistry;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
@@ -86,6 +87,11 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     private final IngameNotificationSender busySender;
 
     /**
+     * Starts conversations with Npcs.
+     */
+    private final ConversationStarter convStarter;
+
+    /**
      * The minimum time between two interactions with an NPC.
      */
     private int interactionLimit;
@@ -107,14 +113,16 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param plugin            the plugin to load config
      * @param profileProvider   the profile provider instance
      * @param questTypeApi      the Quest Type API
+     * @param convStarter       the starter for Npc conversations
      */
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                         final QuestPackageManager packManager, final VariableProcessor variableProcessor,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
-                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi) {
+                        final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter) {
         super(log, packManager, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
+        this.convStarter = convStarter;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
         this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, variableProcessor, this,
@@ -230,11 +238,9 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
                 + "' and started conversation '" + conversationID + "'.");
         final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
-        try {
-            new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile, conversationID, center, npc);
-        } catch (final QuestException e) {
-            log.error(conversationID.getPackage(), "Cannot start conversation '" + conversationID + "': " + e.getMessage(), e);
-        }
+        convStarter.startConversation(onlineProfile, conversationID, center, null,
+                (onlineProfile1, id, center1, run)
+                        -> new NpcConversation<>(loggerFactory.create(NpcConversation.class), pluginMessage, onlineProfile1, id, center1, run, npc));
         return true;
     }
 
