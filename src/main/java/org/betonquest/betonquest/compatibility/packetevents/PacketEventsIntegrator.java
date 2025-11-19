@@ -3,6 +3,13 @@ package org.betonquest.betonquest.compatibility.packetevents;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.protocol.chat.ChatTypes;
+import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_16;
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSystemChatMessage;
+import io.papermc.lib.PaperLib;
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -23,10 +30,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.UUID;
+import java.util.function.Function;
+
 /**
  * Integrator for PacketEvents.
  */
 public class PacketEventsIntegrator implements Integrator {
+    /**
+     * Function to create chat message packets based on server version.
+     */
+    // TODO version switch:
+    //  Remove this code when only 1.19.0+ is supported
+    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = PaperLib.isVersion(19)
+            ? message -> new WrapperPlayServerSystemChatMessage(false, message)
+            : message -> new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message,
+            ChatTypes.CHAT, new UUID(0L, 0L)));
 
     /**
      * The default constructor.

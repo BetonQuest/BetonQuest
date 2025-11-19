@@ -8,9 +8,8 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
-import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegrator;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
@@ -28,12 +27,6 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
  * based on PacketEvents.
  */
 public class PacketEventsInterceptor implements Interceptor, PacketListener {
-
-    /**
-     * The tagger used to mark messages which should not be intercepted.
-     */
-    private static final ComponentTagger TAGGER = new PrefixComponentTagger(" BetonQuest-Interceptor-Bypass-Tag ");
-
     /**
      * The PacketEvents API instance.
      */
@@ -82,7 +75,7 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
 
     @Override
     public void onPacketSend(final PacketSendEvent event) {
-        if (event.isCancelled()) {
+        if (event.isCancelled() || ended.get()) {
             return;
         }
         if (!(event.getPlayer() instanceof final Player player)
@@ -98,13 +91,8 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
             final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
-        final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        if (TAGGER.acceptIfTagged(packetWrapperFunction.getMessage(packetWrapper),
-                untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))
-                || chatHistory.getTagger().isTagged(packetWrapperFunction.getMessage(packetWrapper)) || ended.get()) {
-            return;
-        }
         event.setCancelled(true);
+        final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
         final T packetWrapperCopy = packetWrapperFunction.copy(packetWrapper);
         messages.offer(packetWrapperCopy);
     }
@@ -116,7 +104,8 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
 
     @Override
     public void sendMessage(final Component component) {
-        onlineProfile.getPlayer().sendMessage(TAGGER.tag(chatHistory.getTagger().tag(component)));
+        final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
+        user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(component));
     }
 
     @Override
