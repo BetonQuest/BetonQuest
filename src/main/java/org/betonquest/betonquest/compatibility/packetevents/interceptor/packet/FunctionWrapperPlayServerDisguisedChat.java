@@ -4,8 +4,6 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisguisedChat;
 import net.kyori.adventure.text.Component;
 
-import java.util.function.Function;
-
 /**
  * A PacketWrapperFunction implementation for handling WrapperPlayServerDisguisedChat packets.
  */
@@ -32,8 +30,8 @@ public class FunctionWrapperPlayServerDisguisedChat implements PacketWrapperFunc
     }
 
     @Override
-    public WrapperPlayServerDisguisedChat transform(final WrapperPlayServerDisguisedChat packetWrapper, final Function<Component, Component> messageTransformer) {
-        return new WrapperPlayServerDisguisedChat(messageTransformer.apply(getMessage(packetWrapper)), packetWrapper.getChatFormatting());
+    public WrapperPlayServerDisguisedChat transform(final WrapperPlayServerDisguisedChat packetWrapper) {
+        return new WrapperPlayServerDisguisedChat(getMessage(packetWrapper), packetWrapper.getChatFormatting());
     }
 
     @Override

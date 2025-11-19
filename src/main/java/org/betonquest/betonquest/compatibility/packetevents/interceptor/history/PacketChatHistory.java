@@ -3,10 +3,16 @@ package org.betonquest.betonquest.compatibility.packetevents.interceptor.history
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.chat.ChatTypes;
+import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_16;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSystemChatMessage;
 import com.google.common.collect.EvictingQueue;
+import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.api.common.component.tagger.ComponentTagger;
 import org.betonquest.betonquest.api.common.component.tagger.PrefixComponentTagger;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction;
@@ -19,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -47,6 +54,11 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     private final Map<UUID, Queue<PacketWrapper<?>>> history;
 
     /**
+     * Function to create chat message packets based on server version.
+     */
+    private final Function<Component, PacketWrapper<?>> messageFunction;
+
+    /**
      * Constructs a ChatHistory instance.
      *
      * @param packetEventsAPI the PacketEvents API instance
@@ -57,6 +69,12 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
         this.packetEventsAPI = packetEventsAPI;
         this.cacheSize = cacheSize;
         this.history = new HashMap<>();
+        // TODO version switch:
+        //  Remove this code when only 1.19.0+ is supported
+        this.messageFunction = PaperLib.isVersion(19)
+                ? message -> new WrapperPlayServerSystemChatMessage(false, message)
+                : message -> new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message,
+                ChatTypes.CHAT, new UUID(0L, 0L)));
     }
 
     private Queue<PacketWrapper<?>> getHistory(final UUID uuid) {
@@ -67,8 +85,9 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     public void sendHistory(final Player player) {
         final User user = packetEventsAPI.getPlayerManager().getUser(player);
         final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
-        user.sendMessage(TAGGER.tag(Component.text(Component.newline().content().repeat(cacheSize - history.size()))));
-        history.forEach(user::sendPacket);
+        final TextComponent message = Component.text(Component.newline().content().repeat(cacheSize - history.size()));
+        user.sendPacketSilently(messageFunction.apply(message));
+        history.forEach(user::sendPacketSilently);
     }
 
     @Override
@@ -90,7 +109,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
                 untagged -> packetWrapperFunction.setMessage(packetWrapper, untagged))) {
             return;
         }
-        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper, TAGGER::tag));
+        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper));
     }
 
     /**

@@ -378,8 +378,6 @@ public class Conversation {
 
             log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
             inOut.end(() -> {
-
-                // fire final events
                 try {
                     for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
                         plugin.getQuestTypeApi().event(onlineProfile, event);
@@ -387,12 +385,10 @@ public class Conversation {
                 } catch (final QuestException e) {
                     log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
                 }
+
+                interceptor.end();
                 endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
 
-                // End interceptor after a second
-                interceptor.end();
-
-                // delete conversation
                 ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
             });
@@ -468,14 +464,11 @@ public class Conversation {
             inOut.end(() -> {
             });
 
-            // save the conversation to the database
             final PlayerConversationState state = new PlayerConversationState(identifier, nextNPCOption.name(), center);
             plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
-            // End interceptor
             interceptor.end();
 
-            // delete conversation
             ACTIVE_CONVERSATIONS.remove(onlineProfile);
             new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
