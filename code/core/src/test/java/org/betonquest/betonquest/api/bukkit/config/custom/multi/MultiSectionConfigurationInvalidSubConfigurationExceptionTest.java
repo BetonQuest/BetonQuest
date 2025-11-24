@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static com.ibm.icu.impl.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

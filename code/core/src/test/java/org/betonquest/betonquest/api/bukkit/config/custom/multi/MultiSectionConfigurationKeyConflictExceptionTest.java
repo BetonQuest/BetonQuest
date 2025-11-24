@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ibm.icu.impl.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
-     * Config with key3 as value
+     * Config with key3 as value.
      */
     public static final String CONFIG_STRING_1 = """
             section:
@@ -30,7 +29,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
             """;
 
     /**
-     * Config with key3 as value
+     * Config with key3 as value.
      */
     public static final String CONFIG_STRING_2 = """
             section:
@@ -40,7 +39,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
             """;
 
     /**
-     * Config with key3 as section
+     * Config with key3 as section.
      */
     public static final String CONFIG_STRING_3 = """
             section:
