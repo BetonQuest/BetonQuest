@@ -25,6 +25,7 @@ jobs:
           EXCLUDE_PATHS: |
             docs
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
+          SUB_MODULE: 'betonquest'
 
   build-code:
     name: Build Code
@@ -50,6 +51,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
           VERSION_NAMESPACE: "betonquest"
+          SUB_MODULE: 'betonquest'
       - name: Build with Maven. Phase 'verify'
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
