@@ -825,4 +825,13 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     public FontRegistry getFontRegistry() {
         return fontRegistry;
     }
+
+    /**
+     * Get the Compatibility to add plugins and initialize it.
+     *
+     * @return the compatibility
+     */
+    protected Compatibility getCompatibility() {
+        return compatibility;
+    }
 }

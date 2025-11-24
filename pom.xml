@@ -9,11 +9,11 @@
     <version>2.0.0</version>
   </parent>
 
+  <name>BetonQuest Reactor</name>
   <groupId>org.betonquest.betonquest</groupId>
-  <name>BetonQuest Modules</name>
-  <artifactId>betonquest-modules</artifactId>
+  <artifactId>reactor</artifactId>
   <version>${revision}${changelist}</version>
-  <description>All Your Adventure Supplies</description>
+  <description>Root Module for building the BetonQuest Plugin</description>
   <packaging>pom</packaging>
 
   <properties>
@@ -31,6 +31,8 @@
 
   <modules>
     <module>code/core</module>
+    <module>code/compatibility</module>
+    <module>code/build</module>
   </modules>
 
   <repositories>

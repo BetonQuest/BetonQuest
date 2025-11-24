@@ -1,8 +1,8 @@
-name: ${project.name}
-main: ${project.groupId}.${project.artifactId}.${project.name}
-version: ${betonquest.version}
-api-version: ${minecraft.api.version}
-description: ${project.description}
+name: ${plugin.name}
+main: ${plugin.main}
+version: ${plugin.version}
+api-version: ${plugin.api-version}
+description: ${plugin.description}
 website: ${project.organization.url}
 author: ${project.organization.name}
 authors: [ Wolf2323, TheosRee, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.betonquest</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.1.0</version>
+  </parent>
+
+  <name>BetonQuest Build</name>
+  <artifactId>betonquest</artifactId>
+  <version>${revision}${changelist}</version>
+  <description>All Your Adventure Supplies</description>
+
+  <properties>
+    <revision>3.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+    <core.version>1.0.0${changelist}</core.version>
+    <compatibility.version>1.0.0${changelist}</compatibility.version>
+
+    <plugin.name>BetonQuest</plugin.name>
+    <plugin.main>${project.groupId}.${project.artifactId}.${plugin.name}Plugin</plugin.main>
+    <plugin.version>${revision}-DEV-UNOFFICIAL</plugin.version>
+    <plugin.api-version>1.18</plugin.api-version>
+    <plugin.description>All Your Adventure Supplies</plugin.description>
+
+    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+
+    <maven-shade-plugin.path>${project.groupId}.${project.artifactId}</maven-shade-plugin.path>
+  </properties>
+
+  <dependencies>
+    <!-- BetonQuest -->
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>core</artifactId>
+      <version>${core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>compatibility</artifactId>
+      <version>${compatibility.version}</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>betonquest-repo</id>
+      <url>https://nexus.betonquest.org/repository/betonquest/</url>
+    </repository>
+  </repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>org.spigotmc</exclude>
+                    <exclude>org.bukkit</exclude>
+                  </excludes>
+                </bannedDependencies>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>org.betonquest.betonquest</include>
+                  <include>org.bstats</include>
+                  <include>org.apache.maven</include>
+                  <include>org.apache.commons</include>
+                  <include>com.google.guava</include>
+                  <include>commons-io</include>
+                  <include>org.json</include>
+                  <include>io.papermc:paperlib</include>
+                  <include>com.cronutils:cron-utils</include>
+                  <include>de.themoep:minedown-adventure</include>
+                </includes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>org.bstats</artifact>
+                  <includes>
+                    <include>org/bstats/**</include>
+                  </includes>
+                </filter>
+              </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.org.bstats</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.maven</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.org.apache.maven</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.org.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.org.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.papermc.lib</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.io.papermc.lib</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.cronutils</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.com.cronutils</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>de.themoep</pattern>
+                  <shadedPattern>${maven-shade-plugin.path}.dependencies.de.themoep</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-jar-files</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target name="copy .jar files to root">
+                <copy toDir="../../target/code"
+                      overwrite="true"
+                      quiet="true"
+                      verbose="true"
+                      failonerror="false"
+                      preservelastmodified="true">
+                  <fileset dir="../">
+                    <include name="*/target/code/*.jar"/>
+                  </fileset>
+                  <filtermapper>
+                    <replacestring from="target/code/" to=""/>
+                  </filtermapper>
+                </copy>
+                <copy file="${project.build.directory}/${project.name}.jar"
+                      tofile="../../target/code/BetonQuest.jar"
+                      overwrite="true"
+                      quiet="true"
+                      verbose="true"
+                      failonerror="false"
+                      preservelastmodified="true"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
