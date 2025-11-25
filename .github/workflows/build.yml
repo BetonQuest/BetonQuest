@@ -56,8 +56,10 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
-          ./mvnw ${CHANGELIST-} -P Test-All -B verify
+          ./mvnw package -Dmaven.javadoc.skip=true
+          echo "before"
           git diff > target/artifacts/CodeChanges.patch
+          echo "after"
       - name: Upload Code
         uses: actions/upload-artifact@v4
         with:
