@@ -44,7 +44,7 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_CACHE: 'maven'
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_TARGET_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
@@ -57,12 +57,14 @@ jobs:
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
-          git diff > target/artifacts/CodeChanges.patch
+          git diff > target/code/CodeChanges.patch
       - name: Upload Code
         uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Code
-          path: target/artifacts/*.jar
+          path: |
+            target/code/BetonQuest.jar
+            target/code/*/*.jar
 
   build-docs:
     name: Build Docs
@@ -133,13 +135,13 @@ jobs:
           JAVA_REPOSITORY_ID: 'betonquest'
           JAVA_REPOSITORY_USER: MAVEN_SERVER_USERNAME
           JAVA_REPOSITORY_PASS: MAVEN_SERVER_PASSWORD
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_TARGET_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git apply target/artifacts/CodeChanges.patch
-          rm target/artifacts/CodeChanges.patch
+          git apply target/code/CodeChanges.patch
+          rm target/code/CodeChanges.patch
       - name: Publish to Maven Repository
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -262,7 +264,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_TARGET_DIR: 'target/code'
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material/cache@main
         with:
           MKDOCS_SITE_DIR: 'target/docs'
@@ -286,7 +288,7 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            target/artifacts/BetonQuest.jar
+            target/code/BetonQuest.jar
             target/docs/Docs.zip
 
   discord-announcement:

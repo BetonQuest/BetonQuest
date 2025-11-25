@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
   </parent>
 
   <name>BetonQuest</name>
@@ -673,11 +673,26 @@
             </goals>
             <configuration>
               <target name="copy .jar files to root">
-                <copy toDir="../../target/artifacts" flatten="true">
-                  <fileset dir="${project.build.directory}">
-                    <include name="*.jar"/>
+                <copy toDir="../../target/code"
+                      overwrite="true"
+                      quiet="true"
+                      verbose="true"
+                      failonerror="false"
+                      preservelastmodified="true">
+                  <fileset dir="../">
+                    <include name="*/target/code/*.jar"/>
                   </fileset>
+                  <filtermapper>
+                    <replacestring from="target/code/" to=""/>
+                  </filtermapper>
                 </copy>
+                <copy file="${project.build.directory}/${project.name}.jar"
+                      tofile="../../target/code/${project.name}.jar"
+                      overwrite="true"
+                      quiet="true"
+                      verbose="true"
+                      failonerror="false"
+                      preservelastmodified="true"/>
               </target>
             </configuration>
           </execution>

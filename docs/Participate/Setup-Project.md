@@ -88,7 +88,7 @@ Select "Add as Maven Project".
 At this point it is always recommended to run `./mvnw verify` to check if the software builds fine before making any changes.
 To build the BetonQuest jar, you also run `./mvnw verify`.
 You can do this from the command line or use IntelliJ's `Maven` tab (double-click on `BetonQuest Modules/Lifecycle/verify`).
-You can then find a `BetonQuest.jar` in the newly created folder `target/artifacts`.
+You can then find a `BetonQuest.jar` in the newly created folder `target/code`.
 
 ### Build speed up
 As BetonQuest has a lot of dependencies, the build can take a long time, especially for the first build.
