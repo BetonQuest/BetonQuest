@@ -44,7 +44,7 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_CACHE: 'maven'
-          MAVEN_TARGET_DIR: 'target/code'
+          MAVEN_BUILD_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
@@ -135,7 +135,7 @@ jobs:
           JAVA_REPOSITORY_ID: 'betonquest'
           JAVA_REPOSITORY_USER: MAVEN_SERVER_USERNAME
           JAVA_REPOSITORY_PASS: MAVEN_SERVER_PASSWORD
-          MAVEN_TARGET_DIR: 'target/code'
+          MAVEN_BUILD_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -264,7 +264,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
-          MAVEN_TARGET_DIR: 'target/code'
+          MAVEN_BUILD_DIR: 'target/code'
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material/cache@main
         with:
           MKDOCS_SITE_DIR: 'target/docs'
