@@ -35,15 +35,6 @@
     </repository>
   </repositories>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.betonquest</groupId>
-      <artifactId>betonquest</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -53,7 +44,7 @@
         <executions>
           <execution>
             <id>copy-jar-files</id>
-            <phase>package</phase>
+            <phase>verify</phase>
             <goals>
               <goal>run</goal>
             </goals>
