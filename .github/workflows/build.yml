@@ -44,7 +44,7 @@ jobs:
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven@main
         with:
           JAVA_CACHE: 'maven'
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_BUILD_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
@@ -57,14 +57,14 @@ jobs:
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
-          git diff > target/CodeChanges.patch
-      - name: Upload Artifact
+          git diff > target/code/CodeChanges.patch
+      - name: Upload Code
         uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Code
           path: |
-            code/core/target/artifacts/BetonQuest.jar
-            code/core/target/artifacts/betonquest-*-*.jar
+            target/code/BetonQuest.jar
+            target/code/*/*.jar
 
   build-docs:
     name: Build Docs
@@ -99,7 +99,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           mkdocs build --strict 
-          git diff > target/DocsChanges.patch
+          git diff > target/docs/DocsChanges.patch
         env:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
@@ -109,7 +109,7 @@ jobs:
           name: BetonQuest-Docs
           path: |
             target/docs/
-            !target/DocsChanges.patch
+            !target/docs/DocsChanges.patch
 
   deploy-code:
     name: Deploy Code
@@ -135,13 +135,13 @@ jobs:
           JAVA_REPOSITORY_ID: 'betonquest'
           JAVA_REPOSITORY_USER: MAVEN_SERVER_USERNAME
           JAVA_REPOSITORY_PASS: MAVEN_SERVER_PASSWORD
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_BUILD_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git apply target/CodeChanges.patch
-          rm target/CodeChanges.patch
+          git apply target/code/CodeChanges.patch
+          rm target/code/CodeChanges.patch
       - name: Publish to Maven Repository
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -190,8 +190,8 @@ jobs:
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git apply target/DocsChanges.patch
-          rm target/DocsChanges.patch
+          git apply target/docs/DocsChanges.patch
+          rm target/docs/DocsChanges.patch
       - name: Deploy to Github Pages
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -264,7 +264,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: BetonQuest/Workflows/.github/actions/setup-java-maven/cache@main
         with:
-          MAVEN_TARGET_DIR: 'target/artifacts'
+          MAVEN_BUILD_DIR: 'target/code'
       - uses: BetonQuest/Workflows/.github/actions/setup-mkdocs-material/cache@main
         with:
           MKDOCS_SITE_DIR: 'target/docs'
@@ -288,7 +288,7 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            code/core/target/artifacts/BetonQuest.jar
+            target/code/BetonQuest.jar
             target/docs/Docs.zip
 
   discord-announcement:

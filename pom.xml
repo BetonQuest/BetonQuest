@@ -12,9 +12,14 @@
   <groupId>org.betonquest.betonquest</groupId>
   <name>BetonQuest Modules</name>
   <artifactId>betonquest-modules</artifactId>
-  <version>1.0.0</version>
+  <version>${revision}${changelist}</version>
   <description>All Your Adventure Supplies</description>
   <packaging>pom</packaging>
+
+  <properties>
+    <revision>1.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+  </properties>
 
   <licenses>
     <license>

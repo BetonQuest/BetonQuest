@@ -4,8 +4,8 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  artifacts:
-    name: Build Artifacts
+  code:
+    name: Build Code
     if: "always() && github.repository == 'BetonQuest/BetonQuest'"
     runs-on: ubuntu-latest
 
@@ -42,7 +42,7 @@ jobs:
   alert:
     name: Alert to Discord
     if: failure()
-    needs: [ artifacts, docs ]
+    needs: [ code, docs ]
     runs-on: ubuntu-latest
 
     steps:
