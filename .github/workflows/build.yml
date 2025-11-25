@@ -55,6 +55,8 @@ jobs:
       - name: Build with Maven. Phase 'verify'
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
+          echo "Current path: "
+          pwd
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
           mkdir -p target/artifacts
