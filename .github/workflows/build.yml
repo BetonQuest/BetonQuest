@@ -46,6 +46,7 @@ jobs:
           JAVA_CACHE: 'maven'
           MAVEN_BUILD_DIR: 'target/code'
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
+          JAVA_OVERRIDE: 21
       - uses: BetonQuest/Workflows/.github/actions/replace-code-variables@main
         with:
           VERSION: ${{ env.VERSION }}
