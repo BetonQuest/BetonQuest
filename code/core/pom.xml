@@ -660,6 +660,29 @@
           <includedGroups>none() | any()</includedGroups>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>${maven-antrun-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>copy-jar-files</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target name="copy .jar files to root">
+                <copy toDir="../../target/artifacts" flatten="true">
+                  <fileset dir="${project.build.directory}">
+                    <include name="*.jar"/>
+                  </fileset>
+                </copy>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
