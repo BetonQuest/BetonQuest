@@ -32,6 +32,7 @@
   <modules>
     <module>code/core</module>
     <module>code/mc_1_20_6</module>
+    <module>code/mc_1_21_4</module>
     <module>code/compatibility</module>
     <module>code/build</module>
   </modules>

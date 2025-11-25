@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.betonquest</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.1.1</version>
+  </parent>
+
+  <name>BetonQuest Minecraft 1.21.4</name>
+  <groupId>org.betonquest.betonquest</groupId>
+  <artifactId>mc_1_21_4</artifactId>
+  <version>${revision}${changelist}</version>
+  <description>Provides the Minecraft 1.21.4 Compatibility of BetonQuest</description>
+
+  <properties>
+    <revision>1.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+
+    <paper-api.version>1.21.4-R0.1-SNAPSHOT</paper-api.version>
+    <core.version>1.0.0${changelist}</core.version>
+    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
+  </properties>
+
+  <dependencies>
+    <!-- Paper -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- BetonQuest -->
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>core</artifactId>
+      <version>${core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>mc_1_20_6</artifactId>
+      <version>${mc_1_20_6.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>betonquest-repo</id>
+      <url>https://nexus.betonquest.org/repository/betonquest/</url>
+    </repository>
+    <repository>
+      <id>betonquest-papermc-repo</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+  </repositories>
+</project>
