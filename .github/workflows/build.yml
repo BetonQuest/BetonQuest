@@ -57,14 +57,12 @@ jobs:
         run: |
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           ./mvnw ${CHANGELIST-} -P Test-All -B verify
-          git diff > target/CodeChanges.patch
-      - name: Upload Artifact
+          git diff > target/artifacts/CodeChanges.patch
+      - name: Upload Code
         uses: actions/upload-artifact@v4
         with:
           name: BetonQuest-Code
-          path: |
-            code/core/target/artifacts/BetonQuest.jar
-            code/core/target/artifacts/betonquest-*-*.jar
+          path: target/artifacts/*.jar
 
   build-docs:
     name: Build Docs
@@ -99,7 +97,7 @@ jobs:
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           mkdocs build --strict 
-          git diff > target/DocsChanges.patch
+          git diff > target/docs/DocsChanges.patch
         env:
           MKDOCS_MATERIAL_INSIDERS_ENABLED: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
           MKDOCS_MATERIAL_INSIDERS_ENABLED_CI: ${{ secrets.MKDOCS_MATERIAL_INSIDERS != '' }}
@@ -109,7 +107,7 @@ jobs:
           name: BetonQuest-Docs
           path: |
             target/docs/
-            !target/DocsChanges.patch
+            !target/docs/DocsChanges.patch
 
   deploy-code:
     name: Deploy Code
@@ -140,8 +138,8 @@ jobs:
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git apply target/CodeChanges.patch
-          rm target/CodeChanges.patch
+          git apply target/artifacts/CodeChanges.patch
+          rm target/artifacts/CodeChanges.patch
       - name: Publish to Maven Repository
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -190,8 +188,8 @@ jobs:
       - name: Load patch file
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          git apply target/DocsChanges.patch
-          rm target/DocsChanges.patch
+          git apply target/docs/DocsChanges.patch
+          rm target/docs/DocsChanges.patch
       - name: Deploy to Github Pages
         if: "env.VERSION_TYPE == 'release' || env.VERSION_TYPE == 'development'"
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -288,7 +286,7 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            code/core/target/artifacts/BetonQuest.jar
+            target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
 
   discord-announcement:
