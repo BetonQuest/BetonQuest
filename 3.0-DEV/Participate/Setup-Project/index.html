@@ -5029,14 +5029,14 @@ In the <code>Commit</code> tab click on the <img alt="⚙" class="twemoji" src="
 <li>Check TODO (Show All)</li>
 </ul>
 <h2 id="building-the-plugin-jar">Building the Plugin jar<a class="headerlink" href="#building-the-plugin-jar" title="Permanent link">🔗</a></h2>
-<p>You can build the plugin with Maven. Sometimes, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
+<p>You can build the plugin with Maven. Normally, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
 a "Maven" tab on the right side of the editor if that's the case. Otherwise, do this:
 First, open the "Project" tab on the left site. Then right-click the <code>pom.xml</code> file in the projects root folder. 
 Select "Add as Maven Project". </p>
 <p>At this point it is always recommended to run <code>./mvnw verify</code> to check if the software builds fine before making any changes.
 To build the BetonQuest jar, you also run <code>./mvnw verify</code>.
-You can do this from the command line or use IntelliJ's <code>Maven</code> tab (double-click on <code>BetonQuest/Lifecycle/verify</code>).
-You can then find a <code>BetonQuest.jar</code> in the newly created folder <code>/target/artifacts</code>.</p>
+You can do this from the command line or use IntelliJ's <code>Maven</code> tab (double-click on <code>BetonQuest Modules/Lifecycle/verify</code>).
+You can then find a <code>BetonQuest.jar</code> in the newly created folder <code>target/code</code>.</p>
 <h3 id="build-speed-up">Build speed up<a class="headerlink" href="#build-speed-up" title="Permanent link">🔗</a></h3>
 <p>As BetonQuest has a lot of dependencies, the build can take a long time, especially for the first build.
 By default, the build speed up is only enabled when running Maven from the command line, but not when using IntelliJ.
