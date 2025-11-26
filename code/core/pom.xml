@@ -446,6 +446,10 @@
 
   <repositories>
     <repository>
+      <id>betonquest-repo</id>
+      <url>https://nexus.betonquest.org/repository/betonquest/</url>
+    </repository>
+    <repository>
       <id>betonquest-papermc-repo</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
