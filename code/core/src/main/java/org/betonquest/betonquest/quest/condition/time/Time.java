@@ -4,6 +4,9 @@ import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * A time with an hour and minute.
+ *
+ * @param hour   the hour
+ * @param minute the minute
  */
 public record Time(int hour, int minute) {
 

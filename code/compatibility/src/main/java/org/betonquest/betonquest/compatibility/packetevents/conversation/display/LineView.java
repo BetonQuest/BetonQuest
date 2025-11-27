@@ -32,6 +32,12 @@ public interface LineView {
      * An empty line view that contains no lines.
      */
     class Empty implements LineView {
+        /**
+         * The empty default constructor.
+         */
+        public Empty() {
+        }
+
         @Override
         public List<Line> getLines() {
             return new ArrayList<>();

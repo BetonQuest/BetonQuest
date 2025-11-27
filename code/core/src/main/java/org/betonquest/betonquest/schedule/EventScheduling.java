@@ -94,7 +94,8 @@ public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
      *
      * @param scheduleFactory factory of the schedule
      * @param scheduler       instance of the scheduler
-     * @param <S>             type of the schedule.
+     * @param <S>             type of the schedule
+     * @param <T>             type of time used by the scheduler
      */
     public record ScheduleType<S extends Schedule, T>(ScheduleFactory<S> scheduleFactory, Scheduler<S, T> scheduler) {
         /* default */ S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)

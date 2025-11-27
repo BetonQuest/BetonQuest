@@ -8,6 +8,28 @@ import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * Menu conversation settings.
+ *
+ * @param lineLength             maximum length of a line till its wrapped in pixels
+ * @param lineCount              height of a conversation in lines
+ * @param lineFillBefore         amount of empty lines before a conversation starts
+ * @param refreshDelay           time interval before printing the conversation again in ticks
+ * @param rateLimit              time to wait until a new option can be selected in ticks
+ * @param npcNameType            place to show the NPC name, chat or none
+ * @param npcNameAlign           for npc_name_type chat, the alignment of the name, left, right or center
+ * @param npcNameSeparator       separate the NPC name with an empty line from the text
+ * @param optionsSeparator       separate the NPC text from the player options by filling remaining space with empty lines
+ * @param controlSelect          comma separated actions to select an option, jump, left_click or sneak
+ * @param controlMove            comma separated actions to move the selection, move or scroll
+ * @param controlCancel          comma separated actions to cancel the conversation, jump, left_click or sneak
+ * @param npcName                the format of the NPC name, placeholder {npc_name}
+ * @param npcText                the format of the NPC text, placeholder {npc_text}
+ * @param npcTextWrap            prefix that gets applied to the start of a new line if the actual text is too long
+ * @param optionText             the format of the player options, placeholder {option_text}
+ * @param optionTextWrap         prefix that gets applied to the start of a new line if the actual text is too long
+ * @param optionSelectedText     format of the selected player option, placeholder {option_text}
+ * @param optionSelectedTextWrap prefix that gets applied to the start of a new line if the actual text is too long
+ * @param scrollUp               arrow format to scroll up
+ * @param scrollDown             arrow format to scroll down
  */
 public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefore, int refreshDelay, int rateLimit,
                                  String npcNameType, String npcNameAlign,

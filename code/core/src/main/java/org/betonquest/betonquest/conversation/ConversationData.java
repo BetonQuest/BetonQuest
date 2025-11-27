@@ -541,6 +541,7 @@ public class ConversationData {
      * @param finalEvents    All events that will be executed when the conversation ends.
      * @param convIO         The conversation IO that should be used for this conversation.
      * @param interceptor    The interceptor that should be used for this conversation.
+     * @param invincible     If true, the player will not be able to damage or be damaged by entities in conversation.
      */
     public record PublicData(ConversationID conversationID, Text quester, Variable<Boolean> blockMovement,
                              Variable<List<EventID>> finalEvents, Variable<ConversationIOFactory> convIO,
