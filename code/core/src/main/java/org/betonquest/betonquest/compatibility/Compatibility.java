@@ -5,41 +5,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.brewery.BreweryIntegratorFactory;
-import org.betonquest.betonquest.compatibility.denizen.DenizenIntegratorFactory;
-import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegratorFactory;
-import org.betonquest.betonquest.compatibility.fabled.FabledIntegratorFactory;
-import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegratorFactory;
-import org.betonquest.betonquest.compatibility.heroes.HeroesIntegratorFactory;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
-import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegratorFactory;
-import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegratorFactory;
-import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.magic.MagicIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
-import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
-import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
-import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegrator;
-import org.betonquest.betonquest.compatibility.npc.znpcsplus.ZNPCsPlusIntegratorFactory;
-import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegratorFactory;
-import org.betonquest.betonquest.compatibility.quests.QuestsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.redischat.RedisChatIntegratorFactory;
-import org.betonquest.betonquest.compatibility.shopkeepers.ShopkeepersIntegratorFactory;
-import org.betonquest.betonquest.compatibility.skript.SkriptIntegratorFactory;
-import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegratorFactory;
-import org.betonquest.betonquest.compatibility.vault.VaultIntegratorFactory;
-import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegratorFactory;
-import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegratorFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -106,10 +73,12 @@ public class Compatibility implements Listener {
         this.betonQuestApi = betonQuestApi;
         this.config = config;
         this.version = version;
+    }
 
-        registerCompatiblePlugins();
-
-        // Integrate already enabled plugins in case Bukkit messes up the loading order
+    /**
+     * Integrate already enabled plugins.
+     */
+    public void init() {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
@@ -234,43 +203,13 @@ public class Compatibility implements Listener {
         }
     }
 
-    private void registerCompatiblePlugins() {
-        final BetonQuestLoggerFactory loggerFactory = betonQuestApi.getLoggerFactory();
-        register("MythicMobs", new MythicMobsIntegratorFactory());
-        register("Citizens", new CitizensIntegratorFactory());
-        register("Vault", new VaultIntegratorFactory());
-        register("Skript", new SkriptIntegratorFactory());
-        register("WorldGuard", new WorldGuardIntegratorFactory());
-        register("WorldEdit", new WorldEditIntegratorFactory());
-        register("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
-        register("mcMMO", new McMMOIntegratorFactory());
-        register("MythicLib", new MythicLibIntegratorFactory());
-        register("MMOCore", new MMOCoreIntegratorFactory());
-        register("MMOItems", new MMOItemsIntegratorFactory());
-        register("EffectLib", new EffectLibIntegratorFactory());
-        register("Heroes", new HeroesIntegratorFactory());
-        register("Magic", new MagicIntegratorFactory());
-        register("Denizen", new DenizenIntegratorFactory());
-        register("Fabled", new FabledIntegratorFactory());
-        register("Quests", new QuestsIntegratorFactory());
-        register("Shopkeepers", new ShopkeepersIntegratorFactory());
-        register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory());
-        register("packetevents", new PacketEventsIntegratorFactory());
-        register("Brewery", new BreweryIntegratorFactory());
-        register("BreweryX", new BreweryIntegratorFactory());
-        register("Jobs", new JobsRebornIntegratorFactory());
-        register("LuckPerms", new LuckPermsIntegratorFactory());
-        register("AuraSkills", new AuraSkillsIntegratorFactory());
-        register("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
-        register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
-        register("fake-block", new FakeBlockIntegratorFactory());
-        register("RedisChat", new RedisChatIntegratorFactory());
-        register("Train_Carts", new TrainCartsIntegratorFactory());
-        register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
-        register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
-    }
-
-    private void register(final String name, final IntegratorFactory integrator) {
+    /**
+     * Adds a new Integrator Factory for a Plugin.
+     *
+     * @param name       the plugin name
+     * @param integrator the integrator factory
+     */
+    public void register(final String name, final IntegratorFactory integrator) {
         integrators.put(name, new MutablePair<>(integrator, null));
     }
 }
