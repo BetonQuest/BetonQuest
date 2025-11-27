@@ -25,6 +25,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrato
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.nexo.NexoIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
@@ -266,6 +267,7 @@ public class Compatibility implements Listener {
         register("fake-block", new FakeBlockIntegratorFactory());
         register("RedisChat", new RedisChatIntegratorFactory());
         register("Train_Carts", new TrainCartsIntegratorFactory());
+        register("nexo", new NexoIntegratorFactory());
         register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
         register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
     }
