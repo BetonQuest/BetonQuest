@@ -38,13 +38,19 @@ These are arguments that can be applied to every item:
     You no longer require underscores for spaces and now need to quote the argument when you want to use spaces in it. See examples below.
 
 <div class="annotate" markdown>
-- `name`
-The display name of the item. If you want to specifically say that the item must not have any name, use `none` 
-keyword. Default styling is italic. (1)
+- `name` - The display name of the item.  
+Default styling is italic. (1)  
+If you want to specifically say that the item must not have any name, use `none` keyword.
+
+- `item-name` - The "item name" of the item.  
+@snippet:versions:mc-1.20.6@  
+Is only visible when no (display) `name` is set. (2)  
+If you want to specifically say that the item must not have any name, use `none` keyword.
 
 </div>
 
 1. If you do not want italics, you must append `<!i>` before the name text. See [Minimessage Formatting](https://docs.advntr.dev/minimessage/format.html#decoration) for more information. 
+2. In difference to `name` it is not italic by default and can't be changed in an amboss by players, only overridden.
 
 <div class="annotate" markdown>
 * `lore` - Text under the item's name. Default styling of lore is purple and italic. 
