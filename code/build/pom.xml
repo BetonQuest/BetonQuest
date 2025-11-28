@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
   </parent>
 
   <name>BetonQuest Build</name>
@@ -19,6 +19,7 @@
     <changelist>-SNAPSHOT</changelist>
     <core.version>1.0.0${changelist}</core.version>
     <compatibility.version>1.0.0${changelist}</compatibility.version>
+    <pit.report.skip>true</pit.report.skip>
 
     <plugin.name>BetonQuest</plugin.name>
     <plugin.main>${project.groupId}.${project.artifactId}.${plugin.name}Plugin</plugin.main>

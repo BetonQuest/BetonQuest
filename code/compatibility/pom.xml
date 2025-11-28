@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
   </parent>
 
   <name>BetonQuest Compatibility</name>
@@ -19,6 +19,7 @@
     <revision>1.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <core.version>1.0.0${changelist}</core.version>
+    <pit.report.skip>true</pit.report.skip>
 
     <worldguard-bukkit.version>7.0.9</worldguard-bukkit.version>
     <worldguard-core.version>7.0.9</worldguard-core.version>
