@@ -50,7 +50,7 @@ jobs:
         with:
           VERSION: ${{ env.VERSION }}
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
-          VERSION_NAMESPACE: "betonquest"
+          VERSION_NAMESPACE: "plugin"
           SUB_MODULE: 'betonquest'
       - name: Build with Maven. Phase 'verify'
         shell: bash --noprofile --norc -euo pipefail {0}

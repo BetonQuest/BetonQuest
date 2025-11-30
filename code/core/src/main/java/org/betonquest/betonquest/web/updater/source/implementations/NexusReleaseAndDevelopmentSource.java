@@ -36,9 +36,9 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     public static final String CONTINUATION_TOKEN = "&continuationToken=";
 
     /**
-     * Regex to get the 'betonquest.version' property from the pom.xml file
+     * Regex to get the 'plugin.version' property from the pom.xml file
      */
-    public static final Pattern POM_PATTERN = Pattern.compile("<betonquest\\.version>(?<version>.*)</betonquest\\.version>");
+    public static final Pattern POM_PATTERN = Pattern.compile("<plugin\\.version>(?<version>.*)</plugin\\.version>");
 
     /**
      * The path to the root page for a specific Nexus.

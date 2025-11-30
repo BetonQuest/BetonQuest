@@ -28,7 +28,7 @@ runs:
     - name: Set API/Overview.md version
       shell: bash --noprofile --norc -euo pipefail {0}
       run: |
-        sed -i "s~\${betonquest\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
+        sed -i "s~\${plugin\.version}~${VERSION_MAVEN}~g" ./docs/API/Overview.md
       env:
         VERSION_MAVEN: ${{ inputs.VERSION_MAVEN }}
     - name: Set ref in download commands
