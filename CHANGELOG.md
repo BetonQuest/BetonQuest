@@ -108,7 +108,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Journal` and `Quest Item` are checked with PersistentDataContainer instead of lore
 - `ProtocolLib` was removed and replaced with `PacketEvents` that now needs to be installed instead
     - `packet` chat interceptor was renamed to `packetevents`
-    - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation 
+    - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation
+- `menu` `bound_item` now checks for first menu allowed to open when interacted with instead checking only first
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -72,29 +72,33 @@ public class MenuItemListener implements Listener {
      */
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
-        Menu toOpen = null;
+        MenuID menuID = null;
+        boolean denied = false;
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         for (final Menu menu : menuProcessor.getValues().values()) {
             try {
                 final Variable<Item> boundItem = menu.getBoundItem();
-                if (boundItem != null && boundItem.getValue(profile).matches(event.getItem(), profile)) {
-                    toOpen = menu;
-                    break;
+                if (boundItem == null || !boundItem.getValue(profile).matches(event.getItem(), profile)) {
+                    continue;
                 }
             } catch (final QuestException e) {
                 log.warn(menu.getMenuID().getPackage(), "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
             }
+            menuID = menu.getMenuID();
+            log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
+            if (menu.mayOpen(profile)) {
+                break;
+            }
+            denied = true;
         }
-        if (toOpen == null) {
+        if (menuID == null) {
             return;
         }
         event.setCancelled(true);
-        if (!toOpen.mayOpen(profile)) {
+        if (denied) {
             noPermissionSender.sendNotification(profile);
             return;
         }
-        final MenuID menuID = toOpen.getMenuID();
-        log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
         try {
             rpgMenu.openMenu(profile, menuID);
         } catch (final QuestException e) {
