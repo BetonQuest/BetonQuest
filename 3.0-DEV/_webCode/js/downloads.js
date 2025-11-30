@@ -124,7 +124,7 @@ document$.subscribe(async () => {
     const pomUrl = build.downloadUrl.replace("-shaded.jar", ".pom");
     const pomResponse = await fetch(pomUrl);
     const pomData = await pomResponse.text();
-    return pomData.match(/<plugin\.version>(.+?)<\/plugin\.version>/);
+    return pomData.match(/<(?:plugin|betonquest)\.version>(.+?)<\/(?:plugin|betonquest)\.version>/);
   }
 
   function resetDisabled(element) {
