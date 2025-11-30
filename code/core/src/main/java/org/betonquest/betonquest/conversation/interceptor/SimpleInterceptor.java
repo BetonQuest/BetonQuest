@@ -60,8 +60,6 @@ public class SimpleInterceptor implements Interceptor, Listener {
     @Override
     public void end() {
         HandlerList.unregisterAll(this);
-
-        // Send all messages to player
         for (final String message : messages) {
             player.sendMessage(message);
         }
@@ -74,8 +72,6 @@ public class SimpleInterceptor implements Interceptor, Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        // store all messages so they can be displayed to the player
-        // once the conversation is finished
         if (!event.getPlayer().equals(player) && event.getRecipients().contains(player)) {
             event.getRecipients().remove(player);
             addMessage(String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage()));
