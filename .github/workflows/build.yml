@@ -155,7 +155,7 @@ jobs:
         id: save_upload_path
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
-          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL).*-shaded.jar" maven-deploy.log)"
+          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL)org/betonquest/betonquest/.*/betonquest-.*-shaded.jar" maven-deploy.log)"
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
