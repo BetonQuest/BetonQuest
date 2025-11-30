@@ -78,13 +78,7 @@ public class Menu {
             log.warn(menuID.getPackage(), "Error while resolving open_conditions in menu '" + menuID + "': " + exception.getMessage(), exception);
             return false;
         }
-        for (final ConditionID conditionID : resolved) {
-            if (!questTypeApi.condition(profile, conditionID)) {
-                log.debug(menuID.getPackage(), "Denied opening of " + menuID + ": Condition " + conditionID + "returned false.");
-                return false;
-            }
-        }
-        return true;
+        return questTypeApi.conditions(profile, resolved);
     }
 
     /**
