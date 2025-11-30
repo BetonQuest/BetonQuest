@@ -49,7 +49,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
     protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
         final BlockSelector selector = new BlockSelector(material);
 
-        final NameHandler name = new NameHandler(textParser);
+        final NameHandler name = new UpdatedNameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
 
         final PluginMessage pluginMessage = questItemLoreSupplier.get();

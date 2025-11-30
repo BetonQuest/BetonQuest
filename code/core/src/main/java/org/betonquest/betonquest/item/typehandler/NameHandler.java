@@ -16,7 +16,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The text parser used to parse text.
      */
-    private final TextParser textParser;
+    protected final TextParser textParser;
 
     /**
      * The Item Display Name.
