@@ -4998,13 +4998,22 @@ skip some property checks altogether. You would use these items in conditions.</
 </div>
 <div class="annotate">
 <ul>
-<li><code>name</code>
-The display name of the item. If you want to specifically say that the item must not have any name, use <code>none</code> 
-keyword. Default styling is italic. (1)</li>
+<li>
+<p><code>name</code> - The display name of the item.<br />
+Default styling is italic. (1)<br />
+If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
+</li>
+<li>
+<p><code>item-name</code> - The "item name" of the item.<br />
+<strong>Requires Minecraft version <em>1.20.6</em> or above!</strong><br />
+Is only visible when no (display) <code>name</code> is set. (2)<br />
+If you want to specifically say that the item must not have any name, use <code>none</code> keyword.</p>
+</li>
 </ul>
 </div>
 <ol>
 <li>If you do not want italics, you must append <code>&lt;!i&gt;</code> before the name text. See <a href="https://docs.advntr.dev/minimessage/format.html#decoration">Minimessage Formatting</a> for more information. </li>
+<li>In difference to <code>name</code> it is not italic by default and can't be changed in an amboss by players, only overridden.</li>
 </ol>
 <div class="annotate">
 <ul>
