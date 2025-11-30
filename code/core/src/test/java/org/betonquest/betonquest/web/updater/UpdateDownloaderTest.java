@@ -71,7 +71,9 @@ class UpdateDownloaderTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    // TODO version switch:
+    //  Remove suppression PMD.CloseResource when only Java 21 is supported
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
     void testConcurrentDownloads(@TempDir final File tempDir) throws IOException, InterruptedException {
         final ExecutorService service = Executors.newFixedThreadPool(1);
 

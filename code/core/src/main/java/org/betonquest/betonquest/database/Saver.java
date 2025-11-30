@@ -23,6 +23,9 @@ public interface Saver {
 
     /**
      * Holds the data and the method of saving them to the database.
+     *
+     * @param type method used for saving the data
+     * @param args list of Strings which will be saved to the database
      */
     record Record(UpdateType type, String... args) {
         /**

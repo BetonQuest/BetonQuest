@@ -40,22 +40,22 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
      * The quest package manager to get quest packages from.
      */
-    private final QuestPackageManager packManager;
+    protected final QuestPackageManager packManager;
 
     /**
      * The text parser used to parse text.
      */
-    private final TextParser textParser;
+    protected final TextParser textParser;
 
     /**
      * The book page wrapper used to split pages.
      */
-    private final BookPageWrapper bookPageWrapper;
+    protected final BookPageWrapper bookPageWrapper;
 
     /**
      * Supplier for the PluginMessage.
      */
-    private final Supplier<PluginMessage> questItemLoreSupplier;
+    protected final Supplier<PluginMessage> questItemLoreSupplier;
 
     /**
      * Creates a new simple Quest Item Factory.
@@ -87,7 +87,15 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         return parseInstruction(material, arguments);
     }
 
-    private QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
+    /**
+     * Parses the Quest Item from material and handler arguments.
+     *
+     * @param material  the {@link BlockSelector} string
+     * @param arguments the arguments for the Handlers
+     * @return the parsed Quest Item
+     * @throws QuestException when variables could not be resolved or handlers not be filled
+     */
+    protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
         final BlockSelector selector = new BlockSelector(material);
 
         final NameHandler name = new NameHandler(textParser);
@@ -131,7 +139,14 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         return new ShallowWrapper(parseInstruction(material, arguments));
     }
 
-    private void fillHandler(final List<ItemMetaHandler<?>> handlers, final List<String> arguments) throws QuestException {
+    /**
+     * Fills the handlers with arguments.
+     *
+     * @param handlers  the handlers to fill
+     * @param arguments the instruction arguments to fill into the handlers
+     * @throws QuestException when the argument is invalid for a handler or no handler accepts that argument
+     */
+    protected void fillHandler(final List<ItemMetaHandler<?>> handlers, final List<String> arguments) throws QuestException {
         final Map<String, ItemMetaHandler<?>> keyToHandler = new HashMap<>();
         for (final ItemMetaHandler<?> handler : handlers) {
             for (final String key : handler.keys()) {
@@ -181,7 +196,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      *
      * @param questItem the quest item to wrap.
      */
-    private record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
+    public record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
         @Override
         public QuestItem getItem(@Nullable final Profile profile) {
             return questItem;

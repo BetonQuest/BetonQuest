@@ -1,11 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import io.papermc.lib.PaperLib;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -13,7 +9,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,8 +18,10 @@ import java.util.Set;
 
 /**
  * Handles de-/serialization of Potions.
+ * <p>
+ * Works only up to MC 1.20.4 with a breaking change for PotionData in the following version.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
+@SuppressWarnings("PMD.TooManyMethods")
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
@@ -38,51 +35,34 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     public static final String UPGRADED = "upgraded";
 
     /**
-     * The 1.20.5+ method to check if a Potion Type is in the Potion.
-     */
-    @Nullable
-    private static Method methodHasBasePotionType;
-
-    /**
-     * The 1.20.5+ method to get the Potion Type from.
-     */
-    @Nullable
-    private static Method methodGetBasePotionType;
-
-    /**
-     * Marker for not re-initializing already failed method reflections.
-     */
-    private static boolean methodsInit;
-
-    /**
      * The potion type, defaulting to water.
      */
-    private PotionType type = PotionType.WATER;
+    protected PotionType type = PotionType.WATER;
 
     /**
      * The required potion type existence.
      */
-    private Existence typeE = Existence.WHATEVER;
+    protected Existence typeE = Existence.WHATEVER;
 
     /**
      * If the potion is extended.
      */
-    private boolean extended;
+    protected boolean extended;
 
     /**
      * The required extended existence.
      */
-    private Existence extendedE = Existence.WHATEVER;
+    protected Existence extendedE = Existence.WHATEVER;
 
     /**
      * If the potion is upgraded.
      */
-    private boolean upgraded;
+    protected boolean upgraded;
 
     /**
      * The required upgraded existence.
      */
-    private Existence upgradedE = Existence.WHATEVER;
+    protected Existence upgradedE = Existence.WHATEVER;
 
     /**
      * The custom potion effects.
@@ -103,14 +83,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      * The empty default Constructor.
      */
     public PotionHandler() {
-    }
-
-    private static void initReflection() throws NoSuchMethodException {
-        if (!methodsInit) {
-            methodsInit = true;
-            methodHasBasePotionType = PotionMeta.class.getDeclaredMethod("hasBasePotionType");
-            methodGetBasePotionType = PotionMeta.class.getDeclaredMethod("getBasePotionType");
-        }
     }
 
     @Nullable
@@ -141,58 +113,10 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     @Override
     @Nullable
     public String serializeToString(final PotionMeta potionMeta) {
-        // TODO version switch:
-        //  Remove this code when only 1.20.5+ is supported
-        final String baseEffect = PaperLib.isVersion(20, 5) ? getBasePotionEffects(potionMeta)
-                : getBasePotionEffectsPre_1_21(potionMeta);
-        return addCustomEffects(potionMeta, baseEffect);
-    }
-
-    @SuppressWarnings("PMD.MethodNamingConventions")
-    private String getBasePotionEffectsPre_1_21(final PotionMeta potionMeta) {
         final PotionData pData = potionMeta.getBasePotionData();
-        return "type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
+        final String baseEffect = "type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
                 + (pData.isUpgraded() ? " upgraded" : "");
-    }
-
-    @Nullable
-    private String getBasePotionEffects(final PotionMeta potionMeta) {
-        final Keyed type;
-        try {
-            initReflection();
-            if (methodHasBasePotionType == null || methodGetBasePotionType == null) {
-                return null;
-            }
-            if (!(boolean) methodHasBasePotionType.invoke(potionMeta)) {
-                return null;
-            }
-            type = (Keyed) methodGetBasePotionType.invoke(potionMeta);
-        } catch (final ReflectiveOperationException e) {
-            BetonQuest.getInstance().getLoggerFactory().create(PotionHandler.class)
-                    .error("Could not initialize Methods to get Potion Data!", e);
-            return null;
-        }
-        final String minimalString = asMinimalString(type.getKey());
-        final String longPrefix = "long_";
-        final String strongPrefix = "strong_";
-        final String effects;
-        if (minimalString.startsWith(longPrefix)) {
-            effects = minimalString.substring(longPrefix.length()) + " extended";
-        } else if (minimalString.startsWith(strongPrefix)) {
-            effects = minimalString.substring(strongPrefix.length()) + " upgraded";
-        } else {
-            effects = minimalString;
-        }
-        return "type:" + effects;
-    }
-
-    // TODO version switch:
-    //  remove when paper use a Adventure version >= 4.15.0 This is the case in paper 1.19.0+
-    private String asMinimalString(final NamespacedKey key) {
-        if (NamespacedKey.MINECRAFT_NAMESPACE.equals(key.namespace())) {
-            return key.value();
-        }
-        return key.asString();
+        return addCustomEffects(potionMeta, baseEffect);
     }
 
     @SuppressWarnings("PMD.AssignmentInOperand")
@@ -201,11 +125,11 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         switch (key) {
             case "type" -> setType(data);
             case EXTENDED -> {
-                extendedE = Existence.REQUIRED;
+                this.extendedE = Existence.REQUIRED;
                 this.extended = HandlerUtil.isKeyOrTrue(EXTENDED, data);
             }
             case UPGRADED -> {
-                upgradedE = Existence.REQUIRED;
+                this.upgradedE = Existence.REQUIRED;
                 this.upgraded = HandlerUtil.isKeyOrTrue(UPGRADED, data);
             }
             case "effects" -> setCustom(data);
@@ -228,7 +152,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     private void setType(final String type) throws QuestException {
-        typeE = Existence.REQUIRED;
+        this.typeE = Existence.REQUIRED;
         try {
             this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
@@ -236,7 +160,12 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    private List<PotionEffect> getCustom() {
+    /**
+     * Gets the stored custom potion effects.
+     *
+     * @return the custom potion effects
+     */
+    protected List<PotionEffect> getCustom() {
         final List<PotionEffect> effects = new LinkedList<>();
         if (customE == Existence.FORBIDDEN) {
             return effects;
@@ -249,7 +178,13 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return effects;
     }
 
-    private void setCustom(final String custom) throws QuestException {
+    /**
+     * Sets the stored custom potion effects.
+     *
+     * @param custom the custom potion effects
+     * @throws QuestException when an effect is invalid
+     */
+    protected void setCustom(final String custom) throws QuestException {
         final String[] parts = HandlerUtil.getNNSplit(custom, "Potion is null!", ",");
         if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
             customE = Existence.FORBIDDEN;
@@ -280,7 +215,13 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         }
     }
 
-    private boolean checkCustom(final List<PotionEffect> custom) {
+    /**
+     * Checks the custom effects.
+     *
+     * @param custom the effects to check against the stored
+     * @return if the given effects satisfies the stored
+     */
+    protected boolean checkCustom(final List<PotionEffect> custom) {
         if (customE == Existence.WHATEVER) {
             return true;
         }

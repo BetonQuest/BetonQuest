@@ -201,6 +201,12 @@ public class MenuItem {
 
     /**
      * Contains the ids of events that should be run on a click.
+     *
+     * @param leftClick        for the left click
+     * @param shiftLeftClick   for the left click with shift
+     * @param rightClick       for the right click
+     * @param shiftRightClick  for the right click with shift
+     * @param middleMouseClick for the middle mouse click
      */
     public record ClickEvents(Variable<List<EventID>> leftClick, Variable<List<EventID>> shiftLeftClick,
                               Variable<List<EventID>> rightClick, Variable<List<EventID>> shiftRightClick,

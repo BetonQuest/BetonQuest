@@ -18,6 +18,7 @@
     <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <core.version>1.0.0${changelist}</core.version>
+    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
     <compatibility.version>1.0.0${changelist}</compatibility.version>
     <pit.report.skip>true</pit.report.skip>
 
@@ -38,6 +39,11 @@
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>core</artifactId>
       <version>${core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>mc_1_20_6</artifactId>
+      <version>${mc_1_20_6.version}</version>
     </dependency>
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
