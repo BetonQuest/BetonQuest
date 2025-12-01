@@ -87,6 +87,7 @@ public class MenuItemListener implements Listener {
             menuID = menu.getMenuID();
             log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
             if (menu.mayOpen(profile)) {
+                denied = false;
                 break;
             }
             denied = true;

@@ -109,7 +109,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `ProtocolLib` was removed and replaced with `PacketEvents` that now needs to be installed instead
     - `packet` chat interceptor was renamed to `packetevents`
     - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation
-- `menu` `bound_item` now checks for first menu allowed to open when interacted with instead checking only first
+- `menu` `bound_item` now finds the first menu allowed to open instead aborting after the first check
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
