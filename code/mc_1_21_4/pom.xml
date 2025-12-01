@@ -22,6 +22,7 @@
     <paper-api.version>1.21.4-R0.1-SNAPSHOT</paper-api.version>
     <core.version>1.0.0${changelist}</core.version>
     <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
+    <pit.report.skip>true</pit.report.skip>
   </properties>
 
   <dependencies>

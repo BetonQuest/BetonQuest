@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.mc_1_21_4.item;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
 import org.betonquest.betonquest.api.quest.QuestException;
@@ -161,7 +162,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
         final String[] split = data.split(";", -1);
         switch (split.length) {
             case 4:
-                final String[] colors = split[3].split(",");
+                final String[] colors = StringUtils.split(split[3], ",");
                 this.colors = new ArrayList<>(colors.length);
                 for (final String part : colors) {
                     try {
@@ -171,17 +172,17 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
                     }
                 }
             case 3:
-                this.strings = Arrays.asList(split[2].split(","));
+                this.strings = Arrays.asList(StringUtils.split(split[2], ","));
             case 2:
-                final String[] booleans = split[1].split(",");
+                final String[] booleans = StringUtils.split(split[1], ",");
                 this.flags = new ArrayList<>(booleans.length);
                 for (final String part : booleans) {
                     this.flags.add(BooleanParser.BOOLEAN.apply(part));
                 }
             case 1:
-                final String[] floats = split[0].split(",");
+                final String[] floats = StringUtils.split(split[0], ",");
                 this.floats = new ArrayList<>(floats.length);
-                for (final String part : split) {
+                for (final String part : floats) {
                     try {
                         this.floats.add(Float.parseFloat(part));
                     } catch (final NumberFormatException e) {
