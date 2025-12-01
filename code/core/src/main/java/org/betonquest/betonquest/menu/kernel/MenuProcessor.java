@@ -89,7 +89,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Variable<Item> boundItem = section.isSet("bind")
                 ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(packManager, pack, value))
                 : null;
-        final BetonQuestLogger log = loggerFactory.create(MenuID.class);
+        final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
             final String string = new Variable<>(variableProcessor, pack, helper.getRequired("command"),
