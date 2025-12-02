@@ -76,7 +76,7 @@ public class PacketEventsIntegrator implements Integrator {
 
         final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
                 new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control);
-        api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
+        api.getFeatureRegistries().conversationIO().register("packetevents", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
                 plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
