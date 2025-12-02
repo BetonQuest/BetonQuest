@@ -73,10 +73,14 @@ public class PacketEventsIntegrator implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
 
-        final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
-                new FakeArmorStandPassengerController(packetEventsAPI, player, control);
-        api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
-                plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
+        // TODO version switch:
+        //  Remove this code when only 1.21.4+ is supported
+        if (!PaperLib.isVersion(21, 4)) {
+            final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
+                    new FakeArmorStandPassengerController(packetEventsAPI, player, control);
+            api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
+                    plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
+        }
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
