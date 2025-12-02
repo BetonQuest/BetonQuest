@@ -1,16 +1,16 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation;
+package org.betonquest.betonquest.conversation.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Display;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Scroll;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationState;
+import org.betonquest.betonquest.conversation.menu.display.Display;
+import org.betonquest.betonquest.conversation.menu.display.Scroll;
+import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
+import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

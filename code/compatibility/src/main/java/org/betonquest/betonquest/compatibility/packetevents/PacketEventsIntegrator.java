@@ -16,21 +16,26 @@ import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.MenuConvIOFactory;
 import org.betonquest.betonquest.compatibility.packetevents.event.FreezeEventFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.PacketEventsInterceptorFactory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.NoneChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.PacketChatHistory;
+import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
+import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
+import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
+import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -68,7 +73,10 @@ public class PacketEventsIntegrator implements Integrator {
 
         final BetonQuest plugin = BetonQuest.getInstance();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
-        api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(packetEventsAPI, plugin, plugin.getTextParser(),
+
+        final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
+                new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control);
+        api.getFeatureRegistries().conversationIO().register("menu", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
                 plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
 
         final boolean displayHistory = pluginConfig.getBoolean("conversation.interceptor.display_history");

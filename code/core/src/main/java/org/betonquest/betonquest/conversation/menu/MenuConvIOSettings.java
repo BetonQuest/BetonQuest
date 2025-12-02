@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation;
+package org.betonquest.betonquest.conversation.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;

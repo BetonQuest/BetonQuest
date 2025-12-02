@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
+package org.betonquest.betonquest.conversation.menu.display;
 
 import net.kyori.adventure.text.Component;
 
