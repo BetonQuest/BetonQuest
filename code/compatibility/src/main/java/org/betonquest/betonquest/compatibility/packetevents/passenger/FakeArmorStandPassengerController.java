@@ -5,8 +5,8 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
+import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
+import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
