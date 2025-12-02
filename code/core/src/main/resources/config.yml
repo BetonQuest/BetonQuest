@@ -27,7 +27,7 @@ mysql:
 profile:
   initial_name: 'default'
 conversation:
-  default_io: menu,tellraw
+  default_io: menu,packetevents,tellraw
   interceptor:
     default: redischat,packetevents,simple
     display_history: true

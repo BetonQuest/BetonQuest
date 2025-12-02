@@ -58,6 +58,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - All of Minecrafts default font widths are now used to calculate the width of a string for line wrapping
 - conditions `biome`, `effect`, `ride`, `random` now support variables
 - `sync` variable offering identical evaluation as `eval` but forcing the execution on the main thread 
+- native `menu` io implementation which sets the player's speed to zero instead mounting it on an arrow (MC 1.21.4+)
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations
@@ -115,6 +116,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `menu` `bound_item` now finds the first menu allowed to open instead aborting after the first check
 - `money` event now has a `multiply` argument instead of `*` in front of number
 - old maven artifact repository nexus `https://nexus.betonquest.org/repository/betonquest/` replaced with reposilite available at `https://repo.betonquest.org/betonquest/`
+- `menu` io based on packetevents renamed to `packetevents`
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
