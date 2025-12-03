@@ -8,13 +8,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ScheduleRegistry;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
@@ -38,6 +38,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class EventSchedulingTest {
+
     /**
      * Event Scheduling instance.
      */
@@ -193,9 +194,13 @@ class EventSchedulingTest {
         }
     }
 
+    /**
+     * Schedule Factory that works with Mocks.
+     */
     private static final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
+
         private MockedScheduleFactory() {
-            super(mock(VariableProcessor.class), mock(QuestPackageManager.class));
+            super(mock(Variables.class), mock(QuestPackageManager.class));
         }
 
         @Override

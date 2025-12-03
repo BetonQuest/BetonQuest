@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
@@ -20,7 +21,6 @@ import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public abstract class HologramLoop extends SectionProcessor<HologramLoop.HologramID, HologramWrapper> {
+
     /**
      * The regex for one color.
      */
@@ -56,9 +57,9 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private static final String ORDER_ASC = "asc";
 
     /**
-     * The {@link VariableProcessor} to use.
+     * Variable processor to create and resolve variables.
      */
-    protected final VariableProcessor variableProcessor;
+    protected final Variables variables;
 
     /**
      * Hologram provider to create new Holograms.
@@ -78,20 +79,20 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Creates a new instance of the loop.
      *
-     * @param loggerFactory     logger factory to use
-     * @param log               the logger that will be used for logging
-     * @param packManager       the quest package manager to get quest packages from
-     * @param variableProcessor the {@link VariableProcessor} to use
-     * @param hologramProvider  the hologram provider to create new holograms
-     * @param readable          the type name used for logging, with the first letter in upper case
-     * @param internal          the section name and/or bstats topic identifier
+     * @param loggerFactory    logger factory to use
+     * @param log              the logger that will be used for logging
+     * @param packManager      the quest package manager to get quest packages from
+     * @param variables        the variable processor to create and resolve variables
+     * @param hologramProvider the hologram provider to create new holograms
+     * @param readable         the type name used for logging, with the first letter in upper case
+     * @param internal         the section name and/or bstats topic identifier
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final QuestPackageManager packManager, final VariableProcessor variableProcessor,
+                        final QuestPackageManager packManager, final Variables variables,
                         final HologramProvider hologramProvider, final String readable, final String internal) {
         super(log, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.hologramProvider = hologramProvider;
     }
 
@@ -104,11 +105,11 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     @Override
     protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
-        final Variable<Number> checkInterval = new Variable<>(variableProcessor, pack, checkIntervalString, Argument.NUMBER);
-        final Variable<Number> maxRange = new Variable<>(variableProcessor, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
+        final Variable<Number> checkInterval = new Variable<>(variables, pack, checkIntervalString, Argument.NUMBER);
+        final Variable<Number> maxRange = new Variable<>(variables, pack, section.getString("max_range", "0"), NumberParser.NUMBER);
 
         final List<String> lines = section.getStringList("lines");
-        final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, section.getString("conditions", ""),
+        final List<ConditionID> conditions = new VariableList<>(variables, pack, section.getString("conditions", ""),
                 value -> new ConditionID(packManager, pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * Defines HolographicDisplays placeholder <code>{bq:package:variable}</code>.
  */
 public class HologramPlaceholder implements IndividualPlaceholder {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -21,7 +22,7 @@ public class HologramPlaceholder implements IndividualPlaceholder {
     /**
      * The variable processor to use for creating the time variable.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * The profile provider instance.
@@ -31,14 +32,14 @@ public class HologramPlaceholder implements IndividualPlaceholder {
     /**
      * Creates new instance of HologramPlaceholder.
      *
-     * @param log               the logger that will be used for logging
-     * @param variableProcessor the processor to create new variables
-     * @param profileProvider   the profile provider instance
+     * @param log             the logger that will be used for logging
+     * @param variables       the variable processor to create and resolve variables
+     * @param profileProvider the profile provider instance
      */
-    public HologramPlaceholder(final BetonQuestLogger log, final VariableProcessor variableProcessor,
+    public HologramPlaceholder(final BetonQuestLogger log, final Variables variables,
                                final ProfileProvider profileProvider) {
         this.log = log;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.profileProvider = profileProvider;
     }
 
@@ -55,7 +56,7 @@ public class HologramPlaceholder implements IndividualPlaceholder {
         }
         final Profile profile = profileProvider.getProfile(player);
         try {
-            return variableProcessor.getValue(arguments, profile);
+            return variables.getValue(arguments, profile);
         } catch (final QuestException e) {
             log.warn("Could not parse hologram variable '" + arguments + "': " + e.getMessage(), e);
             return arguments;

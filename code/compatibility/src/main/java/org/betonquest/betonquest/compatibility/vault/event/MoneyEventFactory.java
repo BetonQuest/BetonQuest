@@ -9,11 +9,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.config.PluginMessage;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 
@@ -21,6 +21,7 @@ import org.betonquest.betonquest.quest.event.NotificationLevel;
  * Factory to create {@link MoneyEvent}s from {@link Instruction}s.
  */
 public class MoneyEventFactory implements PlayerEventFactory {
+
     /**
      * Economy where the balance will be modified.
      */
@@ -44,24 +45,24 @@ public class MoneyEventFactory implements PlayerEventFactory {
     /**
      * Processor to create new variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Create a new Factory to create Vault Money Events.
      *
-     * @param economy           the economy where the balance will be modified
-     * @param loggerFactory     the logger factory to create new logger instances.
-     * @param data              the data used for primary server access
-     * @param pluginMessage     the {@link PluginMessage} instance
-     * @param variableProcessor the processor to create new variables
+     * @param economy       the economy where the balance will be modified
+     * @param loggerFactory the logger factory to create new logger instances.
+     * @param data          the data used for primary server access
+     * @param pluginMessage the {@link PluginMessage} instance
+     * @param variables     the variable processor to create and resolve variables
      */
     public MoneyEventFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                             final PluginMessage pluginMessage, final VariableProcessor variableProcessor) {
+                             final PluginMessage pluginMessage, final Variables variables) {
         this.economy = economy;
         this.loggerFactory = loggerFactory;
         this.data = data;
         this.pluginMessage = pluginMessage;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class MoneyEventFactory implements PlayerEventFactory {
         }
         final Variable<Number> amount;
         try {
-            amount = new Variable<>(variableProcessor, instruction.getPackage(), string, Argument.NUMBER);
+            amount = new Variable<>(variables, instruction.getPackage(), string, Argument.NUMBER);
         } catch (final QuestException e) {
             throw new QuestException("Could not parse money amount: " + e.getMessage(), e);
         }

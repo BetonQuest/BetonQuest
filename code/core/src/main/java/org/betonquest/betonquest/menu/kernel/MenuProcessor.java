@@ -12,10 +12,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.MenuItemID;
@@ -36,6 +36,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
+
     /**
      * RPG Menu instance.
      */
@@ -54,21 +55,21 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
     /**
      * Create a new Processor to create and store Menu Items.
      *
-     * @param log               the custom logger for this class
-     * @param loggerFactory     the logger factory to class specific loggers with
-     * @param packManager       the quest package manager to get quest packages from
-     * @param textCreator       the text creator to parse text
-     * @param questTypeApi      the QuestTypeApi
-     * @param variableProcessor the variable resolver
-     * @param featureApi        the Feature API
-     * @param rpgMenu           the RPG Menu instance
-     * @param profileProvider   the Profile Provider
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory to class specific loggers with
+     * @param packManager     the quest package manager to get quest packages from
+     * @param textCreator     the text creator to parse text
+     * @param questTypeApi    the QuestTypeApi
+     * @param variables       the variable processor to create and resolve variables
+     * @param featureApi      the Feature API
+     * @param rpgMenu         the RPG Menu instance
+     * @param profileProvider the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                          final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
-                         final QuestTypeApi questTypeApi, final VariableProcessor variableProcessor,
+                         final QuestTypeApi questTypeApi, final Variables variables,
                          final FeatureApi featureApi, final RPGMenu rpgMenu, final ProfileProvider profileProvider) {
-        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, variableProcessor, questTypeApi, featureApi);
+        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, variables, questTypeApi, featureApi);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -87,12 +88,12 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Variable<Item> boundItem = section.isSet("bind")
-                ? new Variable<>(variableProcessor, pack, helper.getRequired("bind"), value -> itemParser.apply(packManager, pack, value))
+                ? new Variable<>(variables, pack, helper.getRequired("bind"), value -> itemParser.apply(packManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
-            final String string = new Variable<>(variableProcessor, pack, helper.getRequired("command"),
+            final String string = new Variable<>(variables, pack, helper.getRequired("command"),
                     Argument.STRING).getValue(null).trim();
             createBoundCommand(menu, string);
         }
@@ -132,7 +133,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         }
 
         private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new Variable<>(variableProcessor, pack, getRequired("height"), Argument.NUMBER)
+            final int height = new Variable<>(variables, pack, getRequired("height"), Argument.NUMBER)
                     .getValue(null).intValue();
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");
@@ -153,7 +154,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
-                final Variable<List<MenuItemID>> itemsList = new VariableList<>(variableProcessor, pack,
+                final Variable<List<MenuItemID>> itemsList = new VariableList<>(variables, pack,
                         slotsSection.getString(key, ""), value -> new MenuItemID(packManager, pack, value));
                 try {
                     slots.add(new Slots(rpgMenu, key, itemsList));

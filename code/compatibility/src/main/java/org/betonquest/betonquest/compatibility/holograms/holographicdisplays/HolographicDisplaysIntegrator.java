@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
  * Integrates with HolographicDisplays.
  */
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -42,7 +43,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     private final QuestPackageManager packManager;
 
     /**
-     * Variable processor to create new variables.
+     * Variable processor to create and resolve variables.
      */
     private final VariableProcessor variableProcessor;
 

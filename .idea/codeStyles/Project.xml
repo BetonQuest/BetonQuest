@@ -33,6 +33,7 @@
       <option name="KEEP_BLANK_LINES_BETWEEN_PACKAGE_DECLARATION_AND_HEADER" value="0" />
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="BLANK_LINES_AROUND_FIELD" value="1" />
+      <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
     </codeStyleSettings>
     <codeStyleSettings language="Markdown">
       <option name="WRAP_ON_TYPING" value="1" />

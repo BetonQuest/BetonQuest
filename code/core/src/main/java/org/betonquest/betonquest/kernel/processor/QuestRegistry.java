@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
@@ -34,7 +35,6 @@ import org.betonquest.betonquest.kernel.processor.feature.ItemProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalEntryProcessor;
 import org.betonquest.betonquest.kernel.processor.feature.JournalMainPageProcessor;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.schedule.EventScheduling;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
@@ -97,7 +97,7 @@ public record QuestRegistry(
                                        final BaseFeatureRegistries otherRegistries, final PluginMessage pluginMessage,
                                        final ParsedSectionTextCreator textCreator, final ProfileProvider profileProvider,
                                        final PlayerDataStorage playerDataStorage) {
-        final VariableProcessor variables = coreQuestRegistry.variables();
+        final Variables variables = coreQuestRegistry.variables();
         final QuestPackageManager packManager = plugin.getQuestPackageManager();
         final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), packManager, otherRegistries.eventScheduling());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, coreQuestRegistry, playerDataStorage);

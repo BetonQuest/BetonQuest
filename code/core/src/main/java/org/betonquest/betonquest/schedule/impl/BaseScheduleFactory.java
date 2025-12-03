@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.schedule.ScheduleFactory;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -21,10 +21,11 @@ import java.util.Optional;
  * @param <S> the schedule type to create
  */
 public abstract class BaseScheduleFactory<S extends Schedule> implements ScheduleFactory<S> {
+
     /**
-     * Variable processor to create new variables.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Quest package manager to get quest packages from.
@@ -34,11 +35,11 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
     /**
      * Create a new Base Schedule Factory to create parse common schedule data.
      *
-     * @param variableProcessor the variable processor to create new variables
-     * @param packManager       the quest package manager to get quest packages from
+     * @param variables   the variable processor to create and resolve variables
+     * @param packManager the quest package manager to get quest packages from
      */
-    public BaseScheduleFactory(final VariableProcessor variableProcessor, final QuestPackageManager packManager) {
-        this.variableProcessor = variableProcessor;
+    public BaseScheduleFactory(final Variables variables, final QuestPackageManager packManager) {
+        this.variables = variables;
         this.packManager = packManager;
     }
 
@@ -58,7 +59,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
                 .orElseThrow(() -> new QuestException("Missing events"));
         final List<EventID> events;
         try {
-            events = new VariableList<>(variableProcessor, pack, eventsString,
+            events = new VariableList<>(variables, pack, eventsString,
                     value -> new EventID(packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading events: " + e.getMessage(), e);
@@ -82,5 +83,6 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
      * @param catchup Behavior for missed executions.
      */
     protected record ScheduleData(String time, List<EventID> events, CatchupStrategy catchup) {
+
     }
 }

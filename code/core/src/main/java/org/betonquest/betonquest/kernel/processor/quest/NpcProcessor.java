@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -104,20 +105,20 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
     /**
      * Create a new Quest Npc Processor to store them.
      *
-     * @param log               the custom logger for this class
-     * @param loggerFactory     the logger factory used to create logger for the started conversations
-     * @param packManager       the quest package manager to get quest packages from
-     * @param variableProcessor the variable processor to handle variables in Npc conversations
-     * @param npcTypes          the available npc types
-     * @param pluginMessage     the {@link PluginMessage} instance
-     * @param plugin            the plugin to load config
-     * @param profileProvider   the profile provider instance
-     * @param questTypeApi      the Quest Type API
-     * @param convStarter       the starter for Npc conversations
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory used to create logger for the started conversations
+     * @param packManager     the quest package manager to get quest packages from
+     * @param variables       the variable processor to handle variables in Npc conversations
+     * @param npcTypes        the available npc types
+     * @param pluginMessage   the {@link PluginMessage} instance
+     * @param plugin          the plugin to load config
+     * @param profileProvider the profile provider instance
+     * @param questTypeApi    the Quest Type API
+     * @param convStarter     the starter for Npc conversations
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                        final QuestPackageManager packManager, final VariableProcessor variableProcessor,
+                        final QuestPackageManager packManager, final Variables variables,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
                         final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter) {
         super(log, packManager, npcTypes, "Npc", "npcs");
@@ -126,7 +127,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
         this.convStarter = convStarter;
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(new NpcListener(), plugin);
-        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, variableProcessor, this,
+        this.npcHider = new NpcHider(loggerFactory.create(NpcHider.class), packManager, variables, this,
                 questTypeApi, profileProvider, npcTypes);
         this.busySender = new IngameNotificationSender(log, pluginMessage, null, "NpcProcessor", NotificationLevel.ERROR, "busy");
     }

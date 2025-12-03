@@ -3,10 +3,10 @@ package org.betonquest.betonquest.text;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -31,24 +31,24 @@ public class ParsedSectionTextCreator {
     protected final LanguageProvider languageProvider;
 
     /**
-     * The Variable Processor to create and resolve variables.
+     * Variable processor to create and resolve variables.
      */
-    protected final VariableProcessor variableProcessor;
+    protected final Variables variables;
 
     /**
      * Creates a new text Factory.
      *
-     * @param variableProcessor the variable processor to create new variables
+     * @param variables         the variable processor to create and resolve variables
      * @param textParser        the text parser to parse the text
      * @param playerDataStorage the player data storage to get the player's language
      * @param languageProvider  the language provider to get the default language
      */
     public ParsedSectionTextCreator(final TextParser textParser, final PlayerDataStorage playerDataStorage,
-                                    final LanguageProvider languageProvider, final VariableProcessor variableProcessor) {
+                                    final LanguageProvider languageProvider, final Variables variables) {
         this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
     }
 
     /**
@@ -63,7 +63,7 @@ public class ParsedSectionTextCreator {
      */
     public Text parseFromSection(final QuestPackage pack, final ConfigurationSection section, final String path)
             throws QuestException {
-        return new ParsedSectionText(variableProcessor, textParser, playerDataStorage,
+        return new ParsedSectionText(variables, textParser, playerDataStorage,
                 pack, section, path, languageProvider);
     }
 }

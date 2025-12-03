@@ -21,7 +21,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Override
     protected Schedule createSchedule() throws QuestException {
-        return new BaseScheduleFactory<>(variableProcessor, packManager) {
+        return new BaseScheduleFactory<>(variables, packManager) {
             @Override
             public Schedule createNewInstance(final ScheduleID scheduleID, final ConfigurationSection config)
                     throws QuestException {

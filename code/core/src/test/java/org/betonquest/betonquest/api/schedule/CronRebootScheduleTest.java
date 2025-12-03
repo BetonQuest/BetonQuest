@@ -21,7 +21,7 @@ public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws QuestException {
-        return new CronScheduleFactory(variableProcessor, packManager) {
+        return new CronScheduleFactory(variables, packManager) {
             @Override
             protected CronDefinition parseCronDefinition() {
                 return REBOOT_CRON_DEFINITION;

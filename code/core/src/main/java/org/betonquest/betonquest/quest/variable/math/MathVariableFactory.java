@@ -2,12 +2,12 @@ package org.betonquest.betonquest.quest.variable.math;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.util.math.Tokenizer;
 import org.betonquest.betonquest.util.math.tokens.Token;
 
@@ -28,15 +28,15 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     /**
      * The variable processor to use.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Create a new factory to create Math Variables.
      *
-     * @param variableProcessor the variable processor to use
+     * @param variables the variable processor to create and resolve variables
      */
-    public MathVariableFactory(final VariableProcessor variableProcessor) {
-        this.variableProcessor = variableProcessor;
+    public MathVariableFactory(final Variables variables) {
+        this.variables = variables;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
             throw new QuestException("invalid format");
         }
         final String expression = expressionMatcher.group("expression");
-        final Token token = new Tokenizer(variableProcessor, instruction.getPackage()).tokenize(expression);
+        final Token token = new Tokenizer(variables, instruction.getPackage()).tokenize(expression);
         return new NullableVariableAdapter(new MathVariable(token));
     }
 }

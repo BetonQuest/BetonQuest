@@ -15,11 +15,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -57,9 +57,9 @@ public class ConversationData {
     private final QuestPackageManager packManager;
 
     /**
-     * The {@link VariableProcessor} to resolve variables.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Quest Type API.
@@ -101,24 +101,24 @@ public class ConversationData {
     /**
      * Loads conversation from package.
      *
-     * @param log               the custom logger for this class
-     * @param packManager       the quest package manager to get quest packages from
-     * @param variableProcessor the variable processor to resolve variables
-     * @param questTypeApi      the quest type api
-     * @param conversationApi   the Conversation API
-     * @param textCreator       the text creator to parse text
-     * @param convSection       the configuration section of the conversation
-     * @param publicData        the external used data
+     * @param log             the custom logger for this class
+     * @param packManager     the quest package manager to get quest packages from
+     * @param variables       the variable processor to create and resolve variables
+     * @param questTypeApi    the quest type api
+     * @param conversationApi the Conversation API
+     * @param textCreator     the text creator to parse text
+     * @param convSection     the configuration section of the conversation
+     * @param publicData      the external used data
      * @throws QuestException when there is a syntax error in the defined conversation or
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
-                            final VariableProcessor variableProcessor, final QuestTypeApi questTypeApi,
+                            final Variables variables, final QuestTypeApi questTypeApi,
                             final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.questTypeApi = questTypeApi;
         this.conversationApi = conversationApi;
         this.publicData = publicData;
@@ -271,7 +271,7 @@ public class ConversationData {
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new VariableList<>(variableProcessor, getPack(), convSection.getString("first", ""),
+            startingOptions = new VariableList<>(variables, getPack(), convSection.getString("first", ""),
                     Argument.STRING, VariableList.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
@@ -655,7 +655,7 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final Argument<T> resolver) throws QuestException {
-            return new VariableList<>(variableProcessor, getPack(), conv.getString(identifier, ""), resolver).getValue(null);
+            return new VariableList<>(variables, getPack(), conv.getString(identifier, ""), resolver).getValue(null);
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,

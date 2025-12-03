@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -18,17 +18,17 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     /**
      * The variable processor to use for creating the time variable.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Creates new instance of HologramGlobalPlaceholder.
      *
-     * @param log               the logger that will be used for logging
-     * @param variableProcessor the processor to create new variables
+     * @param log       the logger that will be used for logging
+     * @param variables     the variable processor to create and resolve variables
      */
-    public HologramGlobalPlaceholder(final BetonQuestLogger log, final VariableProcessor variableProcessor) {
+    public HologramGlobalPlaceholder(final BetonQuestLogger log, final Variables variables) {
         this.log = log;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
             return "";
         }
         try {
-            return variableProcessor.getValue(arguments, null);
+            return variables.getValue(arguments, null);
         } catch (final QuestException e) {
             log.warn("Could not parse hologram variable '" + arguments + "': " + e.getMessage(), e);
             return arguments;

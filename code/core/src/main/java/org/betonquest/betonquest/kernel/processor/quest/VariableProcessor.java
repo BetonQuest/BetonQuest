@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
@@ -16,7 +17,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Stores Variables and resolve them.
  */
-public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableAdapter> {
+public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableAdapter> implements Variables {
+
     /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
@@ -39,15 +41,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         return new VariableID(packManager, pack, identifier);
     }
 
-    /**
-     * Generates new instance of a Variable. If a similar one was already
-     * created, it will return it instead of creating a new one.
-     *
-     * @param pack        package in which the variable is defined
-     * @param instruction instruction of the variable, including both % characters.
-     * @return the Variable instance
-     * @throws QuestException when the variable parsing fails
-     */
+    @Override
     public VariableAdapter create(@Nullable final QuestPackage pack, final String instruction)
             throws QuestException {
         final VariableID variableID;
@@ -68,15 +62,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         return variable;
     }
 
-    /**
-     * Resolves the variable for specified player. If the variable is not loaded, it will create it.
-     *
-     * @param pack    the {@link QuestPackage} in which the variable is defined
-     * @param name    name of the variable (instruction, with % characters)
-     * @param profile the {@link Profile} of the player
-     * @return the value of this variable for given player
-     * @throws QuestException if the variable could not be created
-     */
+    @Override
     public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws QuestException {
         final VariableAdapter var;
         try {
@@ -87,15 +73,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         return var.getValue(profile);
     }
 
-    /**
-     * Resolves the variable for specified player from string format.
-     *
-     * @param variable the package with the variable, in {@code <package>:<variable>} format
-     * @param profile  the {@link Profile} of the player
-     * @return the value of parsed variable for given player
-     * @throws QuestException if the package cannot be parsed, is not present or the variable could not be created
-     * @see #getValue(QuestPackage, String, Profile)
-     */
+    @Override
     public String getValue(final String variable, @Nullable final Profile profile) throws QuestException {
         final int index = variable.indexOf(':');
         if (index == -1) {

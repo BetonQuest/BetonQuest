@@ -13,10 +13,10 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -52,7 +52,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     /**
      * The variable processor to create new variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Effect Manager starting and controlling particles.
@@ -67,26 +67,26 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     /**
      * Loads the particle configuration and starts the effects.
      *
-     * @param log               the custom logger for this class
-     * @param loggerFactory     the logger factory to create new custom loggers
-     * @param packManager       the quest package manager to get quest packages from
-     * @param questTypeApi      the Quest Type API
-     * @param featureApi        the Feature API
-     * @param profileProvider   the profile provider instance
-     * @param variableProcessor the variable processor to create new variables
-     * @param manager           the effect manager starting and controlling particles
-     * @param plugin            the plugin to start new tasks with
+     * @param log             the custom logger for this class
+     * @param loggerFactory   the logger factory to create new custom loggers
+     * @param packManager     the quest package manager to get quest packages from
+     * @param questTypeApi    the Quest Type API
+     * @param featureApi      the Feature API
+     * @param profileProvider the profile provider instance
+     * @param variables       the variable processor to create and resolve variables
+     * @param manager         the effect manager starting and controlling particles
+     * @param plugin          the plugin to start new tasks with
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                     final QuestPackageManager packManager, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
-                                    final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
+                                    final ProfileProvider profileProvider, final Variables variables,
                                     final EffectManager manager, final Plugin plugin) {
         super(log, packManager, "Effect", "effectlib");
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
         this.profileProvider = profileProvider;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.manager = manager;
         this.plugin = plugin;
     }
@@ -130,7 +130,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
 
     private <T> Variable<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
                                        final String entryName, final Argument<T> argument) throws QuestException {
-        return new VariableList<>(variableProcessor, pack, settings.getString(entryName, ""), argument);
+        return new VariableList<>(variables, pack, settings.getString(entryName, ""), argument);
     }
 
     @Override

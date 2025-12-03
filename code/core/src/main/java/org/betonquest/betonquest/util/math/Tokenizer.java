@@ -3,7 +3,7 @@ package org.betonquest.betonquest.util.math;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.quest.variable.math.MathVariable;
 import org.betonquest.betonquest.util.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.util.math.tokens.Negation;
@@ -38,9 +38,9 @@ public class Tokenizer {
     private static final Pattern ESCAPE_REGEX = Pattern.compile("\\\\(.)");
 
     /**
-     * {@link VariableProcessor} to resolve variables.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Name of the package in which the tokenizer is operating.
@@ -50,11 +50,11 @@ public class Tokenizer {
     /**
      * Create a new Tokenizer in given package.
      *
-     * @param variableProcessor processor to resolve variables
-     * @param pack              name of the package
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      name of the package
      */
-    public Tokenizer(final VariableProcessor variableProcessor, final QuestPackage pack) {
-        this.variableProcessor = variableProcessor;
+    public Tokenizer(final Variables variables, final QuestPackage pack) {
+        this.variables = variables;
         this.pack = pack;
     }
 
@@ -116,7 +116,7 @@ public class Tokenizer {
             final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
 
             try {
-                nextInLine = new Variable(new org.betonquest.betonquest.api.instruction.variable.Variable<>(variableProcessor, pack, "%" + variableName + "%", Argument.NUMBER));
+                nextInLine = new Variable(new org.betonquest.betonquest.api.instruction.variable.Variable<>(variables, pack, "%" + variableName + "%", Argument.NUMBER));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -159,7 +159,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new org.betonquest.betonquest.api.instruction.variable.Variable<>(variableProcessor, pack, "%" + val2.substring(start, index--) + "%", Argument.NUMBER));
+                nextInLine = new Variable(new org.betonquest.betonquest.api.instruction.variable.Variable<>(variables, pack, "%" + val2.substring(start, index--) + "%", Argument.NUMBER));
             } catch (final QuestException e) {
                 throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
             }
