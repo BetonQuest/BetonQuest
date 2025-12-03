@@ -5057,7 +5057,20 @@ colons: (2)</p>
 <li>
 <p><code>custom-model-data</code> - Set the custom model data of the item. You have to specify the data value: 
 <code>custom-model-data:3</code>.
-   To check that an item does not have custom model data set <code>no-custom-model-data</code>.</p>
+    To check that an item does not have custom model data set <code>no-custom-model-data</code>.</p>
+<ul>
+<li>Extended custom model data:<br />
+<strong>Requires Minecraft version <em>1.21.4</em> or above!</strong><br />
+  With 1.21.4 the "classical" CMD now has four lists of comma separated values
+  You just use it like <code>custom-model-data:floats;booleans;strings;colors</code>, where a value can also be empty.
+  When you for example just want to set colors the first values have to be omitted: <code>custom-model-data:;;;colors</code></li>
+</ul>
+</li>
+<li>
+<p><code>item-model</code> - Set the model of the item.<br />
+<strong>Requires Minecraft version <em>1.21.4</em> or above!</strong><br />
+  Set the path to the item model of the item. Example: <code>item-model:minecraft:diamond_sword</code>
+  To check that an item does not have a custom model set <code>no-item-model</code>.</p>
 </li>
 <li>
 <p><code>flags</code> - Item flags that govern the visibility of some item info (comma-delimited) including:</p>
