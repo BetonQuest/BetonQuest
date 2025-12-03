@@ -14,6 +14,7 @@ import java.util.List;
  * The QuestTypeApi provides access to the quest related core features.
  */
 public interface QuestTypeApi {
+
     /**
      * Checks if the conditions described by conditionID are met.
      *
@@ -92,4 +93,11 @@ public interface QuestTypeApi {
      * @throws QuestException if no Objective is loaded for the ID
      */
     Objective getObjective(ObjectiveID objectiveID) throws QuestException;
+
+    /**
+     * Get the Api for Variable interaction.
+     *
+     * @return variable api
+     */
+    Variables variables();
 }
