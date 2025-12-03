@@ -172,14 +172,14 @@ public class CoreFeatureFactories {
         final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());
-        notifyIOTypes.register("chat", new ChatNotifyIOFactory(featureApi.conversationApi()));
-        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(plugin));
-        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
-        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(plugin));
-        notifyIOTypes.register("title", new TitleNotifyIOFactory());
-        notifyIOTypes.register("totem", new TotemNotifyIOFactory());
-        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory());
-        notifyIOTypes.register("sound", new SoundIOFactory());
+        notifyIOTypes.register("chat", new ChatNotifyIOFactory(variables, featureApi.conversationApi()));
+        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(variables, plugin));
+        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory(variables));
+        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(variables, plugin));
+        notifyIOTypes.register("title", new TitleNotifyIOFactory(variables));
+        notifyIOTypes.register("totem", new TotemNotifyIOFactory(variables));
+        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory(variables));
+        notifyIOTypes.register("sound", new SoundIOFactory(variables));
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
         eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(variables, packManager),

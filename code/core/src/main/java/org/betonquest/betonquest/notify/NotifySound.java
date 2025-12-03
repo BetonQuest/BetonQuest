@@ -59,6 +59,9 @@ class NotifySound {
      */
     private static final String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
+    /**
+     * Variable processor to create and resolve variables.
+     */
     private final Variables variables;
 
     /**

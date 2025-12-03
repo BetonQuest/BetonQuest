@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify.io;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.jetbrains.annotations.Nullable;
@@ -14,13 +15,21 @@ import java.util.Map;
 public class TotemNotifyIOFactory implements NotifyIOFactory {
 
     /**
-     * Create a new factory.
+     * Variable processor to create and resolve variables.
      */
-    public TotemNotifyIOFactory() {
+    private final Variables variables;
+
+    /**
+     * Create a new Totem Notify IO factory.
+     *
+     * @param variables the variable processor to create and resolve variables
+     */
+    public TotemNotifyIOFactory(final Variables variables) {
+        this.variables = variables;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new TotemNotifyIO(pack, categoryData);
+        return new TotemNotifyIO(variables, pack, categoryData);
     }
 }

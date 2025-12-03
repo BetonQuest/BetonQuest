@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,6 +21,7 @@ import java.util.Map;
  * Displays the message as boss bar.
  */
 public class BossBarNotifyIO extends NotifyIO {
+
     /**
      * Plugin to start tasks.
      */
@@ -58,14 +60,15 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * Create a new Boss Bar Notify IO.
      *
-     * @param pack   the source pack to resolve variables
-     * @param data   the customization data for notifications
-     * @param plugin the plugin to start tasks
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the source pack to resolve variables
+     * @param data      the customization data for notifications
+     * @param plugin    the plugin to start tasks
      * @throws QuestException when data could not be parsed
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
-        super(pack, data);
+    public BossBarNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
+        super(variables, pack, data);
         this.plugin = plugin;
 
         flags = new ArrayList<>();
