@@ -51,7 +51,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mythic`(mobs) item integration
 - `quest-item` argument for Mythic(-Mobs) and MMOItems item types
 - `point` and `tag` objective
-- `item-name` argument to `simple` item (MC 1.20.6+)
+- `simple` item type:
+    - `item-name` argument (MC 1.20.6+)
+    - `item-model` & `no-item-model` arguments (MC 1.21.4+)
+    - `custom-model-data` support for data lists (MC 1.21.4+)
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

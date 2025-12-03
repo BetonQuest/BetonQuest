@@ -84,8 +84,17 @@ colons: (2)
 
 * `custom-model-data` - Set the custom model data of the item. You have to specify the data value: 
 `custom-model-data:3`.
-   To check that an item does not have custom model data set `no-custom-model-data`.
+    To check that an item does not have custom model data set `no-custom-model-data`.
+    - Extended custom model data:  
+      @snippet:versions:mc-1.21.4@  
+      With 1.21.4 the "classical" CMD now has four lists of comma separated values
+      You just use it like `custom-model-data:floats;booleans;strings;colors`, where a value can also be empty.
+      When you for example just want to set colors the first values have to be omitted: `custom-model-data:;;;colors`
 
+* `item-model` - Set the model of the item.  
+  @snippet:versions:mc-1.21.4@  
+  Set the path to the item model of the item. Example: `item-model:minecraft:diamond_sword`
+  To check that an item does not have a custom model set `no-item-model`.
 
 * `flags` - Item flags that govern the visibility of some item info (comma-delimited) including:
     - HIDE_ENCHANTS: Hides the item's enchants
