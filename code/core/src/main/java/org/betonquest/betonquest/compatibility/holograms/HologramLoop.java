@@ -57,11 +57,6 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private static final String ORDER_ASC = "asc";
 
     /**
-     * Variable processor to create and resolve variables.
-     */
-    protected final Variables variables;
-
-    /**
      * Hologram provider to create new Holograms.
      */
     protected final HologramProvider hologramProvider;
@@ -88,11 +83,10 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
      * @param internal         the section name and/or bstats topic identifier
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final QuestPackageManager packManager, final Variables variables,
+                        final Variables variables, final QuestPackageManager packManager,
                         final HologramProvider hologramProvider, final String readable, final String internal) {
-        super(log, packManager, readable, internal);
+        super(log, variables, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
-        this.variables = variables;
         this.hologramProvider = hologramProvider;
     }
 
@@ -110,7 +104,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
 
         final List<String> lines = section.getStringList("lines");
         final List<ConditionID> conditions = new VariableList<>(variables, pack, section.getString("conditions", ""),
-                value -> new ConditionID(packManager, pack, value)).getValue(null);
+                value -> new ConditionID(variables, packManager, pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
@@ -158,7 +152,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
             final String[] args = line.substring(5).split(":");
-            final ItemID itemID = new ItemID(packManager, pack, args[0]);
+            final ItemID itemID = new ItemID(variables, packManager, pack, args[0]);
             int stackSize;
             try {
                 stackSize = Integer.parseInt(args[1]);

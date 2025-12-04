@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
 import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
@@ -13,11 +11,6 @@ import org.betonquest.betonquest.api.quest.QuestException;
  */
 @FunctionalInterface
 public interface IdentifierArgument<T> {
-
-    /**
-     * The default instance of {@link ItemParser}.
-     */
-    ItemParser ITEM = new ItemParser(BetonQuest.getInstance().getFeatureApi());
 
     /**
      * Gets a {@link T} from string.

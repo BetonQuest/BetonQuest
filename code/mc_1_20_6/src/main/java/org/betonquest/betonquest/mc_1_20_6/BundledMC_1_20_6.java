@@ -37,7 +37,8 @@ public class BundledMC_1_20_6 {
         final ItemRegistry item = betonQuest.getFeatureRegistries().item();
         final TextParser textParser = betonQuest.getTextParser();
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(betonQuest.getFontRegistry(), 114, 14);
-        item.register("simple", new UpdatedSimpleItemFactory(betonQuest.getQuestPackageManager(), textParser, bookPageWrapper,
+        item.register("simple", new UpdatedSimpleItemFactory(betonQuest.getQuestTypeApi().variables(),
+                betonQuest.getQuestPackageManager(), textParser, bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
         log.info("Enabled Minecraft 1.20.6 module");

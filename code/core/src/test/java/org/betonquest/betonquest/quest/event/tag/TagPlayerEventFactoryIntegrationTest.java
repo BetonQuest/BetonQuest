@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class TagPlayerEventFactoryIntegrationTest {
+
     /**
      * Mocked PlayerDataStorage.
      */
@@ -63,12 +65,16 @@ class TagPlayerEventFactoryIntegrationTest {
         return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(factory, logger), "test", packageConfigFile, Collections.emptyList());
     }
 
+    private Instruction createInstruction(final QuestPackage questPackage, final String instruction) throws QuestException {
+        return new Instruction(mock(Variables.class), mock(QuestPackageManager.class), questPackage, null, instruction);
+    }
+
     @Test
     void testCreateTagAddEventWithMultipleTags(final BetonQuestLoggerFactory factory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action add could not be created");
     }
 
@@ -77,7 +83,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag add tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action add could not be created");
     }
 
@@ -86,7 +92,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add");
+        final Instruction instruction = createInstruction(questPackage, "tag add");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "tag event action add without tags should throw an exception when created");
     }
 
@@ -95,7 +101,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action delete could not be created");
     }
 
@@ -104,7 +110,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag delete tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action delete could not be created");
     }
 
@@ -113,7 +119,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete");
+        final Instruction instruction = createInstruction(questPackage, "tag delete");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "tag event action delete without tags should throw an exception when created");
     }
 
@@ -122,7 +128,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action del could not be created");
     }
 
@@ -131,7 +137,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag del tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayer(instruction), "tag event action del could not be created");
     }
 
@@ -140,7 +146,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del");
+        final Instruction instruction = createInstruction(questPackage, "tag del");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "tag event action del without tags should throw an exception when created");
     }
 
@@ -149,7 +155,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag invalid tag-1,tag-2");
+        final Instruction instruction = createInstruction(questPackage, "tag invalid tag-1,tag-2");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayer(instruction), "tag event action invalid should throw an exception when created");
     }
 
@@ -158,7 +164,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag add tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action add could not be created");
     }
 
@@ -167,7 +173,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag add tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action add could not be created");
     }
 
@@ -176,7 +182,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag add");
+        final Instruction instruction = createInstruction(questPackage, "tag add");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "tag event action add without tags should throw an exception when created");
     }
 
@@ -185,7 +191,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag delete tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action delete could not be created");
     }
 
@@ -194,7 +200,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag delete tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action delete could not be created");
     }
 
@@ -203,7 +209,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag delete");
+        final Instruction instruction = createInstruction(questPackage, "tag delete");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "tag event action delete without tags should throw an exception when created");
     }
 
@@ -212,7 +218,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del tag-1,tag-2,tag-3");
+        final Instruction instruction = createInstruction(questPackage, "tag del tag-1,tag-2,tag-3");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action del could not be created");
     }
 
@@ -221,7 +227,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del tag-1");
+        final Instruction instruction = createInstruction(questPackage, "tag del tag-1");
         assertDoesNotThrow(() -> tagFactory.parsePlayerless(instruction), "tag event action del could not be created");
     }
 
@@ -230,7 +236,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag del");
+        final Instruction instruction = createInstruction(questPackage, "tag del");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "tag event action del without tags should throw an exception when created");
     }
 
@@ -239,7 +245,7 @@ class TagPlayerEventFactoryIntegrationTest {
         final TagPlayerEventFactory tagFactory = new TagPlayerEventFactory(dataStorage, saver, profileProvider);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "tag invalid tag-1,tag-2");
+        final Instruction instruction = createInstruction(questPackage, "tag invalid tag-1,tag-2");
         assertThrows(QuestException.class, () -> tagFactory.parsePlayerless(instruction), "tag event action invalid should throw an exception when created");
     }
 }

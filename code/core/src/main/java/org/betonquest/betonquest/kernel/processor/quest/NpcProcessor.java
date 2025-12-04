@@ -46,6 +46,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
+
     /**
      * The section in which the assignments from Npcs to conversations are stored.
      */
@@ -118,10 +119,10 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
-                        final QuestPackageManager packManager, final Variables variables,
+                        final Variables variables, final QuestPackageManager packManager,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,
                         final ProfileProvider profileProvider, final QuestTypeApi questTypeApi, final ConversationStarter convStarter) {
-        super(log, packManager, npcTypes, "Npc", "npcs");
+        super(log, variables, packManager, npcTypes, "Npc", "npcs");
         this.loggerFactory = loggerFactory;
         this.pluginMessage = pluginMessage;
         this.convStarter = convStarter;
@@ -156,7 +157,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
                 log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
             } else {
                 try {
-                    final NpcID npcID = new NpcID(packManager, pack, key);
+                    final NpcID npcID = new NpcID(variables, packManager, pack, key);
                     final ConversationID conversationID = new ConversationID(packManager, pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
@@ -178,7 +179,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
 
     @Override
     protected NpcID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new NpcID(packManager, pack, identifier);
+        return new NpcID(variables, packManager, pack, identifier);
     }
 
     @Override
@@ -259,6 +260,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * Listener for Conversation starting and Hiding with {@link Npc}s.
      */
     private class NpcListener implements Listener {
+
         /**
          * The default Constructor.
          */
