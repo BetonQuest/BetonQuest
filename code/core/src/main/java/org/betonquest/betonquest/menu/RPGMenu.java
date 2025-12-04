@@ -79,6 +79,7 @@ public class RPGMenu {
      * @param featureApi        the Feature API
      * @param profileProvider   the profile provider instance
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public RPGMenu(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                    final QuestPackageManager packManager, final ConfigAccessor pluginConfig,
                    final VariableProcessor variableProcessor, final PluginMessage pluginMessage,

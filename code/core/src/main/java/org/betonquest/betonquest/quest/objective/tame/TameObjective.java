@@ -44,7 +44,7 @@ public class TameObjective extends CountingObjective implements Listener {
         qeHandler.handle(() -> {
             if (event.getOwner() instanceof final Player player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-                if (containsPlayer(onlineProfile) && type.getValue(onlineProfile).equals(event.getEntity().getType()) && checkConditions(onlineProfile)) {
+                if (containsPlayer(onlineProfile) && type.getValue(onlineProfile) == event.getEntity().getType() && checkConditions(onlineProfile)) {
                     getCountingData(onlineProfile).progress();
                     completeIfDoneOrNotify(onlineProfile);
                 }

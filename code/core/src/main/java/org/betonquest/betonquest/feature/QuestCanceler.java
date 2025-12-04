@@ -103,6 +103,7 @@ public class QuestCanceler {
      * @param pack          the {@link QuestPackage} of the canceler
      * @param cancelData    the relevant data to cancel a quest
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public QuestCanceler(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final PlayerDataStorage playerStorage,
                          final QuestCancelerID cancelerID, final FeatureApi featureApi, final PluginMessage pluginMessage,
                          final Text names, @Nullable final ItemID item, final QuestPackage pack, final CancelData cancelData) {

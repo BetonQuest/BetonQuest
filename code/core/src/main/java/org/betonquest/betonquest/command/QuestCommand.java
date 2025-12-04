@@ -1555,6 +1555,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return pluginMessage.getMessage(null, "command_version_output.copy");
     }
 
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void handleDebug(final CommandSender sender, final String... args) {
         if (args.length == 1) {
             sender.sendMessage(
@@ -1624,7 +1625,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AssignmentInOperand"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private void handleDownload(final CommandSender sender, final String... args) {
         if (args.length < 5) {
             sendMessage(sender, "arguments");
@@ -1838,6 +1839,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Returns a list including all possible options for tab complete of the {@code /betonquest variables} command.
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private Optional<List<String>> completeVariables(final String... args) {
         if (args.length == 2) {
             return Optional.empty();

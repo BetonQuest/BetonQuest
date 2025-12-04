@@ -130,7 +130,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
         if (!containsPlayer(onlineProfile)) {
             return false;
         }
-        if (!entity.getType().equals(mobType.getValue(onlineProfile))) {
+        if (entity.getType() != mobType.getValue(onlineProfile)) {
             return false;
         }
         if (customName != null && (entity.customName() == null || !customName.getValue(onlineProfile).equals(entity.customName()))) {

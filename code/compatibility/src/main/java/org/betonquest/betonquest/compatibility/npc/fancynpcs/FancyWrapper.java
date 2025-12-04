@@ -42,6 +42,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public org.betonquest.betonquest.api.quest.npc.Npc<Npc> getNpc(@Nullable final Profile profile) throws QuestException {
         Npc npc = null;
         final String npcId = this.npcId.getValue(profile);

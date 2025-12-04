@@ -49,7 +49,7 @@ public class HeroesExperienceEvent implements OnlineEvent {
             return;
         }
 
-        final boolean isPrimary = classType.getValue(profile).equals(HeroesClassType.PRIMARY);
+        final boolean isPrimary = classType.getValue(profile) == HeroesClassType.PRIMARY;
         final HeroClass heroClass;
         if (isPrimary) {
             heroClass = hero.getHeroClass();

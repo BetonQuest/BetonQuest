@@ -73,6 +73,7 @@ public class CommandObjective extends Objective implements Listener {
      *
      * @param event the event that was triggered
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());

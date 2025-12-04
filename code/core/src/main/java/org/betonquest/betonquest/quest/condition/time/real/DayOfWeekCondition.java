@@ -25,6 +25,6 @@ public class DayOfWeekCondition implements PlayerlessCondition {
 
     @Override
     public boolean check() {
-        return this.day.equals(LocalDate.now().getDayOfWeek());
+        return this.day == LocalDate.now().getDayOfWeek();
     }
 }

@@ -119,7 +119,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return addCustomEffects(potionMeta, baseEffect);
     }
 
-    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

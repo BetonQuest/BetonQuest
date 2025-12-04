@@ -60,7 +60,7 @@ public class ShearObjective extends CountingObjective implements Listener {
         qeHandler.handle(() -> {
             if (containsPlayer(onlineProfile)
                     && (name == null || name.getValue(onlineProfile).equals(event.getEntity().getCustomName()))
-                    && (color == null || color.getValue(onlineProfile).equals(((Sheep) event.getEntity()).getColor()))
+                    && (color == null || color.getValue(onlineProfile) == ((Sheep) event.getEntity()).getColor())
                     && checkConditions(onlineProfile)) {
                 getCountingData(onlineProfile).progress();
                 completeIfDoneOrNotify(onlineProfile);
