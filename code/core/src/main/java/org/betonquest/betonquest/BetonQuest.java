@@ -8,7 +8,8 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
-import org.betonquest.betonquest.api.common.component.font.DefaultFont;
+import org.betonquest.betonquest.api.common.component.font.Font;
+import org.betonquest.betonquest.api.common.component.font.FontIndexFileFormat;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -107,6 +108,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
@@ -394,7 +396,19 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         final Key defaultkey = Key.key("default");
         fontRegistry = new FontRegistry(defaultkey);
-        fontRegistry.registerFont(defaultkey, new DefaultFont());
+        try (InputStream resource = getResource("fonts/default.font.bin")) {
+            if (resource == null) {
+                log.warn("Could not load default font size cache from resources. Faulty build?");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+            final Font defaultFont = FontIndexFileFormat.BINARY.read(resource);
+            fontRegistry.registerFont(defaultkey, defaultFont);
+        } catch (final IOException e) {
+            log.warn("Could not load default font size cache! " + e.getMessage(), e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.variables(),
                 questRegistry, config, conversationColors, textParser, fontRegistry, pluginMessage)
