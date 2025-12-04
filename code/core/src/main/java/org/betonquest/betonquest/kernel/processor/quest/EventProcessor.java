@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
@@ -15,21 +16,23 @@ import org.jetbrains.annotations.Nullable;
  * Stores Events and execute them.
  */
 public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
+
     /**
      * Create a new Event Processor to store events and execute them.
      *
+     * @param variables   the variable processor to create and resolve variables
      * @param log         the custom logger for this class
      * @param packManager the quest package manager to get quest packages from
      * @param eventTypes  the available event types
      */
-    public EventProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+    public EventProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
                           final EventTypeRegistry eventTypes) {
-        super(log, packManager, eventTypes, "Event", "events");
+        super(log, variables, packManager, eventTypes, "Event", "events");
     }
 
     @Override
     protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new EventID(packManager, pack, identifier);
+        return new EventID(variables, packManager, pack, identifier);
     }
 
     /**

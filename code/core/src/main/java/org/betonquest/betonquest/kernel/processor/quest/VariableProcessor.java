@@ -20,6 +20,26 @@ import org.jetbrains.annotations.Nullable;
 public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableAdapter> implements Variables {
 
     /**
+     * Empty variables to satisfy object structure.
+     */
+    public static final Variables EMPTY_VARIABLES = new Variables() {
+        @Override
+        public VariableAdapter create(@Nullable final QuestPackage pack, final String instruction) throws QuestException {
+            throw new QuestException("Not valid");
+        }
+
+        @Override
+        public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws QuestException {
+            throw new QuestException("Not valid");
+        }
+
+        @Override
+        public String getValue(final String variable, @Nullable final Profile profile) throws QuestException {
+            throw new QuestException("Not valid");
+        }
+    };
+
+    /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
      * @param log           the custom logger for this class
@@ -28,7 +48,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
      */
     public VariableProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
                              final VariableTypeRegistry variableTypes) {
-        super(log, packManager, variableTypes, "Variable", "variables");
+        super(log, EMPTY_VARIABLES, packManager, variableTypes, "Variable", "variables");
     }
 
     @Override
@@ -38,7 +58,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
 
     @Override
     protected VariableID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new VariableID(packManager, pack, identifier);
+        return new VariableID(this, packManager, pack, identifier);
     }
 
     @Override
@@ -46,7 +66,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
             throws QuestException {
         final VariableID variableID;
         try {
-            variableID = new VariableID(packManager, pack, instruction);
+            variableID = new VariableID(this, packManager, pack, instruction);
         } catch (final QuestException e) {
             throw new QuestException("Could not load variable: " + e.getMessage(), e);
         }

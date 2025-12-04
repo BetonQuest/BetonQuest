@@ -73,18 +73,18 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      *
      * @param loggerFactory    logger factory to use
      * @param log              the logger that will be used for logging
+     * @param variables        the variable processor to create and resolve variables
      * @param packManager      the quest package manager to get quest packages from
      * @param plugin           the plugin to schedule tasks
-     * @param variables        the variable processor to create and resolve variables
      * @param hologramProvider the hologram provider to create new holograms
      * @param featureApi       the Feature API to get NPC instances
      * @param npcRegistry      the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final QuestPackageManager packManager, final Plugin plugin,
-                           final Variables variables, final HologramProvider hologramProvider,
+                           final Variables variables, final QuestPackageManager packManager, final Plugin plugin,
+                           final HologramProvider hologramProvider,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry) {
-        super(loggerFactory, log, packManager, variables, hologramProvider, "Npc Hologram", "npc_holograms");
+        super(loggerFactory, log, variables, packManager, hologramProvider, "Npc Hologram", "npc_holograms");
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
@@ -165,7 +165,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new VariableList<>(variables, pack, section.getString("npcs", ""), value -> new NpcID(packManager, pack, value)).getValue(null);
+        return new VariableList<>(variables, pack, section.getString("npcs", ""),
+                value -> new NpcID(variables, packManager, pack, value)).getValue(null);
     }
 
     private void updateHologram(final NpcHologram npcHologram) {

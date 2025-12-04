@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
@@ -30,6 +31,11 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * The quest package manager to get quest packages from.
      */
     private final QuestPackageManager packManager;
@@ -37,12 +43,14 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param log         the custom logger for this class
-     * @param packManager the quest package manager to get quest packages from
+     * @param log               the custom logger for this class
+     * @param variables the variable processor to create and resolve variables
+     * @param packManager       the quest package manager to get quest packages from
      */
-    public DecentHologramsIntegrator(final BetonQuestLogger log, final QuestPackageManager packManager) {
+    public DecentHologramsIntegrator(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");
         this.log = log;
+        this.variables = variables;
         this.packManager = packManager;
     }
 
@@ -70,7 +78,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(packManager, pack, group);
+                final VariableID variable = new VariableID(variables, packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {

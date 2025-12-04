@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
@@ -51,14 +50,12 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
      * @param textCreator   the text creator to parse text
      * @param questTypeApi  the QuestTypeApi
      * @param config        the config to load menu item options from
-     * @param variables     the variable processor to create and resolve variables
      * @param featureApi    the Feature API
      */
     public MenuItemProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                              final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
-                             final QuestTypeApi questTypeApi, final ConfigAccessor config,
-                             final Variables variables, final FeatureApi featureApi) {
-        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, variables, questTypeApi, featureApi);
+                             final QuestTypeApi questTypeApi, final ConfigAccessor config, final FeatureApi featureApi) {
+        super(log, packManager, "Menu Item", "menu_items", loggerFactory, textCreator, questTypeApi, featureApi);
         this.packManager = packManager;
         this.config = config;
     }
@@ -67,7 +64,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
-        final Variable<Item> item = new Variable<>(variables, pack, itemString, value -> itemParser.apply(packManager, pack, value));
+        final Variable<Item> item = new Variable<>(variables, pack, itemString,
+                value -> itemParser.apply(variables, packManager, pack, value));
         final Text descriptions;
         if (section.contains(CONFIG_TEXT)) {
             descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);

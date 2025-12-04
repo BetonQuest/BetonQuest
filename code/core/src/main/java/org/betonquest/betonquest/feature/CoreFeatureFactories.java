@@ -155,8 +155,8 @@ public class CoreFeatureFactories {
         final ConversationIORegistry conversationIOTypes = registries.conversationIO();
         conversationIOTypes.register("simple", new SimpleConvIOFactory(colors));
         conversationIOTypes.register("tellraw", new TellrawConvIOFactory(colors));
-        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, packManager, config, fontRegistry, colors, false));
-        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, packManager, config, fontRegistry, colors, true));
+        conversationIOTypes.register("chest", new InventoryConvIOFactory(loggerFactory, variables, packManager, config, fontRegistry, colors, false));
+        conversationIOTypes.register("combined", new InventoryConvIOFactory(loggerFactory, variables, packManager, config, fontRegistry, colors, true));
         conversationIOTypes.register("slowtellraw", new SlowTellrawConvIOFactory(fontRegistry, colors));
 
         final InterceptorRegistry interceptorTypes = registries.interceptor();
@@ -165,7 +165,7 @@ public class CoreFeatureFactories {
 
         final ItemTypeRegistry itemTypes = registries.item();
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemTypes.register("simple", new SimpleQuestItemFactory(packManager, textParser, bookPageWrapper,
+        itemTypes.register("simple", new SimpleQuestItemFactory(variables, packManager, textParser, bookPageWrapper,
                 () -> config.getBoolean("item.quest.lore") ? pluginMessage : null));
         itemTypes.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
 

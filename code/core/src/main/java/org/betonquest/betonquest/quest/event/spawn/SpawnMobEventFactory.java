@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.types.EnumParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -27,6 +27,7 @@ import java.util.List;
  * Factory to create spawn mob events from {@link Instruction}s.
  */
 public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data used for primary server access.
      */
@@ -64,13 +65,13 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final Variable<Component> name = instruction.getValue("name", Argument.MESSAGE);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        final Variable<Item> helmet = instruction.getValue("h", IdentifierArgument.ITEM);
-        final Variable<Item> chestplate = instruction.getValue("c", IdentifierArgument.ITEM);
-        final Variable<Item> leggings = instruction.getValue("l", IdentifierArgument.ITEM);
-        final Variable<Item> boots = instruction.getValue("b", IdentifierArgument.ITEM);
-        final Variable<Item> mainHand = instruction.getValue("m", IdentifierArgument.ITEM);
-        final Variable<Item> offHand = instruction.getValue("o", IdentifierArgument.ITEM);
-        final Variable<List<Item>> drops = instruction.getValueList("drops", IdentifierArgument.ITEM);
+        final Variable<Item> helmet = instruction.getValue("h", InstructionIdentifierArgument.ITEM);
+        final Variable<Item> chestplate = instruction.getValue("c", InstructionIdentifierArgument.ITEM);
+        final Variable<Item> leggings = instruction.getValue("l", InstructionIdentifierArgument.ITEM);
+        final Variable<Item> boots = instruction.getValue("b", InstructionIdentifierArgument.ITEM);
+        final Variable<Item> mainHand = instruction.getValue("m", InstructionIdentifierArgument.ITEM);
+        final Variable<Item> offHand = instruction.getValue("o", InstructionIdentifierArgument.ITEM);
+        final Variable<List<Item>> drops = instruction.getValueList("drops", InstructionIdentifierArgument.ITEM);
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

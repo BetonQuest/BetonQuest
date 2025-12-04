@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -59,15 +60,22 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     protected final Supplier<PluginMessage> questItemLoreSupplier;
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * Creates a new simple Quest Item Factory.
      *
+     * @param variables             the variable processor to create and resolve variables
      * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
      */
-    public SimpleQuestItemFactory(final QuestPackageManager packManager, final TextParser textParser,
+    public SimpleQuestItemFactory(final Variables variables, final QuestPackageManager packManager, final TextParser textParser,
                                   final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
+        this.variables = variables;
         this.packManager = packManager;
         this.textParser = textParser;
         this.bookPageWrapper = bookPageWrapper;
@@ -128,7 +136,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     @Override
     public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
-        final Instruction instruction = new Instruction(packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final Instruction instruction = new Instruction(variables, packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

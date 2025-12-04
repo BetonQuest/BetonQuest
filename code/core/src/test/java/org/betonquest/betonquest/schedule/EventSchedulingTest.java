@@ -52,7 +52,7 @@ class EventSchedulingTest {
     @BeforeEach
     void setUp() {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(QuestPackageManager.class), scheduleTypes);
+        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(Variables.class), mock(QuestPackageManager.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")

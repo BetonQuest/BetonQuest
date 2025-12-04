@@ -60,7 +60,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         final List<EventID> events;
         try {
             events = new VariableList<>(variables, pack, eventsString,
-                    value -> new EventID(packManager, pack, value)).getValue(null);
+                    value -> new EventID(variables, packManager, pack, value)).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading events: " + e.getMessage(), e);
         }

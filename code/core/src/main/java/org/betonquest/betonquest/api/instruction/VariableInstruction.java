@@ -5,11 +5,13 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.api.quest.Variables;
 
 /**
  * The variable instruction. Primary object for variable input parsing.
  */
 public class VariableInstruction extends Instruction {
+
     /**
      * Regular expression that can be used to split variables correctly.
      */
@@ -18,6 +20,7 @@ public class VariableInstruction extends Instruction {
     /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
+     * @param variables   the variable processor to create and resolve variables
      * @param packManager the quest package manager to get quest packages from
      * @param pack        The quest package that this instruction belongs to.
      * @param identifier  The identifier of the variable.
@@ -25,9 +28,9 @@ public class VariableInstruction extends Instruction {
      * @throws QuestException if the instruction could not be tokenized,
      *                        or if the instruction does not start and end with '%' character.
      */
-    public VariableInstruction(final QuestPackageManager packManager, final QuestPackage pack,
+    public VariableInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
                                final Identifier identifier, final String instruction) throws QuestException {
-        super(packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
+        super(variables, packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
     }
 
     /**

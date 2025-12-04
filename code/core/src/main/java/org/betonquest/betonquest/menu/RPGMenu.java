@@ -101,10 +101,10 @@ public class RPGMenu {
         pluginCommand.register();
         pluginCommand.syncCraftBukkitCommands();
         this.menuItemProcessor = new MenuItemProcessor(loggerFactory.create(MenuItemProcessor.class), loggerFactory,
-                packManager, textCreator, questTypeApi, pluginConfig, variables, featureApi);
+                packManager, textCreator, questTypeApi, pluginConfig, featureApi);
         betonQuest.addProcessor(menuItemProcessor);
         this.menuProcessor = new MenuProcessor(loggerFactory.create(MenuProcessor.class), loggerFactory,
-                packManager, textCreator, questTypeApi, variables, featureApi, this, profileProvider);
+                packManager, textCreator, questTypeApi, featureApi, this, profileProvider);
         betonQuest.addProcessor(menuProcessor);
         this.menuItemListener = new MenuItemListener(loggerFactory.create(MenuItemListener.class), this,
                 menuProcessor, profileProvider, pluginMessage);

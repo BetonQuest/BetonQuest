@@ -48,16 +48,18 @@ public record CoreQuestRegistry(
      * @param questTypeRegistries the available quest types
      * @param pluginManager       the manager to register listener
      * @param plugin              the plugin instance to associate registered listener with
+     * @return the newly created quest type api
      */
-    public CoreQuestRegistry(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                             final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
-        this(
-                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), packManager, questTypeRegistries.condition()),
-                new EventProcessor(loggerFactory.create(EventProcessor.class), packManager, questTypeRegistries.event()),
-                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), packManager, questTypeRegistries.objective(),
-                        pluginManager, plugin),
-                new VariableProcessor(loggerFactory.create(VariableProcessor.class), packManager, questTypeRegistries.variable())
-        );
+    public static CoreQuestRegistry create(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
+                                           final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
+        final VariableProcessor variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class),
+                packManager, questTypeRegistries.variable());
+        return new CoreQuestRegistry(
+                new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), variableProcessor, packManager,
+                        questTypeRegistries.condition()),
+                new EventProcessor(loggerFactory.create(EventProcessor.class), variableProcessor, packManager, questTypeRegistries.event()),
+                new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), variableProcessor, packManager,
+                        questTypeRegistries.objective(), pluginManager, plugin), variableProcessor);
     }
 
     /**

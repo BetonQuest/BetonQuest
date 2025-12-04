@@ -22,11 +22,6 @@ import org.bukkit.configuration.ConfigurationSection;
 public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> {
 
     /**
-     * Variable processor to create and resolve variables.
-     */
-    private final Variables variables;
-
-    /**
      * Text creator to parse text.
      */
     private final ParsedSectionTextCreator textCreator;
@@ -39,10 +34,9 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
      * @param variables   the variable processor to create and resolve variables
      * @param textCreator the text creator to parse text
      */
-    public CompassProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                            final Variables variables, final ParsedSectionTextCreator textCreator) {
-        super(log, packManager, "Compass", "compass");
-        this.variables = variables;
+    public CompassProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+                            final ParsedSectionTextCreator textCreator) {
+        super(log, variables, packManager, "Compass", "compass");
         this.textCreator = textCreator;
     }
 
@@ -55,7 +49,7 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
         }
         final Variable<Location> loc = new Variable<>(variables, pack, location, LocationParser.LOCATION);
         final String itemName = section.getString("item");
-        final ItemID itemID = itemName == null ? null : new ItemID(packManager, pack, itemName);
+        final ItemID itemID = itemName == null ? null : new ItemID(variables, packManager, pack, itemName);
         return new QuestCompass(names, loc, itemID);
     }
 

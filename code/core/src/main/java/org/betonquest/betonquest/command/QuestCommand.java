@@ -24,6 +24,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -126,6 +127,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final PlayerDataFactory playerDataFactory;
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * The {@link PluginMessage} instance.
      */
     private final PluginMessage pluginMessage;
@@ -167,6 +173,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param dataStorage           the storage providing player data
      * @param profileProvider       the profile provider
      * @param playerDataFactory     the factory to create player data
+     * @param variables             the variable processor to create and resolve variables
      * @param pluginMessage         the {@link PluginMessage} instance
      * @param config                the plugin configuration accessor
      * @param compatibility         the compatibility instance to use for compatibility checks
@@ -175,7 +182,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     public QuestCommand(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                         final ConfigAccessorFactory configAccessorFactory, final PlayerLogWatcher logWatcher,
                         final LogPublishingController debuggingController, final BetonQuest plugin,
-                        final PlayerDataStorage dataStorage, final ProfileProvider profileProvider, final PlayerDataFactory playerDataFactory,
+                        final PlayerDataStorage dataStorage, final ProfileProvider profileProvider, final PlayerDataFactory playerDataFactory, final Variables variables,
                         final PluginMessage pluginMessage, final ConfigAccessor config, final Compatibility compatibility) {
         this.loggerFactory = loggerFactory;
         this.log = log;
@@ -186,6 +193,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         this.dataStorage = dataStorage;
         this.profileProvider = profileProvider;
         this.playerDataFactory = playerDataFactory;
+        this.variables = variables;
         this.pluginMessage = pluginMessage;
         this.config = config;
         this.compatibility = compatibility;
@@ -436,7 +444,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             final ItemID itemID;
             try {
-                itemID = new ItemID(instance.getQuestPackageManager(), null, args[1]);
+                itemID = new ItemID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, args[1]);
             } catch (final QuestException e) {
                 sendMessage(sender, "error",
                         new VariableReplacement("error", Component.text(e.getMessage())));
@@ -557,7 +565,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "add", "a" -> {
                 final JournalEntryID entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestPackageManager(), null, pointerName);
+                    entryID = new JournalEntryID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -590,7 +598,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 log.debug("Removing pointer");
                 final JournalEntryID entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestPackageManager(), null, pointerName);
+                    entryID = new JournalEntryID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, pointerName);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -862,7 +870,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final EventID eventID;
         try {
-            eventID = new EventID(instance.getQuestPackageManager(), null, args[2]);
+            eventID = new EventID(variables, instance.getQuestPackageManager(), null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -908,7 +916,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final ConditionID conditionID;
         try {
-            conditionID = new ConditionID(instance.getQuestPackageManager(), null, args[2]);
+            conditionID = new ConditionID(variables, instance.getQuestPackageManager(), null, args[2]);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1108,7 +1116,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveID objectiveID;
         final Objective objective;
         try {
-            objectiveID = new ObjectiveID(instance.getQuestPackageManager(), null, args[3]);
+            objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, args[3]);
             objective = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
@@ -1219,7 +1227,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // get ID and package
                 final ObjectiveID nameID;
                 try {
-                    nameID = new ObjectiveID(instance.getQuestPackageManager(), null, name);
+                    nameID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, name);
                 } catch (final QuestException e) {
                     sendMessage(sender, "error",
                             new VariableReplacement("error", Component.text(e.getMessage())));
@@ -1247,7 +1255,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // rename objective instance
                 final ObjectiveID renameID;
                 try {
-                    renameID = new ObjectiveID(instance.getQuestPackageManager(), null, rename);
+                    renameID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, rename);
                 } catch (final QuestException e) {
                     sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
                     log.reportException(e);
@@ -1274,7 +1282,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 final JournalEntryID newEntryID;
                 try {
-                    newEntryID = new JournalEntryID(instance.getQuestPackageManager(), null, rename);
+                    newEntryID = new JournalEntryID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, rename);
                 } catch (final QuestException e) {
                     final String message = "You can't rename into non-existent id!";
                     sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
@@ -1284,7 +1292,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                 final JournalEntryID oldEntryID;
                 try {
-                    oldEntryID = new JournalEntryID(instance.getQuestPackageManager(), null, name);
+                    oldEntryID = new JournalEntryID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, name);
                 } catch (final QuestException e) {
                     final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
                     log.warn(message, e);
@@ -1367,7 +1375,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 final ObjectiveID objectiveID;
                 final Objective objective;
                 try {
-                    objectiveID = new ObjectiveID(instance.getQuestPackageManager(), null, name);
+                    objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, name);
                     objective = instance.getQuestTypeApi().getObjective(objectiveID);
                 } catch (final QuestException e) {
                     final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
@@ -1386,7 +1394,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
                 final JournalEntryID entryID;
                 try {
-                    entryID = new JournalEntryID(instance.getQuestPackageManager(), null, name);
+                    entryID = new JournalEntryID(instance.getQuestTypeApi().variables(), instance.getQuestPackageManager(), null, name);
                 } catch (final QuestException e) {
                     final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
                     log.warn(message, e);
@@ -1742,7 +1750,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ObjectiveID objectiveID;
         final Objective tmp;
         try {
-            objectiveID = new ObjectiveID(instance.getQuestPackageManager(), null, args[2]);
+            objectiveID = new ObjectiveID(variables, instance.getQuestPackageManager(), null, args[2]);
             tmp = instance.getQuestTypeApi().getObjective(objectiveID);
         } catch (final QuestException e) {
             sendMessage(sender, "error",

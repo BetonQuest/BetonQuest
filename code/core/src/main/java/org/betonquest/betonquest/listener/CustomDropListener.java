@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.id.ItemID;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,11 @@ public class CustomDropListener implements Listener {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
 
     /**
      * The quest package manager to get quest packages from.
@@ -41,13 +47,15 @@ public class CustomDropListener implements Listener {
      * Create a new custom drop Listener.
      *
      * @param log         the custom logger for exceptions
+     * @param variables   the variable processor to create and resolve variables
      * @param packManager the quest package manager to get quest packages from
      * @param plugin      the plugin used as namespace
      * @param featureApi  the Feature API
      */
-    public CustomDropListener(final BetonQuestLogger log, final QuestPackageManager packManager, final Plugin plugin,
+    public CustomDropListener(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager, final Plugin plugin,
                               final FeatureApi featureApi) {
         this.log = log;
+        this.variables = variables;
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
@@ -68,7 +76,7 @@ public class CustomDropListener implements Listener {
             if (dataContainerValue != null) {
                 final int separatorIndex = dataContainerValue.indexOf(':');
                 try {
-                    event.getDrops().add(featureApi.getItem(new ItemID(packManager, null, dataContainerValue.substring(0, separatorIndex)), null)
+                    event.getDrops().add(featureApi.getItem(new ItemID(variables, packManager, null, dataContainerValue.substring(0, separatorIndex)), null)
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
                 } catch (final QuestException e) {
                     log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);

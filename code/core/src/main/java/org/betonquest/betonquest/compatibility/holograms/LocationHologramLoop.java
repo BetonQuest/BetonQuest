@@ -31,15 +31,15 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
      *
      * @param loggerFactory    logger factory to use
      * @param log              the logger that will be used for logging
-     * @param packManager      the quest package manager to get quest packages from
      * @param variables        the variable processor to create and resolve variables
+     * @param packManager      the quest package manager to get quest packages from
      * @param hologramProvider the hologram provider to create new holograms
      * @param plugin           the plugin to start tasks
      */
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                                final QuestPackageManager packManager, final Variables variables,
+                                final Variables variables, final QuestPackageManager packManager,
                                 final HologramProvider hologramProvider, final Plugin plugin) {
-        super(loggerFactory, log, packManager, variables, hologramProvider, "Hologram", "holograms");
+        super(loggerFactory, log, variables, packManager, hologramProvider, "Hologram", "holograms");
         this.plugin = plugin;
     }
 

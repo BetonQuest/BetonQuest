@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,13 +20,14 @@ public class ConditionID extends InstructionIdentifier {
     /**
      * Create a new Condition ID.
      *
+     * @param variables   the variable processor to create and resolve variables
      * @param packManager the quest package manager to get quest packages from
      * @param pack        the package of the condition
      * @param identifier  the complete identifier of the condition, inclusive exclamation mark for negating
      * @throws QuestException if there is no such condition
      */
-    public ConditionID(final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
-        super(packManager, pack, removeExclamationMark(identifier), "conditions", "Condition");
+    public ConditionID(final Variables variables, final QuestPackageManager packManager, @Nullable final QuestPackage pack, final String identifier) throws QuestException {
+        super(variables, packManager, pack, removeExclamationMark(identifier), "conditions", "Condition");
         this.isInverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
     }
 

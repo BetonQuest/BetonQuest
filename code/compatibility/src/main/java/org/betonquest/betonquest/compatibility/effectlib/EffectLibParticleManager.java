@@ -81,7 +81,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
                                     final QuestPackageManager packManager, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
                                     final ProfileProvider profileProvider, final Variables variables,
                                     final EffectManager manager, final Plugin plugin) {
-        super(log, packManager, "Effect", "effectlib");
+        super(log, questTypeApi.variables(), packManager, "Effect", "effectlib");
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
@@ -109,8 +109,8 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
         }
 
         final Variable<List<Location>> locations = load(pack, settings, "locations", Argument.LOCATION);
-        final Variable<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(packManager, pack, value));
-        final Variable<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(packManager, pack, value));
+        final Variable<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
+        final Variable<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
 
         final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
         final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),

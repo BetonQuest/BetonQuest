@@ -316,7 +316,8 @@ public class SQLite extends Database {
                 final Key defaultkey = Key.key("default");
                 final FontRegistry fontRegistry = new FontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(BetonQuest.getInstance().getQuestPackageManager(),
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(
+                        BetonQuest.getInstance().getVariableProcessor(), BetonQuest.getInstance().getQuestPackageManager(),
                         (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")),
                         bookPageWrapper, () -> null);
 

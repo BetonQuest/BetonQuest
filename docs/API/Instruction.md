@@ -84,7 +84,7 @@ You can create a location parser manually, but it's unnecessary since you can si
 The former method is effectively `get(next(), VariableLocation::new)`.
 
 ```JAVA title="Own parsing vs. get(VariableArgument)"
-VariableLocation location = new VariableLocation(variableProcessor, instruction.getPackage(), instruction.next());
+VariableLocation location = new VariableLocation(variables, instruction.getPackage(), instruction.next());
 VariableLocation location = instruction.get(VariableLocation::new);
 ```
 
@@ -93,8 +93,8 @@ passed as arguments. The following example demonstrates how a number can be vali
 
 ```JAVA title="Example for number validation"
 VariableNumber number = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
-VariableNumber number = instruction.get((variableProcessor, pack, input) ->
-  new VariableNumber(variableProcessor, pack, input, value -> {
+VariableNumber number = instruction.get((variables, pack, input) ->
+  new VariableNumber(variables, pack, input, value -> {
     if (value.doubleValue() < 0) {
       throw new QuestException("Value must be greater than or equal to 0: " + value);
     }

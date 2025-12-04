@@ -23,11 +23,6 @@ import java.util.List;
 public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID, JournalMainPageEntry> {
 
     /**
-     * Variable to resolve conditions.
-     */
-    private final Variables variables;
-
-    /**
      * Text creator to parse text.
      */
     private final ParsedSectionTextCreator textCreator;
@@ -36,14 +31,13 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
      * Create a new QuestProcessor to store and execute type logic.
      *
      * @param log         the custom logger for this class
-     * @param packManager the quest package manager to get quest packages from
      * @param variables   the variable processor to create and resolve variables
+     * @param packManager the quest package manager to get quest packages from
      * @param textCreator the text creator to parse text
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                                    final Variables variables, final ParsedSectionTextCreator textCreator) {
-        super(log, packManager, "Journal Main Page", "journal_main_page");
-        this.variables = variables;
+    public JournalMainPageProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+                                    final ParsedSectionTextCreator textCreator) {
+        super(log, variables, packManager, "Journal Main Page", "journal_main_page");
         this.textCreator = textCreator;
     }
 
@@ -55,7 +49,7 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         }
         final Variable<List<ConditionID>> conditions = new VariableList<>(variables, pack,
                 section.getString("conditions", ""),
-                value -> new ConditionID(packManager, pack, value));
+                value -> new ConditionID(variables, packManager, pack, value));
         final Text text = textCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, conditions, text);
     }

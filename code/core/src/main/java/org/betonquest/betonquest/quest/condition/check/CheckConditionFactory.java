@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -21,6 +22,12 @@ import java.util.List;
  * Factory for {@link CheckCondition}s.
  */
 public class CheckConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+
+    /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
     /**
      * The quest package manager to get quest packages from.
      */
@@ -34,10 +41,12 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
     /**
      * Create the check condition factory.
      *
+     * @param variables             the variable processor to create and resolve variables
      * @param packManager           the quest package manager to get quest packages from
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      */
-    public CheckConditionFactory(final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
+    public CheckConditionFactory(final Variables variables, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
+        this.variables = variables;
         this.packManager = packManager;
         this.conditionTypeRegistry = conditionTypeRegistry;
     }
@@ -86,7 +95,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new Instruction(packManager, questPackage, null, instruction);
+            final Instruction innerInstruction = new Instruction(variables, packManager, questPackage, null, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);
