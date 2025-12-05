@@ -14,6 +14,7 @@ import org.bukkit.inventory.EquipmentSlot;
  * Factory class for creating {@link ActionObjective} instances from {@link Instruction}s.
  */
 public class ActionObjectiveFactory implements ObjectiveFactory {
+
     /**
      * The "any" keyword.
      */
@@ -28,12 +29,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Click> action = instruction.get(Argument.ENUM(Click.class));
-        final Variable<BlockSelector> selector;
-        if (ANY.equalsIgnoreCase(instruction.next())) {
-            selector = null;
-        } else {
-            selector = instruction.get(instruction.current(), Argument.BLOCK_SELECTOR);
-        }
+        final Variable<BlockSelector> selector = instruction.get(Argument.BLOCK_SELECTOR.prefilter(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
         final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 0);

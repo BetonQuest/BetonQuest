@@ -46,13 +46,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String name = instruction.next();
-        final Variable<EntityType> vehicle;
-        if (ANY_ENTITY.equalsIgnoreCase(name)) {
-            vehicle = null;
-        } else {
-            vehicle = instruction.get(name, Argument.ENUM(EntityType.class));
-        }
+        final Variable<EntityType> vehicle = instruction.get(Argument.ENUM(EntityType.class).prefilter(ANY_ENTITY, null));
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new RideCondition(vehicle), logger, instruction.getPackage()), data);
