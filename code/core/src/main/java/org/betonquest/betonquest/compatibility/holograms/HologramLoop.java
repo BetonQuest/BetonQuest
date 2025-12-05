@@ -200,6 +200,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         return new TopLine(loggerFactory, pointName, orderType, limit, new TopLine.FormatColors(colorPlace, colorName, colorDash, colorScore));
     }
 
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private ChatColor getColorCodes(@Nullable final String color) {
         if (color != null) {
             final int length = color.length();

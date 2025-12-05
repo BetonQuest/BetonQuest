@@ -24,7 +24,7 @@ public final class InventoryUtils {
      * @return true if the slot is empty
      */
     public static boolean isEmptySlot(@Nullable final ItemStack slotItem) {
-        return slotItem == null || slotItem.getType().equals(Material.AIR);
+        return slotItem == null || slotItem.getType().isAir();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class InventoryUtils {
      * @return either 0 or the amount of the result
      */
     public static int calculateDropCraftAmount(final ItemStack result, @Nullable final ItemStack cursor) {
-        if (cursor != null && cursor.getType().equals(Material.AIR)) {
+        if (cursor != null && cursor.getType().isAir()) {
             return result.getAmount();
         }
         return 0;

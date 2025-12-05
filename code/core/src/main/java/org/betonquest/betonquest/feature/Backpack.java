@@ -333,7 +333,7 @@ public class Backpack implements Listener {
             return Pair.of(stack, present);
         }
 
-        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
+        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.NPathComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {

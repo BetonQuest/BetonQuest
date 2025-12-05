@@ -44,6 +44,7 @@ public class Version {
      *
      * @param versionString The raw version string
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public Version(final String versionString) {
         this.artifactVersion = new DefaultArtifactVersion(versionString);
 

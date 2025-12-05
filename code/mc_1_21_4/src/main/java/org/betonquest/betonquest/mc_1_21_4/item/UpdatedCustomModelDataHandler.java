@@ -102,7 +102,6 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
         return builder.isEmpty() ? null : builder.substring(1);
     }
 
-    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

@@ -43,7 +43,7 @@ public class LeverEvent implements NullableEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Block block = location.getValue(profile).getBlock();
 
-        if (!block.getType().equals(Material.LEVER)) {
+        if (block.getType() != Material.LEVER) {
             throw new QuestException("There is no lever at x: " + block.getX() + " y: " + block.getY() + " z: "
                     + block.getZ() + " in world '" + block.getWorld().getName() + "'");
         }

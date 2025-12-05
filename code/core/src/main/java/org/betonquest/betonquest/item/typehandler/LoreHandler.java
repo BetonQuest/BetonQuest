@@ -68,7 +68,6 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
         return null;
     }
 
-    @SuppressWarnings("PMD.AssignmentInOperand")
     @Override
     public void set(final String key, final String data) throws QuestException {
         switch (key) {

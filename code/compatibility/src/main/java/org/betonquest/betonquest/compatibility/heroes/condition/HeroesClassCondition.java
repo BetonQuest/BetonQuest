@@ -84,12 +84,12 @@ public class HeroesClassCondition implements OnlineCondition {
     private List<HeroClass> getHeroClasses(final Profile profile, final Hero hero) throws QuestException {
         final List<HeroClass> heroClasses = new ArrayList<>();
         final HeroesClassType resolvedClassType = classType.getValue(profile);
-        if (resolvedClassType.equals(HeroesClassType.MASTERED)) {
+        if (resolvedClassType == HeroesClassType.MASTERED) {
             hero.getMasteredClasses().stream()
                     .map(classManager::getClass)
                     .forEach(heroClasses::add);
         } else {
-            heroClasses.add(resolvedClassType.equals(HeroesClassType.PRIMARY) ? hero.getHeroClass() : hero.getSecondaryClass());
+            heroClasses.add(resolvedClassType == HeroesClassType.PRIMARY ? hero.getHeroClass() : hero.getSecondaryClass());
         }
         return heroClasses;
     }

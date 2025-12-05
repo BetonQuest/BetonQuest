@@ -115,6 +115,7 @@ public class NpcProcessor extends TypedQuestProcessor<NpcID, NpcWrapper<?>> {
      * @param questTypeApi      the Quest Type API
      * @param convStarter       the starter for Npc conversations
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public NpcProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                         final QuestPackageManager packManager, final VariableProcessor variableProcessor,
                         final NpcTypeRegistry npcTypes, final PluginMessage pluginMessage, final BetonQuest plugin,

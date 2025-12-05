@@ -290,7 +290,7 @@ public class MenuConvIO extends ChatConvIO {
 
             event.setCancelled(true);
 
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
+            if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && controls.containsKey(CONTROL.LEFT_CLICK)) {
                 handleSteering(controls.get(CONTROL.LEFT_CLICK));
             }
         } finally {

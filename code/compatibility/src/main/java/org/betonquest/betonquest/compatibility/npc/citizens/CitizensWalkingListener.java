@@ -85,7 +85,6 @@ public class CitizensWalkingListener implements Listener {
      *
      * @param event the event
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
@@ -95,21 +94,22 @@ public class CitizensWalkingListener implements Listener {
 
                 @Override
                 public void run() {
-                    if (npcs.containsKey(npc)) {
-                        final Pair<Integer, Location> pair = npcs.get(npc);
-                        final int conversationsAmount = pair.getKey() - 1;
-                        if (conversationsAmount == 0) {
-                            npcs.remove(npc);
-                            if (npc.isSpawned()) {
-                                final Navigator nav = npc.getNavigator();
-                                nav.setPaused(false);
-                                nav.setTarget(pair.getValue());
-                            } else {
-                                npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
-                            }
-                        } else {
-                            npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
-                        }
+                    if (!npcs.containsKey(npc)) {
+                        return;
+                    }
+                    final Pair<Integer, Location> pair = npcs.get(npc);
+                    final int conversationsAmount = pair.getKey() - 1;
+                    if (conversationsAmount != 0) {
+                        npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
+                        return;
+                    }
+                    npcs.remove(npc);
+                    if (npc.isSpawned()) {
+                        final Navigator nav = npc.getNavigator();
+                        nav.setPaused(false);
+                        nav.setTarget(pair.getValue());
+                    } else {
+                        npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
                     }
                 }
             }.runTask(plugin);

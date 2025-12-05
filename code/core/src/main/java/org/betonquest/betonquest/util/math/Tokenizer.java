@@ -172,7 +172,7 @@ public class Tokenizer {
         return tokenizeFurther(val1, operator, val2, index, nextInLine);
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "NullAway"})
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "NullAway", "PMD.AvoidDeeplyNestedIfStmts"})
     private Token tokenizeFurther(@Nullable final Token val1, @Nullable final Operator operator, final String val2, final int indexx, final Token nextInLine) throws QuestException {
         if (indexx < val2.length() - 1) {
             int index = indexx;

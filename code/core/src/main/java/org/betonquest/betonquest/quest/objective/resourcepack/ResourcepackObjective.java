@@ -54,7 +54,7 @@ public class ResourcepackObjective extends Objective implements Listener {
         if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             qeHandler.handle(() -> {
                 final PlayerResourcePackStatusEvent.Status expectedStatus = targetStatus.getValue(onlineProfile);
-                if (expectedStatus.equals(status)) {
+                if (expectedStatus == status) {
                     completeObjective(onlineProfile);
                 }
             });

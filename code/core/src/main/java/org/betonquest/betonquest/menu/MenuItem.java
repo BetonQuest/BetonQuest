@@ -161,6 +161,7 @@ public class MenuItem {
      * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public ItemStack generateItem(final Profile profile) {
         try {
             final ItemStack item = this.item.getValue(profile).generate(profile);

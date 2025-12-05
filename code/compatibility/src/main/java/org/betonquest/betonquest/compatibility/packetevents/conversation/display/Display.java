@@ -188,6 +188,7 @@ public class Display {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void checkNewScroll(final Scroll scroll) {
         if (select.isEnabled()) {
             final int selectOffset = select.get() + (scroll.getModification() * 2);
