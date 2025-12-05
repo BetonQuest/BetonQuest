@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
  * Factory for creating {@link RideObjective} instances from {@link Instruction}s.
  */
 public class RideObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Any property for the entity type.
      */
@@ -25,13 +26,7 @@ public class RideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String name = instruction.next();
-        final Variable<EntityType> vehicle;
-        if (ANY_PROPERTY.equalsIgnoreCase(name)) {
-            vehicle = null;
-        } else {
-            vehicle = instruction.get(name, Argument.ENUM(EntityType.class));
-        }
+        final Variable<EntityType> vehicle = instruction.get(Argument.ENUM(EntityType.class).prefilter(ANY_PROPERTY, null));
         return new RideObjective(instruction, vehicle);
     }
 }
