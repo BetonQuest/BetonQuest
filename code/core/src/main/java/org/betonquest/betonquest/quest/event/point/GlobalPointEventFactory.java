@@ -12,12 +12,11 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 
-import java.util.Locale;
-
 /**
  * Factory to create global points events from {@link Instruction}s.
  */
 public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * The global data.
      */
@@ -48,19 +47,8 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        final String number = instruction.next();
-        final String action = instruction.getValue("action");
-        if (action != null) {
-            try {
-                final PointType type = PointType.valueOf(action.toUpperCase(Locale.ROOT));
-                return new GlobalPointEvent(globalData, category, instruction.get(number, Argument.NUMBER), type);
-            } catch (final IllegalArgumentException e) {
-                throw new QuestException("Unknown modification action: " + instruction.current(), e);
-            }
-        }
-        if (!number.isEmpty() && number.charAt(0) == '*') {
-            return new GlobalPointEvent(globalData, category, instruction.get(number.replace("*", ""), Argument.NUMBER), PointType.MULTIPLY);
-        }
-        return new GlobalPointEvent(globalData, category, instruction.get(number, Argument.NUMBER), PointType.ADD);
+        final Variable<Number> number = instruction.get(Argument.NUMBER);
+        final PointType type = instruction.getValue("action", Argument.ENUM(PointType.class), PointType.ADD).getValue(null);
+        return new GlobalPointEvent(globalData, category, number, type);
     }
 }

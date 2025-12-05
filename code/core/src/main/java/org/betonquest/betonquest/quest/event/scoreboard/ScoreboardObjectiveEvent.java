@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
+import org.betonquest.betonquest.quest.event.point.PointType;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -13,6 +14,7 @@ import org.bukkit.scoreboard.Scoreboard;
  * Adds/removes/multiplies/divides scores on scoreboards.
  */
 public class ScoreboardObjectiveEvent implements PlayerEvent {
+
     /**
      * The name of the objective.
      */
@@ -26,19 +28,19 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
     /**
      * The modification to apply to the score.
      */
-    private final ScoreModification scoreModification;
+    private final PointType modification;
 
     /**
      * Creates a new ScoreboardEvent.
      *
-     * @param objective         the name of the objective
-     * @param count             the number to modify the score by
-     * @param scoreModification the modification to apply to the score
+     * @param objective    the name of the objective
+     * @param count        the number to modify the score by
+     * @param modification the modification to apply to the score
      */
-    public ScoreboardObjectiveEvent(final Variable<String> objective, final Variable<Number> count, final ScoreModification scoreModification) {
+    public ScoreboardObjectiveEvent(final Variable<String> objective, final Variable<Number> count, final PointType modification) {
         this.objective = objective;
         this.count = count;
-        this.scoreModification = scoreModification;
+        this.modification = modification;
     }
 
     @Override
@@ -50,6 +52,6 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
             throw new QuestException("Scoreboard objective " + objective + " does not exist!");
         }
         final Score score = obj.getScore(profile.getPlayer());
-        score.setScore(scoreModification.modify(score.getScore(), count.getValue(profile).doubleValue()));
+        score.setScore(modification.modify(score.getScore(), count.getValue(profile).doubleValue()));
     }
 }

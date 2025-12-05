@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
@@ -43,44 +42,25 @@ public class MoneyEventFactory implements PlayerEventFactory {
     private final PluginMessage pluginMessage;
 
     /**
-     * Processor to create new variables.
-     */
-    private final Variables variables;
-
-    /**
      * Create a new Factory to create Vault Money Events.
      *
      * @param economy       the economy where the balance will be modified
      * @param loggerFactory the logger factory to create new logger instances.
      * @param data          the data used for primary server access
      * @param pluginMessage the {@link PluginMessage} instance
-     * @param variables     the variable processor to create and resolve variables
      */
     public MoneyEventFactory(final Economy economy, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                             final PluginMessage pluginMessage, final Variables variables) {
+                             final PluginMessage pluginMessage) {
         this.economy = economy;
         this.loggerFactory = loggerFactory;
         this.data = data;
         this.pluginMessage = pluginMessage;
-        this.variables = variables;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        String string = instruction.next();
-        final boolean multi;
-        if (!string.isEmpty() && string.charAt(0) == '*') {
-            multi = true;
-            string = string.replace("*", "");
-        } else {
-            multi = false;
-        }
-        final Variable<Number> amount;
-        try {
-            amount = new Variable<>(variables, instruction.getPackage(), string, Argument.NUMBER);
-        } catch (final QuestException e) {
-            throw new QuestException("Could not parse money amount: " + e.getMessage(), e);
-        }
+        final boolean multi = instruction.hasArgument("multi");
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean notify = instruction.hasArgument("notify");
         final IngameNotificationSender givenSender;
         final IngameNotificationSender takenSender;

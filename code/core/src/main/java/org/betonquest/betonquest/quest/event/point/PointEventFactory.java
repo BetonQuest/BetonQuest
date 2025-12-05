@@ -15,8 +15,6 @@ import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
-import java.util.Locale;
-
 /**
  * Factory to create points events from {@link Instruction}s.
  */
@@ -53,25 +51,9 @@ public class PointEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.getValue("action");
-        PointType type = PointType.ADD;
-        if (action != null) {
-            try {
-                type = PointType.valueOf(action.toUpperCase(Locale.ROOT));
-            } catch (final IllegalArgumentException e) {
-                throw new QuestException("Unknown modification action: " + action, e);
-            }
-        }
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        String number = instruction.next();
-        if (!number.isEmpty() && number.charAt(0) == '*') {
-            type = PointType.MULTIPLY;
-            number = number.replace("*", "");
-        }
-        if (number.isEmpty() || number.charAt(0) == '-') {
-            type = PointType.SUBTRACT;
-            number = number.replace("-", "");
-        }
+        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final PointType type = instruction.getValue("action", Argument.ENUM(PointType.class), PointType.ADD).getValue(null);
 
         final NotificationSender pointSender;
         if (instruction.hasArgument("notify")) {
@@ -81,7 +63,6 @@ public class PointEventFactory implements PlayerEventFactory {
             pointSender = new NoNotificationSender();
         }
 
-        final Variable<Number> amount = instruction.get(number, Argument.NUMBER);
         return new PointEvent(pointSender, category, amount, type, dataStorage);
     }
 }

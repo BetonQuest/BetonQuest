@@ -55,6 +55,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-416 - Simple Item TextParser](#300-dev-416-simple-item-textparser) :thunder_cloud_rain:
 - [3.0.0-DEV-444 - Simple Item QuestItem](#300-dev-444-simple-item-questitem) :thunder_cloud_rain:
 - [3.0.0-DEV-465 - PacketEvents instead of ProtocolLib](#300-dev-465-packetevents-instead-of-protocollib) :white_sun_cloud:
+- [3.0.0-DEV-488 - Remove Legacy Point Multiply](#300-dev-488-remove-legacy-point-multiply) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -892,3 +893,34 @@ you now need to set the interceptor to `none`.
     
     - `packet` interceptor was renamed to `packetevents`
     - new config option `display_history` defaults to `true`, and only works with packetevents interceptor
+
+### 3.0.0-DEV-488 - Remove Legacy Point Multiply :sun:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    To fix certain instruction parsing issues the `money` event no longer allows the `*` in front of the amount
+    and instead now has a `multiply` argument.
+    
+    In practice, this syntax could also be used in the "point", "globalpoint" and "score" events.
+    It has now been permanently removed from there as well.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    events:
+      winLottery: "money *7 notify"
+      applyBonus: "score kill *1.2"
+      bigProgress: "globalpoint progress *2"
+    ```
+    
+    ```YAML title="New Syntax"
+    events:
+      winLottery: "money 7 multiply notify"
+      applyBonus: "score kill 1.2 action:multiply"
+      bigProgress: "globalpoint progress *2 action:multiply"
+    ```
+    
+    </div>
