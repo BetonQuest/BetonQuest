@@ -21,6 +21,7 @@ import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcE
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.NpcRename;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.PackageSeparator;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.PickRandomPercentage;
+import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.RemoveLegacyPointModification;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.RemoveStringList;
 import org.betonquest.betonquest.config.patcher.migration.migrator.from2to3.VariablesRename;
 import org.betonquest.betonquest.config.quest.Quest;
@@ -41,6 +42,7 @@ import java.util.TreeMap;
  * Migrates {@link Quest}s by Versions.
  */
 public class QuestMigrator {
+
     /**
      * Comparator for {@link Version} with the qualifier QUEST.
      */
@@ -121,6 +123,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.0.0", 11), new NpcEventsRename());
         migrations.put(questVersion("3.0.0", 12), new FolderTimeUnit());
         migrations.put(questVersion("3.0.0", 13), new PackageSeparator());
+        migrations.put(questVersion("3.0.0", 14), new RemoveLegacyPointModification());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

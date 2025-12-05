@@ -367,7 +367,7 @@ the 100th player who does the quest.
     ```YAML
     globalpoint global_knownusers 1 action:add
     globalpoint daily_login 0 action:set
-    globalpoint reputaion 2 action:multiply
+    globalpoint reputation 2 action:multiply
     ```
 
 ## Global tag: `globaltag`

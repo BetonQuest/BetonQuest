@@ -110,6 +110,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `packet` chat interceptor was renamed to `packetevents`
     - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation
 - `menu` `bound_item` now finds the first menu allowed to open instead aborting after the first check
+- `money` event now has a `multiply` argument instead of `*` in front of number
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation
@@ -122,6 +123,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - undocumented way of addressing packages in some variables
 - `journal.show_separator` option deleted
 - `display_missed` config option, as the `none` interceptor should be used instead
+- legacy multiply with `*` for points
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1
