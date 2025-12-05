@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create {@link PermissionEvent}s from {@link Instruction}s.
  */
 public class PermissionEventFactory implements PlayerEventFactory {
+
     /**
      * Service where the permission will be modified.
      */
@@ -41,7 +42,7 @@ public class PermissionEventFactory implements PlayerEventFactory {
         final Variable<Boolean> perm = instruction.get("perm"::equalsIgnoreCase);
         final Variable<String> permission = instruction.get(Argument.STRING);
         final Variable<String> world;
-        if (instruction.size() >= 5 && !instruction.next().matches("^conditions?:")) {
+        if (instruction.size() >= 5 && !instruction.next().startsWith("conditions:")) {
             world = instruction.get(instruction.current(), Argument.STRING);
         } else {
             world = null;
