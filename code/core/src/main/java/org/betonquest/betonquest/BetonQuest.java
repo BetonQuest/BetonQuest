@@ -8,7 +8,6 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
-import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontIndexFileFormat;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -108,7 +107,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.InstantSource;
@@ -123,6 +121,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
+
     /**
      * BStats Plugin id.
      */
@@ -394,18 +393,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         conversationColors = new ConversationColors(textParser, config);
 
-        final Key defaultkey = Key.key("default");
-        fontRegistry = new FontRegistry(defaultkey);
-        try (InputStream resource = getResource("fonts/default.font.bin")) {
-            if (resource == null) {
-                log.warn("Could not load default font size cache from resources. Faulty build?");
-                getServer().getPluginManager().disablePlugin(this);
-                return;
-            }
-            final Font defaultFont = FontIndexFileFormat.BINARY.read(resource);
-            fontRegistry.registerFont(defaultkey, defaultFont);
-        } catch (final IOException e) {
-            log.warn("Could not load default font size cache! " + e.getMessage(), e);
+        if (!setupFontRegistry()) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -457,6 +445,50 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 profileProvider);
 
         log.info("BetonQuest successfully enabled!");
+    }
+
+    private boolean setupFontRegistry() {
+        final Key defaultkey = Key.key("default");
+        final File fontFolder = new File(getDataFolder(), "fonts");
+        fontRegistry = new FontRegistry(defaultkey);
+        saveResource("fonts/default.font.bin", true);
+        final File[] binaryIndexFiles = fontFolder.listFiles((file, name) -> name.endsWith(".bin"));
+        final File[] jsonIndexFiles = fontFolder.listFiles((file, name) -> name.endsWith(".json"));
+        if (binaryIndexFiles == null || jsonIndexFiles == null) {
+            log.warn("Could not load fonts! No fonts found in fonts folder!");
+            return false;
+        }
+        int bins = 0;
+        for (final File binaryIndexFile : binaryIndexFiles) {
+            final Key keyForFontIndexFile = getKeyForFontIndexFile(binaryIndexFile);
+            if (fontRegistry.loadFontFromIndex(keyForFontIndexFile, binaryIndexFile.toPath(), FontIndexFileFormat.BINARY)) {
+                log.info("Loaded font index file: " + binaryIndexFile.getName() + " with key: " + keyForFontIndexFile.asString());
+                bins++;
+            } else {
+                log.warn("Could not load binary font index file: " + binaryIndexFile.getName());
+            }
+        }
+        int jsons = 0;
+        for (final File jsonIndexFile : jsonIndexFiles) {
+            final Key keyForFontIndexFile = getKeyForFontIndexFile(jsonIndexFile);
+            if (fontRegistry.loadFontFromIndex(keyForFontIndexFile, jsonIndexFile.toPath(), FontIndexFileFormat.JSON)) {
+                jsons++;
+            } else {
+                log.warn("Could not load json font index file: " + jsonIndexFile.getName());
+            }
+        }
+        if (jsons + bins == 0) {
+            log.warn("Could not load fonts! No fonts found in fonts folder!");
+            return false;
+        }
+        log.info("Loaded " + bins + " binary font indices and " + jsons + " json font indices.");
+        return true;
+    }
+
+    private Key getKeyForFontIndexFile(final File fontIndexFile) {
+        final String fileName = fontIndexFile.getName();
+        final String keyName = fileName.substring(0, fileName.indexOf('.'));
+        return Key.key(keyName, ':');
     }
 
     private void setupDatabase() {

@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents default font index file formats and their respective readers.
@@ -29,11 +30,13 @@ public enum FontIndexFileFormat implements FontIndexReader {
         @Override
         public Font read(final InputStream inputStream) throws IOException {
             final JsonObject jsonObject = new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
-            final Map<Integer, Integer> widths = new HashMap<>();
-            jsonObject.entrySet().forEach(entry -> widths.put(entry.getKey().codePointAt(0), entry.getValue().getAsInt()));
-            return c -> widths.getOrDefault(c, 6);
+            final Map<Integer, Integer> widths = jsonObject.entrySet().stream()
+                    .map(entry -> Map.entry(entry.getKey().codePointAt(0), entry.getValue().getAsInt()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            return c -> widths.getOrDefault(c, DEFAULT_CHARACTER_WIDTH);
         }
     },
+
     /**
      * Binary index file format.
      * The file should contain a sequence of 4-byte blocks,
@@ -58,7 +61,13 @@ public enum FontIndexFileFormat implements FontIndexReader {
                 //int[32 bits]: [11 bits value][21 bits codepoint]
                 widths.put(blockValue & codepointMask, blockValue >>> 21);
             }
-            return c -> widths.getOrDefault(c, 6);
+            return c -> widths.getOrDefault(c, DEFAULT_CHARACTER_WIDTH);
         }
     };
+
+    /**
+     * Default width for characters without a specific width in the index file.
+     * In case the width is unknown, use this.
+     */
+    private static final int DEFAULT_CHARACTER_WIDTH = 6;
 }
