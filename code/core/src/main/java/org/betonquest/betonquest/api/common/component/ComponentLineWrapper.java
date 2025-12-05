@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class ComponentLineWrapper {
+
     /**
      * The newline string to split text components by new lines.
      */
@@ -193,9 +194,7 @@ public class ComponentLineWrapper {
     private int getTextWidth(final Font font, final String text, final ComponentDecorations decorations) {
         int width = 0;
         final int decorationFix = getTextDecorationWidth(decorations);
-        for (final char c : text.toCharArray()) {
-            width += font.getWidth(c) + decorationFix;
-        }
+        width = text.codePoints().map(elem -> font.getWidth(elem) + (Character.isWhitespace(elem) ? 0 : 1) + decorationFix).reduce(width, Integer::sum);
         return width;
     }
 
@@ -220,6 +219,7 @@ public class ComponentLineWrapper {
      * The Offset class is used to store the offset of a line in pixels.
      */
     private static class Offset {
+
         /**
          * The offset to use even if {@link #reset()} is called.
          */
@@ -268,6 +268,7 @@ public class ComponentLineWrapper {
      * The ComponentDecorations class is used to store the decorations of a Component.
      */
     private static class ComponentDecorations {
+
         /**
          * The map of TextDecoration to its state for the Component.
          */
@@ -317,6 +318,7 @@ public class ComponentLineWrapper {
      * The ComponentBuilder class is used to build a Component of text by appending Components.
      */
     private static class ComponentBuilder {
+
         /**
          * The current Component being built.
          */

@@ -3,10 +3,12 @@ package org.betonquest.betonquest.api.common.component;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -35,8 +37,9 @@ class BookPageWrapperTest extends ComponentFixture {
 
     @ParameterizedTest
     @MethodSource("pagesToWrap")
-    void string(final String input, final List<Component> expected, final int maxLineWidth, final int maxLines) {
+    void string(final String input, final List<Component> expected, final int maxLineWidth, final int maxLines) throws IOException {
         final Component deserialize = MiniMessage.miniMessage().deserialize(input);
-        assertWrap(deserialize, expected, component -> new BookPageWrapper(getFontRegistry(), maxLineWidth, maxLines).splitPages(component));
+        final FontRegistry fontRegistry = getFontRegistry();
+        assertWrap(deserialize, expected, component -> new BookPageWrapper(fontRegistry, maxLineWidth, maxLines).splitPages(component));
     }
 }
