@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.profile;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +16,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class ProfileKeyMap<V> implements Map<Profile, V> {
+
     /**
      * The map used to store the values.
      */
@@ -120,7 +120,7 @@ public class ProfileKeyMap<V> implements Map<Profile, V> {
     @Override
     public Set<Entry<Profile, V>> entrySet() {
         return map.entrySet().stream()
-                .map(entry -> new AbstractMap.SimpleEntry<>(provider.getProfile(entry.getKey()), entry.getValue()))
+                .map(entry -> Map.entry(provider.getProfile(entry.getKey()), entry.getValue()))
                 .collect(Collectors.toSet());
     }
 }
