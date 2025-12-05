@@ -156,7 +156,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final String item = properties.getString("item");
         try {
             final Variable<ItemID> variableItem = item == null ? null
-                    : new Variable<>(betonQuest.getVariableProcessor(), conv.getPackage(), item,
+                    : new Variable<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), item,
                     (value) -> new ItemID(packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
         } catch (final QuestException e) {

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * Integrator for <a href="https://github.com/elBukkit/EffectLib/">EffectLib</a>.
  */
 public class EffectLibIntegrator implements Integrator {
+
     /**
      * BetonQuest plugin.
      */
@@ -40,7 +41,7 @@ public class EffectLibIntegrator implements Integrator {
 
         plugin.addProcessor(new EffectLibParticleManager(loggerFactory.create(EffectLibParticleManager.class), loggerFactory,
                 api.getQuestPackageManager(), api.getQuestTypeApi(), api.getFeatureApi(), api.getProfileProvider(),
-                plugin.getVariableProcessor(), manager, plugin));
+                api.getQuestTypeApi().variables(), manager, plugin));
     }
 
     @Override

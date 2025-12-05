@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.notify;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -16,10 +16,16 @@ import java.util.Map;
  * Sends a text notification to a player, potentially with a sound added.
  */
 public abstract class NotifyIO {
+
     /**
      * Message to use when a data value does not exist.
      */
     protected static final String CATCH_MESSAGE_TYPE = "%s with the name '%s' does not exists!";
+
+    /**
+     * Variable processor to create and resolve variables.
+     */
+    protected final Variables variables;
 
     /**
      * Customization data.
@@ -40,21 +46,24 @@ public abstract class NotifyIO {
     /**
      * Create a new Notify IO.
      *
-     * @param pack the source pack to resolve variables
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the source pack to resolve variables
      * @throws QuestException when data could not be parsed
      */
-    protected NotifyIO(final QuestPackage pack) throws QuestException {
-        this(pack, new HashMap<>());
+    protected NotifyIO(final Variables variables, final QuestPackage pack) throws QuestException {
+        this(variables, pack, new HashMap<>());
     }
 
     /**
      * Create a new Notify IO.
      *
-     * @param pack the source pack to resolve variables
-     * @param data the customization data for notifications
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the source pack to resolve variables
+     * @param data      the customization data for notifications
      * @throws QuestException when data could not be parsed
      */
-    protected NotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    protected NotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+        this.variables = variables;
         this.data = data;
         this.pack = pack;
         sound = new NotifySound(this);
@@ -95,6 +104,6 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return new Variable<>(defaultData);
         }
-        return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, dataString, Argument.NUMBER);
+        return new Variable<>(variables, pack, dataString, Argument.NUMBER);
     }
 }

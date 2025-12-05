@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.api.text.TextParserRegistry;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -23,7 +24,6 @@ import org.betonquest.betonquest.conversation.io.SlowTellrawConvIOFactory;
 import org.betonquest.betonquest.conversation.io.TellrawConvIOFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
@@ -55,6 +55,7 @@ import org.bukkit.plugin.Plugin;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class CoreFeatureFactories {
+
     /**
      * Factory to create new class specific loggers.
      */
@@ -76,9 +77,9 @@ public class CoreFeatureFactories {
     private final QuestTypeApi questTypeApi;
 
     /**
-     * Variable processor to create variables.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Feature API.
@@ -117,7 +118,7 @@ public class CoreFeatureFactories {
      * @param packManager        the quest package manager to get quest packages from
      * @param lastExecutionCache the cache to catch up missed schedulers
      * @param questTypeApi       the class for executing events
-     * @param variableProcessor  the variable processor to create variables
+     * @param variables          the variable processor to create and resolve variables
      * @param featureApi         the Feature API
      * @param config             the config
      * @param colors             the colors to use for the conversation
@@ -128,14 +129,14 @@ public class CoreFeatureFactories {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public CoreFeatureFactories(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
                                 final LastExecutionCache lastExecutionCache, final QuestTypeApi questTypeApi,
-                                final VariableProcessor variableProcessor, final FeatureApi featureApi,
+                                final Variables variables, final FeatureApi featureApi,
                                 final ConfigAccessor config, final ConversationColors colors,
                                 final TextParser textParser, final FontRegistry fontRegistry, final PluginMessage pluginMessage) {
         this.loggerFactory = loggerFactory;
         this.packManager = packManager;
         this.lastExecutionCache = lastExecutionCache;
         this.questTypeApi = questTypeApi;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.featureApi = featureApi;
         this.config = config;
         this.colors = colors;
@@ -171,20 +172,20 @@ public class CoreFeatureFactories {
         final Plugin plugin = BetonQuest.getInstance();
         final NotifyIORegistry notifyIOTypes = registries.notifyIO();
         notifyIOTypes.register("suppress", new SuppressNotifyIOFactory());
-        notifyIOTypes.register("chat", new ChatNotifyIOFactory(featureApi.conversationApi()));
-        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(plugin));
-        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory());
-        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(plugin));
-        notifyIOTypes.register("title", new TitleNotifyIOFactory());
-        notifyIOTypes.register("totem", new TotemNotifyIOFactory());
-        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory());
-        notifyIOTypes.register("sound", new SoundIOFactory());
+        notifyIOTypes.register("chat", new ChatNotifyIOFactory(variables, featureApi.conversationApi()));
+        notifyIOTypes.register("advancement", new AdvancementNotifyIOFactory(variables, plugin));
+        notifyIOTypes.register("actionbar", new ActionBarNotifyIOFactory(variables));
+        notifyIOTypes.register("bossbar", new BossBarNotifyIOFactory(variables, plugin));
+        notifyIOTypes.register("title", new TitleNotifyIOFactory(variables));
+        notifyIOTypes.register("totem", new TotemNotifyIOFactory(variables));
+        notifyIOTypes.register("subtitle", new SubTitleNotifyIOFactory(variables));
+        notifyIOTypes.register("sound", new SoundIOFactory(variables));
 
         final ScheduleRegistry eventSchedulingTypes = registries.eventScheduling();
-        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(variableProcessor, packManager),
+        eventSchedulingTypes.register("realtime-daily", new RealtimeDailyScheduleFactory(variables, packManager),
                 new RealtimeDailyScheduler(loggerFactory.create(RealtimeDailyScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
-        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(variableProcessor, packManager),
+        eventSchedulingTypes.register("realtime-cron", new RealtimeCronScheduleFactory(variables, packManager),
                 new RealtimeCronScheduler(loggerFactory.create(RealtimeCronScheduler.class, "Schedules"), questTypeApi, lastExecutionCache)
         );
 

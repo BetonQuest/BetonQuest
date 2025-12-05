@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
@@ -30,17 +30,17 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     /**
      * The variable processor used to process variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Create the weather condition factory.
      *
-     * @param data              the data used for checking the condition on the main thread
-     * @param variableProcessor the variable processor used to process variables
+     * @param data      the data used for checking the condition on the main thread
+     * @param variables the variable processor to create and resolve variables
      */
-    public WeatherConditionFactory(final PrimaryServerThreadData data, final VariableProcessor variableProcessor) {
+    public WeatherConditionFactory(final PrimaryServerThreadData data, final Variables variables) {
         this.data = data;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
             return new ThrowExceptionPlayerlessCondition();
         }
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
-        final Variable<World> world = new Variable<>(variableProcessor, instruction.getPackage(), worldString, Argument.WORLD);
+        final Variable<World> world = new Variable<>(variables, instruction.getPackage(), worldString, Argument.WORLD);
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }

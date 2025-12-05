@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
  * Class which provides Hologram creation.
  */
 public class HologramProvider implements Integrator {
+
     /**
      * Pattern to match an instruction variable in string.
      */
@@ -94,10 +95,10 @@ public class HologramProvider implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         this.locationHologramLoop = new LocationHologramLoop(loggerFactory, loggerFactory.create(LocationHologramLoop.class),
-                api.getQuestPackageManager(), plugin.getVariableProcessor(), this, plugin);
+                api.getQuestPackageManager(), api.getQuestTypeApi().variables(), this, plugin);
         plugin.addProcessor(locationHologramLoop);
         this.npcHologramLoop = new NpcHologramLoop(loggerFactory, loggerFactory.create(NpcHologramLoop.class),
-                plugin.getQuestPackageManager(), plugin, plugin.getVariableProcessor(), this,
+                plugin.getQuestPackageManager(), plugin, api.getQuestTypeApi().variables(), this,
                 api.getFeatureApi(), api.getFeatureRegistries().npc());
         plugin.addProcessor(npcHologramLoop);
         plugin.getServer().getPluginManager().registerEvents(new HologramListener(api.getProfileProvider()), plugin);
@@ -125,6 +126,7 @@ public class HologramProvider implements Integrator {
      * A listener class for bukkit events that holograms use.
      */
     public static class HologramListener implements Listener {
+
         /**
          * The profile provider instance.
          */

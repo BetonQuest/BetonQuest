@@ -4,13 +4,13 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.schedule.EventScheduling.ScheduleType;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
@@ -34,10 +34,10 @@ import static org.mockito.Mockito.*;
 class ScheduleTypeTest {
 
     /**
-     * VariableProcessor to create new Variables.
+     * Variable processor to create and resolve variables.
      */
     @Mock
-    private VariableProcessor variableProcessor;
+    private Variables variables;
 
     /**
      * The quest package manager to get quest packages from.
@@ -159,7 +159,7 @@ class ScheduleTypeTest {
     private final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
 
         private MockedScheduleFactory() {
-            super(variableProcessor, packManager);
+            super(variables, packManager);
         }
 
         @Override
@@ -175,7 +175,7 @@ class ScheduleTypeTest {
     private final class ThrowingUncheckedScheduleFactory extends BaseScheduleFactory<ThrowingUncheckedSchedule> {
 
         private ThrowingUncheckedScheduleFactory() {
-            super(variableProcessor, packManager);
+            super(variables, packManager);
         }
 
         @Override

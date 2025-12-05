@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -26,6 +26,7 @@ import java.util.Map;
  * The {@link PlayerHider} can hide others, if both the source and the target {@link Profile} meet all conditions.
  */
 public class PlayerHider {
+
     /**
      * The map's key is an array containing the source {@link Profile}'s conditions
      * and the map's value is an array containing the target {@link Profile}'s conditions.
@@ -55,14 +56,14 @@ public class PlayerHider {
     /**
      * Initialize and start a new {@link PlayerHider}.
      *
-     * @param plugin            the plugin instance
-     * @param api               the BetonQuest API instance
-     * @param variableProcessor the variable processor to resolve variables
-     * @param profileProvider   the profile provider instance
-     * @param config            the config to load from
+     * @param plugin          the plugin instance
+     * @param api             the BetonQuest API instance
+     * @param variables       the variable processor to create and resolve variables
+     * @param profileProvider the profile provider instance
+     * @param config          the config to load from
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final Plugin plugin, final BetonQuestApi api, final VariableProcessor variableProcessor,
+    public PlayerHider(final Plugin plugin, final BetonQuestApi api, final Variables variables,
                        final ProfileProvider profileProvider, final ConfigAccessor config) throws QuestException {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
@@ -77,8 +78,8 @@ public class PlayerHider {
             for (final String key : hiderSection.getKeys(false)) {
                 final String rawConditionsSource = hiderSection.getString(key + ".source_player");
                 final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                hiders.put(getConditions(variableProcessor, pack, key, rawConditionsSource),
-                        getConditions(variableProcessor, pack, key, rawConditionsTarget));
+                hiders.put(getConditions(variables, pack, key, rawConditionsSource),
+                        getConditions(variables, pack, key, rawConditionsTarget));
             }
         }
 
@@ -93,13 +94,13 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final VariableProcessor variableProcessor, final QuestPackage pack, final String key,
+    private ConditionID[] getConditions(final Variables variables, final QuestPackage pack, final String key,
                                         @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
             return new ConditionID[0];
         }
         try {
-            return new VariableList<>(variableProcessor, pack, rawConditions,
+            return new VariableList<>(variables, pack, rawConditions,
                     string -> new ConditionID(api.getQuestPackageManager(), pack, string))
                     .getValue(null).toArray(ConditionID[]::new);
         } catch (final QuestException e) {

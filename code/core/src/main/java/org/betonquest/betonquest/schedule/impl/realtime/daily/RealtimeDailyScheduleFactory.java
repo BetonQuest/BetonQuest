@@ -2,8 +2,8 @@ package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -24,11 +24,11 @@ public class RealtimeDailyScheduleFactory extends BaseScheduleFactory<RealtimeDa
     /**
      * Create a new Realtime Schedule Factory.
      *
-     * @param variableProcessor the variable processor to create new variables
-     * @param packManager       the quest package manager to get quest packages from
+     * @param variables   the variable processor to create and resolve variables
+     * @param packManager the quest package manager to get quest packages from
      */
-    public RealtimeDailyScheduleFactory(final VariableProcessor variableProcessor, final QuestPackageManager packManager) {
-        super(variableProcessor, packManager);
+    public RealtimeDailyScheduleFactory(final Variables variables, final QuestPackageManager packManager) {
+        super(variables, packManager);
     }
 
     @Override

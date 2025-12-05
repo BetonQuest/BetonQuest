@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify.io;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.jetbrains.annotations.Nullable;
@@ -14,13 +15,21 @@ import java.util.Map;
 public class TitleNotifyIOFactory implements NotifyIOFactory {
 
     /**
-     * Empty default constructor.
+     * Variable processor to create and resolve variables.
      */
-    public TitleNotifyIOFactory() {
+    private final Variables variables;
+
+    /**
+     * Create a new Title Notify IO factory.
+     *
+     * @param variables the variable processor to create and resolve variables
+     */
+    public TitleNotifyIOFactory(final Variables variables) {
+        this.variables = variables;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new TitleNotifyIO(pack, categoryData);
+        return new TitleNotifyIO(variables, pack, categoryData);
     }
 }

@@ -5,9 +5,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class ParsedSectionText extends ParsedText {
      * Loads value(s) from a key in a section, potentially identified by a language key.
      * When there is no section, the value will be identified by the default language.
      *
-     * @param variableProcessor the variable processor to create new variables
+     * @param variables         the variable processor to create and resolve variables
      * @param textParser        the text parser to parse the text
      * @param playerDataStorage the player data storage to get the player's language
      * @param pack              the pack to resolve variables
@@ -31,33 +31,33 @@ public class ParsedSectionText extends ParsedText {
      * @param languageProvider  the language provider to get the default language
      * @throws QuestException if there is no value, the default language is missing or the section format is invalid
      */
-    public ParsedSectionText(final VariableProcessor variableProcessor, final TextParser textParser,
+    public ParsedSectionText(final Variables variables, final TextParser textParser,
                              final PlayerDataStorage playerDataStorage, final QuestPackage pack,
                              final ConfigurationSection section, final String path,
                              final LanguageProvider languageProvider) throws QuestException {
-        super(textParser, parse(variableProcessor, pack, section, path, languageProvider), playerDataStorage, languageProvider);
+        super(textParser, parse(variables, pack, section, path, languageProvider), playerDataStorage, languageProvider);
     }
 
-    private static Map<String, Variable<String>> parse(final VariableProcessor variableProcessor, final QuestPackage pack,
+    private static Map<String, Variable<String>> parse(final Variables variables, final QuestPackage pack,
                                                        final ConfigurationSection section, final String path,
                                                        final LanguageProvider languageProvider) throws QuestException {
         if (section.isConfigurationSection(path)) {
-            return parseSection(variableProcessor, pack, section, path);
+            return parseSection(variables, pack, section, path);
         } else if (section.isList(path)) {
-            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variableProcessor, pack,
+            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variables, pack,
                     String.join("\n", section.getStringList(path)), Argument.STRING));
         } else if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variableProcessor, pack, raw, Argument.STRING));
+            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variables, pack, raw, Argument.STRING));
         } else {
             throw new QuestException("The '" + path + "' is missing!");
         }
     }
 
-    private static Map<String, Variable<String>> parseSection(final VariableProcessor variableProcessor, final QuestPackage pack,
+    private static Map<String, Variable<String>> parseSection(final Variables variables, final QuestPackage pack,
                                                               final ConfigurationSection textSection, final String path) throws QuestException {
         final ConfigurationSection subSection = textSection.getConfigurationSection(path);
         if (subSection == null) {
@@ -66,7 +66,7 @@ public class ParsedSectionText extends ParsedText {
         final Map<String, Variable<String>> texts = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
-                texts.put(key, new Variable<>(variableProcessor, pack,
+                texts.put(key, new Variable<>(variables, pack,
                         String.join("\n", subSection.getStringList(key)), Argument.STRING));
                 continue;
             }
@@ -74,7 +74,7 @@ public class ParsedSectionText extends ParsedText {
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }
-            texts.put(key, new Variable<>(variableProcessor, pack, raw, Argument.STRING));
+            texts.put(key, new Variable<>(variables, pack, raw, Argument.STRING));
         }
         if (texts.isEmpty()) {
             throw new QuestException("No values defined!");

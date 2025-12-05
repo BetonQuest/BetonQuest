@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,12 +36,13 @@ public class SubTitleNotifyIO extends NotifyIO {
     /**
      * Create a new Sub Title Notify IO.
      *
-     * @param pack the source pack to resolve variables
-     * @param data the customization data for notifications
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the source pack to resolve variables
+     * @param data      the customization data for notifications
      * @throws QuestException when the data could not be parsed
      */
-    public SubTitleNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
-        super(pack, data);
+    public SubTitleNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+        super(variables, pack, data);
 
         variableFadeIn = getNumberData("fadein", 10);
         variableStay = getNumberData("stay", 70);

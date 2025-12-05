@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify.io;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.bukkit.plugin.Plugin;
@@ -15,6 +16,11 @@ import java.util.Map;
 public class BossBarNotifyIOFactory implements NotifyIOFactory {
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * Plugin to start tasks.
      */
     private final Plugin plugin;
@@ -22,14 +28,16 @@ public class BossBarNotifyIOFactory implements NotifyIOFactory {
     /**
      * Create a new Factory.
      *
-     * @param plugin the plugin to start tasks
+     * @param variables the variable processor to create and resolve variables
+     * @param plugin    the plugin to start tasks
      */
-    public BossBarNotifyIOFactory(final Plugin plugin) {
+    public BossBarNotifyIOFactory(final Variables variables, final Plugin plugin) {
+        this.variables = variables;
         this.plugin = plugin;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new BossBarNotifyIO(pack, categoryData, plugin);
+        return new BossBarNotifyIO(variables, pack, categoryData, plugin);
     }
 }

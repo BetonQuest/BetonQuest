@@ -9,6 +9,7 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -28,6 +29,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class AdvancementNotifyIO extends NotifyIO {
+
     /**
      * Plugin to start tasks.
      */
@@ -46,13 +48,14 @@ public class AdvancementNotifyIO extends NotifyIO {
     /**
      * Create a new Advancement Notify IO.
      *
-     * @param pack   the source pack to resolve variables
-     * @param data   the customization data for notifications
-     * @param plugin the plugin to start tasks
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the source pack to resolve variables
+     * @param data      the customization data for notifications
+     * @param plugin    the plugin to start tasks
      * @throws QuestException when data could not be parsed
      */
-    public AdvancementNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
-        super(pack, data);
+    public AdvancementNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data, final Plugin plugin) throws QuestException {
+        super(variables, pack, data);
         this.plugin = plugin;
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);

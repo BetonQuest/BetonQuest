@@ -9,11 +9,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
@@ -197,6 +197,7 @@ import java.time.InstantSource;
  */
 @SuppressWarnings({"PMD.NcssCount", "PMD.AvoidDuplicateLiterals"})
 public class CoreQuestTypes {
+
     /**
      * Logger Factory to create new custom Logger from.
      */
@@ -233,9 +234,9 @@ public class CoreQuestTypes {
     private final PluginMessage pluginMessage;
 
     /**
-     * Variable processor to create new variables.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variableProcessor;
 
     /**
      * Storage for global data.
@@ -272,7 +273,7 @@ public class CoreQuestTypes {
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
      * @param pluginMessage     the plugin message instance
-     * @param variableProcessor the variable processor to create new variables
+     * @param variableProcessor the variable processor to create and resolve variables
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
@@ -283,7 +284,7 @@ public class CoreQuestTypes {
     public CoreQuestTypes(final BetonQuestLoggerFactory loggerFactory,
                           final Server server, final BukkitScheduler scheduler, final BetonQuest betonQuest,
                           final QuestTypeApi questTypeApi, final FeatureApi featureApi, final PluginMessage pluginMessage,
-                          final VariableProcessor variableProcessor, final GlobalData globalData,
+                          final Variables variableProcessor, final GlobalData globalData,
                           final PlayerDataStorage dataStorage, final ProfileProvider profileProvider,
                           final LanguageProvider languageProvider, final PlayerDataFactory playerDataFactory) {
         this.loggerFactory = loggerFactory;

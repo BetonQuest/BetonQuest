@@ -10,11 +10,11 @@ import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.StartTask;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -36,6 +36,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NpcHologramLoop extends HologramLoop implements Listener, StartTask {
+
     /**
      * The task that lets holograms follow NPCs.
      */
@@ -70,20 +71,20 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * Starts a loop, which checks hologram conditions and shows them to players.
      * Also starts the npc update listener.
      *
-     * @param loggerFactory     logger factory to use
-     * @param log               the logger that will be used for logging
-     * @param packManager       the quest package manager to get quest packages from
-     * @param plugin            the plugin to schedule tasks
-     * @param variableProcessor the variable processor to use
-     * @param hologramProvider  the hologram provider to create new holograms
-     * @param featureApi        the Feature API to get NPC instances
-     * @param npcRegistry       the registry to create identifier strings from Npcs
+     * @param loggerFactory    logger factory to use
+     * @param log              the logger that will be used for logging
+     * @param packManager      the quest package manager to get quest packages from
+     * @param plugin           the plugin to schedule tasks
+     * @param variables        the variable processor to create and resolve variables
+     * @param hologramProvider the hologram provider to create new holograms
+     * @param featureApi       the Feature API to get NPC instances
+     * @param npcRegistry      the registry to create identifier strings from Npcs
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final QuestPackageManager packManager, final Plugin plugin,
-                           final VariableProcessor variableProcessor, final HologramProvider hologramProvider,
+                           final Variables variables, final HologramProvider hologramProvider,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry) {
-        super(loggerFactory, log, packManager, variableProcessor, hologramProvider, "Npc Hologram", "npc_holograms");
+        super(loggerFactory, log, packManager, variables, hologramProvider, "Npc Hologram", "npc_holograms");
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
@@ -115,7 +116,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
-            vector.add(new Variable<>(variableProcessor, pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
+            vector.add(new Variable<>(variables, pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);
@@ -164,7 +165,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new VariableList<>(variableProcessor, pack, section.getString("npcs", ""), value -> new NpcID(packManager, pack, value)).getValue(null);
+        return new VariableList<>(variables, pack, section.getString("npcs", ""), value -> new NpcID(packManager, pack, value)).getValue(null);
     }
 
     private void updateHologram(final NpcHologram npcHologram) {
@@ -242,5 +243,6 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      */
     private record NpcHologram(Map<NpcID, BetonHologram> npcHolograms, List<BetonHologram> holograms,
                                Vector vector, boolean follow) {
+
     }
 }

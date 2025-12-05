@@ -11,8 +11,8 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -23,6 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * @param <T> the type
  */
 public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionProcessor<I, T> {
+
     /**
      * Logger Factory to create Menu Item Logger.
      */
@@ -39,9 +40,9 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
     protected final QuestTypeApi questTypeApi;
 
     /**
-     * The Variable Processor.
+     * Variable processor to create and resolve variables.
      */
-    protected final VariableProcessor variableProcessor;
+    protected final Variables variables;
 
     /**
      * The Item Parser instance.
@@ -51,25 +52,25 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
     /**
      * Create a new Processor to create and store Menu Items.
      *
-     * @param log               the custom logger for this class
-     * @param packManager       the quest package manager to get quest packages from
-     * @param readable          the type name used for logging, with the first letter in upper case
-     * @param internal          the section name and/or bstats topic identifier
-     * @param loggerFactory     the logger factory to class specific loggers with
-     * @param textCreator       the text creator to parse text
-     * @param variableProcessor the variable resolver
-     * @param questTypeApi      the QuestTypeApi
-     * @param featureApi        the Feature API
+     * @param log           the custom logger for this class
+     * @param packManager   the quest package manager to get quest packages from
+     * @param readable      the type name used for logging, with the first letter in upper case
+     * @param internal      the section name and/or bstats topic identifier
+     * @param loggerFactory the logger factory to class specific loggers with
+     * @param textCreator   the text creator to parse text
+     * @param variables     the variable processor to create and resolve variables
+     * @param questTypeApi  the QuestTypeApi
+     * @param featureApi    the Feature API
      */
     public RPGMenuProcessor(final BetonQuestLogger log, final QuestPackageManager packManager, final String readable,
                             final String internal, final BetonQuestLoggerFactory loggerFactory,
-                            final ParsedSectionTextCreator textCreator, final VariableProcessor variableProcessor,
+                            final ParsedSectionTextCreator textCreator, final Variables variables,
                             final QuestTypeApi questTypeApi, final FeatureApi featureApi) {
         super(log, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.itemParser = new ItemParser(featureApi);
     }
 
@@ -77,6 +78,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
      * Class to bundle objects required for creation.
      */
     protected class CreationHelper {
+
         /**
          * Source Pack.
          */
@@ -124,7 +126,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
          */
         protected <U extends Identifier> VariableList<U> getID(final String path, final IdentifierArgument<U> argument)
                 throws QuestException {
-            return new VariableList<>(variableProcessor, pack, section.getString(path, ""), value -> argument.apply(packManager, pack, value));
+            return new VariableList<>(variables, pack, section.getString(path, ""), value -> argument.apply(packManager, pack, value));
         }
     }
 }

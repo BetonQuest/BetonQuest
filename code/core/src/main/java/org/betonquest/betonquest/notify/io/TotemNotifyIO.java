@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
@@ -32,12 +33,13 @@ public class TotemNotifyIO extends NotifyIO {
     /**
      * Creates a new TotemNotifyIO instance based on the user's instruction string.
      *
-     * @param pack the related {@link QuestPackage}
-     * @param data map with user instructions.
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the related {@link QuestPackage}
+     * @param data      map with user instructions.
      * @throws QuestException if the user's input couldn't be parsed.
      */
-    public TotemNotifyIO(@Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
-        super(pack, data);
+    public TotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+        super(variables, pack, data);
         variableCustomModelData = getNumberData("custommodeldata", 2);
     }
 

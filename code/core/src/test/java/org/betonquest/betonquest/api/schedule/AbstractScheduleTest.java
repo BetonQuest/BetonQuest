@@ -3,8 +3,8 @@ package org.betonquest.betonquest.api.schedule;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 public abstract class AbstractScheduleTest {
 
     /**
-     * VariableProcessor to create new Variables.
+     * Variable processor to create and resolve variables.
      */
     @Mock
-    protected VariableProcessor variableProcessor;
+    protected Variables variables;
 
     /**
      * The quest package manager to get quest packages from.

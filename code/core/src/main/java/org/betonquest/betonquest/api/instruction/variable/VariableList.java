@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.Map;
  * @param <T> the variable type
  */
 public class VariableList<T> extends Variable<List<T>> {
+
     /**
      * Creates a new VariableList.
      *
@@ -40,15 +41,15 @@ public class VariableList<T> extends Variable<List<T>> {
      * Resolves a string that may contain variables to a variable of the given type.
      * Any constant part will be validated in construction.
      *
-     * @param variableProcessor the processor to create the variables
-     * @param pack              the package in which the variable is used in
-     * @param input             the string that may contain variables
-     * @param resolver          the resolver to convert the resolved variable to the given type
+     * @param variables the variable processor to create and resolve variables
+     * @param pack      the package in which the variable is used in
+     * @param input     the string that may contain variables
+     * @param resolver  the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
+    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
                         final VariableResolver<T> resolver) throws QuestException {
-        this(variableProcessor, pack, input, resolver, (value) -> {
+        this(variables, pack, input, resolver, (value) -> {
         });
     }
 
@@ -56,16 +57,16 @@ public class VariableList<T> extends Variable<List<T>> {
      * Resolves a string that may contain variables to a variable of the given type.
      * Any constant part will be validated in construction.
      *
-     * @param variableProcessor the processor to create the variables
-     * @param pack              the package in which the variable is used in
-     * @param input             the string that may contain variables
-     * @param resolver          the resolver to convert the resolved variable to the given type
-     * @param valueChecker      the checker to verify valid lists
+     * @param variables    the variable processor to create and resolve variables
+     * @param pack         the package in which the variable is used in
+     * @param input        the string that may contain variables
+     * @param resolver     the resolver to convert the resolved variable to the given type
+     * @param valueChecker the checker to verify valid lists
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
+    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
                         final VariableResolver<T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        this(variableProcessor, pack, input, new MarkedResolver<>(new VariableResolver<>() {
+        this(variables, pack, input, new MarkedResolver<>(new VariableResolver<>() {
             @Override
             public List<T> apply(final String value) throws QuestException {
                 final List<T> list = new ArrayList<>();
@@ -87,12 +88,12 @@ public class VariableList<T> extends Variable<List<T>> {
         }));
     }
 
-    private VariableList(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
+    private VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
                          final MarkedResolver<T> resolver) throws QuestException {
-        super(variableProcessor, pack, input, resolver);
+        super(variables, pack, input, resolver);
         if (!resolver.called) {
             for (final String unresolved : StringUtils.split(input, ',')) {
-                new Variable<>(variableProcessor, pack, unresolved, resolver);
+                new Variable<>(variables, pack, unresolved, resolver);
             }
         }
     }

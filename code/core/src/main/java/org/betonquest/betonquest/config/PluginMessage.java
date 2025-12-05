@@ -14,10 +14,10 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.text.ParsedText;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -47,6 +47,7 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class PluginMessage {
+
     /**
      * The scheme for a JAR file.
      */
@@ -63,9 +64,9 @@ public class PluginMessage {
     private final BetonQuestLogger log;
 
     /**
-     * The {@link VariableProcessor} instance.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * The {@link TextParser} instance.
@@ -102,19 +103,19 @@ public class PluginMessage {
      *
      * @param log                   the logger for invalid file names
      * @param instance              the BetonQuest instance
-     * @param variableProcessor     the {@link VariableProcessor} instance
+     * @param variables             the variable processor to create and resolve variables
      * @param playerDataStorage     the {@link PlayerDataStorage} instance
      * @param textParser            the {@link TextParser} instance
      * @param configAccessorFactory the config accessor factory
      * @param languageProvider      the {@link LanguageProvider} instance
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance, final VariableProcessor variableProcessor,
+    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance, final Variables variables,
                          final PlayerDataStorage playerDataStorage, final TextParser textParser,
                          final ConfigAccessorFactory configAccessorFactory, final LanguageProvider languageProvider)
             throws QuestException {
         this.log = log;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
@@ -217,7 +218,7 @@ public class PluginMessage {
             final String key = entry.getKey();
             final Map<String, Variable<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
-                values.put(value.getKey(), new Variable<>(variableProcessor, null, value.getValue(), Argument.STRING));
+                values.put(value.getKey(), new Variable<>(variables, null, value.getValue(), Argument.STRING));
             }
             loadedMessages.put(key, new ParsedText(textParser, values, playerDataStorage, languageProvider));
         }

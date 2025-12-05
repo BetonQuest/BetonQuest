@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.notify;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
@@ -8,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -23,6 +23,7 @@ import java.util.Map;
  * Plays a sound to a player.
  */
 class NotifySound {
+
     /**
      * Key of sound to play.
      */
@@ -59,6 +60,11 @@ class NotifySound {
     private static final String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * Source of player to play the sound for.
      */
     private final QuestConsumer<OnlineProfile> soundPlayer;
@@ -76,6 +82,7 @@ class NotifySound {
      * @throws QuestException when the data could not be parsed
      */
     protected NotifySound(final NotifyIO notify) throws QuestException {
+        this.variables = notify.variables;
         this.pack = notify.pack;
         final Map<String, String> data = notify.data;
 
@@ -173,7 +180,7 @@ class NotifySound {
     @Nullable
     private Variable<Location> getVariableLocation(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, locationString, LocationParser.LOCATION);
+        return locationString == null ? null : new Variable<>(variables, pack, locationString, LocationParser.LOCATION);
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws QuestException {
@@ -189,7 +196,7 @@ class NotifySound {
     private Variable<Vector> getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
         if (playerOffsetString != null) {
             try {
-                return new Variable<>(BetonQuest.getInstance().getVariableProcessor(), pack, playerOffsetString, LocationParser.VECTOR);
+                return new Variable<>(variables, pack, playerOffsetString, LocationParser.VECTOR);
             } catch (final QuestException e) {
                 throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
             }

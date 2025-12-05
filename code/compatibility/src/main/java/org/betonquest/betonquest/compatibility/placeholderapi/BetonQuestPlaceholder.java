@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @SuppressFBWarnings("HE_INHERITS_EQUALS_USE_HASHCODE")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -28,7 +29,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
      * The variable processor to use for creating the placeholder variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * The combined authors.
@@ -43,18 +44,18 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
      * Create a new BetonQuest PAPI Placeholder.
      *
-     * @param log               the custom logger for this class
-     * @param profileProvider   the profile provider instance
-     * @param variableProcessor the processor to create new variables
-     * @param authors           the combined author string
-     * @param version           the version string
+     * @param log             the custom logger for this class
+     * @param profileProvider the profile provider instance
+     * @param variables       the variable processor to create and resolve variables
+     * @param authors         the combined author string
+     * @param version         the version string
      */
-    public BetonQuestPlaceholder(final BetonQuestLogger log, final ProfileProvider profileProvider, final VariableProcessor variableProcessor,
+    public BetonQuestPlaceholder(final BetonQuestLogger log, final ProfileProvider profileProvider, final Variables variables,
                                  final String authors, final String version) {
         super();
         this.log = log;
         this.profileProvider = profileProvider;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.authors = authors;
         this.version = version;
     }
@@ -88,7 +89,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     public String onPlaceholderRequest(@Nullable final Player player, final String identifier) {
         final Profile profile = player == null ? null : profileProvider.getProfile(player);
         try {
-            return variableProcessor.getValue(identifier, profile);
+            return variables.getValue(identifier, profile);
         } catch (final QuestException e) {
             log.warn("Could not parse through PAPI requested variable: " + identifier, e);
             return "";

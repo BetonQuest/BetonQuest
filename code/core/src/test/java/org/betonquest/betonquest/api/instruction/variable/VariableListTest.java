@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ class VariableListTest {
      * The variable processor to create variables.
      */
     @Mock
-    private VariableProcessor variableProcessor;
+    private Variables variables;
 
     @BeforeEach
     void setupQuestPackage() {
@@ -53,7 +53,7 @@ class VariableListTest {
     }
 
     private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
-        return new VariableList<>(variableProcessor, questPackage, input, value -> new EventID(mock(QuestPackageManager.class), questPackage, value));
+        return new VariableList<>(variables, questPackage, input, value -> new EventID(mock(QuestPackageManager.class), questPackage, value));
     }
 
     @Test
@@ -92,7 +92,7 @@ class VariableListTest {
     void getListWithBackedVariable() throws QuestException {
         final VariableAdapter variable = mock(VariableAdapter.class);
         when(variable.getValue(any())).thenReturn("b");
-        when(variableProcessor.create(questPackage, "%bVar%")).thenReturn(variable);
+        when(variables.create(questPackage, "%bVar%")).thenReturn(variable);
         final Variable<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
                 "Validating existing variables should not fail");
         assertDoesNotThrow(() -> list.getValue(null), "Getting existing variable should not fail");
@@ -100,7 +100,7 @@ class VariableListTest {
 
     @Test
     void constructListWithNonBackedVariable() throws QuestException {
-        when(variableProcessor.create(questPackage, "%otherVar%"))
+        when(variables.create(questPackage, "%otherVar%"))
                 .thenThrow(new QuestException("The variable does not exist"));
         assertThrows(QuestException.class, () -> getVariableList("a,%otherVar%,c"),
                 "Parsing non-existing variable should fail");

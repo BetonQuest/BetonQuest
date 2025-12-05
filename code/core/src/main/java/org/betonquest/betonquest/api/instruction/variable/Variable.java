@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * @param <T> the type of the variable
  */
 public class Variable<T> {
+
     /**
      * The pattern to match variables in a string marked with percent signs.<br>
      * The percentage can be escaped with a backslash, and the backslash can be escaped with another backslash.
@@ -51,7 +52,7 @@ public class Variable<T> {
      * @param resolver          the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public Variable(final VariableProcessor variableProcessor, @Nullable final QuestPackage pack, final String input,
+    public Variable(final Variables variableProcessor, @Nullable final QuestPackage pack, final String input,
                     final VariableResolver<T> resolver) throws QuestException {
         final Map<String, VariableAdapter> variables = getVariables(variableProcessor, pack, input);
         if (variables.isEmpty()) {
@@ -62,7 +63,7 @@ public class Variable<T> {
         }
     }
 
-    private Map<String, VariableAdapter> getVariables(final VariableProcessor variableProcessor,
+    private Map<String, VariableAdapter> getVariables(final Variables variableProcessor,
                                                       @Nullable final QuestPackage pack,
                                                       final String input)
             throws QuestException {
@@ -123,6 +124,7 @@ public class Variable<T> {
      */
     @FunctionalInterface
     private interface ValueResolver<T> extends QuestFunction<Profile, T> {
+
         @Override
         T apply(@Nullable Profile arg) throws QuestException;
     }

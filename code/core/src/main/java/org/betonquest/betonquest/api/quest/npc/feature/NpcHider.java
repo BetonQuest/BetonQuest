@@ -8,12 +8,12 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.NpcProcessor;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -32,6 +32,7 @@ import java.util.Set;
  * Hides (or shows) Npcs based on conditions defined in the {@code hide_npcs} section of a {@link QuestPackage}.
  */
 public class NpcHider {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -45,7 +46,7 @@ public class NpcHider {
     /**
      * Processor to create new variables.
      */
-    private final VariableProcessor variableProcessor;
+    private final Variables variables;
 
     /**
      * Processor to get Npcs.
@@ -81,19 +82,19 @@ public class NpcHider {
     /**
      * Create and start a new Npc Hider.
      *
-     * @param log               the custom logger for this class
-     * @param packManager       the quest package manager to get quest packages from
-     * @param variableProcessor the variable processor to resolve variables
-     * @param npcProcessor      the processor to get nps
-     * @param questTypeApi      the Quest Type API to check hiding conditions
-     * @param profileProvider   the profile provider instance
-     * @param npcTypes          the Npc types to get NpcIds
+     * @param log             the custom logger for this class
+     * @param packManager     the quest package manager to get quest packages from
+     * @param variables       the variable processor to create and resolve variables
+     * @param npcProcessor    the processor to get nps
+     * @param questTypeApi    the Quest Type API to check hiding conditions
+     * @param profileProvider the profile provider instance
+     * @param npcTypes        the Npc types to get NpcIds
      */
-    public NpcHider(final BetonQuestLogger log, final QuestPackageManager packManager, final VariableProcessor variableProcessor, final NpcProcessor npcProcessor,
+    public NpcHider(final BetonQuestLogger log, final QuestPackageManager packManager, final Variables variables, final NpcProcessor npcProcessor,
                     final QuestTypeApi questTypeApi, final ProfileProvider profileProvider, final NpcRegistry npcTypes) {
         this.log = log;
         this.packManager = packManager;
-        this.variableProcessor = variableProcessor;
+        this.variables = variables;
         this.npcProcessor = npcProcessor;
         this.questTypeApi = questTypeApi;
         this.profileProvider = profileProvider;
@@ -124,7 +125,7 @@ public class NpcHider {
         if (conditionsString == null) {
             throw new QuestException("No conditions defined");
         }
-        final List<ConditionID> conditions = new VariableList<>(variableProcessor, pack, conditionsString,
+        final List<ConditionID> conditions = new VariableList<>(variables, pack, conditionsString,
                 string -> new ConditionID(packManager, pack, string)).getValue(null);
 
         if (npcs.containsKey(npcId)) {

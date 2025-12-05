@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
-import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.util.math.tokens.Token;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
 @ExtendWith(BetonQuestLoggerService.class)
 class TokenizerTest {
+
     /**
      * Precision up to which to check equality of floating point numbers.
      */
@@ -38,9 +39,9 @@ class TokenizerTest {
     private static final QuestPackage TEST_PACK = mock(QuestPackage.class);
 
     /**
-     * The variable processor to use for variable resolution.
+     * Variable processor to create and resolve variables.
      */
-    private final VariableProcessor variableProcessor = mock(VariableProcessor.class);
+    private final Variables variableProcessor = mock(Variables.class);
 
     @BeforeAll
     static void setUp() {
@@ -1098,5 +1099,6 @@ class TokenizerTest {
      * @param value The variable value.
      */
     private record ProtoVariable(String key, String value) {
+
     }
 }
