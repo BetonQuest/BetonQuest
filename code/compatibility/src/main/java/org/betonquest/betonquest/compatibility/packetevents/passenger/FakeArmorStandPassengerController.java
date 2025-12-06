@@ -1,9 +1,6 @@
 package org.betonquest.betonquest.compatibility.packetevents.passenger;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
-import com.github.retrooper.packetevents.event.PacketListener;
-import com.github.retrooper.packetevents.event.PacketListenerCommon;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
@@ -12,23 +9,16 @@ import org.betonquest.betonquest.compatibility.packetevents.conversation.input.C
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A FakeArmorStandPassenger that listens to input packets and delegates the inputs to a Conversation.
  */
-public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements ConversationSession, PacketListener {
+public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements ConversationSession {
 
     /**
      * The conversation action to call.
      */
     private final ConversationAction action;
-
-    /**
-     * The registered packet listener.
-     */
-    @Nullable
-    private PacketListenerCommon registeredListener;
 
     /**
      * Constructs a new FakeArmorStandPassenger that also catches control packets for the armor stand.
@@ -46,14 +36,10 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     @Override
     public void begin() {
         mount(getBlockBelowPlayer(player));
-        this.registeredListener = packetEventsAPI.getEventManager().registerListener(this, PacketListenerPriority.NORMAL);
     }
 
     @Override
     public void end() {
-        if (registeredListener != null) {
-            packetEventsAPI.getEventManager().unregisterListener(registeredListener);
-        }
         unmount();
     }
 
@@ -69,6 +55,7 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_INPUT) {
             playerInput(event);
         }
+        super.onPacketReceive(event);
     }
 
     private void steer(final PacketReceiveEvent event) {

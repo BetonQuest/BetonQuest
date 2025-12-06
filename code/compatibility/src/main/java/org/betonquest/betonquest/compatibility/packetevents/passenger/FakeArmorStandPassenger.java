@@ -1,11 +1,18 @@
 package org.betonquest.betonquest.compatibility.packetevents.passenger;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.event.PacketListener;
+import com.github.retrooper.packetevents.event.PacketListenerCommon;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
@@ -17,12 +24,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Collection;
@@ -34,7 +43,8 @@ import java.util.Set;
 /**
  * Creates a fake armor stand and mounts the player on it.
  */
-public class FakeArmorStandPassenger implements Listener {
+@SuppressWarnings("PMD.CouplingBetweenObjects")
+public class FakeArmorStandPassenger implements PacketListener, Listener {
 
     /**
      * The plugin instance.
@@ -55,6 +65,12 @@ public class FakeArmorStandPassenger implements Listener {
      * The armor stand entity ID.
      */
     private final int armorStandId;
+
+    /**
+     * The registered packet listener.
+     */
+    @Nullable
+    private PacketListenerCommon registeredListener;
 
     /**
      * Constructs a new FakeArmorStandPassenger that also created a new entity ID for the armor stand.
@@ -83,7 +99,7 @@ public class FakeArmorStandPassenger implements Listener {
      * @return the location on the top of the block below the player
      */
     public static Location getBlockBelowPlayer(final Player player) {
-        if (player.isFlying()) {
+        if (player.isFlying() || player.getVehicle() != null) {
             return player.getLocation();
         }
 
@@ -160,6 +176,7 @@ public class FakeArmorStandPassenger implements Listener {
 
         player.sendActionBar(Component.empty());
 
+        this.registeredListener = packetEventsAPI.getEventManager().registerListener(this, PacketListenerPriority.NORMAL);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
@@ -169,8 +186,40 @@ public class FakeArmorStandPassenger implements Listener {
     public void unmount() {
         final WrapperPlayServerDestroyEntities standDestroyPacket = new WrapperPlayServerDestroyEntities(armorStandId);
         packetEventsAPI.getPlayerManager().sendPacket(player, standDestroyPacket);
+        if (registeredListener != null) {
+            packetEventsAPI.getEventManager().unregisterListener(registeredListener);
+        }
+        remountPlayer();
 
         HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public void onPacketReceive(final PacketReceiveEvent event) {
+        if (event.isCancelled() || !player.equals(event.getPlayer())) {
+            return;
+        }
+        // TODO version switch:
+        //  Remove this code when only 1.21.3+ is supported
+        if (event.getPacketType() == PacketType.Play.Client.STEER_VEHICLE) {
+            final WrapperPlayClientSteerVehicle steerVehicle = new WrapperPlayClientSteerVehicle(event);
+            if (steerVehicle.isUnmount()) {
+                event.setCancelled(true);
+            }
+        } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_INPUT) {
+            final WrapperPlayClientPlayerInput playerInput = new WrapperPlayClientPlayerInput(event);
+            if (playerInput.isShift()) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private void remountPlayer() {
+        final Entity vehicle = player.getVehicle();
+        if (vehicle != null) {
+            packetEventsAPI.getPlayerManager().sendPacket(player, new WrapperPlayServerSetPassengers(
+                    vehicle.getEntityId(), new int[]{player.getEntityId()}));
+        }
     }
 
     /**

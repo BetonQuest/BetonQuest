@@ -53,7 +53,7 @@ public class FreezeEventFactory implements PlayerEventFactory {
         this.loggerFactory = loggerFactory;
         this.data = data;
     }
-    
+
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> ticks = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
