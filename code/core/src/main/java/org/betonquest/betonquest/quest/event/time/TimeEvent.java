@@ -12,10 +12,6 @@ import org.jetbrains.annotations.Nullable;
  * The time event, changing the time on the server.
  */
 public class TimeEvent implements NullableEvent {
-    /**
-     * The type of time that will be applied.
-     */
-    private final Time time;
 
     /**
      * The selector to get the world for that the time should be set.
@@ -25,7 +21,7 @@ public class TimeEvent implements NullableEvent {
     /**
      * The raw time value that will be applied.
      */
-    private final Variable<Number> rawTime;
+    private final Variable<TimeChange> timeChange;
 
     /**
      * If the rawTime needs to be transformed into Minecraft format.
@@ -35,14 +31,12 @@ public class TimeEvent implements NullableEvent {
     /**
      * Creates the time event.
      *
-     * @param time          the time type to set
-     * @param rawTime       the raw time value to set
+     * @param timeChange    the time type to set
      * @param worldSelector to get the world that should be affected
      * @param hourFormat    if the time needs to be multiplied with 1000
      */
-    public TimeEvent(final Time time, final Variable<Number> rawTime, final Selector<World> worldSelector, final boolean hourFormat) {
-        this.time = time;
-        this.rawTime = rawTime;
+    public TimeEvent(final Variable<TimeChange> timeChange, final Selector<World> worldSelector, final boolean hourFormat) {
+        this.timeChange = timeChange;
         this.worldSelector = worldSelector;
         this.hourFormat = hourFormat;
     }
@@ -50,8 +44,7 @@ public class TimeEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final World world = worldSelector.selectFor(profile);
-        final double timeValue = rawTime.getValue(profile).doubleValue();
-        final long actualTime = (long) Math.abs(hourFormat ? timeValue * 1000 : timeValue);
-        world.setTime(time.applyTo(world, actualTime));
+        final TimeChange change = timeChange.getValue(profile);
+        change.applyTo(world, hourFormat);
     }
 }

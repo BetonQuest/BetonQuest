@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.potion.PotionEffectType;
 
@@ -12,19 +14,19 @@ public class EffectCondition implements OnlineCondition {
     /**
      * The type of the potion effect.
      */
-    private final PotionEffectType type;
+    private final Variable<PotionEffectType> type;
 
     /**
      * Create a new effect condition.
      *
      * @param type the type of the potion effect
      */
-    public EffectCondition(final PotionEffectType type) {
+    public EffectCondition(final Variable<PotionEffectType> type) {
         this.type = type;
     }
 
     @Override
-    public boolean check(final OnlineProfile profile) {
-        return profile.getPlayer().hasPotionEffect(type);
+    public boolean check(final OnlineProfile profile) throws QuestException {
+        return profile.getPlayer().hasPotionEffect(type.getValue(profile));
     }
 }

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.biome;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -40,15 +41,10 @@ public class BiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Biome biome;
-        try {
-            biome = Biome.valueOf(instruction.get(Argument.STRING).getValue(null));
-        } catch (final IllegalStateException e) {
-            throw new QuestException("Invalid biome name: " + instruction.current(), e);
-        }
+        final Variable<Biome> biomeVariable = instruction.get(Argument.ENUM(Biome.class));
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new BiomeCondition(biome), log, instruction.getPackage()), data
+                new OnlineConditionAdapter(new BiomeCondition(biomeVariable), log, instruction.getPackage()), data
         );
     }
 }
