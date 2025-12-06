@@ -37,6 +37,7 @@ import java.util.function.Function;
  * Integrator for PacketEvents.
  */
 public class PacketEventsIntegrator implements Integrator {
+
     /**
      * Function to create chat message packets based on server version.
      */
@@ -75,7 +76,7 @@ public class PacketEventsIntegrator implements Integrator {
         api.getFeatureRegistries().interceptor().register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(packetEventsAPI, api.getLoggerFactory(), data));
+        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin, packetEventsAPI, api.getLoggerFactory(), data));
     }
 
     private PacketChatHistory getPacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final PluginManager pluginManager, final BetonQuest plugin) {
