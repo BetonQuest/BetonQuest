@@ -3,12 +3,13 @@ package org.betonquest.betonquest;
 import com.google.common.base.Suppliers;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
-import org.betonquest.betonquest.api.common.component.font.FontIndexFileFormat;
+import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -62,6 +63,7 @@ import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
+import org.betonquest.betonquest.library.font.FontRetriever;
 import org.betonquest.betonquest.listener.CustomDropListener;
 import org.betonquest.betonquest.listener.JoinQuitListener;
 import org.betonquest.betonquest.listener.MobKillListener;
@@ -450,45 +452,13 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private boolean setupFontRegistry() {
         final Key defaultkey = Key.key("default");
         final File fontFolder = new File(getDataFolder(), "fonts");
+        final FontRetriever fontRetriever = new FontRetriever();
         fontRegistry = new FontRegistry(defaultkey);
         saveResource("fonts/default.font.bin", true);
-        final File[] binaryIndexFiles = fontFolder.listFiles((file, name) -> name.endsWith(".bin"));
-        final File[] jsonIndexFiles = fontFolder.listFiles((file, name) -> name.endsWith(".json"));
-        if (binaryIndexFiles == null || jsonIndexFiles == null) {
-            log.warn("Could not load fonts! No fonts found in fonts folder!");
-            return false;
-        }
-        int bins = 0;
-        for (final File binaryIndexFile : binaryIndexFiles) {
-            final Key keyForFontIndexFile = getKeyForFontIndexFile(binaryIndexFile);
-            if (fontRegistry.loadFontFromIndex(keyForFontIndexFile, binaryIndexFile.toPath(), FontIndexFileFormat.BINARY)) {
-                log.info("Loaded font index file: " + binaryIndexFile.getName() + " with key: " + keyForFontIndexFile.asString());
-                bins++;
-            } else {
-                log.warn("Could not load binary font index file: " + binaryIndexFile.getName());
-            }
-        }
-        int jsons = 0;
-        for (final File jsonIndexFile : jsonIndexFiles) {
-            final Key keyForFontIndexFile = getKeyForFontIndexFile(jsonIndexFile);
-            if (fontRegistry.loadFontFromIndex(keyForFontIndexFile, jsonIndexFile.toPath(), FontIndexFileFormat.JSON)) {
-                jsons++;
-            } else {
-                log.warn("Could not load json font index file: " + jsonIndexFile.getName());
-            }
-        }
-        if (jsons + bins == 0) {
-            log.warn("Could not load fonts! No fonts found in fonts folder!");
-            return false;
-        }
-        log.info("Loaded " + bins + " binary font indices and " + jsons + " json font indices.");
-        return true;
-    }
-
-    private Key getKeyForFontIndexFile(final File fontIndexFile) {
-        final String fileName = fontIndexFile.getName();
-        final String keyName = fileName.substring(0, fileName.indexOf('.'));
-        return Key.key(keyName, ':');
+        final List<Pair<Key, Font>> fonts = fontRetriever.loadFonts(fontFolder.toPath());
+        fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
+        log.info("Loaded " + fonts.size() + " font index files.");
+        return !fonts.isEmpty();
     }
 
     private void setupDatabase() {
