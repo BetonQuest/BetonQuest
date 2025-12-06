@@ -78,6 +78,7 @@ markdown_extensions:
   - footnotes
   - md_in_html
   - meta
+  - tables
   - pymdownx.highlight
   - pymdownx.arithmatex:
       generic: true

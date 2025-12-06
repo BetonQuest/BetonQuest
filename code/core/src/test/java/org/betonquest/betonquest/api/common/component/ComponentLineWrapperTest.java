@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -170,7 +171,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
 
             @ParameterizedTest
             @MethodSource("stringsToWrap")
-            void wrap_line(final String input, final List<String> expected, final int lineLength) {
+            void wrap_line(final String input, final List<String> expected, final int lineLength) throws IOException {
 
                 final Component deserialize = MiniMessage.miniMessage().deserialize(input);
                 final FixedComponentLineWrapper wrapper = new FixedComponentLineWrapper(getFontRegistry(), lineLength);
@@ -245,7 +246,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
 
             @ParameterizedTest
             @MethodSource("stringsToWrap")
-            void wrap_line(final String input, final List<Component> expected, final int lineLength) {
+            void wrap_line(final String input, final List<Component> expected, final int lineLength) throws IOException {
                 final Component deserialize = MiniMessage.miniMessage().deserialize(input);
                 final FixedComponentLineWrapper wrapper = new FixedComponentLineWrapper(getFontRegistry(), lineLength);
                 assertWrap(deserialize, expected, wrapper::splitWidth);

@@ -3,12 +3,13 @@ package org.betonquest.betonquest;
 import com.google.common.base.Suppliers;
 import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.bukkit.event.LoadDataEvent;
-import org.betonquest.betonquest.api.common.component.font.DefaultFont;
+import org.betonquest.betonquest.api.common.component.font.Font;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
@@ -62,6 +63,7 @@ import org.betonquest.betonquest.kernel.processor.QuestRegistry;
 import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.BaseFeatureRegistries;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
+import org.betonquest.betonquest.library.font.FontRetriever;
 import org.betonquest.betonquest.listener.CustomDropListener;
 import org.betonquest.betonquest.listener.JoinQuitListener;
 import org.betonquest.betonquest.listener.MobKillListener;
@@ -121,6 +123,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
 public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
+
     /**
      * BStats Plugin id.
      */
@@ -392,9 +395,10 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
         conversationColors = new ConversationColors(textParser, config);
 
-        final Key defaultkey = Key.key("default");
-        fontRegistry = new FontRegistry(defaultkey);
-        fontRegistry.registerFont(defaultkey, new DefaultFont());
+        if (!setupFontRegistry()) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.variables(),
                 questRegistry, config, conversationColors, textParser, fontRegistry, pluginMessage)
@@ -443,6 +447,18 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
                 profileProvider);
 
         log.info("BetonQuest successfully enabled!");
+    }
+
+    private boolean setupFontRegistry() {
+        final Key defaultkey = Key.key("default");
+        final File fontFolder = new File(getDataFolder(), "fonts");
+        final FontRetriever fontRetriever = new FontRetriever();
+        fontRegistry = new FontRegistry(defaultkey);
+        saveResource("fonts/default.font.bin", true);
+        final List<Pair<Key, Font>> fonts = fontRetriever.loadFonts(fontFolder.toPath());
+        fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
+        log.info("Loaded " + fonts.size() + " font index files.");
+        return !fonts.isEmpty();
     }
 
     private void setupDatabase() {
