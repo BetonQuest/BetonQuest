@@ -12,11 +12,18 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Factory to create {@link FreezeEvent}s from {@link Instruction}s.
  */
 public class FreezeEventFactory implements PlayerEventFactory {
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
     /**
      * The PacketEvents API instance.
      */
@@ -35,22 +42,24 @@ public class FreezeEventFactory implements PlayerEventFactory {
     /**
      * Create a new freeze event factory.
      *
+     * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance
      * @param loggerFactory   the logger factory to create new class specific logger
      * @param data            the data for primary server thread access
      */
-    public FreezeEventFactory(final PacketEventsAPI<?> packetEventsAPI, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public FreezeEventFactory(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+        this.plugin = plugin;
         this.packetEventsAPI = packetEventsAPI;
         this.loggerFactory = loggerFactory;
         this.data = data;
     }
-
+    
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> ticks = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final BetonQuestLogger log = loggerFactory.create(FreezeEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new FreezeEvent(packetEventsAPI, ticks),
+                new FreezeEvent(plugin, packetEventsAPI, ticks),
                 log, instruction.getPackage()), data);
     }
 }

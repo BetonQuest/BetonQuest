@@ -18,7 +18,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -29,7 +34,13 @@ import java.util.Set;
 /**
  * Creates a fake armor stand and mounts the player on it.
  */
-public class FakeArmorStandPassenger {
+public class FakeArmorStandPassenger implements Listener {
+
+    /**
+     * The plugin instance.
+     */
+    protected final Plugin plugin;
+
     /**
      * The PacketEvents API instance.
      */
@@ -48,10 +59,12 @@ public class FakeArmorStandPassenger {
     /**
      * Constructs a new FakeArmorStandPassenger that also created a new entity ID for the armor stand.
      *
+     * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance
      * @param player          the player to mount
      */
-    public FakeArmorStandPassenger(final PacketEventsAPI<?> packetEventsAPI, final Player player) {
+    public FakeArmorStandPassenger(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Player player) {
+        this.plugin = plugin;
         this.packetEventsAPI = packetEventsAPI;
         this.player = player;
         this.armorStandId = Bukkit.getUnsafe().nextEntityId();
@@ -146,6 +159,8 @@ public class FakeArmorStandPassenger {
         packetEventsAPI.getPlayerManager().sendPacket(player, standPassengersPacket);
 
         player.sendActionBar(Component.empty());
+
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -154,5 +169,19 @@ public class FakeArmorStandPassenger {
     public void unmount() {
         final WrapperPlayServerDestroyEntities standDestroyPacket = new WrapperPlayServerDestroyEntities(armorStandId);
         packetEventsAPI.getPlayerManager().sendPacket(player, standDestroyPacket);
+
+        HandlerList.unregisterAll(this);
+    }
+
+    /**
+     * Prevents mounting another entity.
+     *
+     * @param event the event
+     */
+    @EventHandler
+    public void onEnter(final EntityMountEvent event) {
+        if (event.getEntity().equals(player)) {
+            event.setCancelled(true);
+        }
     }
 }

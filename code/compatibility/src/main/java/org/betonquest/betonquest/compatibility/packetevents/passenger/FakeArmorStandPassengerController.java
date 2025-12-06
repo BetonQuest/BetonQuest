@@ -11,12 +11,14 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSt
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * A FakeArmorStandPassenger that listens to input packets and delegates the inputs to a Conversation.
  */
 public class FakeArmorStandPassengerController extends FakeArmorStandPassenger implements ConversationSession, PacketListener {
+
     /**
      * The conversation action to call.
      */
@@ -31,12 +33,13 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     /**
      * Constructs a new FakeArmorStandPassenger that also catches control packets for the armor stand.
      *
+     * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance
      * @param player          the player to mount
      * @param action          the conversation action to call on input
      */
-    public FakeArmorStandPassengerController(final PacketEventsAPI<?> packetEventsAPI, final Player player, final ConversationAction action) {
-        super(packetEventsAPI, player);
+    public FakeArmorStandPassengerController(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Player player, final ConversationAction action) {
+        super(plugin, packetEventsAPI, player);
         this.action = action;
     }
 

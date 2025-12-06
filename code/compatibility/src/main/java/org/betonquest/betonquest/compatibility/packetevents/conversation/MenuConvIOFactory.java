@@ -28,6 +28,7 @@ import java.util.function.BiFunction;
  * Menu conversation output.
  */
 public class MenuConvIOFactory implements ConversationIOFactory {
+
     /**
      * The PacketEvents API instance.
      */
@@ -83,7 +84,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
         final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
-                new FakeArmorStandPassengerController(packetEventsAPI, player, control);
+                new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control);
         return new MenuConvIO(inputFunction, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
     }
 
