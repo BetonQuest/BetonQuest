@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleQuestItemSerializer;
+import org.betonquest.betonquest.mc_1_21_4.quest.condition.biome.UpdatedBiomeConditionFactory;
 
 /**
  * Allows to register features with Minecraft 1.21.4.
@@ -40,6 +41,9 @@ public class BundledMC_1_21_4 {
         item.register("simple", new UpdatedSimpleItemFactory(betonQuest.getQuestPackageManager(), textParser, bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
+
+        betonQuest.getQuestRegistries().condition().register("biome", new UpdatedBiomeConditionFactory(betonQuest.getLoggerFactory(), betonQuest.getPrimaryServerThreadData()));
+
         log.info("Enabled Minecraft 1.21.4 module");
     }
 }
