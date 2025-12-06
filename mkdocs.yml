@@ -98,6 +98,7 @@ nav:
 
       - 'Configuration':
           - 'Plugin Config': Documentation/Configuration/Plugin-Config.md
+          - 'Font Config': Documentation/Configuration/Font-Config.md
           - 'Permissions & Commands': Documentation/Configuration/Commands-and-Permissions.md
           - 'Version Changes':
               - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
