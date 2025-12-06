@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.quest.condition.random;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -10,7 +9,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Factory to create random conditions from {@link Instruction}s.
@@ -34,19 +33,7 @@ public class RandomConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private RandomCondition parse(final Instruction instruction) throws QuestException {
-        final String[] values = instruction.next().split("-");
-        final int expectedLength = 2;
-        if (values.length != expectedLength) {
-            throw new QuestException("Wrong randomness format. Use <chance>-<max>");
-        }
-        final Variable<Number> valueMax;
-        final Variable<Number> rangeOfRandom;
-        try {
-            valueMax = instruction.get(values[0], Argument.NUMBER);
-            rangeOfRandom = instruction.get(values[1], Argument.NUMBER);
-        } catch (final QuestException e) {
-            throw new QuestException("Cannot parse randomness values: " + e.getMessage(), e);
-        }
-        return new RandomCondition(new Random(), valueMax, rangeOfRandom);
+        final Variable<RandomChance> randomChanceVariable = instruction.get(RandomChanceParser.CHANCE);
+        return new RandomCondition(ThreadLocalRandom::current, randomChanceVariable);
     }
 }
