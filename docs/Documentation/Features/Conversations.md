@@ -101,7 +101,7 @@ purpose, have a look at
 BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.
 
-BetonQuest uses the `menu` style by default. If PacketEvents is not installed, the `tellraw` style will be used.
+BetonQuest uses the `menu` style by default. If PacketEvents is not installed or using MC <1.21.4, the `tellraw` style will be used.
 You can change this setting globally by changing the [`default_io`](../Configuration/Plugin-Config.md#conversation-conversation-settings) option in the "_config.yml_" file.
 
 It is also possible to override this setting per conversation. Add a `conversationIO:
@@ -114,6 +114,7 @@ In both cases, you can choose from the following conversation styles:
         A modern conversation style that works with some of Minecraft's native controls.
         
         **Requires [PacketEvents](https://www.spigotmc.org/resources/80279/)**
+        or @snippet:versions:mc-1.21.4@
             
         ??? "Customizing the Menu Style"
             The formatting of this style can be configured with the [`menu` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).

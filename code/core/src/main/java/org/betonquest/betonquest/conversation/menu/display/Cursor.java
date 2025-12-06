@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation.display;
+package org.betonquest.betonquest.conversation.menu.display;
 
 /**
  * A cursor that can be used to navigate through a range of values.
