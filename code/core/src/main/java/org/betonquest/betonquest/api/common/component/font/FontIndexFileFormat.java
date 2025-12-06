@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public enum FontIndexFileFormat implements FontIndexReader {
      * The file should contain a JSON object with isolated characters as keys
      * paired with their respective width as integer values.
      */
-    JSON {
+    JSON("json") {
         @Override
         public Font read(final InputStream inputStream) throws IOException {
             final JsonObject jsonObject = new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
@@ -40,12 +41,12 @@ public enum FontIndexFileFormat implements FontIndexReader {
     /**
      * Binary index file format.
      * The file should contain a sequence of 4-byte blocks,
-     * where the least significant 21 bits represent the character codepoint in {@code UTF-16} as used by java
-     * and the most significant 11 bits represent the width as unsigned integer.
-     * Due to the limitation of 11 bits unsigned as width,
+     * where the least significant 21 bits represent the Unicode codepoint of the character
+     * and the most significant 11 bits represent the width as an unsigned integer.
+     * Due to the limitation of unsigned 11 bits as width,
      * only characters with a maximum width of 2<sup>11</sup>-1 (=2047) may be used in this format.
      */
-    BINARY {
+    BINARY("bin") {
         @SuppressWarnings("PMD.AssignmentInOperand")
         @Override
         public Font read(final InputStream inputStream) throws IOException {
@@ -70,4 +71,34 @@ public enum FontIndexFileFormat implements FontIndexReader {
      * In case the width is unknown, use this.
      */
     private static final int DEFAULT_CHARACTER_WIDTH = 6;
+
+    /**
+     * The file extension for this format.
+     */
+    private final String extension;
+
+    FontIndexFileFormat(final String extension) {
+        this.extension = extension;
+    }
+
+    /**
+     * Get the file extension for this format.
+     *
+     * @return the file extension
+     */
+    public String getExtension() {
+        return extension;
+    }
+
+    /**
+     * Get the format for the given file extension.
+     *
+     * @param extension the file extension
+     * @return the format or BINARY by default if the extension is unknown
+     */
+    public static FontIndexFileFormat fromExtension(final String extension) {
+        return Arrays.stream(values())
+                .filter(format -> format.extension.equalsIgnoreCase(extension))
+                .findFirst().orElse(BINARY);
+    }
 }
