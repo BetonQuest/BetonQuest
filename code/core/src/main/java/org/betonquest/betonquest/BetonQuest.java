@@ -285,7 +285,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         return servicesManager.load(clazz);
     }
 
-    @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.CyclomaticComplexity"})
     @Override
     public void onEnable() {
         instance = this;
@@ -293,9 +293,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
         this.log = loggerFactory.create(this);
         if (!isPaper()) {
-            log.warn("Only Paper is supported! Disabling BetonQuest...");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Only Paper is supported!");
         }
 
         this.configAccessorFactory = registerAndGetService(ConfigAccessorFactory.class, new DefaultConfigAccessorFactory(loggerFactory, loggerFactory.create(ConfigAccessorFactory.class)));
@@ -310,9 +308,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         try {
             config = configAccessorFactory.createPatching(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            log.error("Could not load the config.yml file!", e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Could not load the config.yml file!", e);
         }
         defaultLanguage = config.getString("language", "en-US");
 
@@ -349,9 +345,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             }
             cache = configAccessorFactory.create(cacheFile.toFile());
         } catch (final IOException | InvalidConfigurationException e) {
-            log.error("Error while loading schedule cache: " + e.getMessage(), e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Error while loading schedule cache: " + e.getMessage(), e);
         }
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
@@ -373,9 +367,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
             pluginMessage = new PluginMessage(loggerFactory.create(PluginMessage.class), this, coreQuestRegistry.variables(), playerDataStorage,
                     textParser, configAccessorFactory, this);
         } catch (final QuestException e) {
-            log.error("Could not load the plugin messages!", e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Could not load the plugin messages!", e);
         }
 
         final ParsedSectionTextCreator textCreator = new ParsedSectionTextCreator(textParser, playerDataStorage,
@@ -394,8 +386,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         conversationColors = new ConversationColors(textParser, config);
 
         if (!setupFontRegistry()) {
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Could not load fonts!");
         }
 
         new CoreFeatureFactories(loggerFactory, questManager, lastExecutionCache, coreQuestRegistry, coreQuestRegistry.variables(),
@@ -405,9 +396,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         try {
             conversationColors.load();
         } catch (final QuestException e) {
-            log.warn("Could not load conversation colors! " + e.getMessage(), e);
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            throw new IllegalStateException("Could not load conversation colors! " + e.getMessage(), e);
         }
 
         compatibility = new Compatibility(loggerFactory.create(Compatibility.class), this, config, version);
@@ -816,14 +805,14 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     private boolean isPaper() {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
-        } catch (final ClassNotFoundException var2) {
             return true;
-        }
-        try {
-            Class.forName("io.papermc.paper.configuration.Configuration");
-            return false;
-        } catch (final ClassNotFoundException var2) {
-            return true;
+        } catch (final ClassNotFoundException exception) {
+            try {
+                Class.forName("io.papermc.paper.configuration.Configuration");
+                return true;
+            } catch (final ClassNotFoundException e) {
+                return false;
+            }
         }
     }
 

@@ -20,7 +20,13 @@ public class BetonQuestPlugin extends BetonQuest {
 
     @Override
     public void onEnable() {
-        super.onEnable();
+        try {
+            super.onEnable();
+        } catch (final IllegalStateException exception) {
+            getLoggerFactory().create(this).error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         final MinecraftVersion version = new MinecraftVersion(getServer());
         if (version.isCompatibleWith("1.20.6")) {
             new BundledMC_1_20_6(getLoggerFactory().create(BundledMC_1_20_6.class)).register(this);
