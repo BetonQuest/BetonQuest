@@ -102,6 +102,9 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
         final String mark = marked == null ? null : marked.getValue(null);
         for (int i = 0; i < pAmount; i++) {
             final ActiveMob targetMob = mob.spawn(abstractLocation, level);
+            if (targetMob == null) {
+                throw new QuestException("MythicMob '" + mob + "' could not spawn at '" + abstractLocation + "' !");
+            }
             final Entity entity = targetMob.getEntity().getBukkitEntity();
 
             if (mythicHider != null) {
