@@ -1,7 +1,6 @@
 package org.betonquest.betonquest;
 
 import com.google.common.base.Suppliers;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.key.Key;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -116,7 +115,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Handler;
-import java.util.logging.Level;
 
 /**
  * Represents BetonQuest plugin.
@@ -291,10 +289,10 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @Override
     public void onEnable() {
         instance = this;
+
         this.loggerFactory = registerAndGetService(BetonQuestLoggerFactory.class, new CachingBetonQuestLoggerFactory(new DefaultBetonQuestLoggerFactory()));
         this.log = loggerFactory.create(this);
-        if (!PaperLib.isPaper()) {
-            PaperLib.suggestPaper(this, Level.WARNING);
+        if (!isPaper()) {
             log.warn("Only Paper is supported! Disabling BetonQuest...");
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -813,6 +811,20 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @Override
     public PrimaryServerThreadData getPrimaryServerThreadData() {
         return new PrimaryServerThreadData(getServer(), getServer().getScheduler(), this);
+    }
+
+    private boolean isPaper() {
+        try {
+            Class.forName("com.destroystokyo.paper.PaperConfig");
+        } catch (final ClassNotFoundException var2) {
+            return true;
+        }
+        try {
+            Class.forName("io.papermc.paper.configuration.Configuration");
+            return false;
+        } catch (final ClassNotFoundException var2) {
+            return true;
+        }
     }
 
     /**
