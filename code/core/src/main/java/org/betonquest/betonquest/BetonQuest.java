@@ -95,7 +95,7 @@ import org.betonquest.betonquest.web.updater.UpdaterConfig;
 import org.betonquest.betonquest.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.web.updater.source.implementations.GitHubReleaseSource;
-import org.betonquest.betonquest.web.updater.source.implementations.NexusReleaseAndDevelopmentSource;
+import org.betonquest.betonquest.web.updater.source.implementations.ReposiliteReleaseAndDevelopmentSource;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -120,7 +120,7 @@ import java.util.logging.Handler;
  * Represents BetonQuest plugin.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields",
-        "NullAway.Init", "PMD.AvoidDuplicateLiterals"})
+        "NullAway.Init"})
 public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
 
     /**
@@ -527,15 +527,14 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
         final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
 
-        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource(
-                "https://nexus.betonquest.org", "betonquest",
-                "org.betonquest", "betonquest", "shaded",
-                new WebContentSource());
+        final ReposiliteReleaseAndDevelopmentSource reposiliteReleaseAndDevelopmentSource =
+                new ReposiliteReleaseAndDevelopmentSource("https://repo.betonquest.org",
+                        "betonquest", "BetonQuest", new WebContentSource());
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource(
                 "https://api.github.com/repos/BetonQuest/BetonQuest",
                 new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
-        final List<ReleaseUpdateSource> releaseHandlers = List.of(nexusReleaseAndDevelopmentSource, gitHubReleaseSource);
-        final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
+        final List<ReleaseUpdateSource> releaseHandlers = List.of(reposiliteReleaseAndDevelopmentSource, gitHubReleaseSource);
+        final List<DevelopmentUpdateSource> developmentHandlers = List.of(reposiliteReleaseAndDevelopmentSource);
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(loggerFactory.create(UpdateSourceHandler.class),
                 releaseHandlers, developmentHandlers);
 
