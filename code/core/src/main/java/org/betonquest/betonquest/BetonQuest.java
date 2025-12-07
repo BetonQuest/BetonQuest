@@ -119,7 +119,8 @@ import java.util.logging.Handler;
 /**
  * Represents BetonQuest plugin.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields", "NullAway.Init"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.GodClass", "PMD.TooManyMethods", "PMD.TooManyFields",
+        "NullAway.Init", "PMD.AvoidDuplicateLiterals"})
 public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguageProvider {
 
     /**
@@ -527,7 +528,9 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
 
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource(
-                "https://nexus.betonquest.org/", new WebContentSource());
+                "https://nexus.betonquest.org", "betonquest",
+                "org.betonquest", "betonquest", "shaded",
+                new WebContentSource());
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource(
                 "https://api.github.com/repos/BetonQuest/BetonQuest",
                 new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
