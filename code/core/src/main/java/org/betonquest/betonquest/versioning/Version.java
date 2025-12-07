@@ -3,6 +3,7 @@ package org.betonquest.betonquest.versioning;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("NullAway")
 public class Version {
+
     /**
      * Regex for the qualifier and the build number.
      */
@@ -161,5 +163,39 @@ public class Version {
     @Override
     public String toString() {
         return getVersion();
+    }
+
+    /**
+     * Compare the version with another version and decide which one is newer.
+     *
+     * @param comparator the comparator to use
+     * @param other      the other version to compare to
+     * @return true if this version is newer than the other version
+     */
+    public boolean isNewerThan(final Comparator<Version> comparator, final Version other) {
+        return comparator.compare(this, other) > 0;
+    }
+
+    /**
+     * Checks if this version is compatible with the other version based on the comparator.
+     * A version is compatible if it is equal or newer than the other version.
+     *
+     * @param comparator the comparator to use
+     * @param other      the other version to compare to
+     * @return true if this version is compatible with the other version
+     */
+    public boolean isCompatibleWith(final Comparator<Version> comparator, final Version other) {
+        return comparator.compare(this, other) >= 0;
+    }
+
+    /**
+     * Checks if this version is older than the other version based on the comparator.
+     *
+     * @param comparator the comparator to use
+     * @param other      the other version to compare to
+     * @return true if this version is older than the other version
+     */
+    public boolean isOlderThan(final Comparator<Version> comparator, final Version other) {
+        return comparator.compare(this, other) < 0;
     }
 }

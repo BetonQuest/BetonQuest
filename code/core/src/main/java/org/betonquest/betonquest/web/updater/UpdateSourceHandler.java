@@ -20,6 +20,7 @@ import java.util.Map;
  * it will provide the latest version and the URL to download it from.
  */
 public class UpdateSourceHandler {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -82,7 +83,7 @@ public class UpdateSourceHandler {
         for (final T updateSource : updateSources) {
             try {
                 for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
-                    if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
+                    if (comparator.isOlderThan(latest.getKey(), entry.getKey())) {
                         currentLatest = Pair.of(entry.getKey(), entry.getValue());
                     }
                 }

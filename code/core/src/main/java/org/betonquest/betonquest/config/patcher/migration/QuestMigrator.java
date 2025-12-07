@@ -183,7 +183,7 @@ public class QuestMigrator {
                 log.debug("  Version '" + otherVersion + "' is up to date");
                 return;
             }
-            if (VERSION_COMPARATOR.isOtherNewerThanCurrent(lastVersionToSet, otherVersion)) {
+            if (VERSION_COMPARATOR.isOlderThan(lastVersionToSet, otherVersion)) {
                 throw new VersionMissmatchException("The version '" + otherVersion
                         + "' is newer than the latest known version '" + lastVersionToSet + "'!\n"
                         + "Quests with newer versions will probably cause issues. If you know that won't be the case"

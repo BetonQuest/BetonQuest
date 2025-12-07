@@ -22,6 +22,7 @@ import java.util.Objects;
  * HologramIntegrator objects loaded at once, hence reload(), and close() should not do anything.
  */
 public abstract class HologramIntegrator implements Integrator, Comparable<HologramIntegrator> {
+
     /**
      * The name of the plugin.
      */
@@ -108,7 +109,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
         if (plugin != null) {
             final Version version = new Version(plugin.getDescription().getVersion());
             final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
-            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
+            if (comparator.isOlderThan(version, new Version(requiredVersion))) {
                 throw new UnsupportedVersionException(plugin, requiredVersion);
             }
         }

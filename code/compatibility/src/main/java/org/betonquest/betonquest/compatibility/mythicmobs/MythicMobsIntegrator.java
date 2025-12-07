@@ -101,7 +101,7 @@ public class MythicMobsIntegrator implements Integrator {
         final String[] parts = versionWithCommit.split("-");
         final Version mythicMobsVersion = new Version(parts[0]);
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "-");
-        if (comparator.isOtherNewerThanCurrent(mythicMobsVersion, new Version("5.0.0"))) {
+        if (comparator.isOlderThan(mythicMobsVersion, new Version("5.0.0"))) {
             throw new UnsupportedVersionException(mythicMobs, "5.0.0+");
         }
     }

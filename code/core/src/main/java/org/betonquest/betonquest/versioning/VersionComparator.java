@@ -13,6 +13,7 @@ import java.util.List;
  * Compares two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
  */
 public class VersionComparator implements Comparator<Version>, Serializable {
+
     @Serial
     private static final long serialVersionUID = 1641779671214600158L;
 
@@ -55,23 +56,35 @@ public class VersionComparator implements Comparator<Version>, Serializable {
     /**
      * Checks if the other version is greater than the current.
      *
-     * @param current The current version
-     * @param other   The other version
+     * @param current the current version
+     * @param other   the other version
      * @return true if the other version is newer than current
      */
-    public boolean isOtherNewerThanCurrent(final Version current, final Version other) {
-        return compare(current, other) < 0;
+    public boolean isOlderThan(final Version current, final Version other) {
+        return current.isOlderThan(this, other);
     }
 
     /**
-     * Checks if the other version is greater or equal than the current.
+     * Compare the version with another version and decide which one is newer.
      *
-     * @param current The current version
-     * @param other   The other version
-     * @return true if the other version is newer or equal than current
+     * @param current the current version to compare
+     * @param other   the other version to compare to
+     * @return true if this version is newer than the other version
      */
-    public boolean isOtherNewerOrEqualThanCurrent(final Version current, final Version other) {
-        return compare(current, other) <= 0;
+    public boolean isNewerThan(final Version current, final Version other) {
+        return current.isNewerThan(this, other);
+    }
+
+    /**
+     * Checks if this version is compatible with the other version based on the comparator.
+     * A version is compatible if it is equal or newer than the other version.
+     *
+     * @param current the current version to compare
+     * @param other   the other version to compare to
+     * @return true if this version is compatible with the other version
+     */
+    public boolean isCompatibleWith(final Version current, final Version other) {
+        return current.isCompatibleWith(this, other);
     }
 
     /**
