@@ -8,7 +8,6 @@ import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_16
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSystemChatMessage;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
@@ -23,6 +22,7 @@ import org.betonquest.betonquest.compatibility.packetevents.interceptor.PacketEv
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.ChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.NoneChatHistory;
 import org.betonquest.betonquest.compatibility.packetevents.interceptor.history.PacketChatHistory;
+import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
@@ -43,7 +43,7 @@ public class PacketEventsIntegrator implements Integrator {
      */
     // TODO version switch:
     //  Remove this code when only 1.19.0+ is supported
-    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = PaperLib.isVersion(19)
+    public static final Function<Component, PacketWrapper<?>> MESSAGE_FUNCTION = new MinecraftVersion().isCompatibleWith("1.19.0")
             ? message -> new WrapperPlayServerSystemChatMessage(false, message)
             : message -> new WrapperPlayServerChatMessage(new ChatMessage_v1_16(message,
             ChatTypes.CHAT, new UUID(0L, 0L)));
@@ -60,7 +60,7 @@ public class PacketEventsIntegrator implements Integrator {
         final Plugin packetEvents = pluginManager.getPlugin("packetevents");
         final Version packetEventsVersion = new Version(packetEvents.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOtherNewerThanCurrent(packetEventsVersion, new Version("2.9.5"))) {
+        if (comparator.isOlderThan(packetEventsVersion, new Version("2.9.5"))) {
             throw new UnsupportedVersionException(packetEvents, "2.9.5");
         }
 

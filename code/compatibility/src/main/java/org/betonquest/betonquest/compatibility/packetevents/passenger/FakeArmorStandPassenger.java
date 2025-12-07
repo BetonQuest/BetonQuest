@@ -18,8 +18,8 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPassengers;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -62,6 +62,11 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
     protected final Player player;
 
     /**
+     * The Minecraft version.
+     */
+    private final MinecraftVersion version;
+
+    /**
      * The armor stand entity ID.
      */
     private final int armorStandId;
@@ -84,6 +89,7 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
         this.packetEventsAPI = packetEventsAPI;
         this.player = player;
         this.armorStandId = Bukkit.getUnsafe().nextEntityId();
+        this.version = new MinecraftVersion(plugin.getServer());
     }
 
     /**
@@ -153,7 +159,7 @@ public class FakeArmorStandPassenger implements PacketListener, Listener {
     public void mount(final Location location) {
         // TODO version switch:
         //  Remove this code when only 1.20.2+ is supported
-        final double heightFix = PaperLib.isVersion(20, 2) ? -0.375 : -0.131_25;
+        final double heightFix = version.isCompatibleWith("1.20.2") ? -0.375 : -0.131_25;
         final Vector3d position = new Vector3d(location.getX(), location.getY() - 1 + heightFix, location.getZ());
 
         final WrapperPlayServerSpawnEntity standSpawnPacket = new WrapperPlayServerSpawnEntity(armorStandId,

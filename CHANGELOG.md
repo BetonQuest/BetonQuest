@@ -125,6 +125,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `journal.show_separator` option deleted
 - `display_missed` config option, as the `none` interceptor should be used instead
 - legacy multiply with `*` for points
+- dependency PaperLib since its discontinued
 ### Fixed
 - Reloading plugin did not reload Menu config
 - potions generated not extended/upgraded since 2.2.1
@@ -155,6 +156,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `global objective` error on join when it was added with the command or the tag got removed
 - `tellraw` conversation IO showed pop-up for unknown command
 - `simple` item `flags` crashed plugin when invalid
+- Disabling the plugin no longer causes hardly expected zip errors
 ### Security
 
 ## [2.2.1] - 2025-01-12

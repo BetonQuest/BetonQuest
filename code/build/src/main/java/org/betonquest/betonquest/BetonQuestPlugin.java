@@ -1,9 +1,9 @@
 package org.betonquest.betonquest;
 
-import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.compatibility.BundledCompatibility;
 import org.betonquest.betonquest.mc_1_20_6.BundledMC_1_20_6;
 import org.betonquest.betonquest.mc_1_21_4.BundledMC_1_21_4;
+import org.betonquest.betonquest.versioning.MinecraftVersion;
 
 /**
  * Represents Multi Module Entry Point for BetonQuest plugin.
@@ -20,11 +20,18 @@ public class BetonQuestPlugin extends BetonQuest {
 
     @Override
     public void onEnable() {
-        super.onEnable();
-        if (PaperLib.isVersion(20, 6)) {
+        try {
+            super.onEnable();
+        } catch (final IllegalStateException exception) {
+            getLoggerFactory().create(this).error("Disabling BetonQuest due to an error: " + exception.getMessage(), exception);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        final MinecraftVersion version = new MinecraftVersion(getServer());
+        if (version.isCompatibleWith("1.20.6")) {
             new BundledMC_1_20_6(getLoggerFactory().create(BundledMC_1_20_6.class)).register(this);
         }
-        if (PaperLib.isVersion(21, 4)) {
+        if (version.isCompatibleWith("1.21.4")) {
             new BundledMC_1_21_4(getLoggerFactory().create(BundledMC_1_21_4.class)).register(this);
         }
         new BundledCompatibility(getCompatibility(), this).registerCompatiblePlugins();

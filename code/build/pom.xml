@@ -109,7 +109,6 @@
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
-                  <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
                   <include>de.themoep:minedown-adventure</include>
                 </includes>
@@ -142,10 +141,6 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${maven-shade-plugin.path}.dependencies.org.json</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>io.papermc.lib</pattern>
-                  <shadedPattern>${maven-shade-plugin.path}.dependencies.io.papermc.lib</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.cronutils</pattern>

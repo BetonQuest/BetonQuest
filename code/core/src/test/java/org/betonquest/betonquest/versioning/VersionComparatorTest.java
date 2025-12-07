@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class VersionComparatorTest {
+
     /**
      * PRE release qualifier
      */
@@ -514,16 +515,16 @@ class VersionComparatorTest {
                     + "', Version: '" + current.getVersion()
                     + "', with Version: '" + targetVersion.getVersion()
                     + "', expected: '" + updateExpected + "'!";
-            assertEquals(updateExpected, versionComparator.isOtherNewerThanCurrent(current, targetVersion), message);
+            assertEquals(updateExpected, versionComparator.isOlderThan(current, targetVersion), message);
         }
     }
 
     @Test
     void testEmptyQualifier() {
         final VersionComparator vc1 = new VersionComparator(UpdateStrategy.PATCH, "", QUALIFIER_DEV);
-        assertTrue(vc1.isOtherNewerThanCurrent(V_1_1_0_DEV_146, V_1_1_0_99), "Expected update");
+        assertTrue(vc1.isOlderThan(V_1_1_0_DEV_146, V_1_1_0_99), "Expected update");
 
         final VersionComparator vc2 = new VersionComparator(UpdateStrategy.PATCH, QUALIFIER_DEV, "");
-        assertTrue(vc2.isOtherNewerThanCurrent(V_1_1_0_99, V_1_1_0_DEV_146), "Expected no update");
+        assertTrue(vc2.isOlderThan(V_1_1_0_99, V_1_1_0_DEV_146), "Expected no update");
     }
 }

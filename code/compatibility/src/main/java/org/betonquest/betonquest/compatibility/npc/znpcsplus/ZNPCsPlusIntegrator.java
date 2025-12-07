@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
  * <a href="https://www.spigotmc.org/resources/znpcsplus.109380/">ZNPCsPlus plugin</a>.
  */
 public class ZNPCsPlusIntegrator implements Integrator {
+
     /**
      * The prefix used before any registered name for distinguishing.
      */
@@ -45,9 +46,9 @@ public class ZNPCsPlusIntegrator implements Integrator {
 
     private void validateVersion() throws UnsupportedVersionException {
         final Plugin plugin = Bukkit.getPluginManager().getPlugin(PREFIX);
-        final Version version = new Version(plugin.getDescription().getVersion());
+        final Version currentVersion = new Version(plugin.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "SNAPSHOT-");
-        if (!comparator.isOtherNewerOrEqualThanCurrent(new Version("2.1.0-SNAPSHOT"), version)) {
+        if (comparator.isOlderThan(new Version("2.1.0-SNAPSHOT"), currentVersion)) {
             throw new UnsupportedVersionException(plugin, "2.1.0-SNAPSHOT+");
         }
     }

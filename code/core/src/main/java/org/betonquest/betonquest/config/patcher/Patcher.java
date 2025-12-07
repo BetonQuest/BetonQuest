@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  * Patches BetonQuest's configuration file.
  */
 public class Patcher {
+
     /**
      * Comparator for {@link Version} with the qualifier CONFIG.
      */
@@ -139,7 +140,7 @@ public class Patcher {
             setConfigVersion(config, patches.lastKey());
         } else {
             final Version version = getConfigVersion(configVersionString);
-            if (version != null && !VERSION_COMPARATOR.isOtherNewerThanCurrent(version, patches.lastEntry().getKey())) {
+            if (version != null && !VERSION_COMPARATOR.isOlderThan(version, patches.lastEntry().getKey())) {
                 log.debug(logPrefix + "is already up to date.");
             } else {
                 final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";

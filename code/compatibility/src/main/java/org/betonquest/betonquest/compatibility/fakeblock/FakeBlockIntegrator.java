@@ -19,6 +19,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  * Integrates with FakeBlock.
  */
 public class FakeBlockIntegrator implements Integrator {
+
     /**
      * The minimum required version of FakeBlock.
      */
@@ -52,7 +53,7 @@ public class FakeBlockIntegrator implements Integrator {
         if (fakeBlockPlugin != null) {
             final Version version = new Version(fakeBlockPlugin.getDescription().getVersion());
             final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-            if (comparator.isOtherNewerThanCurrent(version, new Version(REQUIRED_VERSION))) {
+            if (comparator.isOlderThan(version, new Version(REQUIRED_VERSION))) {
                 throw new UnsupportedVersionException(plugin, REQUIRED_VERSION);
             }
         }

@@ -24,7 +24,6 @@
     <excludedPitestGroups>ConfigurationSection</excludedPitestGroups>
 
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
-    <paperlib.version>1.0.8</paperlib.version>
     <minedown-adventure.version>1.7.4-SNAPSHOT</minedown-adventure.version>
     <bstats-bukkit.version>3.0.2</bstats-bukkit.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
@@ -49,11 +48,6 @@
           <artifactId>junit</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.papermc</groupId>
-      <artifactId>paperlib</artifactId>
-      <version>${paperlib.version}</version>
     </dependency>
 
     <!-- from minebench repository -->

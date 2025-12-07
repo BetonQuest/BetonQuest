@@ -3,7 +3,6 @@ package org.betonquest.betonquest.notify.io;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.papermc.lib.PaperLib;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -11,6 +10,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
+import org.betonquest.betonquest.versioning.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -46,6 +46,11 @@ public class AdvancementNotifyIO extends NotifyIO {
     private final String icon;
 
     /**
+     * Minecraft version instance.
+     */
+    private final MinecraftVersion version;
+
+    /**
      * Create a new Advancement Notify IO.
      *
      * @param variables the variable processor to create and resolve variables
@@ -59,6 +64,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         this.plugin = plugin;
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);
+        this.version = new MinecraftVersion(plugin.getServer());
     }
 
     private void notifyPlayerObject(final JsonElement message, final OnlineProfile onlineProfile) {
@@ -164,7 +170,7 @@ public class AdvancementNotifyIO extends NotifyIO {
 
     private JsonObject getIcon() {
         final JsonObject icon = new JsonObject();
-        if (PaperLib.isVersion(20, 5)) {
+        if (version.isCompatibleWith("1.20.5")) {
             icon.addProperty("id", this.icon);
         } else {
             icon.addProperty("item", this.icon);

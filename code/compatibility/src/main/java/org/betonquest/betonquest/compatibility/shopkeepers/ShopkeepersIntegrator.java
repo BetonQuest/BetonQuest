@@ -29,7 +29,7 @@ public class ShopkeepersIntegrator implements Integrator {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOtherNewerThanCurrent(shopkeepersVersion, new Version("2.2.0"))) {
+        if (comparator.isOlderThan(shopkeepersVersion, new Version("2.2.0"))) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
