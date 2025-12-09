@@ -90,32 +90,33 @@ public class ConversationStarter {
             return;
         }
 
+        final Conversation conversation;
         try {
-            final Conversation conversation = factory.create(
-                    onlineProfile, conversationID, center, () -> activeConversations.remove(onlineProfile));
-            activeConversations.put(onlineProfile, conversation);
-            final QuestPackage pack = conversationID.getPackage();
-            log.debug(pack, "Starting conversation '" + conversationID + "' for '" + onlineProfile + "'.");
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                try {
-                    if (!new PlayerConversationStartEvent(onlineProfile, conversation).callEvent()) {
-                        log.debug(pack, "Conversation '" + conversationID + "' for '" + onlineProfile + "' has been "
-                                + "canceled because its PlayerConversationStartEvent has been canceled.");
-                        activeConversations.remove(onlineProfile);
-                    }
-                    if (startingOption == null) {
-                        new Conversation.Starter(conversation).start();
-                    } else {
-                        new Conversation.Starter(conversation, startingOption).start();
-                    }
-                } catch (final QuestException e) {
-                    log.error("Cannot continue starting conversation without options: " + e, e);
-                    activeConversations.remove(onlineProfile);
-                }
-            });
+            conversation = factory.create(onlineProfile, conversationID, center, () -> activeConversations.remove(onlineProfile));
         } catch (final QuestException e) {
-            log.error(conversationID.getPackage(), "Cannot create conversation '" + conversationID + "': " + e.getMessage(), e);
+            log.warn(conversationID.getPackage(), "Cannot create conversation '" + conversationID + "': " + e.getMessage(), e);
+            return;
         }
+        activeConversations.put(onlineProfile, conversation);
+        final QuestPackage pack = conversationID.getPackage();
+        log.debug(pack, "Starting conversation '" + conversationID + "' for '" + onlineProfile + "'.");
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!new PlayerConversationStartEvent(onlineProfile, conversation).callEvent()) {
+                log.debug(pack, "Conversation '" + conversationID + "' for '" + onlineProfile + "' has been "
+                        + "canceled because its PlayerConversationStartEvent has been canceled.");
+                activeConversations.remove(onlineProfile);
+            }
+            try {
+                if (startingOption == null) {
+                    new Conversation.Starter(conversation).start();
+                } else {
+                    new Conversation.Starter(conversation, startingOption).start();
+                }
+            } catch (final QuestException e) {
+                log.error(pack, "Cannot continue starting conversation without options: " + e, e);
+                activeConversations.remove(onlineProfile);
+            }
+        });
     }
 
     /**
