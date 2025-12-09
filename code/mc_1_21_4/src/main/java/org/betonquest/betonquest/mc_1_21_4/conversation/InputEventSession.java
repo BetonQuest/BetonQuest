@@ -90,7 +90,7 @@ public class InputEventSession implements ConversationSession, Listener {
 
     @Override
     public void end() {
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (final Attribute attribute : ATTRIBUTES) {
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
                 if (attributeInstance != null) {
@@ -106,8 +106,8 @@ public class InputEventSession implements ConversationSession, Listener {
                     }
                 }
             }
-        });
-        HandlerList.unregisterAll(this);
+            HandlerList.unregisterAll(this);
+        }, 2);
     }
 
     /**
