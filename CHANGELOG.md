@@ -56,6 +56,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `item-model` & `no-item-model` arguments (MC 1.21.4+)
     - `custom-model-data` support for data lists (MC 1.21.4+)
 - All of Minecrafts default font widths are now used to calculate the width of a string for line wrapping
+- conditions `biome`, `effect`, `ride`, `random` now support variables
 ### Changed
 - Spigot is no longer supported, paper is now required 
 - message.yml file was deleted and instead the lang folder now contains all translations

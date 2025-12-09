@@ -87,7 +87,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     void testInvalidCatchup() {
         when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
-        assertEquals("Invalid enum value: NOTEXISTINGCATCHUPSTRATEGY", exception.getMessage(), "QuestException should have correct reason message");
+        assertEquals("Invalid enum value 'NOTEXISTINGCATCHUPSTRATEGY' for type 'CatchupStrategy'", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test

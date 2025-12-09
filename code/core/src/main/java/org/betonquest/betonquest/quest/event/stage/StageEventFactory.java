@@ -64,7 +64,7 @@ public class StageEventFactory implements PlayerEventFactory {
     private Variable<Number> getVariableNumber(final Instruction instruction) throws QuestException {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.next();
-            if (!stringAmount.matches("condition(s)?:.+")) {
+            if (!stringAmount.startsWith("conditions:")) {
                 return instruction.get(stringAmount, Argument.NUMBER);
             }
         }

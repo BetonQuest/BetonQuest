@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * The condition that is met randomly.
@@ -14,36 +15,28 @@ import java.util.Random;
 public class RandomCondition implements NullableCondition {
 
     /**
-     * The random object to generate random numbers.
-     */
-    private final Random random;
-
-    /**
      * The range of the random number to be true.
      */
-    private final Variable<Number> rangeOfRandom;
+    private final Variable<RandomChance> randomChance;
 
     /**
-     * The maximum value that the random number can be.
+     * The random number generator supplier.
      */
-    private final Variable<Number> valueMax;
+    private final Supplier<Random> random;
 
     /**
      * The constructor of the random condition.
      *
-     * @param random        The random object to generate random numbers.
-     * @param valueMax      The maximum value that the random number can be.
-     * @param rangeOfRandom The range of the random number to be true.
+     * @param randomSupplier the random number generator supplier
+     * @param chance         the {@link RandomChance} to check the random condition
      */
-    public RandomCondition(final Random random, final Variable<Number> valueMax, final Variable<Number> rangeOfRandom) {
-        this.random = random;
-        this.valueMax = valueMax;
-        this.rangeOfRandom = rangeOfRandom;
+    public RandomCondition(final Supplier<Random> randomSupplier, final Variable<RandomChance> chance) {
+        this.randomChance = chance;
+        this.random = randomSupplier;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final int randomNumber = random.nextInt(rangeOfRandom.getValue(profile).intValue()) + 1;
-        return randomNumber <= valueMax.getValue(profile).intValue();
+        return randomChance.getValue(profile).pickRandom(random.get());
     }
 }

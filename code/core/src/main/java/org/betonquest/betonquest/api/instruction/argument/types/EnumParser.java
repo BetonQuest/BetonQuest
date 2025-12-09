@@ -11,6 +11,7 @@ import java.util.Locale;
  * @param <T> the type of the enum
  */
 public class EnumParser<T extends Enum<T>> implements Argument<T> {
+
     /**
      * The type of the enum.
      */
@@ -31,7 +32,7 @@ public class EnumParser<T extends Enum<T>> implements Argument<T> {
         try {
             return Enum.valueOf(enumType, upperValue);
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid enum value: " + upperValue, e);
+            throw new QuestException("Invalid enum value '" + upperValue + "' for type '" + enumType.getSimpleName() + "'", e);
         }
     }
 }

@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.quest.condition.ride;
+package org.betonquest.betonquest.mc_1_21_4.quest.condition.biome;
 
+import io.papermc.paper.registry.RegistryKey;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -11,17 +11,19 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.bukkit.entity.EntityType;
+import org.betonquest.betonquest.mc_1_21_4.api.instruction.argument.type.RegistryKeyParser;
+import org.betonquest.betonquest.quest.condition.biome.BiomeCondition;
+import org.bukkit.block.Biome;
 
 /**
- * Factory to create ride conditions from {@link Instruction}s.
+ * Updated Factory for {@link BiomeCondition}s.
  */
-public class RideConditionFactory implements PlayerConditionFactory {
+public class UpdatedBiomeConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The string to match any entity.
+     * Parser for {@link Biome}s.
      */
-    private static final String ANY_ENTITY = "any";
+    private static final RegistryKeyParser<Biome> BIOME_PARSER = new RegistryKeyParser<>(RegistryKey.BIOME);
 
     /**
      * Logger factory to create a logger for the conditions.
@@ -34,21 +36,22 @@ public class RideConditionFactory implements PlayerConditionFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the ride condition factory.
+     * Create the biome factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
      * @param data          the data used for checking the condition on the main thread
      */
-    public RideConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public UpdatedBiomeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
         this.loggerFactory = loggerFactory;
         this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> vehicle = instruction.get(Argument.ENUM(EntityType.class).prefilter(ANY_ENTITY, null));
-        final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
+        final Variable<Biome> biomeVariable = instruction.get(BIOME_PARSER);
+        final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new RideCondition(vehicle), logger, instruction.getPackage()), data);
+                new OnlineConditionAdapter(new BiomeCondition(biomeVariable), log, instruction.getPackage()), data
+        );
     }
 }

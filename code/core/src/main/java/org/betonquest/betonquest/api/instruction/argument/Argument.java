@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.instruction.argument.types.location.WorldPa
 import org.betonquest.betonquest.api.instruction.variable.VariableResolver;
 import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from string.
@@ -22,6 +23,7 @@ import org.bukkit.Bukkit;
  */
 @FunctionalInterface
 public interface Argument<T> extends VariableResolver<T> {
+
     /**
      * The default instance of {@link StringParser}.
      */
@@ -106,4 +108,19 @@ public interface Argument<T> extends VariableResolver<T> {
      */
     @Override
     T apply(String string) throws QuestException;
+
+    /**
+     * Returns a new {@link Argument} that checks for the given expected string before
+     * applying the {@link Argument} this method is called on.
+     * If the expected string matches the {@link String} argument of {@link Argument#apply(String)}
+     * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
+     * Otherwise, the {@link Argument#apply(String)} method of the current {@link Argument} instance is called.
+     *
+     * @param expected   the expected string to be matched
+     * @param fixedValue the value to return if the expected string matches
+     * @return the new {@link Argument}
+     */
+    default Argument<T> prefilter(final String expected, @Nullable final T fixedValue) {
+        return string -> expected.equalsIgnoreCase(string) ? fixedValue : apply(string);
+    }
 }

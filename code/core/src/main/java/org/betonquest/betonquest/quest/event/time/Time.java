@@ -41,10 +41,29 @@ public enum Time {
     }
 
     /**
+     * Gets the time for the given prefix.
+     * <ul>
+     *     <li>{@code +} - {@link #ADD}</li>
+     *     <li>{@code -} - {@link #SUBTRACT}</li>
+     * </ul>
+     *
+     * @param prefix the character identifying the {@link Time}
+     * @return the {@link Time} according to the prefix or {@link #SET} if no match was found
+     */
+    public static Time getForPrefix(final char prefix) {
+        return switch (prefix) {
+            case '+' -> ADD;
+            case '-' -> SUBTRACT;
+            default -> SET;
+        };
+    }
+
+    /**
      * Functional interface to calculate the time.
      */
     @FunctionalInterface
     private interface TimeCalculator {
+
         /**
          * Calculates the time to apply to the world.
          *

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.util.Utils;
 import org.bukkit.potion.PotionEffectType;
 
 /**
@@ -41,10 +40,9 @@ public class EffectConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String string = instruction.get(Argument.STRING).getValue(null);
-        final PotionEffectType type = Utils.getNN(PotionEffectType.getByName(string), "Effect " + string + " does not exist");
+        final Variable<PotionEffectType> typeVariable = instruction.get(PotionEffectTypeParser.POTION_EFFECT_TYPE);
         final BetonQuestLogger log = loggerFactory.create(EffectCondition.class);
         return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new EffectCondition(type), log, instruction.getPackage()), data);
+                new OnlineConditionAdapter(new EffectCondition(typeVariable), log, instruction.getPackage()), data);
     }
 }

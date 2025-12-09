@@ -23,6 +23,11 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     private final QuestTypeApi questTypeApi;
 
     /**
+     * The keyword to identify an else event following.
+     */
+    private static final String ELSE_KEYWORD = "else";
+
+    /**
      * The event constructor.
      *
      * @param questTypeApi the Quest Type API
@@ -44,7 +49,7 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
         final Variable<ConditionID> condition = instruction.get(ConditionID::new);
         final Variable<EventID> event = instruction.get(EventID::new);
-        if (!"else".equalsIgnoreCase(instruction.next())) {
+        if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.next())) {
             throw new QuestException("Missing 'else' keyword");
         }
         final Variable<EventID> elseEvent = instruction.get(EventID::new);
