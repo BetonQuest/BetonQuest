@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
@@ -149,6 +150,20 @@ public class InputEventSession implements ConversationSession, Listener {
     @EventHandler
     public void onExit(final VehicleExitEvent event) {
         if (event.getExited().equals(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Prevents jumping on option selection.
+     * <p>
+     * This only prevents it on the server side, not the own client.
+     *
+     * @param event the event
+     */
+    @EventHandler
+    public void onJump(final HorseJumpEvent event) {
+        if (event.getEntity().getPassengers().contains(player)) {
             event.setCancelled(true);
         }
     }
