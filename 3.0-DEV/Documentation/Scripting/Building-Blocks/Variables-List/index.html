@@ -2198,6 +2198,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#forced-sync-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Forced Sync Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#version-variable">
     <span class="md-ellipsis">
 
@@ -5404,6 +5427,29 @@
       
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#forced-sync-variable">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Forced Sync Variable
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#version-variable">
     <span class="md-ellipsis">
 
@@ -5713,6 +5759,15 @@ Note that the first value is returned when it is higher than the second.</p>
 %randomnumber.decimal~3.3.112~100%
 %randomnumber.decimal~1.0~{location.y}%
 </code></pre></div>
+<h3 id="forced-sync-variable">Forced Sync Variable<a class="headerlink" href="#forced-sync-variable" title="Permanent link">🔗</a></h3>
+<p><strong>static</strong></p>
+<p>This variable forces an evaluation on the server's main thread.
+Its syntax is identical to the <a href="#eval-variable">eval variable</a>, but you should only use it if syncing is required.
+If you encapsule multiple evaluations with <code>sync</code>, all sub-evaluations will be executed on the server's main thread 
+and should be done with <code>eval</code> instead.
+<div class="highlight"><pre><span></span><code>%sync.player.\%objective.variableStore.displayType\%%
+%sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+</code></pre></div></p>
 <h3 id="version-variable">Version Variable<a class="headerlink" href="#version-variable" title="Permanent link">🔗</a></h3>
 <p><strong>static</strong></p>
 <p>This variable displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.</p>
