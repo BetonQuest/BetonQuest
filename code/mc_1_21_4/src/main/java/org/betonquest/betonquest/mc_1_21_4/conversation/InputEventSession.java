@@ -26,6 +26,7 @@ import java.util.Set;
 /**
  * Conversation Session that works on a {@link PlayerInputEvent}.
  */
+@SuppressWarnings("UnstableApiUsage")
 public class InputEventSession implements ConversationSession, Listener {
 
     /**
@@ -65,6 +66,11 @@ public class InputEventSession implements ConversationSession, Listener {
     private final boolean setSpeed;
 
     /**
+     * Separate listener to prevent unmounting.
+     */
+    private final Listener unmount;
+
+    /**
      * Creates a new Conversation Input Session based on the {@link PlayerInputEvent}.
      *
      * @param plugin   the plugin to start tasks
@@ -77,6 +83,7 @@ public class InputEventSession implements ConversationSession, Listener {
         this.player = player;
         this.action = action;
         this.setSpeed = setSpeed;
+        this.unmount = new Unmount();
     }
 
     @Override
@@ -100,11 +107,12 @@ public class InputEventSession implements ConversationSession, Listener {
         }
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(unmount, plugin);
     }
 
     @Override
     public void end() {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             for (final Attribute attribute : ATTRIBUTES) {
                 final AttributeInstance attributeInstance = player.getAttribute(attribute);
                 if (attributeInstance != null) {
@@ -120,8 +128,9 @@ public class InputEventSession implements ConversationSession, Listener {
                     }
                 }
             }
-            HandlerList.unregisterAll(this);
-        }, 2);
+        });
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> HandlerList.unregisterAll(unmount), 20);
     }
 
     /**
@@ -129,7 +138,6 @@ public class InputEventSession implements ConversationSession, Listener {
      *
      * @param event the input event
      */
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler
     public void onInput(final PlayerInputEvent event) {
         if (!event.getPlayer().equals(player)) {
@@ -153,18 +161,6 @@ public class InputEventSession implements ConversationSession, Listener {
         }
         if (input.isRight()) {
             action.right();
-        }
-    }
-
-    /**
-     * Prevents dismounting the ridden vehicle.
-     *
-     * @param event the event
-     */
-    @EventHandler
-    public void onExit(final VehicleExitEvent event) {
-        if (event.getExited().equals(player)) {
-            event.setCancelled(true);
         }
     }
 
@@ -194,6 +190,29 @@ public class InputEventSession implements ConversationSession, Listener {
         }
         if (event.hasChangedPosition() && event.getPlayer().equals(player)) {
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Listener to prevent unmounting in a conversation via {@link Input#isSneak()}.
+     * <p>
+     * It needs to be unregistered delayed to prevent holding the key for a short time unmounting the player.
+     */
+    private final class Unmount implements Listener {
+
+        private Unmount() {
+        }
+
+        /**
+         * Prevents dismounting the ridden vehicle.
+         *
+         * @param event the event
+         */
+        @EventHandler
+        public void onExit(final VehicleExitEvent event) {
+            if (event.getExited().equals(player)) {
+                event.setCancelled(true);
+            }
         }
     }
 }
