@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * @param lineFillBefore         amount of empty lines before a conversation starts
  * @param refreshDelay           time interval before printing the conversation again in ticks
  * @param rateLimit              time to wait until a new option can be selected in ticks
+ * @param setSpeed               sets the speed to zero to achieve a zoom effect
  * @param npcNameType            place to show the NPC name, chat or none
  * @param npcNameAlign           for npc_name_type chat, the alignment of the name, left, right or center
  * @param npcNameSeparator       separate the NPC name with an empty line from the text
@@ -32,7 +33,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * @param scrollDown             arrow format to scroll down
  */
 public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefore, int refreshDelay, int rateLimit,
-                                 String npcNameType, String npcNameAlign,
+                                 boolean setSpeed, String npcNameType, String npcNameAlign,
                                  boolean npcNameSeparator, boolean optionsSeparator,
                                  String controlSelect, String controlMove, String controlCancel,
                                  VariableComponent npcName, VariableComponent npcText, Component npcTextWrap,
@@ -54,6 +55,7 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
         final int lineFillBefore = config.getInt("line_fill_before");
         final int refreshDelay = config.getInt("refresh_delay");
         final int rateLimit = config.getInt("rate_limit");
+        final boolean setSpeed = config.getBoolean("set_speed");
 
         final String npcNameType = config.getString("npc_name_type", "");
         final String npcNameAlign = config.getString("npc_name_align", "");
@@ -73,7 +75,7 @@ public record MenuConvIOSettings(int lineLength, int lineCount, int lineFillBefo
         final String scrollUp = config.getString("scroll_up", "");
         final String scrollDown = config.getString("scroll_down", "");
 
-        return new MenuConvIOSettings(lineLength, lineCount, lineFillBefore, refreshDelay, rateLimit,
+        return new MenuConvIOSettings(lineLength, lineCount, lineFillBefore, refreshDelay, rateLimit, setSpeed,
                 npcNameType, npcNameAlign, npcNameSeparator, optionsSeparator, controlSelect, controlMove, controlCancel,
                 new VariableComponent(textParser.parse(npcName)), new VariableComponent(textParser.parse(npcText)),
                 textParser.parse(npcTextWrap), new VariableComponent(textParser.parse(optionText)),

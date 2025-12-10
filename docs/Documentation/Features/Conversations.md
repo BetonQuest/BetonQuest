@@ -114,9 +114,10 @@ In both cases, you can choose from the following conversation styles:
     === "`menu`"
         A modern conversation style that works with some of Minecraft's native controls.
         
-        It prevents the player from moving on their own.
-        
         @snippet:versions:mc-1.21.4@
+        
+        When `set_speed` is disabled the player won't be able to be moved by external sources and get "rubber banding"
+        like effect when moving/selecting options.
         
         ??? "Customizing the Menu Style"
             The formatting of this style can be configured with the [`menu` config option](../Configuration/Plugin-Config.md/#io-conversation-io-settings).
@@ -129,7 +130,7 @@ In both cases, you can choose from the following conversation styles:
         
         **Requires [PacketEvents](https://www.spigotmc.org/resources/80279/)**
         
-        It also uses the same Customization as `menu`.
+        It uses the same Customization as `menu`.
     === "`chest`"
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
         ??? "Customizing the Chest Style"
