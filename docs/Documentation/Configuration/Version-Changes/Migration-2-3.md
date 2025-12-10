@@ -56,6 +56,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-444 - Simple Item QuestItem](#300-dev-444-simple-item-questitem) :thunder_cloud_rain:
 - [3.0.0-DEV-465 - PacketEvents instead of ProtocolLib](#300-dev-465-packetevents-instead-of-protocollib) :white_sun_cloud:
 - [3.0.0-DEV-488 - Remove Legacy Point Multiply](#300-dev-488-remove-legacy-point-multiply) :sun:
+- [3.0.0-DEV-494 - Add native `menu` conversation io](#300-dev-494-add-native-menu-conversation-io) :white_sun_cloud:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -921,6 +922,53 @@ you now need to set the interceptor to `none`.
       winLottery: "money 7 multiply notify"
       applyBonus: "score kill 1.2 action:multiply"
       bigProgress: "globalpoint progress *2 action:multiply"
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-494 - Add native `menu` conversation io :white_sun_cloud:
+
+With 1.21.4 a Minecraft native input handling was added. That allows to not require PacketEvents for the
+`menu` conversation io anymore.
+
+The old `menu` io was renamed to `packetevents` and a new `menu` io was added.
+In addition, a new `set_speed` option was added to achieve a zoom effect and disable "rubber banding" in the new `menu`.
+
+When you have set an `conversationIO: menu` and want to use the `packetevents` you have to change it manually.
+
+<div class="grid" markdown>
+
+```YAML title="Old conversation"
+conversations:
+  HansConv:
+    conversationIO: menu
+```
+
+```YAML title="New conversation"
+conversations:
+  HansConv:
+    conversationIO: packetevents
+```
+
+</div>
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    The default conversation io was adjusted as following:
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old config.yml"
+    conversation:
+      default_io: menu,tellraw
+    ```
+    
+    ```YAML title="New config.yml"
+    conversation:
+      default_io: menu,packetevents,tellraw
     ```
     
     </div>

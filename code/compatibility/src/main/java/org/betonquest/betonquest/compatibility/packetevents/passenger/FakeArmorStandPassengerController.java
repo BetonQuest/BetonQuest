@@ -2,13 +2,19 @@ package org.betonquest.betonquest.compatibility.packetevents.passenger;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 /**
  * A FakeArmorStandPassenger that listens to input packets and delegates the inputs to a Conversation.
@@ -21,26 +27,48 @@ public class FakeArmorStandPassengerController extends FakeArmorStandPassenger i
     private final ConversationAction action;
 
     /**
+     * The player should get their speed visually set to 0.
+     */
+    private final boolean setSpeed;
+
+    /**
      * Constructs a new FakeArmorStandPassenger that also catches control packets for the armor stand.
      *
      * @param plugin          the plugin instance
      * @param packetEventsAPI the PacketEvents API instance
      * @param player          the player to mount
      * @param action          the conversation action to call on input
+     * @param setSpeed        the player should get their speed visually set to 0 to create the zoom effect
      */
-    public FakeArmorStandPassengerController(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Player player, final ConversationAction action) {
+    public FakeArmorStandPassengerController(final Plugin plugin, final PacketEventsAPI<?> packetEventsAPI, final Player player,
+                                             final ConversationAction action, final boolean setSpeed) {
         super(plugin, packetEventsAPI, player);
         this.action = action;
+        this.setSpeed = setSpeed;
     }
 
     @Override
     public void begin() {
         mount(getBlockBelowPlayer(player));
+        sendSpeed(0);
     }
 
     @Override
     public void end() {
         unmount();
+        final AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        if (attribute != null) {
+            sendSpeed(attribute.getValue());
+        }
+    }
+
+    private void sendSpeed(final double speed) {
+        if (!setSpeed) {
+            return;
+        }
+        final WrapperPlayServerUpdateAttributes attributes = new WrapperPlayServerUpdateAttributes(player.getEntityId(),
+                List.of(new WrapperPlayServerUpdateAttributes.Property(Attributes.MOVEMENT_SPEED, speed, List.of())));
+        packetEventsAPI.getPlayerManager().getUser(player).sendPacket(attributes);
     }
 
     @Override

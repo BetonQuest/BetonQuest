@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conversation.menu;
 
+import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
@@ -20,7 +21,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 /**
  * Menu conversation output.
@@ -30,7 +30,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * Function to create the input object with actions.
      */
-    private final BiFunction<Player, ConversationAction, ConversationSession> inputFunction;
+    private final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction;
 
     /**
      * Plugin instance to run tasks.
@@ -67,8 +67,8 @@ public class MenuConvIOFactory implements ConversationIOFactory {
      * @param config        the config accessor to the plugin's configuration
      * @param colors        the colors used for the conversation
      */
-    public MenuConvIOFactory(final BiFunction<Player, ConversationAction, ConversationSession> inputFunction, final Plugin plugin,
-                             final TextParser textParser, final FontRegistry fontRegistry,
+    public MenuConvIOFactory(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
+                             final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
                              final ConfigAccessor config, final ConversationColors colors) {
         this.inputFunction = inputFunction;
         this.plugin = plugin;

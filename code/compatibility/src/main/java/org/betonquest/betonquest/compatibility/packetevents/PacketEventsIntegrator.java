@@ -9,6 +9,7 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSystemChatMessage;
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -35,7 +36,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -74,8 +74,8 @@ public class PacketEventsIntegrator implements Integrator {
         final BetonQuest plugin = BetonQuest.getInstance();
         final ConfigAccessor pluginConfig = plugin.getPluginConfig();
 
-        final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
-                new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control);
+        final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed) ->
+                new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control, setSpeed);
         api.getFeatureRegistries().conversationIO().register("packetevents", new MenuConvIOFactory(inputFunction, plugin, plugin.getTextParser(),
                 plugin.getFontRegistry(), pluginConfig, plugin.getConversationColors()));
 
