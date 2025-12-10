@@ -184,6 +184,7 @@ import org.betonquest.betonquest.quest.variable.objective.ObjectivePropertyVaria
 import org.betonquest.betonquest.quest.variable.point.GlobalPointVariableFactory;
 import org.betonquest.betonquest.quest.variable.point.PointVariableFactory;
 import org.betonquest.betonquest.quest.variable.random.RandomNumberVariableFactory;
+import org.betonquest.betonquest.quest.variable.sync.SyncVariableFactory;
 import org.betonquest.betonquest.quest.variable.tag.GlobalTagVariableFactory;
 import org.betonquest.betonquest.quest.variable.tag.TagVariableFactory;
 import org.betonquest.betonquest.quest.variable.version.VersionVariableFactory;
@@ -494,6 +495,7 @@ public class CoreQuestTypes {
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("quester", new QuesterVariableFactory(featureApi.conversationApi()));
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
+        variables.registerCombined("sync", new SyncVariableFactory(data));
         variables.register("tag", new TagVariableFactory(dataStorage, pluginMessage));
         variables.register("version", new VersionVariableFactory(betonQuest));
     }

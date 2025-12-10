@@ -286,6 +286,19 @@ Note that the first value is returned when it is higher than the second.
 %randomnumber.decimal~1.0~{location.y}%
 ```
 
+### Forced Sync Variable
+
+**static**
+
+This variable forces an evaluation on the server's main thread.
+Its syntax is identical to the [eval variable](#eval-variable), but you should only use it if syncing is required.
+If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
+and should be done with `eval` instead.
+````
+%sync.player.\%objective.variableStore.displayType\%%
+%sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
+````
+
 ### Version Variable
 
 **static**

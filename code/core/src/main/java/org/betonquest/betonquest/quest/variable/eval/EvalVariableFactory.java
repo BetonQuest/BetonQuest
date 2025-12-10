@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
+import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariableAdapter;
 
 /**
@@ -22,18 +23,27 @@ public class EvalVariableFactory implements PlayerVariableFactory, PlayerlessVar
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        return parseEvalVariable(instruction);
+        return parseInstruction(instruction);
     }
 
     @Override
     public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
-        return parseEvalVariable(instruction);
+        return parseInstruction(instruction);
     }
 
-    private NullableVariableAdapter parseEvalVariable(final Instruction instruction) throws QuestException {
+    /**
+     * Parse an instruction into an {@link NullableVariable}.
+     *
+     * @param instruction the instruction to parse
+     * @return the parsed {@link NullableVariable}
+     * @throws QuestException if the instruction is invalid
+     */
+    protected NullableVariable parseNullableVariable(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(".", instruction.getValueParts());
-        return new NullableVariableAdapter(new EvalVariable(
-                instruction, instruction.get(rawInstruction, Argument.STRING)
-        ));
+        return new EvalVariable(instruction, instruction.get(rawInstruction, Argument.STRING));
+    }
+
+    private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
+        return new NullableVariableAdapter(parseNullableVariable(instruction));
     }
 }
