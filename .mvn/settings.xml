@@ -5,7 +5,7 @@
   <mirrors>
     <mirror>
       <id>BetonQuest-Mirror</id>
-      <url>https://nexus.betonquest.org/repository/default/</url>
+      <url>https://repo.betonquest.org/mirror</url>
       <mirrorOf>*</mirrorOf>
     </mirror>
   </mirrors>
