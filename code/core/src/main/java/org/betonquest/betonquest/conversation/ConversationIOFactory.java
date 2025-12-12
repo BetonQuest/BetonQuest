@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Factory to create Conversation IO for a conversation and online profile.

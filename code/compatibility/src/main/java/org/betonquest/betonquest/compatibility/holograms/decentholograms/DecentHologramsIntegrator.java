@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.betonquest.betonquest.api.BetonQuestApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
  * Integrates with DecentHolograms.
  */
 public class DecentHologramsIntegrator extends HologramIntegrator {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

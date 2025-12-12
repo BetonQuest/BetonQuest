@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

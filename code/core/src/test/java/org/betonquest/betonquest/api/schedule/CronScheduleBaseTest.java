@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.schedule;
 import com.cronutils.builder.CronBuilder;
 import com.cronutils.model.Cron;
 import com.cronutils.model.definition.CronDefinition;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.schedule.impl.realtime.cron.CronScheduleFactory;
 import org.junit.jupiter.api.Test;
 

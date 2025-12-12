@@ -3,13 +3,13 @@ package org.betonquest.betonquest.conversation;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.ConversationOptionEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -698,6 +698,7 @@ public class Conversation {
      * Ends the conversation. Should be called in the main thread.
      */
     private final class ConversationEnder extends BukkitRunnable {
+
         private ConversationEnder() {
             super();
         }

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 

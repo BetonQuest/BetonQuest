@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.listener;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.id.ItemID;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -16,6 +16,7 @@ import org.bukkit.plugin.Plugin;
  * Add QuestItem Drops if the entity is marked.
  */
 public class CustomDropListener implements Listener {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

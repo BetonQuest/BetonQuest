@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.text.TextParser;
  * A parser that uses MiniMessage to parse text.
  */
 public class MiniMessageParser implements TextParser {
+
     /**
      * The MiniMessage instance to use for parsing.
      */

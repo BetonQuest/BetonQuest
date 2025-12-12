@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

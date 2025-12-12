@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.brewery;
 
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;

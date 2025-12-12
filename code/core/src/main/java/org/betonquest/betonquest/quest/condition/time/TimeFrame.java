@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.time;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * A time frame with a start and end time.

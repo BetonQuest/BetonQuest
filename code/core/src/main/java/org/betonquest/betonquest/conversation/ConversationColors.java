@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conversation;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 
 /**
@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.text.TextParser;
  */
 @SuppressWarnings("PMD.DataClass")
 public class ConversationColors {
+
     /**
      * The text parser used to parse the colors.
      */

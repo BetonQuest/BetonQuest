@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.quests;
 
 import me.pikamug.quests.module.BukkitCustomRequirement;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.Bukkit;
@@ -18,6 +18,7 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class ConditionRequirement extends BukkitCustomRequirement {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

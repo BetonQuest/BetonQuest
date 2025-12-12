@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.text;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.text.TextParserDecider;
 
 import java.util.regex.Matcher;
@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  * A decider that chooses a parser based on the text's tag.
  */
 public class TagTextParserDecider implements TextParserDecider {
+
     /**
      * The pattern to match a tag in a text.
      */

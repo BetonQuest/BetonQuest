@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.condition.hand;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.inventory.PlayerInventory;
 

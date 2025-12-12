@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.database.TagData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class TagEventTest {
+
     @Test
     void testTagEventUsesAlwaysActualTagData(
             @Mock final TagData firstData,

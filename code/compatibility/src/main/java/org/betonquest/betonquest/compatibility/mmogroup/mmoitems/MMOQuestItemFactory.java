@@ -2,11 +2,11 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 

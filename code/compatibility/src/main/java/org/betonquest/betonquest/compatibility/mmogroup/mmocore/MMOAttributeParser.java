@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.manager.AttributeManager;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Parses a string to an attribute.

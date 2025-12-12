@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.notify.Notify;
 import org.jetbrains.annotations.Nullable;

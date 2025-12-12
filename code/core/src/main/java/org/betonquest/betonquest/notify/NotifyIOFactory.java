@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -11,6 +11,7 @@ import java.util.Map;
  */
 @FunctionalInterface
 public interface NotifyIOFactory {
+
     /**
      * Create the Notify IO.
      *

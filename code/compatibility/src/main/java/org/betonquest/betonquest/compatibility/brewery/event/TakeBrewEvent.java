@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.brewery.event;
 
 import com.dre.brewery.recipe.BRecipe;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
 import org.betonquest.betonquest.compatibility.brewery.IdentifierType;

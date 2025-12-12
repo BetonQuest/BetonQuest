@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.objective;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Factory to create Objective Data.

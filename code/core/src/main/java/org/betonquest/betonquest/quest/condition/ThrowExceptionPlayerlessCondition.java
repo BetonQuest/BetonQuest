@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 
 /**

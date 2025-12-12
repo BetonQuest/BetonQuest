@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.logger.format;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
  * A test for the {@link LogfileFormatter}.
  */
 class LogfileFormatterTest {
+
     /**
      * The mocked plugin instance.
      */
@@ -50,8 +51,8 @@ class LogfileFormatterTest {
 
     @Test
     void testDebugFormattingPackage() {
-        final QuestPackage pack = mock(QuestPackage.class);
-        when(pack.getQuestPath()).thenReturn("TestPackage");
+        final LogSource pack = mock(LogSource.class);
+        when(pack.getSourcePath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message3", plugin, pack);
         assertLogMessage(record, "INFO]: [BetonQuest] <TestPackage> Message3\n");
     }

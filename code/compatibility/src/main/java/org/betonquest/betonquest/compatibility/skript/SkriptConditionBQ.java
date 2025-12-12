@@ -6,10 +6,10 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @SuppressWarnings("NullAway.Init")
 public class SkriptConditionBQ extends Condition {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

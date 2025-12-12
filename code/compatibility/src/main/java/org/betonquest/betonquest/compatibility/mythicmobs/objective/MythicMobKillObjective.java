@@ -5,11 +5,11 @@ import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -24,6 +24,7 @@ import java.util.List;
  * Player has to kill MythicMobs monster.
  */
 public class MythicMobKillObjective extends CountingObjective implements Listener {
+
     /**
      * The marked key.
      */
@@ -95,7 +96,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onKill(final MythicMobDeathEvent event) throws QuestException {
-        final Profile resolver = event.getKiller() instanceof Player killer ? profileProvider.getProfile(killer) : null;
+        final Profile resolver = event.getKiller() instanceof final Player killer ? profileProvider.getProfile(killer) : null;
         if (!names.getValue(resolver).contains(event.getMobType().getInternalName())
                 || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;

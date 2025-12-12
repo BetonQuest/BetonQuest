@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.betonquest</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.3.1</version>
+  </parent>
+
+  <name>BetonQuest Library</name>
+  <groupId>org.betonquest.betonquest</groupId>
+  <artifactId>lib</artifactId>
+  <version>${revision}${changelist}</version>
+  <description>Provides the library of BetonQuest</description>
+
+  <properties>
+    <revision>1.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+
+    <!-- module versions -->
+    <api.version>3.0.0${changelist}</api.version>
+
+    <!-- dependency versions -->
+    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <minedown-adventure.version>1.7.4-SNAPSHOT</minedown-adventure.version>
+    <log4j-api.version>3.0.0-beta2</log4j-api.version>
+    <log4j-core.version>3.0.0-beta2</log4j-core.version>
+    <maven-artifact.version>4.0.0-beta-3</maven-artifact.version>
+    <guava.version>33.2.1-jre</guava.version>
+    <commons-io.version>2.16.1</commons-io.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
+    <json.version>20240303</json.version>
+  </properties>
+
+  <dependencies>
+    <!-- from betonquest module -->
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>api</artifactId>
+      <version>${api.version}</version>
+    </dependency>
+
+    <!-- from papermc repository -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper-api.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- from minebench repository -->
+    <dependency>
+      <groupId>de.themoep</groupId>
+      <artifactId>minedown-adventure</artifactId>
+      <version>${minedown-adventure.version}</version>
+    </dependency>
+
+    <!-- only dependencies from maven central that are no MC Plugins -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j-core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${maven-artifact.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json.version}</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>betonquest-repo</id>
+      <url>https://repo.betonquest.org/betonquest/</url>
+    </repository>
+    <repository>
+      <id>betonquest-papermc-repo</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-minebench-repo</id>
+      <url>https://repo.minebench.de/</url>
+    </repository>
+    <repository>
+      <id>maven_central</id>
+      <name>Maven Central</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </repository>
+  </repositories>
+</project>

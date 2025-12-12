@@ -1,7 +1,7 @@
 ---
 icon: material/widgets
 ---
-@snippet:api-state:draft@
+@snippet:api-state:unfinished@
 
 To obtain the API or a part of the API there are currently two ways, the new way and the legacy way.
 

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.event.online;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Quest event that needs an online profile to function correctly.

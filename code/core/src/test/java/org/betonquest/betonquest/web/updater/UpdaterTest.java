@@ -2,8 +2,8 @@ package org.betonquest.betonquest.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.betonquest.betonquest.versioning.Version;
 import org.bukkit.entity.Player;
@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class UpdaterTest {
+
     @Mock
     private BetonQuestLogger logger;
 

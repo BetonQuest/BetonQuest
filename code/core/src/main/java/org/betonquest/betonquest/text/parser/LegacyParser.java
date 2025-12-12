@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
  * A parser that uses legacy formatting codes to parse text.
  */
 public class LegacyParser implements TextParser {
+
     /**
      * The legacy component serializer to use for parsing text.
      */

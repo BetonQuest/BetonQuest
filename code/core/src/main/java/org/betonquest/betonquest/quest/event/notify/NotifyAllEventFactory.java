@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -19,6 +19,7 @@ import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAd
  * Factory for the notify all event.
  */
 public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * The profile provider instance.
      */

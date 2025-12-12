@@ -15,6 +15,7 @@ import java.util.List;
  * This {@link QuestPackageImpl} represents all functionality based on a {@link Quest}.
  */
 public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
+
     /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.
      *

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.packetevents.conversation;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
 import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;

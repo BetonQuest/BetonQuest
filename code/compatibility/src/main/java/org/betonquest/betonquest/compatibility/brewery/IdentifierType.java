@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.brewery;
 
 import com.dre.brewery.recipe.BRecipe;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;

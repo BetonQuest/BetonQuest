@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.text;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.text.TextParserDecider;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TagTextParserDeciderTest {
+
     private final TagTextParserDecider decider = new TagTextParserDecider("default");
 
     @Test

@@ -25,6 +25,7 @@ import java.util.List;
  * Converts {@link ItemStack}s into the simple BQ format, parsable by a {@link SimpleQuestItemFactory}.
  */
 public class SimpleQuestItemSerializer implements QuestItemSerializer {
+
     /**
      * Handlers for the {@link #serialize(ItemStack)} method.
      */

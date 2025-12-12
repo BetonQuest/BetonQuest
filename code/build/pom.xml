@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1</version>
   </parent>
 
   <name>BetonQuest Build</name>
@@ -17,25 +17,29 @@
   <properties>
     <revision>3.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
-    <core.version>1.0.0${changelist}</core.version>
-    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
-    <mc_1_21_4.version>1.0.0${changelist}</mc_1_21_4.version>
-    <compatibility.version>1.0.0${changelist}</compatibility.version>
     <pit.report.skip>true</pit.report.skip>
 
+    <maven-shade-plugin.path>${project.groupId}.${project.artifactId}</maven-shade-plugin.path>
+
+    <!-- plugin metadata -->
     <plugin.name>BetonQuest</plugin.name>
     <plugin.main>${project.groupId}.${project.artifactId}.${plugin.name}Plugin</plugin.main>
     <plugin.version>${revision}-DEV-UNOFFICIAL</plugin.version>
     <plugin.api-version>1.18</plugin.api-version>
     <plugin.description>All Your Adventure Supplies</plugin.description>
 
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <!-- module versions -->
+    <core.version>1.0.0${changelist}</core.version>
+    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
+    <mc_1_21_4.version>1.0.0${changelist}</mc_1_21_4.version>
+    <compatibility.version>1.0.0${changelist}</compatibility.version>
 
-    <maven-shade-plugin.path>${project.groupId}.${project.artifactId}</maven-shade-plugin.path>
+    <!-- dependency versions -->
+    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
   </properties>
 
   <dependencies>
-    <!-- BetonQuest -->
+    <!-- from betonquest module -->
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>core</artifactId>
@@ -56,12 +60,30 @@
       <artifactId>compatibility</artifactId>
       <version>${compatibility.version}</version>
     </dependency>
+
+    <!-- from papermc repository -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper-api.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <repositories>
     <repository>
       <id>betonquest-repo</id>
       <url>https://repo.betonquest.org/betonquest/</url>
+    </repository>
+    <repository>
+      <id>betonquest-papermc-repo</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
   </repositories>
 

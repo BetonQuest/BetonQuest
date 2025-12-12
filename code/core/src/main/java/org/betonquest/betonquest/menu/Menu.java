@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -20,6 +20,7 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.ShortClassName")
 public class Menu {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

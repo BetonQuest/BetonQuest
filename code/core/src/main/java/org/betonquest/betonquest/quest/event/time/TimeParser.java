@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.time;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Parses a time change from a string.

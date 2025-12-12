@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.schedule.impl.BaseScheduleFactory;

@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +23,7 @@ import java.util.UUID;
  * Checks if the player is holding a wand.
  */
 public class WandCondition implements OnlineCondition {
+
     /**
      * Magic API.
      */

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.quest;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestCallable;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;

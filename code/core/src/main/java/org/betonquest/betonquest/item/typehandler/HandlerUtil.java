@@ -2,8 +2,8 @@ package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;

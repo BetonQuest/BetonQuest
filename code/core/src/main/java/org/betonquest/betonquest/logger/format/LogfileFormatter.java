@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.logger.format;
 
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 
 import java.time.Instant;
@@ -35,14 +36,15 @@ public final class LogfileFormatter extends Formatter {
 
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
         final String plugin = "[" + betonRecord.map(BetonQuestLogRecord::getPlugin).orElse("?") + "] ";
-        final String questPackage = betonRecord
-                .flatMap(BetonQuestLogRecord::getPack)
-                .map(pack -> "<" + pack + "> ")
+        final String logSourcePath = betonRecord
+                .map(BetonQuestLogRecord::getLogSource)
+                .map(LogSource::getSourcePath)
+                .map(source -> "<" + source + "> ")
                 .orElse("");
         final String message = formatMessage(record);
         final String throwable = record.getThrown() == null ? "" : FormatterUtils.formatThrowable(record.getThrown());
 
         return String.format("[%s %s]: %s%s%s%s%n",
-                formattedTime, record.getLevel().getName(), plugin, questPackage, message, throwable);
+                formattedTime, record.getLevel().getName(), plugin, logSourcePath, message, throwable);
     }
 }

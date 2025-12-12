@@ -2,9 +2,9 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.menu.event.MenuClickEvent;
 import org.betonquest.betonquest.menu.event.MenuCloseEvent;
 import org.bukkit.Bukkit;

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;

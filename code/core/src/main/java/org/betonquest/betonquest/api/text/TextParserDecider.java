@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.api.text;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * A decider for choosing a parser for a text.
  */
 @FunctionalInterface
 public interface TextParserDecider {
+
     /**
      * Chooses a parser for a text.
      *
@@ -23,5 +24,6 @@ public interface TextParserDecider {
      * @param text     the text content
      */
     record Result(String parserId, String text) {
+
     }
 }

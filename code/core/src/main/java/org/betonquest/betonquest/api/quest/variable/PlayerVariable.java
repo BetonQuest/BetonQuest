@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Interface for quest-variables that are checked for a profile. It represents the normal variable as described in the

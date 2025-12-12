@@ -2,8 +2,8 @@ package org.betonquest.betonquest.mc_1_21_4.api.instruction.argument.type;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 

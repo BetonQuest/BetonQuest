@@ -2,6 +2,7 @@ package org.betonquest.betonquest.logger;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.AfterEach;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
  * This class test the {@link BetonQuestLogger}.
  */
 class DefaultBetonQuestLoggerTest {
+
     /**
      * The {@link QuestPackage} name.
      */
@@ -58,9 +60,9 @@ class DefaultBetonQuestLoggerTest {
     private BetonQuestLogger logger;
 
     /**
-     * The {@link QuestPackage} for testing.
+     * The {@link LogSource} for testing.
      */
-    private QuestPackage questPackage;
+    private LogSource logSource;
 
     @BeforeEach
     void setUp() {
@@ -70,8 +72,8 @@ class DefaultBetonQuestLoggerTest {
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("TestPlugin");
         this.logger = new DefaultBetonQuestLogger(plugin, parentLogger, getClass(), null);
-        this.questPackage = mock(QuestPackage.class);
-        when(this.questPackage.getQuestPath()).thenReturn(PACKAGE_NAME);
+        this.logSource = mock(LogSource.class);
+        when(this.logSource.getSourcePath()).thenReturn(PACKAGE_NAME);
     }
 
     @AfterEach
@@ -87,7 +89,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void debugWithPackage() {
-        logger.debug(questPackage, LOG_MESSAGE);
+        logger.debug(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, LOG_MESSAGE)));
     }
 
@@ -99,7 +101,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void debugExceptionWithPackage() {
-        logger.debug(questPackage, LOG_MESSAGE, IO_EXCEPTION);
+        logger.debug(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, LOG_MESSAGE, IO_EXCEPTION)));
     }
 
@@ -111,7 +113,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void infoWithPackage() {
-        logger.info(questPackage, LOG_MESSAGE);
+        logger.info(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.INFO, LOG_MESSAGE)));
     }
 
@@ -123,7 +125,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void warnWithPackage() {
-        logger.warn(questPackage, LOG_MESSAGE);
+        logger.warn(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.WARNING, LOG_MESSAGE)));
     }
 
@@ -136,7 +138,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void warnExceptionWithPackage() {
-        logger.warn(questPackage, LOG_MESSAGE, IO_EXCEPTION);
+        logger.warn(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.WARNING, LOG_MESSAGE)));
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, STACKTRACE_MESSAGE, IO_EXCEPTION)));
     }
@@ -149,7 +151,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void errorWithPackage() {
-        logger.error(questPackage, LOG_MESSAGE);
+        logger.error(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, LOG_MESSAGE)));
     }
 
@@ -161,7 +163,7 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void errorExceptionWithPackage() {
-        logger.error(questPackage, LOG_MESSAGE, IO_EXCEPTION);
+        logger.error(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, LOG_MESSAGE, IO_EXCEPTION)));
     }
 
@@ -173,33 +175,20 @@ class DefaultBetonQuestLoggerTest {
 
     @Test
     void reportExceptionWithPackage() {
-        logger.reportException(questPackage, IO_EXCEPTION);
+        logger.reportException(logSource, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, REPORT_MESSAGE, IO_EXCEPTION)));
     }
 
     /**
      * Argument matcher for {@link LogRecord}s.
+     *
+     * @param source    The source to match.
+     * @param level     The level to match.
+     * @param message   The message to match.
+     * @param exception The exception to match.
      */
-    private static class RecordMatcher implements ArgumentMatcher<LogRecord> {
-        /**
-         * The package name to match.
-         */
-        private final String pack;
-
-        /**
-         * The level to match.
-         */
-        private final Level level;
-
-        /**
-         * The message to match.
-         */
-        private final String message;
-
-        /**
-         * The exception to match.
-         */
-        private final Exception exception;
+    private record RecordMatcher(String source, Level level, String message,
+                                 Exception exception) implements ArgumentMatcher<LogRecord> {
 
         /**
          * Creates a new record matcher.
@@ -225,27 +214,23 @@ class DefaultBetonQuestLoggerTest {
         /**
          * Creates a new record matcher.
          *
-         * @param pack    The package name
+         * @param source  The source
          * @param level   The level
          * @param message The message
          */
-        public RecordMatcher(final String pack, final Level level, final String message) {
-            this(pack, level, message, null);
+        public RecordMatcher(final String source, final Level level, final String message) {
+            this(source, level, message, null);
         }
 
         /**
          * Creates a new record matcher.
          *
-         * @param pack      The package name
+         * @param source    The source
          * @param level     The level
          * @param message   The message
          * @param exception The exception
          */
-        public RecordMatcher(final String pack, final Level level, final String message, final Exception exception) {
-            this.pack = pack;
-            this.level = level;
-            this.message = message;
-            this.exception = exception;
+        private RecordMatcher {
         }
 
         @Override
@@ -253,11 +238,11 @@ class DefaultBetonQuestLoggerTest {
             if (!(record instanceof final BetonQuestLogRecord betonQuestLogRecord)) {
                 return false;
             }
-            final String pack = betonQuestLogRecord.getPack().orElse(null);
+            final String sourcePath = betonQuestLogRecord.getLogSource().getSourcePath();
 
-            final boolean packMatch = this.pack == null && pack == null || this.pack != null && this.pack.equals(pack);
+            final boolean sourceMatch = this.source == null && sourcePath == null || this.source != null && this.source.equals(sourcePath);
             final boolean exceptionMatch = exception == null && record.getThrown() == null || exception != null && exception.equals(record.getThrown());
-            return packMatch && exceptionMatch && record.getLevel().equals(level) && message.equals(record.getMessage());
+            return sourceMatch && exceptionMatch && record.getLevel().equals(level) && message.equals(record.getMessage());
         }
     }
 }

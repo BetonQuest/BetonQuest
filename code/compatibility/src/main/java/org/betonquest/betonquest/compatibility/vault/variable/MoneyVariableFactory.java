@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.vault.variable;
 
 import net.milkbowl.vault.economy.Economy;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 
@@ -16,6 +16,7 @@ import java.util.Locale;
  * Factory to create {@link MoneyVariable}s from {@link Instruction}s.
  */
 public class MoneyVariableFactory implements PlayerVariableFactory {
+
     /**
      * The money amount key.
      */

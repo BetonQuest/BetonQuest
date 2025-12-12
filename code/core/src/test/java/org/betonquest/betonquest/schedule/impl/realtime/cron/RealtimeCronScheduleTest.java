@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule.impl.realtime.cron;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.schedule.CronRebootScheduleTest;
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 

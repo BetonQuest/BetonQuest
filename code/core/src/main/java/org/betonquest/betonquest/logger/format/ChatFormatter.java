@@ -6,6 +6,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.betonquest.betonquest.logger.BetonQuestLogRecord;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +22,7 @@ import java.util.logging.LogRecord;
  * This is a simple log formatting class for the in-game chat.
  */
 public final class ChatFormatter extends Formatter {
+
     /**
      * The name of the plugin that is the source of this formatter.
      */
@@ -81,15 +83,16 @@ public final class ChatFormatter extends Formatter {
         final String plugin = betonRecord
                 .map(BetonQuestLogRecord::getPlugin)
                 .orElse("?");
-        final String questPackage = betonRecord
-                .flatMap(BetonQuestLogRecord::getPack)
-                .map(pack -> "<" + pack + "> ")
+        final String logSourcePath = betonRecord
+                .map(BetonQuestLogRecord::getLogSource)
+                .map(LogSource::getSourcePath)
+                .map(source -> "<" + source + "> ")
                 .orElse("");
 
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
-        return Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + questPackage + color + message)
+        return Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + logSourcePath + color + message)
                 .append(throwable);
     }
 
@@ -191,6 +194,7 @@ public final class ChatFormatter extends Formatter {
          */
         private record Parameters(@Nullable String pluginName, @Nullable String otherPluginName,
                                   @Nullable String shortName, boolean match) {
+
         }
     }
 }
