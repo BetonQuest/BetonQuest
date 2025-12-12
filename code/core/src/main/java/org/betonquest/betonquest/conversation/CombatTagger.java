@@ -3,8 +3,8 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +21,7 @@ import java.util.Map;
  * Tags profiles that are in combat to prevent them from starting the conversation.
  */
 public class CombatTagger implements Listener {
+
     /**
      * Contains a player profile if it is tagged as "in combat".
      * <p>

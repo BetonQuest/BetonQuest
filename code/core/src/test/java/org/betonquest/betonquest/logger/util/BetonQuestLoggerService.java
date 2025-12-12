@@ -3,7 +3,7 @@ package org.betonquest.betonquest.logger.util;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.logger.SingletonLoggerFactory;
+import org.betonquest.betonquest.lib.logger.SingletonLoggerFactory;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
  * and a {@link java.util.logging.Handler} that is registered for the parent logger.
  */
 public class BetonQuestLoggerService implements BeforeEachCallback, ParameterResolver, AfterEachCallback {
+
     /**
      * The instance of a handler that is registered for the parent logger.
      */
