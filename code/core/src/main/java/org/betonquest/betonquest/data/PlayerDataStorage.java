@@ -5,12 +5,12 @@ import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.profile.ProfileKeyMap;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.PlayerDataFactory;
 import org.betonquest.betonquest.kernel.processor.quest.ObjectiveProcessor;
+import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 
 import java.util.Collection;
 import java.util.Map;

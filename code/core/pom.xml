@@ -23,7 +23,8 @@
     <excludedFailsafeGroups>ConfigurationSection</excludedFailsafeGroups>
     <excludedPitestGroups>ConfigurationSection</excludedPitestGroups>
 
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <lib.version>1.0.0${changelist}</lib.version>
+
     <minedown-adventure.version>1.7.4-SNAPSHOT</minedown-adventure.version>
     <bstats-bukkit.version>3.0.2</bstats-bukkit.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
@@ -37,17 +38,11 @@
   </properties>
 
   <dependencies>
-    <!-- from papermc repository -->
+    <!-- from betonquest (module) -->
     <dependency>
-      <groupId>io.papermc.paper</groupId>
-      <artifactId>paper-api</artifactId>
-      <version>${paper-api.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>lib</artifactId>
+      <version>${lib.version}</version>
     </dependency>
 
     <!-- from minebench repository -->

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.config.patcher.transformer;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
-import org.betonquest.betonquest.config.patcher.PatcherOptions;
+import org.betonquest.betonquest.api.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;

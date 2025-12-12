@@ -35,7 +35,8 @@ which can be accessed by `BetonQuest.getInstance().getProfileProvider()`.
 ## Base concepts
 How to write and register new base concepts (events, conditions, objectives, variables) in BetonQuest.
 
-For Conditions, Events and Variables there is the [new API](Writing-Implementations.md#writing-new-quest-type-implementations) available.
+For Conditions, Events and Variables there is the [new API](./Quest/Writing-Implementations.
+md#writing-new-quest-type-implementations) available.
 
 ### Writing objectives
 Objectives are more complicated because they often use event handlers, and they must store players' data.
@@ -125,4 +126,4 @@ You can also call that message when you detect that the player forced conversati
 Remember to notify the conversation about that using `Conversation.end()`.
 
 Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions,
-see [Registry](./Writing-Implementations.md#registry).
+see [Registry](./Quest/Writing-Implementations.md#registry).
