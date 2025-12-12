@@ -27,7 +27,7 @@ mysql:
 profile:
   initial_name: 'default'
 conversation:
-  default_io: menu,tellraw
+  default_io: menu,packetevents,tellraw
   interceptor:
     default: redischat,packetevents,simple
     display_history: true
@@ -53,6 +53,7 @@ conversation:
       line_fill_before: 10
       refresh_delay: 180
       rate_limit: 10
+      set_speed: true
       npc_name_type: chat
       npc_name_align: center
       npc_name_separator: true

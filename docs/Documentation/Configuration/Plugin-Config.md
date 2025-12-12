@@ -158,6 +158,7 @@ Every io has its own settings that can be configured in the `io` section.
       line_fill_before: 10  #(3)!
       refresh_delay: 180    #(4)!
       rate_limit: 10        #(5)!
+      set_speed: true       #(22)!
   
       npc_name_type: chat              #(6)!
       npc_name_align: center           #(7)!
@@ -201,6 +202,7 @@ Every io has its own settings that can be configured in the `io` section.
     19. A prefix that gets applied to the start of a new line if the actual text is too long.
     20. The arrow format to scroll up.
     21. The arrow format to scroll down.
+    22. Sets the speed to zero to achieve a zoom effect.
   
 
 * `chest`  

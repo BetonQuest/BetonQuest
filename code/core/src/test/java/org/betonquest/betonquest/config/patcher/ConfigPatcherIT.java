@@ -24,7 +24,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Integration Test for the plugin config.
+ */
 class ConfigPatcherIT extends QuestFixture {
+
     private static Stream<Arguments> configsToCheck() {
         return Stream.of(
                 Arguments.of("config.yml", (Consumer<ConfigurationSection>) section -> {
@@ -34,6 +38,9 @@ class ConfigPatcherIT extends QuestFixture {
                     assertTrue(section.getBoolean("item.quest.update_legacy_on_join"),
                             "For old config, item.quest.update_legacy_on_join should be true");
                     section.set("item.quest.update_legacy_on_join", false);
+                    assertEquals("menu,tellraw", section.get("conversation.default_io"),
+                            "For old config, conversation.default_io should be menu,tellraw");
+                    section.set("conversation.default_io", "menu,packetevents,tellraw");
                 }),
                 Arguments.of("lang/de-DE.yml", null),
                 Arguments.of("lang/en-US.yml", null),

@@ -1,4 +1,12 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.21:
+  - type: VALUE_RENAME
+    key: conversation.default_io
+    oldValueRegex: 'menu,tellraw'
+    newValue: 'menu,packetevents,tellraw'
+  - type: SET
+    key: conversation.io.menu.set_speed
+    value: true
 3.0.0.20:
   - type: REMOVE
     key: hook.protocollib
