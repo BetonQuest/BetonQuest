@@ -53,7 +53,7 @@ class VariableListTest {
     }
 
     private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
-        return new VariableList<>(variables, questPackage, input, value -> new EventID(mock(QuestPackageManager.class), questPackage, value));
+        return new VariableList<>(variables, questPackage, input, value -> new EventID(mock(Variables.class), mock(QuestPackageManager.class), questPackage, value));
     }
 
     @Test

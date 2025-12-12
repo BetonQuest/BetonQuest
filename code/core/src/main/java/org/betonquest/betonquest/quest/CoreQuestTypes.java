@@ -322,14 +322,14 @@ public class CoreQuestTypes {
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory, data));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory, data));
         conditionTypes.register("burning", new BurningConditionFactory(loggerFactory, data));
-        conditionTypes.registerCombined("check", new CheckConditionFactory(betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("check", new CheckConditionFactory(variableProcessor, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.registerCombined("chestitem", new ChestItemConditionFactory(data));
         conditionTypes.register("conversation", new ConversationConditionFactory(featureApi.conversationApi()));
         conditionTypes.register("dayofweek", new DayOfWeekConditionFactory(loggerFactory.create(DayOfWeekConditionFactory.class)));
         conditionTypes.register("effect", new EffectConditionFactory(loggerFactory, data));
         conditionTypes.register("empty", new EmptySlotsConditionFactory(loggerFactory, data));
         conditionTypes.registerCombined("entities", new EntityConditionFactory(data));
-        conditionTypes.registerCombined("eval", new EvalConditionFactory(betonQuest.getQuestPackageManager(), conditionTypes));
+        conditionTypes.registerCombined("eval", new EvalConditionFactory(variableProcessor, betonQuest.getQuestPackageManager(), conditionTypes));
         conditionTypes.register("experience", new ExperienceConditionFactory(loggerFactory, data));
         conditionTypes.register("facing", new FacingConditionFactory(loggerFactory, data));
         conditionTypes.register("fly", new FlyingConditionFactory(loggerFactory, data));
@@ -391,7 +391,7 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("door", new DoorEventFactory(data));
         eventTypes.registerCombined("drop", new DropEventFactory(profileProvider, data));
         eventTypes.register("effect", new EffectEventFactory(loggerFactory, data));
-        eventTypes.registerCombined("eval", new EvalEventFactory(betonQuest.getQuestPackageManager(), eventTypes));
+        eventTypes.registerCombined("eval", new EvalEventFactory(variableProcessor, betonQuest.getQuestPackageManager(), eventTypes));
         eventTypes.register("experience", new ExperienceEventFactory(loggerFactory, data));
         eventTypes.registerCombined("explosion", new ExplosionEventFactory(data));
         eventTypes.registerCombined("folder", new FolderEventFactory(betonQuest, loggerFactory, server.getPluginManager(), questTypeApi));
@@ -416,11 +416,11 @@ public class CoreQuestTypes {
         eventTypes.registerCombined("objective", new ObjectiveEventFactory(betonQuest, loggerFactory, questTypeApi, playerDataFactory));
         eventTypes.register("opsudo", new OpSudoEventFactory(loggerFactory, data));
         eventTypes.register("party", new PartyEventFactory(loggerFactory, questTypeApi, profileProvider));
-        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(betonQuest.getQuestPackageManager(), questTypeApi));
+        eventTypes.registerCombined("pickrandom", new PickRandomEventFactory(questTypeApi));
         eventTypes.register("point", new PointEventFactory(loggerFactory, dataStorage,
                 pluginMessage));
         eventTypes.registerCombined("removeentity", new RemoveEntityEventFactory(data));
-        eventTypes.registerCombined("run", new RunEventFactory(betonQuest.getQuestPackageManager(), eventTypes));
+        eventTypes.registerCombined("run", new RunEventFactory(variableProcessor, betonQuest.getQuestPackageManager(), eventTypes));
         eventTypes.register("runForAll", new RunForAllEventFactory(questTypeApi, profileProvider));
         eventTypes.register("runIndependent", new RunIndependentEventFactory(questTypeApi));
         eventTypes.registerCombined("setblock", new SetBlockEventFactory(data));

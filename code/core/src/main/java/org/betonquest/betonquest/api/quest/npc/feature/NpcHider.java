@@ -119,14 +119,14 @@ public class NpcHider {
     }
 
     private void loadKey(final QuestPackage pack, final ConfigurationSection section, final String idString) throws QuestException {
-        final NpcID npcId = new NpcID(packManager, pack, idString);
+        final NpcID npcId = new NpcID(variables, packManager, pack, idString);
 
         final String conditionsString = section.getString(idString);
         if (conditionsString == null) {
             throw new QuestException("No conditions defined");
         }
         final List<ConditionID> conditions = new VariableList<>(variables, pack, conditionsString,
-                string -> new ConditionID(packManager, pack, string)).getValue(null);
+                string -> new ConditionID(variables, packManager, pack, string)).getValue(null);
 
         if (npcs.containsKey(npcId)) {
             npcs.get(npcId).addAll(conditions);

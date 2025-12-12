@@ -101,7 +101,7 @@ public class PlayerHider {
         }
         try {
             return new VariableList<>(variables, pack, rawConditions,
-                    string -> new ConditionID(api.getQuestPackageManager(), pack, string))
+                    string -> new ConditionID(variables, api.getQuestPackageManager(), pack, string))
                     .getValue(null).toArray(ConditionID[]::new);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);

@@ -39,6 +39,7 @@ import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegratorFa
  * Allows to register the 3rd party compatibility.
  */
 public class BundledCompatibility {
+
     /**
      * Compatibility to register at.
      */
@@ -90,8 +91,10 @@ public class BundledCompatibility {
         compatibility.register("Jobs", new JobsRebornIntegratorFactory());
         compatibility.register("LuckPerms", new LuckPermsIntegratorFactory());
         compatibility.register("AuraSkills", new AuraSkillsIntegratorFactory());
-        compatibility.register("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
-        compatibility.register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory, betonQuestApi.getQuestPackageManager()));
+        compatibility.register("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
+                betonQuestApi.getQuestTypeApi().variables(), betonQuestApi.getQuestPackageManager()));
+        compatibility.register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
+                betonQuestApi.getQuestPackageManager()));
         compatibility.register("fake-block", new FakeBlockIntegratorFactory());
         compatibility.register("RedisChat", new RedisChatIntegratorFactory());
         compatibility.register("Train_Carts", new TrainCartsIntegratorFactory());
