@@ -114,6 +114,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `conversation.interceptor.display_history` config option, allow the interceptor to send the chat history after a conversation
 - `menu` `bound_item` now finds the first menu allowed to open instead aborting after the first check
 - `money` event now has a `multiply` argument instead of `*` in front of number
+- `nexo` item type
+- `kotlin` support
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/code/build/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/code/build/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/code/compatibility-kotlin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/code/compatibility-kotlin/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/code/compatibility/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/code/compatibility/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/code/core/src/main/java" charset="UTF-8" />

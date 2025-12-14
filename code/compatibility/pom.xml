@@ -53,6 +53,8 @@
     <api.version>5.4</api.version>
     <auraskills-api-bukkit.version>2.2.0</auraskills-api-bukkit.version>
     <fabled.version>1.0.2-R1</fabled.version>
+    <!-- Kotlin -->
+    <kotlin.version>2.2.21</kotlin.version>
   </properties>
 
   <dependencies>
@@ -353,6 +355,16 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.betonquest</groupId>-->
+<!--      <artifactId>compatibility-kotlin</artifactId>-->
+<!--&lt;!&ndash;      <version>2.2.1</version>&ndash;&gt;-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>org.betonquest.betonquest</groupId>
+      <artifactId>compatibility-kotlin</artifactId>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -426,6 +438,76 @@
 
   <build>
     <plugins>
+      <!-- Kotlin compiler plugin configuration -->
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>kotlin-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>src/main/kotlin</sourceDir>
+                <!-- Ensure Kotlin code can reference Java code -->
+                <sourceDir>src/main/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>kotlin-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>src/test/kotlin</sourceDir>
+                <sourceDir>src/test/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven compiler plugin configuration -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version>
+        <executions>
+          <!-- Disable default executions -->
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+
+          <!-- Define custom executions -->
+          <execution>
+            <id>java-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>java-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>

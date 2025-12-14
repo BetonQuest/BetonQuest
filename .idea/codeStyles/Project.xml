@@ -13,6 +13,7 @@
     <JavaCodeStyleSettings>
       <option name="GENERATE_FINAL_LOCALS" value="true" />
       <option name="GENERATE_FINAL_PARAMETERS" value="true" />
+      <option name="BLANK_LINES_AROUND_FIELD_WITH_ANNOTATIONS" value="1" />
       <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999999999" />
       <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999999999" />
       <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
@@ -27,6 +28,9 @@
       <option name="MAX_LINES_AROUND_BLOCK_ELEMENTS" value="0" />
       <option name="MAX_LINES_BETWEEN_PARAGRAPHS" value="0" />
     </Markdown>
+    <editorconfig>
+      <option name="ENABLED" value="false" />
+    </editorconfig>
     <codeStyleSettings language="JAVA">
       <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
       <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />

@@ -88,3 +88,5 @@ permissions:
     default: true
   betonquest.language:
     default: true
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21

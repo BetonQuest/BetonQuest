@@ -32,6 +32,9 @@
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
 
     <maven-shade-plugin.path>${project.groupId}.${project.artifactId}</maven-shade-plugin.path>
+
+    <!-- Kotlin -->
+    <kotlin.version>2.2.21</kotlin.version>
   </properties>
 
   <dependencies>
@@ -56,6 +59,13 @@
       <artifactId>compatibility</artifactId>
       <version>${compatibility.version}</version>
     </dependency>
+
+    <!-- Kotlin -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -67,6 +77,76 @@
 
   <build>
     <plugins>
+      <!-- Kotlin compiler plugin configuration -->
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>kotlin-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>src/main/kotlin</sourceDir>
+                <!-- Ensure Kotlin code can reference Java code -->
+                <sourceDir>src/main/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>kotlin-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>src/test/kotlin</sourceDir>
+                <sourceDir>src/test/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven compiler plugin configuration -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version>
+        <executions>
+          <!-- Disable default executions -->
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+
+          <!-- Define custom executions -->
+          <execution>
+            <id>java-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>java-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

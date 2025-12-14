@@ -19,6 +19,7 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrato
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegratorFactory;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegratorFactory;
+import org.betonquest.betonquest.compatibility.nexo.NexoIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensIntegratorFactory;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegrator;
 import org.betonquest.betonquest.compatibility.npc.fancynpcs.FancyNpcsIntegratorFactory;
@@ -97,5 +98,6 @@ public class BundledCompatibility {
         compatibility.register("Train_Carts", new TrainCartsIntegratorFactory());
         compatibility.register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
         compatibility.register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
+        compatibility.register("nexo", new NexoIntegratorFactory());
     }
 }
