@@ -22,7 +22,7 @@ You can add BetonQuest as a dependency using your build system. Here is the conf
 ```XML title="Add this to your repositories tag"
 <repository>
     <id>betonquest-repo</id>
-    <url>https://nexus.betonquest.org/repository/betonquest/</url>
+    <url>https://repo.betonquest.org/betonquest/</url>
 </repository>
 ```
 

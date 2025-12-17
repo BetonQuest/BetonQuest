@@ -52,7 +52,7 @@
   <repositories>
     <repository>
       <id>betonquest-repo</id>
-      <url>https://nexus.betonquest.org/repository/betonquest/</url>
+      <url>https://repo.betonquest.org/betonquest/</url>
     </repository>
     <repository>
       <id>betonquest-papermc-repo</id>
