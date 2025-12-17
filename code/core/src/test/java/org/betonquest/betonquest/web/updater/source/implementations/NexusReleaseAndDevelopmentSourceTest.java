@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class tests the {@link NexusReleaseAndDevelopmentSource}.
  */
 class NexusReleaseAndDevelopmentSourceTest {
+
     /**
      * The path to the root page for a specific Nexus.
      */
@@ -35,7 +36,8 @@ class NexusReleaseAndDevelopmentSourceTest {
                     case apiUrlShadedPage2 -> Files.readString(filePathShadedPage2);
                     default -> throw new IOException("Unexpected URL: " + url);
                 };
-        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
+        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, "betonquest",
+                "org.betonquest", "betonquest", "shaded", contentSource);
 
         final Map<Version, String> versions = source.getReleaseVersions(new Version("1.12.4"));
 
@@ -70,7 +72,8 @@ class NexusReleaseAndDevelopmentSourceTest {
                     case apiUrlPom2 -> Files.readString(filePathPom2);
                     default -> throw new IOException("Unexpected URL: " + url);
                 };
-        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
+        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, "betonquest",
+                "org.betonquest", "betonquest", "shaded", contentSource);
 
         final Map<Version, String> versions = source.getDevelopmentVersions(new Version("1.12.0"));
 

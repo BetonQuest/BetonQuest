@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
  * This is a {@link WebContentSource} for the Nexus repository.
  */
 public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
+
     /**
      * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
      */
@@ -28,7 +29,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
      * The sub path for a REST API call to Nexus to search for shaded jars
      * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
      */
-    public static final String SEARCH_URL = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version&prerelease=%s";
+    public static final String SEARCH_URL = "/search/assets?repository=%s&group=%s&name=%s&maven.extension=jar&maven.classifier=%s&sort=version&prerelease=%s";
 
     /**
      * The sub path for a REST API call to Nexus with pagination to append to any path that has pagination.
@@ -46,6 +47,26 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
     private final String apiUrl;
 
     /**
+     * The repository to search in.
+     */
+    private final String repository;
+
+    /**
+     * The groupId to search for.
+     */
+    private final String groupId;
+
+    /**
+     * The artifactId to search for.
+     */
+    private final String artifactId;
+
+    /**
+     * The classifier to search for.
+     */
+    private final String classifier;
+
+    /**
      * The {@link ContentSource} to use to read the content from the given {@link URL}.
      */
     private final ContentSource contentSource;
@@ -55,11 +76,21 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
      * Provide only the url to the nexus, not the url to the search itself.
      *
      * @param apiUrl        path to the root page for a specific Nexus
+     * @param repository    the repository to search in
+     * @param groupId       the groupId to search for
+     * @param artifactId    the artifactId to search for
+     * @param classifier    the classifier to search for
      * @param contentSource the {@link ContentSource} to use to read the content from the given {@link URL}
      */
-    public NexusReleaseAndDevelopmentSource(final String apiUrl, final ContentSource contentSource) {
+    public NexusReleaseAndDevelopmentSource(final String apiUrl, final String repository, final String groupId,
+                                            final String artifactId, final String classifier,
+                                            final ContentSource contentSource) {
         super();
         this.apiUrl = apiUrl;
+        this.repository = repository;
+        this.groupId = groupId;
+        this.artifactId = artifactId;
+        this.classifier = classifier;
         this.contentSource = contentSource;
     }
 
@@ -95,7 +126,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
 
         String continuationToken = "";
         while (continuationToken != null) {
-            final String url = apiUrl + SERVICE_REST_V_1 + String.format(SEARCH_URL, prereleases) + continuationToken;
+            final String url = apiUrl + SERVICE_REST_V_1 + String.format(SEARCH_URL, repository, groupId, artifactId, classifier, prereleases) + continuationToken;
             final JSONObject nexusResponse = new JSONObject(contentSource.get(new URL(url)));
             final JSONArray items = nexusResponse.getJSONArray("items");
             for (int index = 0; index < items.length(); index++) {
@@ -123,6 +154,7 @@ public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, De
      */
     @FunctionalInterface
     private interface VersionConsumer {
+
         /**
          * Consumes the given version and downloadUrl.
          *
