@@ -8,7 +8,6 @@ document$.subscribe(async () => {
   const repoUrl = "${REPOSITORY_URL}";
   const parts = repoUrl.split("/");
   const baseUrl = parts.slice(0, -2).join("/") + "/";
-  const repositoryName = parts[parts.length - 2];
 
   window.onload = async function () {
     let urlParams = new URLSearchParams(window.location.search);
