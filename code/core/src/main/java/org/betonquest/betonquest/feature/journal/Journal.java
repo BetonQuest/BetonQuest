@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerJournalDeleteEvent;
@@ -41,6 +42,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +55,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class Journal {
+
     /**
      * Key that an ItemStack is the Journal.
      */
@@ -327,10 +330,8 @@ public class Journal {
         final List<Component> sortedLines = new ArrayList<>();
         for (final int i : sorted) {
             final List<Component> linesOrder = lines.get(i);
-            Component[] sortedLinesOrder = new Component[linesOrder.size()];
-            sortedLinesOrder = linesOrder.toArray(sortedLinesOrder);
-            Arrays.sort(sortedLinesOrder);
-            sortedLines.addAll(Arrays.asList(sortedLinesOrder));
+            linesOrder.sort(Comparator.comparing(component -> PlainTextComponentSerializer.plainText().serialize(component)));
+            sortedLines.addAll(linesOrder);
         }
         return Component.join(JoinConfiguration.newlines(), sortedLines);
     }
