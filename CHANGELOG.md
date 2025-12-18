@@ -160,6 +160,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `tellraw` conversation IO showed pop-up for unknown command
 - `simple` item `flags` crashed plugin when invalid
 - Disabling the plugin no longer causes hardly expected zip errors
+- `mspawnmob` exception when spawning the mob is cancelled/forbidden
 ### Security
 
 ## [2.2.1] - 2025-01-12
