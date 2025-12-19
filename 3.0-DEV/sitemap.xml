@@ -13,10 +13,6 @@
          <lastmod>2025-12-19</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Events/</loc>
-         <lastmod>2025-12-19</lastmod>
-    </url>
-    <url>
          <loc>https://betonquest.org/3.0-DEV/API/Instruction/</loc>
          <lastmod>2025-12-19</lastmod>
     </url>
@@ -37,11 +33,39 @@
          <lastmod>2025-12-19</lastmod>
     </url>
     <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Profiles/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
          <loc>https://betonquest.org/3.0-DEV/API/Schedules/</loc>
          <lastmod>2025-12-19</lastmod>
     </url>
     <url>
-         <loc>https://betonquest.org/3.0-DEV/API/Writing-Implementations/</loc>
+         <loc>https://betonquest.org/3.0-DEV/API/TextParsing/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Conditions/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Events/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/NPCs/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Objectives/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Quest-API/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://betonquest.org/3.0-DEV/API/Quest/Writing-Implementations/</loc>
          <lastmod>2025-12-19</lastmod>
     </url>
     <url>
