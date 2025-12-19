@@ -3638,6 +3638,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-494-add-native-menu-conversation-io">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-494 - Add native <code>menu</code> conversation io <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -5927,6 +5950,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#300-dev-494-add-native-menu-conversation-io">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.0.0-DEV-494 - Add native <code>menu</code> conversation io <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" />
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -6097,6 +6143,7 @@ to automatically migrate from "not versioned".
 <li><a href="#300-dev-444-simple-item-questitem">3.0.0-DEV-444 - Simple Item QuestItem</a> <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /></li>
 <li><a href="#300-dev-465-packetevents-instead-of-protocollib">3.0.0-DEV-465 - PacketEvents instead of ProtocolLib</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 <li><a href="#300-dev-488-remove-legacy-point-multiply">3.0.0-DEV-488 - Remove Legacy Point Multiply</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:" /></li>
+<li><a href="#300-dev-494-add-native-menu-conversation-io">3.0.0-DEV-494 - Add native <code>menu</code> conversation io</a> <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:" /><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -6802,6 +6849,36 @@ It has now been permanently removed from there as well.</p>
 <span class="w">  </span><span class="nt">winLottery</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;money</span><span class="nv"> </span><span class="s">7</span><span class="nv"> </span><span class="s">multiply</span><span class="nv"> </span><span class="s">notify&quot;</span>
 <span class="w">  </span><span class="nt">applyBonus</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;score</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">1.2</span><span class="nv"> </span><span class="s">action:multiply&quot;</span>
 <span class="w">  </span><span class="nt">bigProgress</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;globalpoint</span><span class="nv"> </span><span class="s">progress</span><span class="nv"> </span><span class="s">*2</span><span class="nv"> </span><span class="s">action:multiply&quot;</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="300-dev-494-add-native-menu-conversation-io">3.0.0-DEV-494 - Add native <code>menu</code> conversation io <img alt="🌥" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f325.svg" title=":white_sun_cloud:" /><a class="headerlink" href="#300-dev-494-add-native-menu-conversation-io" title="Permanent link">🔗</a></h3>
+<p>With 1.21.4 a Minecraft native input handling was added. That allows to not require PacketEvents for the
+<code>menu</code> conversation io anymore.</p>
+<p>The old <code>menu</code> io was renamed to <code>packetevents</code> and a new <code>menu</code> io was added.
+In addition, a new <code>set_speed</code> option was added to achieve a zoom effect and disable "rubber banding" in the new <code>menu</code>.</p>
+<p>When you have set an <code>conversationIO: menu</code> and want to use the <code>packetevents</code> you have to change it manually.</p>
+<div class="grid">
+<div class="highlight"><span class="filename">Old conversation</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">HansConv</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">conversationIO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">menu</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New conversation</span><pre><span></span><code><span class="nt">conversations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">HansConv</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">conversationIO</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">packetevents</span>
+</code></pre></div>
+</div>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr />
+<p>The default conversation io was adjusted as following:</p>
+<div class="grid" markdown>
+<div class="highlight"><span class="filename">Old config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">default_io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">menu,tellraw</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New config.yml</span><pre><span></span><code><span class="nt">conversation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">default_io</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">menu,packetevents,tellraw</span>
 </code></pre></div>
 </div>
 </details>

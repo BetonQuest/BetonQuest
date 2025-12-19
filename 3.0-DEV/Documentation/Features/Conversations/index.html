@@ -5168,18 +5168,21 @@ purpose, have a look at
 <h2 id="conversation-displaying">Conversation displaying<a class="headerlink" href="#conversation-displaying" title="Permanent link">🔗</a></h2>
 <p>BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
 and the way the player interacts with them.</p>
-<p>BetonQuest uses the <code>menu</code> style by default. If PacketEvents is not installed, the <code>tellraw</code> style will be used.
+<p>BetonQuest uses the <code>menu</code> style by default if the server runs at least Minecraft version 1.21.4.
+If PacketEvents is installed it will use the <code>packetevents</code> style as fallback, otherwise the <code>tellraw</code> style will be used.
 You can change this setting globally by changing the <a href="../../Configuration/Plugin-Config/#conversation-conversation-settings"><code>default_io</code></a> option in the "<em>config.yml</em>" file.</p>
-<p>It is also possible to override this setting per conversation. Add a <code>conversationIO:
-&lt;type&gt;</code> setting to the conversation file at the top of the YAML hierarchy (which is the same level as <code>quester</code> or <code>first</code> options).</p>
+<p>It is also possible to override this setting per conversation. Add a <code>conversationIO: &lt;type&gt;</code> setting
+to the conversation file at the top of the YAML hierarchy (which is the same level as <code>quester</code> or <code>first</code> options).</p>
 <p>In both cases, you can choose from the following conversation styles:</p>
 <div class="admonition example">
 <p class="admonition-title">Conversation Styles</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><code>menu</code></label><label for="__tabbed_1_2"><code>chest</code></label><label for="__tabbed_1_3"><code>combined</code></label><label for="__tabbed_1_4"><code>simple</code></label><label for="__tabbed_1_5"><code>tellraw</code></label><label for="__tabbed_1_6"><code>slowtellraw</code></label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:7"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><input id="__tabbed_1_7" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><code>menu</code></label><label for="__tabbed_1_2"><code>packetevents</code></label><label for="__tabbed_1_3"><code>chest</code></label><label for="__tabbed_1_4"><code>combined</code></label><label for="__tabbed_1_5"><code>simple</code></label><label for="__tabbed_1_6"><code>tellraw</code></label><label for="__tabbed_1_7"><code>slowtellraw</code></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>A modern conversation style that works with some of Minecraft's native controls.</p>
-<p><strong>Requires <a href="https://www.spigotmc.org/resources/80279/">PacketEvents</a></strong></p>
+<p><strong>Requires Minecraft version <em>1.21.4</em> or above!</strong></p>
+<p>When <code>set_speed</code> is disabled the player won't be able to be moved by external sources and get "rubber banding"
+like effect when moving/selecting options.</p>
 <details>
 <summary>Customizing the Menu Style</summary>
 <p>The formatting of this style can be configured with the <a href="../../Configuration/Plugin-Config/#io-conversation-io-settings"><code>menu</code> config option</a>.</p>
@@ -5188,6 +5191,11 @@ You can change this setting globally by changing the <a href="../../Configuratio
   Sorry, your browser doesn't support embedded videos.
 </video>
 The blue overlay shows the player's key presses.</p>
+</div>
+<div class="tabbed-block">
+<p>Similar to <code>menu</code>, but it mounts the player client side on a fake entity instead.</p>
+<p><strong>Requires <a href="https://www.spigotmc.org/resources/80279/">PacketEvents</a></strong></p>
+<p>It uses the same Customization as <code>menu</code>.</p>
 </div>
 <div class="tabbed-block">
 <p>A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.</p>
