@@ -3,13 +3,13 @@ package org.betonquest.betonquest.feature;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -40,6 +40,7 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class Backpack implements Listener {
+
     /**
      * The maximum amount of rows an inventory can have.
      */
@@ -164,6 +165,7 @@ public class Backpack implements Listener {
      * Represents a display that can be shown as the backpack.
      */
     private abstract static class Display {
+
         private Display() {
         }
 
@@ -182,6 +184,7 @@ public class Backpack implements Listener {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private class BackpackPage extends Display {
+
         /**
          * Backpack size.
          */
@@ -479,6 +482,7 @@ public class Backpack implements Listener {
      * Showing the possible locations for the compass.
      */
     private class Compass extends Display {
+
         /**
          * Maps the slot to a compass.
          */

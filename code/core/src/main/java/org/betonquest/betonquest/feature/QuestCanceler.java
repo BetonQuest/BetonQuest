@@ -2,6 +2,7 @@ package org.betonquest.betonquest.feature;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureApi;
@@ -10,7 +11,6 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -38,6 +38,7 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class QuestCanceler {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -272,5 +273,6 @@ public class QuestCanceler {
                              Variable<List<ObjectiveID>> objectives, Variable<List<String>> tags,
                              Variable<List<String>> points, Variable<List<JournalEntryID>> journal,
                              @Nullable Variable<Location> location) {
+
     }
 }

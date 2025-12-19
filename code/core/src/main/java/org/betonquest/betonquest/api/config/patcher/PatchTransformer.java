@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.config.patcher;
 
-import org.betonquest.betonquest.config.patcher.PatcherOptions;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**

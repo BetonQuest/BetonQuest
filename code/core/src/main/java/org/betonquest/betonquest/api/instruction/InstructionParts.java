@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.instruction;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 import java.util.List;
 

@@ -10,7 +10,16 @@ unfinished: |-
   ??? warning "API State: `Unfinished`"
       @snippet:api-state:state-explanation@
 
+todo: |-
+  ??? warning "API State: `Todo`"
+      @snippet:api-state:state-explanation@
+
 state-explanation: |-
+  <h3><u>Todo</u></h3>
+  This part of the API is only planned.
+
+  **Do not use anything of this part of the API yet. It will change in the future.**
+  
   <h3><u>Unfinished</u> </h3>
   This part of the API is brand-new.
   It will be changed if there are any bugs, missing features or usability improvements.

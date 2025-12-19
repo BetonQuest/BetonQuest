@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;

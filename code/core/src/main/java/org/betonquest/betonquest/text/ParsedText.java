@@ -2,9 +2,9 @@ package org.betonquest.betonquest.text;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -16,6 +16,7 @@ import java.util.Map;
  * A text that is parsed using a text parser.
  */
 public class ParsedText implements Text {
+
     /**
      * The text parser to use for parsing text.
      */

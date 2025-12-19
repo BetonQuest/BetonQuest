@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 

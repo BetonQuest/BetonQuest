@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.api.instruction.argument.types;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 
 /**
  * Parses a string to a component using a text parser.
  */
 public class TextParserToComponentParser implements Argument<Component> {
+
     /**
      * The text parser to use.
      */

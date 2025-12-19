@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from quest package manager, package and string.

@@ -111,15 +111,22 @@ nav:
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
-      - APIs:
+      - 'Quest API':
+          - 'Overview': API/Quest/Quest-API.md
+          - 'Writing Implementations': API/Quest/Writing-Implementations.md
+          - 'Conditions': API/Quest/Conditions.md
+          - 'Events': API/Quest/Events.md
+          - 'Objectives': API/Quest/Objectives.md
+          - 'NPCs': API/Quest/NPCs.md
+      - 'Other':
           - 'Legacy API': API/Legacy-API.md
           - 'Instruction': API/Instruction.md
-          - 'Writing Implementations': API/Writing-Implementations.md
           - 'Logging': API/Logging.md
+          - 'Text Parsing': API/TextParsing.md
+          - 'Profiles': API/Profiles.md
           - 'Configuration Files': API/Configuration-Files.md
           - 'Bukkit Configurations': API/BukkitConfigurations.md
           - 'Schedules': API/Schedules.md
-          - 'Events': API/Events.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Donate Money': Participate/Donating-Money.md

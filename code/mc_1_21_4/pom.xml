@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.betonquest</groupId>
     <artifactId>parent</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1</version>
   </parent>
 
   <name>BetonQuest Minecraft 1.21.4</name>
@@ -18,23 +18,18 @@
   <properties>
     <revision>1.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
-
-    <paper-api.version>1.21.4-R0.1-SNAPSHOT</paper-api.version>
-    <core.version>1.0.0${changelist}</core.version>
-    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
     <pit.report.skip>true</pit.report.skip>
+
+    <!-- module versions -->
+    <core.version>1.0.0${changelist}</core.version>
+
+    <!-- dependency versions -->
+    <paper-api.version>1.21.4-R0.1-SNAPSHOT</paper-api.version>
+    <mc_1_20_6.version>1.0.0${changelist}</mc_1_20_6.version>
   </properties>
 
   <dependencies>
-    <!-- Paper -->
-    <dependency>
-      <groupId>io.papermc.paper</groupId>
-      <artifactId>paper-api</artifactId>
-      <version>${paper-api.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- BetonQuest -->
+    <!-- from betonquest module -->
     <dependency>
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>core</artifactId>
@@ -45,6 +40,14 @@
       <groupId>org.betonquest.betonquest</groupId>
       <artifactId>mc_1_20_6</artifactId>
       <version>${mc_1_20_6.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- from papermc repository -->
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper-api.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

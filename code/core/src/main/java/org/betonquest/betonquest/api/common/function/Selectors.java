@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.common.function;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 

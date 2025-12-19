@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.variable.sync;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.api.quest.variable.thread.PrimaryServerThreadNullableVariable;
 import org.betonquest.betonquest.quest.variable.eval.EvalVariable;

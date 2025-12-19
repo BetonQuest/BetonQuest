@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.vault.event;
 
 import net.milkbowl.vault.permission.Permission;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.jetbrains.annotations.Nullable;
 

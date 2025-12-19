@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegistry;
+import org.betonquest.betonquest.api.config.patcher.PatcherOptions;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.versioning.UpdateStrategy;
 import org.betonquest.betonquest.versioning.Version;
@@ -185,7 +186,7 @@ public class Patcher {
     private boolean applyPatch(final ConfigurationSection config, final List<Map<?, ?>> patchData) {
         boolean noErrors = true;
         for (final Map<?, ?> transformationData : patchData) {
-            final PatcherOptions patcherOptions = new PatcherOptions(transformationData);
+            final PatcherOptions patcherOptions = new DefaultPatcherOptions(transformationData);
             try {
                 getPatchTransformer(patcherOptions.getString("type")).transform(patcherOptions, config);
             } catch (final PatchException e) {

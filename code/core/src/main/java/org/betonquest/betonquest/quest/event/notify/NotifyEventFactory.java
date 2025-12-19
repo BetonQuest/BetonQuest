@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
@@ -29,6 +29,7 @@ import static org.betonquest.betonquest.config.PluginMessage.LANG_KEY;
  * Factory for {@link NotifyEvent}.
  */
 public class NotifyEventFactory implements PlayerEventFactory {
+
     /**
      * A pattern for the notation of notifyIO options.
      */

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.packetevents.conversation;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableComponent;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.bukkit.configuration.ConfigurationSection;
 

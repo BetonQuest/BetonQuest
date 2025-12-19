@@ -2,8 +2,8 @@ package org.betonquest.betonquest.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.versioning.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -26,6 +26,7 @@ import java.util.UUID;
  * This {@link Updater} checks for new versions on the BetonQuest page and on the GitHub page and download them if wanted.
  */
 public class Updater {
+
     /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */

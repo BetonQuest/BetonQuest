@@ -2,7 +2,7 @@ package org.betonquest.betonquest.logger;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import org.betonquest.betonquest.logger.handler.chat.PlayerPackageReceiverSelector;
+import org.betonquest.betonquest.logger.handler.chat.PlayerLogSourceReceiverSelector;
 import org.betonquest.betonquest.logger.handler.chat.ReceiverSelectorRegistry;
 import org.betonquest.betonquest.logger.handler.chat.RecordReceiverSelector;
 import org.jetbrains.annotations.Nullable;
@@ -61,31 +61,31 @@ public class PlayerLogWatcher {
     /**
      * Check whether the given pattern is active for the given player, regardless of the level.
      *
-     * @param subject        the player to check
-     * @param packagePattern the pattern to check
+     * @param subject the player to check
+     * @param pattern the pattern to check
      * @return true if the pattern is active for the player; false otherwise
      */
-    public boolean isActivePattern(final UUID subject, final String packagePattern) {
-        return activeSelectors.contains(subject, packagePattern);
+    public boolean isActivePattern(final UUID subject, final String pattern) {
+        return activeSelectors.contains(subject, pattern);
     }
 
     /**
-     * Register a filter. A filter consists of the subject player, the package pattern and a minimum required logging
-     * level. The player is represented by its UUID. The filter is a package string that may end with an asterisk '*';
+     * Register a filter. A filter consists of the subject player, the pattern and a minimum required logging
+     * level. The player is represented by its UUID. The filter is a source string that may end with an asterisk '*';
      * in the case that it does end with an asterisk the rest of the string will be matched as prefix, otherwise
-     * the pattern will be matched exact. A pure asterisk (or empty prefix) will match any package.
-     * If a filter was previously set for the subject player and package pattern combination then just the level will be
+     * the pattern will be matched exact. A pure asterisk (or empty prefix) will match any source.
+     * If a filter was previously set for the subject player and pattern combination then just the level will be
      * overwritten to the given (new) level.
      *
-     * @param subject        the player that the filter is for
-     * @param packagePattern the package pattern that should be filtered for
-     * @param minimumLevel   the minimum logging level to filter for
+     * @param subject      the player that the filter is for
+     * @param pattern      the pattern that should be filtered for
+     * @param minimumLevel the minimum logging level to filter for
      */
-    public void addFilter(final UUID subject, final String packagePattern, final Level minimumLevel) {
-        final PlayerPackageReceiverSelector newSelector = new PlayerPackageReceiverSelector(
-                Collections.singleton(subject), minimumLevel, packagePattern);
+    public void addFilter(final UUID subject, final String pattern, final Level minimumLevel) {
+        final PlayerLogSourceReceiverSelector newSelector = new PlayerLogSourceReceiverSelector(
+                Collections.singleton(subject), minimumLevel, pattern);
         selectorRegistry.addSelector(newSelector);
-        final RecordReceiverSelector oldSelector = activeSelectors.put(subject, packagePattern, newSelector);
+        final RecordReceiverSelector oldSelector = activeSelectors.put(subject, pattern, newSelector);
         unregisterSelector(oldSelector);
     }
 
@@ -93,11 +93,11 @@ public class PlayerLogWatcher {
      * Remove a filter. An equal UUID and pattern needs to be used for removal, no pattern matching will be done.
      * If there was no filter for the given combination it will be silently ignored.
      *
-     * @param subject        the player to remove the filter from
-     * @param packagePattern the package pattern to be removed
+     * @param subject the player to remove the filter from
+     * @param pattern the pattern to be removed
      */
-    public void removeFilter(final UUID subject, final String packagePattern) {
-        final RecordReceiverSelector oldSelector = activeSelectors.remove(subject, packagePattern);
+    public void removeFilter(final UUID subject, final String pattern) {
+        final RecordReceiverSelector oldSelector = activeSelectors.remove(subject, pattern);
         unregisterSelector(oldSelector);
     }
 

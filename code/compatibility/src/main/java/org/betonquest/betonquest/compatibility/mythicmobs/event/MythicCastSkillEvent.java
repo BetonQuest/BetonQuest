@@ -1,17 +1,18 @@
 package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
 
 /**
  * Casts a skill as a player.
  */
 public class MythicCastSkillEvent implements OnlineEvent {
+
     /**
      * Logger instance for this class.
      */

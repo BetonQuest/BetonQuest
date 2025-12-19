@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.text;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("PMD.ShortClassName")
 @FunctionalInterface
 public interface Text {
+
     /**
      * Returns the text as a component for the given profile.
      *

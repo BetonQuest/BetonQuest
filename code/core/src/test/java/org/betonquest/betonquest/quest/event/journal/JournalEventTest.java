@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.feature.journal.Journal;
@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerService.class})
 class JournalEventTest {
+
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testJournalEventChangesUpdatesAndNotifiesInOrder(

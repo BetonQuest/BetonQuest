@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.run;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.jetbrains.annotations.Nullable;

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule.impl.realtime.daily;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.schedule.ScheduleBaseTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

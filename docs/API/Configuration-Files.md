@@ -1,7 +1,7 @@
 ---
 icon: material/note-edit
 ---
-@snippet:api-state:draft@
+@snippet:api-state:unfinished@
 
 !!! abstract "[ServicesManager](Obtaining-API.md) API Classes"
     * `org.betonquest.betonquest.api.config.ConfigAccessorFactory`
@@ -20,11 +20,11 @@ Here is an example method that loads a "_config.yml_" file from your plugin's re
 ```java
 public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) { //(1)!
     File targetConfigFile = new File(plugin.getDataFolder(), "config.yml"); //(2)!
-    String sourceResourceFile = "config.yml"; //(3)!
+    final String sourceResourceFile = "config.yml"; //(3)!
     
-    ConfigAccessor config1 = configAccessorFactory.create(targetConfigFile, plugin, sourceResourceFile);
+    final ConfigAccessor config1 = configAccessorFactory.create(targetConfigFile, plugin, sourceResourceFile);
     // or
-    ConfigAccessor config2 = configAccessorFactory.createPatching(targetConfigFile, plugin, sourceResourceFile);
+    final ConfigAccessor config2 = configAccessorFactory.createPatching(targetConfigFile, plugin, sourceResourceFile);
 }
 ```
 
@@ -300,10 +300,10 @@ Reading them can be simplified by using the class  `DefaultPatchTransformerRegis
 this is internal code like the default patcher itself, so it's not recommended to use and also not guaranteed to work in future versions.
 
 ```JAVA title="Anonymous PatchTransformerRegisterer Example"
-public void loadPluginConfig(Plugin plugin, ConfigAccessorFactory configAccessorFactory) {
-    File targetConfigFile = new File(plugin.getDataFolder(), "config.yml");
-    PatchTransformerRegistry patchTransformerRegistry = new MyTransformerRegistry();
-    ConfigAccessor config = configAccessorFactory.createPatching(targetConfigFile, plugin, "config.yml", patchTransformerRegistry);
+public void loadPluginConfig(final Plugin plugin, final ConfigAccessorFactory configAccessorFactory) {
+    final File targetConfigFile = new File(plugin.getDataFolder(), "config.yml");
+    final PatchTransformerRegistry patchTransformerRegistry = new MyTransformerRegistry();
+    final ConfigAccessor config = configAccessorFactory.createPatching(targetConfigFile, plugin, "config.yml", patchTransformerRegistry);
 }
 
 public class MyTransformerRegistry extends DefaultPatchTransformerRegistry { //(1)!

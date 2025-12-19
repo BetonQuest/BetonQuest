@@ -2,10 +2,10 @@ package org.betonquest.betonquest.compatibility.vault.event;
 
 import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
  * Modifies player's balance.
  */
 public class MoneyEvent implements PlayerEvent {
+
     /**
      * Economy where the balance will be modified.
      */

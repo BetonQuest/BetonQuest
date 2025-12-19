@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.quest.condition.thread;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadType;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

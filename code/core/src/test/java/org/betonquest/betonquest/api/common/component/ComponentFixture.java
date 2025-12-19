@@ -2,8 +2,8 @@ package org.betonquest.betonquest.api.common.component;
 
 import net.kyori.adventure.key.Key;
 import org.betonquest.betonquest.api.common.component.font.Font;
-import org.betonquest.betonquest.api.common.component.font.FontIndexFileFormat;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
+import org.betonquest.betonquest.lib.font.FontIndexFileFormat;
 
 import java.io.IOException;
 import java.nio.file.Files;

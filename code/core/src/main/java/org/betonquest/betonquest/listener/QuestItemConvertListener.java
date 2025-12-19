@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.listener;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
@@ -32,6 +32,7 @@ import static org.betonquest.betonquest.util.Utils.COMPONENT_BI_PREDICATE;
  * and {@link Journal#JOURNAL_KEY} to all "legacy" Journals on player join.
  */
 public class QuestItemConvertListener implements Listener {
+
     /**
      * Custom logger for this class.
      */
@@ -110,7 +111,7 @@ public class QuestItemConvertListener implements Listener {
     }
 
     private boolean isJournal(final ItemMeta meta, final Component journalTitle, final List<Component> journalLines) {
-        return meta instanceof BookMeta bookMeta && bookMeta.hasTitle()
+        return meta instanceof final BookMeta bookMeta && bookMeta.hasTitle()
                 && bookMeta.title().contains(journalTitle, COMPONENT_BI_PREDICATE)
                 && Objects.equals(compactList(meta.lore()), compactList(journalLines));
     }

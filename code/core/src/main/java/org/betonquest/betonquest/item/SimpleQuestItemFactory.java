@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.item;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -37,6 +37,7 @@ import java.util.function.Supplier;
  * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
+
     /**
      * The quest package manager to get quest packages from.
      */
@@ -197,6 +198,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @param questItem the quest item to wrap.
      */
     public record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
+
         @Override
         public QuestItem getItem(@Nullable final Profile profile) {
             return questItem;

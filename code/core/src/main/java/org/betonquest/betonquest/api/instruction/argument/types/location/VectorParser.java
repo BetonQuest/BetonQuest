@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.types.location;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;

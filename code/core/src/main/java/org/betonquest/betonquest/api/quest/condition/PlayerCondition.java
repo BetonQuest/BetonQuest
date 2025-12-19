@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest.condition;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Interface for quest-conditions that are checked for a profile. It represents the normal condition as described in the

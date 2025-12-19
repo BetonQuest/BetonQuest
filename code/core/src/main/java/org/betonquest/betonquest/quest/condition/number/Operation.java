@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.number;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * The type of compare.

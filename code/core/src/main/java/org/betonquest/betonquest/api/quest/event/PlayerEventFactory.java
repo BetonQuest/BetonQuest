@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.quest.event;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Factory to create a specific {@link PlayerEvent} from {@link Instruction}s.

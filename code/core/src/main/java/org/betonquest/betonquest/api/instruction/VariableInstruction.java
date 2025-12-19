@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api.instruction;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * The variable instruction. Primary object for variable input parsing.

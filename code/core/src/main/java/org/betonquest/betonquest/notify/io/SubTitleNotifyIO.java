@@ -2,10 +2,10 @@ package org.betonquest.betonquest.notify.io;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.jetbrains.annotations.Nullable;

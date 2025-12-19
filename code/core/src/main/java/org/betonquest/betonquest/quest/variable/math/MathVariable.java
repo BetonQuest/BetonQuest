@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.math;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.util.math.tokens.Token;
 import org.jetbrains.annotations.Nullable;

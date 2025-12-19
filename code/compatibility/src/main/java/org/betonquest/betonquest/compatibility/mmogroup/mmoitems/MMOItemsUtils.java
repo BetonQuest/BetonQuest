@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;

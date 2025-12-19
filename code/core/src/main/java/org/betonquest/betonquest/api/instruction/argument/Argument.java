@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.types.BlockSelectorParser;
 import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
 import org.betonquest.betonquest.api.instruction.argument.types.EnumParser;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.api.instruction.argument.types.location.Locatio
 import org.betonquest.betonquest.api.instruction.argument.types.location.VectorParser;
 import org.betonquest.betonquest.api.instruction.argument.types.location.WorldParser;
 import org.betonquest.betonquest.api.instruction.variable.VariableResolver;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 

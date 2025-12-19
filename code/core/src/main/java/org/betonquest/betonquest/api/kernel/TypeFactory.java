@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.kernel;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * A factory to create a Quest Type from an {@link Instruction}.

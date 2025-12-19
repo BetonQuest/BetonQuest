@@ -2,8 +2,10 @@ package org.betonquest.betonquest.api.config.quest;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,13 +14,20 @@ import java.util.List;
 /**
  * Functionality for a quest to get all related information.
  */
-public interface QuestPackage {
+public interface QuestPackage extends LogSource {
+
     /**
      * Gets the path that addresses this {@link QuestPackage}.
      *
      * @return the address
      */
     String getQuestPath();
+
+    @Override
+    @Nullable
+    default String getSourcePath() {
+        return getQuestPath();
+    }
 
     /**
      * Gets the merged {@link MultiConfiguration} that represents this {@link QuestPackage}.

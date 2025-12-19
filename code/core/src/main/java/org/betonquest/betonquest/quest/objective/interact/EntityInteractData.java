@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.objective.interact;
 
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.bukkit.entity.Entity;
 

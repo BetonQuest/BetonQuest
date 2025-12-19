@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.logger;
 
-import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.logger.LogSource;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,97 +39,97 @@ public class DefaultBetonQuestLogger implements BetonQuestLogger {
 
     @Override
     public void debug(@Nullable final String msg) {
-        debug(null, msg);
+        debug(LogSource.EMPTY, msg);
     }
 
     @Override
-    public void debug(@Nullable final QuestPackage pack, @Nullable final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+    public void debug(final LogSource logSource, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, logSource);
         logger.log(record);
     }
 
     @Override
     public void debug(@Nullable final String msg, final Throwable thrown) {
-        debug(null, msg, thrown);
+        debug(LogSource.EMPTY, msg, thrown);
     }
 
     @Override
-    public void debug(@Nullable final QuestPackage pack, @Nullable final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, pack);
+    public void debug(final LogSource logSource, @Nullable final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, msg, plugin, logSource);
         record.setThrown(thrown);
         logger.log(record);
     }
 
     @Override
     public void info(final String msg) {
-        info(null, msg);
+        info(LogSource.EMPTY, msg);
     }
 
     @Override
-    public void info(@Nullable final QuestPackage pack, @Nullable final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, msg, plugin, pack);
+    public void info(final LogSource logSource, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, msg, plugin, logSource);
         logger.log(record);
     }
 
     @Override
     public void warn(@Nullable final String msg) {
-        warn(null, msg);
+        warn(LogSource.EMPTY, msg);
     }
 
     @Override
-    public void warn(@Nullable final QuestPackage pack, @Nullable final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg, plugin, pack);
+    public void warn(final LogSource logSource, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg, plugin, logSource);
         logger.log(record);
     }
 
     @Override
     public void warn(@Nullable final String msg, final Throwable thrown) {
-        warn(null, msg, thrown);
+        warn(LogSource.EMPTY, msg, thrown);
     }
 
     @Override
-    public void warn(@Nullable final QuestPackage pack, @Nullable final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg, plugin, pack);
+    public void warn(final LogSource logSource, @Nullable final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.WARNING, msg, plugin, logSource);
         logger.log(record);
 
-        final BetonQuestLogRecord recordThrowable = new BetonQuestLogRecord(Level.FINE, "Additional stacktrace:", plugin, pack);
+        final BetonQuestLogRecord recordThrowable = new BetonQuestLogRecord(Level.FINE, "Additional stacktrace:", plugin, logSource);
         recordThrowable.setThrown(thrown);
         logger.log(recordThrowable);
     }
 
     @Override
     public void error(@Nullable final String msg) {
-        error(null, msg);
+        error(LogSource.EMPTY, msg);
     }
 
     @Override
-    public void error(@Nullable final QuestPackage pack, @Nullable final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
+    public void error(final LogSource logSource, @Nullable final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, logSource);
         logger.log(record);
     }
 
     @Override
     public void error(@Nullable final String msg, final Throwable thrown) {
-        error(null, msg, thrown);
+        error(LogSource.EMPTY, msg, thrown);
     }
 
     @Override
-    public void error(@Nullable final QuestPackage pack, @Nullable final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
+    public void error(final LogSource logSource, @Nullable final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, logSource);
         record.setThrown(thrown);
         logger.log(record);
     }
 
     @Override
     public void reportException(final Throwable thrown) {
-        reportException(null, thrown);
+        reportException(LogSource.EMPTY, thrown);
     }
 
     @Override
-    public void reportException(@Nullable final QuestPackage pack, final Throwable thrown) {
+    public void reportException(final LogSource logSource, final Throwable thrown) {
         final String msg = "This is an exception that should never occur. "
                 + "If you don't know why this occurs please report it to the author.";
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, pack);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.SEVERE, msg, plugin, logSource);
         record.setThrown(thrown);
         logger.log(record);
     }

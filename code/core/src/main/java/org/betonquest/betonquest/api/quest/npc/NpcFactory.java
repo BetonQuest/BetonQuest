@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.quest.npc;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 /**
  * Factory to create specific {@link Npc}s from {@link Instruction}s.

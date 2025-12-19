@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.brewery.condition;
 
 import com.dre.brewery.BPlayer;
 import com.dre.brewery.api.BreweryApi;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 
 /**

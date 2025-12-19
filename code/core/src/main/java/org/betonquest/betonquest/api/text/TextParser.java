@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.api.text;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * A parser can convert a plain string into formatted components.
  */
 @FunctionalInterface
 public interface TextParser {
+
     /**
      * Parse a text into a component.
      *

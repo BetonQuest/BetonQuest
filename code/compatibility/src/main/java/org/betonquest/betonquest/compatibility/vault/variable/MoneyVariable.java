@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.compatibility.vault.variable;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 
 /**
  * Resolves to amount of money.
  */
 public class MoneyVariable implements PlayerVariable {
+
     /**
      * Function to get the displayed money amount from a profile.
      */

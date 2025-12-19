@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.identifier;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class IdentifierTest {
+
     private static QuestPackage createQuestPackage(final QuestPackageManager manager, final Map<String, QuestPackage> packages, final String name) {
         final QuestPackage pack = mock(QuestPackage.class);
         when(pack.getQuestPath()).thenReturn(name);
@@ -29,6 +30,7 @@ class IdentifierTest {
 
     @Nested
     class valid {
+
         private static Stream<Arguments> identifiersToResolve() {
             final Map<String, QuestPackage> packages = new HashMap<>();
             final QuestPackageManager manager = mock(QuestPackageManager.class);
@@ -71,6 +73,7 @@ class IdentifierTest {
 
     @Nested
     class invalid {
+
         private static Stream<Arguments> identifiersToResolve() {
             final Map<String, QuestPackage> packages = new HashMap<>();
             final QuestPackageManager manager = mock(QuestPackageManager.class);

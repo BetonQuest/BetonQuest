@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.instruction;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * Checks if a given value is valid.

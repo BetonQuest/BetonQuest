@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.api.text;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 
 /**
  * A registry for text parsers.
  */
 public interface TextParserRegistry {
+
     /**
      * Register a parser by name.
      *

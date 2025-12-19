@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.mc_1_20_6.item;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.item.typehandler.Existence;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.bukkit.Keyed;

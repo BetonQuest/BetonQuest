@@ -1,7 +1,7 @@
 ---
 icon: material/puzzle-edit
 ---
-@snippet:api-state:stable@
+@snippet:api-state:draft@
 
 We implemented multiple different `org.bukkit.configuration.ConfigurationSection`'s and `Configuration`'s to make it 
 easier to work with configurations and to implement some new features.

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.time.real;
 
-import org.betonquest.betonquest.api.quest.QuestException;
+import org.betonquest.betonquest.api.QuestException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

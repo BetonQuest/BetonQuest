@@ -1,16 +1,17 @@
 package org.betonquest.betonquest.compatibility.npc.citizens;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
  * Parses a string to a Citizens Npc ID.
  */
 public class CitizensArgument implements IdentifierArgument<NpcID> {
+
     /**
      * The default instance of {@link CitizensArgument}.
      */

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mythicmobs;
 
 import io.lumine.mythic.api.mobs.MobManager;
 import io.lumine.mythic.api.mobs.MythicMob;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.quest.QuestException;
 
 import java.util.Optional;
 

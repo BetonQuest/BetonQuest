@@ -2,11 +2,11 @@ package org.betonquest.betonquest.command;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.LanguageProvider;
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.QuestException;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -28,6 +28,7 @@ import java.util.Set;
  */
 @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
