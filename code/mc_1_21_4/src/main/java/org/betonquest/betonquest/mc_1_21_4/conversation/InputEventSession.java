@@ -11,11 +11,13 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -212,6 +214,19 @@ public class InputEventSession implements ConversationSession, Listener {
         public void onExit(final VehicleExitEvent event) {
             if (event.getExited().equals(player)) {
                 event.setCancelled(true);
+            }
+        }
+
+        /**
+         * End this listener when player gets teleported.
+         * If one would not end this listener the player would stay on the mount without being teleported.
+         *
+         * @param event the event
+         */
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        public void onTeleport(final PlayerTeleportEvent event) {
+            if (event.getPlayer().equals(player)) {
+                HandlerList.unregisterAll(this);
             }
         }
     }
