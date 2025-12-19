@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation.input;
+package org.betonquest.betonquest.conversation.menu.input;
 
 /**
  * Interface for processing control inputs.

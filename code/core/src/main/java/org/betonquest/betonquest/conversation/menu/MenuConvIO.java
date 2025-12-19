@@ -1,16 +1,17 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation;
+package org.betonquest.betonquest.conversation.menu;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Display;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.display.Scroll;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationState;
+import org.betonquest.betonquest.conversation.menu.display.Display;
+import org.betonquest.betonquest.conversation.menu.display.Scroll;
+import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
+import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,13 +32,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.BiFunction;
 
 /**
  * An {@link ChatConvIO} implementation that use player ingame movements to control the conversation.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
 public class MenuConvIO extends ChatConvIO {
+
     /**
      * The controls that are used in the conversation.
      */
@@ -104,7 +105,7 @@ public class MenuConvIO extends ChatConvIO {
      * @param plugin               the plugin instance to run tasks
      * @param controls             the used controls
      */
-    public MenuConvIO(final BiFunction<Player, ConversationAction, ConversationSession> inputFunction, final Conversation conv,
+    public MenuConvIO(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction, final Conversation conv,
                       final OnlineProfile onlineProfile, final ConversationColors colors,
                       final MenuConvIOSettings settings, final FixedComponentLineWrapper componentLineWrapper,
                       final Plugin plugin, final Map<CONTROL, ACTION> controls) {
@@ -113,7 +114,7 @@ public class MenuConvIO extends ChatConvIO {
         this.settings = settings;
         this.componentLineWrapper = componentLineWrapper;
         this.controls = controls;
-        this.input = inputFunction.apply(onlineProfile.getPlayer(), new MenuConversationAction());
+        this.input = inputFunction.apply(onlineProfile.getPlayer(), new MenuConversationAction(), settings.setSpeed());
     }
 
     private void start() {
@@ -422,6 +423,7 @@ public class MenuConvIO extends ChatConvIO {
      * Menu specific controls.
      */
     private class MenuConversationAction implements ConversationAction {
+
         /**
          * The empty default constructor.
          */

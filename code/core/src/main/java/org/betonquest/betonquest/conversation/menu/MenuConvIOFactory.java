@@ -1,19 +1,18 @@
-package org.betonquest.betonquest.compatibility.packetevents.conversation;
+package org.betonquest.betonquest.conversation.menu;
 
-import com.github.retrooper.packetevents.PacketEventsAPI;
+import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationAction;
-import org.betonquest.betonquest.compatibility.packetevents.conversation.input.ConversationSession;
-import org.betonquest.betonquest.compatibility.packetevents.passenger.FakeArmorStandPassengerController;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIO;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
+import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
+import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -22,7 +21,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 /**
  * Menu conversation output.
@@ -30,9 +28,9 @@ import java.util.function.BiFunction;
 public class MenuConvIOFactory implements ConversationIOFactory {
 
     /**
-     * The PacketEvents API instance.
+     * Function to create the input object with actions.
      */
-    private final PacketEventsAPI<?> packetEventsAPI;
+    private final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction;
 
     /**
      * Plugin instance to run tasks.
@@ -62,16 +60,17 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     /**
      * Create a new Menu conversation IO factory.
      *
-     * @param packetEventsAPI the PacketEvents API instance
-     * @param plugin          the plugin instance to run tasks
-     * @param textParser      the text parser to parse the configuration text
-     * @param fontRegistry    the font registry used for the conversation
-     * @param config          the config accessor to the plugin's configuration
-     * @param colors          the colors used for the conversation
+     * @param inputFunction the function to create the input object with actions
+     * @param plugin        the plugin instance to run tasks
+     * @param textParser    the text parser to parse the configuration text
+     * @param fontRegistry  the font registry used for the conversation
+     * @param config        the config accessor to the plugin's configuration
+     * @param colors        the colors used for the conversation
      */
-    public MenuConvIOFactory(final PacketEventsAPI<?> packetEventsAPI, final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
+    public MenuConvIOFactory(final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction,
+                             final Plugin plugin, final TextParser textParser, final FontRegistry fontRegistry,
                              final ConfigAccessor config, final ConversationColors colors) {
-        this.packetEventsAPI = packetEventsAPI;
+        this.inputFunction = inputFunction;
         this.plugin = plugin;
         this.textParser = textParser;
         this.fontRegistry = fontRegistry;
@@ -83,8 +82,6 @@ public class MenuConvIOFactory implements ConversationIOFactory {
     public ConversationIO parse(final Conversation conversation, final OnlineProfile onlineProfile) throws QuestException {
         final MenuConvIOSettings settings = MenuConvIOSettings.fromConfigurationSection(textParser, config.getConfigurationSection("conversation.io.menu"));
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, settings.lineLength());
-        final BiFunction<Player, ConversationAction, ConversationSession> inputFunction = (player, control) ->
-                new FakeArmorStandPassengerController(plugin, packetEventsAPI, player, control);
         return new MenuConvIO(inputFunction, conversation, onlineProfile, colors, settings, componentLineWrapper, plugin, getControls(settings));
     }
 
