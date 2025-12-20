@@ -121,6 +121,9 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (!containsPlayer(onlineProfile)) {
+            return;
+        }
         if (marked != null) {
             final String value = marked.getValue(onlineProfile);
             final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
@@ -141,7 +144,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) throws QuestException {
-        if (containsPlayer(onlineProfile) && matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
+        if (matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }
