@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -59,10 +59,10 @@ public class RPGMenuCommand extends SimpleCommand {
             //complete menu ids
             case "open":
             case "o":
-                if (!args[1].contains(DefaultIdentifier.SEPARATOR)) {
+                if (!args[1].contains(Identifier.SEPARATOR)) {
                     return new ArrayList<>(getPlugin().getQuestPackageManager().getPackages().keySet());
                 }
-                final String pack = args[1].substring(0, args[1].indexOf(DefaultIdentifier.SEPARATOR));
+                final String pack = args[1].substring(0, args[1].indexOf(Identifier.SEPARATOR));
                 final QuestPackage configPack = getPlugin().getQuestPackageManager().getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();

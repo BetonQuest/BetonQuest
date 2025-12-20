@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.event;
 
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveState;
 import org.bukkit.event.HandlerList;
@@ -24,7 +24,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
     /**
      * ID of the changed objective.
      */
-    private final DefaultIdentifier objectiveID;
+    private final Identifier objectiveID;
 
     /**
      * Objective future state.
@@ -46,7 +46,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      * @param state         future state of this objective
      * @param previousState previous state of this objective
      */
-    public PlayerObjectiveChangeEvent(final Profile who, final boolean isAsync, final Objective objective, final DefaultIdentifier objectiveID,
+    public PlayerObjectiveChangeEvent(final Profile who, final boolean isAsync, final Objective objective, final Identifier objectiveID,
                                       final ObjectiveState state, final ObjectiveState previousState) {
         super(who, isAsync);
         this.objective = objective;
@@ -78,7 +78,7 @@ public class PlayerObjectiveChangeEvent extends ProfileEvent {
      *
      * @return the objective ID
      */
-    public DefaultIdentifier getObjectiveID() {
+    public Identifier getObjectiveID() {
         return objectiveID;
     }
 

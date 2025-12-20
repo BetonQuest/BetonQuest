@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Variables;
 
@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * Does the logic around {@link T}.
  *
- * @param <I> the {@link DefaultIdentifier} identifying {@link T}
+ * @param <I> the {@link Identifier} identifying {@link T}
  * @param <T> the quest type being processed
  */
-public abstract class QuestProcessor<I extends DefaultIdentifier, T> {
+public abstract class QuestProcessor<I extends Identifier, T> {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -34,7 +34,7 @@ public abstract class QuestProcessor<I extends DefaultIdentifier, T> {
     protected final QuestPackageManager packManager;
 
     /**
-     * Loaded {@link T} identified by their {@link DefaultIdentifier}.
+     * Loaded {@link T} identified by their {@link Identifier}.
      */
     protected final Map<I, T> values;
 

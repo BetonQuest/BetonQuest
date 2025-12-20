@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.instruction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
@@ -49,7 +49,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     /**
      * The identifier for this instruction.
      */
-    private final DefaultIdentifier identifier;
+    private final Identifier identifier;
 
     /**
      * The raw instruction string.
@@ -72,7 +72,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @throws QuestException if the instruction could not be tokenized
      */
     public Instruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
-                       @Nullable final DefaultIdentifier identifier, final String instruction) throws QuestException {
+                       @Nullable final Identifier identifier, final String instruction) throws QuestException {
         this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), instruction);
     }
 
@@ -87,7 +87,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final DefaultIdentifier identifier, final String instruction) throws QuestException {
+    public Instruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
         this.variables = variables;
         this.packManager = packManager;
         this.pack = pack;
@@ -106,7 +106,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction to copy
      * @param identifier  identifier of the new instruction
      */
-    public Instruction(final Instruction instruction, final DefaultIdentifier identifier) {
+    public Instruction(final Instruction instruction, final Identifier identifier) {
         this.variables = instruction.variables;
         this.packManager = instruction.packManager;
         this.pack = instruction.pack;
@@ -115,7 +115,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
     }
 
-    private static DefaultIdentifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final DefaultIdentifier identifier) {
+    private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
         if (identifier != null) {
             return identifier;
         }
@@ -136,11 +136,11 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
     }
 
     /**
-     * Get the {@link DefaultIdentifier} of this instruction.
+     * Get the {@link Identifier} of this instruction.
      *
      * @return the instruction identifier
      */
-    public DefaultIdentifier getID() {
+    public Identifier getID() {
         return identifier;
     }
 
@@ -199,7 +199,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param newID the ID to identify the copied instruction with
      * @return copy of this instruction with the new ID
      */
-    public Instruction copy(final DefaultIdentifier newID) {
+    public Instruction copy(final Identifier newID) {
         return new Instruction(this, newID);
     }
 

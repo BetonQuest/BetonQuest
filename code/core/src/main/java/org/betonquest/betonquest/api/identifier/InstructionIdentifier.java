@@ -30,7 +30,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
      */
     protected InstructionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                     final String identifier,
-                                    final QuestFunction<DefaultIdentifier, Instruction> instructionFunction) throws QuestException {
+                                    final QuestFunction<Identifier, Instruction> instructionFunction) throws QuestException {
         super(packManager, pack, identifier);
         this.instruction = instructionFunction.apply(this);
     }

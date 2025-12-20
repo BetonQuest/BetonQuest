@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.types;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 
 /**
@@ -17,9 +17,9 @@ public class IdentifierParser implements PackageArgument<String> {
 
     @Override
     public String apply(final QuestPackage pack, final String string) {
-        if (string.contains(DefaultIdentifier.SEPARATOR)) {
+        if (string.contains(Identifier.SEPARATOR)) {
             return string;
         }
-        return pack.getQuestPath() + DefaultIdentifier.SEPARATOR + string;
+        return pack.getQuestPath() + Identifier.SEPARATOR + string;
     }
 }
