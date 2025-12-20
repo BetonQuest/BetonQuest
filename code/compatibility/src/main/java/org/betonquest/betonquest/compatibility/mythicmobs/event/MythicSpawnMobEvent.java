@@ -99,7 +99,7 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
         final MythicMob mob = mobLevelValue.getKey();
         final double level = mobLevelValue.getValue();
         final AbstractLocation abstractLocation = BukkitAdapter.adapt(loc.getValue(profile));
-        final String mark = marked == null ? null : marked.getValue(null);
+        final String mark = marked == null ? null : marked.getValue(profile);
         for (int i = 0; i < pAmount; i++) {
             final ActiveMob targetMob = mob.spawn(abstractLocation, level);
             if (targetMob == null) {
@@ -129,6 +129,9 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
         final String mark = marked == null ? null : marked.getValue(null);
         for (int i = 0; i < pAmount; i++) {
             final ActiveMob targetMob = mob.spawn(abstractLocation, level);
+            if (targetMob == null) {
+                throw new QuestException("MythicMob '" + mob + "' could not spawn at '" + abstractLocation + "' !");
+            }
             final Entity entity = targetMob.getEntity().getBukkitEntity();
             if (mark != null) {
                 entity.getPersistentDataContainer().set(markedKey, PersistentDataType.STRING, mark);
