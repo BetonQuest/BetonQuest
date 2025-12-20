@@ -99,7 +99,7 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
         final MythicMob mob = mobLevelValue.getKey();
         final double level = mobLevelValue.getValue();
         final AbstractLocation abstractLocation = BukkitAdapter.adapt(loc.getValue(profile));
-        final String mark = marked == null ? null : marked.getValue(null);
+        final String mark = marked == null ? null : marked.getValue(profile);
         for (int i = 0; i < pAmount; i++) {
             final ActiveMob targetMob = mob.spawn(abstractLocation, level);
             if (targetMob == null) {
