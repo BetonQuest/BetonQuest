@@ -16,7 +16,8 @@ import java.util.regex.Pattern;
  * Navigation in the package hierarchy is done with the dash as separator and the underscore as up navigator.
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class Identifier {
+public abstract class DefaultIdentifier {
+
     /**
      * The string used to separate the package name from the identifier.
      */
@@ -56,8 +57,8 @@ public abstract class Identifier {
      * @param identifier  the identifier string leading to the object
      * @throws QuestException if the identifier could not be parsed
      */
-    protected Identifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
-                         final String identifier) throws QuestException {
+    protected DefaultIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
+                                final String identifier) throws QuestException {
         final RawIdentifier rawIdentifier = splitIdentifier(identifier);
         this.identifier = rawIdentifier.identifier;
         if (rawIdentifier.pack == null) {
@@ -200,7 +201,7 @@ public abstract class Identifier {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final Identifier other = (Identifier) obj;
+        final DefaultIdentifier other = (DefaultIdentifier) obj;
         return Objects.equals(identifier, other.identifier)
                 && Objects.equals(pack.getQuestPath(), other.pack.getQuestPath());
     }
@@ -217,5 +218,6 @@ public abstract class Identifier {
      * @param identifier the identifier part
      */
     private record RawIdentifier(@Nullable String pack, String identifier) {
+
     }
 }

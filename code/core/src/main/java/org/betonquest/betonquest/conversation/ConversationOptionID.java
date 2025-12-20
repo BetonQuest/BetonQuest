@@ -3,13 +3,13 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a conversation option ID.
  */
-public class ConversationOptionID extends Identifier {
+public class ConversationOptionID extends DefaultIdentifier {
 
     /**
      * The name of the conversation this option belongs to, or null if it is in the current conversation.

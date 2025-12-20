@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.instruction;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.quest.Variables;
 
@@ -29,7 +29,7 @@ public class VariableInstruction extends Instruction {
      *                        or if the instruction does not start and end with '%' character.
      */
     public VariableInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
-                               final Identifier identifier, final String instruction) throws QuestException {
+                               final DefaultIdentifier identifier, final String instruction) throws QuestException {
         super(variables, packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
     }
 
@@ -39,7 +39,7 @@ public class VariableInstruction extends Instruction {
      * @param instruction The raw instruction string for this variable.
      * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final VariableInstruction instruction, final Identifier identifier) {
+    public VariableInstruction(final VariableInstruction instruction, final DefaultIdentifier identifier) {
         super(instruction, identifier);
     }
 
@@ -56,7 +56,7 @@ public class VariableInstruction extends Instruction {
     }
 
     @Override
-    public VariableInstruction copy(final Identifier newID) {
+    public VariableInstruction copy(final DefaultIdentifier newID) {
         return new VariableInstruction(this, newID);
     }
 }

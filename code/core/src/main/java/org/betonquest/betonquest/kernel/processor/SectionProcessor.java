@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,10 +13,10 @@ import java.util.Map;
 /**
  * Does the load logic around {@link T} from a configuration section.
  *
- * @param <I> the {@link Identifier} identifying the type
+ * @param <I> the {@link DefaultIdentifier} identifying the type
  * @param <T> the type
  */
-public abstract class SectionProcessor<I extends Identifier, T> extends QuestProcessor<I, T> {
+public abstract class SectionProcessor<I extends DefaultIdentifier, T> extends QuestProcessor<I, T> {
 
     /**
      * Create a new QuestProcessor to store and execute type logic.

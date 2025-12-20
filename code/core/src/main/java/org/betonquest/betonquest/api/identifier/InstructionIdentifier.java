@@ -10,9 +10,9 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * An abstract class for {@link Identifier}s that also provides an instruction.
+ * An abstract class for {@link DefaultIdentifier}s that also provides an instruction.
  */
-public abstract class InstructionIdentifier extends Identifier {
+public abstract class InstructionIdentifier extends DefaultIdentifier {
 
     /**
      * The created instruction of the object.
@@ -30,7 +30,7 @@ public abstract class InstructionIdentifier extends Identifier {
      */
     protected InstructionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                     final String identifier,
-                                    final QuestFunction<Identifier, Instruction> instructionFunction) throws QuestException {
+                                    final QuestFunction<DefaultIdentifier, Instruction> instructionFunction) throws QuestException {
         super(packManager, pack, identifier);
         this.instruction = instructionFunction.apply(this);
     }

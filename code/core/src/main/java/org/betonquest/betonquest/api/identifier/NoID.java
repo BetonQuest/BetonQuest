@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
  * This is used for runtime-only IDs that are not stored anywhere.
  */
 @SuppressWarnings("PMD.ShortClassName")
-public class NoID extends Identifier {
+public class NoID extends DefaultIdentifier {
 
     /**
      * Constructs a new NoID.
