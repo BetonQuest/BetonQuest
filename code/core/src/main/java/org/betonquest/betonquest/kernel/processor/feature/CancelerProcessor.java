@@ -46,11 +46,6 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
     private final PluginMessage pluginMessage;
 
     /**
-     * Variable processor to create and resolve variables.
-     */
-    private final Variables variables;
-
-    /**
      * Text creator to parse text.
      */
     private final ParsedSectionTextCreator textCreator;
@@ -81,11 +76,10 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
                              final BetonQuestApi api, final PluginMessage pluginMessage,
                              final Variables variables, final ParsedSectionTextCreator textCreator,
                              final QuestTypeApi questTypeApi, final PlayerDataStorage playerDataStorage) {
-        super(log, api.getQuestPackageManager(), "Quest Canceler", "cancel");
+        super(log, variables, api.getQuestPackageManager(), "Quest Canceler", "cancel");
         this.loggerFactory = loggerFactory;
         this.api = api;
         this.pluginMessage = pluginMessage;
-        this.variables = variables;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
@@ -96,16 +90,16 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
         final Text names = textCreator.parseFromSection(pack, section, "name");
         final String itemString = section.getString("item");
         final String rawItem = itemString == null ? pack.getConfig().getString("item.cancel_button") : itemString;
-        final ItemID item = rawItem == null ? null : new ItemID(packManager, pack, rawItem);
+        final ItemID item = rawItem == null ? null : new ItemID(variables, packManager, pack, rawItem);
         final String rawLoc = section.getString("location");
         final Variable<Location> location = rawLoc == null ? null : new Variable<>(variables, pack, rawLoc, Argument.LOCATION);
         final QuestCanceler.CancelData cancelData = new QuestCanceler.CancelData(
-                new VariableList<>(variables, pack, section.getString("conditions", ""), value -> new ConditionID(packManager, pack, value)),
-                new VariableList<>(variables, pack, section.getString("events", ""), value -> new EventID(packManager, pack, value)),
-                new VariableList<>(variables, pack, section.getString("objectives", ""), value -> new ObjectiveID(packManager, pack, value)),
+                new VariableList<>(variables, pack, section.getString("conditions", ""), value -> new ConditionID(variables, packManager, pack, value)),
+                new VariableList<>(variables, pack, section.getString("events", ""), value -> new EventID(variables, packManager, pack, value)),
+                new VariableList<>(variables, pack, section.getString("objectives", ""), value -> new ObjectiveID(variables, packManager, pack, value)),
                 new VariableList<>(variables, pack, section.getString("tags", ""), Argument.STRING),
                 new VariableList<>(variables, pack, section.getString("points", ""), Argument.STRING),
-                new VariableList<>(variables, pack, section.getString("journal", ""), value -> new JournalEntryID(packManager, pack, value)),
+                new VariableList<>(variables, pack, section.getString("journal", ""), value -> new JournalEntryID(variables, packManager, pack, value)),
                 location);
         final BetonQuestLogger logger = loggerFactory.create(QuestCanceler.class);
         return new QuestCanceler(logger, questTypeApi, playerDataStorage, getIdentifier(pack, section.getName()),
@@ -114,6 +108,6 @@ public class CancelerProcessor extends SectionProcessor<QuestCancelerID, QuestCa
 
     @Override
     protected QuestCancelerID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new QuestCancelerID(packManager, pack, identifier);
+        return new QuestCancelerID(variables, packManager, pack, identifier);
     }
 }

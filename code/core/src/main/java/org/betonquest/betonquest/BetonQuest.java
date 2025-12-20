@@ -351,10 +351,10 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"), cache);
 
         questTypeRegistries = BaseQuestTypeRegistries.create(loggerFactory, this);
-        final CoreQuestRegistry coreQuestRegistry = new CoreQuestRegistry(loggerFactory, questManager, questTypeRegistries,
+        final CoreQuestRegistry coreQuestRegistry = CoreQuestRegistry.create(loggerFactory, questManager, questTypeRegistries,
                 getServer().getPluginManager(), this);
 
-        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, questManager, saver, getServer(),
+        final PlayerDataFactory playerDataFactory = new PlayerDataFactory(loggerFactory, coreQuestRegistry.variables(), questManager, saver, getServer(),
                 coreQuestRegistry, Suppliers.memoize(() -> new JournalFactory(loggerFactory, pluginMessage,
                 coreQuestRegistry, questRegistry, config, textParser, fontRegistry)));
         playerDataStorage = new PlayerDataStorage(loggerFactory.create(PlayerDataStorage.class), config,
@@ -487,7 +487,8 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),
-                new CustomDropListener(loggerFactory.create(CustomDropListener.class), questManager, this, questRegistry),
+                new CustomDropListener(loggerFactory.create(CustomDropListener.class), coreQuestRegistry.variables(),
+                        questManager, this, questRegistry),
                 new QuestItemHandler(config, playerDataStorage, profileProvider),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), pluginMessage, profileProvider),
@@ -498,15 +499,16 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
 
     private void registerCommands(final AccumulatingReceiverSelector receiverSelector, final HistoryHandler debugHistoryHandler,
                                   final PlayerDataFactory playerDataFactory) {
+        final VariableProcessor variables = getVariableProcessor();
         final QuestCommand questCommand = new QuestCommand(loggerFactory, loggerFactory.create(QuestCommand.class),
                 configAccessorFactory, new PlayerLogWatcher(receiverSelector), debugHistoryHandler,
-                this, playerDataStorage, profileProvider, playerDataFactory, pluginMessage, config, compatibility);
+                this, playerDataStorage, profileProvider, playerDataFactory, variables, pluginMessage, config, compatibility);
         getCommand("betonquest").setExecutor(questCommand);
         getCommand("betonquest").setTabCompleter(questCommand);
         getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
-        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, pluginMessage, profileProvider));
-        getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, pluginMessage, profileProvider));
-        getCommand("compass").setExecutor(new CompassCommand(config, pluginMessage, profileProvider));
+        getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class), config, variables, pluginMessage, profileProvider));
+        getCommand("cancelquest").setExecutor(new CancelQuestCommand(config, variables, pluginMessage, profileProvider));
+        getCommand("compass").setExecutor(new CompassCommand(config, variables, pluginMessage, profileProvider));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, pluginMessage, profileProvider, this);
         getCommand("questlang").setExecutor(langCommand);
         getCommand("questlang").setTabCompleter(langCommand);

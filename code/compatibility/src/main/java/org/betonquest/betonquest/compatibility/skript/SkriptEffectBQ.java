@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -33,6 +34,11 @@ public class SkriptEffectBQ extends Effect {
     private final BetonQuest plugin;
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * The quest package manager to get quest packages from.
      */
     private final QuestPackageManager packManager;
@@ -53,6 +59,7 @@ public class SkriptEffectBQ extends Effect {
     public SkriptEffectBQ() {
         super();
         this.plugin = BetonQuest.getInstance();
+        this.variables = plugin.getQuestTypeApi().variables();
         this.log = plugin.getLoggerFactory().create(getClass());
         packManager = plugin.getQuestPackageManager();
     }
@@ -79,7 +86,8 @@ public class SkriptEffectBQ extends Effect {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
                     final ProfileProvider profileProvider = plugin.getProfileProvider();
-                    plugin.getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)), new EventID(packManager, null, eventID));
+                    plugin.getQuestTypeApi().event(profileProvider.getProfile(player.getSingle(event)),
+                            new EventID(variables, packManager, null, eventID));
                 } catch (final QuestException e) {
                     log.warn("Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }

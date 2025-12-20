@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -22,6 +22,7 @@ import java.util.List;
  * Factory to create chest events from {@link Instruction}s.
  */
 public class ChestGiveEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */
@@ -48,7 +49,7 @@ public class ChestGiveEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createChestGiveEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
-        final Variable<List<Item>> items = instruction.getList(IdentifierArgument.ITEM);
+        final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         return new NullableEventAdapter(new ChestGiveEvent(location, items)
         );
     }

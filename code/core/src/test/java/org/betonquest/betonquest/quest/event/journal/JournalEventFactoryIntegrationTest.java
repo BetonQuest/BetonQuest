@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.MockedInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -92,7 +92,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal update");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal update");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event update action could not be created");
     }
 
@@ -101,7 +101,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal add quest_started");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal add quest_started");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event add action could not be created");
     }
 
@@ -110,7 +110,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal add");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal add");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
@@ -119,7 +119,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal delete quest_started");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal delete quest_started");
         assertDoesNotThrow(() -> journalFactory.parseInstruction(instruction), "journal event delete action could not be created");
     }
 
@@ -128,7 +128,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal delete");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal delete");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
@@ -137,7 +137,7 @@ class JournalEventFactoryIntegrationTest {
         final EventAdapterFactory journalFactory = createJournalEventFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(factory, logger, questPackagesDirectory);
 
-        final Instruction instruction = new Instruction(mock(QuestPackageManager.class), questPackage, null, "journal invalid");
+        final Instruction instruction = new MockedInstruction(questPackage, "journal invalid");
         assertThrows(QuestException.class, () -> journalFactory.parseInstruction(instruction), "invalid action of journal event should throw an exception when created");
     }
 }

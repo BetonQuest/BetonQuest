@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -19,6 +19,7 @@ import java.util.Locale;
  * A factory for creating Item variables.
  */
 public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
+
     /**
      * Storage for player data.
      */
@@ -55,7 +56,7 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
         }
         final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
         final Pair<ItemDisplayType, Integer> typeAndAmount = getTypeAndAmount(argument);
-        final Variable<Item> questItem = instruction.get(IdentifierArgument.ITEM);
+        final Variable<Item> questItem = instruction.get(InstructionIdentifierArgument.ITEM);
         return new ItemVariable(playerDataStorage, questItem, typeAndAmount.getLeft(), raw, typeAndAmount.getRight());
     }
 

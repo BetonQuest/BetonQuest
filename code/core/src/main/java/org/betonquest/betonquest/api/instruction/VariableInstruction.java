@@ -5,24 +5,22 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
+import org.betonquest.betonquest.api.quest.Variables;
 
 /**
  * The variable instruction. Primary object for variable input parsing.
  */
 public class VariableInstruction extends Instruction {
+
     /**
      * Regular expression that can be used to split variables correctly.
      */
     private static final Tokenizer DOT_TOKENIZER = (instruction) -> instruction.split("\\.");
 
     /**
-     * The quest package manager to get quest packages from.
-     */
-    private final QuestPackageManager packManager;
-
-    /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
+     * @param variables   the variable processor to create and resolve variables
      * @param packManager the quest package manager to get quest packages from
      * @param pack        The quest package that this instruction belongs to.
      * @param identifier  The identifier of the variable.
@@ -30,22 +28,19 @@ public class VariableInstruction extends Instruction {
      * @throws QuestException if the instruction could not be tokenized,
      *                        or if the instruction does not start and end with '%' character.
      */
-    public VariableInstruction(final QuestPackageManager packManager, final QuestPackage pack,
+    public VariableInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
                                final Identifier identifier, final String instruction) throws QuestException {
-        super(packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
-        this.packManager = packManager;
+        super(variables, packManager, DOT_TOKENIZER, pack, identifier, cleanInstruction(instruction));
     }
 
     /**
      * Constructs a new VariableInstruction with the given quest package, variable identifier, and instruction.
      *
-     * @param packManager the quest package manager to get quest packages from
      * @param instruction The raw instruction string for this variable.
      * @param identifier  The identifier for this variable.
      */
-    public VariableInstruction(final QuestPackageManager packManager, final VariableInstruction instruction, final Identifier identifier) {
-        super(packManager, instruction, identifier);
-        this.packManager = packManager;
+    public VariableInstruction(final VariableInstruction instruction, final Identifier identifier) {
+        super(instruction, identifier);
     }
 
     private static String cleanInstruction(final String instruction) throws QuestException {
@@ -62,6 +57,6 @@ public class VariableInstruction extends Instruction {
 
     @Override
     public VariableInstruction copy(final Identifier newID) {
-        return new VariableInstruction(packManager, this, newID);
+        return new VariableInstruction(this, newID);
     }
 }

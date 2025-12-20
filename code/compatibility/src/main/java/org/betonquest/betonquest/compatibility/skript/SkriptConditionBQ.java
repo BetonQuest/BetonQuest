@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -32,6 +33,11 @@ public class SkriptConditionBQ extends Condition {
     private final BetonQuest plugin;
 
     /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
+    /**
      * The quest package manager to get quest packages from.
      */
     private final QuestPackageManager packManager;
@@ -48,10 +54,12 @@ public class SkriptConditionBQ extends Condition {
 
     /**
      * Constructs a new SkriptCondition for BetonQuest conditions.
+     *
      */
     public SkriptConditionBQ() {
         super();
         this.plugin = BetonQuest.getInstance();
+        this.variables = plugin.getQuestTypeApi().variables();
         this.log = plugin.getLoggerFactory().create(getClass());
         this.packManager = plugin.getQuestPackageManager();
     }
@@ -75,7 +83,8 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             final ProfileProvider profileProvider = plugin.getProfileProvider();
-            return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)), new ConditionID(packManager, null, conditionID));
+            return plugin.getQuestTypeApi().condition(profileProvider.getProfile(player.getSingle(event)),
+                    new ConditionID(variables, packManager, null, conditionID));
         } catch (final QuestException e) {
             log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;

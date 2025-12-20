@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.give;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -21,6 +21,7 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
  * Factory for {@link GiveEvent}.
  */
 public class GiveEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -72,7 +73,7 @@ public class GiveEventFactory implements PlayerEventFactory {
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveEvent(
-                        instruction.getList(IdentifierArgument.ITEM),
+                        instruction.getList(InstructionIdentifierArgument.ITEM),
                         itemsGivenSender,
                         itemsInBackpackSender,
                         itemsDroppedSender,

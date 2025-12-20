@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
@@ -15,6 +16,12 @@ import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
  * A factory for creating Eval events.
  */
 public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
+    /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
+
     /**
      * The quest package manager to get quest packages from.
      */
@@ -28,10 +35,12 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     /**
      * Create a new Eval event factory.
      *
+     * @param variables         the variable processor to create and resolve variables
      * @param packManager       the quest package manager to get quest packages from
      * @param eventTypeRegistry the event type registry providing factories to parse the evaluated instruction
      */
-    public EvalEventFactory(final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry) {
+    public EvalEventFactory(final Variables variables, final QuestPackageManager packManager, final EventTypeRegistry eventTypeRegistry) {
+        this.variables = variables;
         this.packManager = packManager;
         this.eventTypeRegistry = eventTypeRegistry;
     }
@@ -48,7 +57,7 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
-        return new NullableEventAdapter(new EvalEvent(packManager, eventTypeRegistry, instruction.getPackage(),
+        return new NullableEventAdapter(new EvalEvent(variables, packManager, eventTypeRegistry, instruction.getPackage(),
                 instruction.get(rawInstruction, Argument.STRING)));
     }
 }

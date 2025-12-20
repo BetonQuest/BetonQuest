@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.PlayerData;
@@ -46,15 +47,16 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
      * Create a new Objective Processor to store Objectives and starts/stops/resumes them.
      *
      * @param log            the custom logger for this class
+     * @param variables      the variable processor to create and resolve variables
      * @param packManager    the quest package manager to get quest packages from
      * @param objectiveTypes the available objective types
      * @param pluginManager  the manager to register listener
      * @param plugin         the plugin instance to associate registered listener with
      */
-    public ObjectiveProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+    public ObjectiveProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
                               final FactoryTypeRegistry<Objective> objectiveTypes,
                               final PluginManager pluginManager, final Plugin plugin) {
-        super(log, packManager, objectiveTypes, "Objective", "objectives");
+        super(log, variables, packManager, objectiveTypes, "Objective", "objectives");
         this.pluginManager = pluginManager;
         this.plugin = plugin;
         globalObjectiveIds = new HashSet<>();
@@ -84,7 +86,7 @@ public class ObjectiveProcessor extends TypedQuestProcessor<ObjectiveID, Objecti
 
     @Override
     protected ObjectiveID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ObjectiveID(packManager, pack, identifier);
+        return new ObjectiveID(variables, packManager, pack, identifier);
     }
 
     @Override

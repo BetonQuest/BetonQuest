@@ -46,38 +46,38 @@ public class Variable<T> {
     /**
      * Resolves a string that may contain variables to a variable of the given type.
      *
-     * @param variableProcessor the processor to create the variables
-     * @param pack              the package in which the variable is used in
-     * @param input             the string that may contain variables
-     * @param resolver          the resolver to convert the resolved variable to the given type
+     * @param variables the processor to create the variables
+     * @param pack      the package in which the variable is used in
+     * @param input     the string that may contain variables
+     * @param resolver  the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public Variable(final Variables variableProcessor, @Nullable final QuestPackage pack, final String input,
+    public Variable(final Variables variables, @Nullable final QuestPackage pack, final String input,
                     final VariableResolver<T> resolver) throws QuestException {
-        final Map<String, VariableAdapter> variables = getVariables(variableProcessor, pack, input);
-        if (variables.isEmpty()) {
+        final Map<String, VariableAdapter> foundVariables = getVariables(variables, pack, input);
+        if (foundVariables.isEmpty()) {
             final T resolved = resolver.apply(replaceEscapedPercent(input));
             value = profile -> resolver.clone(resolved);
         } else {
-            value = profile -> resolver.apply(replaceEscapedPercent(getString(input, variables, profile)));
+            value = profile -> resolver.apply(replaceEscapedPercent(getString(input, foundVariables, profile)));
         }
     }
 
-    private Map<String, VariableAdapter> getVariables(final Variables variableProcessor,
+    private Map<String, VariableAdapter> getVariables(final Variables variables,
                                                       @Nullable final QuestPackage pack,
                                                       final String input)
             throws QuestException {
-        final Map<String, VariableAdapter> variables = new HashMap<>();
+        final Map<String, VariableAdapter> foundVariables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final VariableAdapter variableAdapter = variableProcessor.create(pack, replaceEscapedPercent(variable));
-                variables.put(variable, variableAdapter);
+                final VariableAdapter variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
+                foundVariables.put(variable, variableAdapter);
             } catch (final QuestException exception) {
                 throw new QuestException("Could not create variable '" + variable + "': "
                         + exception.getMessage(), exception);
             }
         }
-        return variables;
+        return foundVariables;
     }
 
     private Set<String> resolveVariables(final String input) {

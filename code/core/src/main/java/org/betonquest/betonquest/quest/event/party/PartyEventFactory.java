@@ -19,6 +19,7 @@ import java.util.List;
  * Fires specified events for every player in the party.
  */
 public class PartyEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

@@ -3,13 +3,13 @@ package org.betonquest.betonquest.id;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
+import org.betonquest.betonquest.api.identifier.SectionIdentifier;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a Journal Main Page ID.
  */
-public class JournalMainPageID extends InstructionIdentifier {
+public class JournalMainPageID extends SectionIdentifier {
 
     /**
      * Creates new JournalMainPageID instance.

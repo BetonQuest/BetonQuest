@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.hand;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,7 +41,7 @@ public class HandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Item> item = instruction.get(IdentifierArgument.ITEM);
+        final Variable<Item> item = instruction.get(InstructionIdentifierArgument.ITEM);
         final boolean offhand = instruction.hasArgument("offhand");
         final BetonQuestLogger log = loggerFactory.create(HandCondition.class);
         return new PrimaryServerThreadPlayerCondition(

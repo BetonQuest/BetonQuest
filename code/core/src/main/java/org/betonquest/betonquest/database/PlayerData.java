@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveID;
 import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -45,6 +46,11 @@ public class PlayerData implements TagData, PointData {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * Variable processor to create and resolve variables.
+     */
+    private final Variables variables;
 
     /**
      * The quest package manager to get quest packages from.
@@ -128,6 +134,7 @@ public class PlayerData implements TagData, PointData {
      * Loads the PlayerData of the given {@link Profile}.
      *
      * @param log            the custom logger for this class
+     * @param variables      the variable processor to create and resolve variables
      * @param packManager    the quest package manager to get quest packages from
      * @param saver          the saver to persist data changes
      * @param server         the server to determine if an event should be stated as async
@@ -135,9 +142,10 @@ public class PlayerData implements TagData, PointData {
      * @param journalFactory the factory to create a new journal
      * @param profile        the profile to load the data for
      */
-    public PlayerData(final BetonQuestLogger log, final QuestPackageManager packManager, final Saver saver,
+    public PlayerData(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager, final Saver saver,
                       final Server server, final QuestTypeApi questTypeApi, final JournalFactory journalFactory, final Profile profile) {
         this.log = log;
+        this.variables = variables;
         this.packManager = packManager;
         this.saver = saver;
         this.server = server;
@@ -198,7 +206,7 @@ public class PlayerData implements TagData, PointData {
 
     private void loadJournalPointer(final String pointer, final long date) {
         try {
-            final JournalEntryID entryID = new JournalEntryID(packManager, null, pointer);
+            final JournalEntryID entryID = new JournalEntryID(questTypeApi.variables(), packManager, null, pointer);
             entries.add(new Pointer(entryID, date));
         } catch (final QuestException e) {
             log.warn("Loaded '" + pointer
@@ -335,7 +343,7 @@ public class PlayerData implements TagData, PointData {
         for (final Map.Entry<String, String> entry : objectives.entrySet()) {
             final String objective = entry.getKey();
             try {
-                final ObjectiveID objectiveID = new ObjectiveID(packManager, null, objective);
+                final ObjectiveID objectiveID = new ObjectiveID(variables, packManager, null, objective);
                 questTypeApi.resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final QuestException e) {
                 log.warn("Loaded '" + objective

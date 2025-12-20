@@ -87,7 +87,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(packManager, pack, group);
+                final VariableID variable = new VariableID(variableProcessor, packManager, pack, group);
                 final Instruction instruction = variable.getInstruction();
                 final String prefix = variableProcessor.get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";

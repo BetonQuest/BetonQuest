@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.ScheduleID;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -27,11 +28,13 @@ public class EventScheduling extends SectionProcessor<ScheduleID, Void> {
      * Creates a new instance of the event scheduling class.
      *
      * @param log           the logger that will be used for logging
+     * @param variables     the variable processor to create and resolve variables
      * @param packManager   the quest package manager to get quest packages from
      * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public EventScheduling(final BetonQuestLogger log, final QuestPackageManager packManager, final ScheduleRegistry scheduleTypes) {
-        super(log, packManager, "Schedules", "schedules");
+    public EventScheduling(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+                           final ScheduleRegistry scheduleTypes) {
+        super(log, variables, packManager, "Schedules", "schedules");
         this.scheduleTypes = scheduleTypes;
     }
 

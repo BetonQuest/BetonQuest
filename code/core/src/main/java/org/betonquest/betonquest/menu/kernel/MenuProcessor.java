@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
@@ -60,16 +59,15 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
      * @param packManager     the quest package manager to get quest packages from
      * @param textCreator     the text creator to parse text
      * @param questTypeApi    the QuestTypeApi
-     * @param variables       the variable processor to create and resolve variables
      * @param featureApi      the Feature API
      * @param rpgMenu         the RPG Menu instance
      * @param profileProvider the Profile Provider
      */
     public MenuProcessor(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                          final QuestPackageManager packManager, final ParsedSectionTextCreator textCreator,
-                         final QuestTypeApi questTypeApi, final Variables variables,
+                         final QuestTypeApi questTypeApi,
                          final FeatureApi featureApi, final RPGMenu rpgMenu, final ProfileProvider profileProvider) {
-        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, variables, questTypeApi, featureApi);
+        super(log, packManager, "Menu", "menus", loggerFactory, textCreator, questTypeApi, featureApi);
         this.rpgMenu = rpgMenu;
         this.profileProvider = profileProvider;
         this.boundCommands = new HashSet<>();
@@ -88,7 +86,8 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Variable<Item> boundItem = section.isSet("bind")
-                ? new Variable<>(variables, pack, helper.getRequired("bind"), value -> itemParser.apply(packManager, pack, value))
+                ? new Variable<>(variables, pack, helper.getRequired("bind"),
+                value -> itemParser.apply(variables, packManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);

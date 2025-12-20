@@ -66,11 +66,6 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
     private final InterceptorRegistry interceptorRegistry;
 
     /**
-     * Variable processor to create and resolve variables.
-     */
-    private final Variables variables;
-
-    /**
      * Text creator to parse text.
      */
     private final ParsedSectionTextCreator textCreator;
@@ -101,7 +96,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
                                  final BetonQuest plugin, final ParsedSectionTextCreator textCreator,
                                  final ConversationIORegistry convIORegistry, final InterceptorRegistry interceptorRegistry,
                                  final Variables variables, final PluginMessage pluginMessage) {
-        super(log, plugin.getQuestPackageManager(), "Conversation", "conversations");
+        super(log, variables, plugin.getQuestPackageManager(), "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(plugin.getProfileProvider(), new ConcurrentHashMap<>());
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
@@ -110,7 +105,6 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         this.textCreator = textCreator;
         this.convIORegistry = convIORegistry;
         this.interceptorRegistry = interceptorRegistry;
-        this.variables = variables;
         this.listener = new ConversationListener(loggerFactory.create(ConversationListener.class), this, plugin.getProfileProvider(),
                 pluginMessage, plugin.getPluginConfig());
         plugin.getServer().getPluginManager().registerEvents(listener, plugin);
@@ -132,7 +126,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final Variable<Boolean> blockMovement = new Variable<>(variables, pack, section.getString("stop", "false"), Argument.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
         final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
-        final Variable<List<EventID>> finalEvents = new VariableList<>(variables, pack, section.getString("final_events", ""), value -> new EventID(packManager, pack, value));
+        final Variable<List<EventID>> finalEvents = new VariableList<>(variables, pack, section.getString("final_events", ""), value -> new EventID(variables, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
         final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
 

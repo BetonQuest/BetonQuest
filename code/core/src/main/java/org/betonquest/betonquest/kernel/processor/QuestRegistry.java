@@ -99,15 +99,15 @@ public record QuestRegistry(
                                        final PlayerDataStorage playerDataStorage) {
         final Variables variables = coreQuestRegistry.variables();
         final QuestPackageManager packManager = plugin.getQuestPackageManager();
-        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), packManager, otherRegistries.eventScheduling());
+        final EventScheduling eventScheduling = new EventScheduling(loggerFactory.create(EventScheduling.class, "Schedules"), variables, packManager, otherRegistries.eventScheduling());
         final CancelerProcessor cancelers = new CancelerProcessor(loggerFactory.create(CancelerProcessor.class), loggerFactory, plugin, pluginMessage, variables, textCreator, coreQuestRegistry, playerDataStorage);
-        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), packManager, variables, textCreator);
+        final CompassProcessor compasses = new CompassProcessor(loggerFactory.create(CompassProcessor.class), variables, packManager, textCreator);
         final ConversationProcessor conversations = new ConversationProcessor(loggerFactory.create(ConversationProcessor.class), loggerFactory, plugin,
                 textCreator, otherRegistries.conversationIO(), otherRegistries.interceptor(), variables, pluginMessage);
-        final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), packManager, otherRegistries.item());
-        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), packManager, textCreator);
-        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), packManager, variables, textCreator);
-        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, packManager, variables,
+        final ItemProcessor items = new ItemProcessor(loggerFactory.create(ItemProcessor.class), variables, packManager, otherRegistries.item());
+        final JournalEntryProcessor journalEntries = new JournalEntryProcessor(loggerFactory.create(JournalEntryProcessor.class), variables, packManager, textCreator);
+        final JournalMainPageProcessor journalMainPages = new JournalMainPageProcessor(loggerFactory.create(JournalMainPageProcessor.class), variables, packManager, textCreator);
+        final NpcProcessor npcs = new NpcProcessor(loggerFactory.create(NpcProcessor.class), loggerFactory, variables, packManager,
                 otherRegistries.npc(), pluginMessage, plugin, profileProvider, coreQuestRegistry, conversations.getStarter());
         return new QuestRegistry(log, coreQuestRegistry, eventScheduling, cancelers, compasses, conversations, items, journalEntries, journalMainPages, npcs, new ArrayList<>());
     }

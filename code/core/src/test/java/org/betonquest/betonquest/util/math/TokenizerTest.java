@@ -41,7 +41,7 @@ class TokenizerTest {
     /**
      * Variable processor to create and resolve variables.
      */
-    private final Variables variableProcessor = mock(Variables.class);
+    private final Variables variables = mock(Variables.class);
 
     @BeforeAll
     static void setUp() {
@@ -50,21 +50,21 @@ class TokenizerTest {
 
     @Test
     void testTokenizeEmpty() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(""), "an empty string should not be parsable");
         assertEquals("missing calculation", exception.getMessage(), "exception should be about missing a calculation");
     }
 
     @Test
     void testTokenizeNegationOnly() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize("-"), "a string containing only a negation should throw an exception");
         assertEquals("invalid calculation (negation missing value)", exception.getMessage(), "exception should be about missing something to negate");
     }
 
     @Test
     void testTokenizeDigit() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize("1");
         assertEquals(1, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a single letter integer should work");
@@ -72,7 +72,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeInteger() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final double number = 2_134_671;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -81,7 +81,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegativeInteger() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final double number = -56_234;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -90,7 +90,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDecimal() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final double number = 45_213.234_5;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -99,7 +99,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegativeDecimal() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final double number = -7_342.634;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -108,7 +108,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeTwoDecimalPoints() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String number = "43.654.123";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(number), "tokenizing a string with digits that contain two decimal point symbols should throw an exception");
@@ -117,7 +117,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeIntegerAddition() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1+2";
         final double expectedResult = 3;
 
@@ -127,7 +127,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeIntegerSubtraction() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1-2";
         final double expectedResult = -1;
 
@@ -137,7 +137,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeIntegerMultiplication() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "2*3";
         final double expectedResult = 6;
 
@@ -147,7 +147,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeIntegerDivision() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "6/3";
         final double expectedResult = 2;
 
@@ -157,7 +157,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDecimalAddition() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1.7+3.5";
         final double expectedResult = 5.2;
 
@@ -167,7 +167,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDecimalSubtraction() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "4.6-5.3";
         final double expectedResult = -0.7;
 
@@ -177,7 +177,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDecimalMultiplication() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "2.4*5.3";
         final double expectedResult = 12.72;
 
@@ -187,7 +187,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDecimalDivision() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "7.8/3.2";
         final double expectedResult = 2.4375;
 
@@ -197,7 +197,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAddNegativeNumber() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "18.3+-23.4";
         final double expectedResult = -5.1;
 
@@ -207,7 +207,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSubtractNegativeNumber() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "7--5";
         final double expectedResult = 12;
 
@@ -217,7 +217,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeMultiplyNegativeNumber() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1.3*-2";
         final double expectedResult = -2.6;
 
@@ -227,7 +227,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDotRuleAddThenMultiple() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "13+2*4";
         final double expectedResult = 21;
 
@@ -237,7 +237,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDotRuleMultipleThenAdd() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "8*3+14";
         final double expectedResult = 38;
 
@@ -247,7 +247,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDotRuleMinusThenDivide() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "3.7-12/24";
         final double expectedResult = 3.2;
 
@@ -257,7 +257,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDotRuleDivideThenMinus() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "14/4-0.7";
         final double expectedResult = 2.8;
 
@@ -267,7 +267,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDotRuleModulo() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "5+13%7-2";
         final double expectedResult = 9;
 
@@ -277,7 +277,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizePowerRuleExponentThenMultiply() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "3^4*2";
         final double expectedResult = 162;
 
@@ -287,7 +287,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizePowerRuleMultiplyThenExponent() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "0.3*2^5";
         final double expectedResult = 9.6;
 
@@ -297,7 +297,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundToInteger() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "2.2~0";
         final double expectedResult = 2;
 
@@ -307,7 +307,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundEdgeCase() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "3.05~1";
         final double expectedResult = 3.1;
 
@@ -317,7 +317,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundResult() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "10-3.03*4~1";
         final double expectedResult = -2.1;
 
@@ -327,7 +327,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundInParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(4.0345~2)*4";
         final double expectedResult = 16.12;
 
@@ -337,7 +337,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(4.0345*4)~2";
         final double expectedResult = 16.14;
 
@@ -347,7 +347,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundPower() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "2.5^3~2";
         final double expectedResult = 15.63;
 
@@ -357,7 +357,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundNegativeDigits() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1234~-2";
         final double expectedResult = 1200;
 
@@ -367,7 +367,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeRoundMinus() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "13.243~7-5";
         final double expectedResult = 13.24;
 
@@ -377,7 +377,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNothingTimesSomething() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "*64";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string without value before the first operator should throw an exception");
@@ -386,7 +386,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSomethingTimesNothing() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "423*";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string without value after the last operator should throw an exception");
@@ -395,7 +395,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDoubleTimesOperator() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "423**64";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with two adjacent plus operators should throw an exception");
@@ -404,7 +404,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSimpleParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(4123)";
         final double expectedResult = 4123;
 
@@ -414,7 +414,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSimpleDoubleParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "((4123))";
         final double expectedResult = 4123;
 
@@ -424,7 +424,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeCalculationInParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(423+543)";
         final double expectedResult = 966;
 
@@ -434,7 +434,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeMultipleOfSum() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "2.3*(32+12+65)";
         final double expectedResult = 250.7;
 
@@ -444,7 +444,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDeepParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "1-(45+((23-5)*4))/6";
         final double expectedResult = -18.5;
 
@@ -454,7 +454,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeChainedParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(14+6)*(4-1)/(8*2)+(12/3)";
         final double expectedResult = 7.75;
 
@@ -464,7 +464,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDeepAndChainedParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "((1-1)*2)/1.5+(3/4)";
         final double expectedResult = 0.75;
 
@@ -474,7 +474,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegativeParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "-(15.4-32.9)";
         final double expectedResult = 17.5;
 
@@ -484,7 +484,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeMissingOpeningParenthesis() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "865)";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing opening parenthesis should throw an exception");
@@ -493,7 +493,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeMissingClosingParenthesis() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(846";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing closing parenthesis should throw an exception");
@@ -502,7 +502,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeEmptyParenthesis() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "()";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with an empty parenthesis should throw an exception");
@@ -511,7 +511,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegatedEmptyParenthesis() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "-()";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a negated empty parenthesis should throw an exception");
@@ -520,7 +520,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNestedEmptyParenthesis() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(())";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis should throw an exception");
@@ -529,7 +529,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNestedEmptyParenthesisWithCalculation() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(()+5)";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis followed by a calculation should throw an exception");
@@ -538,7 +538,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNumberThenParenthesisWithoutOperator() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "7(2+4)";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with a parenthesis without operator should throw an exception");
@@ -547,7 +547,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeParenthesisThenNumberWithoutOperator() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(2+4)7";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a number without operator should throw an exception");
@@ -556,7 +556,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSimpleBrackets() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "[546]";
         final double expectedResult = 546;
 
@@ -566,7 +566,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeSimpleDoubleBrackets() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "[[546]]";
         final double expectedResult = 546;
 
@@ -576,7 +576,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeCalculationInBrackets() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "[329+603]";
         final double expectedResult = 932;
 
@@ -586,7 +586,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeParenthesisInBrackets() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "[(8345)]";
         final double expectedResult = 8345;
 
@@ -596,7 +596,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeBracketsInParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "([8345])";
         final double expectedResult = 8345;
 
@@ -606,7 +606,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeInvalidParenthesisAndBracketsMix() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "[(653])";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
@@ -615,7 +615,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAbsoluteOfPositive() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|5|";
         final double expectedResult = 5;
 
@@ -625,7 +625,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAbsoluteOfNegative() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|-7|";
         final double expectedResult = 7;
 
@@ -635,7 +635,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAbsoluteOfNegativeDecimal() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|-32.65|";
         final double expectedResult = 32.65;
 
@@ -645,7 +645,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegativeAbsolute() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "-|-23.5|";
         final double expectedResult = -23.5;
 
@@ -655,7 +655,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeDifferenceOfAbsolutes() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|-3|-|-7|";
         final double expectedResult = -4;
 
@@ -665,7 +665,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAbsoluteOfAbsoluteInParenthesis() throws QuestException {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|1-(|3|)|";
         final double expectedResult = 2;
 
@@ -675,7 +675,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeEmptyAbsolute() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "||";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing an empty absolute value should throw an exception");
@@ -684,7 +684,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNegatedEmptyAbsolute() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "-||";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a negated empty absolute value should throw an exception");
@@ -693,7 +693,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeNumberThenAbsoluteWithoutOperator() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "7|2+4|";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with an absolute without operator should throw an exception");
@@ -702,7 +702,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeAbsoluteThenNumberWithoutOperator() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|2+4|7";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects an absolute with a number without operator should throw an exception");
@@ -711,7 +711,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeInvalidAbsoluteAndParenthesisMix() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "|(653|)";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved absolutes and parenthesis should throw an exception");
@@ -720,7 +720,7 @@ class TokenizerTest {
 
     @Test
     void testTokenizeInvalidParenthesisAndAbsoluteMix() {
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
         final String calculation = "(|653)|";
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved absolutes and parenthesis should throw an exception");
@@ -733,7 +733,7 @@ class TokenizerTest {
         final double value = 43;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable should work");
@@ -745,7 +745,7 @@ class TokenizerTest {
         final double value = 44;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number should work");
@@ -757,7 +757,7 @@ class TokenizerTest {
         final double value = 45;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an underscore should work");
@@ -769,7 +769,7 @@ class TokenizerTest {
         final double value = 47;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an exclamation mark should work");
@@ -781,7 +781,7 @@ class TokenizerTest {
         final double value = 48;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an equals sign should work");
@@ -793,7 +793,7 @@ class TokenizerTest {
         final double value = 49;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number sign should work");
@@ -805,7 +805,7 @@ class TokenizerTest {
         final double value = 50;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an ampersand should work");
@@ -817,7 +817,7 @@ class TokenizerTest {
         final double value = 51;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an apostrophe should work");
@@ -829,7 +829,7 @@ class TokenizerTest {
         final double value = 52;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a question mark should work");
@@ -841,7 +841,7 @@ class TokenizerTest {
         final double value = 53;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a dot should work");
@@ -853,7 +853,7 @@ class TokenizerTest {
         final double value = 54;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a colon should work");
@@ -865,7 +865,7 @@ class TokenizerTest {
         final double value = 53;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(variable);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable ending with a digit should work");
@@ -878,7 +878,7 @@ class TokenizerTest {
         final double value = 23;
 
         withVariables(new ProtoVariable(variable, String.valueOf(-value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of a variable should work");
@@ -892,7 +892,7 @@ class TokenizerTest {
         final double expectedResult = 12;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a number to a variable should work");
@@ -906,7 +906,7 @@ class TokenizerTest {
         final double expectedResult = 12;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a variable to a number should work");
@@ -922,7 +922,7 @@ class TokenizerTest {
         final double expectedResult = 96;
 
         withVariables(new ProtoVariable(firstVariable, String.valueOf(firstValue)), new ProtoVariable(secondVariable, String.valueOf(secondValue)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of two variables should work");
@@ -935,7 +935,7 @@ class TokenizerTest {
         final double value = 6354.6;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a variable inside parenthesis should work");
@@ -948,7 +948,7 @@ class TokenizerTest {
         final double value = 57.1;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with a variable without operator should throw an exception");
         assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
@@ -961,7 +961,7 @@ class TokenizerTest {
         final double value = 5;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a variable with a parenthesis without operator should throw an exception");
         assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
@@ -974,7 +974,7 @@ class TokenizerTest {
         final double value = 8;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
         assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
@@ -987,7 +987,7 @@ class TokenizerTest {
         final double value = 65;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
@@ -1001,7 +1001,7 @@ class TokenizerTest {
         final double expected = -value;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(expected, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
@@ -1014,7 +1014,7 @@ class TokenizerTest {
         final double value = 17;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped backslash should work");
@@ -1027,7 +1027,7 @@ class TokenizerTest {
         final double value = 27;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
@@ -1040,7 +1040,7 @@ class TokenizerTest {
         final double value = 32;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
@@ -1053,7 +1053,7 @@ class TokenizerTest {
         final double value = 87;
 
         withVariables(new ProtoVariable(variable, String.valueOf(value)));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with two backslashes in a row should work");
@@ -1065,7 +1065,7 @@ class TokenizerTest {
         final String calculation = variable + "}";
 
         withVariables(new ProtoVariable(variable, "83"));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
         assertEquals("invalid calculation (unbalanced curly brace)", exception.getMessage(), "exception should be about missing operator");
@@ -1077,7 +1077,7 @@ class TokenizerTest {
         final String calculation = "{" + variable;
 
         withVariables(new ProtoVariable(variable, "83"));
-        final Tokenizer tokenizer = new Tokenizer(variableProcessor, TEST_PACK);
+        final Tokenizer tokenizer = new Tokenizer(variables, TEST_PACK);
 
         final QuestException exception = assertThrows(QuestException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
         assertEquals("invalid calculation (unbalanced curly brace)", exception.getMessage(), "exception should be about missing operator");
@@ -1088,7 +1088,7 @@ class TokenizerTest {
             final PlayerVariable var = mock(PlayerVariable.class);
             when(var.getValue(TEST_PLAYER_PROFILE)).thenReturn(variableTemplate.value());
             final VariableAdapter varWrapper = new VariableAdapter(mock(Instruction.class), var, null);
-            when(variableProcessor.create(TEST_PACK, "%" + variableTemplate.key() + "%")).thenReturn(varWrapper);
+            when(this.variables.create(TEST_PACK, "%" + variableTemplate.key() + "%")).thenReturn(varWrapper);
         }
     }
 

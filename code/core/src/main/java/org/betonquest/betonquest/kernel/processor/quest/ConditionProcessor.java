@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
@@ -21,21 +22,23 @@ import java.util.concurrent.ExecutionException;
  * Does the logic around Conditions.
  */
 public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
+
     /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log            the custom logger for this class
+     * @param variables      the variable processor to create and resolve variables
      * @param packManager    the quest package manager to get quest packages from
      * @param conditionTypes the available condition types
      */
-    public ConditionProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
+    public ConditionProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
                               final ConditionTypeRegistry conditionTypes) {
-        super(log, packManager, conditionTypes, "Condition", "conditions");
+        super(log, variables, packManager, conditionTypes, "Condition", "conditions");
     }
 
     @Override
     protected ConditionID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new ConditionID(packManager, pack, identifier);
+        return new ConditionID(variables, packManager, pack, identifier);
     }
 
     /**
