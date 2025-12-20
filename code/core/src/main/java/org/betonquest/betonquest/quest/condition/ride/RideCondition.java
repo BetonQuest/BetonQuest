@@ -7,22 +7,24 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
+import java.util.Optional;
+
 /**
  * A condition that checks if the player is riding a vehicle.
  */
 public class RideCondition implements OnlineCondition {
 
     /**
-     * The entity type to match.
+     * The entity type to match or an empty optional if any entity is allowed.
      */
-    private final Variable<EntityType> vehicle;
+    private final Variable<Optional<EntityType>> vehicle;
 
     /**
      * Creates a new ride condition. If the entity type is null, any entity will match.
      *
      * @param vehicle the entity type to match
      */
-    public RideCondition(final Variable<EntityType> vehicle) {
+    public RideCondition(final Variable<Optional<EntityType>> vehicle) {
         this.vehicle = vehicle;
     }
 
@@ -32,7 +34,7 @@ public class RideCondition implements OnlineCondition {
         if (entity == null) {
             return false;
         }
-        final EntityType entityType = vehicle.getValue(profile);
-        return entityType == null || entity.getType() == entityType;
+        final Optional<EntityType> entityType = vehicle.getValue(profile);
+        return entityType.map(type -> type == entity.getType()).orElse(true);
     }
 }

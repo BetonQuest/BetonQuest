@@ -8,6 +8,8 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.entity.EntityType;
 
+import java.util.Optional;
+
 /**
  * Factory for creating {@link RideObjective} instances from {@link Instruction}s.
  */
@@ -26,7 +28,9 @@ public class RideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> vehicle = instruction.get(Argument.ENUM(EntityType.class).prefilter(ANY_PROPERTY, null));
+        final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
+                .prefilterOptional(ANY_PROPERTY, null);
+        final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         return new RideObjective(instruction, vehicle);
     }
 }

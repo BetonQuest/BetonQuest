@@ -10,6 +10,8 @@ import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.Optional;
+
 /**
  * Factory class for creating {@link ActionObjective} instances from {@link Instruction}s.
  */
@@ -29,7 +31,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Click> action = instruction.get(Argument.ENUM(Click.class));
-        final Variable<BlockSelector> selector = instruction.get(Argument.BLOCK_SELECTOR.prefilter(ANY, null));
+        final Variable<Optional<BlockSelector>> selector = instruction.get(Argument.BLOCK_SELECTOR.prefilterOptional(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
         final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 0);

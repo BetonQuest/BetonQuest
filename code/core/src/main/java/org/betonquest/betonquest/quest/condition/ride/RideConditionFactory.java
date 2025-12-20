@@ -13,6 +13,8 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.bukkit.entity.EntityType;
 
+import java.util.Optional;
+
 /**
  * Factory to create ride conditions from {@link Instruction}s.
  */
@@ -46,7 +48,9 @@ public class RideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> vehicle = instruction.get(Argument.ENUM(EntityType.class).prefilter(ANY_ENTITY, null));
+        final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
+                .prefilterOptional(ANY_ENTITY, null);
+        final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new RideCondition(vehicle), logger, instruction.getPackage()), data);
