@@ -106,24 +106,24 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         final double deathRadiusAllPlayers = deathRadius * deathRadius;
         final double neutralDeathRadiusAllPlayers = neutralDeathRadius * neutralDeathRadius;
         if (deathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, deathRadiusAllPlayers, key);
+            executeForEveryoneInRange(event, deathRadiusAllPlayers);
         } else if (event.getKiller() instanceof Player) {
-            checkKill(event, profileProvider.getProfile((Player) event.getKiller()), key);
+            checkKill(event, profileProvider.getProfile((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers, key);
+            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers);
         }
     }
 
-    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range, final NamespacedKey key) throws QuestException {
+    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range) throws QuestException {
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
-                checkKill(event, profileProvider.getProfile(player), key);
+                checkKill(event, profileProvider.getProfile(player));
             }
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile, final NamespacedKey key) throws QuestException {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
         if (marked != null) {
             final String value = marked.getValue(onlineProfile);
             final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
