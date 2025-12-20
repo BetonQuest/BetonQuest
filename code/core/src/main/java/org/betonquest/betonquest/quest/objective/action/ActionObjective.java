@@ -18,11 +18,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
  */
 public class ActionObjective extends Objective implements Listener {
+
     /**
      * The key for the location property.
      */
@@ -34,10 +37,9 @@ public class ActionObjective extends Objective implements Listener {
     private final Variable<Click> action;
 
     /**
-     * The selector to check for the block.
+     * The selector to check for the block or an empty optional if any block is allowed.
      */
-    @Nullable
-    private final Variable<BlockSelector> selector;
+    private final Variable<Optional<BlockSelector>> selector;
 
     /**
      * If the block should be checked for exact match.
@@ -80,7 +82,7 @@ public class ActionObjective extends Objective implements Listener {
      * @throws QuestException if an error occurs while creating the objective
      */
     public ActionObjective(final Instruction instruction, final Variable<Click> action,
-                           @Nullable final Variable<BlockSelector> selector, final boolean exactMatch,
+                           final Variable<Optional<BlockSelector>> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
@@ -127,16 +129,17 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     private boolean checkBlock(final Profile profile, @Nullable final Block clickedBlock, final BlockFace blockFace) throws QuestException {
-        if (selector == null) {
+        final Optional<BlockSelector> blockSelector = selector.getValue(profile);
+        if (blockSelector.isEmpty()) {
             return true;
         }
         if (clickedBlock == null) {
             return false;
         }
-        final BlockSelector blockSelector = selector.getValue(profile);
-        return (blockSelector.match(Material.WATER) || blockSelector.match(Material.LAVA))
-                && blockSelector.match(clickedBlock.getRelative(blockFace), exactMatch)
-                || blockSelector.match(clickedBlock, exactMatch);
+        final BlockSelector selectorValue = blockSelector.get();
+        return (selectorValue.match(Material.WATER) || selectorValue.match(Material.LAVA))
+                && selectorValue.match(clickedBlock.getRelative(blockFace), exactMatch)
+                || selectorValue.match(clickedBlock, exactMatch);
     }
 
     @Override
