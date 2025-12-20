@@ -126,9 +126,10 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         final Variable<Boolean> blockMovement = new Variable<>(variables, pack, section.getString("stop", "false"), Argument.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
         final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
+        final Variable<Number> interceptorDelay = helper.parseInterceptorDelay();
         final Variable<List<EventID>> finalEvents = new VariableList<>(variables, pack, section.getString("final_events", ""), value -> new EventID(variables, packManager, pack, value));
         final boolean invincible = plugin.getConfig().getBoolean("conversation.damage.invincible");
-        final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, invincible);
+        final ConversationData.PublicData publicData = new ConversationData.PublicData(conversationID, quester, blockMovement, finalEvents, convIO, interceptor, interceptorDelay, invincible);
 
         return new ConversationData(loggerFactory.create(ConversationData.class), packManager,
                 variables, plugin.getQuestTypeApi(), plugin.getFeatureApi().conversationApi(), textCreator, section, publicData);
@@ -216,7 +217,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         }
 
         private String defaulting(final String path, final String configPath, final String defaultConfig) {
-            if (section.isString(path)) {
+            if (section.isSet(path)) {
                 return Objects.requireNonNull(opt(path));
             }
             return plugin.getPluginConfig().getString(configPath, defaultConfig);
@@ -236,6 +237,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
                 final List<String> interceptors = new VariableList<>(variables, pack, value, Argument.STRING).getValue(null);
                 return interceptorRegistry.getFactory(interceptors);
             });
+        }
+
+        private Variable<Number> parseInterceptorDelay() throws QuestException {
+            final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
+            return new Variable<>(variables, pack, rawInterceptorDelay, Argument.NUMBER_NOT_LESS_THAN_ZERO);
         }
     }
 }

@@ -118,6 +118,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `money` event now has a `multiply` argument instead of `*` in front of number
 - old maven artifact repository nexus `https://nexus.betonquest.org/repository/betonquest/` replaced with reposilite available at `https://repo.betonquest.org/betonquest/`
 - `menu` io based on packetevents renamed to `packetevents`
+- config option `conversation.interceptor.delay` to configure a delay between the end of a conversation and the moment the interceptor is ended
 ### Deprecated
 ### Removed
 - undocumented prefix feature in conversation

@@ -43,7 +43,7 @@ import static org.betonquest.betonquest.conversation.ConversationData.OptionType
  * Manages an active conversation between a player and a NPC.
  * Handles the conversation flow based on {@link ConversationData}.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "NullAway"})
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods", "NullAway"})
 public class Conversation {
 
     /**
@@ -321,14 +321,29 @@ public class Conversation {
                     log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
                 }
 
-                interceptor.end();
-                endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
-
-                endCallable.run();
-                new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
+                endConversationDelayed();
             });
         } finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    private void endConversationDelayed() {
+        try {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (onlineProfile.getOnlineProfile().isPresent()) {
+                        interceptor.end();
+                        endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+                    }
+
+                    endCallable.run();
+                    new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), Conversation.this).callEvent();
+                }
+            }.runTaskLaterAsynchronously(plugin, data.getPublicData().interceptorDelay().getValue(onlineProfile).longValue());
+        } catch (final QuestException e) {
+            log.warn(pack, "Error while ending conversation: " + e.getMessage(), e);
         }
     }
 
