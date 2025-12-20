@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -96,40 +95,44 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onKill(final MythicMobDeathEvent event) throws QuestException {
-        final Profile resolver = event.getKiller() instanceof final Player killer ? profileProvider.getProfile(killer) : null;
-        if (!names.getValue(resolver).contains(event.getMobType().getInternalName())
-                || marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
+        if (marked != null && !event.getEntity().getPersistentDataContainer().has(key)) {
             return;
         }
-        final double deathRadius = deathRadiusAllPlayers.getValue(resolver).doubleValue();
-        final double neutralDeathRadius = neutralDeathRadiusAllPlayers.getValue(resolver).doubleValue();
+        final double deathRadius = deathRadiusAllPlayers.getValue(null).doubleValue();
+        final double neutralDeathRadius = neutralDeathRadiusAllPlayers.getValue(null).doubleValue();
         final double deathRadiusAllPlayers = deathRadius * deathRadius;
         final double neutralDeathRadiusAllPlayers = neutralDeathRadius * neutralDeathRadius;
         if (deathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, deathRadiusAllPlayers, key);
+            executeForEveryoneInRange(event, deathRadiusAllPlayers);
         } else if (event.getKiller() instanceof Player) {
-            checkKill(event, profileProvider.getProfile((Player) event.getKiller()), key);
+            checkKill(event, profileProvider.getProfile((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
-            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers, key);
+            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers);
         }
     }
 
-    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range, final NamespacedKey key) throws QuestException {
+    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range) throws QuestException {
         final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
         for (final Player player : center.getWorld().getPlayers()) {
             if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
-                checkKill(event, profileProvider.getProfile(player), key);
+                checkKill(event, profileProvider.getProfile(player));
             }
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile, final NamespacedKey key) throws QuestException {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) throws QuestException {
+        if (!containsPlayer(onlineProfile)) {
+            return;
+        }
         if (marked != null) {
             final String value = marked.getValue(onlineProfile);
             final String dataContainerValue = event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.STRING);
-            if (dataContainerValue == null || !dataContainerValue.equals(value)) {
+            if (!value.equals(dataContainerValue)) {
                 return;
             }
+        }
+        if (!names.getValue(onlineProfile).contains(event.getMobType().getInternalName())) {
+            return;
         }
         handlePlayerKill(onlineProfile, event.getMob());
     }
@@ -141,7 +144,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) throws QuestException {
-        if (containsPlayer(onlineProfile) && matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
+        if (matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
             getCountingData(onlineProfile).progress();
             completeIfDoneOrNotify(onlineProfile);
         }
