@@ -20,19 +20,21 @@ conversations: #(1)!
     first: "welcome,blacksmithReminder" #(4)!
     stop: "true"  #(5)!
     final_events: "setCityState" #(6)!
-    interceptor: "simple" #(7)!
-    NPC_options: #(8)!
+    conversationIO: "menu" #(7)!
+    interceptor: "simple" #(8)!
+    interceptor_delay: 70 #(9)!
+    NPC_options: #(10)!
       welcome:
-        text: "Good day, dear %player%! Welcome back to my town." #(10)!
+        text: "Good day, dear %player%! Welcome back to my town." #(11)!
         events: "playSound,giveMoney" #(12)!
-        conditions: "firstVisit,!criminal" #(11)!
-        pointers: "friendly,hostile" #(13)!
+        conditions: "firstVisit,!criminal" #(13)!
+        pointers: "friendly,hostile" #(14)!
       blacksmithReminder:
         text: "Please visit the blacksmith, he has a task for you."
         conditions: "!criminal"
       howDareYou:
         text: "How dare you to talk to me like that?! Get out of my sight!"
-    player_options: #(9)!
+    player_options: #(15)!
       friendly:
         text: "Thank you your honor, I'm happy to be here."
         events: "givePresent"
@@ -47,21 +49,34 @@ conversations: #(1)!
 1. All conversation must be defined in a `conversations` section.
 2. `mayorHans` is the name of the conversation, which is used to reference the conversation. 
 3. `Hans` is the visual name of NPC that is displayed during the conversation.
-4. `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You 
+4. `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first 
+    one that meets all conditions. You 
     define these options in `npc_options` branch.
-5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
-    he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
-    joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with `max_conversation_distance` option in "_config.yml_".
-6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
-    the player if he tries to run). You can leave this option out if you don't need any final events.
-7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in "_config.yml_".
-8. `NPC_options` is a branch with texts said by the NPC.
-9. `player_options` is a branch with options the player can choose from.
-10. `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only `text` is always required.
-11. `conditions` are names of conditions which must be met for this option to display, separated by commas.
-12. `events` is a list of event names that will fire when an option is chosen (either by NPC or a player), defined similar to conditions.
-13. `pointer` is list of pointers to the opposite branch (from NPC branch it will point to options player can choose from when answering, and from player branch it will point to different NPC reactions).
+5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped 
+    every time he tries to (true). If enabled, it will also suspend the conversation when the player quits, and 
+    resume it after he joins back in. This way he will have to finish his conversation no matter what. You can modify
+    the distance at which the conversation is automatically stopped / player is teleported back with 
+    `max_conversation_distance` option in "_config.yml_".
+6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create 
+    e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final 
+    events.
+7. `conversationIO` optionally set the conversation style for this conversation. Multiple styles can be provided in 
+    acomma-separated list with the first valid one used. It's better to set this as a global config setting in
+    "_config.yml_".
+8. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a 
+    comma-separated list with the first valid one used. It's better to set this as a global config setting in
+    "_config.yml_".
+9. `interceptor_delay` optionally set a delay (in ticks) after the conversation ends and before the interceptor is 
+    displayed. This can also be set globally in "_config.yml_".
+10. `NPC_options` is a branch with texts said by the NPC.
+11. `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the 
+    option, just skip them. Only `text` is always required.
+12. `events` is a list of event names that will fire when an option is chosen (either by NPC or a player), defined 
+    similar to conditions.
+13. `conditions` are names of conditions which must be met for this option to display, separated by commas.
+14. `pointers` is list of pointers to the opposite branch (from NPC branch it will point to options player can 
+    choose from when answering, and from player branch it will point to different NPC reactions).
+15. `player_options` is a branch with options the player can choose from.
 
 When an NPC wants to say something he will check conditions for the first option (in this case `welcome`). If they are met,
 he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).

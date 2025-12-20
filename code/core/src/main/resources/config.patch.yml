@@ -1,4 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.0.0.22:
+  - type: SET
+    key: conversation.interceptor.delay
+    value: 50
 3.0.0.21:
   - type: VALUE_RENAME
     key: conversation.default_io

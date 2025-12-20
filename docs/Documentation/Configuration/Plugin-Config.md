@@ -123,6 +123,8 @@ All conversation related settings.
     * `display_history` - If set to `true`, the interceptor will display all previous messages in the chat after
       the conversation ends, like there was no conversation. This is only supported by some interceptors.  
       **This option needs a server restart to take effect when changed!**
+    * `delay` - The delay (in ticks) after the conversation ends and before the interceptor is displayed.
+      This is to let the player some time to read the last conversation message.
 * `damage`  
   All damage related settings.
     * `combat_delay` - A delay (in seconds) the player must wait before starting a conversation after the last combat.  

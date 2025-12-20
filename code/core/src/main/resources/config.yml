@@ -31,6 +31,7 @@ conversation:
   interceptor:
     default: redischat,packetevents,simple
     display_history: true
+    delay: 50
   damage:
     combat_delay: 10
     invincible: true
