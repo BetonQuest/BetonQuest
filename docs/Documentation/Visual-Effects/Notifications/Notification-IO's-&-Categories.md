@@ -128,10 +128,11 @@ during the animation.
       Sorry, your browser doesn't support embedded videos.
     </video>
 
-| Option          | Description                            |
-|-----------------|----------------------------------------|
-| customisation   | This CustomModelData will be used.     |
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+| Option          | Description                                                     |
+|-----------------|-----------------------------------------------------------------|
+| customModelData | The CustomModelData to use. Prefere to use `itemModel` instead. |
+| itemModel       | @snippet:versions:mc-1.21.4@ The ItemModel to use               |
+| [Sound](#sound) | Any option from the [SoundIO](#sound).                          |
 
 ### Sound
 This IO just plays a sound. You can use its options in any other IO.

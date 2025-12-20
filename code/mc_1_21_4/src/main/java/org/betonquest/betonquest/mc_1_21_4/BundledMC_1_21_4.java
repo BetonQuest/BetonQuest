@@ -12,6 +12,7 @@ import org.betonquest.betonquest.item.ItemRegistry;
 import org.betonquest.betonquest.mc_1_21_4.conversation.InputEventSession;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleQuestItemSerializer;
+import org.betonquest.betonquest.mc_1_21_4.notify.io.UpdatedTotemNotifyIOFactory;
 import org.betonquest.betonquest.mc_1_21_4.quest.condition.biome.UpdatedBiomeConditionFactory;
 import org.bukkit.entity.Player;
 
@@ -57,6 +58,7 @@ public class BundledMC_1_21_4 {
 
         betonQuest.getQuestRegistries().condition().register("biome", new UpdatedBiomeConditionFactory(betonQuest.getLoggerFactory(), betonQuest.getPrimaryServerThreadData()));
 
+        betonQuest.getFeatureRegistries().notifyIO().register("totem", new UpdatedTotemNotifyIOFactory(betonQuest.getVariableProcessor()));
         log.info("Enabled Minecraft 1.21.4 module");
     }
 }

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.notify.io;
+package org.betonquest.betonquest.mc_1_21_4.notify.io;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
@@ -8,8 +8,10 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.notify.NotifyIO;
+import org.betonquest.betonquest.util.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -20,9 +22,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * Shows a totem of undying animation with a "customModelData".
+ * Shows a totem of undying animation with a "itemModel" or a "customModelData".
  */
-public class TotemNotifyIO extends NotifyIO {
+public class UpdatedTotemNotifyIO extends NotifyIO {
+
+    /**
+     * The totems item model.
+     * It instructs the game client to display a different model or texture when the totem is shown.
+     */
+    @Nullable
+    private final Variable<NamespacedKey> variableItemModel;
 
     /**
      * The totems customModelData.
@@ -31,15 +40,17 @@ public class TotemNotifyIO extends NotifyIO {
     private final Variable<Number> variableCustomModelData;
 
     /**
-     * Creates a new TotemNotifyIO instance based on the user's instruction string.
+     * Creates a new UpdatedTotemNotifyIO instance based on the user's instruction string.
      *
      * @param variables the variable processor to create and resolve variables
      * @param pack      the related {@link QuestPackage}
      * @param data      map with user instructions.
      * @throws QuestException if the user's input couldn't be parsed.
      */
-    public TotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+    public UpdatedTotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(variables, pack, data);
+        variableItemModel = data.containsKey("itemmodel") ? new Variable<>(variables, pack, data.getOrDefault("itemmodel", ""),
+                input -> Utils.getNN(NamespacedKey.fromString(input), "The item-model '" + input + "' could not be parsed!")) : null;
         variableCustomModelData = getNumberData("custommodeldata", 0);
     }
 
@@ -53,6 +64,10 @@ public class TotemNotifyIO extends NotifyIO {
 
     private ItemStack buildFakeTotem(final Profile profile) throws QuestException {
         final ItemStack fakeTotem = new ItemStack(Material.TOTEM_OF_UNDYING);
+        if (variableItemModel != null) {
+            final NamespacedKey itemModel = variableItemModel.getValue(profile);
+            fakeTotem.editMeta(meta -> meta.setItemModel(itemModel));
+        }
         final int customModelData = variableCustomModelData.getValue(profile).intValue();
         fakeTotem.editMeta(meta -> meta.setCustomModelData(customModelData));
         return fakeTotem;
@@ -63,7 +78,7 @@ public class TotemNotifyIO extends NotifyIO {
     }
 
     private void playSilentTotemEffect(final Player player) {
-        player.playEffect(EntityEffect.TOTEM_RESURRECT);
+        player.sendEntityEffect(EntityEffect.PROTECTED_FROM_DEATH, player);
         player.stopSound(Sound.ITEM_TOTEM_USE, SoundCategory.PLAYERS);
     }
 }
