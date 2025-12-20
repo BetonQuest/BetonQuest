@@ -5099,19 +5099,21 @@ the NPC.</p>
 <span class="w">    </span><span class="nt">first</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;welcome,blacksmithReminder&quot;</span><span class="w"> </span><span class="c1">#(4)!</span>
 <span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">  </span><span class="c1">#(5)!</span>
 <span class="w">    </span><span class="nt">final_events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;setCityState&quot;</span><span class="w"> </span><span class="c1">#(6)!</span>
-<span class="w">    </span><span class="nt">interceptor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
-<span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span><span class="w"> </span><span class="c1">#(8)!</span>
+<span class="w">    </span><span class="nt">conversationIO</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;menu&quot;</span><span class="w"> </span><span class="c1">#(7)!</span>
+<span class="w">    </span><span class="nt">interceptor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple&quot;</span><span class="w"> </span><span class="c1">#(8)!</span>
+<span class="w">    </span><span class="nt">interceptor_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span><span class="w"> </span><span class="c1">#(9)!</span>
+<span class="w">    </span><span class="nt">NPC_options</span><span class="p">:</span><span class="w"> </span><span class="c1">#(10)!</span>
 <span class="w">      </span><span class="nt">welcome</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Good</span><span class="nv"> </span><span class="s">day,</span><span class="nv"> </span><span class="s">dear</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Welcome</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">town.&quot;</span><span class="w"> </span><span class="c1">#(10)!</span>
+<span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Good</span><span class="nv"> </span><span class="s">day,</span><span class="nv"> </span><span class="s">dear</span><span class="nv"> </span><span class="s">%player%!</span><span class="nv"> </span><span class="s">Welcome</span><span class="nv"> </span><span class="s">back</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">town.&quot;</span><span class="w"> </span><span class="c1">#(11)!</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;playSound,giveMoney&quot;</span><span class="w"> </span><span class="c1">#(12)!</span>
-<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;firstVisit,!criminal&quot;</span><span class="w"> </span><span class="c1">#(11)!</span>
-<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;friendly,hostile&quot;</span><span class="w"> </span><span class="c1">#(13)!</span>
+<span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;firstVisit,!criminal&quot;</span><span class="w"> </span><span class="c1">#(13)!</span>
+<span class="w">        </span><span class="nt">pointers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;friendly,hostile&quot;</span><span class="w"> </span><span class="c1">#(14)!</span>
 <span class="w">      </span><span class="nt">blacksmithReminder</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Please</span><span class="nv"> </span><span class="s">visit</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">blacksmith,</span><span class="nv"> </span><span class="s">he</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">task</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">you.&quot;</span>
 <span class="w">        </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;!criminal&quot;</span>
 <span class="w">      </span><span class="nt">howDareYou</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;How</span><span class="nv"> </span><span class="s">dare</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">talk</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">me</span><span class="nv"> </span><span class="s">like</span><span class="nv"> </span><span class="s">that?!</span><span class="nv"> </span><span class="s">Get</span><span class="nv"> </span><span class="s">out</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">my</span><span class="nv"> </span><span class="s">sight!&quot;</span>
-<span class="w">    </span><span class="nt">player_options</span><span class="p">:</span><span class="w"> </span><span class="c1">#(9)!</span>
+<span class="w">    </span><span class="nt">player_options</span><span class="p">:</span><span class="w"> </span><span class="c1">#(15)!</span>
 <span class="w">      </span><span class="nt">friendly</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thank</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">your</span><span class="nv"> </span><span class="s">honor,</span><span class="nv"> </span><span class="s">I&#39;m</span><span class="nv"> </span><span class="s">happy</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">here.&quot;</span>
 <span class="w">        </span><span class="nt">events</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;givePresent&quot;</span>
@@ -5125,21 +5127,34 @@ the NPC.</p>
 <li>All conversation must be defined in a <code>conversations</code> section.</li>
 <li><code>mayorHans</code> is the name of the conversation, which is used to reference the conversation. </li>
 <li><code>Hans</code> is the visual name of NPC that is displayed during the conversation.</li>
-<li><code>first</code> are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You 
+<li><code>first</code> are pointers to options the NPC will use at the beginning of the conversation. He will choose the first 
+    one that meets all conditions. You 
     define these options in <code>npc_options</code> branch.</li>
-<li><code>stop</code> determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
-    he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
-    joins back in. This way he will have to finish his conversation no matter what. You can modify
-    the distance at which the conversation is automatically stopped / player is teleported back with <code>max_conversation_distance</code> option in "<em>config.yml</em>".</li>
-<li><code>final_events</code> are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
-    the player if he tries to run). You can leave this option out if you don't need any final events.</li>
-<li><code>interceptor</code> optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in "<em>config.yml</em>".</li>
+<li><code>stop</code> determines if player can move away from an NPC while in this conversation (false) or if he's stopped 
+    every time he tries to (true). If enabled, it will also suspend the conversation when the player quits, and 
+    resume it after he joins back in. This way he will have to finish his conversation no matter what. You can modify
+    the distance at which the conversation is automatically stopped / player is teleported back with 
+    <code>max_conversation_distance</code> option in "<em>config.yml</em>".</li>
+<li><code>final_events</code> are events that will fire when the conversation ends, no matter how it ends (so you can create 
+    e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final 
+    events.</li>
+<li><code>conversationIO</code> optionally set the conversation style for this conversation. Multiple styles can be provided in 
+    acomma-separated list with the first valid one used. It's better to set this as a global config setting in
+    "<em>config.yml</em>".</li>
+<li><code>interceptor</code> optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a 
+    comma-separated list with the first valid one used. It's better to set this as a global config setting in
+    "<em>config.yml</em>".</li>
+<li><code>interceptor_delay</code> optionally set a delay (in ticks) after the conversation ends and before the interceptor is 
+    displayed. This can also be set globally in "<em>config.yml</em>".</li>
 <li><code>NPC_options</code> is a branch with texts said by the NPC.</li>
-<li><code>player_options</code> is a branch with options the player can choose from.</li>
-<li><code>text</code> defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only <code>text</code> is always required.</li>
+<li><code>text</code> defines what will display on screen. If you don't want to set any events/conditions/pointers to the 
+    option, just skip them. Only <code>text</code> is always required.</li>
+<li><code>events</code> is a list of event names that will fire when an option is chosen (either by NPC or a player), defined 
+    similar to conditions.</li>
 <li><code>conditions</code> are names of conditions which must be met for this option to display, separated by commas.</li>
-<li><code>events</code> is a list of event names that will fire when an option is chosen (either by NPC or a player), defined similar to conditions.</li>
-<li><code>pointer</code> is list of pointers to the opposite branch (from NPC branch it will point to options player can choose from when answering, and from player branch it will point to different NPC reactions).</li>
+<li><code>pointers</code> is list of pointers to the opposite branch (from NPC branch it will point to options player can 
+    choose from when answering, and from player branch it will point to different NPC reactions).</li>
+<li><code>player_options</code> is a branch with options the player can choose from.</li>
 </ol>
 <p>When an NPC wants to say something he will check conditions for the first option (in this case <code>welcome</code>). If they are met,
 he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).
