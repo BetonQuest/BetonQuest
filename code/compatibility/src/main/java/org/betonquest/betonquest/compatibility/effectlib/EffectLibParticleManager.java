@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -141,7 +141,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     /**
      * Internal identifier/key for a Particle.
      */
-    protected static class ParticleID extends Identifier {
+    protected static class ParticleID extends DefaultIdentifier {
 
         /**
          * Creates a new ID.

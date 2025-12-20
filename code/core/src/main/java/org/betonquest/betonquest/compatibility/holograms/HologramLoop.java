@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.identifier.Identifier;
+import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
@@ -225,7 +225,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     /**
      * Internal identifier/key for a Hologram.
      */
-    protected static class HologramID extends Identifier {
+    protected static class HologramID extends DefaultIdentifier {
 
         /**
          * Creates a new ID.

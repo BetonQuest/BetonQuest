@@ -59,7 +59,7 @@ class IdentifierTest {
         @MethodSource("identifiersToResolve")
         @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
         void resolve(final QuestPackageManager packManager, final QuestPackage pack, final String identifier, final QuestPackage expectedPack, final String expectedIdentifier) throws QuestException {
-            final Identifier resolvedIdentifier = new Identifier(packManager, pack, identifier) {
+            final Identifier resolvedIdentifier = new DefaultIdentifier(packManager, pack, identifier) {
             };
             final QuestPackage resolvedPack = resolvedIdentifier.getPackage();
             final String resolvedIdentifierString = resolvedIdentifier.get();
@@ -96,7 +96,7 @@ class IdentifierTest {
         @ParameterizedTest
         @MethodSource("identifiersToResolve")
         void resolve(final QuestPackageManager packManager, final QuestPackage pack, final String identifier, final String message) {
-            final QuestException questException = assertThrows(QuestException.class, () -> new Identifier(packManager, pack, identifier) {
+            final QuestException questException = assertThrows(QuestException.class, () -> new DefaultIdentifier(packManager, pack, identifier) {
             }, "Expected QuestException");
             assertEquals(message, questException.getMessage(), "Exception message does not equal expected message");
         }

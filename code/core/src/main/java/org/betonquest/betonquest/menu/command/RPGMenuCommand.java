@@ -26,6 +26,7 @@ import java.util.Locale;
  * The RPG menu main command.
  */
 public class RPGMenuCommand extends SimpleCommand {
+
     /**
      * RPGMenu instance this command works on.
      */

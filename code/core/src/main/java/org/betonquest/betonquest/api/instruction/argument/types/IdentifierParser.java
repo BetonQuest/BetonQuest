@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
  * Parses a string to an identifier.
  */
 public class IdentifierParser implements PackageArgument<String> {
+
     /**
      * Created a new parser for identifiers.
      */

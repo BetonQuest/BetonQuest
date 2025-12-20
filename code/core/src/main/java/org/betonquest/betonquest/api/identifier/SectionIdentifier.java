@@ -10,7 +10,8 @@ import org.jetbrains.annotations.Nullable;
  * Identifier for a section in a {@link QuestPackage}.
  * This class is used to ensure that the identifier corresponds to a valid section in the {@link QuestPackage}.
  */
-public class SectionIdentifier extends Identifier {
+public class SectionIdentifier extends DefaultIdentifier {
+
     /**
      * Creates a new section identifier,
      * ensuring that the identifier corresponds to a valid section in the package's configuration.
