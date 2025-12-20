@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Identifiers are used to identify objects in BetonQuest.
@@ -16,27 +15,7 @@ import java.util.regex.Pattern;
  * Navigation in the package hierarchy is done with the dash as separator and the underscore as up navigator.
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class DefaultIdentifier {
-
-    /**
-     * The string used to separate the package name from the identifier.
-     */
-    public static final String SEPARATOR = ">";
-
-    /**
-     * The string to separate the package address into parts.
-     */
-    public static final String PACKAGE_SEPARATOR = "-";
-
-    /**
-     * The string used to navigate up in the package hierarchy.
-     */
-    public static final String PACKAGE_NAVIGATOR = "_";
-
-    /**
-     * The pattern to find unescaped separators in an identifier.
-     */
-    private static final Pattern SEPARATOR_PATTERN = Pattern.compile("^(?<package>.*?)(?<!\\\\)(?:\\\\\\\\)*" + SEPARATOR + "(?<identifier>.*)$");
+public abstract class DefaultIdentifier implements Identifier {
 
     /**
      * The package the object is in.
@@ -161,29 +140,17 @@ public abstract class DefaultIdentifier {
         return resolvedPack;
     }
 
-    /**
-     * Returns the package the object exist in.
-     *
-     * @return the package
-     */
+    @Override
     public QuestPackage getPackage() {
         return pack;
     }
 
-    /**
-     * Returns the identifier of the object without the package name.
-     *
-     * @return the identifier in the format {@code identifier}
-     */
+    @Override
     public String get() {
         return identifier;
     }
 
-    /**
-     * Returns the full identifier of the object, including the package name.
-     *
-     * @return the full identifier in the format {@code package.identifier}
-     */
+    @Override
     public String getFull() {
         return pack.getQuestPath() + SEPARATOR + get();
     }
