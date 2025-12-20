@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
  * The package name can be relative or absolute.
  * Navigation in the package hierarchy is done with the dash as separator and the underscore as up navigator.
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class DefaultIdentifier implements Identifier {
 
     /**
@@ -25,7 +24,6 @@ public abstract class DefaultIdentifier implements Identifier {
     /**
      * The identifier of the object without the package name.
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private final String identifier;
 
     /**
