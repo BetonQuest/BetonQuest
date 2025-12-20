@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -50,7 +50,7 @@ public class ItemConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         final BetonQuestLogger log = loggerFactory.create(ItemCondition.class);
         return new PrimaryServerThreadPlayerCondition(

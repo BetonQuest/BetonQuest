@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.brewery.condition;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create {@link DrunkQualityCondition}s from {@link DefaultInstruction}s.
+ * Factory to create {@link DrunkQualityCondition}s from {@link Instruction}s.
  */
 public class DrunkQualityConditionFactory implements PlayerConditionFactory {
 
@@ -39,7 +39,7 @@ public class DrunkQualityConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> qualityVar = instruction.get(Argument.NUMBER);
         final BetonQuestLogger logger = loggerFactory.create(DrunkQualityCondition.class);
         return new PrimaryServerThreadPlayerCondition(

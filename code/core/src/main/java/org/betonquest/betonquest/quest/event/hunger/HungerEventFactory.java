@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.hunger;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -38,7 +38,7 @@ public class HungerEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Hunger> hunger = instruction.get(Argument.ENUM(Hunger.class));
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(

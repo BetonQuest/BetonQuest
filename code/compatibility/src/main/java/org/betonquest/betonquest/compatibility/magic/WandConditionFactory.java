@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.magic;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Factory to create {@link WandCondition}s from {@link DefaultInstruction}s.
+ * Factory to create {@link WandCondition}s from {@link Instruction}s.
  */
 public class WandConditionFactory implements PlayerConditionFactory {
 
@@ -51,7 +51,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<CheckType> type = instruction.get(Argument.ENUM(CheckType.class));
         final Variable<List<Map.Entry<String, Integer>>> spells =
                 instruction.getValueList("spells", SpellParser.SPELL, VariableList.notDuplicateKeyChecker());

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.world;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 import org.bukkit.World;
 
 /**
- * Factory to create world conditions from {@link DefaultInstruction}s.
+ * Factory to create world conditions from {@link Instruction}s.
  */
 public class WorldConditionFactory implements PlayerConditionFactory {
 
@@ -40,7 +40,7 @@ public class WorldConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<World> world = instruction.get(Argument.WORLD);
         final BetonQuestLogger logger = loggerFactory.create(WorldCondition.class);
         return new PrimaryServerThreadPlayerCondition(

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.party;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -18,7 +18,7 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory to create party conditions from {@link DefaultInstruction}s.
+ * Factory to create party conditions from {@link Instruction}s.
  */
 public class PartyConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
@@ -44,14 +44,14 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(instruction.getValue("location", "%location%"),
                 Argument.LOCATION);
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.getValue("location", Argument.LOCATION);
         if (location == null) {
             return new ThrowExceptionPlayerlessCondition();
@@ -59,7 +59,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
         return new NullableConditionAdapter(parse(instruction, location));
     }
 
-    private PartyCondition parse(final DefaultInstruction instruction, final Variable<Location> location) throws QuestException {
+    private PartyCondition parse(final Instruction instruction, final Variable<Location> location) throws QuestException {
         final Variable<Number> range = instruction.get(Argument.NUMBER);
         final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
         final Variable<List<ConditionID>> everyone = instruction.getValueList("every", ConditionID::new);

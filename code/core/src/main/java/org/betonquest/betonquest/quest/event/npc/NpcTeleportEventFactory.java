@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -17,7 +17,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.bukkit.Location;
 
 /**
- * Factory for {@link NpcTeleportEvent} from the {@link DefaultInstruction}.
+ * Factory for {@link NpcTeleportEvent} from the {@link Instruction}.
  */
 public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -43,16 +43,16 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createNpcTeleportEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createNpcTeleportEvent(instruction), data);
     }
 
-    private NullableEventAdapter createNpcTeleportEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final boolean spawn = instruction.hasArgument("spawn");

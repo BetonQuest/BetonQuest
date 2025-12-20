@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.ride;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -16,7 +16,7 @@ import org.bukkit.entity.EntityType;
 import java.util.Optional;
 
 /**
- * Factory to create ride conditions from {@link DefaultInstruction}s.
+ * Factory to create ride conditions from {@link Instruction}s.
  */
 public class RideConditionFactory implements PlayerConditionFactory {
 
@@ -47,7 +47,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
                 .prefilterOptional(ANY_ENTITY, null);
         final Variable<Optional<EntityType>> vehicle = instruction.get(argument);

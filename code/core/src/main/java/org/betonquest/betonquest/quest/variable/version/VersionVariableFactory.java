@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.version;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.util.Utils;
@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Factory to create version variables from {@link DefaultInstruction}s.
+ * Factory to create version variables from {@link Instruction}s.
  */
 public class VersionVariableFactory implements PlayerlessVariableFactory {
 
@@ -28,7 +28,7 @@ public class VersionVariableFactory implements PlayerlessVariableFactory {
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         final Plugin plugin;
         if (instruction.hasNext()) {
             final String pluginName = String.join(".", instruction.getValueParts());

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -29,7 +29,7 @@ public class TagVariableFactory extends AbstractTagVariableFactory<PlayerDataSto
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return new TagVariable(pluginMessage, dataHolder, instruction.next(), instruction.getPackage(), instruction.hasArgument("papiMode"));
     }
 }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.command;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.command.SilentCommandSender;
 import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -15,7 +15,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlaye
 import org.bukkit.command.CommandSender;
 
 /**
- * Creates a new CommandEvent from an {@link DefaultInstruction}.
+ * Creates a new CommandEvent from an {@link Instruction}.
  */
 public class CommandEventFactory extends BaseCommandEventFactory implements PlayerlessEventFactory {
 
@@ -39,16 +39,16 @@ public class CommandEventFactory extends BaseCommandEventFactory implements Play
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createCommandEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createCommandEvent(instruction), data);
     }
 
-    private NullableEventAdapter createCommandEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createCommandEvent(final Instruction instruction) throws QuestException {
         return new NullableEventAdapter(new CommandEvent(parseCommands(instruction), silentSender, data.server()));
     }
 }

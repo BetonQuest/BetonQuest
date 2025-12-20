@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.variable;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 
 /**
- * Factory to create a specific {@link PlayerlessVariable} from {@link DefaultInstruction}s.
+ * Factory to create a specific {@link PlayerlessVariable} from {@link Instruction}s.
  */
 @FunctionalInterface
 public interface PlayerlessVariableFactory extends PlayerlessQuestFactory<PlayerlessVariable> {
@@ -18,5 +18,5 @@ public interface PlayerlessVariableFactory extends PlayerlessQuestFactory<Player
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override
-    PlayerlessVariable parsePlayerless(DefaultInstruction instruction) throws QuestException;
+    PlayerlessVariable parsePlayerless(Instruction instruction) throws QuestException;
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 
 /**
- * Factory to create if-else events from {@link DefaultInstruction}s.
+ * Factory to create if-else events from {@link Instruction}s.
  */
 public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -37,16 +37,16 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createIfElseEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createIfElseEvent(instruction);
     }
 
-    private NullableEventAdapter createIfElseEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
         final Variable<ConditionID> condition = instruction.get(ConditionID::new);
         final Variable<EventID> event = instruction.get(EventID::new);
         if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.next())) {

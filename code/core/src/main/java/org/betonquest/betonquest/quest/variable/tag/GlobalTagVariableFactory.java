@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariableFactory;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -29,7 +29,7 @@ public class GlobalTagVariableFactory extends AbstractTagVariableFactory<GlobalD
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         return new GlobalTagVariable(pluginMessage, dataHolder, instruction.next(), instruction.getPackage(), instruction.hasArgument("papiMode"));
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.constant;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -22,16 +22,16 @@ public class ConstantVariableFactory implements PlayerVariableFactory, Playerles
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return parseConstantVariable(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         return parseConstantVariable(instruction);
     }
 
-    private NullableVariableAdapter parseConstantVariable(final DefaultInstruction instruction) throws QuestException {
+    private NullableVariableAdapter parseConstantVariable(final Instruction instruction) throws QuestException {
         final ConfigurationSection section = instruction.getPackage().getConfig().getConfigurationSection("constants");
         if (section == null) {
             throw new QuestException("No 'constants' section found in the QuestPackage!");

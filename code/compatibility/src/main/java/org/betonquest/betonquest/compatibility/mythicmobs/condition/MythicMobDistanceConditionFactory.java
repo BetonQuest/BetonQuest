@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.condition;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create {@link MythicMobDistanceCondition}s from {@link DefaultInstruction}s.
+ * Factory to create {@link MythicMobDistanceCondition}s from {@link Instruction}s.
  */
 public class MythicMobDistanceConditionFactory implements PlayerConditionFactory {
 
@@ -55,7 +55,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<MythicMob> mobType = instruction.get(mobArgument);
         final Variable<Number> distance = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

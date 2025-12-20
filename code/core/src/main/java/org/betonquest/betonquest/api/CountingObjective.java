@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -50,7 +50,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
+    public CountingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              @Nullable final String notifyMessageName) throws QuestException {
         this(instruction, COUNTING_FACTORY, targetAmount, notifyMessageName);
     }
@@ -64,7 +64,7 @@ public abstract class CountingObjective extends Objective {
      * @param notifyMessageName the message name used for notifying by default
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public CountingObjective(final DefaultInstruction instruction, final ObjectiveDataFactory templateFactory,
+    public CountingObjective(final Instruction instruction, final ObjectiveDataFactory templateFactory,
                              final Variable<Number> targetAmount, @Nullable final String notifyMessageName)
             throws QuestException {
         super(instruction, templateFactory);

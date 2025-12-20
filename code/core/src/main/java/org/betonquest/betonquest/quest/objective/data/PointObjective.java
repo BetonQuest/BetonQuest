@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -68,7 +68,7 @@ public class PointObjective extends Objective implements Listener {
      * @param operation         the operation to use for comparing
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public PointObjective(final DefaultInstruction instruction, final PlayerDataStorage playerDataStorage, final Variable<String> category,
+    public PointObjective(final Instruction instruction, final PlayerDataStorage playerDataStorage, final Variable<String> category,
                           final Variable<Number> targetAmount, final Variable<CountingMode> mode, final Variable<Operation> operation)
             throws QuestException {
         super(instruction, POINT_FACTORY);

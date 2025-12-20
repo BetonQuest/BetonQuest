@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.npc;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 
 /**
- * Factory to create specific {@link Npc}s from {@link DefaultInstruction}s.
+ * Factory to create specific {@link Npc}s from {@link Instruction}s.
  */
 @FunctionalInterface
 public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
@@ -18,5 +18,5 @@ public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override
-    NpcWrapper<?> parseInstruction(DefaultInstruction instruction) throws QuestException;
+    NpcWrapper<?> parseInstruction(Instruction instruction) throws QuestException;
 }

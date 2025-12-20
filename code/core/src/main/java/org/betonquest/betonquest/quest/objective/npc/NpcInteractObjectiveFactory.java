@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.npc;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.quest.objective.interact.Interaction;
 import static org.betonquest.betonquest.quest.objective.interact.Interaction.RIGHT;
 
 /**
- * Factory for creating {@link NpcInteractObjective} instances from {@link DefaultInstruction}s.
+ * Factory for creating {@link NpcInteractObjective} instances from {@link Instruction}s.
  */
 public class NpcInteractObjectiveFactory implements ObjectiveFactory {
 
@@ -23,7 +23,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final boolean cancel = instruction.hasArgument("cancel");
         final Variable<Interaction> interactionType = instruction.getValue("interaction", Argument.ENUM(Interaction.class), RIGHT);

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -17,7 +17,7 @@ import org.betonquest.betonquest.menu.OpenedMenu;
 import org.betonquest.betonquest.menu.RPGMenu;
 
 /**
- * Factory to create {@link MenuEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link MenuEvent}s from {@link Instruction}s.
  */
 public class MenuEventFactory implements PlayerEventFactory {
 
@@ -50,7 +50,7 @@ public class MenuEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Operation operation = instruction.get(Argument.ENUM(Operation.class)).getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {

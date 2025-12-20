@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.eval;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -47,16 +47,16 @@ public class EvalConditionFactory implements PlayerConditionFactory, PlayerlessC
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return parseEvalCondition(instruction);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return parseEvalCondition(instruction);
     }
 
-    private NullableConditionAdapter parseEvalCondition(final DefaultInstruction instruction) throws QuestException {
+    private NullableConditionAdapter parseEvalCondition(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         return new NullableConditionAdapter(new EvalCondition(variables, packManager, conditionTypeRegistry,
                 instruction.getPackage(), instruction.get(rawInstruction, Argument.STRING)));

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
 
 /**
- * Factory to create {@link MMOCoreProfessionExperienceEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link MMOCoreProfessionExperienceEvent}s from {@link Instruction}s.
  */
 public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFactory {
 
@@ -31,7 +31,7 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final boolean isLevel = instruction.hasArgument("level");

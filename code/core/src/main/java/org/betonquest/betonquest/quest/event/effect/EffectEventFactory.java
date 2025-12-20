@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.bukkit.potion.PotionEffectType;
 
 /**
- * Factory to create effect events from {@link DefaultInstruction}s.
+ * Factory to create effect events from {@link Instruction}s.
  */
 public class EffectEventFactory implements PlayerEventFactory {
 
@@ -39,7 +39,7 @@ public class EffectEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final PotionEffectType effect = PotionEffectType.getByName(instruction.get(Argument.STRING).getValue(null));
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());

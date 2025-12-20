@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -81,7 +81,7 @@ public class ActionObjective extends Objective implements Listener {
      * @param slot        the equipment slot to check for the action
      * @throws QuestException if an error occurs while creating the objective
      */
-    public ActionObjective(final DefaultInstruction instruction, final Variable<Click> action,
+    public ActionObjective(final Instruction instruction, final Variable<Click> action,
                            final Variable<Optional<BlockSelector>> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {

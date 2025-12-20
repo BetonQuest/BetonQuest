@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.item;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -35,17 +35,17 @@ public class ItemVariableFactory implements PlayerVariableFactory, PlayerlessVar
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableVariableAdapter(parseInstruction(instruction));
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableVariableAdapter(parseInstruction(instruction));
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    private ItemVariable parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    private ItemVariable parseInstruction(final Instruction instruction) throws QuestException {
         final boolean raw;
         int pos = instruction.size() - 1;
         if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {

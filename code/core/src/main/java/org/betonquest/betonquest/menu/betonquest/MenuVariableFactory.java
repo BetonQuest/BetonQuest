@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.menu.betonquest;
 
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
 
 /**
- * Factory to create {@link MenuVariable}s from {@link DefaultInstruction}s.
+ * Factory to create {@link MenuVariable}s from {@link Instruction}s.
  */
 public class MenuVariableFactory implements PlayerVariableFactory {
 
@@ -17,7 +17,7 @@ public class MenuVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) {
+    public PlayerVariable parsePlayer(final Instruction instruction) {
         return new OnlineVariableAdapter(new MenuVariable(), profile -> "");
     }
 }

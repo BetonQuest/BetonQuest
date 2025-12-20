@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.npc;
 
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
 
 /**
- * Factory to create {@link UpdateVisibilityNowEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link UpdateVisibilityNowEvent}s from {@link Instruction}s.
  */
 public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
 
@@ -43,7 +43,7 @@ public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) {
+    public PlayerEvent parsePlayer(final Instruction instruction) {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new UpdateVisibilityNowEvent(npcHider),
                 loggerFactory.create(UpdateVisibilityNowEvent.class),

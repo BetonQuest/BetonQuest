@@ -4,7 +4,7 @@ import io.lumine.mythic.lib.api.event.skill.SkillCastEvent;
 import io.lumine.mythic.lib.skill.trigger.TriggerType;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -37,7 +37,7 @@ public class MythicLibSkillObjective extends Objective implements Listener {
      * @param triggerTypes the trigger types that will activate the skill
      * @throws QuestException if the instruction is invalid
      */
-    public MythicLibSkillObjective(final DefaultInstruction instruction, final Variable<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
+    public MythicLibSkillObjective(final Instruction instruction, final Variable<String> skillId, final List<TriggerType> triggerTypes) throws QuestException {
         super(instruction);
         this.skillId = skillId;
         this.triggerTypes = triggerTypes;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -16,7 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
- * Factory to create {@link ParticleEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link ParticleEvent}s from {@link Instruction}s.
  */
 public class ParticleEventFactory implements PlayerEventFactory {
 
@@ -49,7 +49,7 @@ public class ParticleEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.get(Argument.STRING).getValue(null);
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");

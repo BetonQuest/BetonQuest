@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.objective;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import java.util.List;
 
 /**
- * Factory for creating {@link MythicMobKillObjective} instances from {@link DefaultInstruction}s.
+ * Factory for creating {@link MythicMobKillObjective} instances from {@link Instruction}s.
  */
 public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
 
@@ -22,7 +22,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<List<String>> names = instruction.getList(Argument.STRING);
         final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
 

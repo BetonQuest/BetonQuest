@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -76,7 +77,7 @@ public class EvalCondition implements NullableCondition {
      * @throws QuestException if the condition could not be created
      */
     public static ConditionAdapter createCondition(final Variables variables, final QuestPackageManager packManager, final QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter> conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
-        final DefaultInstruction conditionInstruction = new DefaultInstruction(variables, packManager, pack, null, instruction);
+        final Instruction conditionInstruction = new DefaultInstruction(variables, packManager, pack, null, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
         return conditionFactory.parseInstruction(conditionInstruction);
     }

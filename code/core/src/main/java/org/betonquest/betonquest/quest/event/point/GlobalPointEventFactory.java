@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
- * Factory to create global points events from {@link DefaultInstruction}s.
+ * Factory to create global points events from {@link Instruction}s.
  */
 public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -32,20 +32,20 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return parseCombinedEvent(instruction);
     }
 
-    private NullableEventAdapter parseCombinedEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter parseCombinedEvent(final Instruction instruction) throws QuestException {
         return new NullableEventAdapter(createGlobalPointEvent(instruction));
     }
 
-    private GlobalPointEvent createGlobalPointEvent(final DefaultInstruction instruction) throws QuestException {
+    private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> number = instruction.get(Argument.NUMBER);
         final PointType type = instruction.getValue("action", Argument.ENUM(PointType.class), PointType.ADD).getValue(null);

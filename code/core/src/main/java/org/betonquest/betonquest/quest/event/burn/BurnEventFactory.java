@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.burn;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
- * Factory to create burn events from {@link DefaultInstruction}s.
+ * Factory to create burn events from {@link Instruction}s.
  */
 public class BurnEventFactory implements PlayerEventFactory {
 
@@ -27,7 +27,7 @@ public class BurnEventFactory implements PlayerEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the brun event factory.
+     * Create the burn event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access
@@ -38,7 +38,7 @@ public class BurnEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> duration = instruction.getValue("duration", Argument.NUMBER);
         if (duration == null) {
             throw new QuestException("Missing duration!");

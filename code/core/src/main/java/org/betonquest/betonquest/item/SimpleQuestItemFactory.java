@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -35,7 +36,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * Creates {@link SimpleQuestItem}s from {@link DefaultInstruction}s.
+ * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
@@ -134,9 +135,9 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     }
 
     @Override
-    public QuestItemWrapper parseInstruction(final DefaultInstruction rawInstruction) throws QuestException {
+    public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
-        final DefaultInstruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final Instruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

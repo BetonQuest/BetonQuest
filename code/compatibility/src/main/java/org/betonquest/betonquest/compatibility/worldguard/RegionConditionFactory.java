@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.worldguard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create {@link RegionCondition}s from {@link DefaultInstruction}s.
+ * Factory to create {@link RegionCondition}s from {@link Instruction}s.
  */
 public class RegionConditionFactory implements PlayerConditionFactory {
 
@@ -38,7 +38,7 @@ public class RegionConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(RegionCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new RegionCondition(instruction.get(Argument.STRING)), log, instruction.getPackage()), data);

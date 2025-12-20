@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.data;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.quest.condition.number.Operation;
 
 /**
- * Factory to create {@link PointObjective}s from {@link DefaultInstruction}s.
+ * Factory to create {@link PointObjective}s from {@link Instruction}s.
  */
 public class PointObjectiveFactory implements ObjectiveFactory {
 
@@ -30,7 +30,7 @@ public class PointObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER);
         final Variable<CountingMode> mode = instruction.getValue("mode", Argument.ENUM(CountingMode.class), CountingMode.TOTAL);

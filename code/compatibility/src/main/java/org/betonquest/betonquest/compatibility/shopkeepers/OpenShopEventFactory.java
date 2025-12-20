@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.shopkeepers;
 import com.nisovin.shopkeepers.api.ShopkeepersAPI;
 import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.util.Utils;
 import java.util.UUID;
 
 /**
- * Factory to create {@link OpenShopEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link OpenShopEvent}s from {@link Instruction}s.
  */
 public class OpenShopEventFactory implements PlayerEventFactory {
 
@@ -42,7 +42,7 @@ public class OpenShopEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String string = instruction.get(Argument.STRING).getValue(null);
         final Shopkeeper shopkeeper;
         try {

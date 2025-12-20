@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.objective;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -60,16 +60,16 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createObjectiveEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createObjectiveEvent(instruction);
     }
 
-    private NullableEventAdapter createObjectiveEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null).toLowerCase(Locale.ROOT);
         final Variable<List<ObjectiveID>> objectives = instruction.getList(ObjectiveID::new);
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),

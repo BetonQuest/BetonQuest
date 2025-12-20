@@ -4,7 +4,7 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -26,7 +26,7 @@ public enum Type {
      */
     MYTHIC_MOB {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final DefaultInstruction instruction, final MythicHider mythicHider,
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
             final Variable<MythicMob> mythicMobVariable = instruction.get(string -> {
                 final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
@@ -48,7 +48,7 @@ public enum Type {
      */
     UUID {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final DefaultInstruction instruction, final MythicHider mythicHider,
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
             try {
                 return new UUIDWrapper(instruction.get(Argument.UUID), mythicHider, mobExecutor);
@@ -67,7 +67,7 @@ public enum Type {
      */
     FACTION {
         @Override
-        protected NpcWrapper<ActiveMob> parse(final DefaultInstruction instruction, final MythicHider mythicHider,
+        protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
             return new FactionWrapper(instruction.get(Argument.STRING), mythicHider, mobExecutor);
         }
@@ -87,7 +87,7 @@ public enum Type {
      * @return a new validated wrapper
      * @throws QuestException if the instruction cannot be parsed or there is no valid target for it
      */
-    protected abstract NpcWrapper<ActiveMob> parse(DefaultInstruction instruction, MythicHider mythicHider,
+    protected abstract NpcWrapper<ActiveMob> parse(Instruction instruction, MythicHider mythicHider,
                                                    MobExecutor mobExecutor) throws QuestException;
 
     /**

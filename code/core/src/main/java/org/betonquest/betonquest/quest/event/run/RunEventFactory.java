@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.run;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -50,16 +50,16 @@ public class RunEventFactory implements PlayerEventFactory, PlayerlessEventFacto
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createEvent(instruction);
     }
 
-    private NullableEventAdapter createEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createEvent(final Instruction instruction) throws QuestException {
         final List<String> parts = instruction.getValueParts();
         final List<EventAdapter> events = new ArrayList<>();
         StringBuilder builder = new StringBuilder();

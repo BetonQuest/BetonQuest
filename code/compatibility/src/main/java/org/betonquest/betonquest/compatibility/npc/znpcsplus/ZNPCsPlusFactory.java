@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 import lol.pyr.znpcsplus.api.npc.NpcEntry;
 import lol.pyr.znpcsplus.api.npc.NpcRegistry;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -28,7 +28,7 @@ public class ZNPCsPlusFactory implements NpcFactory {
     }
 
     @Override
-    public NpcWrapper<NpcEntry> parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public NpcWrapper<NpcEntry> parseInstruction(final Instruction instruction) throws QuestException {
         return new ZNPCsPlusWrapper(npcRegistry, instruction.get(Argument.STRING));
     }
 }

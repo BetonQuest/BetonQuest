@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
@@ -44,7 +44,7 @@ public class EventAdapterFactory extends QuestAdapterFactory<PlayerEvent, Player
     }
 
     @Override
-    protected EventAdapter getAdapter(final DefaultInstruction instruction,
+    protected EventAdapter getAdapter(final Instruction instruction,
                                       @Nullable final PlayerEvent playerType,
                                       @Nullable final PlayerlessEvent playerlessType) throws QuestException {
         return new EventAdapter(loggerFactory.create(EventAdapter.class), questTypeApi, instruction, playerType, playerlessType);

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
@@ -19,7 +19,7 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory to create chest item conditions from {@link DefaultInstruction}s.
+ * Factory to create chest item conditions from {@link Instruction}s.
  */
 public class ChestItemConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
@@ -38,16 +38,16 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerCondition(new NullableConditionAdapter(parse(instruction)), data);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessCondition(new NullableConditionAdapter(parse(instruction)), data);
     }
 
-    private ChestItemCondition parse(final DefaultInstruction instruction) throws QuestException {
+    private ChestItemCondition parse(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         return new ChestItemCondition(loc, items);

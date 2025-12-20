@@ -2,7 +2,7 @@ package org.betonquest.betonquest.menu.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 
 /**
- * Factory for creating {@link MenuObjective} instances from {@link DefaultInstruction}s.
+ * Factory for creating {@link MenuObjective} instances from {@link Instruction}s.
  */
 public class MenuObjectiveFactory implements ObjectiveFactory {
 
@@ -37,7 +37,7 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<MenuID> menuID = instruction.get(MenuID::new);
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);
         return new MenuObjective(instruction, log, rpgMenu, menuID);

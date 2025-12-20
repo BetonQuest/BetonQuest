@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.database.GlobalData;
 
 /**
- * Factory to create global point conditions from {@link DefaultInstruction}s.
+ * Factory to create global point conditions from {@link Instruction}s.
  */
 public class GlobalPointConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
@@ -32,16 +32,16 @@ public class GlobalPointConditionFactory implements PlayerConditionFactory, Play
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableConditionAdapter(parse(instruction));
     }
 
-    private GlobalPointCondition parse(final DefaultInstruction instruction) throws QuestException {
+    private GlobalPointCondition parse(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> count = instruction.get(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");

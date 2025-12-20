@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 
 /**
- * Factory to create {@link QuesterVariable}s from {@link DefaultInstruction}s.
+ * Factory to create {@link QuesterVariable}s from {@link Instruction}s.
  */
 public class QuesterVariableFactory implements PlayerVariableFactory {
 
@@ -25,7 +25,7 @@ public class QuesterVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) {
+    public PlayerVariable parsePlayer(final Instruction instruction) {
         return new QuesterVariable(conversationApi);
     }
 }

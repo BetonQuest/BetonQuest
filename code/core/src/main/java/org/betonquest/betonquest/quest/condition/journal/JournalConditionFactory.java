@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -38,7 +38,7 @@ public class JournalConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(JournalEntryID::new);
         final BetonQuestLogger log = loggerFactory.create(JournalCondition.class);
         return new OnlineConditionAdapter(new JournalCondition(dataStorage, entryID), log, instruction.getPackage());

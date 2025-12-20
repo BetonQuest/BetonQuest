@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.npc;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.npc.NpcInteractEvent;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -43,7 +43,7 @@ public class NpcInteractObjective extends Objective implements Listener {
      * @param interactionType the type of interaction with the NPC
      * @throws QuestException if the instruction is invalid
      */
-    public NpcInteractObjective(final DefaultInstruction instruction, final Variable<NpcID> npcId,
+    public NpcInteractObjective(final Instruction instruction, final Variable<NpcID> npcId,
                                 final boolean cancel, final Variable<Interaction> interactionType) throws QuestException {
         super(instruction);
         this.npcId = npcId;

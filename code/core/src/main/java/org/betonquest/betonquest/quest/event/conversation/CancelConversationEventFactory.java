@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 
 /**
- * Factory to create conversation cancel events from {@link DefaultInstruction}s.
+ * Factory to create conversation cancel events from {@link Instruction}s.
  */
 public class CancelConversationEventFactory implements PlayerEventFactory {
 
@@ -34,7 +34,7 @@ public class CancelConversationEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) {
+    public PlayerEvent parsePlayer(final Instruction instruction) {
         return new OnlineEventAdapter(
                 new CancelConversationEvent(conversationApi),
                 loggerFactory.create(CancelConversationEvent.class),

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -15,7 +15,7 @@ import org.betonquest.betonquest.quest.variable.location.LocationFormationMode;
 import org.betonquest.betonquest.quest.variable.name.QuesterVariable;
 
 /**
- * Factory to create {@link NpcVariable}s and {@link QuesterVariable}s from {@link DefaultInstruction}s.
+ * Factory to create {@link NpcVariable}s and {@link QuesterVariable}s from {@link Instruction}s.
  * <p>
  * Format:
  * {@code %<variableName>.<id>.<argument>.<mode>.<precision>%}
@@ -45,16 +45,16 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
         return new NullableVariableAdapter(parseInstruction(instruction));
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         return new NullableVariableAdapter(parseInstruction(instruction));
     }
 
-    private NullableVariable parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    private NullableVariable parseInstruction(final Instruction instruction) throws QuestException {
         if (!instruction.hasNext() || instruction.size() == 2 && "conversation".equals(instruction.getPart(1))) {
             final QuesterVariable questerVariable = new QuesterVariable(featureApi.conversationApi());
             return profile -> {

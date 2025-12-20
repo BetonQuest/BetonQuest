@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.slots;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -39,7 +39,7 @@ public class EmptySlotsConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> required = instruction.get(Argument.NUMBER);
         final boolean equal = instruction.hasArgument("equal");
         final BetonQuestLogger log = loggerFactory.create(EmptySlotsCondition.class);

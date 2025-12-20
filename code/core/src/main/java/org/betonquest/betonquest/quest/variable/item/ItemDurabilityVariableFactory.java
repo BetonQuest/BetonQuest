@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter
 import org.bukkit.inventory.EquipmentSlot;
 
 /**
- * Factory to create item durability variables from {@link DefaultInstruction}s.
+ * Factory to create item durability variables from {@link Instruction}s.
  */
 public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
 
@@ -31,7 +31,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
         final boolean relative = instruction.hasArgument("relative");
         final Variable<Number> digitsAfter = digits(instruction);
@@ -39,7 +39,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
         return new OnlineVariableAdapter(new ItemDurabilityVariable(slot, relative, digitsAfter, inPercent));
     }
 
-    private Variable<Number> digits(final DefaultInstruction instruction) throws QuestException {
+    private Variable<Number> digits(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument(DIGITS_KEY)) {
             for (int i = instruction.size() - 2; i >= 0; i--) {
                 final String part = instruction.getPart(i);

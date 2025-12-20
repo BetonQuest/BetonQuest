@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
@@ -79,7 +79,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
             final String group = match.group();
             try {
                 final VariableID variable = new VariableID(variables, packManager, pack, group);
-                final DefaultInstruction instruction = variable.getInstruction();
+                final Instruction instruction = variable.getInstruction();
                 return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);

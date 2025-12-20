@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.variable;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 
 /**
- * Factory to create a specific {@link PlayerVariable} from {@link DefaultInstruction}s.
+ * Factory to create a specific {@link PlayerVariable} from {@link Instruction}s.
  */
 @FunctionalInterface
 public interface PlayerVariableFactory extends PlayerQuestFactory<PlayerVariable> {
@@ -18,5 +18,5 @@ public interface PlayerVariableFactory extends PlayerQuestFactory<PlayerVariable
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override
-    PlayerVariable parsePlayer(DefaultInstruction instruction) throws QuestException;
+    PlayerVariable parsePlayer(Instruction instruction) throws QuestException;
 }

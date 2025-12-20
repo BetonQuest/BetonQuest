@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
 /**
- * Factory to create points events from {@link DefaultInstruction}s.
+ * Factory to create points events from {@link Instruction}s.
  */
 public class PointEventFactory implements PlayerEventFactory {
 
@@ -50,7 +50,7 @@ public class PointEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final PointType type = instruction.getValue("action", Argument.ENUM(PointType.class), PointType.ADD).getValue(null);

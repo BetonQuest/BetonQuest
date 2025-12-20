@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.event;
 
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 
 /**
- * Factory to create {@link AddLevelEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link AddLevelEvent}s from {@link Instruction}s.
  */
 public class AddLevelEventFactory implements PlayerEventFactory {
 
@@ -31,7 +31,7 @@ public class AddLevelEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Job> job = instruction.get(JobParser.JOB);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadEvent(new AddLevelEvent(job, amount), data);

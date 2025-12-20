@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -87,7 +87,7 @@ public abstract class Objective {
     /**
      * Instruction of this.
      */
-    protected DefaultInstruction instruction;
+    protected Instruction instruction;
 
     /**
      * Creates a new instance of the objective.
@@ -98,7 +98,7 @@ public abstract class Objective {
      * @param instruction Instruction object representing the objective
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(final DefaultInstruction instruction) throws QuestException {
+    public Objective(final Instruction instruction) throws QuestException {
         this(instruction, DATA_FACTORY);
     }
 
@@ -112,7 +112,7 @@ public abstract class Objective {
      * @param templateFactory the factory for the objective data object
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public Objective(final DefaultInstruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
+    public Objective(final Instruction instruction, final ObjectiveDataFactory templateFactory) throws QuestException {
         this.log = BetonQuest.getInstance().getLoggerFactory().create(getClass());
         this.templateFactory = templateFactory;
         this.instruction = instruction;

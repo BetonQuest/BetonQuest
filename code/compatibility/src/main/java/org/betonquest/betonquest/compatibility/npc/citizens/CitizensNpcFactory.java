@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
@@ -37,7 +37,7 @@ public class CitizensNpcFactory implements NpcFactory {
     }
 
     @Override
-    public NpcWrapper<NPC> parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    public NpcWrapper<NPC> parseInstruction(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument("byName")) {
             return new CitizensNameWrapper(plugin, registry, instruction.get(Argument.STRING));
         }

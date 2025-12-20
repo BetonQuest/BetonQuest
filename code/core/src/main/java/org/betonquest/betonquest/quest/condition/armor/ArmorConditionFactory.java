@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapt
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory for {@link ArmorCondition}s from {@link DefaultInstruction}s.
+ * Factory for {@link ArmorCondition}s from {@link Instruction}s.
  */
 public class ArmorConditionFactory implements PlayerConditionFactory {
 
@@ -40,7 +40,7 @@ public class ArmorConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Item> armorItem = instruction.get(InstructionIdentifierArgument.ITEM);
         final BetonQuestLogger log = loggerFactory.create(ArmorCondition.class);
         return new PrimaryServerThreadPlayerCondition(

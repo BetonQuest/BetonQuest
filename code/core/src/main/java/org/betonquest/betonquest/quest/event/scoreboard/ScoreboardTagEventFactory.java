@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
- * Factory to create scoreboard tag events from {@link DefaultInstruction}s.
+ * Factory to create scoreboard tag events from {@link Instruction}s.
  */
 public class ScoreboardTagEventFactory implements PlayerEventFactory {
 
@@ -39,7 +39,7 @@ public class ScoreboardTagEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<ScoreboardTagAction> action = instruction.get(Argument.ENUM(ScoreboardTagAction.class));
         final Variable<String> tag = instruction.get(Argument.STRING);
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagEvent.class);

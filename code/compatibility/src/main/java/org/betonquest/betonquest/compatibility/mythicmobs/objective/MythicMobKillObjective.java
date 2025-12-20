@@ -6,7 +6,7 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
@@ -74,7 +74,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @throws QuestException if the instruction is invalid
      */
     public MythicMobKillObjective(
-            final DefaultInstruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> names,
+            final Instruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> names,
             final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
             final Variable<Number> deathRadiusAllPlayers, final Variable<Number> neutralDeathRadiusAllPlayers,
             @Nullable final Variable<String> marked) throws QuestException {

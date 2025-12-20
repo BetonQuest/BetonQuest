@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.folder;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -62,16 +62,16 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return createFolderEvent(instruction);
     }
 
-    private NullableEventAdapter createFolderEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
         final Variable<Number> delay = instruction.getValue("delay", Argument.NUMBER);
         final Variable<Number> period = instruction.getValue("period", Argument.NUMBER);

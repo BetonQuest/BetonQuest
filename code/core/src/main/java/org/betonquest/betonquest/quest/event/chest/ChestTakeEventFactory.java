@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
@@ -19,7 +19,7 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory to create chest events from {@link DefaultInstruction}s.
+ * Factory to create chest events from {@link Instruction}s.
  */
 public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -38,16 +38,16 @@ public class ChestTakeEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createChestTakeEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createChestTakeEvent(instruction), data);
     }
 
-    private NullableEventAdapter createChestTakeEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createChestTakeEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> variableLocation = instruction.get(Argument.LOCATION);
         final Variable<List<Item>> item = instruction.getList(InstructionIdentifierArgument.ITEM);
         return new NullableEventAdapter(new ChestTakeEvent(variableLocation, item));

@@ -4,7 +4,7 @@ import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -34,7 +34,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
      * @param targetLevel    the target level to be reached
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOCoreProfessionObjective(final DefaultInstruction instruction, final Variable<String> professionName,
+    public MMOCoreProfessionObjective(final Instruction instruction, final Variable<String> professionName,
                                       final Variable<Number> targetLevel) throws QuestException {
         super(instruction);
         this.professionName = professionName;

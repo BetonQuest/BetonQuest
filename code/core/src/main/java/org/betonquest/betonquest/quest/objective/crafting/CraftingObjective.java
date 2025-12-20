@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.crafting;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.ItemStackCraftedEvent;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -35,7 +35,7 @@ public class CraftingObjective extends CountingObjective implements Listener {
      * @param item         the item to be crafted
      * @throws QuestException if there is an error in the instruction
      */
-    public CraftingObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
+    public CraftingObjective(final Instruction instruction, final Variable<Number> targetAmount,
                              final Variable<Item> item) throws QuestException {
         super(instruction, targetAmount, "items_to_craft");
         this.item = item;

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.entity;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -20,7 +20,7 @@ import org.bukkit.entity.EntityType;
 import java.util.List;
 
 /**
- * Factory for {@link RemoveEntityEvent} to create from {@link DefaultInstruction}.
+ * Factory for {@link RemoveEntityEvent} to create from {@link Instruction}.
  */
 public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -39,16 +39,16 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createRemoveEntityEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createRemoveEntityEvent(instruction), data);
     }
 
-    private NullableEventAdapter createRemoveEntityEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
         final Variable<List<EntityType>> types = instruction.getList(Argument.ENUM(EntityType.class));
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);

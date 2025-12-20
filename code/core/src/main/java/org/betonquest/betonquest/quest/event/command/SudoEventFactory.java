@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
- * Creates new {@link SudoEvent}s from {@link DefaultInstruction}s.
+ * Creates new {@link SudoEvent}s from {@link Instruction}s.
  */
 public class SudoEventFactory extends BaseCommandEventFactory {
 
@@ -24,7 +24,7 @@ public class SudoEventFactory extends BaseCommandEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new SudoEvent(parseCommands(instruction)),
                 loggerFactory.create(SudoEvent.class),

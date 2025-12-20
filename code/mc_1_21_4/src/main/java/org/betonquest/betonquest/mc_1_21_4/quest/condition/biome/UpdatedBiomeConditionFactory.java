@@ -2,7 +2,7 @@ package org.betonquest.betonquest.mc_1_21_4.quest.condition.biome;
 
 import io.papermc.paper.registry.RegistryKey;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -47,7 +47,7 @@ public class UpdatedBiomeConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Biome> biomeVariable = instruction.get(BIOME_PARSER);
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new PrimaryServerThreadPlayerCondition(

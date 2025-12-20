@@ -5,7 +5,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -37,7 +37,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
      * @param npcID        the npc id
      * @throws QuestException when the instruction cannot be parsed or is invalid
      */
-    public NPCKillObjective(final DefaultInstruction instruction, final NPCRegistry registry, final Variable<Number> targetAmount,
+    public NPCKillObjective(final Instruction instruction, final NPCRegistry registry, final Variable<Number> targetAmount,
                             final Variable<NpcID> npcID) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
         this.registry = registry;
@@ -57,7 +57,7 @@ public class NPCKillObjective extends CountingObjective implements Listener {
         }
         final Profile profile = event.getProfile();
         qeHandler.handle(() -> {
-            final DefaultInstruction npcInstruction = npcID.getValue(profile).getInstruction();
+            final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);
             if (npcInstruction.hasArgument("byName")) {
                 final String resolvedName = npcInstruction.get(argument, Argument.STRING).getValue(profile);

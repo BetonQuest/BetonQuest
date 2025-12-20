@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
- * Factory to create scoreboard objective conditions from {@link DefaultInstruction}s.
+ * Factory to create scoreboard objective conditions from {@link Instruction}s.
  */
 public class ScoreboardObjectiveConditionFactory implements PlayerConditionFactory {
 
@@ -29,7 +29,7 @@ public class ScoreboardObjectiveConditionFactory implements PlayerConditionFacto
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> objective = instruction.get(Argument.STRING);
         final Variable<Number> count = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new ScoreboardObjectiveCondition(objective, count), data);

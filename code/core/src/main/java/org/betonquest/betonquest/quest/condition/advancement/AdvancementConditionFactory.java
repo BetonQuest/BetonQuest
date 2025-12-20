@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -15,7 +15,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
 
 /**
- * Factory to create advancement conditions from {@link DefaultInstruction}s.
+ * Factory to create advancement conditions from {@link Instruction}s.
  */
 public class AdvancementConditionFactory implements PlayerConditionFactory {
 
@@ -46,7 +46,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String advancementString = instruction.get(Argument.STRING).getValue(null);
         final String[] split = advancementString.split(":");
         if (split.length != ADVANCEMENT_LENGTH) {

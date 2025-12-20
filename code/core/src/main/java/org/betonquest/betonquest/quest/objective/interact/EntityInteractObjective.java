@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -106,7 +106,7 @@ public class EntityInteractObjective extends CountingObjective implements Listen
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public EntityInteractObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
+    public EntityInteractObjective(final Instruction instruction, final Variable<Number> targetAmount,
                                    @Nullable final Variable<Location> loc,
                                    final Variable<Number> range, @Nullable final Variable<Component> customName,
                                    @Nullable final Variable<String> realName, @Nullable final EquipmentSlot slot,

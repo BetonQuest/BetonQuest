@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -43,12 +43,12 @@ public class NotifyAllEventFactory extends NotifyEventFactory implements PlayerE
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new CallPlayerlessEventAdapter(parsePlayerless(instruction));
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new OnlineProfileGroupPlayerlessEventAdapter(profileProvider::getOnlineProfiles, super.parsePlayer(instruction));
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.worldedit;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -18,7 +18,7 @@ import org.bukkit.Location;
 import java.io.File;
 
 /**
- * Factory to create {@link PasteSchematicEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link PasteSchematicEvent}s from {@link Instruction}s.
  */
 public class PasteSchematicEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -44,16 +44,16 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(new NullableEventAdapter(parseInstruction(instruction)), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(new NullableEventAdapter(parseInstruction(instruction)), data);
     }
 
-    private NullableEvent parseInstruction(final DefaultInstruction instruction) throws QuestException {
+    private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Number> rotation = instruction.getValue("rotation", Argument.NUMBER, 0);
 

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -56,7 +56,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Pair<ConversationID, String>> conversation = getConversation(instruction);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new ConversationEvent(conversationApi, conversation),
@@ -72,7 +72,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
      * @return the conversation ID and the option name as a pair
      * @throws QuestException if no NPC option with the given name is present
      */
-    private Variable<Pair<ConversationID, String>> getConversation(final DefaultInstruction instruction) throws QuestException {
+    private Variable<Pair<ConversationID, String>> getConversation(final Instruction instruction) throws QuestException {
         final String conversation = instruction.next();
         final String option = instruction.getValue("option", "");
         return instruction.get(conversation + " " + option, combined -> {

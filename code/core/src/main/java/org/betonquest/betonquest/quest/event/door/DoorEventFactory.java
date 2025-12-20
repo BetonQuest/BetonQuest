@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.door;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -17,7 +17,7 @@ import org.bukkit.Location;
 import java.util.Locale;
 
 /**
- * Factory to create door events from {@link DefaultInstruction}s.
+ * Factory to create door events from {@link Instruction}s.
  */
 public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -36,16 +36,16 @@ public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createDoorEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createDoorEvent(instruction), data);
     }
 
-    private NullableEventAdapter createDoorEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createDoorEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final String action = instruction.get(Argument.STRING).getValue(null);
         final DoorEvent doorEvent = switch (action.toLowerCase(Locale.ROOT)) {

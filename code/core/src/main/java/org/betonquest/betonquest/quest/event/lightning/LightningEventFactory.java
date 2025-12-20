@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lightning;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -15,7 +15,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlaye
 import org.bukkit.Location;
 
 /**
- * Factory for {@link LightningEvent} from the {@link DefaultInstruction}.
+ * Factory for {@link LightningEvent} from the {@link Instruction}.
  */
 public class LightningEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -34,16 +34,16 @@ public class LightningEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createLightningEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createLightningEvent(instruction), data);
     }
 
-    private NullableEventAdapter createLightningEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createLightningEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final boolean noDamage = instruction.hasArgument("noDamage");
         return new NullableEventAdapter(new LightningEvent(location, noDamage));

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 
 /**
- * Factory to create a specific {@link PlayerCondition} from {@link DefaultInstruction}s.
+ * Factory to create a specific {@link PlayerCondition} from {@link Instruction}s.
  */
 @FunctionalInterface
 public interface PlayerConditionFactory extends PlayerQuestFactory<PlayerCondition> {
@@ -18,5 +18,5 @@ public interface PlayerConditionFactory extends PlayerQuestFactory<PlayerConditi
      * @throws QuestException when the instruction cannot be parsed
      */
     @Override
-    PlayerCondition parsePlayer(DefaultInstruction instruction) throws QuestException;
+    PlayerCondition parsePlayer(Instruction instruction) throws QuestException;
 }

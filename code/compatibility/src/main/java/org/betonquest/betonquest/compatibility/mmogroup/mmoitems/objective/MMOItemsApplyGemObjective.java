@@ -4,7 +4,7 @@ import net.Indyuce.mmoitems.api.event.item.ApplyGemStoneEvent;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -40,7 +40,7 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
      * @param gemID       the ID of the gem to be applied
      * @throws QuestException if the syntax is wrong or any error happens while parsing
      */
-    public MMOItemsApplyGemObjective(final DefaultInstruction instruction, final Variable<String> itemID, final Variable<String> itemType, final Variable<String> gemID) throws QuestException {
+    public MMOItemsApplyGemObjective(final Instruction instruction, final Variable<String> itemID, final Variable<String> itemType, final Variable<String> gemID) throws QuestException {
         super(instruction);
         this.itemID = itemID;
         this.itemType = itemType;

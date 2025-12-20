@@ -2,7 +2,7 @@ package org.betonquest.betonquest.util.math;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -1087,7 +1087,7 @@ class TokenizerTest {
         for (final ProtoVariable variableTemplate : variables) {
             final PlayerVariable var = mock(PlayerVariable.class);
             when(var.getValue(TEST_PLAYER_PROFILE)).thenReturn(variableTemplate.value());
-            final VariableAdapter varWrapper = new VariableAdapter(mock(DefaultInstruction.class), var, null);
+            final VariableAdapter varWrapper = new VariableAdapter(mock(Instruction.class), var, null);
             when(this.variables.create(TEST_PACK, "%" + variableTemplate.key() + "%")).thenReturn(varWrapper);
         }
     }

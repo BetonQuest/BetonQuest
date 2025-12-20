@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.mcmmo;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
- * Factory to create {@link McMMOAddExpEvent}s from {@link DefaultInstruction}s.
+ * Factory to create {@link McMMOAddExpEvent}s from {@link Instruction}s.
  */
 public class McMMOAddExpEventFactory implements PlayerEventFactory {
 
@@ -39,7 +39,7 @@ public class McMMOAddExpEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> skillType = instruction.get(Argument.STRING);
         final Variable<Number> exp = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(McMMOAddExpEvent.class);

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.location;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
 
 /**
- * Factory to create location variables from {@link DefaultInstruction}s.
+ * Factory to create location variables from {@link Instruction}s.
  */
 public class LocationVariableFactory implements PlayerVariableFactory {
 
@@ -20,7 +20,7 @@ public class LocationVariableFactory implements PlayerVariableFactory {
     }
 
     @Override
-    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final LocationFormationMode mode;
         if (instruction.hasNext()) {
             mode = LocationFormationMode.getMode(instruction.next());

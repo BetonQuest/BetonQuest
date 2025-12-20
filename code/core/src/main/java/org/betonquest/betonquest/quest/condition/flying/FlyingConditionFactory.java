@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.condition.flying;
 
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -36,7 +36,7 @@ public class FlyingConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final DefaultInstruction instruction) {
+    public PlayerCondition parsePlayer(final Instruction instruction) {
         final BetonQuestLogger log = loggerFactory.create(FlyingCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new FlyingCondition(), log, instruction.getPackage()), data);

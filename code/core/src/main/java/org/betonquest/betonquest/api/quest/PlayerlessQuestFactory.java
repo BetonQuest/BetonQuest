@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 
 /**
  * Factory to create a specific {@link T}.
@@ -21,5 +21,5 @@ public interface PlayerlessQuestFactory<T> {
      * @return {@link T} represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
-    T parsePlayerless(DefaultInstruction instruction) throws QuestException;
+    T parsePlayerless(Instruction instruction) throws QuestException;
 }

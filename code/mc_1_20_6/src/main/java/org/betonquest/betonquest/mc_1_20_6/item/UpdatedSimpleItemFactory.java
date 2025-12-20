@@ -3,7 +3,7 @@ package org.betonquest.betonquest.mc_1_20_6.item;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Creates {@link SimpleQuestItem}s from {@link DefaultInstruction}s.
+ * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
  */
 public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
 

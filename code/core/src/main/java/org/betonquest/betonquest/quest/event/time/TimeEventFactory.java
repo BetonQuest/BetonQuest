@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
-import org.betonquest.betonquest.api.instruction.DefaultInstruction;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory to create time events from {@link DefaultInstruction}s.
+ * Factory to create time events from {@link Instruction}s.
  */
 public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -47,12 +47,12 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     @Override
-    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createTimeEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         if (instruction.copy().getValue("world") == null) {
             return new DoNothingPlayerlessEvent();
         } else {
@@ -60,7 +60,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         }
     }
 
-    private NullableEventAdapter createTimeEvent(final DefaultInstruction instruction) throws QuestException {
+    private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
         final Variable<TimeChange> timeVariable = instruction.get(TimeParser.TIME);
         final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
         final boolean hourFormat = !instruction.hasArgument("ticks");
