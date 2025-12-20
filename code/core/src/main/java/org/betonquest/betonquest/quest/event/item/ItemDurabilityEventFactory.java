@@ -19,6 +19,7 @@ import java.util.Random;
  * Factory for the item durability event.
  */
 public class ItemDurabilityEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

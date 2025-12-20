@@ -19,6 +19,7 @@ import org.bukkit.Location;
  * Factory to create setblock events from {@link Instruction}s.
  */
 public class SetBlockEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

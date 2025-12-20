@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
  * Creates variables based on what player is typing, not just from event.
  */
 public class ChatVariableObjective extends VariableObjective implements Listener {
+
     /**
      * Pattern to match the chat variable format.
      */

@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
  * Factory to create velocity events from {@link Instruction}s.
  */
 public class VelocityEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

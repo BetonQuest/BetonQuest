@@ -12,6 +12,7 @@ import org.bukkit.Location;
  * The region objective requires the player to be inside a specific region.
  */
 public class RegionObjective extends AbstractLocationObjective {
+
     /**
      * The name of the region.
      */

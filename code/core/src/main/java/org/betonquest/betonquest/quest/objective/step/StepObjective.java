@@ -19,6 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
  * The player must step on the pressure plate.
  */
 public class StepObjective extends Objective implements Listener {
+
     /**
      * The key for the location property.
      */

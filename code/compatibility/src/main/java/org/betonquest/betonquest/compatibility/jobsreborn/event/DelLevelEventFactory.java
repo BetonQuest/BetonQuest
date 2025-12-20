@@ -15,6 +15,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
  * Factory to create {@link DelLevelEvent}s from {@link Instruction}s.
  */
 public class DelLevelEventFactory implements PlayerEventFactory {
+
     /**
      * The data for the primary server thread.
      */

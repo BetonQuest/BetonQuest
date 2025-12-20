@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
  * Factory to create effect events from {@link Instruction}s.
  */
 public class EffectEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

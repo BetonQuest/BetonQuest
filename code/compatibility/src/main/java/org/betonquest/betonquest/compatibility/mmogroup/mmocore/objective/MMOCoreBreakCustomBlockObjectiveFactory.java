@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link MMOCoreBreakCustomBlockObjective} instances from {@link Instruction}s.
  */
 public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the MMOCoreBreakCustomBlockObjectiveFactory.
      */

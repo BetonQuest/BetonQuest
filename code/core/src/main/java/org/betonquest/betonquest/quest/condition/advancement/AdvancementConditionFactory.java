@@ -18,6 +18,7 @@ import org.bukkit.advancement.Advancement;
  * Factory to create advancement conditions from {@link Instruction}s.
  */
 public class AdvancementConditionFactory implements PlayerConditionFactory {
+
     /**
      * Amount of parts the advancement string is expected to have.
      */

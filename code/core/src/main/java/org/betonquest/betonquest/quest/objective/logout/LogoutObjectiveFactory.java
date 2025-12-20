@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link LogoutObjective} instances from {@link Instruction}s.
  */
 public class LogoutObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the LogoutObjectiveFactory.
      */

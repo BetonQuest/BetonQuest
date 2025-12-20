@@ -14,6 +14,7 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  * Factory to create {@link MMOQuestItem}s from {@link Instruction}s.
  */
 public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
+
     /**
      * {@link MMOItems} plugin instance.
      */

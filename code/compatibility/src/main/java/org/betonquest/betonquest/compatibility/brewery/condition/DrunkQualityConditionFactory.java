@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link DrunkQualityCondition}s from {@link Instruction}s.
  */
 public class DrunkQualityConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */

@@ -11,6 +11,7 @@ import java.util.List;
  * Factory to create partial date conditions from {@link Instruction}s.
  */
 public class PartialDateConditionFactory implements PlayerlessConditionFactory {
+
     /**
      * Create a new PartialDate condition factory.
      */

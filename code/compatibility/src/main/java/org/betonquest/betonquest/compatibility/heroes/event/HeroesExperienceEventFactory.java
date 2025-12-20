@@ -17,6 +17,7 @@ import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
  * Factory to create {@link HeroesExperienceEvent}s from {@link Instruction}s.
  */
 public class HeroesExperienceEventFactory implements PlayerEventFactory {
+
     /**
      * The logger factory.
      */

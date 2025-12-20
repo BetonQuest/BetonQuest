@@ -17,6 +17,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link MythicMobDistanceCondition}s from {@link Instruction}s.
  */
 public class MythicMobDistanceConditionFactory implements PlayerConditionFactory {
+
     /**
      * Factory to create new class specific loggers.
      */

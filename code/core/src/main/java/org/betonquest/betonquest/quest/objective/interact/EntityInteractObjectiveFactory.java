@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * Factory for creating {@link EntityInteractObjective} instances from {@link Instruction}s.
  */
 public class EntityInteractObjectiveFactory implements ObjectiveFactory {
+
     /**
      * The key for any hand.
      */

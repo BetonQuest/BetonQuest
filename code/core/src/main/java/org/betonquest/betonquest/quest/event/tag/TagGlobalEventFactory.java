@@ -18,6 +18,7 @@ import java.util.Locale;
  * Factory to create global tag events from {@link Instruction}s.
  */
 public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * BetonQuest instance to provide to events.
      */

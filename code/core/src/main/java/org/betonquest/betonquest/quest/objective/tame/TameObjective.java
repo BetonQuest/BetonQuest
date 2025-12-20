@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityTameEvent;
  * The player must tame specified amount of specified mobs.
  */
 public class TameObjective extends CountingObjective implements Listener {
+
     /**
      * The entity type to be tamed.
      */

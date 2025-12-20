@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create burn events from {@link Instruction}s.
  */
 public class BurnEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -26,7 +27,7 @@ public class BurnEventFactory implements PlayerEventFactory {
     private final PrimaryServerThreadData data;
 
     /**
-     * Create the brun event factory.
+     * Create the burn event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
      * @param data          the data for primary server thread access

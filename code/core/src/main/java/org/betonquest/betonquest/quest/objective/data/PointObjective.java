@@ -26,6 +26,7 @@ import java.util.Optional;
  * Player needs to get a certain amount of points.
  */
 public class PointObjective extends Objective implements Listener {
+
     /**
      * The Factory for the Point Data.
      */
@@ -152,6 +153,7 @@ public class PointObjective extends Objective implements Listener {
      * Data class for the PointObjective.
      */
     public static class PointData extends ObjectiveData {
+
         /**
          * The total required points.
          */

@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
  * Factory to get FancyNpcs Npcs.
  */
 public class FancyFactory implements NpcFactory {
+
     /**
      * The empty default constructor.
      */

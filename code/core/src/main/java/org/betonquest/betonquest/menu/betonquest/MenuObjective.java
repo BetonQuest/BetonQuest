@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
  * Completed if menu with given id is opened.
  */
 public class MenuObjective extends Objective implements Listener {
+
     /**
      * The key for the menu property.
      */

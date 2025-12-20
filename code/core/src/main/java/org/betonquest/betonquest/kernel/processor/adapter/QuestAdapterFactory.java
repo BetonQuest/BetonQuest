@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <A> adapter for created types
  */
 public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
+
     /**
      * The player type factory to be adapted.
      */

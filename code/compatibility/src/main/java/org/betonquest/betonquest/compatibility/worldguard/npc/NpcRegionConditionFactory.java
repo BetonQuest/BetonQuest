@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
  * Factory to create {@link NpcRegionCondition}s from {@link Instruction}s.
  */
 public class NpcRegionConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+
     /**
      * Feature API.
      */

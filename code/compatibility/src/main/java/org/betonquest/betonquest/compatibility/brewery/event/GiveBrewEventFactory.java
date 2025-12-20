@@ -17,6 +17,7 @@ import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
  * Factory to create {@link GiveBrewEvent}s from {@link Instruction}s.
  */
 public class GiveBrewEventFactory implements PlayerEventFactory {
+
     /**
      * The logger factory.
      */

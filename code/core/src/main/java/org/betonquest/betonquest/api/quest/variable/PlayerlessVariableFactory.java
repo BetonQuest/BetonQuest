@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
  */
 @FunctionalInterface
 public interface PlayerlessVariableFactory extends PlayerlessQuestFactory<PlayerlessVariable> {
+
     /**
      * Parses an instruction to create a {@link PlayerlessVariable}.
      *

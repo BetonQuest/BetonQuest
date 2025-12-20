@@ -14,6 +14,7 @@ import org.bukkit.entity.Tameable;
  * Factory for creating {@link TameObjective} instances from {@link Instruction}s.
  */
 public class TameObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new TameObjectiveFactory instance.
      */
@@ -31,6 +32,7 @@ public class TameObjectiveFactory implements ObjectiveFactory {
      * Parser for {@link EntityType} enums.
      */
     private static class EntityTypeParser extends EnumParser<EntityType> {
+
         /**
          * Creates a new parser for enums.
          */

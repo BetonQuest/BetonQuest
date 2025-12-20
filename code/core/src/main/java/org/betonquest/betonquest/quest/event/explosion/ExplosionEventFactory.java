@@ -18,6 +18,7 @@ import org.bukkit.Location;
  * Factory to create explosion events from {@link Instruction}s.
  */
 public class ExplosionEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

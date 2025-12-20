@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link MoneyCondition}s from {@link Instruction}s.
  */
 public class MoneyConditionFactory implements PlayerConditionFactory {
+
     /**
      * Economy where the balance will be retrieved.
      */

@@ -43,9 +43,9 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param log               the custom logger for this class
-     * @param variables the variable processor to create and resolve variables
-     * @param packManager       the quest package manager to get quest packages from
+     * @param log         the custom logger for this class
+     * @param variables   the variable processor to create and resolve variables
+     * @param packManager the quest package manager to get quest packages from
      */
     public DecentHologramsIntegrator(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");

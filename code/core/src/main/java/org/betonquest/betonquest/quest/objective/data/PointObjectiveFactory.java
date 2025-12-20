@@ -14,6 +14,7 @@ import org.betonquest.betonquest.quest.condition.number.Operation;
  * Factory to create {@link PointObjective}s from {@link Instruction}s.
  */
 public class PointObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Storage for player data.
      */

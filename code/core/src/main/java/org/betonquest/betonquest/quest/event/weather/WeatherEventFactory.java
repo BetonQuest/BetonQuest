@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
  * Factory to create weather events from {@link Instruction}s.
  */
 public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

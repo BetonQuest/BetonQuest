@@ -17,6 +17,7 @@ import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
  * Factory to create {@link HasBrewCondition}s from {@link Instruction}s.
  */
 public class HasBrewConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */

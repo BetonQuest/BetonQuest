@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory for the {@link TrainCartsRideCondition}.
  */
 public class TrainCartsRideConditionFactory implements PlayerConditionFactory {
+
     /**
      * Logger factory to create a logger for condition.
      */

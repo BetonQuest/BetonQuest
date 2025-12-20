@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
  * Factory to create {@link QuesterVariable}s from {@link Instruction}s.
  */
 public class QuesterVariableFactory implements PlayerVariableFactory {
+
     /**
      * Conversation API.
      */

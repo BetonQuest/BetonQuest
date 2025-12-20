@@ -22,6 +22,7 @@ import java.util.Locale;
  * Timer objective that tracks the ingame time when the conditions are fulfilled.
  */
 public class TimerObjective extends CountingObjective implements Listener, Runnable {
+
     /**
      * Quest Type API.
      */

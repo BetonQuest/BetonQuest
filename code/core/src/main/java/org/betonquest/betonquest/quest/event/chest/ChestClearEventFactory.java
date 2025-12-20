@@ -18,6 +18,7 @@ import org.bukkit.Location;
  * Factory to create chest events from {@link Instruction}s.
  */
 public class ChestClearEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

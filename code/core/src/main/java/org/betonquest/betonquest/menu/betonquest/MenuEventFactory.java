@@ -20,6 +20,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
  * Factory to create {@link MenuEvent}s from {@link Instruction}s.
  */
 public class MenuEventFactory implements PlayerEventFactory {
+
     /**
      * Factory to create new class specific logger.
      */

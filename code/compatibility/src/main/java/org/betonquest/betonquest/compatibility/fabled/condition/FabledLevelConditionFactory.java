@@ -14,6 +14,7 @@ import org.betonquest.betonquest.compatibility.auraskills.condition.AuraSkillsLe
  * Factory to create {@link AuraSkillsLevelCondition}s from {@link Instruction}s.
  */
 public class FabledLevelConditionFactory implements PlayerConditionFactory {
+
     /**
      * The data used for primary server access.
      */

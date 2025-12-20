@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
  * Factory for creating {@link BreedObjective} instances from {@link Instruction}s.
  */
 public class BreedObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the BreedObjectiveFactory.
      */

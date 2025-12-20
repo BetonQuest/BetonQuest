@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
  * An objective that listens for the player upgrading their MMOItems item.
  */
 public class MMOItemsUpgradeObjective extends Objective implements Listener {
+
     /**
      * The ID of the item to be upgraded.
      */

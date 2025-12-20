@@ -18,6 +18,7 @@ import java.util.Locale;
  * Factory for creating {@link MythicLibSkillObjective} instances from {@link Instruction}s.
  */
 public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the MythicLibSkillObjectiveFactory.
      */

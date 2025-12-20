@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create Denizen Task Script Events.
  */
 public class DenizenTaskScriptEventFactory implements PlayerEventFactory {
+
     /**
      * The data for the primary server thread.
      */

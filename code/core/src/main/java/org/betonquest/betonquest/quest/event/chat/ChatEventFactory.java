@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * The chat event factory.
  */
 public class ChatEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

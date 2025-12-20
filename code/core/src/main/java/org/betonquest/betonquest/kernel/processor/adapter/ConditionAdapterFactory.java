@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link PlayerCondition}s and {@link PlayerlessCondition}s they create.
  */
 public class ConditionAdapterFactory extends QuestAdapterFactory<PlayerCondition, PlayerlessCondition, ConditionAdapter> {
+
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories} for
      * {@link org.betonquest.betonquest.api.quest.condition Conditions}.

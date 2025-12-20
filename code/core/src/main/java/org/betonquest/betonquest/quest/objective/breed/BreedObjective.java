@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityBreedEvent;
  * Requires the player to breed a specific type of animal.
  */
 public class BreedObjective extends CountingObjective implements Listener {
+
     /**
      * The type of animal to breed.
      */

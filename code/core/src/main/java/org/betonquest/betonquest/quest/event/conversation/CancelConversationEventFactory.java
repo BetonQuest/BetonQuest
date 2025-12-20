@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
  * Factory to create conversation cancel events from {@link Instruction}s.
  */
 public class CancelConversationEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

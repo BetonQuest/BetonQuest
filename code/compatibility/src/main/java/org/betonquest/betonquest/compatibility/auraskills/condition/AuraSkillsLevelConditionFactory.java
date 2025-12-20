@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link AuraSkillsLevelCondition}s from {@link Instruction}s.
  */
 public class AuraSkillsLevelConditionFactory implements PlayerConditionFactory {
+
     /**
      * The {@link AuraSkillsApi}.
      */

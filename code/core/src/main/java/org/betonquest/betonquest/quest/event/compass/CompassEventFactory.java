@@ -16,6 +16,7 @@ import org.betonquest.betonquest.id.CompassID;
  * The compass event factory.
  */
 public class CompassEventFactory implements PlayerEventFactory {
+
     /**
      * Feature API.
      */

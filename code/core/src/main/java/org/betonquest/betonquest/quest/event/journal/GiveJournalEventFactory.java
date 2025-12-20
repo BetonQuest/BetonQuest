@@ -13,6 +13,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
  * Creates a new GiveJournalEvent from an {@link Instruction}.
  */
 public class GiveJournalEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
  * This {@link AbstractLocationObjective} is completed when a player is inside a certain location while riding a train.
  */
 public class TrainCartsLocationObjective extends AbstractLocationObjective implements Listener {
+
     /**
      * The {@link LocationParser} that stores the location the player has to be inside.
      */

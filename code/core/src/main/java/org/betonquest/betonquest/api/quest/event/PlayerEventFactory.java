@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
  */
 @FunctionalInterface
 public interface PlayerEventFactory extends PlayerQuestFactory<PlayerEvent> {
+
     /**
      * Parses an instruction to create a {@link PlayerEvent}.
      *

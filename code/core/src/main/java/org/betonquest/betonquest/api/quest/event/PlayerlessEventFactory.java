@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
  */
 @FunctionalInterface
 public interface PlayerlessEventFactory extends PlayerlessQuestFactory<PlayerlessEvent> {
+
     /**
      * Parses an instruction to create a {@link PlayerlessEvent}.
      *

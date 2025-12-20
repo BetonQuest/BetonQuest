@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link VariableObjective} instances from {@link Instruction}s.
  */
 public class VariableObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new VariableObjectiveFactory instance.
      */

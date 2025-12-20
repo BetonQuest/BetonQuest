@@ -11,6 +11,7 @@ import org.bukkit.Location;
  * Player has to reach certain radius around the specified location.
  */
 public class LocationObjective extends AbstractLocationObjective {
+
     /**
      * The key for the location property.
      */

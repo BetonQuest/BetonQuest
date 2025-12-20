@@ -12,6 +12,7 @@ import org.bukkit.Location;
  * Factory for creating {@link LocationObjective} instances from {@link Instruction}s.
  */
 public class LocationObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the LocationObjectiveFactory.
      */

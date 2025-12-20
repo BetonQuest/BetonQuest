@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link RegionObjective} instances from {@link Instruction}s.
  */
 public class RegionObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the RegionObjectiveFactory.
      */

@@ -107,6 +107,7 @@ public enum Type {
      */
     private record UUIDWrapper(Variable<UUID> uuid, MythicHider mythicHider,
                                MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final UUID uuid = this.uuid.getValue(profile);
@@ -127,6 +128,7 @@ public enum Type {
      */
     private record TypeWrapper(Variable<MythicMob> type, MythicHider mythicHider,
                                MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final MythicMob type = this.type.getValue(profile);
@@ -151,6 +153,7 @@ public enum Type {
      */
     private record FactionWrapper(Variable<String> faction, MythicHider mythicHider,
                                   MobExecutor mobExecutor) implements NpcWrapper<ActiveMob> {
+
         @Override
         public Npc<ActiveMob> getNpc(@Nullable final Profile profile) throws QuestException {
             final String faction = this.faction.getValue(profile);

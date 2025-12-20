@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory for the hunger event.
  */
 public class HungerEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

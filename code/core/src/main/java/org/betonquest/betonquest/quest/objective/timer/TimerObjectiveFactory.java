@@ -15,6 +15,7 @@ import java.util.List;
  * Factory for creating {@link TimerObjective} instances from {@link Instruction}s.
  */
 public class TimerObjectiveFactory implements ObjectiveFactory {
+
     /**
      * The QuestTypeAPI instance.
      */

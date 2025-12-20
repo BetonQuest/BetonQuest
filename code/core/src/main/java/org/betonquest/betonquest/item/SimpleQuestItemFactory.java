@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
@@ -136,7 +137,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     @Override
     public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), Argument.STRING).getValue(null);
-        final Instruction instruction = new Instruction(variables, packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
+        final Instruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(), rawInstruction.getID(), instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  * Requires the player to join the server.
  */
 public class LoginObjective extends Objective implements Listener {
+
     /**
      * Constructor for the LoginObjective.
      *

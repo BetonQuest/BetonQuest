@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and a versatile data object to track the progress.
  */
 public abstract class CountingObjective extends Objective {
+
     /**
      * The Factory for the Counting Data.
      */
@@ -149,6 +150,7 @@ public abstract class CountingObjective extends Objective {
      * Objective data for counting objectives.
      */
     public static class CountingData extends ObjectiveData {
+
         /**
          * Custom {@link BetonQuestLogger} instance for this class.
          */

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
  * Factory to create {@link HasJobCondition}s from {@link Instruction}s.
  */
 public class HasJobConditionFactory implements PlayerConditionFactory {
+
     /**
      * The data for the primary server thread.
      */

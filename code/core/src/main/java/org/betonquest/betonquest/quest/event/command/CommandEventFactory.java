@@ -18,6 +18,7 @@ import org.bukkit.command.CommandSender;
  * Creates a new CommandEvent from an {@link Instruction}.
  */
 public class CommandEventFactory extends BaseCommandEventFactory implements PlayerlessEventFactory {
+
     /**
      * Command sender to run the commands as.
      * <p>

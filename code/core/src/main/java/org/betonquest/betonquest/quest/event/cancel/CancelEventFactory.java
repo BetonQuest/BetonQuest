@@ -14,6 +14,7 @@ import org.betonquest.betonquest.id.QuestCancelerID;
  * Factory for the cancel event.
  */
 public class CancelEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

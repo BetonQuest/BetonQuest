@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link MMOItemsApplyGemObjective} instances from {@link Instruction}s.
  */
 public class MMOItemsApplyGemObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the MMOItemsApplyGemObjectiveFactory.
      */

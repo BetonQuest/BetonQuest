@@ -20,6 +20,7 @@ import java.util.Locale;
  * Factory to create door events from {@link Instruction}s.
  */
 public class DoorEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

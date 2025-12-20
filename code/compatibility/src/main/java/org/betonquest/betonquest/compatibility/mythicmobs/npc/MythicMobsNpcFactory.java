@@ -13,6 +13,7 @@ import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
  * Creates validated Npc Wrapper for MythicMobs Npcs.
  */
 public class MythicMobsNpcFactory implements NpcFactory {
+
     /**
      * Instance to get mobs from the MythicMobs plugin.
      */

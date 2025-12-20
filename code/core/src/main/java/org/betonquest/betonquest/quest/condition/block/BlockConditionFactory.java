@@ -19,6 +19,7 @@ import org.bukkit.Location;
  * Factory to create test for block conditions from {@link Instruction}s.
  */
 public class BlockConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+
     /**
      * Data used for condition check on the primary server thread.
      */

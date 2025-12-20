@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
  * Parses a string to a Citizens Npc ID.
  */
 public class CitizensArgument implements InstructionIdentifierArgument<NpcID> {
+
     /**
      * The default instance of {@link CitizensArgument}.
      */

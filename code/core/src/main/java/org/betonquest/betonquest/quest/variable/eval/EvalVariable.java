@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * A variable which evaluates to another variable.
  */
 public class EvalVariable implements NullableVariable {
+
     /**
      * The original instruction.
      */

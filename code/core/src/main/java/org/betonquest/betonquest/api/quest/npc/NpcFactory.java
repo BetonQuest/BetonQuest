@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.kernel.TypeFactory;
  */
 @FunctionalInterface
 public interface NpcFactory extends TypeFactory<NpcWrapper<?>> {
+
     /**
      * Parses an instruction to create a {@link NpcWrapper} which resolves into a {@link Npc}.
      *

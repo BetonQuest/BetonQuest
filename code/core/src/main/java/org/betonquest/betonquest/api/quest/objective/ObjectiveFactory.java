@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.kernel.TypeFactory;
  */
 @FunctionalInterface
 public interface ObjectiveFactory extends TypeFactory<Objective> {
+
     /**
      * Parses an instruction to create a {@link Objective}.
      *

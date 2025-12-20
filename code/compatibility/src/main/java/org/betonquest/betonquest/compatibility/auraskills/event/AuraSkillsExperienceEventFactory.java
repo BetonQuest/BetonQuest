@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create {@link AuraSkillsExperienceEvent}s from {@link Instruction}s.
  */
 public class AuraSkillsExperienceEventFactory implements PlayerEventFactory {
+
     /**
      * The {@link AuraSkillsApi}.
      */

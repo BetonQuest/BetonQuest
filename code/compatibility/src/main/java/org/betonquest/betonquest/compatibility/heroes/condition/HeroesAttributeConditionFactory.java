@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link HeroesAttributeCondition}s from {@link Instruction}s.
  */
 public class HeroesAttributeConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */

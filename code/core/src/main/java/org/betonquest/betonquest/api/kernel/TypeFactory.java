@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
  */
 @FunctionalInterface
 public interface TypeFactory<T> {
+
     /**
      * Create a new {@link T} from an {@link Instruction}.
      *

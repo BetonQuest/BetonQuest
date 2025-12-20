@@ -12,6 +12,7 @@ import org.betonquest.betonquest.conversation.ConversationID;
  * Factory for {@link InConversationCondition}s.
  */
 public class InConversationConditionFactory implements PlayerConditionFactory {
+
     /**
      * Conversation API.
      */

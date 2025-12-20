@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
  * Creates validated Npc Wrapper for Citizens Npcs.
  */
 public class CitizensNpcFactory implements NpcFactory {
+
     /**
      * The plugin instance.
      */

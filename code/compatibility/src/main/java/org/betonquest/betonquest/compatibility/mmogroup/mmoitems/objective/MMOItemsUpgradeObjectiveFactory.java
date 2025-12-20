@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
  * Factory for creating {@link MMOItemsUpgradeObjective} instances from {@link Instruction}s.
  */
 public class MMOItemsUpgradeObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the MMOItemsUpgradeObjectiveFactory.
      */

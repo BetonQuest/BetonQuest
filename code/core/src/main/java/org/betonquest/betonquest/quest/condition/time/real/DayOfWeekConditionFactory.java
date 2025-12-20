@@ -15,6 +15,7 @@ import java.util.Locale;
  * Factory to create day of weeks conditions from {@link Instruction}s.
  */
 public class DayOfWeekConditionFactory implements PlayerlessConditionFactory {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

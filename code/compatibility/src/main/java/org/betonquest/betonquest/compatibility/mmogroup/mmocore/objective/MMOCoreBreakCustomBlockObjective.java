@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * An objective that listens for the player breaking a custom block.
  */
 public class MMOCoreBreakCustomBlockObjective extends CountingObjective implements Listener {
+
     /**
      * The ID of the block to be broken.
      */

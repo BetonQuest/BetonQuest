@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory for the kill event.
  */
 public class KillEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

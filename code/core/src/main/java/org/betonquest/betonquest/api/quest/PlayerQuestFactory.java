@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
  */
 @FunctionalInterface
 public interface PlayerQuestFactory<T> {
+
     /**
      * Parses an instruction to create a {@link T}.
      *

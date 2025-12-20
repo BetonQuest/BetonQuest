@@ -18,14 +18,14 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
     /**
-     * Quest Type API.
-     */
-    private final QuestTypeApi questTypeApi;
-
-    /**
      * The keyword to identify an else event following.
      */
     private static final String ELSE_KEYWORD = "else";
+
+    /**
+     * Quest Type API.
+     */
+    private final QuestTypeApi questTypeApi;
 
     /**
      * The event constructor.

@@ -21,6 +21,7 @@ import java.util.Locale;
  * Factory to create FakeBlock events from {@link Instruction}s.
  */
 public class FakeBlockEventFactory implements PlayerEventFactory {
+
     /**
      * GroupService to search for existing Groups from FakeBlock.
      */

@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link FabledClassCondition}s from {@link Instruction}s.
  */
 public class FabledClassConditionFactory implements PlayerConditionFactory {
+
     /**
      * The data used for primary server access.
      */

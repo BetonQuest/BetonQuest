@@ -14,6 +14,7 @@ import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
  * Factory to create {@link CanLevelCondition}s from {@link Instruction}s.
  */
 public class CanLevelConditionFactory implements PlayerConditionFactory {
+
     /**
      * The data for the primary server thread.
      */

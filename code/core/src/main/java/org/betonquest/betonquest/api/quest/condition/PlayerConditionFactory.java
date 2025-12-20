@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
  */
 @FunctionalInterface
 public interface PlayerConditionFactory extends PlayerQuestFactory<PlayerCondition> {
+
     /**
      * Parses an instruction to create a {@link PlayerCondition}.
      *

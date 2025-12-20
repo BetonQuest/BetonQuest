@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create {@link BQEventSkript}s from {@link Instruction}s.
  */
 public class BQEventSkriptFactory implements PlayerEventFactory {
+
     /**
      * Data for primary server thread access.
      */

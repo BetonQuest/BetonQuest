@@ -12,6 +12,7 @@ import org.betonquest.betonquest.item.QuestItemWrapper;
  * Factory to create {@link MythicItemWrapper}s from {@link Instruction}s.
  */
 public class MythicItemFactory implements TypeFactory<QuestItemWrapper> {
+
     /**
      * Manager instance to get items.
      */

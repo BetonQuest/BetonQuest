@@ -14,6 +14,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
  * Factory for creating {@link MenuObjective} instances from {@link Instruction}s.
  */
 public class MenuObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Logger factory to create a logger for the objectives.
      */

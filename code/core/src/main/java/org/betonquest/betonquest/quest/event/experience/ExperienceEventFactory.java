@@ -18,6 +18,7 @@ import java.util.Optional;
  * Factory for the experience event.
  */
 public class ExperienceEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

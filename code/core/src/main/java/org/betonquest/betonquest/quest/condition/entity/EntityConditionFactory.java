@@ -63,6 +63,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
      * Parses a string to a Spell with level.
      */
     private static final class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
+
         /**
          * The default instance of {@link EntityAmount}.
          */

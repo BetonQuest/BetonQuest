@@ -15,6 +15,7 @@ import org.betonquest.betonquest.menu.MenuID;
  * Factory to create {@link MenuCondition}s from {@link Instruction}s.
  */
 public class MenuConditionFactory implements PlayerConditionFactory {
+
     /**
      * Factory to create new class specific logger.
      */

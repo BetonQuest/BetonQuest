@@ -17,6 +17,7 @@ import org.bukkit.Location;
  * Factory to create teleport events from {@link Instruction}s.
  */
 public class TeleportEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

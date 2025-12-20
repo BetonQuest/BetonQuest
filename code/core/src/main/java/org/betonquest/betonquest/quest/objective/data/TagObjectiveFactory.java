@@ -11,6 +11,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
  * Factory to create {@link TagObjective}s from {@link Instruction}s.
  */
 public class TagObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Storage for player data.
      */

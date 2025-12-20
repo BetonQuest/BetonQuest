@@ -68,6 +68,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
      * Parses a string to a Spell with level.
      */
     private static final class SpellParser implements Argument<Map.Entry<String, Integer>> {
+
         /**
          * The default instance of {@link SpellParser}.
          */

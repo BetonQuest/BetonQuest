@@ -161,6 +161,7 @@ public class StageObjective extends Objective {
      * {@link ObjectiveData} for {@link StageObjective}.
      */
     public static class StageData extends ObjectiveData {
+
         /**
          * Creates a new objective data.
          *
@@ -196,6 +197,7 @@ public class StageObjective extends Objective {
      * A mapping of stages to indices in a bidirectional map.
      */
     public static class StageMap {
+
         /**
          * The mapping of stages to indices.
          */

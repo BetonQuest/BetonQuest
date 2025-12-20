@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory for {@link FlyingCondition}s.
  */
 public class FlyingConditionFactory implements PlayerConditionFactory {
+
     /**
      * Logger factory to create a logger for the conditions.
      */

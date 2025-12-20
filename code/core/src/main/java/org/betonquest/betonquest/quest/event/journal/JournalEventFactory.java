@@ -27,6 +27,7 @@ import java.util.Locale;
  * Factory to create journal events from {@link Instruction}s.
  */
 public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

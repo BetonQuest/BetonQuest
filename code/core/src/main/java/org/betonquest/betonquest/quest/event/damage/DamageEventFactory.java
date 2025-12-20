@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory to create damage events from {@link Instruction}s.
  */
 public class DamageEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

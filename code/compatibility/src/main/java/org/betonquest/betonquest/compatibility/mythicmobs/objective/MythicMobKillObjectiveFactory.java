@@ -14,6 +14,7 @@ import java.util.List;
  * Factory for creating {@link MythicMobKillObjective} instances from {@link Instruction}s.
  */
 public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the MythicMobKillObjectiveFactory.
      */

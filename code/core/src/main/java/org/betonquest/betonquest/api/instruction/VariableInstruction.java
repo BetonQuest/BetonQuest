@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 /**
  * The variable instruction. Primary object for variable input parsing.
  */
-public class VariableInstruction extends Instruction {
+public class VariableInstruction extends DefaultInstruction {
 
     /**
      * Regular expression that can be used to split variables correctly.

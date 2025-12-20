@@ -18,6 +18,7 @@ import org.bukkit.Location;
  * Factory for {@link LeverEvent}.
  */
 public class LeverEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

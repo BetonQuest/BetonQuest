@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
  * {@code %objective.<id>.<property>%}
  */
 public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
+
     /**
      * Quest Type API.
      */

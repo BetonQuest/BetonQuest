@@ -176,6 +176,7 @@ public class DelayObjective extends Objective {
      * Data class for the DelayObjective.
      */
     public static class DelayData extends ObjectiveData {
+
         /**
          * The timestamp when the delay is over.
          */

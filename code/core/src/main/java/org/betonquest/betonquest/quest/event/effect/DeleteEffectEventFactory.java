@@ -19,6 +19,7 @@ import java.util.List;
  * Factory to create delete effect events from {@link Instruction}s.
  */
 public class DeleteEffectEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

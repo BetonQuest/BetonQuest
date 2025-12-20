@@ -11,6 +11,7 @@ import org.betonquest.betonquest.data.PlayerDataStorage;
  * A factory for creating Tag variables.
  */
 public class TagVariableFactory extends AbstractTagVariableFactory<PlayerDataStorage> implements PlayerVariableFactory {
+
     /**
      * The {@link PluginMessage} instance.
      */

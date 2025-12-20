@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
  * An objective that listens for the player applying a gem to their MMOItems item.
  */
 public class MMOItemsApplyGemObjective extends Objective implements Listener {
+
     /**
      * The ID of the item to be upgraded.
      */

@@ -91,6 +91,7 @@ public class VariableObjective extends Objective {
      * The data class for the {@link VariableObjective}.
      */
     public static class VariableData extends ObjectiveData {
+
         /**
          * Pattern to split the serialized data into key-value pairs.
          */

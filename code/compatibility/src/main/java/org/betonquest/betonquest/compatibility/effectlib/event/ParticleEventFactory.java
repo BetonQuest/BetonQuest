@@ -19,6 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * Factory to create {@link ParticleEvent}s from {@link Instruction}s.
  */
 public class ParticleEventFactory implements PlayerEventFactory {
+
     /**
      * Logger Factory to create new class specific logger.
      */

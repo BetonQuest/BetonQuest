@@ -18,6 +18,7 @@ import org.betonquest.betonquest.conversation.ConversationID;
  * Factory for {@link ConversationEvent}.
  */
 public class ConversationEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
  * Factory to create {@link AuraSkillsStatsCondition}s from {@link Instruction}s.
  */
 public class AuraSkillsStatsConditionFactory implements PlayerConditionFactory {
+
     /**
      * The {@link AuraSkillsApi}.
      */

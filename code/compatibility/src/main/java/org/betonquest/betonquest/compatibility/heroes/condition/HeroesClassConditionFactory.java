@@ -18,6 +18,7 @@ import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
  * Factory to create {@link HeroesClassCondition}s from {@link Instruction}s.
  */
 public class HeroesClassConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */

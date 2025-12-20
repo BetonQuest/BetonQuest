@@ -14,6 +14,7 @@ import java.util.List;
  * Factory for creating {@link NpcRangeObjective} instances from {@link Instruction}s.
  */
 public class NpcRangeObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new instance of the NpcRangeObjectiveFactory.
      */

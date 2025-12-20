@@ -18,6 +18,7 @@ import org.bukkit.Location;
  * Factory for {@link LightningEvent} from the {@link Instruction}.
  */
 public class LightningEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */

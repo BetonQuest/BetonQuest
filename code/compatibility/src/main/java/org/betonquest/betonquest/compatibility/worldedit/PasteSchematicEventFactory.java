@@ -21,6 +21,7 @@ import java.io.File;
  * Factory to create {@link PasteSchematicEvent}s from {@link Instruction}s.
  */
 public class PasteSchematicEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Schematics folder.
      */

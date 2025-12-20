@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Creates new {@link SudoEvent}s from {@link Instruction}s.
  */
 public class SudoEventFactory extends BaseCommandEventFactory {
+
     /**
      * Create the sudo event factory.
      *

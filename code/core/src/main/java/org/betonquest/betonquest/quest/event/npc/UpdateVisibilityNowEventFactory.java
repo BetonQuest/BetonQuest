@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
  * Factory to create {@link UpdateVisibilityNowEvent}s from {@link Instruction}s.
  */
 public class UpdateVisibilityNowEventFactory implements PlayerEventFactory {
+
     /**
      * Hider to update visibility.
      */

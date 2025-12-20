@@ -29,6 +29,7 @@ import java.util.UUID;
  * If the train name is not specified, the {@link CountingObjective} will be completed when the player rides any train.
  */
 public class TrainCartsRideObjective extends CountingObjective implements Listener {
+
     /**
      * The conversion factor from milliseconds to seconds.
      */
