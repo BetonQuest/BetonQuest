@@ -9,10 +9,6 @@ import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.ArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.InstructionIdentifierArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.PackageArgumentConverter;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
@@ -29,7 +25,7 @@ import java.util.Locale;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
-public class DefaultInstruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter, InstructionIdentifierArgumentConverter {
+public class DefaultInstruction implements Instruction {
 
     /**
      * Variable processor to create and resolve variables.
