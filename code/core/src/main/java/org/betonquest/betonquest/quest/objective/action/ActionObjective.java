@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
  * them is supported.
  */
 public class ActionObjective extends Objective implements Listener {
+
     /**
      * The key for the location property.
      */
@@ -36,7 +37,6 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * The selector to check for the block.
      */
-    @Nullable
     private final Variable<BlockSelector> selector;
 
     /**
@@ -80,7 +80,7 @@ public class ActionObjective extends Objective implements Listener {
      * @throws QuestException if an error occurs while creating the objective
      */
     public ActionObjective(final Instruction instruction, final Variable<Click> action,
-                           @Nullable final Variable<BlockSelector> selector, final boolean exactMatch,
+                           final Variable<BlockSelector> selector, final boolean exactMatch,
                            @Nullable final Variable<Location> loc, final Variable<Number> range, final boolean cancel,
                            @Nullable final EquipmentSlot slot) throws QuestException {
         super(instruction);
@@ -127,16 +127,16 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     private boolean checkBlock(final Profile profile, @Nullable final Block clickedBlock, final BlockFace blockFace) throws QuestException {
-        if (selector == null) {
+        final BlockSelector selectorValue = selector.getValue(profile);
+        if (selectorValue == null) {
             return true;
         }
         if (clickedBlock == null) {
             return false;
         }
-        final BlockSelector blockSelector = selector.getValue(profile);
-        return (blockSelector.match(Material.WATER) || blockSelector.match(Material.LAVA))
-                && blockSelector.match(clickedBlock.getRelative(blockFace), exactMatch)
-                || blockSelector.match(clickedBlock, exactMatch);
+        return (selectorValue.match(Material.WATER) || selectorValue.match(Material.LAVA))
+                && selectorValue.match(clickedBlock.getRelative(blockFace), exactMatch)
+                || selectorValue.match(clickedBlock, exactMatch);
     }
 
     @Override

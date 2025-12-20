@@ -10,17 +10,16 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.Nullable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 /**
  * Requires the player to ride a vehicle.
  */
 public class RideObjective extends Objective implements Listener {
+
     /**
      * The type of vehicle that is required, or null if any vehicle is allowed.
      */
-    @Nullable
     private final Variable<EntityType> vehicle;
 
     /**
@@ -30,7 +29,7 @@ public class RideObjective extends Objective implements Listener {
      * @param vehicle     the type of vehicle that is required, or null if any vehicle is allowed
      * @throws QuestException if there is an error in the instruction
      */
-    public RideObjective(final Instruction instruction, @Nullable final Variable<EntityType> vehicle) throws QuestException {
+    public RideObjective(final Instruction instruction, final Variable<EntityType> vehicle) throws QuestException {
         super(instruction);
         this.vehicle = vehicle;
     }
@@ -47,7 +46,8 @@ public class RideObjective extends Objective implements Listener {
         }
         qeHandler.handle(() -> {
             final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-            if (containsPlayer(onlineProfile) && (vehicle == null || event.getMount().getType() == vehicle.getValue(onlineProfile)) && checkConditions(onlineProfile)) {
+            final EntityType entityType = vehicle.getValue(onlineProfile);
+            if (containsPlayer(onlineProfile) && (entityType == null || event.getMount().getType() == entityType) && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             }
         });
