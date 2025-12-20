@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.fish;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -49,7 +49,7 @@ public class FishObjective extends CountingObjective implements Listener {
      * @param rangeVar           the range around the location where the item should be fished
      * @throws QuestException if there is an error in the instruction
      */
-    public FishObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public FishObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                          final Variable<Item> item, @Nullable final Variable<Location> hookTargetLocation,
                          @Nullable final Variable<Number> rangeVar) throws QuestException {
         super(instruction, targetAmount, "fish_to_catch");

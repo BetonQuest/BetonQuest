@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.worldguard;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -12,6 +12,7 @@ import org.bukkit.Location;
  * The region objective requires the player to be inside a specific region.
  */
 public class RegionObjective extends AbstractLocationObjective {
+
     /**
      * The name of the region.
      */
@@ -24,7 +25,7 @@ public class RegionObjective extends AbstractLocationObjective {
      * @param name        the name of the region
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public RegionObjective(final Instruction instruction, final Variable<String> name) throws QuestException {
+    public RegionObjective(final DefaultInstruction instruction, final Variable<String> name) throws QuestException {
         super(instruction);
         this.name = name;
     }

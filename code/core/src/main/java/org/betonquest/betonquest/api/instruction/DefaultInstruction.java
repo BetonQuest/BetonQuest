@@ -29,7 +29,7 @@ import java.util.Locale;
  * The Instruction. Primary object for input parsing.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"})
-public class Instruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter, InstructionIdentifierArgumentConverter {
+public class DefaultInstruction implements InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter, InstructionIdentifierArgumentConverter {
 
     /**
      * Variable processor to create and resolve variables.
@@ -71,8 +71,8 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
-                       @Nullable final Identifier identifier, final String instruction) throws QuestException {
+    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
+                              @Nullable final Identifier identifier, final String instruction) throws QuestException {
         this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), instruction);
     }
 
@@ -87,7 +87,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public Instruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
+    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
         this.variables = variables;
         this.packManager = packManager;
         this.pack = pack;
@@ -106,7 +106,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param instruction instruction to copy
      * @param identifier  identifier of the new instruction
      */
-    public Instruction(final Instruction instruction, final Identifier identifier) {
+    public DefaultInstruction(final DefaultInstruction instruction, final Identifier identifier) {
         this.variables = instruction.variables;
         this.packManager = instruction.packManager;
         this.pack = instruction.pack;
@@ -189,7 +189,7 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      *
      * @return a copy of this instruction
      */
-    public Instruction copy() {
+    public DefaultInstruction copy() {
         return copy(identifier);
     }
 
@@ -199,8 +199,8 @@ public class Instruction implements InstructionParts, ArgumentConverter, Package
      * @param newID the ID to identify the copied instruction with
      * @return copy of this instruction with the new ID
      */
-    public Instruction copy(final Identifier newID) {
-        return new Instruction(this, newID);
+    public DefaultInstruction copy(final Identifier newID) {
+        return new DefaultInstruction(this, newID);
     }
 
     @Override

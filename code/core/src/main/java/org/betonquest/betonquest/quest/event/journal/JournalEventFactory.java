@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -24,9 +24,10 @@ import java.time.InstantSource;
 import java.util.Locale;
 
 /**
- * Factory to create journal events from {@link Instruction}s.
+ * Factory to create journal events from {@link DefaultInstruction}s.
  */
 public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -77,7 +78,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
@@ -88,7 +89,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update", "add" -> new DoNothingPlayerlessEvent();
@@ -97,14 +98,14 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         };
     }
 
-    private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws QuestException {
+    private JournalEvent createJournalDeleteEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
-    private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
+    private JournalEvent createJournalAddEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
@@ -118,7 +119,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
-    private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
+    private PlayerlessEvent createStaticJournalDeleteEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
         return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, entryID);
     }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -26,7 +26,7 @@ public class VariableAdapterFactory extends QuestAdapterFactory<PlayerVariable, 
     }
 
     @Override
-    protected VariableAdapter getAdapter(final Instruction instruction,
+    protected VariableAdapter getAdapter(final DefaultInstruction instruction,
                                          @Nullable final PlayerVariable playerType,
                                          @Nullable final PlayerlessVariable playerlessType) {
         return new VariableAdapter(instruction, playerType, playerlessType);

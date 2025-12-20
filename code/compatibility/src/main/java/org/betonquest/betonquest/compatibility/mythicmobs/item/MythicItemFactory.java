@@ -2,16 +2,17 @@ package org.betonquest.betonquest.compatibility.mythicmobs.item;
 
 import io.lumine.mythic.api.items.ItemManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.item.QuestItemTagAdapterWrapper;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 
 /**
- * Factory to create {@link MythicItemWrapper}s from {@link Instruction}s.
+ * Factory to create {@link MythicItemWrapper}s from {@link DefaultInstruction}s.
  */
 public class MythicItemFactory implements TypeFactory<QuestItemWrapper> {
+
     /**
      * Manager instance to get items.
      */
@@ -27,7 +28,7 @@ public class MythicItemFactory implements TypeFactory<QuestItemWrapper> {
     }
 
     @Override
-    public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
+    public QuestItemWrapper parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final MythicItemWrapper mythicItemWrapper = new MythicItemWrapper(itemManager, instruction.get(Argument.STRING));
         if (instruction.hasArgument("quest-item")) {
             return new QuestItemTagAdapterWrapper(mythicItemWrapper);

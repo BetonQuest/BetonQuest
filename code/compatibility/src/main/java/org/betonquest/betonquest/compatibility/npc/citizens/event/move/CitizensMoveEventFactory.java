@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -18,7 +18,7 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory for {@link CitizensMoveEvent} from the {@link Instruction}.
+ * Factory for {@link CitizensMoveEvent} from the {@link DefaultInstruction}.
  */
 public class CitizensMoveEventFactory implements PlayerEventFactory {
 
@@ -51,7 +51,7 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
         final Variable<List<Location>> locations = instruction.getList(Argument.LOCATION, VariableList.notEmptyChecker());
         final Variable<Number> waitTicks = instruction.getValue("wait", Argument.NUMBER, 0);

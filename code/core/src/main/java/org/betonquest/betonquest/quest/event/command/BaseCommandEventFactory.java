@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -58,7 +58,7 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
      * @return list of commands
      * @throws QuestException if the instruction is invalid
      */
-    public List<Variable<String>> parseCommands(final Instruction instruction) throws QuestException {
+    public List<Variable<String>> parseCommands(final DefaultInstruction instruction) throws QuestException {
         final List<Variable<String>> commands = new ArrayList<>();
         final String string = String.join(" ", instruction.getValueParts());
         final Matcher conditionsMatcher = CONDITIONS_REGEX.matcher(string);

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.fakeblock.event;
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Factory to create FakeBlock events from {@link Instruction}s.
+ * Factory to create FakeBlock events from {@link DefaultInstruction}s.
  */
 public class FakeBlockEventFactory implements PlayerEventFactory {
+
     /**
      * GroupService to search for existing Groups from FakeBlock.
      */
@@ -52,11 +53,11 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(getFakeBlockEvent(instruction), data);
     }
 
-    private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
+    private PlayerEvent getFakeBlockEvent(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
         final Variable<List<String>> groupNames = instruction.getList(Argument.STRING, checkForNotExistingGroups());
         return switch (action.toLowerCase(Locale.ROOT)) {

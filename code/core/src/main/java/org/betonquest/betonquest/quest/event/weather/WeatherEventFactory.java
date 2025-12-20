@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -23,9 +23,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory to create weather events from {@link Instruction}s.
+ * Factory to create weather events from {@link DefaultInstruction}s.
  */
 public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -48,7 +49,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final PlayerEvent weatherPlayerEvent = parseWeatherEvent(instruction);
         final PlayerEvent playerEvent;
         if (requiresPlayer(instruction)) {
@@ -64,7 +65,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         if (requiresPlayer(instruction)) {
             return new DoNothingPlayerlessEvent();
         } else {
@@ -72,11 +73,11 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         }
     }
 
-    private boolean requiresPlayer(final Instruction instruction) {
+    private boolean requiresPlayer(final DefaultInstruction instruction) {
         return instruction.copy().getValue("world") == null;
     }
 
-    private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter parseWeatherEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
         final Variable<Number> duration = instruction.getValue("duration", Argument.NUMBER, 0);

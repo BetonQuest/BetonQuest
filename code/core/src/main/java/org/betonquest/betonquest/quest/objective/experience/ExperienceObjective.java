@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -45,7 +45,7 @@ public class ExperienceObjective extends Objective implements Listener {
      * @param levelSender the notification to send when the player gains experience
      * @throws QuestException if there is an error in the instruction
      */
-    public ExperienceObjective(final Instruction instruction, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
+    public ExperienceObjective(final DefaultInstruction instruction, final Variable<Number> amount, final IngameNotificationSender levelSender) throws QuestException {
         super(instruction);
         this.amount = amount;
         this.levelSender = levelSender;

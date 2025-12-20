@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -55,7 +55,7 @@ public abstract class AbstractLocationObjective extends Objective implements Lis
      * @param instruction the Instruction object to be used in the constructor
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public AbstractLocationObjective(final Instruction instruction) throws QuestException {
+    public AbstractLocationObjective(final DefaultInstruction instruction) throws QuestException {
         super(instruction);
         entry = instruction.hasArgument("entry");
         exit = instruction.hasArgument("exit");

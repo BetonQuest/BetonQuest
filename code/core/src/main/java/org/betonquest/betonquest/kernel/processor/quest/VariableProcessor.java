@@ -3,7 +3,7 @@ package org.betonquest.betonquest.kernel.processor.quest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -74,7 +74,7 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         if (existingVariable != null) {
             return existingVariable;
         }
-        final Instruction instructionVar = variableID.getInstruction();
+        final DefaultInstruction instructionVar = variableID.getInstruction();
         final TypeFactory<VariableAdapter> variableFactory = types.getFactory(instructionVar.current());
         final VariableAdapter variable = variableFactory.parseInstruction(instructionVar);
         values.put(variableID, variable);

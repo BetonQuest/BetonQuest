@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.tame;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.EntityType;
@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityTameEvent;
  * The player must tame specified amount of specified mobs.
  */
 public class TameObjective extends CountingObjective implements Listener {
+
     /**
      * The entity type to be tamed.
      */
@@ -28,7 +29,7 @@ public class TameObjective extends CountingObjective implements Listener {
      * @param type         the entity type to be tamed
      * @throws QuestException if there is an error in the instruction
      */
-    public TameObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public TameObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                          final Variable<EntityType> type) throws QuestException {
         super(instruction, targetAmount, "animals_to_tame");
         this.type = type;

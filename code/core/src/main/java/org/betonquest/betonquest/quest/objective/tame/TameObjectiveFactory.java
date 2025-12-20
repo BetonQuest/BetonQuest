@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.tame;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.types.EnumParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -11,9 +11,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Tameable;
 
 /**
- * Factory for creating {@link TameObjective} instances from {@link Instruction}s.
+ * Factory for creating {@link TameObjective} instances from {@link DefaultInstruction}s.
  */
 public class TameObjectiveFactory implements ObjectiveFactory {
+
     /**
      * Creates a new TameObjectiveFactory instance.
      */
@@ -21,7 +22,7 @@ public class TameObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Variable<EntityType> type = instruction.get(new EntityTypeParser());
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
         return new TameObjective(instruction, targetAmount, type);
@@ -31,6 +32,7 @@ public class TameObjectiveFactory implements ObjectiveFactory {
      * Parser for {@link EntityType} enums.
      */
     private static class EntityTypeParser extends EnumParser<EntityType> {
+
         /**
          * Creates a new parser for enums.
          */

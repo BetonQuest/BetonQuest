@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -15,9 +15,10 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlaye
 import org.bukkit.Location;
 
 /**
- * Factory to create chest events from {@link Instruction}s.
+ * Factory to create chest events from {@link DefaultInstruction}s.
  */
 public class ChestClearEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */
@@ -33,16 +34,16 @@ public class ChestClearEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createChestClearEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createChestClearEvent(instruction), data);
     }
 
-    private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter createChestClearEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> variableLocation = instruction.get(Argument.LOCATION);
         return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }

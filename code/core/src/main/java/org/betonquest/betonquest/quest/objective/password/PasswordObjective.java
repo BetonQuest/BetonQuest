@@ -4,7 +4,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -52,7 +52,7 @@ public class PasswordObjective extends Objective implements Listener {
      * @param failEvents     the events to be triggered on failure
      * @throws QuestException if there is an error in the instruction
      */
-    public PasswordObjective(final Instruction instruction, final Pattern regex,
+    public PasswordObjective(final DefaultInstruction instruction, final Pattern regex,
                              @Nullable final String passwordPrefix, final Variable<List<EventID>> failEvents) throws QuestException {
         super(instruction);
         this.regex = regex;

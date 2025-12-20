@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
@@ -24,7 +24,7 @@ import org.bukkit.entity.Mob;
 import java.util.List;
 
 /**
- * Factory to create spawn mob events from {@link Instruction}s.
+ * Factory to create spawn mob events from {@link DefaultInstruction}s.
  */
 public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -43,12 +43,12 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createSpawnMobEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createSpawnMobEvent(instruction), data);
     }
 
@@ -59,7 +59,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @return the created event
      * @throws QuestException if the instruction could not be parsed
      */
-    public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
+    public NullableEventAdapter createSpawnMobEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<EntityType> type = instruction.get(new EntityTypeParser());
         final Variable<Number> amount = instruction.get(Argument.NUMBER);

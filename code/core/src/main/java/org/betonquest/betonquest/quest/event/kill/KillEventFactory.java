@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.kill;
 
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
  * Factory for the kill event.
  */
 public class KillEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -34,7 +35,7 @@ public class KillEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new KillEvent(),
                 loggerFactory.create(KillEvent.class),

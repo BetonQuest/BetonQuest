@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.experience;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -13,7 +13,7 @@ import org.betonquest.betonquest.quest.event.IngameNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 
 /**
- * Factory for creating {@link ExperienceObjective} instances from {@link Instruction}s.
+ * Factory for creating {@link ExperienceObjective} instances from {@link DefaultInstruction}s.
  */
 public class ExperienceObjectiveFactory implements ObjectiveFactory {
 
@@ -39,7 +39,7 @@ public class ExperienceObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(ExperienceObjective.class);
         final IngameNotificationSender levelSender = new IngameNotificationSender(log,

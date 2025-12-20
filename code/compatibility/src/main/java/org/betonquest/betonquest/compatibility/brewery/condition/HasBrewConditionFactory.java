@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.brewery.condition;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -14,9 +14,10 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 
 /**
- * Factory to create {@link HasBrewCondition}s from {@link Instruction}s.
+ * Factory to create {@link HasBrewCondition}s from {@link DefaultInstruction}s.
  */
 public class HasBrewConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */
@@ -39,7 +40,7 @@ public class HasBrewConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<Number> countVar = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<String> nameVar = instruction.get(Argument.STRING);
         final Variable<IdentifierType> mode = instruction.getValue("mode", Argument.ENUM(IdentifierType.class), IdentifierType.NAME);

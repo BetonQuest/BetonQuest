@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <A> adapter for created types
  */
 public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
+
     /**
      * The player type factory to be adapted.
      */
@@ -51,7 +52,7 @@ public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
      * @throws QuestException if the instruction cannot be parsed
      */
     @Override
-    public A parseInstruction(final Instruction instruction) throws QuestException {
+    public A parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final P playerType = playerFactory == null ? null : playerFactory.parsePlayer(instruction.copy());
         final L playerlessType = playerlessFactory == null ? null : playerlessFactory.parsePlayerless(instruction.copy());
         return getAdapter(instruction, playerType, playerlessType);
@@ -67,5 +68,5 @@ public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
      * @throws QuestException           when the instruction cannot be parsed
      * @throws IllegalArgumentException if there is no type provided
      */
-    protected abstract A getAdapter(Instruction instruction, @Nullable P playerType, @Nullable L playerlessType) throws QuestException;
+    protected abstract A getAdapter(DefaultInstruction instruction, @Nullable P playerType, @Nullable L playerlessType) throws QuestException;
 }

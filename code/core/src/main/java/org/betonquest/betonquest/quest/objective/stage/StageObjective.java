@@ -4,7 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -42,7 +42,7 @@ public class StageObjective extends Objective {
      * @param preventCompletion true if the increase of stages should not complete the objective
      * @throws QuestException if the instruction is invalid
      */
-    public StageObjective(final Instruction instruction, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
+    public StageObjective(final DefaultInstruction instruction, final StageMap stageMap, final boolean preventCompletion) throws QuestException {
         super(instruction, STAGE_FACTORY);
         this.stageMap = stageMap;
         this.preventCompletion = preventCompletion;
@@ -161,6 +161,7 @@ public class StageObjective extends Objective {
      * {@link ObjectiveData} for {@link StageObjective}.
      */
     public static class StageData extends ObjectiveData {
+
         /**
          * Creates a new objective data.
          *
@@ -196,6 +197,7 @@ public class StageObjective extends Objective {
      * A mapping of stages to indices in a bidirectional map.
      */
     public static class StageMap {
+
         /**
          * The mapping of stages to indices.
          */

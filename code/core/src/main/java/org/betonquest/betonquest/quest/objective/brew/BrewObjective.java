@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.brew;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -53,7 +53,7 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @param potion          the potion item to brew
      * @throws QuestException if there is an error in the instruction
      */
-    public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public BrewObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                          final ProfileProvider profileProvider, final Variable<Item> potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
         this.potion = potion;

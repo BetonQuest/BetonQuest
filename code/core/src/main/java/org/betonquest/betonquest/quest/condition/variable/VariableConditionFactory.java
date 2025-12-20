@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -42,7 +42,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
         if (instruction.hasArgument("forceSync")) {
             return new PrimaryServerThreadPlayerCondition(condition, data);
@@ -51,7 +51,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
         if (instruction.hasArgument("forceSync")) {
             return new PrimaryServerThreadPlayerlessCondition(condition, data);
@@ -59,7 +59,7 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
         return condition;
     }
 
-    private VariableCondition parse(final Instruction instruction) throws QuestException {
+    private VariableCondition parse(final DefaultInstruction instruction) throws QuestException {
         final Variable<String> variable = instruction.get(Argument.STRING);
         final Variable<String> regex = instruction.get(Argument.STRING);
         final String variableAddress = instruction.getID().toString();

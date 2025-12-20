@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.hunger;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -39,7 +39,7 @@ public class HungerConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<Number> hunger = instruction.get(Argument.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(HungerCondition.class);
         return new PrimaryServerThreadPlayerCondition(

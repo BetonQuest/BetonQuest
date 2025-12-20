@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 /**
  * Instruction where everything except package and instruction string is mocked.
  */
-public class MockedInstruction extends Instruction {
+public class MockedInstruction extends DefaultInstruction {
 
     /**
      * Creates a new mocked instruction.

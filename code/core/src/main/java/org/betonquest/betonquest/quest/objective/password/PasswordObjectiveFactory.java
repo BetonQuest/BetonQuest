@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.password;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Factory for creating {@link PasswordObjective} instances from {@link Instruction}s.
+ * Factory for creating {@link PasswordObjective} instances from {@link DefaultInstruction}s.
  */
 public class PasswordObjectiveFactory implements ObjectiveFactory {
 
@@ -23,7 +23,7 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final String pattern = instruction.get(Argument.STRING).getValue(null);
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         final Pattern regex = Pattern.compile(pattern, regexFlags);

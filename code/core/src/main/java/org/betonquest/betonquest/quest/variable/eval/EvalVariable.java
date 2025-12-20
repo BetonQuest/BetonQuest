@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.eval;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -12,10 +12,11 @@ import org.jetbrains.annotations.Nullable;
  * A variable which evaluates to another variable.
  */
 public class EvalVariable implements NullableVariable {
+
     /**
      * The original instruction.
      */
-    private final Instruction instruction;
+    private final DefaultInstruction instruction;
 
     /**
      * The evaluation input.
@@ -28,7 +29,7 @@ public class EvalVariable implements NullableVariable {
      * @param instruction the original instruction
      * @param evaluation  the evaluation input
      */
-    public EvalVariable(final Instruction instruction, final Variable<String> evaluation) {
+    public EvalVariable(final DefaultInstruction instruction, final Variable<String> evaluation) {
         this.instruction = instruction;
         this.evaluation = evaluation;
     }

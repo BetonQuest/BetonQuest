@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -68,7 +68,7 @@ public class ChestPutObjective extends Objective implements Listener {
      * @param multipleAccess     argument to manage the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
-    public ChestPutObjective(final Instruction instruction,
+    public ChestPutObjective(final DefaultInstruction instruction,
                              final NullableCondition chestItemCondition, @Nullable final ChestTakeEvent chestTakeEvent,
                              final Variable<Location> loc, final IngameNotificationSender occupiedSender,
                              final boolean multipleAccess) throws QuestException {

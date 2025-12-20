@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.entity;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -41,16 +41,16 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
     }
 
-    private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
+    private EntityCondition parseEntityCondition(final DefaultInstruction instruction) throws QuestException {
         final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<Number> range = instruction.get(Argument.NUMBER);
@@ -63,6 +63,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
      * Parses a string to a Spell with level.
      */
     private static final class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
+
         /**
          * The default instance of {@link EntityAmount}.
          */

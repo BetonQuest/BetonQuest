@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
 
 /**
- * Factory to create {@link MythicCastSkillEvent}s from {@link Instruction}s.
+ * Factory to create {@link MythicCastSkillEvent}s from {@link DefaultInstruction}s.
  */
 public class MythicCastSkillEventFactory implements PlayerEventFactory {
 
@@ -38,7 +38,7 @@ public class MythicCastSkillEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<String> skillName = instruction.get(Argument.STRING);
         final BetonQuestLogger log = loggerFactory.create(MythicCastSkillEvent.class);
         return new OnlineEventAdapter(

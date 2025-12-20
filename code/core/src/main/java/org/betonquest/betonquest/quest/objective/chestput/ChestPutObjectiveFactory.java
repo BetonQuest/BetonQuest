@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.chestput;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
@@ -20,7 +20,7 @@ import org.bukkit.Location;
 import java.util.List;
 
 /**
- * Factory for creating {@link ChestPutObjective} instances from {@link Instruction}s.
+ * Factory for creating {@link ChestPutObjective} instances from {@link DefaultInstruction}s.
  */
 public class ChestPutObjectiveFactory implements ObjectiveFactory {
 
@@ -46,7 +46,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         final boolean multipleAccess = Boolean.parseBoolean(instruction.getValue("multipleaccess"));

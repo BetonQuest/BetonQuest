@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.pickup;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -32,7 +32,7 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @param pickupItems  the items to be picked up
      * @throws QuestException if there is an error in the instruction
      */
-    public PickupObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public PickupObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                            final Variable<List<Item>> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;

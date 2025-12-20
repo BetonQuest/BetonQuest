@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
     /**
      * The created instruction of the object.
      */
-    private final Instruction instruction;
+    private final DefaultInstruction instruction;
 
     /**
      * Constructor of an identifier that creates an instruction from the given function.
@@ -30,7 +30,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
      */
     protected InstructionIdentifier(final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                     final String identifier,
-                                    final QuestFunction<Identifier, Instruction> instructionFunction) throws QuestException {
+                                    final QuestFunction<Identifier, DefaultInstruction> instructionFunction) throws QuestException {
         super(packManager, pack, identifier);
         this.instruction = instructionFunction.apply(this);
     }
@@ -54,7 +54,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
             }
-            return new Instruction(variables, packManager, id.getPackage(), id, rawInstruction);
+            return new DefaultInstruction(variables, packManager, id.getPackage(), id, rawInstruction);
         });
     }
 
@@ -63,7 +63,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
      *
      * @return the instruction of this ID
      */
-    public Instruction getInstruction() {
+    public DefaultInstruction getInstruction() {
         return instruction;
     }
 }

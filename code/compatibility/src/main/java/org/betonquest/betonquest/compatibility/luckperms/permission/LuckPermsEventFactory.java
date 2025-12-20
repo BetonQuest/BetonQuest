@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms.permission;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -34,7 +34,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
 
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -47,7 +47,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
         };
     }
 
-    private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
+    private LuckPermsNodeBuilder getNodeBuilder(final DefaultInstruction instruction) throws QuestException {
         final Variable<List<String>> permissions = instruction.getValueList("permission", Argument.STRING, VariableList.notEmptyChecker());
         final Variable<List<String>> contexts = instruction.getValueList("context", Argument.STRING);
         final Variable<String> value = instruction.getValue("value", Argument.STRING, "");

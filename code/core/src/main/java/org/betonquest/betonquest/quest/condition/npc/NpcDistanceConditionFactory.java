@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.npc;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
- * Factory to create {@link NpcDistanceCondition}s from {@link Instruction}s.
+ * Factory to create {@link NpcDistanceCondition}s from {@link DefaultInstruction}s.
  */
 public class NpcDistanceConditionFactory implements PlayerConditionFactory {
 
@@ -48,7 +48,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Number> distance = instruction.get(Argument.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

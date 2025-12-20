@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
@@ -43,9 +43,9 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param log               the custom logger for this class
-     * @param variables the variable processor to create and resolve variables
-     * @param packManager       the quest package manager to get quest packages from
+     * @param log         the custom logger for this class
+     * @param variables   the variable processor to create and resolve variables
+     * @param packManager the quest package manager to get quest packages from
      */
     public DecentHologramsIntegrator(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");
@@ -79,7 +79,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
             final String group = match.group();
             try {
                 final VariableID variable = new VariableID(variables, packManager, pack, group);
-                final Instruction instruction = variable.getInstruction();
+                final DefaultInstruction instruction = variable.getInstruction();
                 return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
                 log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);

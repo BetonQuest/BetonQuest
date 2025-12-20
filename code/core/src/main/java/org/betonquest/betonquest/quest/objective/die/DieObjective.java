@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.die;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -46,7 +46,7 @@ public class DieObjective extends Objective implements Listener {
      * @param location    the location where the player should respawn
      * @throws QuestException if there is an error in the instruction
      */
-    public DieObjective(final Instruction instruction, final boolean cancel, @Nullable final Variable<Location> location) throws QuestException {
+    public DieObjective(final DefaultInstruction instruction, final boolean cancel, @Nullable final Variable<Location> location) throws QuestException {
         super(instruction);
         this.cancel = cancel;
         this.location = location;

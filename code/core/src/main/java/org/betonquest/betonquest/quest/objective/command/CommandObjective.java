@@ -4,7 +4,7 @@ import org.apache.commons.lang3.Strings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -57,7 +57,7 @@ public class CommandObjective extends Objective implements Listener {
      * @param failEvents  events to trigger if the command is not matched
      * @throws QuestException if there is an error in the instruction
      */
-    public CommandObjective(final Instruction instruction, final Variable<String> command,
+    public CommandObjective(final DefaultInstruction instruction, final Variable<String> command,
                             final boolean ignoreCase, final boolean exact, final boolean cancel,
                             final Variable<List<EventID>> failEvents) throws QuestException {
         super(instruction);

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -11,9 +11,10 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 
 /**
- * Factory to create {@link CanLevelCondition}s from {@link Instruction}s.
+ * Factory to create {@link CanLevelCondition}s from {@link DefaultInstruction}s.
  */
 public class CanLevelConditionFactory implements PlayerConditionFactory {
+
     /**
      * The data for the primary server thread.
      */
@@ -29,7 +30,7 @@ public class CanLevelConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<Job> job = instruction.get(JobParser.JOB);
         return new PrimaryServerThreadPlayerCondition(new CanLevelCondition(job), data);
     }

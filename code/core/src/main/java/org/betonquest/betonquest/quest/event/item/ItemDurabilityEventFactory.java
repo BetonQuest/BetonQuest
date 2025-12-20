@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -19,6 +19,7 @@ import java.util.Random;
  * Factory for the item durability event.
  */
 public class ItemDurabilityEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -41,7 +42,7 @@ public class ItemDurabilityEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
         final Variable<PointType> operation = instruction.get(Argument.ENUM(PointType.class));
         final Variable<Number> amount = instruction.get(Argument.NUMBER);

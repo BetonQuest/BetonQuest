@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -15,9 +15,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Factory to create global tag events from {@link Instruction}s.
+ * Factory to create global tag events from {@link DefaultInstruction}s.
  */
 public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * BetonQuest instance to provide to events.
      */
@@ -33,7 +34,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
         final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -44,7 +45,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         final String action = instruction.get(Argument.STRING).getValue(null);
         final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
         return switch (action.toLowerCase(Locale.ROOT)) {

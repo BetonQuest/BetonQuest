@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.jump;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.event.EventHandler;
@@ -21,7 +21,7 @@ public class JumpObjective extends CountingObjective implements Listener {
      * @param targetAmount the target amount of jumps
      * @throws QuestException if there is an error in the instruction
      */
-    public JumpObjective(final Instruction instruction, final Variable<Number> targetAmount) throws QuestException {
+    public JumpObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount) throws QuestException {
         super(instruction, targetAmount, "times_to_jump");
     }
 

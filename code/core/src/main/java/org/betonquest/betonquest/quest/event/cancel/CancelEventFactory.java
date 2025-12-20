@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.cancel;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -14,6 +14,7 @@ import org.betonquest.betonquest.id.QuestCancelerID;
  * Factory for the cancel event.
  */
 public class CancelEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -36,7 +37,7 @@ public class CancelEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<QuestCancelerID> cancelerID = instruction.get(QuestCancelerID::new);
         final boolean bypass = instruction.hasArgument("bypass");
         return new OnlineEventAdapter(new CancelEvent(featureApi, cancelerID, bypass),

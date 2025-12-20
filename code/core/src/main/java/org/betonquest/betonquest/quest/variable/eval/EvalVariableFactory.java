@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.eval;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -22,12 +22,12 @@ public class EvalVariableFactory implements PlayerVariableFactory, PlayerlessVar
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
@@ -38,12 +38,12 @@ public class EvalVariableFactory implements PlayerVariableFactory, PlayerlessVar
      * @return the parsed {@link NullableVariable}
      * @throws QuestException if the instruction is invalid
      */
-    protected NullableVariable parseNullableVariable(final Instruction instruction) throws QuestException {
+    protected NullableVariable parseNullableVariable(final DefaultInstruction instruction) throws QuestException {
         final String rawInstruction = String.join(".", instruction.getValueParts());
         return new EvalVariable(instruction, instruction.get(rawInstruction, Argument.STRING));
     }
 
-    private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
+    private NullableVariableAdapter parseInstruction(final DefaultInstruction instruction) throws QuestException {
         return new NullableVariableAdapter(parseNullableVariable(instruction));
     }
 }

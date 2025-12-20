@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 
 import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -22,7 +22,7 @@ import org.bukkit.Location;
 import java.util.Map;
 
 /**
- * Factory to create {@link MythicSpawnMobEvent}s from {@link Instruction}s.
+ * Factory to create {@link MythicSpawnMobEvent}s from {@link DefaultInstruction}s.
  */
 public class MythicSpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -64,7 +64,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);
@@ -79,7 +79,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
         final Variable<Number> amount = instruction.get(Argument.NUMBER);

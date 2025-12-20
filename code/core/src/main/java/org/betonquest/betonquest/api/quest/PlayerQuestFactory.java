@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.quest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 
 /**
  * Factory to create a specific {@link T}.
@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
  */
 @FunctionalInterface
 public interface PlayerQuestFactory<T> {
+
     /**
      * Parses an instruction to create a {@link T}.
      *
@@ -17,5 +18,5 @@ public interface PlayerQuestFactory<T> {
      * @return {@link T} represented by the instruction
      * @throws QuestException when the instruction cannot be parsed
      */
-    T parsePlayer(Instruction instruction) throws QuestException;
+    T parsePlayer(DefaultInstruction instruction) throws QuestException;
 }

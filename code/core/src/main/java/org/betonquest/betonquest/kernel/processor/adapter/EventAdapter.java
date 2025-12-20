@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -31,7 +31,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
     /**
      * Instruction used to create the types.
      */
-    private final Instruction instruction;
+    private final DefaultInstruction instruction;
 
     /**
      * Conditions that must be met to execute.
@@ -49,7 +49,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
      * @throws IllegalArgumentException if there is no type provided
      * @throws QuestException           when there was an error parsing conditions
      */
-    public EventAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Instruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
+    public EventAdapter(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final DefaultInstruction instruction, @Nullable final PlayerEvent player, @Nullable final PlayerlessEvent playerless) throws QuestException {
         super(instruction.getPackage(), player, playerless);
         this.log = log;
         this.questTypeApi = questTypeApi;

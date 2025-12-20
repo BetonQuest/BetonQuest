@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.take;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -30,7 +30,7 @@ public class TakeEventFactory extends AbstractTakeEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(TakeEvent.class);
         final List<CheckType> checkOrder = getCheckOrder(instruction);
         final Variable<List<Item>> questItems = instruction.getList(InstructionIdentifierArgument.ITEM);

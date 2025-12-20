@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.heroes.condition;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -15,9 +15,10 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 
 /**
- * Factory to create {@link HeroesClassCondition}s from {@link Instruction}s.
+ * Factory to create {@link HeroesClassCondition}s from {@link DefaultInstruction}s.
  */
 public class HeroesClassConditionFactory implements PlayerConditionFactory {
+
     /**
      * The logger factory.
      */
@@ -55,7 +56,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<HeroesClassType> classType = instruction.get(Argument.ENUM(HeroesClassType.class));
         final Variable<String> heroClass = instruction.get(Argument.STRING);
         final Variable<Number> level = instruction.getValue("level", Argument.NUMBER);

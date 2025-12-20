@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.adapter;
 
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.quest.PlayerQuestFactory;
 import org.betonquest.betonquest.api.quest.PlayerlessQuestFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link PlayerCondition}s and {@link PlayerlessCondition}s they create.
  */
 public class ConditionAdapterFactory extends QuestAdapterFactory<PlayerCondition, PlayerlessCondition, ConditionAdapter> {
+
     /**
      * Create a new adapter factory from {@link org.betonquest.betonquest.api.quest QuestFactories} for
      * {@link org.betonquest.betonquest.api.quest.condition Conditions}.
@@ -27,7 +28,7 @@ public class ConditionAdapterFactory extends QuestAdapterFactory<PlayerCondition
     }
 
     @Override
-    protected ConditionAdapter getAdapter(final Instruction instruction,
+    protected ConditionAdapter getAdapter(final DefaultInstruction instruction,
                                           @Nullable final PlayerCondition playerType,
                                           @Nullable final PlayerlessCondition playerlessType) {
         return new ConditionAdapter(instruction.getPackage(), playerType, playerlessType);

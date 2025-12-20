@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.math;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Factory to create math variables from {@link Instruction}s.
+ * Factory to create math variables from {@link DefaultInstruction}s.
  */
 public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVariableFactory {
 
@@ -40,17 +40,17 @@ public class MathVariableFactory implements PlayerVariableFactory, PlayerlessVar
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
     @SuppressWarnings("deprecation")
-    private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
+    private NullableVariableAdapter parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Matcher expressionMatcher = CALC_REGEX.matcher(String.join(".", instruction.getValueParts()));
         if (!expressionMatcher.matches()) {
             throw new QuestException("invalid format");

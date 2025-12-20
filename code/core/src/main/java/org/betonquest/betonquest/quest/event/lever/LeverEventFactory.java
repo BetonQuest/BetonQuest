@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -18,6 +18,7 @@ import org.bukkit.Location;
  * Factory for {@link LeverEvent}.
  */
 public class LeverEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
+
     /**
      * Data for primary server thread access.
      */
@@ -33,16 +34,16 @@ public class LeverEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createLeverEvent(instruction), data);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createLeverEvent(instruction), data);
     }
 
-    private NullableEventAdapter createLeverEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter createLeverEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         final Variable<StateType> stateType = instruction.get(Argument.ENUM(StateType.class));
         return new NullableEventAdapter(new LeverEvent(stateType, location));

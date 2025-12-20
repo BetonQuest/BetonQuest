@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.step;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -19,6 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
  * The player must step on the pressure plate.
  */
 public class StepObjective extends Objective implements Listener {
+
     /**
      * The key for the location property.
      */
@@ -42,7 +43,7 @@ public class StepObjective extends Objective implements Listener {
      * @param pressurePlateSelector the selector for the pressure plate block
      * @throws QuestException if there is an error in the instruction
      */
-    public StepObjective(final Instruction instruction, final Variable<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
+    public StepObjective(final DefaultInstruction instruction, final Variable<Location> loc, final BlockSelector pressurePlateSelector) throws QuestException {
         super(instruction);
         this.loc = loc;
         this.pressurePlateSelector = pressurePlateSelector;

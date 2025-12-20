@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.variable;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveDataFactory;
@@ -36,7 +36,7 @@ public class VariableObjective extends Objective {
      * @param instruction the instruction that created this objective
      * @throws QuestException if there is an error in the instruction
      */
-    public VariableObjective(final Instruction instruction) throws QuestException {
+    public VariableObjective(final DefaultInstruction instruction) throws QuestException {
         super(instruction, VARIABLE_FACTORY);
     }
 
@@ -91,6 +91,7 @@ public class VariableObjective extends Objective {
      * The data class for the {@link VariableObjective}.
      */
     public static class VariableData extends ObjectiveData {
+
         /**
          * Pattern to split the serialized data into key-value pairs.
          */

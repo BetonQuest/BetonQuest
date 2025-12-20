@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 
 /**
- * Factory for {@link CitizensStopEvent} from the {@link Instruction}.
+ * Factory for {@link CitizensStopEvent} from the {@link DefaultInstruction}.
  */
 public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerEventFactory {
 
@@ -49,16 +49,16 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessEvent(createCitizensStopEvent(instruction), primaryServerThreadData);
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadEvent(createCitizensStopEvent(instruction), primaryServerThreadData);
     }
 
-    private NullableEventAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter createCitizensStopEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
         return new NullableEventAdapter(new CitizensStopEvent(featureApi, npcId, citizensMoveController));
     }

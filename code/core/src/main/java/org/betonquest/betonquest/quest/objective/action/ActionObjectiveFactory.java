@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.action;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -13,7 +13,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.Optional;
 
 /**
- * Factory class for creating {@link ActionObjective} instances from {@link Instruction}s.
+ * Factory class for creating {@link ActionObjective} instances from {@link DefaultInstruction}s.
  */
 public class ActionObjectiveFactory implements ObjectiveFactory {
 
@@ -29,7 +29,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Variable<Click> action = instruction.get(Argument.ENUM(Click.class));
         final Variable<Optional<BlockSelector>> selector = instruction.get(Argument.BLOCK_SELECTOR.prefilterOptional(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");

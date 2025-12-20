@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
@@ -88,7 +88,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
             final String group = match.group();
             try {
                 final VariableID variable = new VariableID(variableProcessor, packManager, pack, group);
-                final Instruction instruction = variable.getInstruction();
+                final DefaultInstruction instruction = variable.getInstruction();
                 final String prefix = variableProcessor.get(variable).allowsPlayerless() ? "{bqg:" : "{bq:";
                 return prefix + variable.getPackage().getQuestPath() + ":" + instruction + "}";
             } catch (final QuestException exception) {

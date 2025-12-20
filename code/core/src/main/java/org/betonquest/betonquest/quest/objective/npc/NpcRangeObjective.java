@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.QuestListException;
 import org.betonquest.betonquest.api.common.function.QuestBiPredicate;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -60,7 +60,7 @@ public class NpcRangeObjective extends Objective {
      * @param trigger     the trigger type for the objective
      * @throws QuestException if the instruction is invalid
      */
-    public NpcRangeObjective(final Instruction instruction, final Variable<List<NpcID>> npcIds, final Variable<Number> radius,
+    public NpcRangeObjective(final DefaultInstruction instruction, final Variable<List<NpcID>> npcIds, final Variable<Number> radius,
                              final Variable<Trigger> trigger) throws QuestException {
         super(instruction);
         this.npcIds = npcIds;

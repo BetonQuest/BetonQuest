@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.logic;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import java.util.List;
 
 /**
- * Factory to create FirstEvents from events from {@link Instruction}s.
+ * Factory to create FirstEvents from events from {@link DefaultInstruction}s.
  */
 public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -33,16 +33,16 @@ public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return createFirstEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return createFirstEvent(instruction);
     }
 
-    private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter createFirstEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<List<EventID>> list = instruction.getList(EventID::new);
         return new NullableEventAdapter(new FirstEvent(list, questTypeApi));
     }

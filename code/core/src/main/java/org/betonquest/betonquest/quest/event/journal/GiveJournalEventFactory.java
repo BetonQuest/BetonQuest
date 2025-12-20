@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -10,9 +10,10 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.betonquest.betonquest.data.PlayerDataStorage;
 
 /**
- * Creates a new GiveJournalEvent from an {@link Instruction}.
+ * Creates a new GiveJournalEvent from an {@link DefaultInstruction}.
  */
 public class GiveJournalEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -42,7 +43,7 @@ public class GiveJournalEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) {
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new GiveJournalEvent(dataStorage::get),
                 loggerFactory.create(GiveJournalEvent.class),

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.gamemode;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -40,7 +40,7 @@ public class GameModeConditionFactory implements PlayerConditionFactory {
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<GameMode> gameMode = instruction.get(Argument.ENUM(GameMode.class));
         final BetonQuestLogger log = loggerFactory.create(GameModeCondition.class);
         return new PrimaryServerThreadPlayerCondition(

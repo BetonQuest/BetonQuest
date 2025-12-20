@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.moon;
 
 import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -19,7 +19,7 @@ import org.bukkit.World;
 import java.util.List;
 
 /**
- * Factory to create moon phase conditions from {@link Instruction}s.
+ * Factory to create moon phase conditions from {@link DefaultInstruction}s.
  */
 public class MoonPhaseConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
@@ -38,7 +38,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<List<MoonPhase>> moonPhases = instruction.getList(Argument.ENUM(MoonPhase.class));
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
                 Argument.WORLD);
@@ -47,7 +47,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         final Variable<World> world = instruction.getValue("world", Argument.WORLD);
         if (world == null) {
             return new ThrowExceptionPlayerlessCondition();

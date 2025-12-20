@@ -59,7 +59,7 @@ class VariableInstructionTest {
         final VariableID variableID2 = mock(VariableID.class);
         final VariableInstruction original = new VariableInstruction(mock(Variables.class), mock(QuestPackageManager.class),
                 questPackage, variableID1, "%instruction%");
-        final Instruction copy = original.copy(variableID2);
+        final DefaultInstruction copy = original.copy(variableID2);
         assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
         assertNotEquals(original.getID(), copy.getID(), "Should have different ID");
     }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Creates new {@link PickRandomEvent} instances from an {@link Instruction}.
+ * Creates new {@link PickRandomEvent} instances from an {@link DefaultInstruction}.
  */
 public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
@@ -41,16 +41,16 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
     @Override
-    public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessEvent parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return createPickRandomEvent(instruction);
     }
 
-    private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
+    private NullableEventAdapter createPickRandomEvent(final DefaultInstruction instruction) throws QuestException {
         final Variable<List<RandomEvent>> events = instruction.getList(string -> {
             final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {

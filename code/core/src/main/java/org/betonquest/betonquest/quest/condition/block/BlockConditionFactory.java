@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.block;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -16,9 +16,10 @@ import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 
 /**
- * Factory to create test for block conditions from {@link Instruction}s.
+ * Factory to create test for block conditions from {@link DefaultInstruction}s.
  */
 public class BlockConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
+
     /**
      * Data used for condition check on the primary server thread.
      */
@@ -34,16 +35,16 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     @Override
-    public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerCondition parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerCondition(parseBlockCondition(instruction), data);
     }
 
     @Override
-    public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessCondition parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return new PrimaryServerThreadPlayerlessCondition(parseBlockCondition(instruction), data);
     }
 
-    private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
+    private NullableConditionAdapter parseBlockCondition(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.get(Argument.LOCATION);
         final Variable<BlockSelector> selector = instruction.get(Argument.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");

@@ -6,7 +6,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -57,7 +57,7 @@ public class DelayObjective extends Objective {
      * @param delay       the delay time in seconds, minutes, or ticks
      * @throws QuestException if there is an error in the instruction
      */
-    public DelayObjective(final Instruction instruction, final Variable<Number> interval,
+    public DelayObjective(final DefaultInstruction instruction, final Variable<Number> interval,
                           final Variable<Number> delay) throws QuestException {
         super(instruction, DELAY_FACTORY);
         this.delay = delay;
@@ -176,6 +176,7 @@ public class DelayObjective extends Objective {
      * Data class for the DelayObjective.
      */
     public static class DelayData extends ObjectiveData {
+
         /**
          * The timestamp when the delay is over.
          */

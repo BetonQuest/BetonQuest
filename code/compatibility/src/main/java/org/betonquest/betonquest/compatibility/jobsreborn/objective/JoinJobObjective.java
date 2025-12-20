@@ -4,7 +4,7 @@ import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -28,7 +28,7 @@ public class JoinJobObjective extends Objective implements Listener {
      * @param job         the job to join
      * @throws QuestException if the instruction is invalid
      */
-    public JoinJobObjective(final Instruction instruction, final Variable<Job> job) throws QuestException {
+    public JoinJobObjective(final DefaultInstruction instruction, final Variable<Job> job) throws QuestException {
         super(instruction);
         this.job = job;
     }

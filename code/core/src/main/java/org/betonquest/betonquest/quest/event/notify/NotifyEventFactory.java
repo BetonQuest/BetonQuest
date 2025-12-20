@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.notify;
 
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -85,7 +85,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         final Matcher keyValueMatcher = KEY_VALUE_PATTERN.matcher(rawInstruction);
 
@@ -99,20 +99,20 @@ public class NotifyEventFactory implements PlayerEventFactory {
         ), data);
     }
 
-    private Text getText(final Instruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {
+    private Text getText(final DefaultInstruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {
         final int indexEnd = keyValueMatcher.find() ? keyValueMatcher.start() : rawInstruction.length();
         keyValueMatcher.reset();
         final String langTexts = rawInstruction.substring(0, indexEnd);
         return getLanguages(instruction, langTexts);
     }
 
-    private NotifyIO processInstruction(final Instruction instruction, final Matcher keyValueMatcher) throws QuestException {
+    private NotifyIO processInstruction(final DefaultInstruction instruction, final Matcher keyValueMatcher) throws QuestException {
         final Map<String, String> data = getData(keyValueMatcher);
         final String category = data.remove("category");
         return Notify.get(instruction.getPackage(), category, data);
     }
 
-    private Text getLanguages(final Instruction instruction, final String texts) throws QuestException {
+    private Text getLanguages(final DefaultInstruction instruction, final String texts) throws QuestException {
         final Map<String, Variable<String>> translations = new HashMap<>();
         final Matcher languageMatcher = LANGUAGE_PATTERN.matcher(texts);
 

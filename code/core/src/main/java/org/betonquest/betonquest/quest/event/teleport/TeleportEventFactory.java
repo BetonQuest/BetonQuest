@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.teleport;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -14,9 +14,10 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 import org.bukkit.Location;
 
 /**
- * Factory to create teleport events from {@link Instruction}s.
+ * Factory to create teleport events from {@link DefaultInstruction}s.
  */
 public class TeleportEventFactory implements PlayerEventFactory {
+
     /**
      * Logger factory to create a logger for the events.
      */
@@ -46,7 +47,7 @@ public class TeleportEventFactory implements PlayerEventFactory {
     }
 
     @Override
-    public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerEvent parsePlayer(final DefaultInstruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(Argument.LOCATION);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new TeleportEvent(conversationApi, location),

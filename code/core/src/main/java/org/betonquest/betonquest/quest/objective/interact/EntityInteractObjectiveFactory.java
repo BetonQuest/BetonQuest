@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.interact;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -14,9 +14,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory for creating {@link EntityInteractObjective} instances from {@link Instruction}s.
+ * Factory for creating {@link EntityInteractObjective} instances from {@link DefaultInstruction}s.
  */
 public class EntityInteractObjectiveFactory implements ObjectiveFactory {
+
     /**
      * The key for any hand.
      */
@@ -29,7 +30,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Override
-    public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    public Objective parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final Variable<Interaction> interaction = instruction.get(Argument.ENUM(Interaction.class));
         final Variable<EntityType> mobType = instruction.get(Argument.ENUM(EntityType.class));
         final Variable<Number> targetAmount = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
@@ -44,7 +45,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     }
 
     @Nullable
-    private EquipmentSlot getEquipmentSlot(final Instruction instruction) throws QuestException {
+    private EquipmentSlot getEquipmentSlot(final DefaultInstruction instruction) throws QuestException {
         final String handString = instruction.getValue("hand");
         if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
             return EquipmentSlot.HAND;

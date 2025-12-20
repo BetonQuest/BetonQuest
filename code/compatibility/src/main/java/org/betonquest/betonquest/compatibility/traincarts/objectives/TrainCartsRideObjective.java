@@ -6,7 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -29,6 +29,7 @@ import java.util.UUID;
  * If the train name is not specified, the {@link CountingObjective} will be completed when the player rides any train.
  */
 public class TrainCartsRideObjective extends CountingObjective implements Listener {
+
     /**
      * The conversion factor from milliseconds to seconds.
      */
@@ -52,7 +53,7 @@ public class TrainCartsRideObjective extends CountingObjective implements Listen
      * @param name         the name of the train, maybe empty
      * @throws QuestException if the instruction is invalid
      */
-    public TrainCartsRideObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public TrainCartsRideObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                                    final Variable<String> name) throws QuestException {
         super(instruction, targetAmount, null);
         this.name = name;

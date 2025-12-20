@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.objective.location;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -11,6 +11,7 @@ import org.bukkit.Location;
  * Player has to reach certain radius around the specified location.
  */
 public class LocationObjective extends AbstractLocationObjective {
+
     /**
      * The key for the location property.
      */
@@ -34,7 +35,7 @@ public class LocationObjective extends AbstractLocationObjective {
      * @param range       the VariableNumber object representing the range
      * @throws QuestException if there is an error while parsing the instruction
      */
-    public LocationObjective(final Instruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
+    public LocationObjective(final DefaultInstruction instruction, final Variable<Location> loc, final Variable<Number> range) throws QuestException {
         super(instruction);
         this.loc = loc;
         this.range = range;

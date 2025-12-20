@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.block;
 
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -80,7 +80,7 @@ public class BlockObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public BlockObjective(final Instruction instruction, final Variable<Number> targetAmount,
+    public BlockObjective(final DefaultInstruction instruction, final Variable<Number> targetAmount,
                           final Variable<BlockSelector> selector, final boolean exactMatch, final boolean noSafety,
                           @Nullable final Variable<Location> location, @Nullable final Variable<Location> region,
                           final boolean ignoreCancel, final IngameNotificationSender blockBreakSender,

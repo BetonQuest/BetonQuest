@@ -2,7 +2,7 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
@@ -16,7 +16,7 @@ public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVari
     /**
      * Instruction used to create the types.
      */
-    private final Instruction instruction;
+    private final DefaultInstruction instruction;
 
     /**
      * Create a new Wrapper for variables with instruction.
@@ -26,7 +26,7 @@ public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVari
      * @param playerless  the type working without a profile
      * @throws IllegalArgumentException if there is no type provided
      */
-    public VariableAdapter(final Instruction instruction, @Nullable final PlayerVariable player, @Nullable final PlayerlessVariable playerless) {
+    public VariableAdapter(final DefaultInstruction instruction, @Nullable final PlayerVariable player, @Nullable final PlayerlessVariable playerless) {
         super(instruction.getPackage(), player, playerless);
         this.instruction = instruction;
     }
@@ -53,7 +53,7 @@ public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVari
      *
      * @return the instruction used to create the types
      */
-    public Instruction getInstruction() {
+    public DefaultInstruction getInstruction() {
         return instruction;
     }
 

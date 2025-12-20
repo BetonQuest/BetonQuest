@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.variable.random;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -38,16 +38,16 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
     }
 
     @Override
-    public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
+    public PlayerVariable parsePlayer(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
     @Override
-    public PlayerlessVariable parsePlayerless(final Instruction instruction) throws QuestException {
+    public PlayerlessVariable parsePlayerless(final DefaultInstruction instruction) throws QuestException {
         return parseInstruction(instruction);
     }
 
-    private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
+    private NullableVariableAdapter parseInstruction(final DefaultInstruction instruction) throws QuestException {
         final String type = instruction.next();
         final boolean fractional;
         final DecimalFormat format;
@@ -80,7 +80,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         return null;
     }
 
-    private Variable<Number> parseFirst(final Instruction instruction) throws QuestException {
+    private Variable<Number> parseFirst(final DefaultInstruction instruction) throws QuestException {
         final String start = instruction.next();
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
@@ -94,7 +94,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         }
     }
 
-    private Variable<Number> parseSecond(final Instruction instruction) throws QuestException {
+    private Variable<Number> parseSecond(final DefaultInstruction instruction) throws QuestException {
         final String start = instruction.current().substring(instruction.current().indexOf('~') + 1);
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
@@ -107,11 +107,11 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
      * Converts a variable part into a Variable Number.
      *
      * @param start       The String to start with, including '{'
-     * @param instruction The {@link Instruction} to retrieve a Variable
+     * @param instruction The {@link DefaultInstruction} to retrieve a Variable
      * @return a new Variable Number
      * @throws QuestException if the instruction ends before a variable is resolved
      */
-    private Variable<Number> parseToVariable(final String start, final Instruction instruction) throws QuestException {
+    private Variable<Number> parseToVariable(final String start, final DefaultInstruction instruction) throws QuestException {
         final StringBuilder builder = new StringBuilder("%");
         builder.append(start.substring(1)).append('.');
         while (true) {

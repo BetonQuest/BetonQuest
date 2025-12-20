@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.objective.logout;
 
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.event.EventHandler;
@@ -21,7 +21,7 @@ public class LogoutObjective extends Objective implements Listener {
      * @param instruction the instruction that created this objective
      * @throws QuestException if there is an error in the instruction
      */
-    public LogoutObjective(final Instruction instruction) throws QuestException {
+    public LogoutObjective(final DefaultInstruction instruction) throws QuestException {
         super(instruction);
     }
 

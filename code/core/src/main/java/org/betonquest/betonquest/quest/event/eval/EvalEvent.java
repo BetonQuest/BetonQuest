@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.eval;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -75,7 +75,7 @@ public class EvalEvent implements NullableEvent {
     public static EventAdapter createEvent(final Variables variables, final QuestPackageManager packManager,
                                            final EventTypeRegistry eventTypeRegistry,
                                            final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction eventInstruction = new Instruction(variables, packManager, pack, null, instruction);
+        final DefaultInstruction eventInstruction = new DefaultInstruction(variables, packManager, pack, null, instruction);
         final TypeFactory<EventAdapter> eventFactory = eventTypeRegistry.getFactory(eventInstruction.getPart(0));
         return eventFactory.parseInstruction(eventInstruction);
     }
