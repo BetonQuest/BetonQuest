@@ -122,20 +122,12 @@ public class DefaultInstruction implements Instruction {
         }
     }
 
-    /**
-     * Get the source QuestPackage.
-     *
-     * @return the package containing this instruction
-     */
+    @Override
     public QuestPackage getPackage() {
         return pack;
     }
 
-    /**
-     * Get the {@link Identifier} of this instruction.
-     *
-     * @return the instruction identifier
-     */
+    @Override
     public Identifier getID() {
         return identifier;
     }
@@ -180,21 +172,12 @@ public class DefaultInstruction implements Instruction {
         return instructionParts.getParts();
     }
 
-    /**
-     * Copy this instruction. The copy has no consumed arguments.
-     *
-     * @return a copy of this instruction
-     */
+    @Override
     public DefaultInstruction copy() {
         return copy(identifier);
     }
 
-    /**
-     * Copy this instruction but overwrite the ID of the copy. The copy has no consumed arguments.
-     *
-     * @param newID the ID to identify the copied instruction with
-     * @return copy of this instruction with the new ID
-     */
+    @Override
     public DefaultInstruction copy(final Identifier newID) {
         return new DefaultInstruction(this, newID);
     }
@@ -209,12 +192,7 @@ public class DefaultInstruction implements Instruction {
                 .map(part -> part.substring(prefix.length() + 1)).orElse(defaultValue);
     }
 
-    /**
-     * Checks if the instruction contains the argument.
-     *
-     * @param argument the argument to check
-     * @return if the instruction contains that argument, ignoring cases
-     */
+    @Override
     public boolean hasArgument(final String argument) {
         return getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
     }

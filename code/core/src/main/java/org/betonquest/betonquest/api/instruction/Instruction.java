@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.api.instruction;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.parser.ArgumentConverter;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierArgumentConverter;
 import org.betonquest.betonquest.api.instruction.argument.parser.InstructionIdentifierArgumentConverter;
@@ -10,4 +12,40 @@ import org.betonquest.betonquest.api.instruction.argument.parser.PackageArgument
  */
 public interface Instruction extends InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter, InstructionIdentifierArgumentConverter {
 
+    /**
+     * Get the source QuestPackage.
+     *
+     * @return the package containing this instruction
+     */
+    QuestPackage getPackage();
+
+    /**
+     * Get the {@link Identifier} of this instruction.
+     *
+     * @return the instruction identifier
+     */
+    Identifier getID();
+
+    /**
+     * Copy this instruction. The copy has no consumed arguments.
+     *
+     * @return a copy of this instruction
+     */
+    Instruction copy();
+
+    /**
+     * Copy this instruction but overwrite the ID of the copy. The copy has no consumed arguments.
+     *
+     * @param newID the ID to identify the copied instruction with
+     * @return copy of this instruction with the new ID
+     */
+    Instruction copy(Identifier newID);
+
+    /**
+     * Checks if the instruction contains the argument.
+     *
+     * @param argument the argument to check
+     * @return if the instruction contains that argument, ignoring cases
+     */
+    boolean hasArgument(String argument);
 }
