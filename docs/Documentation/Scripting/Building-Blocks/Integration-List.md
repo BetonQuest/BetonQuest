@@ -300,7 +300,9 @@ When you install Heroes, all kills done via this plugin's skills will be counted
 
 #### Heroes Class: `heroesclass`
 
-This condition checks the classes of the player. The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`. You can optionally specify `level:` argument followed by the required level of the player.
+This condition checks the classes of the player.
+The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`.
+You can optionally specify `level:` argument followed by the required level of the player.
 
 !!! example
     ```YAML
@@ -309,7 +311,9 @@ This condition checks the classes of the player. The first argument must be `pri
 
 #### Heroes Attribute: `heroesattribute`
 
-This condition check's the level of a player's attribute. The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`. Second argument is the required level of the attribute. Must be greater than or equal the specified number.
+This condition check's the level of a player's attribute.
+The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`.
+Second argument is the required level of the attribute. Must be greater than or equal the specified number.
 
 !!! example
     ```YAML
@@ -475,7 +479,15 @@ Instead only use the permission to remove.
 
 #### Wand: `wand`
 
-This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list must have a minimal level defined after a colon.
+This condition can check wands. The first argument is either `hand`, `inventory` or `lost`.
+If you choose `lost`, the condition will check if the player has lost a wand.
+If you choose `hand`, the condition will check if you're holding a wand in your hand.
+`inventory` will check your whole inventory instead of just the hand.
+In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name
+of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand.
+In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount.
+You can also use optional `spells:` argument, followed by a list of spells separated with a comma.
+Each spell in this list must have a minimal level defined after a colon.
 
 !!! example
     ```YAML
@@ -708,27 +720,32 @@ events:
 
 #### MobKill: `mmobkill`
 
-You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
-the mob's internal name (the one defined in your MythicMobs configuration). Multiple mob names must be comma separated.
-You can optionally add the `amount:` argument to specify how many of these mobs need to be killed. It's also possible
-to add the optional arguments `minLevel` and `maxLevel` to further customize what mobs need to be killed.
-You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player
-within the defined radius when the mob is killed by any non-player source.
-Alternatively, you could use the `deathRadiusAllPlayers` argument to count all deaths of the specified mythic mob(s),
-no matter if it was killed by a non-player source or not.
+You need to kill the specified amount of MythicMobs to complete this objective.
 You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
-You can also add an optional `marked` argument to only count kills marked with the `mspawn` event. Variables are supported.
+
+| Parameter                      | Syntax                              | Default Value          | Explanation                                                                                                                                             |
+|--------------------------------|-------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _identifier_                   | strings                             | :octicons-x-circle-16: | Identifiers for mobs that must be killed, based on `mode`. Multiple mob identifiers must be comma separated.                                            |
+| _mode_                         | mode:mode                           | INTERNAL_NAME          | What of the mob should be checked. Either `INTERNAL_NAME` of the mob (as defined in the config) or `FACTION`.                                           |
+| _amount_                       | amount:number                       | 1                      | Amount of mobs required to kill.                                                                                                                        |
+| _minLevel_                     | minLevel:number                     | Disabled               | Minimal level of mob to kill.                                                                                                                           |
+| _maxLevel_                     | maxLevel:number                     | Disabled               | Maximal level of mob to kill.                                                                                                                           |
+| _neutralDeathRadiusAllPlayers_ | neutralDeathRadiusAllPlayers:number | Disabled               | Radius to count objective progress for each nearby player when the mob is killed by any non-player source.                                              |
+| _deathRadiusAllPlayers_        | deathRadiusAllPlayers:number        | Disabled               | Radius to count objective progress for each nearby player, no matter if it was killed by a non-player source or not. Disables the neutral death radius. |
+| _marked_                       | marked:text                         | None                   | Check for mark on mobs as used in `mspawnmob` event.                                                                                                    |
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
+`mode` gives the identification type.
 
-!!! example
-    ```YAML
-    mmobkill SkeletalKnight amount:2 events:reward
-    mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
-    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
-    mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
-    ```
+```YAML title="Example"
+killKnight: mmobkill SkeletalKnight amount:2 events:reward
+killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
+snailFaction: mmobkill snail mode:faction amount:10 events:reward
+killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
+killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
+bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION events:spawnTrader
+```
 
 ### Conditions
 
@@ -833,15 +850,21 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 
 ## Quests[](https://www.spigotmc.org/resources/3711/)
 
-Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
+Quests is another questing plugin, which offers very simple creation of quests.
+If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from
+this plugin you can use Custom Event Reward or Custom Condition Requirement.
+Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system,
+you can use `quest` event and `quest` condition.
 
 ### Condition Requirement (Quests)
 
-When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition". Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
+When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition".
+Now specify condition's name and it's package (like `package.conditionName`). Quests will check BetonQuest condition when starting the quest.
 
 ### Event Reward (Quests)
 
-When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
+When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event".
+Now specify event's name and it's package (like `package.eventName`). Quests will fire BetonQuest event when this reward will run.
 
 ### Conditions
 
@@ -859,7 +882,10 @@ If it contains spaces you need to quote it.
 
 #### Quest: `quest`
 
-This event will start the quest for the player. The first argument must be the name of the quest, as defined in `name` option in the quest. You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements (otherwise the quest will be forced to be started).
+This event will start the quest for the player.
+The first argument must be the name of the quest, as defined in `name` option in the quest.
+You can optionally add `check-requirements` argument if you want the event to respect this quest's requirements
+(otherwise the quest will be forced to be started).
 
 !!! example
     ```YAML
@@ -924,7 +950,9 @@ The first argument is class name, the second one is the required level.
 
 ## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
-BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
+BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by
+name of the plugin (Skript event is something else than BetonQuest event).
+Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
 
 You can use cross-package paths using `-` between the packages. Example:
 `player meets condition "default-Forest-Jack.Completed"`
@@ -933,8 +961,12 @@ You can use cross-package paths using `-` between the packages. Example:
 
 This entry will describe two things: Skript event and BetonQuest event.
 
-1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code. `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in BetonQuest event.
-2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.
+1. **Skript event** - `on [betonquest] event "id"` - this is the line you use in your scripts to trigger the code.
+  `betonquest` part is optional, and `id` is just some string, which must be equal to the one you specified in 
+  BetonQuest event.
+2. **BetonQuest event** - `skript` - this event will trigger the above Skript event in your scripts.
+  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in 
+  Skript event for it to be triggered.
 
 !!! example
     **In your script**
@@ -1094,7 +1126,7 @@ Adds or removes a permission or a group.
 | Parameter | Syntax                      | Default Value          | Explanation                                                                                                          |
 |-----------|-----------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------|
 | _action_  | `add` or `remove`           | :octicons-x-circle-16: | Whether to add or remove the thing specified using the following arguments.                                          |
-| _type_    | `perm` or `group`           | :octicons-x-circle-16: | Whether to use a permission or permission group.                                                                     |                                   | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
+| _type_    | `perm` or `group`           | :octicons-x-circle-16: | Whether to use a permission or permission group.                                                                     |
 | _name_    | The name of the permission. | :octicons-x-circle-16: | The name of the permission or group to add.                                                                          |
 | _world_   | The name of the world.      | Global                 | You can limit permissions to certain worlds only. If no world is set the permission will be set everywhere (global). |
 

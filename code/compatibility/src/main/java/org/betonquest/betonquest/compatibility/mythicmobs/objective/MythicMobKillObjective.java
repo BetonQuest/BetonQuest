@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -25,14 +26,24 @@ import java.util.List;
 public class MythicMobKillObjective extends CountingObjective implements Listener {
 
     /**
+     * The 'mode' string for properties.
+     */
+    private static final String MODE = "mode";
+
+    /**
      * The marked key.
      */
     private final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-marked");
 
     /**
-     * The names of all mobs that this objective should count.
+     * The identifiers of all mobs that this objective should count.
      */
-    private final Variable<List<String>> names;
+    private final Variable<List<String>> identifiers;
+
+    /**
+     * Mode to choose the identifier from a mob.
+     */
+    private final Variable<IdentifierMode> mode;
 
     /**
      * The minimal level the killed mob must have to count.
@@ -65,7 +76,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      *
      * @param instruction                  the user-provided instruction
      * @param targetAmount                 the target amount of kills
-     * @param names                        the names of all mobs that this objective should count
+     * @param identifiers                  the identifiers of all mobs that this objective should count
+     * @param mode                         the mode to choose the identifier from a mob
      * @param minMobLevel                  the minimal level the mob must have to count
      * @param maxMobLevel                  the maximal level the mob must have to count
      * @param deathRadiusAllPlayers        the radius of a death mob to count for all players
@@ -74,17 +86,26 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * @throws QuestException if the instruction is invalid
      */
     public MythicMobKillObjective(
-            final Instruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> names,
-            final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
+            final Instruction instruction, final Variable<Number> targetAmount, final Variable<List<String>> identifiers,
+            final Variable<IdentifierMode> mode, final Variable<Number> minMobLevel, final Variable<Number> maxMobLevel,
             final Variable<Number> deathRadiusAllPlayers, final Variable<Number> neutralDeathRadiusAllPlayers,
             @Nullable final Variable<String> marked) throws QuestException {
         super(instruction, targetAmount, "mobs_to_kill");
-        this.names = names;
+        this.identifiers = identifiers;
+        this.mode = mode;
         this.minMobLevel = minMobLevel;
         this.maxMobLevel = maxMobLevel;
         this.deathRadiusAllPlayers = deathRadiusAllPlayers;
         this.neutralDeathRadiusAllPlayers = neutralDeathRadiusAllPlayers;
         this.marked = marked;
+    }
+
+    @Override
+    public String getProperty(final String name, final Profile profile) throws QuestException {
+        if (MODE.equalsIgnoreCase(name)) {
+            return mode.getValue(profile).toString();
+        }
+        return super.getProperty(name, profile);
     }
 
     /**
@@ -131,7 +152,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 return;
             }
         }
-        if (!names.getValue(onlineProfile).contains(event.getMobType().getInternalName())) {
+        final String identifier = this.mode.getValue(onlineProfile).getIdentifier(event.getMobType());
+        if (!identifiers.getValue(onlineProfile).contains(identifier)) {
             return;
         }
         handlePlayerKill(onlineProfile, event.getMob());
