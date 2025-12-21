@@ -708,27 +708,28 @@ events:
 
 #### MobKill: `mmobkill`
 
-You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
-the mob's internal name (the one defined in your MythicMobs configuration). Multiple mob names must be comma separated.
-You can optionally add the `amount:` argument to specify how many of these mobs need to be killed. It's also possible
-to add the optional arguments `minLevel` and `maxLevel` to further customize what mobs need to be killed.
-You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player
-within the defined radius when the mob is killed by any non-player source.
-Alternatively, you could use the `deathRadiusAllPlayers` argument to count all deaths of the specified mythic mob(s),
-no matter if it was killed by a non-player source or not.
+You need to kill the specified amount of MythicMobs to complete this objective.
 You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
-You can also add an optional `marked` argument to only count kills marked with the `mspawn` event. Variables are supported.
+
+| Parameter                      | Syntax                              | Default Value          | Explanation                                                                                                                                             |
+|--------------------------------|-------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _name_                         | names                               | :octicons-x-circle-16: | MythicMobs mob internal name (as defined in the config). Multiple mob names must be comma separated.                                                    |
+| _amount_                       | amount:number                       | 1                      | Amount of mobs required to kill.                                                                                                                        |
+| _minLevel_                     | minLevel:number                     | Disabled               | Minimal level of mob to kill.                                                                                                                           |
+| _maxLevel_                     | maxLevel:number                     | Disabled               | Maximal level of mob to kill.                                                                                                                           |
+| _neutralDeathRadiusAllPlayers_ | neutralDeathRadiusAllPlayers:number | Disabled               | Radius to count objective progress for each nearby player when the mob is killed by any non-player source.                                              |
+| _deathRadiusAllPlayers_        | deathRadiusAllPlayers:number        | Disabled               | Radius to count objective progress for each nearby player, no matter if it was killed by a non-player source or not. Disables the neutral death radius. |
+| _marked_                       | marked:text                         | None                   | Check for mark on mobs as used in `mspawnmob` event.                                                                                                    |
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
 
-!!! example
-    ```YAML
-    mmobkill SkeletalKnight amount:2 events:reward
-    mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
-    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
-    mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
-    ```
+```YAML title="Example"
+killKnight: mmobkill SkeletalKnight amount:2 events:reward
+killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
+killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
+killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
+```
 
 ### Conditions
 
