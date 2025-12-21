@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.Location;
@@ -33,13 +32,13 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Interaction> interaction = instruction.get(instruction.getParsers().forEnum(Interaction.class));
         final Variable<EntityType> mobType = instruction.get(instruction.getParsers().forEnum(EntityType.class));
-        final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
         final Variable<Component> customName = instruction.getValue("name", instruction.getParsers().component());
         final Variable<String> realName = instruction.getValue("realname", instruction.getParsers().string());
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         final boolean cancel = instruction.hasArgument("cancel");
         final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
-        final Variable<Number> range = instruction.getValue("range", DefaultArgumentParsers.NUMBER, 1);
+        final Variable<Number> range = instruction.getValue("range", instruction.getParsers().number(), 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }

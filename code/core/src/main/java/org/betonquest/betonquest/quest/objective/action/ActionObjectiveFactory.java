@@ -34,7 +34,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
         final Variable<Optional<BlockSelector>> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR.prefilterOptional(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
-        final Variable<Number> range = instruction.getValue("range", DefaultArgumentParsers.NUMBER, 0);
+        final Variable<Number> range = instruction.getValue("range", instruction.getParsers().number(), 0);
         final boolean cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getValue("hand");
         final EquipmentSlot slot;

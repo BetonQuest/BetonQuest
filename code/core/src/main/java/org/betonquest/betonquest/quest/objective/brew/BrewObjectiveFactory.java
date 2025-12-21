@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -32,7 +32,9 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Item> potion = instruction.get(InstructionIdentifierArgument.ITEM);
-        final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ZERO);
+        final DecoratedArgument<Number> amountParser = instruction.getParsers().number()
+                .validate(value -> value.doubleValue() < 0, "Amount must be a non-negative number, got: '%s'");
+        final Variable<Number> targetAmount = instruction.get(amountParser);
         return new BrewObjective(instruction, targetAmount, profileProvider, potion);
     }
 }

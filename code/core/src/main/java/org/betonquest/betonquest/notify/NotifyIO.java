@@ -3,7 +3,7 @@ package org.betonquest.betonquest.notify;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -104,6 +104,6 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return new Variable<>(defaultData);
         }
-        return new Variable<>(variables, pack, dataString, DefaultArgumentParsers.NUMBER);
+        return new Variable<>(variables, pack, dataString, NumberParser.DEFAULT);
     }
 }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -33,12 +33,13 @@ public class DecoratableArgument<T> implements DecoratedArgument<T> {
     }
 
     @Override
-    public DecoratableArgument<T> validate(final ValueChecker<T> checker) {
-        return new DecoratableArgument<>(string -> {
-            final T value = apply(string);
-            checker.check(value);
-            return value;
-        });
+    public DecoratableArgument<T> validate(final ValueValidator<T> checker, final String errorMessage) {
+        return new DecoratableArgument<>(string -> validateLocal(checker, string, errorMessage));
+    }
+
+    @Override
+    public DecoratableArgument<T> validate(final ValueValidator<T> checker) {
+        return new DecoratableArgument<>(string -> validateLocal(checker, string, "Invalid value '%s'"));
     }
 
     @Override
@@ -49,5 +50,13 @@ public class DecoratableArgument<T> implements DecoratedArgument<T> {
     @Override
     public DecoratableArgument<Optional<T>> prefilterOptional(final String expected, @Nullable final T fixedValue) {
         return new DecoratableArgument<>(string -> Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(string)));
+    }
+
+    private T validateLocal(final ValueValidator<T> checker, final String string, final String errorMessage) throws QuestException {
+        final T value = apply(string);
+        if (!checker.validate(value)) {
+            throw new QuestException(errorMessage.formatted(string));
+        }
+        return value;
     }
 }

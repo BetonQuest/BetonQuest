@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -223,12 +223,9 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             this.pack = pack;
             this.section = section;
             this.stringParser = new StringParser();
-            this.numberParser = new DecoratableArgument<>(DefaultArgumentParsers.NUMBER)
-                    .validate(value -> {
-                        if (value.doubleValue() < 0) {
-                            throw new QuestException("Expected a non-negative number for 'interceptor_delay', got '" + value + "' instead.");
-                        }
-                    });
+            this.numberParser = new DecoratableArgument<>(NumberParser.DEFAULT)
+                    .validate(value -> value.doubleValue() < 0,
+                            "Expected a non-negative number for 'interceptor_delay', got '%s' instead.");
         }
 
         @Nullable

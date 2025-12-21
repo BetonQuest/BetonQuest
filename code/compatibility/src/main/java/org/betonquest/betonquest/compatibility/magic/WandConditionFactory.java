@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -86,7 +86,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
             if (parts.length != SPELL_FORMAT_LENGTH) {
                 throw new IllegalArgumentException("Invalid spell format: " + value);
             }
-            return Map.entry(parts[0], DefaultArgumentParsers.NUMBER.apply(parts[1]).intValue());
+            return Map.entry(parts[0], NumberParser.DEFAULT.apply(parts[1]).intValue());
         }
     }
 }

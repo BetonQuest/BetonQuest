@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.instruction.argument.Argument;
 public class NumberParser implements Argument<Number> {
 
     /**
+     * The default instance of {@link NumberParser}.
+     */
+    public static final NumberParser DEFAULT = new NumberParser();
+
+    /**
      * The used {@link ValueChecker} for the number.
      */
     private final ValueChecker<Number> valueChecker;

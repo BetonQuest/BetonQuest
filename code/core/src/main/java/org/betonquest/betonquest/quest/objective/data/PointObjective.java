@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.bukkit.event.PlayerUpdatePointEvent;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
@@ -169,7 +169,7 @@ public class PointObjective extends Objective implements Listener {
          */
         public PointData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            this.points = DefaultArgumentParsers.NUMBER.apply(instruction).intValue();
+            this.points = NumberParser.DEFAULT.apply(instruction).intValue();
         }
 
         private int getPoints() {

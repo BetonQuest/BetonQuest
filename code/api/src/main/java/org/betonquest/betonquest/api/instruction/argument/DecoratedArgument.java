@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
-import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -18,7 +18,18 @@ public interface DecoratedArgument<T> extends Argument<T> {
      * @param checker the checker to apply to the argument
      * @return the new argument
      */
-    DecoratedArgument<T> validate(ValueChecker<T> checker);
+    DecoratedArgument<T> validate(ValueValidator<T> checker);
+
+    /**
+     * Apply a value checker to the argument for early validation and improved error messages.
+     * The error message will be used if the checker fails and may contain a {@code %s} placeholder for the wrong argument value
+     * according to {@link String#format(String, Object...)}.
+     *
+     * @param checker      the checker to apply to the argument
+     * @param errorMessage the error message to use if the checker fails
+     * @return the new argument
+     */
+    DecoratedArgument<T> validate(ValueValidator<T> checker, String errorMessage);
 
     /**
      * Returns a new {@link Argument} that checks for the given expected string before

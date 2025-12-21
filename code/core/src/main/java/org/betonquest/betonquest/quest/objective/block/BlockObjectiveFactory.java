@@ -44,7 +44,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<BlockSelector> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number());
         final boolean noSafety = instruction.hasArgument("noSafety");
         final Variable<Location> location = instruction.getValue("loc", instruction.getParsers().location());
         final Variable<Location> region = instruction.getValue("region", instruction.getParsers().location());

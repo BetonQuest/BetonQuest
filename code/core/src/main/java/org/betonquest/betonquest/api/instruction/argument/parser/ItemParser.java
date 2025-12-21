@@ -36,7 +36,7 @@ public class ItemParser implements InstructionIdentifierArgument<Item> {
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
             item = new ItemID(variables, packManager, pack, parts[0]);
-            number = new Variable<>(DefaultArgumentParsers.NUMBER.apply(parts[1]));
+            number = new Variable<>(NumberParser.DEFAULT.apply(parts[1]));
         } else {
             item = new ItemID(variables, packManager, pack, string);
             number = new Variable<>(1);

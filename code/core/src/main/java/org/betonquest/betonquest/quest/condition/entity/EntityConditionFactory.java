@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -75,7 +75,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
             final String[] parts = string.split(":");
             final EntityType type = new EnumParser<>(EntityType.class).apply(parts[0]);
-            final int amount = parts.length == 2 ? DefaultArgumentParsers.NUMBER.apply(parts[1]).intValue() : 1;
+            final int amount = parts.length == 2 ? NumberParser.DEFAULT.apply(parts[1]).intValue() : 1;
             return Map.entry(type, amount);
         }
     }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -133,7 +133,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         }
 
         private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new Variable<>(variables, pack, getRequired("height"), DefaultArgumentParsers.NUMBER)
+            final int height = new Variable<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
                     .getValue(null).intValue();
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");

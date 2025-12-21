@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
@@ -128,7 +128,7 @@ public class PaymentObjective extends Objective implements Listener {
          */
         public PaymentData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            targetAmount = DefaultArgumentParsers.NUMBER.apply(instruction).doubleValue();
+            targetAmount = NumberParser.DEFAULT.apply(instruction).doubleValue();
         }
 
         private void add(final Double amount) {

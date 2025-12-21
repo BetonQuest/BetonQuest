@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.brewery.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,7 +40,7 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amountVar = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> amountVar = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
         final Variable<Number> qualityVar = instruction.get(instruction.getParsers().number());
         final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
         final Variable<IdentifierType> mode = instruction.getValue("mode", instruction.getParsers().forEnum(IdentifierType.class), IdentifierType.NAME);

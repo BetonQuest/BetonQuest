@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.objective;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -24,7 +23,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
         if (desiredBlockId == null) {
             throw new QuestException("Missing required argument: block");
         }
-        final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
         return new MMOCoreBreakCustomBlockObjective(instruction, targetAmount, desiredBlockId);
     }
 }
