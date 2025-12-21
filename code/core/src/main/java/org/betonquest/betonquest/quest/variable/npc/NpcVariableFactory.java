@@ -66,7 +66,7 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
             };
         }
         final Variable<NpcID> npcID = instruction.get(NpcID::new);
-        final Argument key = instruction.get(DefaultArgumentParsers.forEnum(Argument.class)).getValue(null);
+        final Argument key = instruction.get(DefaultArgumentParsers.forEnumeration(Argument.class)).getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
         if (key == Argument.LOCATION) {

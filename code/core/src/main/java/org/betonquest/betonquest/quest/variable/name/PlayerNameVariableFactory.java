@@ -23,7 +23,7 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<PlayerNameType> type;
         if (instruction.hasNext()) {
-            type = instruction.get(DefaultArgumentParsers.forEnum(PlayerNameType.class));
+            type = instruction.get(DefaultArgumentParsers.forEnumeration(PlayerNameType.class));
         } else {
             type = new Variable<>(PlayerNameType.NAME);
         }

@@ -24,7 +24,7 @@ public class MobKillObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<List<EntityType>> entities = instruction.getList(DefaultArgumentParsers.forEnum(EntityType.class));
+        final Variable<List<EntityType>> entities = instruction.getList(DefaultArgumentParsers.forEnumeration(EntityType.class));
         final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);

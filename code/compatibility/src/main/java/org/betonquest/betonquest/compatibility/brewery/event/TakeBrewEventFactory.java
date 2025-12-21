@@ -43,7 +43,7 @@ public class TakeBrewEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> countVar = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<String> brewVar = instruction.get(DefaultArgumentParsers.STRING);
-        final Variable<IdentifierType> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnum(IdentifierType.class), IdentifierType.NAME);
+        final Variable<IdentifierType> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnumeration(IdentifierType.class), IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(TakeBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar, mode), logger, instruction.getPackage()), data);

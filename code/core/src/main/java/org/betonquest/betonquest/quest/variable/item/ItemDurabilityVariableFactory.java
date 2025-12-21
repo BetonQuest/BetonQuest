@@ -32,7 +32,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.get(DefaultArgumentParsers.forEnum(EquipmentSlot.class));
+        final Variable<EquipmentSlot> slot = instruction.get(DefaultArgumentParsers.forEnumeration(EquipmentSlot.class));
         final boolean relative = instruction.hasArgument("relative");
         final Variable<Number> digitsAfter = digits(instruction);
         final boolean inPercent = instruction.hasArgument("percent");

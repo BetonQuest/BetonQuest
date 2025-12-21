@@ -37,7 +37,7 @@ public class MythicMobsNpcFactory implements NpcFactory {
 
     @Override
     public NpcWrapper<ActiveMob> parseInstruction(final Instruction instruction) throws QuestException {
-        final Type type = instruction.get(DefaultArgumentParsers.forEnum(Type.class)).getValue(null);
+        final Type type = instruction.get(DefaultArgumentParsers.forEnumeration(Type.class)).getValue(null);
         return type.parse(instruction, mythicHider, mobExecutor);
     }
 }

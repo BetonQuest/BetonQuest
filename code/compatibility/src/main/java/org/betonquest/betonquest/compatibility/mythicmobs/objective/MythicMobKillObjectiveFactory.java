@@ -24,7 +24,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<List<String>> names = instruction.getList(DefaultArgumentParsers.STRING);
-        final Variable<IdentifierMode> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnum(IdentifierMode.class), IdentifierMode.INTERNAL_NAME);
+        final Variable<IdentifierMode> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnumeration(IdentifierMode.class), IdentifierMode.INTERNAL_NAME);
         final Variable<Number> targetAmount = instruction.getValue("amount", DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE, 1);
 
         final Variable<Number> deathRadiusAllPlayers = instruction.getValue("deathRadiusAllPlayers", DefaultArgumentParsers.NUMBER, 0);

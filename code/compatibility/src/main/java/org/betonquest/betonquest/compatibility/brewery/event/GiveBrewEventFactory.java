@@ -44,7 +44,7 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
         final Variable<Number> amountVar = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<Number> qualityVar = instruction.get(DefaultArgumentParsers.NUMBER);
         final Variable<String> nameVar = instruction.get(DefaultArgumentParsers.STRING);
-        final Variable<IdentifierType> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnum(IdentifierType.class), IdentifierType.NAME);
+        final Variable<IdentifierType> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnumeration(IdentifierType.class), IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar, mode), logger, instruction.getPackage()), data);

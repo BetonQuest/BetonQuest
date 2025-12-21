@@ -23,7 +23,7 @@ public class ShearObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
         final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING);
-        final Variable<DyeColor> color = instruction.getValue("color", DefaultArgumentParsers.forEnum(DyeColor.class));
+        final Variable<DyeColor> color = instruction.getValue("color", DefaultArgumentParsers.forEnumeration(DyeColor.class));
         return new ShearObjective(instruction, targetAmount, name, color);
     }
 }

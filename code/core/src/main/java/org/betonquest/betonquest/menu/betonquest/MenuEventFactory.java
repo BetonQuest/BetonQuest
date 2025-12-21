@@ -51,7 +51,7 @@ public class MenuEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Operation operation = instruction.get(DefaultArgumentParsers.forEnum(Operation.class)).getValue(null);
+        final Operation operation = instruction.get(DefaultArgumentParsers.forEnumeration(Operation.class)).getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
                 final Variable<MenuID> menuID = instruction.get(MenuID::new);

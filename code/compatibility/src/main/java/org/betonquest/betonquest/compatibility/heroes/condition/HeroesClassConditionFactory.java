@@ -57,7 +57,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<HeroesClassType> classType = instruction.get(DefaultArgumentParsers.forEnum(HeroesClassType.class));
+        final Variable<HeroesClassType> classType = instruction.get(DefaultArgumentParsers.forEnumeration(HeroesClassType.class));
         final Variable<String> heroClass = instruction.get(DefaultArgumentParsers.STRING);
         final Variable<Number> level = instruction.getValue("level", DefaultArgumentParsers.NUMBER);
 

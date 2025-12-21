@@ -30,7 +30,7 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Click> action = instruction.get(DefaultArgumentParsers.forEnum(Click.class));
+        final Variable<Click> action = instruction.get(DefaultArgumentParsers.forEnumeration(Click.class));
         final Variable<Optional<BlockSelector>> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR.prefilterOptional(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Location> loc = instruction.getValue("loc", DefaultArgumentParsers.LOCATION);

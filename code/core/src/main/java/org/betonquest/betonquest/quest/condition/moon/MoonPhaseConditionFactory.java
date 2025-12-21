@@ -39,7 +39,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnum(MoonPhase.class));
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnumeration(MoonPhase.class));
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
                 DefaultArgumentParsers.WORLD);
         return new PrimaryServerThreadPlayerCondition(
@@ -52,7 +52,7 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
         if (world == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnum(MoonPhase.class));
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnumeration(MoonPhase.class));
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new MoonPhasesCondition(world, moonPhases)), data);
     }

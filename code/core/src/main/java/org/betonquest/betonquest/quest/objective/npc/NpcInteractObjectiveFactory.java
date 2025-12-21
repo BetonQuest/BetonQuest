@@ -26,7 +26,7 @@ public class NpcInteractObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Interaction> interactionType = instruction.getValue("interaction", DefaultArgumentParsers.forEnum(Interaction.class), RIGHT);
+        final Variable<Interaction> interactionType = instruction.getValue("interaction", DefaultArgumentParsers.forEnumeration(Interaction.class), RIGHT);
         return new NpcInteractObjective(instruction, npcId, cancel, interactionType);
     }
 }

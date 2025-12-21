@@ -48,7 +48,7 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> number = instruction.get(DefaultArgumentParsers.NUMBER);
-        final PointType type = instruction.getValue("action", DefaultArgumentParsers.forEnum(PointType.class), PointType.ADD).getValue(null);
+        final PointType type = instruction.getValue("action", DefaultArgumentParsers.forEnumeration(PointType.class), PointType.ADD).getValue(null);
         return new GlobalPointEvent(globalData, category, number, type);
     }
 }

@@ -73,7 +73,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         @Override
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
             final String[] parts = string.split(":");
-            final EntityType type = DefaultArgumentParsers.forEnum(EntityType.class).apply(parts[0]);
+            final EntityType type = DefaultArgumentParsers.forEnumeration(EntityType.class).apply(parts[0]);
             final int amount = parts.length == 2 ? DefaultArgumentParsers.NUMBER.apply(parts[1]).intValue() : 1;
             return Map.entry(type, amount);
         }

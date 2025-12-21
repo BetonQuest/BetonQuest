@@ -6,9 +6,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
@@ -58,6 +60,11 @@ public class DefaultInstruction implements Instruction {
     private final InstructionParts instructionParts;
 
     /**
+     * The default {@link Argument} parsers.
+     */
+    private final DefaultArgumentParsers argumentParsers;
+
+    /**
      * Create an instruction using the quoting tokenizer.
      *
      * @param variables   the variable processor to create and resolve variables
@@ -89,6 +96,7 @@ public class DefaultInstruction implements Instruction {
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
+        this.argumentParsers = new DefaultArgumentParsers();
         try {
             this.instructionParts = new InstructionPartsArray(tokenizer, instruction);
         } catch (final TokenizerException e) {
@@ -109,6 +117,7 @@ public class DefaultInstruction implements Instruction {
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
+        this.argumentParsers = instruction.argumentParsers;
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -125,6 +134,11 @@ public class DefaultInstruction implements Instruction {
     @Override
     public QuestPackage getPackage() {
         return pack;
+    }
+
+    @Override
+    public ArgumentParsers getParsers() {
+        return argumentParsers;
     }
 
     @Override

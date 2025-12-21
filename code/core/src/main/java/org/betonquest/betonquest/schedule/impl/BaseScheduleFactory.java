@@ -70,7 +70,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         if (catchupString == null) {
             catchup = CatchupStrategy.NONE;
         } else {
-            catchup = DefaultArgumentParsers.forEnum(CatchupStrategy.class).apply(catchupString);
+            catchup = DefaultArgumentParsers.forEnumeration(CatchupStrategy.class).apply(catchupString);
         }
         return new ScheduleData(time, events, catchup);
     }

@@ -41,7 +41,7 @@ public class GameModeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<GameMode> gameMode = instruction.get(DefaultArgumentParsers.forEnum(GameMode.class));
+        final Variable<GameMode> gameMode = instruction.get(DefaultArgumentParsers.forEnumeration(GameMode.class));
         final BetonQuestLogger log = loggerFactory.create(GameModeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new GameModeCondition(gameMode), log, instruction.getPackage()), data);

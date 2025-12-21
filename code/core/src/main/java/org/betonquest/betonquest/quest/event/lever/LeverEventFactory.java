@@ -45,7 +45,7 @@ public class LeverEventFactory implements PlayerEventFactory, PlayerlessEventFac
 
     private NullableEventAdapter createLeverEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.get(DefaultArgumentParsers.LOCATION);
-        final Variable<StateType> stateType = instruction.get(DefaultArgumentParsers.forEnum(StateType.class));
+        final Variable<StateType> stateType = instruction.get(DefaultArgumentParsers.forEnumeration(StateType.class));
         return new NullableEventAdapter(new LeverEvent(stateType, location));
     }
 }

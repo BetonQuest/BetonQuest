@@ -33,7 +33,7 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> objective = instruction.get(DefaultArgumentParsers.STRING);
         final Variable<Number> number = instruction.get(DefaultArgumentParsers.NUMBER);
-        final PointType action = instruction.getValue("action", DefaultArgumentParsers.forEnum(PointType.class), PointType.ADD).getValue(null);
+        final PointType action = instruction.getValue("action", DefaultArgumentParsers.forEnumeration(PointType.class), PointType.ADD).getValue(null);
         return new PrimaryServerThreadEvent(
                 new ScoreboardObjectiveEvent(objective, number, action),
                 data);
