@@ -93,7 +93,7 @@ public class LocationParser implements Argument<Location> {
     }
 
     @Override
-    public Location clone(final Location value) {
+    public Location cloneValue(final Location value) {
         return value.clone();
     }
 }

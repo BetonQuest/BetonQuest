@@ -78,7 +78,7 @@ public class VectorParser implements Argument<Vector> {
     }
 
     @Override
-    public Vector clone(final Vector value) {
+    public Vector cloneValue(final Vector value) {
         return value.clone();
     }
 }

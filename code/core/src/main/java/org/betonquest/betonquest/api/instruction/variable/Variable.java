@@ -57,7 +57,7 @@ public class Variable<T> {
         final Map<String, VariableAdapter> foundVariables = getVariables(variables, pack, input);
         if (foundVariables.isEmpty()) {
             final T resolved = resolver.apply(replaceEscapedPercent(input));
-            value = profile -> resolver.clone(resolved);
+            value = profile -> resolver.cloneValue(resolved);
         } else {
             value = profile -> resolver.apply(replaceEscapedPercent(getString(input, foundVariables, profile)));
         }

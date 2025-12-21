@@ -11,13 +11,13 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 public interface ValueParser<R> extends QuestFunction<String, R> {
 
     /**
-     * Clones the value.
+     * Clones the value, ensuring decoupling the object to prevent unwanted modifications.
      * This is necessary for mutable values.
      *
      * @param value the value to clone
      * @return the cloned value
      */
-    default R clone(final R value) {
+    default R cloneValue(final R value) {
         return value;
     }
 }

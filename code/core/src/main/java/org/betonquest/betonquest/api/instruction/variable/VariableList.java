@@ -78,10 +78,10 @@ public class VariableList<T> extends Variable<List<T>> {
             }
 
             @Override
-            public List<T> clone(final List<T> value) {
+            public List<T> cloneValue(final List<T> value) {
                 final List<T> list = new ArrayList<>();
                 for (final T part : value) {
-                    list.add(resolver.clone(part));
+                    list.add(resolver.cloneValue(part));
                 }
                 return list;
             }
@@ -160,8 +160,8 @@ public class VariableList<T> extends Variable<List<T>> {
         }
 
         @Override
-        public List<T> clone(final List<T> value) {
-            return resolver.clone(value);
+        public List<T> cloneValue(final List<T> value) {
+            return resolver.cloneValue(value);
         }
     }
 }
