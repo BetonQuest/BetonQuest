@@ -21,7 +21,7 @@ public class LocationObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<Number> range = instruction.get(DefaultArgumentParsers.NUMBER);
         return new LocationObjective(instruction, loc, range);
     }

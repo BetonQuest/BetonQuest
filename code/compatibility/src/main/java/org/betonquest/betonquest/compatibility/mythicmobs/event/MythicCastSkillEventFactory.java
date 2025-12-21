@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.mythicmobs.event;
 import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -39,7 +38,7 @@ public class MythicCastSkillEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> skillName = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<String> skillName = instruction.get(instruction.getParsers().string());
         final BetonQuestLogger log = loggerFactory.create(MythicCastSkillEvent.class);
         return new OnlineEventAdapter(
                 new MythicCastSkillEvent(log, instruction.getPackage(), apiHelper, skillName),

@@ -39,7 +39,7 @@ public class CitizensNpcFactory implements NpcFactory {
     @Override
     public NpcWrapper<NPC> parseInstruction(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument("byName")) {
-            return new CitizensNameWrapper(plugin, registry, instruction.get(DefaultArgumentParsers.STRING));
+            return new CitizensNameWrapper(plugin, registry, instruction.get(instruction.getParsers().string()));
         }
         final Variable<Number> npcId = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ZERO);
         return new CitizensWrapper(plugin, registry, npcId);

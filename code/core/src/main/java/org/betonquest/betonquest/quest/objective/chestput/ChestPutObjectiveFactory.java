@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -47,7 +46,7 @@ public class ChestPutObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         final boolean multipleAccess = Boolean.parseBoolean(instruction.getValue("multipleaccess"));
         final ChestItemCondition chestItemCondition = new ChestItemCondition(loc, items);

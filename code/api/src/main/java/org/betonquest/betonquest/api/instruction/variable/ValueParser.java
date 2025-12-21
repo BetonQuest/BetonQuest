@@ -3,12 +3,13 @@ package org.betonquest.betonquest.api.instruction.variable;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 
 /**
- * A variable resolver is a function that resolves a variable to a value.
+ * A {@link ValueParser} is essentially a function that resolves a string to a value.
  *
- * @param <R> the type of the value
+ * @param <R> the type of the resulting value
  */
 @FunctionalInterface
-public interface VariableResolver<R> extends QuestFunction<String, R> {
+public interface ValueParser<R> extends QuestFunction<String, R> {
+
     /**
      * Clones the value.
      * This is necessary for mutable values.

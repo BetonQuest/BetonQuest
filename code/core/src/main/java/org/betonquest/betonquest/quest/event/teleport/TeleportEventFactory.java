@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.teleport;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -48,7 +47,7 @@ public class TeleportEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> location = instruction.get(instruction.getParsers().location());
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new TeleportEvent(conversationApi, location),
                 loggerFactory.create(TeleportEvent.class),

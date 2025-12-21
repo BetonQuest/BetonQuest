@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.npc.citizens.event.move;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -53,8 +52,8 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
-        final Variable<List<Location>> locations = instruction.getList(DefaultArgumentParsers.LOCATION, VariableList.notEmptyChecker());
-        final Variable<Number> waitTicks = instruction.getValue("wait", DefaultArgumentParsers.NUMBER, 0);
+        final Variable<List<Location>> locations = instruction.getList(instruction.getParsers().location(), VariableList.notEmptyChecker());
+        final Variable<Number> waitTicks = instruction.getValue("wait", instruction.getParsers().number(), 0);
         final Variable<List<EventID>> doneEvents = instruction.getValueList("done", EventID::new);
         final Variable<List<EventID>> failEvents = instruction.getValueList("fail", EventID::new);
         final boolean blockConversations = instruction.hasArgument("block");

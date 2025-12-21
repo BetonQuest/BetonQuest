@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.number;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -32,9 +31,9 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Number> first = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> first = instruction.get(instruction.getParsers().number());
         final Operation operation = instruction.get(Operation::fromSymbol).getValue(null);
-        final Variable<Number> second = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> second = instruction.get(instruction.getParsers().number());
         return new NumberCompareCondition(first, second, operation);
     }
 }

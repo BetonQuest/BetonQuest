@@ -21,7 +21,7 @@ public class TrainCartsLocationObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<Number> range = instruction.getValue("range", DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new TrainCartsLocationObjective(instruction, loc, range);
     }

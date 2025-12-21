@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.time.ingame;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -39,7 +38,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<TimeFrame> timeFrame = instruction.get(TimeFrame::parse);
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
-                DefaultArgumentParsers.WORLD);
+                instruction.getParsers().world());
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
     }
@@ -51,7 +50,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
             return new ThrowExceptionPlayerlessCondition();
         }
         final Variable<TimeFrame> timeFrame = instruction.get(TimeFrame::parse);
-        final Variable<World> world = instruction.get(worldString, DefaultArgumentParsers.WORLD);
+        final Variable<World> world = instruction.get(worldString, instruction.getParsers().world());
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
     }

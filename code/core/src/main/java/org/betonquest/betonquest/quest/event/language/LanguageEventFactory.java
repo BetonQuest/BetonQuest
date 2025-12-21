@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.language;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -29,7 +28,7 @@ public class LanguageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> language = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<String> language = instruction.get(instruction.getParsers().string());
         return new LanguageEvent(language, dataStorage);
     }
 }

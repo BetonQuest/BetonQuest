@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.effectlib.event;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -50,12 +49,12 @@ public class ParticleEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String string = instruction.get(DefaultArgumentParsers.STRING).getValue(null);
+        final String string = instruction.get(instruction.getParsers().string()).getValue(null);
         final ConfigurationSection parameters = Utils.getNN(instruction.getPackage().getConfig().getConfigurationSection("effects." + string),
                 "Effect '" + string + "' does not exist!");
         final String rawEffectClass = Utils.getNN(parameters.getString("class"), "Effect '" + string + "' is incorrectly defined");
-        final String effectClass = instruction.get(rawEffectClass, DefaultArgumentParsers.STRING).getValue(null);
-        final Variable<Location> loc = instruction.getValue("loc", DefaultArgumentParsers.LOCATION);
+        final String effectClass = instruction.get(rawEffectClass, instruction.getParsers().string()).getValue(null);
+        final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
         final PlayerEvent playerEvent = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());

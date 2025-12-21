@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.effect;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -40,13 +39,13 @@ public class EffectEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final PotionEffectType effect = PotionEffectType.getByName(instruction.get(DefaultArgumentParsers.STRING).getValue(null));
+        final PotionEffectType effect = PotionEffectType.getByName(instruction.get(instruction.getParsers().string()).getValue(null));
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final Variable<Number> duration = instruction.get(DefaultArgumentParsers.NUMBER);
-            final Variable<Number> level = instruction.get(DefaultArgumentParsers.NUMBER);
+            final Variable<Number> duration = instruction.get(instruction.getParsers().number());
+            final Variable<Number> level = instruction.get(instruction.getParsers().number());
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

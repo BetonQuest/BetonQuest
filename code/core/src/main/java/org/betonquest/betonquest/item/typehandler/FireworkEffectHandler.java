@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -116,15 +116,16 @@ public class FireworkEffectHandler {
                 fadeColors.add(fireworkColor == null ? regularColor : fireworkColor.getFireworkColor());
             }
         }
+        final BooleanParser booleanParser = new BooleanParser();
         if ("?".equals(parts[3])) {
             trail = Existence.WHATEVER;
         } else {
-            trail = DefaultArgumentParsers.BOOLEAN.apply(parts[3]) ? Existence.REQUIRED : Existence.FORBIDDEN;
+            trail = booleanParser.apply(parts[3]) ? Existence.REQUIRED : Existence.FORBIDDEN;
         }
         if ("?".equals(parts[4])) {
             flicker = Existence.WHATEVER;
         } else {
-            flicker = DefaultArgumentParsers.BOOLEAN.apply(parts[4]) ? Existence.REQUIRED : Existence.FORBIDDEN;
+            flicker = booleanParser.apply(parts[4]) ? Existence.REQUIRED : Existence.FORBIDDEN;
         }
     }
 

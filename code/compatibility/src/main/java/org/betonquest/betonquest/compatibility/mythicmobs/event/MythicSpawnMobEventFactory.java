@@ -4,7 +4,6 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -65,9 +64,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
-        final Variable<Number> amount = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
         final boolean targetPlayer = instruction.hasArgument("target");
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
@@ -80,9 +79,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
-        final Variable<Number> amount = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, null, false, marked), data);
     }

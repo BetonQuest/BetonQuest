@@ -43,7 +43,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.getValue("loc", DefaultArgumentParsers.LOCATION);
+        final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
         final Variable<BlockSelector> selector = instruction.getValue("type", DefaultArgumentParsers.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);

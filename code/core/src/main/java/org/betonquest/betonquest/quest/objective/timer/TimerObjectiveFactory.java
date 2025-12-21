@@ -33,7 +33,7 @@ public class TimerObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Number> targetAmount = instruction.getValue("amount", DefaultArgumentParsers.NUMBER, Integer.MAX_VALUE);
-        final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING, "");
+        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string(), "");
         final Variable<Number> interval = instruction.getValue("interval", DefaultArgumentParsers.NUMBER, 1);
         final Variable<List<EventID>> doneEvents = instruction.getValueList("done", EventID::new);
         return new TimerObjective(instruction, targetAmount, questTypeApi, name, interval, doneEvents);

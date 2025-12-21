@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.bukkit.event.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.common.function.QuestRunnable;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -121,7 +120,7 @@ public abstract class Objective {
         persistent = instruction.hasArgument("persistent");
         events = instruction.getValueList("events", EventID::new);
         conditions = instruction.getValueList("conditions", ConditionID::new);
-        final int customNotifyInterval = instruction.getValue("notify", DefaultArgumentParsers.NUMBER, 0).getValue(null).intValue();
+        final int customNotifyInterval = instruction.getValue("notify", instruction.getParsers().number(), 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
     }

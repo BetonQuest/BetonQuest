@@ -53,11 +53,11 @@ public class WandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<CheckType> type = instruction.get(DefaultArgumentParsers.forEnumeration(CheckType.class));
+        final Variable<CheckType> type = instruction.get(instruction.getParsers().forEnum(CheckType.class));
         final Variable<List<Map.Entry<String, Integer>>> spells =
                 instruction.getValueList("spells", SpellParser.SPELL, VariableList.notDuplicateKeyChecker());
-        final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING);
-        final Variable<Number> amount = instruction.getValue("amount", DefaultArgumentParsers.NUMBER);
+        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string());
+        final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(

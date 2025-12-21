@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.lever;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -44,8 +43,8 @@ public class LeverEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     private NullableEventAdapter createLeverEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(DefaultArgumentParsers.LOCATION);
-        final Variable<StateType> stateType = instruction.get(DefaultArgumentParsers.forEnumeration(StateType.class));
+        final Variable<Location> location = instruction.get(instruction.getParsers().location());
+        final Variable<StateType> stateType = instruction.get(instruction.getParsers().forEnum(StateType.class));
         return new NullableEventAdapter(new LeverEvent(stateType, location));
     }
 }

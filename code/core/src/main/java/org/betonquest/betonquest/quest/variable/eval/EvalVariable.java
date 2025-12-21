@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.variable.eval;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
@@ -36,6 +35,6 @@ public class EvalVariable implements NullableVariable {
 
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        return instruction.get("%" + evaluation.getValue(profile) + "%", DefaultArgumentParsers.STRING).getValue(profile);
+        return instruction.get("%" + evaluation.getValue(profile) + "%", instruction.getParsers().string()).getValue(profile);
     }
 }

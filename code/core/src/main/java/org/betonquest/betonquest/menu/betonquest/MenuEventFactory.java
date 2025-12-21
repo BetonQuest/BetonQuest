@@ -3,7 +3,6 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -51,7 +50,7 @@ public class MenuEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Operation operation = instruction.get(DefaultArgumentParsers.forEnumeration(Operation.class)).getValue(null);
+        final Operation operation = instruction.get(instruction.getParsers().forEnum(Operation.class)).getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
                 final Variable<MenuID> menuID = instruction.get(MenuID::new);

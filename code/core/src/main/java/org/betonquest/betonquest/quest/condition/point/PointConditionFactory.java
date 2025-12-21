@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.point;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -31,7 +30,7 @@ public class PointConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        final Variable<Number> count = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> count = instruction.get(instruction.getParsers().number());
         final boolean equal = instruction.hasArgument("equal");
         return new PointCondition(dataStorage, category, count, equal);
     }

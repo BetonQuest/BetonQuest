@@ -5,7 +5,6 @@ import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
 
@@ -23,6 +22,6 @@ public class FancyFactory implements NpcFactory {
     @Override
     public NpcWrapper<Npc> parseInstruction(final Instruction instruction) throws QuestException {
         final NpcManager npcManager = FancyNpcsPlugin.get().getNpcManager();
-        return new FancyWrapper(npcManager, instruction.get(DefaultArgumentParsers.STRING), instruction.hasArgument("byName"));
+        return new FancyWrapper(npcManager, instruction.get(instruction.getParsers().string()), instruction.hasArgument("byName"));
     }
 }

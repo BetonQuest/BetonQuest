@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.VariableResolver;
+import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from string.
@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.variable.VariableResolver;
  * @param <T> what the argument returns
  */
 @FunctionalInterface
-public interface Argument<T> extends VariableResolver<T> {
+public interface Argument<T> extends ValueParser<T> {
 
     /**
      * Gets a {@link T} from string.

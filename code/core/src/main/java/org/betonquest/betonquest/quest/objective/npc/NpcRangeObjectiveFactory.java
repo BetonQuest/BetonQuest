@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.npc;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -24,8 +23,8 @@ public class NpcRangeObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<List<NpcID>> npcIds = instruction.getList(NpcID::new);
-        final Variable<Trigger> trigger = instruction.get(DefaultArgumentParsers.forEnumeration(Trigger.class));
-        final Variable<Number> radius = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Trigger> trigger = instruction.get(instruction.getParsers().forEnum(Trigger.class));
+        final Variable<Number> radius = instruction.get(instruction.getParsers().number());
         return new NpcRangeObjective(instruction, npcIds, radius, trigger);
     }
 }

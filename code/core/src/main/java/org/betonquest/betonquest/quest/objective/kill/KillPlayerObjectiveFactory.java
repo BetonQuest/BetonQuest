@@ -24,7 +24,7 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING);
+        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string());
         final Variable<List<ConditionID>> required = instruction.getValueList("required", ConditionID::new);
         return new KillPlayerObjective(instruction, targetAmount, name, required);
     }

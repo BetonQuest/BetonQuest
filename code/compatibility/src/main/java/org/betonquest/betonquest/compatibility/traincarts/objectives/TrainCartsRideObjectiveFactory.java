@@ -20,7 +20,7 @@ public class TrainCartsRideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING, "");
+        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string(), "");
         final Variable<Number> targetAmount = instruction.getValue("amount", DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE, 1);
         return new TrainCartsRideObjective(instruction, targetAmount, name);
     }

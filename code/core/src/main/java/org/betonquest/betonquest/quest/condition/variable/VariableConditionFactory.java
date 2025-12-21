@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.variable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -60,8 +59,8 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<String> variable = instruction.get(DefaultArgumentParsers.STRING);
-        final Variable<String> regex = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<String> variable = instruction.get(instruction.getParsers().string());
+        final Variable<String> regex = instruction.get(instruction.getParsers().string());
         final String variableAddress = instruction.getID().toString();
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
         return new VariableCondition(log, variable, regex, variableAddress);

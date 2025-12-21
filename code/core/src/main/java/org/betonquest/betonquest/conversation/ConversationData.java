@@ -10,7 +10,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -273,7 +273,7 @@ public class ConversationData {
         final List<String> startingOptions;
         try {
             startingOptions = new VariableList<>(variables, getPack(), convSection.getString("first", ""),
-                    DefaultArgumentParsers.STRING, VariableList.notEmptyChecker()).getValue(null);
+                    new StringParser(), VariableList.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
         }
@@ -644,11 +644,13 @@ public class ConversationData {
             this.conditions = resolve(conv, "conditions", ConditionID::new);
             this.events = resolve(conv, "events", EventID::new);
 
-            pointers = resolve(conv, "pointers", DefaultArgumentParsers.STRING).stream()
+            final StringParser stringParser = new StringParser();
+
+            pointers = resolve(conv, "pointers", stringParser).stream()
                     .filter(StringUtils::isNotEmpty)
                     .toList();
 
-            extendLinks = resolve(conv, "extends", DefaultArgumentParsers.STRING).stream()
+            extendLinks = resolve(conv, "extends", stringParser).stream()
                     .filter(StringUtils::isNotEmpty)
                     .toList();
 

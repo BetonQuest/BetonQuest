@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -30,8 +29,8 @@ public class MMOCoreClassConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> className = instruction.get(DefaultArgumentParsers.STRING);
-        final Variable<Number> classLevel = instruction.hasNext() ? instruction.get(DefaultArgumentParsers.NUMBER) : null;
+        final Variable<String> className = instruction.get(instruction.getParsers().string());
+        final Variable<Number> classLevel = instruction.hasNext() ? instruction.get(instruction.getParsers().number()) : null;
         final boolean equal = instruction.hasArgument("equal");
         return new PrimaryServerThreadPlayerCondition(
                 new MMOCoreClassCondition(className, classLevel, equal),

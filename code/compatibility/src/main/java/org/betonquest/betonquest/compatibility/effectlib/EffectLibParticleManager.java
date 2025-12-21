@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -18,6 +18,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -109,7 +110,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
             throw new QuestException("Check interval must be bigger than 0.");
         }
 
-        final Variable<List<Location>> locations = load(pack, settings, "locations", DefaultArgumentParsers.LOCATION);
+        final Variable<List<Location>> locations = load(pack, settings, "locations", new LocationParser(Bukkit.getServer()));
         final Variable<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
         final Variable<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
 

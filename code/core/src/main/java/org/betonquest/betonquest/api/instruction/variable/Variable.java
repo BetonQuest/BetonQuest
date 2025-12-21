@@ -53,7 +53,7 @@ public class Variable<T> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public Variable(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                    final VariableResolver<T> resolver) throws QuestException {
+                    final ValueParser<T> resolver) throws QuestException {
         final Map<String, VariableAdapter> foundVariables = getVariables(variables, pack, input);
         if (foundVariables.isEmpty()) {
             final T resolved = resolver.apply(replaceEscapedPercent(input));

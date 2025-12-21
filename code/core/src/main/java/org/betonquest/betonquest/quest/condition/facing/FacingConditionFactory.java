@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.facing;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -40,7 +39,7 @@ public class FacingConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Direction> direction = instruction.get(DefaultArgumentParsers.forEnumeration(Direction.class));
+        final Variable<Direction> direction = instruction.get(instruction.getParsers().forEnum(Direction.class));
         final BetonQuestLogger log = loggerFactory.create(FacingCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new FacingCondition(direction), log, instruction.getPackage()), data);

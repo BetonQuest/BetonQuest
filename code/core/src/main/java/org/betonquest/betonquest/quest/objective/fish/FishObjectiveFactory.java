@@ -29,7 +29,7 @@ public class FishObjectiveFactory implements ObjectiveFactory {
         final String loc = instruction.getValue("hookLocation");
         final String range = instruction.getValue("range");
         final boolean hookIsNotNull = loc != null && range != null;
-        final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.get(loc, DefaultArgumentParsers.LOCATION) : null;
+        final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.get(loc, instruction.getParsers().location()) : null;
         final Variable<Number> rangeVar = hookIsNotNull ? instruction.get(range, DefaultArgumentParsers.NUMBER) : null;
         return new FishObjective(instruction, targetAmount, item, hookTargetLocation, rangeVar);
     }

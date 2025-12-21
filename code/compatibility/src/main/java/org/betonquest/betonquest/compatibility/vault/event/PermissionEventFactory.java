@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.vault.event;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -40,10 +39,10 @@ public class PermissionEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Boolean> add = instruction.get("add"::equalsIgnoreCase);
         final Variable<Boolean> perm = instruction.get("perm"::equalsIgnoreCase);
-        final Variable<String> permission = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<String> permission = instruction.get(instruction.getParsers().string());
         final Variable<String> world;
         if (instruction.size() >= 5 && !instruction.next().startsWith("conditions:")) {
-            world = instruction.get(instruction.current(), DefaultArgumentParsers.STRING);
+            world = instruction.get(instruction.current(), instruction.getParsers().string());
         } else {
             world = null;
         }

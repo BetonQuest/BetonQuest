@@ -33,7 +33,7 @@ public class PointObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
         final Variable<Number> targetAmount = instruction.get(DefaultArgumentParsers.NUMBER);
-        final Variable<CountingMode> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnumeration(CountingMode.class), CountingMode.TOTAL);
+        final Variable<CountingMode> mode = instruction.getValue("mode", instruction.getParsers().forEnum(CountingMode.class), CountingMode.TOTAL);
         final Variable<Operation> operation = instruction.getValue("operation", Operation::fromSymbol, Operation.GREATER_EQUAL);
         return new PointObjective(instruction, playerDataStorage, category, targetAmount, mode, operation);
     }

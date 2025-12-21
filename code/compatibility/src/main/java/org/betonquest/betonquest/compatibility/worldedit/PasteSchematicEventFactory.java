@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.worldedit;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -54,8 +53,8 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
-        final Variable<Number> rotation = instruction.getValue("rotation", DefaultArgumentParsers.NUMBER, 0);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
+        final Variable<Number> rotation = instruction.getValue("rotation", instruction.getParsers().number(), 0);
 
         if (!folder.exists() || !folder.isDirectory()) {
             throw new QuestException("Schematic folder does not exist");

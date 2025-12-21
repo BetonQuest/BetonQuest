@@ -5,7 +5,6 @@ import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
@@ -51,7 +50,7 @@ public enum Type {
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
             try {
-                return new UUIDWrapper(instruction.get(DefaultArgumentParsers.UUID), mythicHider, mobExecutor);
+                return new UUIDWrapper(instruction.get(instruction.getParsers().uuid()), mythicHider, mobExecutor);
             } catch (final IllegalArgumentException exception) {
                 throw new QuestException(exception);
             }
@@ -69,7 +68,7 @@ public enum Type {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
-            return new FactionWrapper(instruction.get(DefaultArgumentParsers.STRING), mythicHider, mobExecutor);
+            return new FactionWrapper(instruction.get(instruction.getParsers().string()), mythicHider, mobExecutor);
         }
 
         @Override

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.moon;
 import io.papermc.paper.world.MoonPhase;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -39,20 +38,20 @@ public class MoonPhaseConditionFactory implements PlayerConditionFactory, Player
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnumeration(MoonPhase.class));
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(instruction.getParsers().forEnum(MoonPhase.class));
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
-                DefaultArgumentParsers.WORLD);
+                instruction.getParsers().world());
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new MoonPhasesCondition(world, moonPhases)), data);
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<World> world = instruction.getValue("world", DefaultArgumentParsers.WORLD);
+        final Variable<World> world = instruction.getValue("world", instruction.getParsers().world());
         if (world == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
-        final Variable<List<MoonPhase>> moonPhases = instruction.getList(DefaultArgumentParsers.forEnumeration(MoonPhase.class));
+        final Variable<List<MoonPhase>> moonPhases = instruction.getList(instruction.getParsers().forEnum(MoonPhase.class));
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new MoonPhasesCondition(world, moonPhases)), data);
     }

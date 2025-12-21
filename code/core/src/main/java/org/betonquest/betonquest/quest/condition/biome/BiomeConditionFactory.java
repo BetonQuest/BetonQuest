@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.biome;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,7 +40,7 @@ public class BiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Biome> biomeVariable = instruction.get(DefaultArgumentParsers.forEnumeration(Biome.class));
+        final Variable<Biome> biomeVariable = instruction.get(instruction.getParsers().forEnum(Biome.class));
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new BiomeCondition(biomeVariable), log, instruction.getPackage()), data

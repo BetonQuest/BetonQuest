@@ -21,31 +21,6 @@ import java.util.UUID;
 public class DefaultArgumentParsers implements ArgumentParsers {
 
     /**
-     * The default decoratable instance of {@link StringParser}.
-     */
-    public static final DecoratableArgument<String> STRING = new DecoratableArgument<>(new StringParser());
-
-    /**
-     * The default instance of {@link BooleanParser}.
-     */
-    public static final DecoratableArgument<Boolean> BOOLEAN = new DecoratableArgument<>(new BooleanParser());
-
-    /**
-     * The default instance of {@link VectorParser}.
-     */
-    public static final DecoratableArgument<Vector> VECTOR = new DecoratableArgument<>(new VectorParser());
-
-    /**
-     * The default instance of {@link WorldParser}.
-     */
-    public static final DecoratableArgument<World> WORLD = new DecoratableArgument<>(new WorldParser(Bukkit.getServer()));
-
-    /**
-     * The default instance of {@link LocationParser}.
-     */
-    public static final DecoratableArgument<Location> LOCATION = new DecoratableArgument<>(new LocationParser(Bukkit.getServer()));
-
-    /**
      * The default instance of {@link NumberParser}.
      */
     public static final DecoratableArgument<Number> NUMBER = new DecoratableArgument<>(new NumberParser());
@@ -74,24 +49,51 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     public static final DecoratableArgument<BlockSelector> BLOCK_SELECTOR = new DecoratableArgument<>(new BlockSelectorParser());
 
     /**
-     * The default instance of {@link TextParserToComponentParser}.
+     * The default instance of {@link LocationParser}.
      */
-    public static final DecoratableArgument<Component> MESSAGE = new DecoratableArgument<>(new TextParserToComponentParser(BetonQuest.getInstance().getTextParser()));
+    public final DecoratableArgument<Location> defaultLocationParser;
+
+    /**
+     * The default instance of {@link BooleanParser}.
+     */
+    public final DecoratableArgument<Boolean> defaultBooleanParser;
 
     /**
      * The default instance of {@link UUIDParser}.
      */
-    public static final DecoratableArgument<UUID> UUID = new DecoratableArgument<>(new UUIDParser());
+    public final DecoratableArgument<UUID> defaultUUIDParser;
 
     /**
-     * The default instance of {@link EnumParser}.
-     *
-     * @param <E>      the type of the enum
-     * @param enumType the type of the enum
-     * @return the parser for the enum
+     * The default instance of {@link TextParserToComponentParser}.
      */
-    public static <E extends Enum<E>> DecoratedArgument<E> forEnumeration(final Class<E> enumType) {
-        return new DecoratableArgument<>(new EnumParser<>(enumType));
+    public final DecoratableArgument<Component> defaultComponentParser;
+
+    /**
+     * The default instance of {@link VectorParser}.
+     */
+    public final DecoratableArgument<Vector> defaultVectorParser;
+
+    /**
+     * The default instance of {@link WorldParser}.
+     */
+    public final DecoratableArgument<World> defaultWorldParser;
+
+    /**
+     * The default decoratable instance of {@link StringParser}.
+     */
+    private final DecoratableArgument<String> defaultStringParser;
+
+    /**
+     * Creates a new instance of {@link DefaultArgumentParsers}.
+     */
+    public DefaultArgumentParsers() {
+        defaultStringParser = new DecoratableArgument<>(new StringParser());
+        defaultBooleanParser = new DecoratableArgument<>(new BooleanParser());
+        defaultUUIDParser = new DecoratableArgument<>(new UUIDParser());
+        defaultComponentParser = new DecoratableArgument<>(new TextParserToComponentParser(BetonQuest.getInstance().getTextParser()));
+        defaultVectorParser = new DecoratableArgument<>(new VectorParser());
+        defaultWorldParser = new DecoratableArgument<>(new WorldParser(Bukkit.getServer()));
+        defaultLocationParser = new DecoratableArgument<>(new LocationParser(Bukkit.getServer()));
     }
 
     @Override
@@ -101,37 +103,37 @@ public class DefaultArgumentParsers implements ArgumentParsers {
 
     @Override
     public DecoratedArgument<String> string() {
-        return STRING;
+        return defaultStringParser;
     }
 
     @Override
     public DecoratedArgument<Boolean> bool() {
-        return BOOLEAN;
+        return defaultBooleanParser;
     }
 
     @Override
     public DecoratedArgument<Vector> vector() {
-        return VECTOR;
+        return defaultVectorParser;
     }
 
     @Override
     public DecoratedArgument<World> world() {
-        return WORLD;
+        return defaultWorldParser;
     }
 
     @Override
     public DecoratedArgument<Location> location() {
-        return LOCATION;
+        return defaultLocationParser;
     }
 
     @Override
     public DecoratedArgument<Component> component() {
-        return MESSAGE;
+        return defaultComponentParser;
     }
 
     @Override
     public DecoratedArgument<UUID> uuid() {
-        return UUID;
+        return defaultUUIDParser;
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.mcmmo;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -40,8 +39,8 @@ public class McMMOAddExpEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> skillType = instruction.get(DefaultArgumentParsers.STRING);
-        final Variable<Number> exp = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<String> skillType = instruction.get(instruction.getParsers().string());
+        final Variable<Number> exp = instruction.get(instruction.getParsers().number());
         final BetonQuestLogger log = loggerFactory.create(McMMOAddExpEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new McMMOAddExpEvent(skillType, exp),

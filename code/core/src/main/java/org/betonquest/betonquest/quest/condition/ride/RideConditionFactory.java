@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.ride;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -49,7 +48,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Optional<EntityType>> argument = DefaultArgumentParsers.forEnumeration(EntityType.class)
+        final Argument<Optional<EntityType>> argument = instruction.getParsers().forEnum(EntityType.class)
                 .prefilterOptional(ANY_ENTITY, null);
         final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);

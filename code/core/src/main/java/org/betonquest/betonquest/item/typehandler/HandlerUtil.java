@@ -3,7 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.util.Utils;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.Nullable;
@@ -107,6 +107,6 @@ public final class HandlerUtil {
      * @throws QuestException when the data is neither the key nor "true" or "false"
      */
     public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
-        return key.equals(data) || DefaultArgumentParsers.BOOLEAN.apply(data);
+        return key.equals(data) || new BooleanParser().apply(data);
     }
 }
