@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -38,7 +38,7 @@ public class QuestsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.get(Argument.STRING);
+        final Variable<String> name = instruction.get(DefaultArgumentParsers.STRING);
         final boolean override = instruction.hasArgument("check-requirements");
         return new PrimaryServerThreadEvent(new QuestsEvent(quests, name, override), data);
     }

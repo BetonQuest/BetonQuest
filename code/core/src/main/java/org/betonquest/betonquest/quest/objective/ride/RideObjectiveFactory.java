@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.entity.EntityType;
@@ -28,7 +29,7 @@ public class RideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
+        final Argument<Optional<EntityType>> argument = DefaultArgumentParsers.forEnum(EntityType.class)
                 .prefilterOptional(ANY_PROPERTY, null);
         final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         return new RideObjective(instruction, vehicle);

@@ -4,7 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
@@ -48,7 +48,7 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
         if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             function = profile -> String.valueOf(economy.getBalance(profile.getPlayer()));
         } else if (instructionString.toLowerCase(Locale.ROOT).startsWith(MONEY_LEFT)) {
-            final Variable<Number> amount = instruction.get(instructionString.substring(MONEY_LEFT.length()), Argument.NUMBER);
+            final Variable<Number> amount = instruction.get(instructionString.substring(MONEY_LEFT.length()), DefaultArgumentParsers.NUMBER);
             function = profile -> String.valueOf(amount.getValue(profile).doubleValue() - economy.getBalance(profile.getPlayer()));
         } else {
             throw new QuestException("No type specified");

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -52,11 +53,11 @@ public class WandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<CheckType> type = instruction.get(Argument.ENUM(CheckType.class));
+        final Variable<CheckType> type = instruction.get(DefaultArgumentParsers.forEnum(CheckType.class));
         final Variable<List<Map.Entry<String, Integer>>> spells =
                 instruction.getValueList("spells", SpellParser.SPELL, VariableList.notDuplicateKeyChecker());
-        final Variable<String> name = instruction.getValue("name", Argument.STRING);
-        final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
+        final Variable<String> name = instruction.getValue("name", DefaultArgumentParsers.STRING);
+        final Variable<Number> amount = instruction.getValue("amount", DefaultArgumentParsers.NUMBER);
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
@@ -85,7 +86,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
             if (parts.length != SPELL_FORMAT_LENGTH) {
                 throw new IllegalArgumentException("Invalid spell format: " + value);
             }
-            return Map.entry(parts[0], NUMBER.apply(parts[1]).intValue());
+            return Map.entry(parts[0], DefaultArgumentParsers.NUMBER.apply(parts[1]).intValue());
         }
     }
 }

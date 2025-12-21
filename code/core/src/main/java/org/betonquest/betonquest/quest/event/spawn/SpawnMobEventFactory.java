@@ -4,9 +4,9 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.types.EnumParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -60,10 +60,10 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @throws QuestException if the instruction could not be parsed
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
         final Variable<EntityType> type = instruction.get(new EntityTypeParser());
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
-        final Variable<Component> name = instruction.getValue("name", Argument.MESSAGE);
+        final Variable<Number> amount = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Component> name = instruction.getValue("name", DefaultArgumentParsers.MESSAGE);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         final Variable<Item> helmet = instruction.getValue("h", InstructionIdentifierArgument.ITEM);
         final Variable<Item> chestplate = instruction.getValue("c", InstructionIdentifierArgument.ITEM);

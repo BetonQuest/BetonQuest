@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.command;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -69,7 +69,7 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
                 .map(String::trim)
                 .toList();
         for (final String rawCommand : rawCommands) {
-            commands.add(instruction.get(rawCommand, Argument.STRING));
+            commands.add(instruction.get(rawCommand, DefaultArgumentParsers.STRING));
         }
         return commands;
     }

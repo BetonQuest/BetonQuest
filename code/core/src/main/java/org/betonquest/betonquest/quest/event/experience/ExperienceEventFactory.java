@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.experience;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -42,7 +42,7 @@ public class ExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(DefaultArgumentParsers.NUMBER);
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
         String action = instruction.getValue("action");
         if (instruction.hasArgument("level")) {

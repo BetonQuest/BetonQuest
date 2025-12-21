@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.language;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -48,7 +48,7 @@ public class LanguageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<List<String>> languages = instruction.getList(Argument.STRING, list -> {
+        final Variable<List<String>> languages = instruction.getList(DefaultArgumentParsers.STRING, list -> {
             for (final String language : list) {
                 if (!pluginMessage.getLanguages().contains(language)) {
                     throw new QuestException("Language " + language + " does not exist.");

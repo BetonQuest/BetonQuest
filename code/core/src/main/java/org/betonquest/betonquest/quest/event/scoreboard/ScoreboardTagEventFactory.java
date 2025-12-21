@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -40,8 +40,8 @@ public class ScoreboardTagEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ScoreboardTagAction> action = instruction.get(Argument.ENUM(ScoreboardTagAction.class));
-        final Variable<String> tag = instruction.get(Argument.STRING);
+        final Variable<ScoreboardTagAction> action = instruction.get(DefaultArgumentParsers.forEnum(ScoreboardTagAction.class));
+        final Variable<String> tag = instruction.get(DefaultArgumentParsers.STRING);
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new ScoreboardTagEvent(tag, action), logger, instruction.getPackage()

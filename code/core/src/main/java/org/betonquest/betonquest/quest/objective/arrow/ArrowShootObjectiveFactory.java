@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.arrow;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.Location;
@@ -21,8 +21,8 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(Argument.LOCATION);
-        final Variable<Number> range = instruction.get(Argument.NUMBER);
+        final Variable<Location> location = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Number> range = instruction.get(DefaultArgumentParsers.NUMBER);
         return new ArrowShootObjective(instruction, location, range);
     }
 }

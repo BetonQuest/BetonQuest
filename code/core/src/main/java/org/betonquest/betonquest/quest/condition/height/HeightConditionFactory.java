@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.height;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -45,7 +45,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
                 if (value.matches("-?\\d+\\.?\\d*")) {
                     return Double.parseDouble(value);
                 }
-                return Argument.LOCATION.apply(value).getY();
+                return DefaultArgumentParsers.LOCATION.apply(value).getY();
             } catch (final NumberFormatException e) {
                 throw new QuestException("Could not parse number: " + value, e);
             }

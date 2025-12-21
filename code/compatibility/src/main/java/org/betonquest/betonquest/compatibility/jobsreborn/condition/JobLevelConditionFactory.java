@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.jobsreborn.condition;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -33,8 +33,8 @@ public class JobLevelConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Job> job = instruction.get(JobParser.JOB);
-        final Variable<Number> minimum = instruction.get(Argument.NUMBER);
-        final Variable<Number> maximum = instruction.get(Argument.NUMBER);
+        final Variable<Number> minimum = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<Number> maximum = instruction.get(DefaultArgumentParsers.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new JobLevelCondition(job, minimum, maximum), data);
     }
 }

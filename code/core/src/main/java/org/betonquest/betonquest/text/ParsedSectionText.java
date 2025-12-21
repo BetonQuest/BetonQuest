@@ -3,7 +3,7 @@ package org.betonquest.betonquest.text;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -45,13 +45,13 @@ public class ParsedSectionText extends ParsedText {
             return parseSection(variables, pack, section, path);
         } else if (section.isList(path)) {
             return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variables, pack,
-                    String.join("\n", section.getStringList(path)), Argument.STRING));
+                    String.join("\n", section.getStringList(path)), DefaultArgumentParsers.STRING));
         } else if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variables, pack, raw, Argument.STRING));
+            return Map.of(languageProvider.getDefaultLanguage(), new Variable<>(variables, pack, raw, DefaultArgumentParsers.STRING));
         } else {
             throw new QuestException("The '" + path + "' is missing!");
         }
@@ -67,14 +67,14 @@ public class ParsedSectionText extends ParsedText {
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
                 texts.put(key, new Variable<>(variables, pack,
-                        String.join("\n", subSection.getStringList(key)), Argument.STRING));
+                        String.join("\n", subSection.getStringList(key)), DefaultArgumentParsers.STRING));
                 continue;
             }
             final String raw = subSection.getString(key);
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }
-            texts.put(key, new Variable<>(variables, pack, raw, Argument.STRING));
+            texts.put(key, new Variable<>(variables, pack, raw, DefaultArgumentParsers.STRING));
         }
         if (texts.isEmpty()) {
             throw new QuestException("No values defined!");

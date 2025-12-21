@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.bukkit.event.npc.NpcVisibilityUpdateEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -118,7 +118,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
-            vector.add(new Variable<>(variables, pack, "(" + stringVector + ")", Argument.VECTOR).getValue(null));
+            vector.add(new Variable<>(variables, pack, "(" + stringVector + ")", DefaultArgumentParsers.VECTOR).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);

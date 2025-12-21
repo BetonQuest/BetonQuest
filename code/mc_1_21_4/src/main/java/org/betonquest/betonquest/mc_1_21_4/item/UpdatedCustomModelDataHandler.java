@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.item.typehandler.Existence;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.util.Utils;
@@ -176,7 +176,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
                 final String[] booleans = StringUtils.split(split[1], ",");
                 this.flags = new ArrayList<>(booleans.length);
                 for (final String part : booleans) {
-                    this.flags.add(BooleanParser.BOOLEAN.apply(part));
+                    this.flags.add(DefaultArgumentParsers.BOOLEAN.apply(part));
                 }
             case 1:
                 final String[] floats = StringUtils.split(split[0], ",");

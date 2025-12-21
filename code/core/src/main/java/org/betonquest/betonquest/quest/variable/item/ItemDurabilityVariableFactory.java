@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -32,7 +32,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
+        final Variable<EquipmentSlot> slot = instruction.get(DefaultArgumentParsers.forEnum(EquipmentSlot.class));
         final boolean relative = instruction.hasArgument("relative");
         final Variable<Number> digitsAfter = digits(instruction);
         final boolean inPercent = instruction.hasArgument("percent");
@@ -44,7 +44,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
             for (int i = instruction.size() - 2; i >= 0; i--) {
                 final String part = instruction.getPart(i);
                 if (DIGITS_KEY.equalsIgnoreCase(part)) {
-                    return instruction.get(instruction.getPart(i + 1), Argument.NUMBER, DEFAULT_DIGITS);
+                    return instruction.get(instruction.getPart(i + 1), DefaultArgumentParsers.NUMBER, DEFAULT_DIGITS);
                 }
             }
         }

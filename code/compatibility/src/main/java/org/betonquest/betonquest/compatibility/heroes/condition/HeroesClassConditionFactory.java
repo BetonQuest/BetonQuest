@@ -4,7 +4,7 @@ import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -57,9 +57,9 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<HeroesClassType> classType = instruction.get(Argument.ENUM(HeroesClassType.class));
-        final Variable<String> heroClass = instruction.get(Argument.STRING);
-        final Variable<Number> level = instruction.getValue("level", Argument.NUMBER);
+        final Variable<HeroesClassType> classType = instruction.get(DefaultArgumentParsers.forEnum(HeroesClassType.class));
+        final Variable<String> heroClass = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<Number> level = instruction.getValue("level", DefaultArgumentParsers.NUMBER);
 
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new HeroesClassCondition(characterManager, classManager, classType, heroClass, level),

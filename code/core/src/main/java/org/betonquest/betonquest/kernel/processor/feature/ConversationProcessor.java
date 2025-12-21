@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -123,7 +123,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         final Text quester = textCreator.parseFromSection(pack, section, "quester");
         final CreationHelper helper = new CreationHelper(pack, section);
-        final Variable<Boolean> blockMovement = new Variable<>(variables, pack, section.getString("stop", "false"), Argument.BOOLEAN);
+        final Variable<Boolean> blockMovement = new Variable<>(variables, pack, section.getString("stop", "false"), DefaultArgumentParsers.BOOLEAN);
         final Variable<ConversationIOFactory> convIO = helper.parseConvIO();
         final Variable<InterceptorFactory> interceptor = helper.parseInterceptor();
         final Variable<Number> interceptorDelay = helper.parseInterceptorDelay();
@@ -226,7 +226,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         private Variable<ConversationIOFactory> parseConvIO() throws QuestException {
             final String rawConvIOs = defaulting("conversationIO", "conversation.default_io", "menu,tellraw");
             return new Variable<>(variables, pack, rawConvIOs, value -> {
-                final List<String> ios = new VariableList<>(variables, pack, value, Argument.STRING).getValue(null);
+                final List<String> ios = new VariableList<>(variables, pack, value, DefaultArgumentParsers.STRING).getValue(null);
                 return convIORegistry.getFactory(ios);
             });
         }
@@ -234,14 +234,14 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         private Variable<InterceptorFactory> parseInterceptor() throws QuestException {
             final String rawInterceptor = defaulting("interceptor", "conversation.interceptor.default", "simple");
             return new Variable<>(variables, pack, rawInterceptor, value -> {
-                final List<String> interceptors = new VariableList<>(variables, pack, value, Argument.STRING).getValue(null);
+                final List<String> interceptors = new VariableList<>(variables, pack, value, DefaultArgumentParsers.STRING).getValue(null);
                 return interceptorRegistry.getFactory(interceptors);
             });
         }
 
         private Variable<Number> parseInterceptorDelay() throws QuestException {
             final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
-            return new Variable<>(variables, pack, rawInterceptorDelay, Argument.NUMBER_NOT_LESS_THAN_ZERO);
+            return new Variable<>(variables, pack, rawInterceptorDelay, DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ZERO);
         }
     }
 }

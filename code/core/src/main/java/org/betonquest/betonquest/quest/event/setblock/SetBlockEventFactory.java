@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.setblock;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -45,8 +45,8 @@ public class SetBlockEventFactory implements PlayerEventFactory, PlayerlessEvent
     }
 
     private NullableEventAdapter createSetBlockEvent(final Instruction instruction) throws QuestException {
-        final Variable<BlockSelector> blockSelector = instruction.get(Argument.BLOCK_SELECTOR);
-        final Variable<Location> variableLocation = instruction.get(Argument.LOCATION);
+        final Variable<BlockSelector> blockSelector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR);
+        final Variable<Location> variableLocation = instruction.get(DefaultArgumentParsers.LOCATION);
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
         return new NullableEventAdapter(new SetBlockEvent(blockSelector, variableLocation, applyPhysics));
     }

@@ -5,8 +5,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.id.ItemID;
@@ -37,7 +37,7 @@ public class ItemParser implements InstructionIdentifierArgument<Item> {
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
             item = new ItemID(variables, packManager, pack, parts[0]);
-            number = new Variable<>(Argument.NUMBER.apply(parts[1]));
+            number = new Variable<>(DefaultArgumentParsers.NUMBER.apply(parts[1]));
         } else {
             item = new ItemID(variables, packManager, pack, string);
             number = new Variable<>(1);

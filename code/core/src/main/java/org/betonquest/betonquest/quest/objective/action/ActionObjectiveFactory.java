@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.action;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.betonquest.betonquest.util.BlockSelector;
@@ -30,11 +30,11 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Click> action = instruction.get(Argument.ENUM(Click.class));
-        final Variable<Optional<BlockSelector>> selector = instruction.get(Argument.BLOCK_SELECTOR.prefilterOptional(ANY, null));
+        final Variable<Click> action = instruction.get(DefaultArgumentParsers.forEnum(Click.class));
+        final Variable<Optional<BlockSelector>> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR.prefilterOptional(ANY, null));
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Location> loc = instruction.getValue("loc", Argument.LOCATION);
-        final Variable<Number> range = instruction.getValue("range", Argument.NUMBER, 0);
+        final Variable<Location> loc = instruction.getValue("loc", DefaultArgumentParsers.LOCATION);
+        final Variable<Number> range = instruction.getValue("range", DefaultArgumentParsers.NUMBER, 0);
         final boolean cancel = instruction.hasArgument("cancel");
         final String handString = instruction.getValue("hand");
         final EquipmentSlot slot;

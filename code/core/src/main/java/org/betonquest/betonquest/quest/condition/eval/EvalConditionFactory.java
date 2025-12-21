@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.condition.eval;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
@@ -59,6 +59,6 @@ public class EvalConditionFactory implements PlayerConditionFactory, PlayerlessC
     private NullableConditionAdapter parseEvalCondition(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         return new NullableConditionAdapter(new EvalCondition(variables, packManager, conditionTypeRegistry,
-                instruction.getPackage(), instruction.get(rawInstruction, Argument.STRING)));
+                instruction.getPackage(), instruction.get(rawInstruction, DefaultArgumentParsers.STRING)));
     }
 }

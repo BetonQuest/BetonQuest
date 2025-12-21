@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -108,7 +109,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
             throw new QuestException("Check interval must be bigger than 0.");
         }
 
-        final Variable<List<Location>> locations = load(pack, settings, "locations", Argument.LOCATION);
+        final Variable<List<Location>> locations = load(pack, settings, "locations", DefaultArgumentParsers.LOCATION);
         final Variable<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
         final Variable<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
 

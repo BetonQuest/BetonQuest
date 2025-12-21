@@ -5,7 +5,7 @@ import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -58,8 +58,8 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(Argument.STRING).getValue(null);
-        final Variable<List<String>> groupNames = instruction.getList(Argument.STRING, checkForNotExistingGroups());
+        final String action = instruction.get(DefaultArgumentParsers.STRING).getValue(null);
+        final Variable<List<String>> groupNames = instruction.getList(DefaultArgumentParsers.STRING, checkForNotExistingGroups());
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupEvent(groupNames, playerGroupService);

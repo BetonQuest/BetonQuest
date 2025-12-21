@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.command;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -23,7 +23,7 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> command = instruction.get(Argument.STRING);
+        final Variable<String> command = instruction.get(DefaultArgumentParsers.STRING);
         final boolean ignoreCase = instruction.hasArgument("ignoreCase");
         final boolean exact = instruction.hasArgument("exact");
         final boolean cancel = instruction.hasArgument("cancel");

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -31,9 +31,9 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> objective = instruction.get(Argument.STRING);
-        final Variable<Number> number = instruction.get(Argument.NUMBER);
-        final PointType action = instruction.getValue("action", Argument.ENUM(PointType.class), PointType.ADD).getValue(null);
+        final Variable<String> objective = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<Number> number = instruction.get(DefaultArgumentParsers.NUMBER);
+        final PointType action = instruction.getValue("action", DefaultArgumentParsers.forEnum(PointType.class), PointType.ADD).getValue(null);
         return new PrimaryServerThreadEvent(
                 new ScoreboardObjectiveEvent(objective, number, action),
                 data);

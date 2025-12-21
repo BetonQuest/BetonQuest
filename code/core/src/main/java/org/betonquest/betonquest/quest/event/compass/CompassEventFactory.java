@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.compass;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -48,7 +48,7 @@ public class CompassEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<CompassTargetAction> action = instruction.get(Argument.ENUM(CompassTargetAction.class));
+        final Variable<CompassTargetAction> action = instruction.get(DefaultArgumentParsers.forEnum(CompassTargetAction.class));
         final Variable<CompassID> compassId = instruction.get(CompassID::new);
         return new PrimaryServerThreadEvent(
                 new CompassEvent(featureApi, dataStorage, action, compassId),

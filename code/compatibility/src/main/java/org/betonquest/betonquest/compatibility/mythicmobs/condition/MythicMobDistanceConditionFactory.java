@@ -5,6 +5,7 @@ import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -57,7 +58,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<MythicMob> mobType = instruction.get(mobArgument);
-        final Variable<Number> distance = instruction.get(Argument.NUMBER);
+        final Variable<Number> distance = instruction.get(DefaultArgumentParsers.NUMBER);
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new MythicMobDistanceCondition(mobExecutor, mobType, distance),
                 loggerFactory.create(MythicMobDistanceCondition.class),

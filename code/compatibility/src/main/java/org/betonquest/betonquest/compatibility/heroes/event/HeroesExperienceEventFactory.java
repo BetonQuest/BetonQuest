@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.heroes.event;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -49,8 +49,8 @@ public class HeroesExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<HeroesClassType> classType = instruction.get(Argument.ENUM(HeroesClassType.class));
-        final Variable<Number> amountVar = instruction.get(Argument.NUMBER);
+        final Variable<HeroesClassType> classType = instruction.get(DefaultArgumentParsers.forEnum(HeroesClassType.class));
+        final Variable<Number> amountVar = instruction.get(DefaultArgumentParsers.NUMBER);
 
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(new HeroesExperienceEvent(characterManager, classType, amountVar),
                 loggerFactory.create(HeroesExperienceEvent.class), instruction.getPackage()), data);

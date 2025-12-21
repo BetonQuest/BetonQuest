@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -58,7 +58,7 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
         if (rawLocation == null) {
             throw new QuestException("Location is not specified");
         } else {
-            return new Variable<>(variables, pack, rawLocation, Argument.LOCATION).getValue(null);
+            return new Variable<>(variables, pack, rawLocation, DefaultArgumentParsers.LOCATION).getValue(null);
         }
     }
 

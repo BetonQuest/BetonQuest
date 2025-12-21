@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.location;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,8 +41,8 @@ public class LocationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(Argument.LOCATION);
-        final Variable<Number> range = instruction.get(Argument.NUMBER);
+        final Variable<Location> loc = instruction.get(DefaultArgumentParsers.LOCATION);
+        final Variable<Number> range = instruction.get(DefaultArgumentParsers.NUMBER);
         final BetonQuestLogger log = loggerFactory.create(LocationCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new LocationCondition(loc, range), log, instruction.getPackage()), data);

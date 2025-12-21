@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.velocity;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -40,12 +40,12 @@ public class VelocityEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Vector> vector = instruction.getValue("vector", Argument.VECTOR);
+        final Variable<Vector> vector = instruction.getValue("vector", DefaultArgumentParsers.VECTOR);
         if (vector == null) {
             throw new QuestException("A 'vector' is required");
         }
-        final Variable<VectorDirection> direction = instruction.getValue("direction", Argument.ENUM(VectorDirection.class), VectorDirection.ABSOLUTE);
-        final Variable<VectorModification> modification = instruction.getValue("modification", Argument.ENUM(VectorModification.class), VectorModification.SET);
+        final Variable<VectorDirection> direction = instruction.getValue("direction", DefaultArgumentParsers.forEnum(VectorDirection.class), VectorDirection.ABSOLUTE);
+        final Variable<VectorModification> modification = instruction.getValue("modification", DefaultArgumentParsers.forEnum(VectorModification.class), VectorModification.SET);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new VelocityEvent(vector, direction, modification),
                 loggerFactory.create(VelocityEvent.class),

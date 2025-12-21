@@ -4,6 +4,7 @@ import io.lumine.mythic.api.mobs.MobManager;
 import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,6 @@ public record MythicMobDoubleParser(MobManager mobManager) implements Argument<M
         if (mythicMob.isEmpty()) {
             throw new QuestException("MythicMob type " + parts[0] + " is invalid.");
         }
-        return Map.entry(mythicMob.get(), NUMBER.apply(parts[1]).doubleValue());
+        return Map.entry(mythicMob.get(), DefaultArgumentParsers.NUMBER.apply(parts[1]).doubleValue());
     }
 }

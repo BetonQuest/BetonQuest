@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.brewery.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,10 +41,10 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amountVar = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ONE);
-        final Variable<Number> qualityVar = instruction.get(Argument.NUMBER);
-        final Variable<String> nameVar = instruction.get(Argument.STRING);
-        final Variable<IdentifierType> mode = instruction.getValue("mode", Argument.ENUM(IdentifierType.class), IdentifierType.NAME);
+        final Variable<Number> amountVar = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
+        final Variable<Number> qualityVar = instruction.get(DefaultArgumentParsers.NUMBER);
+        final Variable<String> nameVar = instruction.get(DefaultArgumentParsers.STRING);
+        final Variable<IdentifierType> mode = instruction.getValue("mode", DefaultArgumentParsers.forEnum(IdentifierType.class), IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar, mode), logger, instruction.getPackage()), data);

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -41,8 +41,8 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.get(Argument.ENUM(EquipmentSlot.class));
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<EquipmentSlot> slot = instruction.get(DefaultArgumentParsers.forEnum(EquipmentSlot.class));
+        final Variable<Number> amount = instruction.get(DefaultArgumentParsers.NUMBER);
         final boolean relative = instruction.hasArgument("relative");
         final BetonQuestLogger log = loggerFactory.create(ItemDurabilityCondition.class);
         return new PrimaryServerThreadPlayerCondition(
