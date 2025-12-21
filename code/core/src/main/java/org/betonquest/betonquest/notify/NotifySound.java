@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -63,9 +63,9 @@ class NotifySound {
     private static final String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Source of player to play the sound for.
@@ -73,7 +73,7 @@ class NotifySound {
     private final QuestConsumer<OnlineProfile> soundPlayer;
 
     /**
-     * Source pack to use for variable resolving.
+     * Source pack to use for argument creation.
      */
     @Nullable
     private final QuestPackage pack;
@@ -85,7 +85,7 @@ class NotifySound {
      * @throws QuestException when the data could not be parsed
      */
     protected NotifySound(final NotifyIO notify) throws QuestException {
-        this.variables = notify.variables;
+        this.placeholders = notify.placeholders;
         this.pack = notify.pack;
         final Map<String, String> data = notify.data;
 
@@ -185,7 +185,7 @@ class NotifySound {
     @Nullable
     private Argument<Location> getLocationArgument(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new DefaultArgument<>(variables, pack, locationString, new LocationParser(Bukkit.getServer()));
+        return locationString == null ? null : new DefaultArgument<>(placeholders, pack, locationString, new LocationParser(Bukkit.getServer()));
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws QuestException {
@@ -201,7 +201,7 @@ class NotifySound {
     private Argument<Vector> getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
         if (playerOffsetString != null) {
             try {
-                return new DefaultArgument<>(variables, pack, playerOffsetString, new VectorParser());
+                return new DefaultArgument<>(placeholders, pack, playerOffsetString, new VectorParser());
             } catch (final QuestException e) {
                 throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
             }
@@ -234,7 +234,7 @@ class NotifySound {
      * Sends the sound to the profile.
      *
      * @param onlineProfile the profile to send the sound to
-     * @throws QuestException when variables could not be resolved
+     * @throws QuestException when placeholders could not be resolved
      */
     protected void sendSound(final OnlineProfile onlineProfile) throws QuestException {
         soundPlayer.accept(onlineProfile);

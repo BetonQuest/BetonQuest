@@ -112,14 +112,14 @@ public class DelayObjective extends DefaultObjective {
     public String getProperty(final String name, final Profile profile) {
         return switch (name.toLowerCase(Locale.ROOT)) {
             case "left" ->
-                    qeHandler.handle(() -> LegacyComponentSerializer.legacySection().serialize(parseVariableLeft(profile)), "");
-            case "date" -> parseVariableDate(profile);
-            case "rawseconds" -> parseVariableRawSeconds(profile);
+                    qeHandler.handle(() -> LegacyComponentSerializer.legacySection().serialize(parseLeftProperty(profile)), "");
+            case "date" -> parseDateProperty(profile);
+            case "rawseconds" -> parseRawSecondsProperty(profile);
             default -> "";
         };
     }
 
-    private Component parseVariableLeft(final Profile profile) throws QuestException {
+    private Component parseLeftProperty(final Profile profile) throws QuestException {
         final PluginMessage pluginMessage = BetonQuest.getInstance().getPluginMessage();
         final Component daysWord = pluginMessage.getMessage(profile, "days");
         final Component daysWordSingular = pluginMessage.getMessage(profile, "days_singular");
@@ -155,14 +155,14 @@ public class DelayObjective extends DefaultObjective {
         }
     }
 
-    private String parseVariableDate(final Profile profile) {
+    private String parseDateProperty(final Profile profile) {
         final String pattern = BetonQuest.getInstance().getPluginConfig().getString("date_format", "");
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         final long millis = (long) getDelayData(profile).getTime();
         return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).format(formatter);
     }
 
-    private String parseVariableRawSeconds(final Profile profile) {
+    private String parseRawSecondsProperty(final Profile profile) {
         final double timeLeft = getDelayData(profile).getTime() - System.currentTimeMillis();
         return String.valueOf(timeLeft / 1000);
     }

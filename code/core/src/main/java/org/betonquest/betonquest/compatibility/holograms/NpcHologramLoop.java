@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
@@ -74,7 +74,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      *
      * @param loggerFactory    logger factory to use
      * @param log              the logger that will be used for logging
-     * @param variables        the variable processor to create and resolve variables
+     * @param placeholders     the {@link Placeholders} to create and resolve placeholders
      * @param packManager      the quest package manager to get quest packages from
      * @param plugin           the plugin to schedule tasks
      * @param hologramProvider the hologram provider to create new holograms
@@ -83,10 +83,10 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param textParser       the text parser used to parse text and colors
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                           final Variables variables, final QuestPackageManager packManager, final Plugin plugin,
+                           final Placeholders placeholders, final QuestPackageManager packManager, final Plugin plugin,
                            final HologramProvider hologramProvider,
                            final FeatureApi featureApi, final NpcRegistry npcRegistry, final TextParser textParser) {
-        super(loggerFactory, log, variables, packManager, hologramProvider, "Npc Hologram", "npc_holograms", textParser);
+        super(loggerFactory, log, placeholders, packManager, hologramProvider, "Npc Hologram", "npc_holograms", textParser);
         this.packManager = packManager;
         this.plugin = plugin;
         this.featureApi = featureApi;
@@ -119,7 +119,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         final String stringVector = section.getString("vector");
         final VectorParser vectorParser = new VectorParser();
         if (stringVector != null) {
-            vector.add(new DefaultArgument<>(variables, pack, "(" + stringVector + ")", vectorParser).getValue(null));
+            vector.add(new DefaultArgument<>(placeholders, pack, "(" + stringVector + ")", vectorParser).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);
@@ -168,8 +168,8 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new DefaultListArgument<>(variables, pack, section.getString("npcs", ""),
-                value -> new NpcID(variables, packManager, pack, value)).getValue(null);
+        return new DefaultListArgument<>(placeholders, pack, section.getString("npcs", ""),
+                value -> new NpcID(placeholders, packManager, pack, value)).getValue(null);
     }
 
     private void updateHologram(final NpcHologram npcHologram) {

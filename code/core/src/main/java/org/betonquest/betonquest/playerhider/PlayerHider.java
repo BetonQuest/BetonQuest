@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.bukkit.Bukkit;
@@ -58,12 +58,12 @@ public class PlayerHider {
      *
      * @param plugin          the plugin instance
      * @param api             the BetonQuest API instance
-     * @param variables       the variable processor to create and resolve variables
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param profileProvider the profile provider instance
      * @param config          the config to load from
      * @throws QuestException Thrown if there is a configuration error.
      */
-    public PlayerHider(final Plugin plugin, final BetonQuestApi api, final Variables variables,
+    public PlayerHider(final Plugin plugin, final BetonQuestApi api, final Placeholders placeholders,
                        final ProfileProvider profileProvider, final ConfigAccessor config) throws QuestException {
         this.plugin = plugin;
         this.profileProvider = profileProvider;
@@ -78,8 +78,8 @@ public class PlayerHider {
             for (final String key : hiderSection.getKeys(false)) {
                 final String rawConditionsSource = hiderSection.getString(key + ".source_player");
                 final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                hiders.put(getConditions(variables, pack, key, rawConditionsSource),
-                        getConditions(variables, pack, key, rawConditionsTarget));
+                hiders.put(getConditions(placeholders, pack, key, rawConditionsSource),
+                        getConditions(placeholders, pack, key, rawConditionsTarget));
             }
         }
 
@@ -94,14 +94,14 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private Collection<ConditionID> getConditions(final Variables variables, final QuestPackage pack, final String key,
+    private Collection<ConditionID> getConditions(final Placeholders placeholders, final QuestPackage pack, final String key,
                                                   @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
             return new ArrayList<>();
         }
         try {
-            return new DefaultListArgument<>(variables, pack, rawConditions,
-                    string -> new ConditionID(variables, api.getQuestPackageManager(), pack, string))
+            return new DefaultListArgument<>(placeholders, pack, rawConditions,
+                    string -> new ConditionID(placeholders, api.getQuestPackageManager(), pack, string))
                     .getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);

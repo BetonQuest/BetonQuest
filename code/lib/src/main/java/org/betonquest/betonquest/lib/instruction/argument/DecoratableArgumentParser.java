@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.ListArgumentParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     }
 
     @Override
-    public T apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
-        return argumentParser.apply(variables, packManager, pack, string);
+    public T apply(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+        return argumentParser.apply(placeholders, packManager, pack, string);
     }
 
     @Override
@@ -51,14 +51,14 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
 
     @Override
     public <R> DecoratedArgumentParser<R> collect(final Collector<T, ?, R> collector) {
-        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
-                parseCollect(variables, packManager, pack, string, collector));
+        return new DecoratableArgumentParser<>((placeholders, packManager, pack, string) ->
+                parseCollect(placeholders, packManager, pack, string, collector));
     }
 
     @Override
     public <U> DecoratedArgumentParser<U> map(final QuestFunction<T, U> mapper) {
-        return new DecoratableArgumentParser<>((variables, packManager, pack, string)
-                -> mapper.apply(apply(variables, packManager, pack, string)));
+        return new DecoratableArgumentParser<>((placeholders, packManager, pack, string)
+                -> mapper.apply(apply(placeholders, packManager, pack, string)));
     }
 
     @Override
@@ -68,36 +68,36 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
 
     @Override
     public DecoratedArgumentParser<T> validate(final ValueValidator<T> validator, final String errorMessage) {
-        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
-                validateLocal(validator, errorMessage, variables, packManager, pack, string));
+        return new DecoratableArgumentParser<>((placeholders, packManager, pack, string) ->
+                validateLocal(validator, errorMessage, placeholders, packManager, pack, string));
     }
 
     @Override
     public DecoratedArgumentParser<T> prefilter(final String expected, final T fixedValue) {
-        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
-                expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string));
+        return new DecoratableArgumentParser<>((placeholders, packManager, pack, string) ->
+                expected.equalsIgnoreCase(string) ? fixedValue : apply(placeholders, packManager, pack, string));
     }
 
     @Override
     public DecoratedArgumentParser<Optional<T>> prefilterOptional(final String expected, @Nullable final T fixedValue) {
-        return new DecoratableArgumentParser<>((variables, packManager, pack, string) ->
-                Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(variables, packManager, pack, string)));
+        return new DecoratableArgumentParser<>((placeholders, packManager, pack, string) ->
+                Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(placeholders, packManager, pack, string)));
     }
 
-    private <R, A> R parseCollect(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
+    private <R, A> R parseCollect(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack,
                                   final String string, final Collector<T, A, R> collector) throws QuestException {
         final String[] elements = StringUtils.split(string, ",");
         final Stream.Builder<T> streamBuilder = Stream.builder();
         for (final String element : elements) {
-            final T resolved = apply(variables, packManager, pack, element);
+            final T resolved = apply(placeholders, packManager, pack, element);
             streamBuilder.add(resolved);
         }
         return streamBuilder.build().collect(collector);
     }
 
-    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Variables variables,
+    private T validateLocal(final ValueValidator<T> checker, final String errorMessage, final Placeholders placeholders,
                             final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
-        final T value = apply(variables, packManager, pack, string);
+        final T value = apply(placeholders, packManager, pack, string);
         if (!checker.validate(value)) {
             throw new QuestException(errorMessage.formatted(string));
         }

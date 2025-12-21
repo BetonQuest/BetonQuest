@@ -29,25 +29,25 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     /**
      * The parser for the mythic mob type.
      */
-    private final SimpleArgumentParser<MythicMob> mobArgument;
+    private final SimpleArgumentParser<MythicMob> mob;
 
     /**
      * Create a new factory for {@link MythicMobDistanceCondition}s.
      *
      * @param loggerFactory the logger factory to create class specific logger
      * @param mobExecutor   the mob executor used to get MythicMobs
-     * @param mobArgument   the parser for the mythic mob type
+     * @param mob           the parser for the mythic mob type
      */
     public MythicMobDistanceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final MobExecutor mobExecutor,
-                                             final SimpleArgumentParser<MythicMob> mobArgument) {
+                                             final SimpleArgumentParser<MythicMob> mob) {
         this.loggerFactory = loggerFactory;
         this.mobExecutor = mobExecutor;
-        this.mobArgument = mobArgument;
+        this.mob = mob;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<MythicMob> mobType = instruction.parse(mobArgument).get();
+        final Argument<MythicMob> mobType = instruction.parse(mob).get();
         final Argument<Number> distance = instruction.number().get();
         return new OnlineConditionAdapter(new MythicMobDistanceCondition(mobExecutor, mobType, distance),
                 loggerFactory.create(MythicMobDistanceCondition.class),

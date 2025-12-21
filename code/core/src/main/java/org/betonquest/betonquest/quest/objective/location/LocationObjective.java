@@ -31,8 +31,8 @@ public class LocationObjective extends AbstractLocationObjective {
      * The constructor takes an Instruction object as a parameter and throws an QuestException.
      *
      * @param instruction the Instruction object to be used in the constructor
-     * @param loc         the VariableLocation object representing the location
-     * @param range       the VariableNumber object representing the range
+     * @param loc         the target location
+     * @param range       the range around the target location
      * @throws QuestException if there is an error while parsing the instruction
      */
     public LocationObjective(final Instruction instruction, final Argument<Location> loc, final Argument<Number> range) throws QuestException {

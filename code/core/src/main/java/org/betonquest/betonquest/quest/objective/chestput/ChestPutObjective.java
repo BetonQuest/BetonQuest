@@ -52,8 +52,7 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
     private final IngameNotificationSender occupiedSender;
 
     /**
-     * Argument to manage the chest access for one or multiple players. False by default which means only one player
-     * can access the chest at the same time.
+     * Manages the chest access for one or multiple players.
      */
     private final boolean multipleAccess;
 
@@ -65,7 +64,7 @@ public class ChestPutObjective extends DefaultObjective implements Listener {
      * @param chestTakeEvent     the event to execute when the items are put in the chest to take them out
      * @param loc                the location of the chest
      * @param occupiedSender     the sender to notify the player if the chest is occupied
-     * @param multipleAccess     argument to manage the chest access for one or multiple players
+     * @param multipleAccess     manages the chest access for one or multiple players
      * @throws QuestException if there is an error in the instruction
      */
     public ChestPutObjective(final Instruction instruction,

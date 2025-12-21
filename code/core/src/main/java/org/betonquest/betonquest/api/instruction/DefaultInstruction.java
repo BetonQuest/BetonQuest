@@ -19,7 +19,7 @@ import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultChainableInstruction;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultInstructionChainParser;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
@@ -43,9 +43,9 @@ import java.util.UUID;
 public class DefaultInstruction implements Instruction {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -85,34 +85,34 @@ public class DefaultInstruction implements Instruction {
     /**
      * Create an instruction using the quoting tokenizer.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param pack        quest package the instruction belongs to
-     * @param identifier  identifier of the instruction
-     * @param parsers     The parsers to use for parsing the instruction's arguments.
-     * @param instruction instruction string to parse
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param pack         quest package the instruction belongs to
+     * @param identifier   identifier of the instruction
+     * @param parsers      The parsers to use for parsing the instruction's arguments.
+     * @param instruction  instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
+    public DefaultInstruction(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack,
                               @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
-        this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), parsers, instruction);
+        this(placeholders, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), parsers, instruction);
     }
 
     /**
      * Create an instruction using the given tokenizer.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
-     * @param pack        quest package the instruction belongs to
-     * @param identifier  identifier of the instruction
-     * @param parsers     The parsers to use for parsing the instruction's arguments.
-     * @param instruction instruction string to parse
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param tokenizer    Tokenizer that can split on spaces but interpret quotes and escapes.
+     * @param pack         quest package the instruction belongs to
+     * @param identifier   identifier of the instruction
+     * @param parsers      The parsers to use for parsing the instruction's arguments.
+     * @param instruction  instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer,
+    public DefaultInstruction(final Placeholders placeholders, final QuestPackageManager packManager, final Tokenizer tokenizer,
                               final QuestPackage pack, final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.packManager = packManager;
         this.pack = pack;
         this.identifier = identifier;
@@ -123,7 +123,7 @@ public class DefaultInstruction implements Instruction {
         } catch (final TokenizerException e) {
             throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
         }
-        this.chainableInstruction = new DefaultChainableInstruction(variables, packManager, pack,
+        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
                 this.instructionParts::nextElement, this::getValue, this::getFlag);
     }
 
@@ -134,14 +134,14 @@ public class DefaultInstruction implements Instruction {
      * @param identifier  identifier of the new instruction
      */
     public DefaultInstruction(final DefaultInstruction instruction, final Identifier identifier) {
-        this.variables = instruction.variables;
+        this.placeholders = instruction.placeholders;
         this.packManager = instruction.packManager;
         this.pack = instruction.pack;
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
         this.argumentParsers = instruction.argumentParsers;
-        this.chainableInstruction = new DefaultChainableInstruction(variables, packManager, pack,
+        this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack,
                 this.instructionParts::nextElement, this::getValue, this::getFlag);
     }
 
@@ -242,7 +242,7 @@ public class DefaultInstruction implements Instruction {
 
     @Override
     public InstructionChainParser chainForArgument(final QuestSupplier<String> rawArgumentSupplier) {
-        final ChainableInstruction instruction = new DefaultChainableInstruction(variables, packManager, pack,
+        final ChainableInstruction instruction = new DefaultChainableInstruction(placeholders, packManager, pack,
                 rawArgumentSupplier, key -> rawArgumentSupplier.get(), key -> Map.entry(FlagState.DEFINED, key));
         return new DefaultInstructionChainParser(instruction, argumentParsers);
     }

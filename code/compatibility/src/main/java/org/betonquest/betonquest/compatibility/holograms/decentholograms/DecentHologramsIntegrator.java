@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
-import org.betonquest.betonquest.api.quest.variable.VariableID;
+import org.betonquest.betonquest.api.quest.Placeholders;
+import org.betonquest.betonquest.api.quest.placeholder.PlaceholderID;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
@@ -31,9 +31,9 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     private final BetonQuestLogger log;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -43,14 +43,14 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms.
      *
-     * @param log         the custom logger for this class
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
+     * @param log          the custom logger for this class
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
      */
-    public DecentHologramsIntegrator(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager) {
+    public DecentHologramsIntegrator(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager) {
         super("DecentHolograms", "2.7.5");
         this.log = log;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.packManager = packManager;
     }
 
@@ -65,24 +65,30 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     public void hook(final BetonQuestApi api) throws HookException {
         super.hook(api);
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            log.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines "
-                    + "without PlaceholderAPI plugin! Install it to use holograms with variables!");
+            log.warn("Holograms from DecentHolograms will not be able to use BetonQuest placeholders in text lines "
+                    + "without PlaceholderAPI plugin! Install it to use holograms with placeholders!");
         }
     }
 
+    /**
+     * Parses a BetonQuest placeholder with package and converts it to the appropriate format for DecentHolograms
+     * which uses PlaceholderAPI format.
+     *
+     * @param pack the quest pack where the placeholder resides
+     * @param text the raw text
+     * @return the parsed and formatted full string
+     */
     @Override
-    public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable with package to
-           "%betonquest_pack:objective.kills.left%" which is parsed by DecentHolograms as a PlaceholderAPI placeholder. */
-        final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
+    public String parsePlaceholder(final QuestPackage pack, final String text) {
+        final Matcher matcher = HologramProvider.PLACEHOLDER_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final VariableID variable = new VariableID(variables, packManager, pack, group);
-                final Instruction instruction = variable.getInstruction();
-                return "%betonquest_" + variable.getPackage().getQuestPath() + ":" + instruction + "%";
+                final PlaceholderID placeholderID = new PlaceholderID(placeholders, packManager, pack, group);
+                final Instruction instruction = placeholderID.getInstruction();
+                return "%betonquest_" + placeholderID.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
-                log.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
+                log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
             }
             return group;
         });

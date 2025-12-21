@@ -19,7 +19,7 @@ item_created: >-
   <newline>Click to suggest the <yellow>/bq reload</yellow> command.'>Reload BetonQuest
 value_set: '@[legacy]&aValue {value} set for key {key}.'
 key_remove: '@[legacy]&aRemoved key {key}.'
-player_variables: '@[legacy]&aPlayer''s variables in &b{objective}&a:'
+player_variables: '@[legacy]&aPlayer''s variable in &b{objective}&a:'
 player_no_property: '@[legacy]&cNo property stored for Player.'
 player_objectives: '@[legacy]&aPlayer''s objectives:'
 player_tags: '@[legacy]&aPlayer''s tags:'

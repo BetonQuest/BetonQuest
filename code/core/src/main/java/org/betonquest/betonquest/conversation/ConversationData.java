@@ -13,8 +13,8 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.text.Text;
@@ -57,9 +57,9 @@ public class ConversationData {
     private final QuestPackageManager packManager;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Quest Type API.
@@ -103,7 +103,7 @@ public class ConversationData {
      *
      * @param log             the custom logger for this class
      * @param packManager     the quest package manager to get quest packages from
-     * @param variables       the variable processor to create and resolve variables
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param questTypeApi    the quest type api
      * @param conversationApi the Conversation API
      * @param textCreator     the text creator to parse text
@@ -113,12 +113,12 @@ public class ConversationData {
      *                        when conversation options cannot be resolved or {@code convSection} is null
      */
     public ConversationData(final BetonQuestLogger log, final QuestPackageManager packManager,
-                            final Variables variables, final QuestTypeApi questTypeApi,
+                            final Placeholders placeholders, final QuestTypeApi questTypeApi,
                             final ConversationApi conversationApi, final ParsedSectionTextCreator textCreator,
                             final ConfigurationSection convSection, final PublicData publicData) throws QuestException {
         this.log = log;
         this.packManager = packManager;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.questTypeApi = questTypeApi;
         this.conversationApi = conversationApi;
         this.publicData = publicData;
@@ -271,7 +271,7 @@ public class ConversationData {
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new DefaultListArgument<>(variables, getPack(), convSection.getString("first", ""),
+            startingOptions = new DefaultListArgument<>(placeholders, getPack(), convSection.getString("first", ""),
                     new StringParser(), DefaultListArgument.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
@@ -555,7 +555,7 @@ public class ConversationData {
          * Returns "Quester" in case of an exception.
          *
          * @param log     the logger used when the name could not be resolved
-         * @param profile the profile to resolve the variable
+         * @param profile the profile to resolve the quester's name for
          * @return the quester's name in the specified language
          */
         public Component getQuester(final BetonQuestLogger log, final Profile profile) {
@@ -658,8 +658,8 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final InstructionArgumentParser<T> resolver) throws QuestException {
-            return new DefaultListArgument<>(variables, getPack(), conv.getString(identifier, ""),
-                    value -> resolver.apply(variables, packManager, getPack(), value)).getValue(null);
+            return new DefaultListArgument<>(placeholders, getPack(), conv.getString(identifier, ""),
+                    value -> resolver.apply(placeholders, packManager, getPack(), value)).getValue(null);
         }
 
         @Nullable

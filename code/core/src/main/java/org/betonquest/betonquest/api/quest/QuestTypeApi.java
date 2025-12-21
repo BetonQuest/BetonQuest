@@ -106,9 +106,9 @@ public interface QuestTypeApi {
     DefaultObjective getObjective(ObjectiveID objectiveID) throws QuestException;
 
     /**
-     * Get the Api for Variable interaction.
+     * Get the Api for placeholder interaction.
      *
-     * @return variable api
+     * @return placeholder api
      */
-    Variables variables();
+    Placeholders placeholders();
 }

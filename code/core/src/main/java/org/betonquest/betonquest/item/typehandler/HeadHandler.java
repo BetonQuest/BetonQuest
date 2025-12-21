@@ -190,7 +190,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
 
     /**
      * Get the profile of the skull's owner.
-     * Also resolves the owner name to a player if it is a variable.
+     * Also resolves the owner name to a player if it is a placeholder.
      *
      * @param profile The Profile that the item is made for
      * @return The profile of the skull's owner.

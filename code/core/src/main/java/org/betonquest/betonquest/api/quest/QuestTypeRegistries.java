@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.DefaultObjective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
-import org.betonquest.betonquest.api.quest.variable.VariableRegistry;
+import org.betonquest.betonquest.api.quest.placeholder.PlaceholderRegistry;
 
 /**
  * Provides the BetonQuest Quest Type Registries.
@@ -35,9 +35,9 @@ public interface QuestTypeRegistries {
     FeatureTypeRegistry<DefaultObjective> objective();
 
     /**
-     * Gets the registry for variables.
+     * Gets the registry for placeholders.
      *
-     * @return the variable registry
+     * @return the placeholder registry
      */
-    VariableRegistry variable();
+    PlaceholderRegistry placeholder();
 }

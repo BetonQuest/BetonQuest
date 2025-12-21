@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 
 /**
  * Parses a string to an identifier.
@@ -23,7 +23,7 @@ public class IdentifierParser implements InstructionArgumentParser<String> {
     }
 
     /**
-     * Overloaded by {@link #apply(Variables, QuestPackageManager, QuestPackage, String)}.
+     * Overloaded by {@link #apply(Placeholders, QuestPackageManager, QuestPackage, String)}.
      *
      * @param pack   the package the instruction belongs to
      * @param string the string to parse
@@ -37,7 +37,7 @@ public class IdentifierParser implements InstructionArgumentParser<String> {
     }
 
     @Override
-    public String apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) {
+    public String apply(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) {
         return apply(pack, string);
     }
 }

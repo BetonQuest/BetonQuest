@@ -69,10 +69,10 @@ public class VariableObjective extends DefaultObjective {
     }
 
     /**
-     * Gets the currently stored variables.
+     * Gets the currently stored placeholders.
      *
      * @param profile the {@link Profile} of the player
-     * @return the profile's variables as unmodifiable map; or null if the objective is not active for the profile
+     * @return the profile's placeholders as unmodifiable map; or null if the objective is not active for the profile
      */
     @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     @Nullable
@@ -108,7 +108,7 @@ public class VariableObjective extends DefaultObjective {
         private static final Pattern DESERIALIZE_PATTERN = Pattern.compile("\\\\(?<escaped>.)");
 
         /**
-         * The map containing the variables.
+         * The map containing the placeholders.
          */
         private final Map<String, String> variables;
 
@@ -127,7 +127,7 @@ public class VariableObjective extends DefaultObjective {
         /**
          * The static serialize method for the data.
          *
-         * @param values the map of variables to serialize
+         * @param values the map of placeholders to serialize
          * @return the serialized string
          */
         public static String serializeData(final Map<String, String> values) {
@@ -156,7 +156,7 @@ public class VariableObjective extends DefaultObjective {
          * The static deserialize method for the data.
          *
          * @param data the data to deserialize
-         * @return the deserialized map of variables
+         * @return the deserialized map of placeholders
          */
         public static Map<String, String> deserializeData(final String data) {
             final Map<String, String> variables = new LinkedHashMap<>();

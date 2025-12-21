@@ -34,7 +34,7 @@ public class BundledMC_1_20_6 implements Integrator {
         final ItemRegistry item = betonQuest.getFeatureRegistries().item();
         final TextParser textParser = betonQuest.getTextParser();
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(betonQuest.getFontRegistry(), 114, 14);
-        item.register("simple", new UpdatedSimpleItemFactory(betonQuest.getQuestTypeApi().variables(),
+        item.register("simple", new UpdatedSimpleItemFactory(betonQuest.getQuestTypeApi().placeholders(),
                 betonQuest.getQuestPackageManager(), textParser, bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? betonQuest.getPluginMessage() : null));
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));

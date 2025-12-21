@@ -100,7 +100,7 @@ public class BundledCompatibility {
         compatibility.registerPlugin("LuckPerms", new LuckPermsIntegratorFactory());
         compatibility.registerPlugin("AuraSkills", new AuraSkillsIntegratorFactory());
         compatibility.registerPlugin("DecentHolograms", new DecentHologramsIntegratorFactory(loggerFactory,
-                betonQuestApi.getQuestTypeApi().variables(), betonQuestApi.getQuestPackageManager()));
+                betonQuestApi.getQuestTypeApi().placeholders(), betonQuestApi.getQuestPackageManager()));
         compatibility.registerPlugin("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
                 betonQuestApi.getQuestPackageManager()));
         compatibility.registerPlugin("fake-block", new FakeBlockIntegratorFactory(plugin));

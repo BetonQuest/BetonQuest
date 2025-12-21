@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Contract;
 
 /**
@@ -27,7 +27,7 @@ public interface SimpleArgumentParser<T> extends InstructionArgumentParser<T>, V
     T apply(String string) throws QuestException;
 
     @Override
-    default T apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+    default T apply(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
         return apply(string);
     }
 }

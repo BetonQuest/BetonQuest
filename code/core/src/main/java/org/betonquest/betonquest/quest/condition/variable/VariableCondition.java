@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Checks if the variable value matches given pattern.
+ * Checks if a given content matches a given regex pattern.
  */
 public class VariableCondition implements NullableCondition {
 
@@ -20,19 +20,19 @@ public class VariableCondition implements NullableCondition {
     private final BetonQuestLogger log;
 
     /**
-     * The argument to compare with the regex.
+     * The content to compare with the regex.
      */
-    private final Argument<String> argument;
+    private final Argument<String> content;
 
     /**
-     * The regex the variable must match.
+     * The regex the content must match.
      */
     private final Argument<String> regex;
 
     /**
-     * The address of the variable for logging.
+     * The address of the id for logging.
      */
-    private final String variableAddress;
+    private final String instructionId;
 
     /**
      * Whether to force synchronization with the main server thread.
@@ -42,30 +42,30 @@ public class VariableCondition implements NullableCondition {
     /**
      * Creates a new VariableCondition based on the given instruction.
      *
-     * @param log             the logger
-     * @param argument        the argument to compare with the regex
-     * @param regex           the regex the variable must match
-     * @param variableAddress the address of the variable for logging
-     * @param forceSync       whether to force synchronization with the main server thread
+     * @param log           the logger
+     * @param content       the content to compare with the regex
+     * @param regex         the regex the content must match
+     * @param instructionId the address of the id for logging
+     * @param forceSync     whether to force synchronization with the main server thread
      */
-    public VariableCondition(final BetonQuestLogger log, final Argument<String> argument, final Argument<String> regex,
-                             final String variableAddress, final boolean forceSync) {
+    public VariableCondition(final BetonQuestLogger log, final Argument<String> content, final Argument<String> regex,
+                             final String instructionId, final boolean forceSync) {
         this.log = log;
-        this.argument = argument;
+        this.content = content;
         this.regex = regex;
-        this.variableAddress = variableAddress;
+        this.instructionId = instructionId;
         this.forceSync = forceSync;
     }
 
     @Override
     public boolean check(@Nullable final Profile profile) throws QuestException {
-        final String resolvedVariable = argument.getValue(profile);
-        final String resolvedRegex = regex.getValue(profile);
+        final String content = this.content.getValue(profile);
+        final String regex = this.regex.getValue(profile);
         try {
-            return resolvedVariable.matches(resolvedRegex);
+            return content.matches(regex);
         } catch (final PatternSyntaxException e) {
             log.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
-                    .formatted(e.getPattern(), variableAddress, e.getMessage()), e);
+                    .formatted(e.getPattern(), instructionId, e.getMessage()), e);
             return false;
         }
     }

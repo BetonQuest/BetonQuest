@@ -30,7 +30,7 @@ public class InConversationConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ConversationID> conversationID = instruction.parse(
-                (variables, packManager, pack, string)
+                (placeholders, packManager, pack, string)
                         -> new ConversationID(packManager, pack, string)).get();
         return new InConversationCondition(conversationApi, conversationID);
     }

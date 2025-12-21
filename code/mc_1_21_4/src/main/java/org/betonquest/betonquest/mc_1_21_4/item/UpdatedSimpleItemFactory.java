@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.item.SimpleQuestItem;
@@ -38,15 +38,15 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
     /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param variables             the variable processor to create and resolve variables
+     * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param packManager           the quest package manager to get quest packages from
      * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the plugin message instance if the "quest item" lore line should be added
      */
-    public UpdatedSimpleItemFactory(final Variables variables, final QuestPackageManager packManager, final TextParser textParser,
+    public UpdatedSimpleItemFactory(final Placeholders placeholders, final QuestPackageManager packManager, final TextParser textParser,
                                     final BookPageWrapper bookPageWrapper, final Supplier<PluginMessage> questItemLoreSupplier) {
-        super(variables, packManager, textParser, bookPageWrapper, questItemLoreSupplier);
+        super(placeholders, packManager, textParser, bookPageWrapper, questItemLoreSupplier);
     }
 
     @Override

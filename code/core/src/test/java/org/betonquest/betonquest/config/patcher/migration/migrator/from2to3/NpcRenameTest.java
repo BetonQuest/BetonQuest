@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 /**
- * Test for Npc Variable renaming.
+ * Test for Npc Variable (now named Placeholders) renaming.
  */
 class NpcRenameTest extends QuestFixture {
 

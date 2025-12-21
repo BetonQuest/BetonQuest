@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -40,15 +40,15 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
     /**
      * Constructor of an identifier that creates an instruction from the given section.
      *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param pack        the package the instruction is in
-     * @param identifier  the identifier string leading to the instruction
-     * @param section     the section of the config file
-     * @param readable    the readable name of the object type
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param pack         the package the instruction is in
+     * @param identifier   the identifier string leading to the instruction
+     * @param section      the section of the config file
+     * @param readable     the readable name of the object type
      * @throws QuestException if the identifier or instruction could not be parsed
      */
-    protected InstructionIdentifier(final Variables variables, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
+    protected InstructionIdentifier(final Placeholders placeholders, final QuestPackageManager packManager, @Nullable final QuestPackage pack,
                                     final String identifier, final String section, final String readable) throws QuestException {
         this(packManager, pack, identifier, id -> {
             final MultiConfiguration config = id.getPackage().getConfig();
@@ -56,7 +56,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
             }
-            return new DefaultInstruction(variables, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, rawInstruction);
+            return new DefaultInstruction(placeholders, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, rawInstruction);
         });
     }
 
