@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.argument.types.IdentifierParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 
 /**
  * Objectified parser for the Instruction to get a {@link T} from package and string.
@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.instruction.argument.types.IdentifierParser
  */
 @FunctionalInterface
 public interface PackageArgument<T> {
+
     /**
      * The default instance of {@link IdentifierParser}.
      */

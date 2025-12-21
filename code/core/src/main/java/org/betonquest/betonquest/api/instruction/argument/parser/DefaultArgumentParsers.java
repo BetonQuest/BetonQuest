@@ -3,16 +3,6 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.types.BlockSelectorParser;
-import org.betonquest.betonquest.api.instruction.argument.types.BooleanParser;
-import org.betonquest.betonquest.api.instruction.argument.types.EnumParser;
-import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
-import org.betonquest.betonquest.api.instruction.argument.types.StringParser;
-import org.betonquest.betonquest.api.instruction.argument.types.TextParserToComponentParser;
-import org.betonquest.betonquest.api.instruction.argument.types.UUIDParser;
-import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
-import org.betonquest.betonquest.api.instruction.argument.types.location.VectorParser;
-import org.betonquest.betonquest.api.instruction.argument.types.location.WorldParser;
 import org.bukkit.Bukkit;
 
 /**

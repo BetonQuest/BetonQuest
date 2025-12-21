@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.argument.parser;
+package org.betonquest.betonquest.api.instruction.variable.resolver;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.jetbrains.annotations.Contract;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Interface for the instruction to split method definitions.
  */
-public interface Parser {
+public interface Resolver {
 
     /**
      * Gets the next string.

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.argument.types.location;
+package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * Parses a string to a vector.
  */
 public class VectorParser implements Argument<Vector> {
+
     /**
      * This regex matches everything except ';'.
      */
