@@ -1,28 +1,24 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
-import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.VariableResolver;
+import org.betonquest.betonquest.api.instruction.ValueChecker;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 /**
- * Objectified parser for the Instruction to get a {@link T} from string.
+ * A decorated {@link Argument}.
  *
- * @param <T> what the argument returns
+ * @param <T> the type of the argument
  */
-@FunctionalInterface
-public interface Argument<T> extends VariableResolver<T> {
+public interface DecoratedArgument<T> extends Argument<T> {
 
     /**
-     * Gets a {@link T} from string.
+     * Apply a value checker to the argument for early validation and improved error messages.
      *
-     * @param string the string to parse
-     * @return the {@link T}
-     * @throws QuestException when the string cannot be parsed as {@link T}
+     * @param checker the checker to apply to the argument
+     * @return the new argument
      */
-    @Override
-    T apply(String string) throws QuestException;
+    DecoratedArgument<T> validate(ValueChecker<T> checker);
 
     /**
      * Returns a new {@link Argument} that checks for the given expected string before
@@ -35,9 +31,7 @@ public interface Argument<T> extends VariableResolver<T> {
      * @param fixedValue the non-null value to return if the expected string matches
      * @return the new {@link Argument}
      */
-    default Argument<T> prefilter(final String expected, final T fixedValue) {
-        return string -> expected.equalsIgnoreCase(string) ? fixedValue : apply(string);
-    }
+    DecoratedArgument<T> prefilter(String expected, T fixedValue);
 
     /**
      * Returns a new {@link Argument} that checks for the given expected string before
@@ -51,7 +45,5 @@ public interface Argument<T> extends VariableResolver<T> {
      * @param fixedValue the nullable value to return if the expected string matches
      * @return the new {@link Argument}
      */
-    default Argument<Optional<T>> prefilterOptional(final String expected, @Nullable final T fixedValue) {
-        return string -> Optional.ofNullable(expected.equalsIgnoreCase(string) ? fixedValue : apply(string));
-    }
+    DecoratedArgument<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
 }
