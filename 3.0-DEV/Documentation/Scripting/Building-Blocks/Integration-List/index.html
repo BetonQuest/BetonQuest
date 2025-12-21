@@ -7186,14 +7186,18 @@ The groups are case-sensitive. To show a group the <code>showgroup</code> argume
 <p>When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.</p>
 <h3 id="conditions_2">Conditions<a class="headerlink" href="#conditions_2" title="Permanent link">🔗</a></h3>
 <h4 id="heroes-class-heroesclass">Heroes Class: <code>heroesclass</code><a class="headerlink" href="#heroes-class-heroesclass" title="Permanent link">🔗</a></h4>
-<p>This condition checks the classes of the player. The first argument must be <code>primary</code>, <code>secondary</code> or <code>mastered</code>. Second is the name of a class or <code>any</code>. You can optionally specify <code>level:</code> argument followed by the required level of the player.</p>
+<p>This condition checks the classes of the player.
+The first argument must be <code>primary</code>, <code>secondary</code> or <code>mastered</code>. Second is the name of a class or <code>any</code>.
+You can optionally specify <code>level:</code> argument followed by the required level of the player.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesclass mastered warrior</span>
 </code></pre></div>
 </div>
 <h4 id="heroes-attribute-heroesattribute">Heroes Attribute: <code>heroesattribute</code><a class="headerlink" href="#heroes-attribute-heroesattribute" title="Permanent link">🔗</a></h4>
-<p>This condition check's the level of a player's attribute. The first argument must be <code>strength</code>, <code>constitution</code>, <code>endurance</code>, <code>dexterity</code>, <code>intellect</code>, <code>wisdom</code>, or <code>charisma</code>. Second argument is the required level of the attribute. Must be greater than or equal the specified number.</p>
+<p>This condition check's the level of a player's attribute.
+The first argument must be <code>strength</code>, <code>constitution</code>, <code>endurance</code>, <code>dexterity</code>, <code>intellect</code>, <code>wisdom</code>, or <code>charisma</code>.
+Second argument is the required level of the attribute. Must be greater than or equal the specified number.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">heroesattribute strength 5</span>
@@ -7327,7 +7331,15 @@ Instead only use the permission to remove.</p>
 <h2 id="magic">Magic<a href="http://dev.bukkit.org/bukkit-plugins/magic/"></a><a class="headerlink" href="#magic" title="Permanent link">🔗</a></h2>
 <h3 id="conditions_4">Conditions<a class="headerlink" href="#conditions_4" title="Permanent link">🔗</a></h3>
 <h4 id="wand-wand">Wand: <code>wand</code><a class="headerlink" href="#wand-wand" title="Permanent link">🔗</a></h4>
-<p>This condition can check wands. The first argument is either <code>hand</code>, <code>inventory</code> or <code>lost</code>. If you choose <code>lost</code>, the condition will check if the player has lost a wand. If you choose <code>hand</code>, the condition will check if you're holding a wand in your hand. <code>inventory</code> will check your whole inventory instead of just the hand. In case of <code>hand</code> and <code>inventory</code> arguments you can also add optional <code>name:</code> argument followed by the name of the wand (as defined in <em>wands.yml</em> in Magic plugin) to check if it's the specific type of the wand. In the case of <code>inventory</code> you can specify an amount with <code>amount</code> and this will only return true if a player has that amount. You can also use optional <code>spells:</code> argument, followed by a list of spells separated with a comma. Each spell in this list must have a minimal level defined after a colon.</p>
+<p>This condition can check wands. The first argument is either <code>hand</code>, <code>inventory</code> or <code>lost</code>.
+If you choose <code>lost</code>, the condition will check if the player has lost a wand.
+If you choose <code>hand</code>, the condition will check if you're holding a wand in your hand.
+<code>inventory</code> will check your whole inventory instead of just the hand.
+In case of <code>hand</code> and <code>inventory</code> arguments you can also add optional <code>name:</code> argument followed by the name
+of the wand (as defined in <em>wands.yml</em> in Magic plugin) to check if it's the specific type of the wand.
+In the case of <code>inventory</code> you can specify an amount with <code>amount</code> and this will only return true if a player has that amount.
+You can also use optional <code>spells:</code> argument, followed by a list of spells separated with a comma.
+Each spell in this list must have a minimal level defined after a colon.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">wand hand name:master spells:flare:3,missile:2</span>
@@ -7543,26 +7555,78 @@ is optional and would convert the amount to levels instead of XP points.
 </code></pre></div></td></tr></table></div>
 <h3 id="objectives_3">Objectives<a class="headerlink" href="#objectives_3" title="Permanent link">🔗</a></h3>
 <h4 id="mobkill-mmobkill">MobKill: <code>mmobkill</code><a class="headerlink" href="#mobkill-mmobkill" title="Permanent link">🔗</a></h4>
-<p>You need to kill the specified amount of MythicMobs to complete this objective. The first argument must be
-the mob's internal name (the one defined in your MythicMobs configuration). Multiple mob names must be comma separated.
-You can optionally add the <code>amount:</code> argument to specify how many of these mobs need to be killed. It's also possible
-to add the optional arguments <code>minLevel</code> and <code>maxLevel</code> to further customize what mobs need to be killed.
-You can also add an optional <code>neutralDeathRadiusAllPlayers</code> argument to complete the objective for each nearby player
-within the defined radius when the mob is killed by any non-player source.
-Alternatively, you could use the <code>deathRadiusAllPlayers</code> argument to count all deaths of the specified mythic mob(s),
-no matter if it was killed by a non-player source or not.
-You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.
-You can also add an optional <code>marked</code> argument to only count kills marked with the <code>mspawn</code> event. Variables are supported.</p>
+<p>You need to kill the specified amount of MythicMobs to complete this objective.
+You can add a <code>notify</code> keyword if you want to send a notification to players whenever the objective progresses.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Syntax</th>
+<th>Default Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>identifier</em></td>
+<td>strings</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg></span></td>
+<td>Identifiers for mobs that must be killed, based on <code>mode</code>. Multiple mob identifiers must be comma separated.</td>
+</tr>
+<tr>
+<td><em>mode</em></td>
+<td>mode:mode</td>
+<td>INTERNAL_NAME</td>
+<td>What of the mob should be checked. Either <code>INTERNAL_NAME</code> of the mob (as defined in the config) or <code>FACTION</code>.</td>
+</tr>
+<tr>
+<td><em>amount</em></td>
+<td>amount:number</td>
+<td>1</td>
+<td>Amount of mobs required to kill.</td>
+</tr>
+<tr>
+<td><em>minLevel</em></td>
+<td>minLevel:number</td>
+<td>Disabled</td>
+<td>Minimal level of mob to kill.</td>
+</tr>
+<tr>
+<td><em>maxLevel</em></td>
+<td>maxLevel:number</td>
+<td>Disabled</td>
+<td>Maximal level of mob to kill.</td>
+</tr>
+<tr>
+<td><em>neutralDeathRadiusAllPlayers</em></td>
+<td>neutralDeathRadiusAllPlayers:number</td>
+<td>Disabled</td>
+<td>Radius to count objective progress for each nearby player when the mob is killed by any non-player source.</td>
+</tr>
+<tr>
+<td><em>deathRadiusAllPlayers</em></td>
+<td>deathRadiusAllPlayers:number</td>
+<td>Disabled</td>
+<td>Radius to count objective progress for each nearby player, no matter if it was killed by a non-player source or not. Disables the neutral death radius.</td>
+</tr>
+<tr>
+<td><em>marked</em></td>
+<td>marked:text</td>
+<td>None</td>
+<td>Check for mark on mobs as used in <code>mspawnmob</code> event.</td>
+</tr>
+</tbody>
+</table>
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of mythic mobs already killed,
-<code>left</code> is the amount of mythic mobs still needed to kill and <code>total</code> is the amount of mythic mobs initially required.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">mmobkill SkeletalKnight amount:2 events:reward</span>
-<span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward</span>
-<span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3</span>
-<span class="l l-Scalar l-Scalar-Plain">mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward</span>
+<code>left</code> is the amount of mythic mobs still needed to kill and <code>total</code> is the amount of mythic mobs initially required.
+<code>mode</code> gives the identification type.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">killKnight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SkeletalKnight amount:2 events:reward</span>
+<span class="nt">killSnails</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward</span>
+<span class="nt">snailFaction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill snail mode:faction amount:10 events:reward</span>
+<span class="nt">killBoss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3</span>
+<span class="nt">killDevil</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward</span>
+<span class="nt">bandits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION events:spawnTrader</span>
 </code></pre></div>
-</div>
 <h3 id="conditions_7">Conditions<a class="headerlink" href="#conditions_7" title="Permanent link">🔗</a></h3>
 <h4 id="mythicmob-distance-mythicmobdistance">MythicMob distance: <code>mythicmobdistance</code><a class="headerlink" href="#mythicmob-distance-mythicmobdistance" title="Permanent link">🔗</a></h4>
 <p>Check whether the player is near a specific MythicMobs entity. The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.</p>
@@ -7693,11 +7757,17 @@ The <code>variable</code> part is just a <a href="../Variables-List/">BetonQuest
 </code></pre></div>
 </div>
 <h2 id="quests">Quests<a href="https://www.spigotmc.org/resources/3711/"></a><a class="headerlink" href="#quests" title="Permanent link">🔗</a></h2>
-<p>Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use <code>quest</code> event and <code>quest</code> condition.</p>
+<p>Quests is another questing plugin, which offers very simple creation of quests.
+If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from
+this plugin you can use Custom Event Reward or Custom Condition Requirement.
+Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system,
+you can use <code>quest</code> event and <code>quest</code> condition.</p>
 <h3 id="condition-requirement-quests">Condition Requirement (Quests)<a class="headerlink" href="#condition-requirement-quests" title="Permanent link">🔗</a></h3>
-<p>When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition". Now specify condition's name and it's package (like <code>package.conditionName</code>). Quests will check BetonQuest condition when starting the quest.</p>
+<p>When adding requirements to a quest, choose "Custom requirement" and then select "BetonQuest condition".
+Now specify condition's name and it's package (like <code>package.conditionName</code>). Quests will check BetonQuest condition when starting the quest.</p>
 <h3 id="event-reward-quests">Event Reward (Quests)<a class="headerlink" href="#event-reward-quests" title="Permanent link">🔗</a></h3>
-<p>When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event". Now specify event's name and it's package (like <code>package.eventName</code>). Quests will fire BetonQuest event when this reward will run.</p>
+<p>When adding rewards to a quest or a stage, choose "Custom reward" and then select "BetonQuest event".
+Now specify event's name and it's package (like <code>package.eventName</code>). Quests will fire BetonQuest event when this reward will run.</p>
 <h3 id="conditions_8">Conditions<a class="headerlink" href="#conditions_8" title="Permanent link">🔗</a></h3>
 <h4 id="quest-condition-quest">Quest condition: <code>quest</code><a class="headerlink" href="#quest-condition-quest" title="Permanent link">🔗</a></h4>
 <p>This condition is met when the player has completed the specified quest. The first and only argument is the name of the quest.
@@ -7709,7 +7779,10 @@ If it contains spaces you need to quote it.</p>
 </div>
 <h3 id="events_12">Events<a class="headerlink" href="#events_12" title="Permanent link">🔗</a></h3>
 <h4 id="quest-quest">Quest: <code>quest</code><a class="headerlink" href="#quest-quest" title="Permanent link">🔗</a></h4>
-<p>This event will start the quest for the player. The first argument must be the name of the quest, as defined in <code>name</code> option in the quest. You can optionally add <code>check-requirements</code> argument if you want the event to respect this quest's requirements (otherwise the quest will be forced to be started).</p>
+<p>This event will start the quest for the player.
+The first argument must be the name of the quest, as defined in <code>name</code> option in the quest.
+You can optionally add <code>check-requirements</code> argument if you want the event to respect this quest's requirements
+(otherwise the quest will be forced to be started).</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">quest stone_miner check-requirements</span>
@@ -7756,14 +7829,20 @@ The first argument is class name, the second one is the required level.</p>
 </code></pre></div>
 </div>
 <h2 id="skript">Skript<a href="http://dev.bukkit.org/bukkit-plugins/skript/"></a><a class="headerlink" href="#skript" title="Permanent link">🔗</a></h2>
-<p>BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.</p>
+<p>BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will reference to everything here by
+name of the plugin (Skript event is something else than BetonQuest event).
+Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.</p>
 <p>You can use cross-package paths using <code>-</code> between the packages. Example:
 <code>player meets condition "default-Forest-Jack.Completed"</code></p>
 <h3 id="skript-event-triggered-by-betonquest-skript-event">Skript event triggered by BetonQuest <code>skript</code> event<a class="headerlink" href="#skript-event-triggered-by-betonquest-skript-event" title="Permanent link">🔗</a></h3>
 <p>This entry will describe two things: Skript event and BetonQuest event.</p>
 <ol>
-<li><strong>Skript event</strong> - <code>on [betonquest] event "id"</code> - this is the line you use in your scripts to trigger the code. <code>betonquest</code> part is optional, and <code>id</code> is just some string, which must be equal to the one you specified in BetonQuest event.</li>
-<li><strong>BetonQuest event</strong> - <code>skript</code> - this event will trigger the above Skript event in your scripts. The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in Skript event for it to be triggered.</li>
+<li><strong>Skript event</strong> - <code>on [betonquest] event "id"</code> - this is the line you use in your scripts to trigger the code.
+  <code>betonquest</code> part is optional, and <code>id</code> is just some string, which must be equal to the one you specified in 
+  BetonQuest event.</li>
+<li><strong>BetonQuest event</strong> - <code>skript</code> - this event will trigger the above Skript event in your scripts.
+  The instruction string accepts only one argument, id of the event. It have to be the same as the one defined in 
+  Skript event for it to be triggered.</li>
 </ol>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
