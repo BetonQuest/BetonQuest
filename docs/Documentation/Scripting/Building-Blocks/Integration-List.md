@@ -725,7 +725,8 @@ You can add a `notify` keyword if you want to send a notification to players whe
 
 | Parameter                      | Syntax                              | Default Value          | Explanation                                                                                                                                             |
 |--------------------------------|-------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _name_                         | names                               | :octicons-x-circle-16: | MythicMobs mob internal name (as defined in the config). Multiple mob names must be comma separated.                                                    |
+| _identifier_                   | strings                             | :octicons-x-circle-16: | Identifiers for mobs that must be killed, based on `mode`. Multiple mob identifiers must be comma separated.                                            |
+| _mode_                         | mode:mode                           | INTERNAL_NAME          | What of the mob should be checked. Either `INTERNAL_NAME` of the mob (as defined in the config) or `FACTION`.                                           |
 | _amount_                       | amount:number                       | 1                      | Amount of mobs required to kill.                                                                                                                        |
 | _minLevel_                     | minLevel:number                     | Disabled               | Minimal level of mob to kill.                                                                                                                           |
 | _maxLevel_                     | maxLevel:number                     | Disabled               | Maximal level of mob to kill.                                                                                                                           |
@@ -735,12 +736,15 @@ You can add a `notify` keyword if you want to send a notification to players whe
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
+`mode` gives the identification type.
 
 ```YAML title="Example"
 killKnight: mmobkill SkeletalKnight amount:2 events:reward
 killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
+snailFaction: mmobkill snail mode:faction amount:10 events:reward
 killBoss: mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
 killDevil: mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
+bandits: mmobkill bandit deathRadiusAllPlayers:30 mode:FACTION events:spawnTrader
 ```
 
 ### Conditions

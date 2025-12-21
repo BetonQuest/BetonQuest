@@ -24,6 +24,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<List<String>> names = instruction.getList(Argument.STRING);
+        final Variable<IdentifierMode> mode = instruction.getValue("mode", Argument.ENUM(IdentifierMode.class), IdentifierMode.INTERNAL_NAME);
         final Variable<Number> targetAmount = instruction.getValue("amount", Argument.NUMBER_NOT_LESS_THAN_ONE, 1);
 
         final Variable<Number> deathRadiusAllPlayers = instruction.getValue("deathRadiusAllPlayers", Argument.NUMBER, 0);
@@ -32,6 +33,6 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
         final Variable<Number> minMobLevel = instruction.getValue("minLevel", Argument.NUMBER, Double.NEGATIVE_INFINITY);
         final Variable<Number> maxMobLevel = instruction.getValue("maxLevel", Argument.NUMBER, Double.POSITIVE_INFINITY);
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        return new MythicMobKillObjective(instruction, targetAmount, names, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
+        return new MythicMobKillObjective(instruction, targetAmount, names, mode, minMobLevel, maxMobLevel, deathRadiusAllPlayers, neutralDeathRadiusAllPlayers, marked);
     }
 }
