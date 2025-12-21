@@ -3,11 +3,11 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Defines HolographicDisplays global placeholder <code>{bqg:package:variable}</code>.
+ * Defines HolographicDisplays global placeholder <code>{bqg:package:placeholder}</code>.
  */
 public class HologramGlobalPlaceholder implements GlobalPlaceholder {
 
@@ -17,19 +17,19 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     private final BetonQuestLogger log;
 
     /**
-     * The variable processor to use for creating the time variable.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Creates new instance of HologramGlobalPlaceholder.
      *
-     * @param log       the logger that will be used for logging
-     * @param variables the variable processor to create and resolve variables
+     * @param log          the logger that will be used for logging
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
      */
-    public HologramGlobalPlaceholder(final BetonQuestLogger log, final Variables variables) {
+    public HologramGlobalPlaceholder(final BetonQuestLogger log, final Placeholders placeholders) {
         this.log = log;
-        this.variables = variables;
+        this.placeholders = placeholders;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
             return "";
         }
         try {
-            return variables.getValue(arguments, null);
+            return placeholders.getValue(arguments, null);
         } catch (final QuestException e) {
-            log.warn("Could not parse hologram variable '" + arguments + "': " + e.getMessage(), e);
+            log.warn("Could not parse hologram placeholder '" + arguments + "': " + e.getMessage(), e);
             return arguments;
         }
     }

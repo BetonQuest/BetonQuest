@@ -22,12 +22,12 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
     private final MMOItems mmoPlugin;
 
     /**
-     * Item type variable.
+     * Item type argument.
      */
     private final Argument<Type> itemType;
 
     /**
-     * Item id variable.
+     * Item id argument.
      */
     private final Argument<String> itemId;
 

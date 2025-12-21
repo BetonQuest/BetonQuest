@@ -90,7 +90,7 @@ public class Connector {
      * Queries the database with the given type and arguments.
      *
      * @param type             type of the query
-     * @param variableResolver resolver for variables in prepared statements
+     * @param variableResolver resolver for placeholders in prepared statements
      * @return ResultSet with the requested data
      */
     @SuppressWarnings("PMD.CloseResource")
@@ -135,16 +135,16 @@ public class Connector {
     }
 
     /**
-     * Resolver for variables in prepared statements.
+     * Resolver for placeholders in prepared statements.
      */
     @FunctionalInterface
     public interface VariableResolver {
 
         /**
-         * Resolves the variables in the prepared statement.
+         * Resolves the placeholders in the prepared statement.
          *
          * @param statement the statement to resolve
-         * @throws SQLException if there is an error resolving the variables
+         * @throws SQLException if there is an error resolving the placeholders
          */
         void resolve(PreparedStatement statement) throws SQLException;
     }

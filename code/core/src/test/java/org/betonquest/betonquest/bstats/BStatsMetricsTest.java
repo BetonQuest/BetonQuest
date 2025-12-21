@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.DefaultConfigAccessorFactory;
 import org.betonquest.betonquest.config.quest.QuestPackageImpl;
@@ -140,7 +140,7 @@ class BStatsMetricsTest {
         final Map<InstructionIdentifier, Void> ids = new HashMap<>();
 
         final InstructionIdentifier firstId = mock(InstructionIdentifier.class);
-        final Instruction firstInstruction = new DefaultInstruction(mock(Variables.class),
+        final Instruction firstInstruction = new DefaultInstruction(mock(Placeholders.class),
                 mock(QuestPackageManager.class), questPackage, firstId, mock(ArgumentParsers.class), TEST_INSTRUCTION);
         when(firstId.getInstruction()).thenReturn(firstInstruction);
 
@@ -166,7 +166,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final InstructionIdentifier secondId = mock(InstructionIdentifier.class);
-        final Instruction secondInstruction = new DefaultInstruction(mock(Variables.class), mock(QuestPackageManager.class),
+        final Instruction secondInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
                 questPackage, secondId, mock(ArgumentParsers.class), TEST_INSTRUCTION);
         when(secondId.getInstruction()).thenReturn(secondInstruction);
         ids.put(secondId, null);
@@ -175,7 +175,7 @@ class BStatsMetricsTest {
         assertCollectedChartData("{\"chartId\":\"idEnabled\",\"data\":{\"values\":{\"test\":1}}}", enabledChart);
 
         final InstructionIdentifier thirdId = mock(InstructionIdentifier.class);
-        final Instruction thirdInstruction = new DefaultInstruction(mock(Variables.class), mock(QuestPackageManager.class),
+        final Instruction thirdInstruction = new DefaultInstruction(mock(Placeholders.class), mock(QuestPackageManager.class),
                 questPackage, thirdId, mock(ArgumentParsers.class), OTHER_INSTRUCTION);
         when(thirdId.getInstruction()).thenReturn(thirdInstruction);
         ids.put(thirdId, null);

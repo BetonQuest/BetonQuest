@@ -65,8 +65,8 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
-        final Argument<ItemWrapper> item = new DefaultArgument<>(variables, pack, itemString,
-                value -> itemParser.apply(variables, packManager, pack, value));
+        final Argument<ItemWrapper> item = new DefaultArgument<>(placeholders, pack, itemString,
+                value -> itemParser.apply(placeholders, packManager, pack, value));
         final Text descriptions;
         if (section.contains(CONFIG_TEXT)) {
             descriptions = textCreator.parseFromSection(pack, section, CONFIG_TEXT);
@@ -76,7 +76,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
         final Argument<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
-        final Argument<Boolean> close = new DefaultArgument<>(variables, pack, rawClose, new BooleanParser());
+        final Argument<Boolean> close = new DefaultArgument<>(placeholders, pack, rawClose, new BooleanParser());
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
         return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
     }

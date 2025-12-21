@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.kernel.processor.QuestProcessor;
@@ -26,14 +26,14 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
     /**
      * Create a new QuestProcessor to store and execute journal entry logic.
      *
-     * @param log         the custom logger for this class
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param textCreator the text creator to parse text
+     * @param log          the custom logger for this class
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param textCreator  the text creator to parse text
      */
-    public JournalEntryProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+    public JournalEntryProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                                  final ParsedSectionTextCreator textCreator) {
-        super(log, variables, packManager, "Journal Entry", "journal");
+        super(log, placeholders, packManager, "Journal Entry", "journal");
         this.textCreator = textCreator;
     }
 
@@ -54,7 +54,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryID, Text> 
 
     @Override
     protected JournalEntryID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
-        return new JournalEntryID(variables, packManager, pack, identifier);
+        return new JournalEntryID(placeholders, packManager, pack, identifier);
     }
 
     /**

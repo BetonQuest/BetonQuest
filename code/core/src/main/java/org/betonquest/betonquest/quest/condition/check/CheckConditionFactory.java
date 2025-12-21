@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -26,9 +26,9 @@ import java.util.List;
 public class CheckConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -43,12 +43,12 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
     /**
      * Create the check condition factory.
      *
-     * @param variables             the variable processor to create and resolve variables
+     * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param packManager           the quest package manager to get quest packages from
      * @param conditionTypeRegistry the condition type registry providing factories to parse the evaluated instruction
      */
-    public CheckConditionFactory(final Variables variables, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
-        this.variables = variables;
+    public CheckConditionFactory(final Placeholders placeholders, final QuestPackageManager packManager, final ConditionTypeRegistry conditionTypeRegistry) {
+        this.placeholders = placeholders;
         this.packManager = packManager;
         this.conditionTypeRegistry = conditionTypeRegistry;
     }
@@ -97,7 +97,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new DefaultInstruction(variables, packManager, questPackage, null, DefaultArgumentParsers.INSTANCE, instruction);
+            final Instruction innerInstruction = new DefaultInstruction(placeholders, packManager, questPackage, null, DefaultArgumentParsers.INSTANCE, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

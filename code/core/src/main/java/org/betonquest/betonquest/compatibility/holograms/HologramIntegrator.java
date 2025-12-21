@@ -128,14 +128,14 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     }
 
     /**
-     * Parses a string containing an instruction variable and converts it to the appropriate format for the given
+     * Parses a string containing a placeholder and converts it to the appropriate format for the given
      * plugin implementation.
      *
-     * @param pack The quest pack where the variable resides
-     * @param text The raw text
-     * @return The parsed and formatted full string
+     * @param pack the quest pack where the placeholder resides
+     * @param text the raw text
+     * @return the parsed and formatted full string
      */
-    public abstract String parseVariable(QuestPackage pack, String text);
+    public abstract String parsePlaceholder(QuestPackage pack, String text);
 
     @Override
     public int compareTo(final HologramIntegrator integrator) {

@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.QuestCompass;
 import org.betonquest.betonquest.id.CompassID;
@@ -31,14 +31,14 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
     /**
      * Create a new QuestProcessor to store {@link QuestCompass}es.
      *
-     * @param log         the custom logger for this class
-     * @param packManager the quest package manager to get quest packages from
-     * @param variables   the variable processor to create and resolve variables
-     * @param textCreator the text creator to parse text
+     * @param log          the custom logger for this class
+     * @param packManager  the quest package manager to get quest packages from
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param textCreator  the text creator to parse text
      */
-    public CompassProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+    public CompassProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                             final ParsedSectionTextCreator textCreator) {
-        super(log, variables, packManager, "Compass", "compass");
+        super(log, placeholders, packManager, "Compass", "compass");
         this.textCreator = textCreator;
     }
 
@@ -49,9 +49,9 @@ public class CompassProcessor extends SectionProcessor<CompassID, QuestCompass> 
         if (location == null) {
             throw new QuestException("Location not defined");
         }
-        final Argument<Location> loc = new DefaultArgument<>(variables, pack, location, new LocationParser(Bukkit.getServer()));
+        final Argument<Location> loc = new DefaultArgument<>(placeholders, pack, location, new LocationParser(Bukkit.getServer()));
         final String itemName = section.getString("item");
-        final ItemID itemID = itemName == null ? null : new ItemID(variables, packManager, pack, itemName);
+        final ItemID itemID = itemName == null ? null : new ItemID(placeholders, packManager, pack, itemName);
         return new QuestCompass(names, loc, itemID);
     }
 

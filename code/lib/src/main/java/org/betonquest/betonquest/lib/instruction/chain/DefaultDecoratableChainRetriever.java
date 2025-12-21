@@ -17,14 +17,14 @@ import java.util.stream.Collector;
  * Default implementation of {@link DecoratableChainRetriever}
  * that uses {@link DefaultInstructionChainRetriever} as a base.
  *
- * @param <T> the variable type
+ * @param <T> the type of the argument
  */
 public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChainRetriever<T> implements DecoratableChainRetriever<T> {
 
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction the instruction used to retrieve the variable
+     * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
      */
     public DefaultDecoratableChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {

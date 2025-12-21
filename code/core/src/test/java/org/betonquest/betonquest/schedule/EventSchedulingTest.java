@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConf
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.FictiveTime;
@@ -52,7 +52,7 @@ class EventSchedulingTest {
     @BeforeEach
     void setUp() {
         scheduleTypes = new ScheduleRegistry(mock(BetonQuestLogger.class));
-        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(Variables.class), mock(QuestPackageManager.class), scheduleTypes);
+        scheduling = new EventScheduling(mock(BetonQuestLogger.class), mock(Placeholders.class), mock(QuestPackageManager.class), scheduleTypes);
     }
 
     @SuppressWarnings("unchecked")
@@ -200,7 +200,7 @@ class EventSchedulingTest {
     private static final class MockedScheduleFactory extends BaseScheduleFactory<MockedSchedule> {
 
         private MockedScheduleFactory() {
-            super(mock(Variables.class), mock(QuestPackageManager.class));
+            super(mock(Placeholders.class), mock(QuestPackageManager.class));
         }
 
         @Override

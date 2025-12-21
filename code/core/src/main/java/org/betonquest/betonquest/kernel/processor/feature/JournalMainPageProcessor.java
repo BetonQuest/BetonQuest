@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.feature.journal.JournalMainPageEntry;
@@ -30,14 +30,14 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
     /**
      * Create a new QuestProcessor to store and execute type logic.
      *
-     * @param log         the custom logger for this class
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param textCreator the text creator to parse text
+     * @param log          the custom logger for this class
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param packManager  the quest package manager to get quest packages from
+     * @param textCreator  the text creator to parse text
      */
-    public JournalMainPageProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
+    public JournalMainPageProcessor(final BetonQuestLogger log, final Placeholders placeholders, final QuestPackageManager packManager,
                                     final ParsedSectionTextCreator textCreator) {
-        super(log, variables, packManager, "Journal Main Page", "journal_main_page");
+        super(log, placeholders, packManager, "Journal Main Page", "journal_main_page");
         this.textCreator = textCreator;
     }
 
@@ -47,9 +47,9 @@ public class JournalMainPageProcessor extends SectionProcessor<JournalMainPageID
         if (priority < 0) {
             throw new QuestException("Priority of journal main page needs to be at least 0!");
         }
-        final Argument<List<ConditionID>> conditions = new DefaultListArgument<>(variables, pack,
+        final Argument<List<ConditionID>> conditions = new DefaultListArgument<>(placeholders, pack,
                 section.getString("conditions", ""),
-                value -> new ConditionID(variables, packManager, pack, value));
+                value -> new ConditionID(placeholders, packManager, pack, value));
         final Text text = textCreator.parseFromSection(pack, section, "text");
         return new JournalMainPageEntry(priority, conditions, text);
     }

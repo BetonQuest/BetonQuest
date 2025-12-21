@@ -12,8 +12,8 @@ import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
@@ -52,11 +52,6 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     private final ProfileProvider profileProvider;
 
     /**
-     * The variable processor to create new variables.
-     */
-    private final Variables variables;
-
-    /**
      * Effect Manager starting and controlling particles.
      */
     private final EffectManager manager;
@@ -75,20 +70,19 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
      * @param questTypeApi    the Quest Type API
      * @param featureApi      the Feature API
      * @param profileProvider the profile provider instance
-     * @param variables       the variable processor to create and resolve variables
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param manager         the effect manager starting and controlling particles
      * @param plugin          the plugin to start new tasks with
      */
     public EffectLibParticleManager(final BetonQuestLogger log, final BetonQuestLoggerFactory loggerFactory,
                                     final QuestPackageManager packManager, final QuestTypeApi questTypeApi, final FeatureApi featureApi,
-                                    final ProfileProvider profileProvider, final Variables variables,
+                                    final ProfileProvider profileProvider, final Placeholders placeholders,
                                     final EffectManager manager, final Plugin plugin) {
-        super(log, questTypeApi.variables(), packManager, "Effect", "effectlib");
+        super(log, placeholders, packManager, "Effect", "effectlib");
         this.loggerFactory = loggerFactory;
         this.questTypeApi = questTypeApi;
         this.featureApi = featureApi;
         this.profileProvider = profileProvider;
-        this.variables = variables;
         this.manager = manager;
         this.plugin = plugin;
     }
@@ -111,8 +105,8 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
         }
 
         final Argument<List<Location>> locations = load(pack, settings, "locations", new LocationParser(Bukkit.getServer()));
-        final Argument<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(variables, packManager, pack, value));
-        final Argument<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(variables, packManager, pack, value));
+        final Argument<List<NpcID>> npcs = load(pack, settings, "npcs", value -> new NpcID(placeholders, packManager, pack, value));
+        final Argument<List<ConditionID>> conditions = load(pack, settings, "conditions", value -> new ConditionID(placeholders, packManager, pack, value));
 
         final EffectConfiguration effect = new EffectConfiguration(effectClass, locations, npcs, conditions, settings, conditionsCheckInterval);
         final EffectLibRunnable particleRunnable = new EffectLibRunnable(loggerFactory.create(EffectLibRunnable.class),
@@ -132,7 +126,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
 
     private <T> Argument<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
                                        final String entryName, final SimpleArgumentParser<T> argument) throws QuestException {
-        return new DefaultListArgument<>(variables, pack, settings.getString(entryName, ""), argument);
+        return new DefaultListArgument<>(placeholders, pack, settings.getString(entryName, ""), argument);
     }
 
     @Override

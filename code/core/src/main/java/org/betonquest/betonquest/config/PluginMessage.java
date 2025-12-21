@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -65,9 +65,9 @@ public class PluginMessage {
     private final BetonQuestLogger log;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The {@link TextParser} instance.
@@ -104,19 +104,19 @@ public class PluginMessage {
      *
      * @param log                   the logger for invalid file names
      * @param instance              the BetonQuest instance
-     * @param variables             the variable processor to create and resolve variables
+     * @param placeholders          the {@link Placeholders} to create and resolve placeholders
      * @param playerDataStorage     the {@link PlayerDataStorage} instance
      * @param textParser            the {@link TextParser} instance
      * @param configAccessorFactory the config accessor factory
      * @param languageProvider      the {@link LanguageProvider} instance
      * @throws QuestException if the messages could not be loaded
      */
-    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance, final Variables variables,
+    public PluginMessage(final BetonQuestLogger log, final BetonQuest instance, final Placeholders placeholders,
                          final PlayerDataStorage playerDataStorage, final TextParser textParser,
                          final ConfigAccessorFactory configAccessorFactory, final LanguageProvider languageProvider)
             throws QuestException {
         this.log = log;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
@@ -219,7 +219,7 @@ public class PluginMessage {
             final String key = entry.getKey();
             final Map<String, Argument<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
-                values.put(value.getKey(), new DefaultArgument<>(variables, null, value.getValue(), stringParser));
+                values.put(value.getKey(), new DefaultArgument<>(placeholders, null, value.getValue(), stringParser));
             }
             loadedMessages.put(key, new ParsedText(textParser, values, playerDataStorage, languageProvider));
         }
@@ -249,20 +249,20 @@ public class PluginMessage {
     }
 
     /**
-     * Retrieves the message from the configuration in the profile's language and replaces the variables.
+     * Retrieves the message from the configuration in the profile's language and replaces the placeholders.
      *
-     * @param profile   the profile to get the message for
-     * @param message   name of the message to retrieve
-     * @param variables array of variables to replace
-     * @return message with replaced variables in the profile's language or the default language or in english
+     * @param profile      the profile to get the message for
+     * @param message      name of the message to retrieve
+     * @param replacements array of placeholders to replace
+     * @return message with replaced placeholders in the profile's language or the default language or in english
      * @throws IllegalArgumentException if the message could not be found in the configuration
      * @throws QuestException           if the message could not be parsed
      */
-    public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... variables) throws QuestException {
+    public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... replacements) throws QuestException {
         final Text component = loadedMessages.get(message);
         if (component == null) {
             throw new IllegalArgumentException("Message not found: " + message);
         }
-        return new VariableComponent(component.asComponent(profile)).resolve(variables);
+        return new VariableComponent(component.asComponent(profile)).resolve(replacements);
     }
 }

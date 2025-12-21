@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
@@ -84,16 +84,16 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
      * @param loggerFactory    logger factory to use
      * @param log              the logger that will be used for logging
      * @param packManager      the quest package manager to get quest packages from
-     * @param variables        the variable processor to create and resolve variables
+     * @param placeholders     the {@link Placeholders} to create and resolve placeholders
      * @param hologramProvider the hologram provider to create new holograms
      * @param readable         the type name used for logging, with the first letter in upper case
      * @param internal         the section name and/or bstats topic identifier
      * @param textParser       the text parser used to parse text and colors
      */
     public HologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
-                        final Variables variables, final QuestPackageManager packManager,
+                        final Placeholders placeholders, final QuestPackageManager packManager,
                         final HologramProvider hologramProvider, final String readable, final String internal, final TextParser textParser) {
-        super(log, variables, packManager, readable, internal);
+        super(log, placeholders, packManager, readable, internal);
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.textParser = textParser;
@@ -109,12 +109,12 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     @Override
     protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
-        final Argument<Number> checkInterval = new DefaultArgument<>(variables, pack, checkIntervalString, NumberParser.DEFAULT);
-        final Argument<Number> maxRange = new DefaultArgument<>(variables, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
+        final Argument<Number> checkInterval = new DefaultArgument<>(placeholders, pack, checkIntervalString, NumberParser.DEFAULT);
+        final Argument<Number> maxRange = new DefaultArgument<>(placeholders, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
 
         final List<String> lines = section.getStringList("lines");
-        final List<ConditionID> conditions = new DefaultListArgument<>(variables, pack, section.getString("conditions", ""),
-                value -> new ConditionID(variables, packManager, pack, value)).getValue(null);
+        final List<ConditionID> conditions = new DefaultListArgument<>(placeholders, pack, section.getString("conditions", ""),
+                value -> new ConditionID(placeholders, packManager, pack, value)).getValue(null);
 
         final List<AbstractLine> cleanedLines = new ArrayList<>();
         for (final String line : lines) {
@@ -161,7 +161,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
 
     private ItemLine parseItemLine(final QuestPackage pack, final String line) throws QuestException {
         try {
-            return new ItemLine(itemParser.apply(variables, packManager, pack, line).generate(null));
+            return new ItemLine(itemParser.apply(placeholders, packManager, pack, line).generate(null));
         } catch (final QuestException e) {
             throw new QuestException("Error while loading item: " + e.getMessage(), e);
         }
@@ -203,9 +203,9 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     }
 
     private TextLine parseTextLine(final QuestPackage pack, final String line) throws QuestException {
-        final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(line);
+        final Matcher matcher = HologramProvider.PLACEHOLDER_VALIDATOR.matcher(line);
         final String text = matcher.find()
-                ? hologramProvider.parseVariable(pack, line)
+                ? hologramProvider.parsePlaceholder(pack, line)
                 : line;
         return new TextLine(textParser.parse(text));
     }

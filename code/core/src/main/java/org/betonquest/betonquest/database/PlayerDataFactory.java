@@ -3,8 +3,8 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.feature.journal.JournalFactory;
 import org.bukkit.Server;
 
@@ -21,9 +21,9 @@ public class PlayerDataFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * The quest package manager to get quest packages from.
@@ -54,18 +54,18 @@ public class PlayerDataFactory {
      * Create a new Player Data Factory.
      *
      * @param loggerFactory  the logger factory to create class specific logger
-     * @param variables      the variable processor to create and resolve variables
+     * @param placeholders   the {@link Placeholders} to create and resolve placeholders
      * @param packManager    the quest package manager to get quest packages from
      * @param saver          the saver to persist data changes
      * @param server         the server to determine if an event should be stated as async
      * @param questTypeApi   the Quest Type API
      * @param journalFactory the supplier for the journal factory to use
      */
-    public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final Variables variables, final QuestPackageManager packManager,
-                             final Saver saver, final Server server, final QuestTypeApi questTypeApi,
-                             final Supplier<JournalFactory> journalFactory) {
+    public PlayerDataFactory(final BetonQuestLoggerFactory loggerFactory, final Placeholders placeholders,
+                             final QuestPackageManager packManager, final Saver saver, final Server server,
+                             final QuestTypeApi questTypeApi, final Supplier<JournalFactory> journalFactory) {
         this.loggerFactory = loggerFactory;
-        this.variables = variables;
+        this.placeholders = placeholders;
         this.packManager = packManager;
         this.saver = saver;
         this.server = server;
@@ -80,7 +80,7 @@ public class PlayerDataFactory {
      * @return the newly created player data
      */
     public PlayerData createPlayerData(final Profile profile) {
-        return new PlayerData(loggerFactory.create(PlayerData.class), variables, packManager, saver, server, questTypeApi,
+        return new PlayerData(loggerFactory.create(PlayerData.class), placeholders, packManager, saver, server, questTypeApi,
                 journalFactory.get(), profile);
     }
 }

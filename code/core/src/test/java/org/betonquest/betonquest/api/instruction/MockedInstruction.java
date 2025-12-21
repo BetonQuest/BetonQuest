@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 
 import static org.mockito.Mockito.*;
@@ -34,6 +34,6 @@ public class MockedInstruction extends DefaultInstruction {
      * @throws QuestException when the instruction could not be created
      */
     public MockedInstruction(final QuestPackage pack, final String instruction) throws QuestException {
-        super(mock(Variables.class), mock(QuestPackageManager.class), pack, null, ARGUMENT_PARSERS, instruction);
+        super(mock(Placeholders.class), mock(QuestPackageManager.class), pack, null, ARGUMENT_PARSERS, instruction);
     }
 }

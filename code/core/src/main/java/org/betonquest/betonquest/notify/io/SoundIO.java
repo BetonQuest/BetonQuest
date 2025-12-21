@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,13 +18,13 @@ public class SoundIO extends NotifyIO {
     /**
      * Create a new Sound IO.
      *
-     * @param variables the variable processor to create and resolve variables
-     * @param pack      the source pack to resolve variables
-     * @param data      the customization data for sound
+     * @param placeholders the {@link Placeholders} to create and resolve placeholders
+     * @param pack         the source pack to resolve placeholders
+     * @param data         the customization data for sound
      * @throws QuestException when data could not be parsed
      */
-    public SoundIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
-        super(variables, pack, data);
+    public SoundIO(final Placeholders placeholders, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
+        super(placeholders, pack, data);
     }
 
     @Override

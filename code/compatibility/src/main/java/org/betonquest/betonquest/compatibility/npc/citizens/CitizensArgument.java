@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
@@ -25,8 +25,8 @@ public class CitizensArgument implements InstructionArgumentParser<NpcID> {
     }
 
     @Override
-    public NpcID apply(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
-        final NpcID npcId = new NpcID(variables, packManager, pack, string);
+    public NpcID apply(final Placeholders placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String string) throws QuestException {
+        final NpcID npcId = new NpcID(placeholders, packManager, pack, string);
         final Instruction npcInstruction = npcId.getInstruction();
         if (!"citizens".equals(npcInstruction.getPart(0))) {
             throw new QuestException("Cannot use non-Citizens NPC ID!");

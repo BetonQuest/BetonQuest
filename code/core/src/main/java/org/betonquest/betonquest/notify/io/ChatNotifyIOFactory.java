@@ -3,7 +3,7 @@ package org.betonquest.betonquest.notify.io;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.quest.Placeholders;
 import org.betonquest.betonquest.notify.NotifyIO;
 import org.betonquest.betonquest.notify.NotifyIOFactory;
 import org.jetbrains.annotations.Nullable;
@@ -16,9 +16,9 @@ import java.util.Map;
 public class ChatNotifyIOFactory implements NotifyIOFactory {
 
     /**
-     * Variable processor to create and resolve variables.
+     * The {@link Placeholders} to create and resolve placeholders.
      */
-    private final Variables variables;
+    private final Placeholders placeholders;
 
     /**
      * Conversation API.
@@ -28,16 +28,16 @@ public class ChatNotifyIOFactory implements NotifyIOFactory {
     /**
      * Create a new Chat Notify IO.
      *
-     * @param variables       the variable processor to create and resolve variables
+     * @param placeholders    the {@link Placeholders} to create and resolve placeholders
      * @param conversationApi the Conversation API
      */
-    public ChatNotifyIOFactory(final Variables variables, final ConversationApi conversationApi) {
-        this.variables = variables;
+    public ChatNotifyIOFactory(final Placeholders placeholders, final ConversationApi conversationApi) {
+        this.placeholders = placeholders;
         this.conversationApi = conversationApi;
     }
 
     @Override
     public NotifyIO create(@Nullable final QuestPackage pack, final Map<String, String> categoryData) throws QuestException {
-        return new ChatNotifyIO(variables, pack, categoryData, conversationApi);
+        return new ChatNotifyIO(placeholders, pack, categoryData, conversationApi);
     }
 }

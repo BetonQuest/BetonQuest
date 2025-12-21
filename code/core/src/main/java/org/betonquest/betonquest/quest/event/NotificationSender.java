@@ -12,8 +12,8 @@ public interface NotificationSender {
     /**
      * Send the notification.
      *
-     * @param profile   the {@link Profile} of the player to receive the notification
-     * @param variables the variables to use in the notification
+     * @param profile      the {@link Profile} of the player to receive the notification
+     * @param replacements the placeholders to use in the notification
      */
-    void sendNotification(Profile profile, VariableReplacement... variables);
+    void sendNotification(Profile profile, VariableReplacement... replacements);
 }

@@ -273,7 +273,7 @@ public class Journal {
             try {
                 text = journalEntry.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(entryID.getPackage(), "Error while creating variable on journal page '" + entryID + "' in "
+                log.warn(entryID.getPackage(), "Error while creating placeholder on journal page '" + entryID + "' in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = Component.text("error");
             }
@@ -301,7 +301,7 @@ public class Journal {
                 }
                 text = mainPageEntry.entry().asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(entry.getKey().getPackage(), "Error while creating variable on main page in "
+                log.warn(entry.getKey().getPackage(), "Error while creating placeholder on main page in "
                         + profile + " journal: " + e.getMessage(), e);
                 text = Component.text("error");
             }
