@@ -19,7 +19,7 @@ public class UUIDParser implements Argument<UUID> {
     @Override
     public UUID apply(final String string) throws QuestException {
         try {
-            return java.util.UUID.fromString(string);
+            return UUID.fromString(string);
         } catch (final IllegalArgumentException exception) {
             throw new QuestException(exception);
         }
