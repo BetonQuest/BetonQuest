@@ -70,8 +70,8 @@ class VariableInstructionTest {
     void partsShouldBeSplitByDot() throws QuestException {
         final VariableInstruction instruction = createNoIDInstruction("%instruction.part1.part2%");
         assertTrue(instruction.hasNext(), "Should have more parts");
-        assertEquals("part1", instruction.next(), "Should return the next part");
+        assertEquals("part1", instruction.nextElement(), "Should return the next part");
         assertTrue(instruction.hasNext(), "Should have more parts");
-        assertEquals("part2", instruction.next(), "Should return the next part");
+        assertEquals("part2", instruction.nextElement(), "Should return the next part");
     }
 }

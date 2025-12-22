@@ -160,8 +160,8 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public String next() throws QuestException {
-        return instructionParts.next();
+    public String nextElement() throws QuestException {
+        return instructionParts.nextElement();
     }
 
     @Override

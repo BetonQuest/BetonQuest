@@ -15,7 +15,7 @@ import java.util.List;
 public interface PackageArgumentResolver extends Resolver {
 
     /**
-     * Parses the {@link #next()} string with a converter.
+     * Parses the {@link #nextElement()} string with a converter.
      *
      * @param argument the converter creating the value
      * @param <T>      the value to create
@@ -23,7 +23,7 @@ public interface PackageArgumentResolver extends Resolver {
      * @throws QuestException when there is no part left or the value can't be created
      */
     default <T> Variable<T> get(final PackageArgument<T> argument) throws QuestException {
-        return get(next(), argument);
+        return get(nextElement(), argument);
     }
 
     /**
@@ -86,7 +86,7 @@ public interface PackageArgumentResolver extends Resolver {
     }
 
     /**
-     * Parses the {@link #next()} string with a converter to a list.
+     * Parses the {@link #nextElement()} string with a converter to a list.
      *
      * @param argument the converter creating the value
      * @param <T>      the value to create
@@ -94,11 +94,11 @@ public interface PackageArgumentResolver extends Resolver {
      * @throws QuestException when there is no part left or the value can't be created
      */
     default <T> Variable<List<T>> getList(final PackageArgument<T> argument) throws QuestException {
-        return getList(next(), argument);
+        return getList(nextElement(), argument);
     }
 
     /**
-     * Parses the {@link #next()} string with a converter to a list.
+     * Parses the {@link #nextElement()} string with a converter to a list.
      *
      * @param argument     the converter creating the value
      * @param valueChecker the checker to verify valid lists
@@ -107,7 +107,7 @@ public interface PackageArgumentResolver extends Resolver {
      * @throws QuestException when there is no part left or the value can't be created
      */
     default <T> Variable<List<T>> getList(final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        return getList(next(), argument, valueChecker);
+        return getList(nextElement(), argument, valueChecker);
     }
 
     /**

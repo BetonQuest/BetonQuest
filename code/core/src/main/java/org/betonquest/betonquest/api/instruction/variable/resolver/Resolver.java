@@ -17,7 +17,7 @@ public interface Resolver {
      * @return the following string
      * @throws QuestException when there is no part left
      */
-    String next() throws QuestException;
+    String nextElement() throws QuestException;
 
     /**
      * Gets an optional key:value instruction argument or null if the key is not present.
