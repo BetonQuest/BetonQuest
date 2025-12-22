@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -12,6 +11,8 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -28,16 +29,31 @@ import java.util.concurrent.Future;
 public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
 
     /**
+     * The Bukkit scheduler to run sync tasks.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
      * Create a new Condition Processor to store Conditions and checks them.
      *
      * @param log            the custom logger for this class
      * @param variables      the variable processor to create and resolve variables
      * @param packManager    the quest package manager to get quest packages from
      * @param conditionTypes the available condition types
+     * @param scheduler      the bukkit scheduler to run sync tasks
+     * @param plugin         the plugin instance
      */
     public ConditionProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
-                              final ConditionTypeRegistry conditionTypes) {
+                              final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
+                              final Plugin plugin) {
         super(log, variables, packManager, conditionTypes, "Condition", "conditions");
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     @Override
@@ -50,11 +66,12 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      *
      * @param profile      the {@link Profile} of the player which should be checked
      * @param conditionIDs IDs of the conditions to check
+     * @param matchAll     True if all conditions have to be met, false if only one condition has to be met
      * @return if all conditions are met
      */
-    public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+    public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs, final boolean matchAll) {
         if (Bukkit.isPrimaryThread()) {
-            return conditionIDs.stream().allMatch(id -> check(profile, id));
+            return matchAll == conditionIDs.stream().allMatch(id -> matchAll == check(profile, id));
         }
 
         final Map<Boolean, List<ConditionID>> syncAsyncList = new HashMap<>();
@@ -66,12 +83,12 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             syncAsyncList.get(adapter != null && adapter.isPrimaryThreadEnforced()).add(id);
         });
 
-        final Future<Boolean> syncFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(),
-                () -> syncAsyncList.get(true).stream().allMatch(id -> check(profile, id)));
-        final boolean asyncResult = syncAsyncList.get(false).stream().allMatch((id) -> check(profile, id));
+        final Future<Boolean> syncFuture = scheduler.callSyncMethod(plugin,
+                () -> matchAll == syncAsyncList.get(true).stream().allMatch(id -> matchAll == check(profile, id)));
+        final boolean asyncResult = matchAll == syncAsyncList.get(false).stream().allMatch((id) -> matchAll == check(profile, id));
 
         try {
-            return asyncResult && syncFuture.get();
+            return matchAll == (matchAll == asyncResult && matchAll == syncFuture.get());
         } catch (final InterruptedException | ExecutionException e) {
             log.reportException(e);
             return false;

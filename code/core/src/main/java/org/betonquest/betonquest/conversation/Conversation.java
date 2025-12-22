@@ -241,7 +241,6 @@ public class Conversation {
      *
      * @param options list of pointers to player options separated by commas
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final List<ResolvedOption> options) {
         final List<Pair<ResolvedOption, CompletableFuture<Boolean>>> futuresOptions = new ArrayList<>();
         for (final ResolvedOption option : options) {

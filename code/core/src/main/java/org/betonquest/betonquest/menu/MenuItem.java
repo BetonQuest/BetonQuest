@@ -137,22 +137,12 @@ public class MenuItem {
      * @return true if all display conditions are met, false otherwise
      */
     public boolean display(final Profile profile) {
-        final List<ConditionID> resolved;
         try {
-            resolved = this.conditions.getValue(profile);
+            return questTypeApi.conditions(profile, this.conditions.getValue(profile));
         } catch (final QuestException exception) {
             log.warn(itemId.getPackage(), "Error while resolving condition in menu item '" + itemId + "': " + exception.getMessage(), exception);
             return false;
         }
-        for (final ConditionID condition : resolved) {
-            if (questTypeApi.condition(profile, condition)) {
-                log.debug(itemId.getPackage(), "Item " + itemId + ": condition " + condition + " returned true");
-            } else {
-                log.debug(itemId.getPackage(), "Item " + itemId + " wont be displayed: condition" + condition + " returned false.");
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

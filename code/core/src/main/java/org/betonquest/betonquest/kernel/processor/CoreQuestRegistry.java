@@ -19,6 +19,7 @@ import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.BaseQuestTypeRegistries;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -46,17 +47,19 @@ public record CoreQuestRegistry(
      * @param loggerFactory       the logger factory used for new custom logger instances
      * @param packManager         the quest package manager to get quest packages from
      * @param questTypeRegistries the available quest types
+     * @param scheduler           the bukkit scheduler to run sync tasks
      * @param pluginManager       the manager to register listener
      * @param plugin              the plugin instance to associate registered listener with
      * @return the newly created quest type api
      */
     public static CoreQuestRegistry create(final BetonQuestLoggerFactory loggerFactory, final QuestPackageManager packManager,
-                                           final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager, final Plugin plugin) {
+                                           final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
+                                           final BukkitScheduler scheduler, final Plugin plugin) {
         final VariableProcessor variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class),
                 packManager, questTypeRegistries.variable());
         return new CoreQuestRegistry(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), variableProcessor, packManager,
-                        questTypeRegistries.condition()),
+                        questTypeRegistries.condition(), scheduler, plugin),
                 new EventProcessor(loggerFactory.create(EventProcessor.class), variableProcessor, packManager, questTypeRegistries.event()),
                 new ObjectiveProcessor(loggerFactory.create(ObjectiveProcessor.class), variableProcessor, packManager,
                         questTypeRegistries.objective(), pluginManager, plugin), variableProcessor);
@@ -110,7 +113,12 @@ public record CoreQuestRegistry(
 
     @Override
     public boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
-        return conditions().checks(profile, conditionIDs);
+        return conditions().checks(profile, conditionIDs, true);
+    }
+
+    @Override
+    public boolean conditionsAny(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
+        return conditions().checks(profile, conditionIDs, false);
     }
 
     @Override

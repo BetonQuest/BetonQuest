@@ -17,13 +17,22 @@ import java.util.List;
 public interface QuestTypeApi {
 
     /**
-     * Checks if the conditions described by conditionID are met.
+     * Checks whether all the conditions described by conditionIDs are met.
      *
      * @param profile      the {@link Profile} of the player which should be checked
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
     boolean conditions(@Nullable Profile profile, Collection<ConditionID> conditionIDs);
+
+    /**
+     * Checks whether any of the conditions described by conditionIDs are met.
+     *
+     * @param profile      the {@link Profile} of the player which should be checked
+     * @param conditionIDs IDs of the conditions to check
+     * @return if all conditions are met
+     */
+    boolean conditionsAny(@Nullable Profile profile, Collection<ConditionID> conditionIDs);
 
     /**
      * Checks if the condition described by conditionID is met.
