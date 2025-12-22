@@ -26,15 +26,6 @@ public interface QuestTypeApi {
     boolean conditions(@Nullable Profile profile, Collection<ConditionID> conditionIDs);
 
     /**
-     * Checks if the conditions described by conditionID are met.
-     *
-     * @param profile      the {@link Profile} of the player which should be checked
-     * @param conditionIDs IDs of the conditions to check
-     * @return if all conditions are met
-     */
-    boolean conditions(@Nullable Profile profile, ConditionID... conditionIDs);
-
-    /**
      * Checks if the condition described by conditionID is met.
      *
      * @param conditionID ID of the condition to check

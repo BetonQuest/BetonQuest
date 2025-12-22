@@ -110,16 +110,6 @@ public record CoreQuestRegistry(
 
     @Override
     public boolean conditions(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
-        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
-        int index = 0;
-        for (final ConditionID id : conditionIDs) {
-            ids[index++] = id;
-        }
-        return conditions(profile, ids);
-    }
-
-    @Override
-    public boolean conditions(@Nullable final Profile profile, final ConditionID... conditionIDs) {
         return conditions().checks(profile, conditionIDs);
     }
 

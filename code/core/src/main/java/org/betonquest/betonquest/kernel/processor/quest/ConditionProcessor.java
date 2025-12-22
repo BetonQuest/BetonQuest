@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,37 +52,30 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param conditionIDs IDs of the conditions to check
      * @return if all conditions are met
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    public boolean checks(@Nullable final Profile profile, final ConditionID... conditionIDs) {
+    public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
-            for (final ConditionID id : conditionIDs) {
-                if (!check(profile, id)) {
-                    return false;
-                }
-            }
-        } else {
-            final Map<Boolean, List<ConditionID>> syncAsyncList = new HashMap<>();
-            syncAsyncList.put(true, new ArrayList<>());
-            syncAsyncList.put(false, new ArrayList<>());
-            for (final ConditionID conditionID : conditionIDs) {
-                final ConditionAdapter adapter = values.get(conditionID);
-                syncAsyncList.get(adapter != null && adapter.isPrimaryThreadEnforced()).add(conditionID);
-            }
-
-            final Future<Boolean> syncFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(),
-                    () -> syncAsyncList.get(true).stream().allMatch(id -> check(profile, id)));
-            final boolean asyncResult = syncAsyncList.get(false).stream().allMatch((id) -> check(profile, id));
-
-            try {
-                if (!asyncResult || !syncFuture.get()) {
-                    return false;
-                }
-            } catch (final InterruptedException | ExecutionException e) {
-                log.reportException(e);
-                return false;
-            }
+            return conditionIDs.stream().allMatch(id -> check(profile, id));
         }
-        return true;
+
+        final Map<Boolean, List<ConditionID>> syncAsyncList = new HashMap<>();
+        syncAsyncList.put(true, new ArrayList<>());
+        syncAsyncList.put(false, new ArrayList<>());
+
+        conditionIDs.forEach(id -> {
+            final ConditionAdapter adapter = values.get(id);
+            syncAsyncList.get(adapter != null && adapter.isPrimaryThreadEnforced()).add(id);
+        });
+
+        final Future<Boolean> syncFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(),
+                () -> syncAsyncList.get(true).stream().allMatch(id -> check(profile, id)));
+        final boolean asyncResult = syncAsyncList.get(false).stream().allMatch((id) -> check(profile, id));
+
+        try {
+            return asyncResult && syncFuture.get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return false;
+        }
     }
 
     /**
