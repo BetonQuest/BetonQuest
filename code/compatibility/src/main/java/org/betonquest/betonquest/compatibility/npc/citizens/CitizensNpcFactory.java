@@ -41,8 +41,7 @@ public class CitizensNpcFactory implements NpcFactory {
         if (instruction.hasArgument("byName")) {
             return new CitizensNameWrapper(plugin, registry, instruction.get(instruction.getParsers().string()));
         }
-        final DecoratedArgument<Number> numberParser = instruction.getParsers().number()
-                .validate(value -> value.doubleValue() < 0, "NPC ID must be a positive number, got: '%s'");
+        final DecoratedArgument<Number> numberParser = instruction.getParsers().number().atLeast(0);
         final Variable<Number> npcId = instruction.get(numberParser);
         return new CitizensWrapper(plugin, registry, npcId);
     }

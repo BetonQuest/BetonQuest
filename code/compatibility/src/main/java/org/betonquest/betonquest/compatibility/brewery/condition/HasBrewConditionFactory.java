@@ -41,8 +41,7 @@ public class HasBrewConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final DecoratedArgument<Number> countParser = instruction.getParsers().number()
-                .validate(value -> value.doubleValue() < 1, "Count must be at least 1, got: '%s'");
+        final DecoratedArgument<Number> countParser = instruction.getParsers().number().atLeast(1);
         final Variable<Number> countVar = instruction.get(countParser);
         final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
         final Variable<IdentifierType> mode = instruction.getValue("mode", instruction.getParsers().forEnum(IdentifierType.class), IdentifierType.NAME);

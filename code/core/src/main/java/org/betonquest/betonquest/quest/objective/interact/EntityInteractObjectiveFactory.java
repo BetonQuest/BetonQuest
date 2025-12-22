@@ -32,7 +32,7 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Interaction> interaction = instruction.get(instruction.getParsers().forEnum(Interaction.class));
         final Variable<EntityType> mobType = instruction.get(instruction.getParsers().forEnum(EntityType.class));
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
         final Variable<Component> customName = instruction.getValue("name", instruction.getParsers().component());
         final Variable<String> realName = instruction.getValue("realname", instruction.getParsers().string());
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);

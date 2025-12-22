@@ -23,7 +23,7 @@ public class MMOCoreBreakCustomBlockObjectiveFactory implements ObjectiveFactory
         if (desiredBlockId == null) {
             throw new QuestException("Missing required argument: block");
         }
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
         return new MMOCoreBreakCustomBlockObjective(instruction, targetAmount, desiredBlockId);
     }
 }

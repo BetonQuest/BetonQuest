@@ -31,7 +31,7 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcID = instruction.get(CitizensArgument.CITIZENS_ID);
-        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().validate(value -> value.doubleValue() < 1), 1);
+        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().atLeast(1), 1);
         return new NPCKillObjective(instruction, registry, targetAmount, npcID);
     }
 }

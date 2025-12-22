@@ -55,7 +55,7 @@ public class FreezeEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> ticks = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> ticks = instruction.get(instruction.getParsers().number().atLeast(1));
         final BetonQuestLogger log = loggerFactory.create(FreezeEvent.class);
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new FreezeEvent(plugin, packetEventsAPI, ticks),

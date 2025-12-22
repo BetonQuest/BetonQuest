@@ -29,7 +29,7 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().validate(value -> value.doubleValue() < 1), 1);
+        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().atLeast(1), 1);
         final Variable<Item> item = instruction.get(InstructionIdentifierArgument.ITEM);
         final Variable<List<EnchantObjective.EnchantmentData>> desiredEnchantments =
                 instruction.getList(EnchantObjective.EnchantmentData::convert, VariableList.notEmptyChecker());

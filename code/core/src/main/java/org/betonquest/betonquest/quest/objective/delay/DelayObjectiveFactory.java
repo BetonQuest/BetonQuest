@@ -20,10 +20,8 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final DecoratedArgument<Number> delayParser = instruction.getParsers().number()
-                .validate(value -> value.doubleValue() < 0, "Delay must be a non-negative number, got: '%s'");
-        final DecoratedArgument<Number> intervalParser = instruction.getParsers().number()
-                .validate(value -> value.doubleValue() < 1, "Interval must be at least 1, got: '%s'");
+        final DecoratedArgument<Number> delayParser = instruction.getParsers().number().atLeast(0);
+        final DecoratedArgument<Number> intervalParser = instruction.getParsers().number().atLeast(1);
         final Variable<Number> delay = instruction.get(delayParser);
         final Variable<Number> interval = instruction.getValue("interval", intervalParser, 20 * 10);
         return new DelayObjective(instruction, interval, delay);

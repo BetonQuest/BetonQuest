@@ -50,7 +50,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
         final Variable<List<String>> permissions = instruction.getValueList("permission", instruction.getParsers().string(), VariableList.notEmptyChecker());
         final Variable<List<String>> contexts = instruction.getValueList("context", instruction.getParsers().string());
         final Variable<String> value = instruction.getValue("value", instruction.getParsers().string(), "");
-        final Variable<Number> expiry = instruction.getValue("expiry", instruction.getParsers().number().validate(number -> number.doubleValue() < 1), 0);
+        final Variable<Number> expiry = instruction.getValue("expiry", instruction.getParsers().number().atLeast(1), 0);
         final Variable<TimeUnit> timeUnit = instruction.getValue("unit", instruction.getParsers().forEnum(TimeUnit.class), TimeUnit.DAYS);
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }

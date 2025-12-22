@@ -19,7 +19,7 @@ public class JumpObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
         return new JumpObjective(instruction, targetAmount);
     }
 }

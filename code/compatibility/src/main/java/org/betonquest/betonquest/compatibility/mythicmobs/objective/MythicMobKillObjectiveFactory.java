@@ -24,7 +24,7 @@ public class MythicMobKillObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<List<String>> names = instruction.getList(instruction.getParsers().string());
         final Variable<IdentifierMode> mode = instruction.getValue("mode", instruction.getParsers().forEnum(IdentifierMode.class), IdentifierMode.INTERNAL_NAME);
-        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().validate(value -> value.doubleValue() < 1), 1);
+        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number().atLeast(1), 1);
 
         final Variable<Number> deathRadiusAllPlayers = instruction.getValue("deathRadiusAllPlayers", instruction.getParsers().number(), 0);
         final Variable<Number> neutralDeathRadiusAllPlayers = instruction.getValue("neutralDeathRadiusAllPlayers", instruction.getParsers().number(), 0);

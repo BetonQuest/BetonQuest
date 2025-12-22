@@ -4,7 +4,9 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratableNumberArgument;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedNumberArgument;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,7 +28,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * The default decoratable instance of {@link NumberParser}.
      */
-    public final DecoratableArgument<Number> defaultNumberParser;
+    public final DecoratedNumberArgument defaultNumberParser;
 
     /**
      * The default decoratable instance of {@link LocationParser}.
@@ -68,7 +70,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
      * and all default instances of {@link DecoratedArgument}s.
      */
     public DefaultArgumentParsers() {
-        defaultNumberParser = new DecoratableArgument<>(new NumberParser());
+        defaultNumberParser = new DecoratableNumberArgument(new NumberParser());
         defaultLocationParser = new DecoratableArgument<>(new LocationParser(Bukkit.getServer()));
         defaultBooleanParser = new DecoratableArgument<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgument<>(new UUIDParser());
@@ -119,7 +121,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     }
 
     @Override
-    public DecoratedArgument<Number> number() {
+    public DecoratedNumberArgument number() {
         return defaultNumberParser;
     }
 }

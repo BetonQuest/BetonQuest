@@ -37,7 +37,7 @@ public class MoneyConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number().atLeast(1));
         return new PrimaryServerThreadPlayerCondition(new MoneyCondition(economy, amount), data);
     }
 }

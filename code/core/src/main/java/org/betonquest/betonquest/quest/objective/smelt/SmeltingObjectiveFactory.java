@@ -22,7 +22,7 @@ public class SmeltingObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Item> item = instruction.get(InstructionIdentifierArgument.ITEM);
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
         return new SmeltingObjective(instruction, targetAmount, item);
     }
 }

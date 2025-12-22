@@ -40,7 +40,7 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amountVar = instruction.get(instruction.getParsers().number().validate(value -> value.doubleValue() < 1));
+        final Variable<Number> amountVar = instruction.get(instruction.getParsers().number().atLeast(1));
         final Variable<Number> qualityVar = instruction.get(instruction.getParsers().number());
         final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
         final Variable<IdentifierType> mode = instruction.getValue("mode", instruction.getParsers().forEnum(IdentifierType.class), IdentifierType.NAME);

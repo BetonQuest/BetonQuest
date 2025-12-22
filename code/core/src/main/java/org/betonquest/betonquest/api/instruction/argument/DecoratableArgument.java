@@ -14,14 +14,14 @@ import java.util.Optional;
 public class DecoratableArgument<T> implements DecoratedArgument<T> {
 
     /**
-     * The wrapped argument.
+     * The wrapped {@link Argument}.
      */
-    private final Argument<T> argument;
+    protected final Argument<T> argument;
 
     /**
-     * Create a new decoratable argument.
+     * Create a new {@link DecoratableArgument}.
      *
-     * @param argument the argument to wrap
+     * @param argument the {@link Argument} to wrap
      */
     public DecoratableArgument(final Argument<T> argument) {
         this.argument = argument;

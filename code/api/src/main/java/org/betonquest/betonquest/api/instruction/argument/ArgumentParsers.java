@@ -62,11 +62,11 @@ public interface ArgumentParsers {
     DecoratedArgument<UUID> uuid();
 
     /**
-     * Default parser for {@link Number}.
+     * Default parser for {@link Number} using {@link DecoratedNumberArgument}.
      *
      * @return a parser for numbers
      */
-    DecoratedArgument<Number> number();
+    DecoratedNumberArgument number();
 
     /**
      * Default parser for an {@link Enum} type.
