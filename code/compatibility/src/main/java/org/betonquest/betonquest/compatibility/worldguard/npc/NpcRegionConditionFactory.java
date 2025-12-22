@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.worldguard.npc;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -53,7 +52,7 @@ public class NpcRegionConditionFactory implements PlayerConditionFactory, Player
 
     private NullableConditionAdapter parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
-        final Variable<String> region = instruction.get(Argument.STRING);
+        final Variable<String> region = instruction.get(instruction.getParsers().string());
         return new NullableConditionAdapter(new NpcRegionCondition(featureApi, npcId, region));
     }
 }

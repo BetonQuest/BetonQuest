@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.traincarts.objectives;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -17,7 +16,7 @@ import org.bukkit.event.Listener;
 public class TrainCartsLocationObjective extends AbstractLocationObjective implements Listener {
 
     /**
-     * The {@link LocationParser} that stores the location the player has to be inside.
+     * The {@link Variable} that stores the location the player has to be inside.
      */
     private final Variable<Location> loc;
 

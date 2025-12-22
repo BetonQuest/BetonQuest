@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.NoID;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class VariableInstructionTest {
 
     private VariableInstruction createNoIDInstruction(final String instruction) throws QuestException {
         return new VariableInstruction(mock(Variables.class), mock(QuestPackageManager.class),
-                questPackage, new NoID(mock(QuestPackageManager.class), questPackage), instruction);
+                questPackage, new NoID(mock(QuestPackageManager.class), questPackage), mock(ArgumentParsers.class), instruction);
     }
 
     @Test
@@ -58,7 +59,7 @@ class VariableInstructionTest {
         final VariableID variableID1 = mock(VariableID.class);
         final VariableID variableID2 = mock(VariableID.class);
         final VariableInstruction original = new VariableInstruction(mock(Variables.class), mock(QuestPackageManager.class),
-                questPackage, variableID1, "%instruction%");
+                questPackage, variableID1, mock(ArgumentParsers.class), "%instruction%");
         final Instruction copy = original.copy(variableID2);
         assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
         assertNotEquals(original.getID(), copy.getID(), "Should have different ID");

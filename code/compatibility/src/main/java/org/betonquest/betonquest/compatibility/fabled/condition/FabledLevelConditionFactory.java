@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.fabled.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -31,8 +30,8 @@ public class FabledLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> classNameVar = instruction.get(Argument.STRING);
-        final Variable<Number> levelVar = instruction.get(Argument.NUMBER);
+        final Variable<String> classNameVar = instruction.get(instruction.getParsers().string());
+        final Variable<Number> levelVar = instruction.get(instruction.getParsers().number());
         return new PrimaryServerThreadPlayerCondition(new FabledLevelCondition(classNameVar, levelVar), data);
     }
 }

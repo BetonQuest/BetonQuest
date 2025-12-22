@@ -28,7 +28,7 @@ public class RideObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
+        final Argument<Optional<EntityType>> argument = instruction.getParsers().forEnum(EntityType.class)
                 .prefilterOptional(ANY_PROPERTY, null);
         final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         return new RideObjective(instruction, vehicle);

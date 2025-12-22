@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.variable.eval;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
@@ -40,7 +39,7 @@ public class EvalVariableFactory implements PlayerVariableFactory, PlayerlessVar
      */
     protected NullableVariable parseNullableVariable(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(".", instruction.getValueParts());
-        return new EvalVariable(instruction, instruction.get(rawInstruction, Argument.STRING));
+        return new EvalVariable(instruction, instruction.get(rawInstruction, instruction.getParsers().string()));
     }
 
     private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {

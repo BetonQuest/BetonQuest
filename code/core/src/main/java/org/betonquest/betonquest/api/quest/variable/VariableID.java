@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.InstructionIdentifier;
 import org.betonquest.betonquest.api.instruction.VariableInstruction;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +35,7 @@ public class VariableID extends InstructionIdentifier {
             if (!identifier.startsWith(VARIABLE_IDENTIFIER) || !identifier.endsWith(VARIABLE_IDENTIFIER)) {
                 throw new QuestException("Variable instruction has to start and end with '%' characters");
             }
-            return new VariableInstruction(variables, packManager, id.getPackage(), id, id.get());
+            return new VariableInstruction(variables, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, id.get());
         });
     }
 

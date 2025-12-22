@@ -1,0 +1,25 @@
+package org.betonquest.betonquest.api.instruction.argument;
+
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.variable.ValueParser;
+import org.jetbrains.annotations.Contract;
+
+/**
+ * Objectified parser to get a {@link T} from string.
+ *
+ * @param <T> the type of the parsed result
+ */
+@FunctionalInterface
+public interface Argument<T> extends ValueParser<T> {
+
+    /**
+     * Parses a {@link T} from a string without affecting the state of the {@link Argument} instance.
+     *
+     * @param string the string to parse
+     * @return the parsed {@link T} from the string
+     * @throws QuestException when the string cannot be parsed as {@link T}
+     */
+    @Override
+    @Contract(pure = true)
+    T apply(String string) throws QuestException;
+}

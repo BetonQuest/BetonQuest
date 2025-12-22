@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.common.function.ConstantSelector;
 import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -80,7 +79,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
-        final Variable<Number> duration = instruction.getValue("duration", Argument.NUMBER, 0);
+        final Variable<Number> duration = instruction.getValue("duration", instruction.getParsers().number(), 0);
         return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 

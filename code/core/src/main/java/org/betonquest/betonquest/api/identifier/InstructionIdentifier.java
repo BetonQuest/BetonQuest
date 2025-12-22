@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +56,7 @@ public abstract class InstructionIdentifier extends DefaultIdentifier {
             if (rawInstruction == null) {
                 throw new QuestException(readable + " '" + id.getFull() + "' is not defined");
             }
-            return new DefaultInstruction(variables, packManager, id.getPackage(), id, rawInstruction);
+            return new DefaultInstruction(variables, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, rawInstruction);
         });
     }
 

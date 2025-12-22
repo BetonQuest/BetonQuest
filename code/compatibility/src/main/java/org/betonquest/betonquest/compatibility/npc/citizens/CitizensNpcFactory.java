@@ -4,7 +4,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.npc.NpcFactory;
 import org.betonquest.betonquest.api.quest.npc.NpcWrapper;
@@ -39,9 +39,10 @@ public class CitizensNpcFactory implements NpcFactory {
     @Override
     public NpcWrapper<NPC> parseInstruction(final Instruction instruction) throws QuestException {
         if (instruction.hasArgument("byName")) {
-            return new CitizensNameWrapper(plugin, registry, instruction.get(Argument.STRING));
+            return new CitizensNameWrapper(plugin, registry, instruction.get(instruction.getParsers().string()));
         }
-        final Variable<Number> npcId = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
+        final DecoratedArgument<Number> numberParser = instruction.getParsers().number().atLeast(0);
+        final Variable<Number> npcId = instruction.get(numberParser);
         return new CitizensWrapper(plugin, registry, npcId);
     }
 }

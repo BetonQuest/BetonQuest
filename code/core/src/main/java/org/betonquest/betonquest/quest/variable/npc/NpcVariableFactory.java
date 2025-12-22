@@ -65,7 +65,7 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
             };
         }
         final Variable<NpcID> npcID = instruction.get(NpcID::new);
-        final Argument key = instruction.get(org.betonquest.betonquest.api.instruction.argument.Argument.ENUM(Argument.class)).getValue(null);
+        final Argument key = instruction.get(instruction.getParsers().forEnum(Argument.class)).getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
         if (key == Argument.LOCATION) {

@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.types.ItemParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -108,8 +108,8 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     @Override
     protected HologramWrapper loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final String checkIntervalString = section.getString("check_interval", String.valueOf(defaultInterval));
-        final Variable<Number> checkInterval = new Variable<>(variables, pack, checkIntervalString, Argument.NUMBER);
-        final Variable<Number> maxRange = new Variable<>(variables, pack, section.getString("max_range", "0"), Argument.NUMBER);
+        final Variable<Number> checkInterval = new Variable<>(variables, pack, checkIntervalString, NumberParser.DEFAULT);
+        final Variable<Number> maxRange = new Variable<>(variables, pack, section.getString("max_range", "0"), NumberParser.DEFAULT);
 
         final List<String> lines = section.getStringList("lines");
         final List<ConditionID> conditions = new VariableList<>(variables, pack, section.getString("conditions", ""),

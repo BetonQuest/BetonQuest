@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.stage;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -36,7 +35,7 @@ public class StageEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
-        final String action = instruction.get(Argument.STRING).getValue(null);
+        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);
             case "increase" -> createIncreaseEvent(instruction, objectiveID);
@@ -46,7 +45,7 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createSetEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
-        final Variable<String> variableString = instruction.get(Argument.STRING);
+        final Variable<String> variableString = instruction.get(instruction.getParsers().string());
         return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, variableString.getValue(profile)));
     }
 
@@ -65,7 +64,7 @@ public class StageEventFactory implements PlayerEventFactory {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.next();
             if (!stringAmount.startsWith("conditions:")) {
-                return instruction.get(stringAmount, Argument.NUMBER);
+                return instruction.get(stringAmount, instruction.getParsers().number());
             }
         }
         return null;

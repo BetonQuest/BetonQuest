@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.random;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.types.NumberParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 
 /**
  * A parser for {@link RandomChance}s.

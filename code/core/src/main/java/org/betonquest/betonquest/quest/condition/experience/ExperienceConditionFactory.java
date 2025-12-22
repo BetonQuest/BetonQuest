@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.experience;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -40,7 +39,7 @@ public class ExperienceConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final BetonQuestLogger log = loggerFactory.create(ExperienceCondition.class);
         return new PrimaryServerThreadPlayerCondition(
                 new OnlineConditionAdapter(new ExperienceCondition(amount), log, instruction.getPackage()), data);

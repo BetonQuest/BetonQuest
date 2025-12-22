@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.npc;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -50,7 +49,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
-        final Variable<Number> distance = instruction.get(Argument.NUMBER);
+        final Variable<Number> distance = instruction.get(instruction.getParsers().number());
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new NpcDistanceCondition(featureApi, npcId, distance),
                 loggerFactory.create(NpcDistanceCondition.class),

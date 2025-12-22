@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.delay;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -20,8 +20,10 @@ public class DelayObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> delay = instruction.get(Argument.NUMBER_NOT_LESS_THAN_ZERO);
-        final Variable<Number> interval = instruction.getValue("interval", Argument.NUMBER_NOT_LESS_THAN_ONE, 20 * 10);
+        final DecoratedArgument<Number> delayParser = instruction.getParsers().number().atLeast(0);
+        final DecoratedArgument<Number> intervalParser = instruction.getParsers().number().atLeast(1);
+        final Variable<Number> delay = instruction.get(delayParser);
+        final Variable<Number> interval = instruction.getValue("interval", intervalParser, 20 * 10);
         return new DelayObjective(instruction, interval, delay);
     }
 }

@@ -4,7 +4,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -60,7 +59,7 @@ public class MoneyEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final boolean multi = instruction.hasArgument("multi");
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final boolean notify = instruction.hasArgument("notify");
         final IngameNotificationSender givenSender;
         final IngameNotificationSender takenSender;

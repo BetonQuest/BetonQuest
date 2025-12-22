@@ -2,15 +2,16 @@ package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
-import org.betonquest.betonquest.api.instruction.argument.parser.ArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.InstructionIdentifierArgumentConverter;
-import org.betonquest.betonquest.api.instruction.argument.parser.PackageArgumentConverter;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.variable.resolver.ArgumentResolver;
+import org.betonquest.betonquest.api.instruction.variable.resolver.IdentifierArgumentResolver;
+import org.betonquest.betonquest.api.instruction.variable.resolver.InstructionIdentifierArgumentResolver;
+import org.betonquest.betonquest.api.instruction.variable.resolver.PackageArgumentResolver;
 
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends InstructionParts, ArgumentConverter, PackageArgumentConverter, IdentifierArgumentConverter, InstructionIdentifierArgumentConverter {
+public interface Instruction extends InstructionParts, ArgumentResolver, PackageArgumentResolver, IdentifierArgumentResolver, InstructionIdentifierArgumentResolver {
 
     /**
      * Get the source QuestPackage.
@@ -18,6 +19,13 @@ public interface Instruction extends InstructionParts, ArgumentConverter, Packag
      * @return the package containing this instruction
      */
     QuestPackage getPackage();
+
+    /**
+     * Get {@link ArgumentParsers} with commonly used parsers.
+     *
+     * @return a provider of commonly used parsers
+     */
+    ArgumentParsers getParsers();
 
     /**
      * Get the {@link Identifier} of this instruction.

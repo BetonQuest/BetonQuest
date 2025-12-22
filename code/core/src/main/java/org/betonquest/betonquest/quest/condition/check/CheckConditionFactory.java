@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -96,7 +97,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new DefaultInstruction(variables, packManager, questPackage, null, instruction);
+            final Instruction innerInstruction = new DefaultInstruction(variables, packManager, questPackage, null, DefaultArgumentParsers.INSTANCE, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

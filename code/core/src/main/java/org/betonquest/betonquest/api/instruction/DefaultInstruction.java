@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
@@ -58,18 +59,24 @@ public class DefaultInstruction implements Instruction {
     private final InstructionParts instructionParts;
 
     /**
+     * The default {@link Argument} parsers.
+     */
+    private final ArgumentParsers argumentParsers;
+
+    /**
      * Create an instruction using the quoting tokenizer.
      *
      * @param variables   the variable processor to create and resolve variables
      * @param packManager the quest package manager to get quest packages from
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
+     * @param parsers     The parsers to use for parsing the instruction's arguments.
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
     public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
-                              @Nullable final Identifier identifier, final String instruction) throws QuestException {
-        this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), instruction);
+                              @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
+        this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), parsers, instruction);
     }
 
     /**
@@ -80,15 +87,18 @@ public class DefaultInstruction implements Instruction {
      * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
+     * @param parsers     The parsers to use for parsing the instruction's arguments.
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
+    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer,
+                              final QuestPackage pack, final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
         this.variables = variables;
         this.packManager = packManager;
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
+        this.argumentParsers = parsers;
         try {
             this.instructionParts = new InstructionPartsArray(tokenizer, instruction);
         } catch (final TokenizerException e) {
@@ -109,6 +119,7 @@ public class DefaultInstruction implements Instruction {
         this.identifier = identifier;
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
+        this.argumentParsers = instruction.argumentParsers;
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -125,6 +136,11 @@ public class DefaultInstruction implements Instruction {
     @Override
     public QuestPackage getPackage() {
         return pack;
+    }
+
+    @Override
+    public ArgumentParsers getParsers() {
+        return argumentParsers;
     }
 
     @Override

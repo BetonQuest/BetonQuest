@@ -57,7 +57,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<MythicMob> mobType = instruction.get(mobArgument);
-        final Variable<Number> distance = instruction.get(Argument.NUMBER);
+        final Variable<Number> distance = instruction.get(instruction.getParsers().number());
         return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
                 new MythicMobDistanceCondition(mobExecutor, mobType, distance),
                 loggerFactory.create(MythicMobDistanceCondition.class),

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.chest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -48,7 +47,7 @@ public class ChestItemConditionFactory implements PlayerConditionFactory, Player
     }
 
     private ChestItemCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(Argument.LOCATION);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<List<Item>> items = instruction.getList(InstructionIdentifierArgument.ITEM);
         return new ChestItemCondition(loc, items);
     }

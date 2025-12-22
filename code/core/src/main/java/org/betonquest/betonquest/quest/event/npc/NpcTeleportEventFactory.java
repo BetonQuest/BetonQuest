@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.npc;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -54,7 +53,7 @@ public class NpcTeleportEventFactory implements PlayerEventFactory, PlayerlessEv
 
     private NullableEventAdapter createNpcTeleportEvent(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
-        final Variable<Location> location = instruction.get(Argument.LOCATION);
+        final Variable<Location> location = instruction.get(instruction.getParsers().location());
         final boolean spawn = instruction.hasArgument("spawn");
         return new NullableEventAdapter(new NpcTeleportEvent(featureApi, npcId, location, spawn));
     }

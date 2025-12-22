@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.variable.random;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -86,10 +85,10 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
-                return instruction.get(start.substring(0, start.indexOf('~')), Argument.NUMBER);
+                return instruction.get(start.substring(0, start.indexOf('~')), instruction.getParsers().number());
             } else {
                 final String next = instruction.next();
-                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), Argument.NUMBER);
+                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), instruction.getParsers().number());
             }
         }
     }
@@ -99,7 +98,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, Argument.NUMBER);
+            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, instruction.getParsers().number());
         }
     }
 
@@ -118,7 +117,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             final String current = instruction.next();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return instruction.get(builder.toString(), Argument.NUMBER);
+                return instruction.get(builder.toString(), instruction.getParsers().number());
             } else {
                 builder.append(current).append('.');
             }

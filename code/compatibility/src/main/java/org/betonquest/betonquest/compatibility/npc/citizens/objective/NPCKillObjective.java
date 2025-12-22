@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -60,12 +59,12 @@ public class NPCKillObjective extends CountingObjective implements Listener {
             final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);
             if (npcInstruction.hasArgument("byName")) {
-                final String resolvedName = npcInstruction.get(argument, Argument.STRING).getValue(profile);
+                final String resolvedName = npcInstruction.get(argument, npcInstruction.getParsers().string()).getValue(profile);
                 if (!resolvedName.equals(npc.getName())) {
                     return;
                 }
             } else {
-                final int resolvedId = npcInstruction.get(argument, Argument.NUMBER_NOT_LESS_THAN_ONE).getValue(profile).intValue();
+                final int resolvedId = npcInstruction.get(argument, npcInstruction.getParsers().number().atLeast(1)).getValue(profile).intValue();
                 if (resolvedId != npc.getId()) {
                     return;
                 }

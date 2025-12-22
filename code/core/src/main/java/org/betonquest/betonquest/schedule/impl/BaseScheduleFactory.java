@@ -3,7 +3,7 @@ package org.betonquest.betonquest.schedule.impl;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -70,7 +70,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         if (catchupString == null) {
             catchup = CatchupStrategy.NONE;
         } else {
-            catchup = Argument.ENUM(CatchupStrategy.class).apply(catchupString);
+            catchup = new EnumParser<>(CatchupStrategy.class).apply(catchupString);
         }
         return new ScheduleData(time, events, catchup);
     }

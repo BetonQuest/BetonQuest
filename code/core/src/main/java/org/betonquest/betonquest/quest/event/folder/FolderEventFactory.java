@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.folder;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -73,9 +72,9 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
-        final Variable<Number> delay = instruction.getValue("delay", Argument.NUMBER);
-        final Variable<Number> period = instruction.getValue("period", Argument.NUMBER);
-        final Variable<Number> random = instruction.getValue("random", Argument.NUMBER);
+        final Variable<Number> delay = instruction.getValue("delay", instruction.getParsers().number());
+        final Variable<Number> period = instruction.getValue("period", instruction.getParsers().number());
+        final Variable<Number> random = instruction.getValue("random", instruction.getParsers().number());
         final Variable<TimeUnit> timeUnit = instruction.getValue("unit", this::getTimeUnit, TimeUnit.SECONDS);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
         final Variable<List<ConditionID>> cancelConditions = instruction.getValueList("cancelConditions", ConditionID::new);

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -30,7 +29,7 @@ public class MMOCoreSkillPointsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         return new PrimaryServerThreadEvent(new MMOCoreSkillPointsEvent(amount), data);
     }
 }

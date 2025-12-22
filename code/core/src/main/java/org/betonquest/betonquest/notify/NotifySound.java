@@ -3,11 +3,13 @@ package org.betonquest.betonquest.notify;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestConsumer;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.argument.types.location.LocationParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -180,7 +182,7 @@ class NotifySound {
     @Nullable
     private Variable<Location> getVariableLocation(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new Variable<>(variables, pack, locationString, LocationParser.LOCATION);
+        return locationString == null ? null : new Variable<>(variables, pack, locationString, new LocationParser(Bukkit.getServer()));
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws QuestException {
@@ -196,7 +198,7 @@ class NotifySound {
     private Variable<Vector> getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
         if (playerOffsetString != null) {
             try {
-                return new Variable<>(variables, pack, playerOffsetString, LocationParser.VECTOR);
+                return new Variable<>(variables, pack, playerOffsetString, new VectorParser());
             } catch (final QuestException e) {
                 throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
             }

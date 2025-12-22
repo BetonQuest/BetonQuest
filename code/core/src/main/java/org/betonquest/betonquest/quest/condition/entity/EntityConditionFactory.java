@@ -5,6 +5,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -52,9 +54,9 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
         final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
-        final Variable<Location> location = instruction.get(Argument.LOCATION);
-        final Variable<Number> range = instruction.get(Argument.NUMBER);
-        final Variable<Component> name = instruction.getValue("name", Argument.MESSAGE);
+        final Variable<Location> location = instruction.get(instruction.getParsers().location());
+        final Variable<Number> range = instruction.get(instruction.getParsers().number());
+        final Variable<Component> name = instruction.getValue("name", instruction.getParsers().component());
         final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
         return new EntityCondition(entityAmounts, location, range, name, marked);
     }
@@ -72,8 +74,8 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
         @Override
         public Map.Entry<EntityType, Integer> apply(final String string) throws QuestException {
             final String[] parts = string.split(":");
-            final EntityType type = Argument.ENUM(EntityType.class).apply(parts[0]);
-            final int amount = parts.length == 2 ? NUMBER.apply(parts[1]).intValue() : 1;
+            final EntityType type = new EnumParser<>(EntityType.class).apply(parts[0]);
+            final int amount = parts.length == 2 ? NumberParser.DEFAULT.apply(parts[1]).intValue() : 1;
             return Map.entry(type, amount);
         }
     }

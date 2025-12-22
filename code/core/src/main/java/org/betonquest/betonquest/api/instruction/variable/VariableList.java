@@ -48,7 +48,7 @@ public class VariableList<T> extends Variable<List<T>> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final VariableResolver<T> resolver) throws QuestException {
+                        final ValueParser<T> resolver) throws QuestException {
         this(variables, pack, input, resolver, (value) -> {
         });
     }
@@ -65,8 +65,8 @@ public class VariableList<T> extends Variable<List<T>> {
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
     public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final VariableResolver<T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        this(variables, pack, input, new MarkedResolver<>(new VariableResolver<>() {
+                        final ValueParser<T> resolver, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        this(variables, pack, input, new MarkedResolver<>(new ValueParser<>() {
             @Override
             public List<T> apply(final String value) throws QuestException {
                 final List<T> list = new ArrayList<>();
@@ -78,10 +78,10 @@ public class VariableList<T> extends Variable<List<T>> {
             }
 
             @Override
-            public List<T> clone(final List<T> value) {
+            public List<T> cloneValue(final List<T> value) {
                 final List<T> list = new ArrayList<>();
                 for (final T part : value) {
-                    list.add(resolver.clone(part));
+                    list.add(resolver.cloneValue(part));
                 }
                 return list;
             }
@@ -136,19 +136,19 @@ public class VariableList<T> extends Variable<List<T>> {
      *
      * @param <T> the type to resolve to
      */
-    private static final class MarkedResolver<T> implements VariableResolver<List<T>> {
+    private static final class MarkedResolver<T> implements ValueParser<List<T>> {
 
         /**
          * The resolver which applying should be marked.
          */
-        private final VariableResolver<List<T>> resolver;
+        private final ValueParser<List<T>> resolver;
 
         /**
          * If the resolver was applied.
          */
         private boolean called;
 
-        private MarkedResolver(final VariableResolver<List<T>> resolver) {
+        private MarkedResolver(final ValueParser<List<T>> resolver) {
             this.resolver = resolver;
             this.called = false;
         }
@@ -160,8 +160,8 @@ public class VariableList<T> extends Variable<List<T>> {
         }
 
         @Override
-        public List<T> clone(final List<T> value) {
-            return resolver.clone(value);
+        public List<T> cloneValue(final List<T> value) {
+            return resolver.cloneValue(value);
         }
     }
 }

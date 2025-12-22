@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.eval;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -58,6 +57,6 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         return new NullableEventAdapter(new EvalEvent(variables, packManager, eventTypeRegistry, instruction.getPackage(),
-                instruction.get(rawInstruction, Argument.STRING)));
+                instruction.get(rawInstruction, instruction.getParsers().string())));
     }
 }

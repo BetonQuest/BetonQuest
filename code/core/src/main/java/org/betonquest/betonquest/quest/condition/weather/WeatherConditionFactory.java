@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -46,7 +45,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
-        final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"), Argument.WORLD);
+        final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"), instruction.getParsers().world());
         return new PrimaryServerThreadPlayerCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }
@@ -58,7 +57,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
             return new ThrowExceptionPlayerlessCondition();
         }
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
-        final Variable<World> world = new Variable<>(variables, instruction.getPackage(), worldString, Argument.WORLD);
+        final Variable<World> world = new Variable<>(variables, instruction.getPackage(), worldString, instruction.getParsers().world());
         return new PrimaryServerThreadPlayerlessCondition(
                 new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
     }

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.block;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -45,8 +45,8 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(Argument.LOCATION);
-        final Variable<BlockSelector> selector = instruction.get(Argument.BLOCK_SELECTOR);
+        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
+        final Variable<BlockSelector> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));
     }

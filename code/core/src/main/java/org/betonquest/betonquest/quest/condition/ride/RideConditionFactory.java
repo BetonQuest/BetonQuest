@@ -48,7 +48,7 @@ public class RideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Optional<EntityType>> argument = Argument.ENUM(EntityType.class)
+        final Argument<Optional<EntityType>> argument = instruction.getParsers().forEnum(EntityType.class)
                 .prefilterOptional(ANY_ENTITY, null);
         final Variable<Optional<EntityType>> vehicle = instruction.get(argument);
         final BetonQuestLogger logger = loggerFactory.create(RideCondition.class);

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -38,7 +37,7 @@ public class QuestsConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.get(Argument.STRING);
+        final Variable<String> name = instruction.get(instruction.getParsers().string());
         return new PrimaryServerThreadPlayerCondition(new QuestsCondition(quests, name), data);
     }
 }

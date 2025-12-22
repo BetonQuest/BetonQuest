@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.time.real;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
@@ -33,7 +32,7 @@ public class DayOfWeekConditionFactory implements PlayerlessConditionFactory {
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String dayString = instruction.get(Argument.STRING).getValue(null);
+        final String dayString = instruction.get(instruction.getParsers().string()).getValue(null);
         DayOfWeek dayOfWeek;
         try {
             dayOfWeek = DayOfWeek.of(Integer.parseInt(dayString));

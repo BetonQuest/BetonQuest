@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.argument.types;
+package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 

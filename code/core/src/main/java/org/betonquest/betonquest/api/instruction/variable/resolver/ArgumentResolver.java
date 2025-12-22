@@ -1,8 +1,8 @@
-package org.betonquest.betonquest.api.instruction.argument.parser;
+package org.betonquest.betonquest.api.instruction.variable.resolver;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
-import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Interface for parsing {@link IdentifierArgument}s.
+ * Interface to parse values with {@link Argument}s.
  */
-public interface IdentifierArgumentConverter extends Parser {
+public interface ArgumentResolver extends Resolver {
+
     /**
      * Parses the {@link #next()} string with a converter.
      *
@@ -21,7 +22,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the created value
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<T> get(final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<T> get(final Argument<T> argument) throws QuestException {
         return get(next(), argument);
     }
 
@@ -36,7 +37,7 @@ public interface IdentifierArgumentConverter extends Parser {
      */
     @Contract("!null, _ -> !null")
     @Nullable
-    default <T> Variable<T> get(@Nullable final String string, final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<T> get(@Nullable final String string, final Argument<T> argument) throws QuestException {
         return get(string, argument, null);
     }
 
@@ -52,7 +53,7 @@ public interface IdentifierArgumentConverter extends Parser {
      */
     @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Nullable
-    <T> Variable<T> get(@Nullable String string, IdentifierArgument<T> argument, @Nullable T defaultValue) throws QuestException;
+    <T> Variable<T> get(@Nullable String string, Argument<T> argument, @Nullable T defaultValue) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter.
@@ -64,7 +65,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @throws QuestException when the value can't be created
      */
     @Nullable
-    default <T> Variable<T> getValue(final String key, final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<T> getValue(final String key, final Argument<T> argument) throws QuestException {
         return getValue(key, argument, null);
     }
 
@@ -80,7 +81,7 @@ public interface IdentifierArgumentConverter extends Parser {
      */
     @Contract("_, _, !null -> !null")
     @Nullable
-    default <T> Variable<T> getValue(final String key, final IdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
+    default <T> Variable<T> getValue(final String key, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         return get(getValue(key), argument, defaultValue);
     }
 
@@ -92,7 +93,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<List<T>> getList(final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getList(final Argument<T> argument) throws QuestException {
         return getList(next(), argument);
     }
 
@@ -105,7 +106,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the value for the key was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<List<T>> getList(final IdentifierArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    default <T> Variable<List<T>> getList(final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         return getList(next(), argument, valueChecker);
     }
 
@@ -118,7 +119,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getList(@Nullable final String string, final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getList(@Nullable final String string, final Argument<T> argument) throws QuestException {
         return getList(string, argument, (value) -> {
         });
     }
@@ -133,7 +134,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    <T> Variable<List<T>> getList(@Nullable String string, IdentifierArgument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
+    <T> Variable<List<T>> getList(@Nullable String string, Argument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter to a list.
@@ -144,7 +145,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getValueList(final String key, final IdentifierArgument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getValueList(final String key, final Argument<T> argument) throws QuestException {
         return getList(getValue(key), argument);
     }
 
@@ -158,7 +159,7 @@ public interface IdentifierArgumentConverter extends Parser {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getValueList(final String key, final IdentifierArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    default <T> Variable<List<T>> getValueList(final String key, final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         return getList(getValue(key), argument, valueChecker);
     }
 }

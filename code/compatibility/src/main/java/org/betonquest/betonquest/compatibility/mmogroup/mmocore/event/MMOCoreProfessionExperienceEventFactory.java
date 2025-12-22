@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore.event;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -33,7 +32,7 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
-        final Variable<Number> amount = instruction.get(Argument.NUMBER);
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final boolean isLevel = instruction.hasArgument("level");
         return new PrimaryServerThreadEvent(new MMOCoreProfessionExperienceEvent(profession, amount, isLevel), data);
     }

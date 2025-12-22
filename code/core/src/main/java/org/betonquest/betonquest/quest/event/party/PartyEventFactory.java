@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.party;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -50,8 +49,8 @@ public class PartyEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> range = instruction.get(Argument.NUMBER);
-        final Variable<Number> amount = instruction.getValue("amount", Argument.NUMBER);
+        final Variable<Number> range = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());
         final Variable<List<ConditionID>> conditions = instruction.getList(ConditionID::new);
         final Variable<List<EventID>> events = instruction.getList(EventID::new);
         return new OnlineEventAdapter(

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.notify;
 import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -121,7 +120,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String text = languageMatcher.group("text")
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(lang, instruction.get(text, Argument.STRING));
+            translations.put(lang, instruction.get(text, instruction.getParsers().string()));
         }
 
         final String defaultLanguageKey = languageProvider.getDefaultLanguage();
@@ -129,7 +128,7 @@ public class NotifyEventFactory implements PlayerEventFactory {
             final String text = texts
                     .replace("\\{", "{")
                     .replace("\\:", ":");
-            translations.put(defaultLanguageKey, instruction.get(text, Argument.STRING));
+            translations.put(defaultLanguageKey, instruction.get(text, instruction.getParsers().string()));
         }
         if (!translations.containsKey(defaultLanguageKey)) {
             throw new QuestException("No text defined for default language '" + defaultLanguageKey + "'!");

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveData;
@@ -192,7 +192,7 @@ public class DelayObjective extends Objective {
          */
         public DelayData(final String instruction, final Profile profile, final ObjectiveID objID) throws QuestException {
             super(instruction, profile, objID);
-            timestamp = Argument.NUMBER.apply(instruction).doubleValue();
+            timestamp = NumberParser.DEFAULT.apply(instruction).doubleValue();
         }
 
         private double getTime() {
