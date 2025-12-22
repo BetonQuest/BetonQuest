@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Interface for playerless quest-conditions.
@@ -8,7 +9,8 @@ import org.betonquest.betonquest.api.QuestException;
  * For the player condition variant see {@link PlayerCondition}.
  */
 @FunctionalInterface
-public interface PlayerlessCondition {
+public interface PlayerlessCondition extends PrimaryThreadEnforceable {
+
     /**
      * Checks the condition.
      *

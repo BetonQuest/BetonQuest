@@ -2,13 +2,15 @@ package org.betonquest.betonquest.api.quest.condition;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Interface for quest-conditions that are checked for a profile. It represents the normal condition as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessCondition}.
  */
 @FunctionalInterface
-public interface PlayerCondition {
+public interface PlayerCondition extends PrimaryThreadEnforceable {
+
     /**
      * Checks the condition.
      *

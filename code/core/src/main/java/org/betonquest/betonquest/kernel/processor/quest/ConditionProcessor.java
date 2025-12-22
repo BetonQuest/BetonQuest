@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.kernel.processor.quest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -14,9 +15,11 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Does the logic around Conditions.
@@ -57,29 +60,25 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
                 }
             }
         } else {
-            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID id : conditionIDs) {
-                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> check(profile, id));
-                conditions.add(future);
+            final Map<Boolean, List<ConditionID>> syncAsyncList = new HashMap<>();
+            syncAsyncList.put(true, new ArrayList<>());
+            syncAsyncList.put(false, new ArrayList<>());
+            for (final ConditionID conditionID : conditionIDs) {
+                final ConditionAdapter adapter = values.get(conditionID);
+                syncAsyncList.get(adapter != null && adapter.isPrimaryThreadEnforced()).add(conditionID);
             }
-            for (final CompletableFuture<Boolean> condition : conditions) {
-                try {
-                    if (!condition.get()) {
-                        return false;
-                    }
-                } catch (final InterruptedException | ExecutionException e) {
-                    // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
-                    // to delay the check by one tick.
-                    // If this happens during a shutdown, the check will be delayed past the last tick.
-                    // This will throw a CancellationException and IllegalPluginAccessExceptions.
-                    if (Bukkit.getServer().isStopping()) {
-                        log.debug("Exception during shutdown while checking conditions (expected):", e);
-                        return false;
-                    }
-                    log.reportException(e);
+
+            final Future<Boolean> syncFuture = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(),
+                    () -> syncAsyncList.get(true).stream().allMatch(id -> check(profile, id)));
+            final boolean asyncResult = syncAsyncList.get(false).stream().allMatch((id) -> check(profile, id));
+
+            try {
+                if (!asyncResult || !syncFuture.get()) {
                     return false;
                 }
+            } catch (final InterruptedException | ExecutionException e) {
+                log.reportException(e);
+                return false;
             }
         }
         return true;

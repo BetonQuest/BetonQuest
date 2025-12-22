@@ -35,4 +35,9 @@ public final class PrimaryServerThreadEvent extends PrimaryServerThreadType<Play
             return null;
         });
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

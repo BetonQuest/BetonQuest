@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Interface for playerless quest-events.
@@ -9,7 +10,8 @@ import org.betonquest.betonquest.api.QuestException;
  * For the normal event variant see {@link PlayerEvent}.
  */
 @FunctionalInterface
-public interface PlayerlessEvent {
+public interface PlayerlessEvent extends PrimaryThreadEnforceable {
+
     /**
      * Executes the playerless event.
      *
