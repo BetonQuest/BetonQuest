@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for player and playerless variables.
  */
-public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVariable> {
+public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVariable> implements Variable<String> {
 
     /**
      * Instruction used to create the types.
@@ -38,6 +39,7 @@ public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVari
      * @return the value of this variable for given profile
      * @throws QuestException if the variable could not be resolved or requires a profile to resolve
      */
+    @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
         if (player == null || profile == null) {
             if (playerless == null) {
