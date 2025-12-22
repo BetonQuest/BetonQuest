@@ -16,6 +16,7 @@ import java.util.UUID;
  * Holds data of a ranking.
  */
 public class TopXObject {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -77,8 +78,12 @@ public class TopXObject {
             statement.setInt(2, limit);
         })) {
             while (resultSet.next()) {
-                final String playerName = Bukkit.getOfflinePlayer(UUID.fromString(resultSet.getString("playerID"))).getName();
-                entries.add(new TopXLine(playerName, resultSet.getLong("count")));
+                final UUID uuid = UUID.fromString(resultSet.getString("playerID"));
+                final String playerName = Bukkit.getOfflinePlayer(uuid).getName();
+                if (playerName == null) {
+                    log.debug("No player name found for '" + uuid + "' in top line for '" + category + "'");
+                }
+                entries.add(new TopXLine(playerName == null ? "???" : playerName, resultSet.getLong("count")));
             }
         } catch (final SQLException e) {
             log.error("There was an SQL exception while querying the top " + limit, e);
