@@ -8,119 +8,102 @@ icon: material/text-account
 The **Instruction** refers to the user-defined string that specifies conditions, events, items, and similar elements.
 
 !!! info Package
-    The `org.betonquest.betonquest.instruction` package contains the `Instruction` class and related objects.
+    The `org.betonquest.betonquest.api.instruction` package contains the `Instruction` interface and related objects.
 
 ## Reading the `Instruction` Object
 
 The `Instruction` object is responsible for parsing the instruction string provided by the user and splitting it into 
-arguments. You can retrieve required arguments one at a time using the `next()` method or through a parser method
-like `get(Argument<T>)`. Required arguments are those specified at the beginning of an instruction string, 
+arguments. You can retrieve required arguments one at a time through a parser method like `get(Argument<T>)` for 
+required arguments or `getValue(String, Argument<T>)` for optional or key-value arguments. 
+Required arguments are those specified at the beginning of an instruction string, 
 such as `add someTag` in the `tag` event.
 
-If an error occurs—such as when there are no more arguments in the user's instruction or if the argument cannot 
-be parsed into the requested type—the `Instruction` object will automatically throw a `QuestException`.
-
-You can also request optional arguments. If the instruction string contains an argument formatted as `arg:something`, 
-and you request the optional `arg`, it will return `something`. If there is no optional argument, it will return `null`. 
+If the instruction string contains an argument formatted as `arg:something` and you request the optional `arg`, 
+it will return `something`. If there is no optional argument, it will return `null`. 
 You can safely pass this `null` to parser methods like `get(String, Argument<T>)`, which will not throw an error 
 but will simply return `null`.
 
-## Parser
+If an error occurs the `Instruction` object will automatically throw a `QuestException`.
+This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
+be parsed into the requested type.
 
-Instead of having separate methods like `getLocation()` or `getLocation(String)` that return a `VariableLocation` 
-object, as well as methods for fetching various `ID`s, you can provide these directly within the `get` method.
+## Argument Parsing
 
-All methods are overloaded to accept either a provided string as the first argument to parse, or, to fetch the next
-argument using `next()`, directly an argument.
+The `Argument` interface defines a method for parsing an argument into a specific type.
+Implementations for custom types can be created by implementing the `Argument` interface, 
+which also satisfies the single-method-requirement for a functional interface and can be used directly as a lambda.
+```JAVA title="simple example"
+Argument<String> stringArgument = s -> s;
+Argument<Integer> integerArgument = Integer::parseInt;
+```
+Since there are frequently used types like `String`, `Number`, `Boolean` and so on, 
+there are predefined implementations for these types in the `ArgumentParsers` class.
+Those may be accessed through the `Instruction` instance that is present most of the time 
+when parsing using an Argument.
+```JAVA title="accessing predefined parsers"
+Argument<String> stringArgument = instruction.getParsers().string();
+Argument<Number> numberArgument = instruction.getParsers().number();
+```
 
-### Primitive & Enum
-
-To retrieve a primitive number, you can use the `getInt()` and `getDouble()` methods.
-Parsing Enums is straightforward; simply pass the desired class into the `getEnum` method. 
-Ensure that the enum values adhere to the default Java naming conventions,
-meaning all letters used for the enum values must be uppercase.
-
-```JAVA title="Own parsing vs. getEnum(Enum)"
-try {
-  EntityType entity = EntityType.valueOf(instruction.next().toUpperCase(Locale.ROOT));
-} catch (IllegalArgumentException e) {
-  throw new QuestException("Unknown mob type: " + mob);
+To offer a better overview, the following examples show excerpts from factories in BetonQuest: \
+Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
+```JAVA title="ExperienceConditionFactory.java"
+public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
+        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        
+        //creating the condition object and returning it...
 }
-  
-EntityType entity = instruction.getEnum(EntityType.class);
 ```
 
-### Argument
-
-The `Argument<T>` interface provides a simple way to construct an object from a single string.
-Using `get(Argument<T>)` is equivalent to `Argument<T>.apply(next())`, but it allows for in-method construction 
-in `getList(Argument<T>)`, which splits the string by `,` and converts each part to the requested type `T`.
-
-```JAVA title="Getting a List of Primitives"
-List<String> strings = instruction.getList(string -> string);
-List<Integer> ints = instruction.getList(string -> instruction.getInt(string, 0));
-```
-
-```JAVA title="Own parsing vs. getList(Argument)"
-List<EntityType> entities = new ArrayList<>();
-for (String mob : instruction.next().split(",")) {
-  entities.add(instruction.getEnum(mob, EntityType.class));
+Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Events-List.md#item-durability-itemdurability) event.
+```JAVA title="ItemDurabilityEventFactory.java"
+public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
+    final Variable<EquipmentSlot> slot = instruction.get(instruction.getParsers().forEnum(EquipmentSlot.class));
+    final Variable<PointType> operation = instruction.get(instruction.getParsers().forEnum(PointType.class));
+    final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+    final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
+    final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
+    
+    //creating event object and returning it...
 }
-
-List<EntityType> entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
 ```
 
-!!! warning Overloaded Methods in Lambdas
-    Be cautious to use the method that accepts a string as the first argument within the lambda; otherwise, 
-    the method will call `next()` for each split segment, (potentially) resulting in incorrect conversions.
+### Advanced Argument Parsing
+Default implementations from ArgumentParsers offer more functionality than just parsing a string into a specific type.
 
-### VariableArgument
+#### Validations
+You can validate an argument using the `validate(ValueValidator<T>)` or `validate(ValueValidator<T>, String)` method.
+This method will throw a `QuestException` if the predicate does not match the argument.
+It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
+outside matching just the type.
 
-The `VariableArgument` interface provides an easy way to parse variables (from the `instruction.variable` package) 
-by utilizing the constructor as a method reference (as shown in line 2 of the example below).
-
-You can create a location parser manually, but it's unnecessary since you can simply use the 
-`get(VariableLocation::new)` or `get(String, VariableLocation::new)` methods to obtain a `VariableLocation` object. 
-The former method is effectively `get(next(), VariableLocation::new)`.
-
-```JAVA title="Own parsing vs. get(VariableArgument)"
-VariableLocation location = new VariableLocation(variables, instruction.getPackage(), instruction.next());
-VariableLocation location = instruction.get(VariableLocation::new);
+The example below checks if the parsed number is even and throws an error if it is not.
+```JAVA title="validate example"
+DecoratedArgument<Number> evenArgument = instruction.getParsers().number().validate(i -> i.intValue() % 2);
+DecoratedArgument<Number> evenArgument2 = instruction.getParsers().number().validate(i -> i.intValue() % 2, 
+"Number must be even, but was %s.");
 ```
 
-Additionally, there are common non-standard constructor implementations in the `VariableArgument` that can also be 
-passed as arguments. The following example demonstrates how a number can be validated to ensure it is positive or zero.
+#### Prefilter
+You can use prefilters to modify the argument before parsing it.
+This can be useful to parse additional cases that are not covered by the default parsers.
+Use the `prefilter(String expected, T fixedValue)` method to decorate the argument with a prefilter.
 
-```JAVA title="Example for number validation"
-VariableNumber number = instruction.get(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ZERO);
-VariableNumber number = instruction.get((variables, pack, input) ->
-  new VariableNumber(variables, pack, input, value -> {
-    if (value.doubleValue() < 0) {
-      throw new QuestException("Value must be greater than or equal to 0: " + value);
-    }
-  }));
+The example below parses the string "infinity" into the number `Double.POSITIVE_INFINITY` while still allowing other 
+number values.
+```JAVA title="prefilter example"
+DecoratedArgument<Number> numberArgument = instruction.getParsers().number().prefilter("infinity", Double.POSITIVE_INFINITY);
 ```
 
-Utilizing these various options simplifies the process of parsing, for instance, a list of `VariableLocation` objects:
+#### DecoratedNumberArgument
+The `DecoratedNumberArgument` class offers a more convenient way to create a number argument with range limits.
+It is retrieved through the `ArgumentParsers` class as default number argument parser wrapping `DecoratedArgument<Number>`.
 
-```JAVA title="Equivalant calls"
-List<VariableLocation> locs = instruction.getList(instruction.next(), string -> instruction.get(string, VariableLocation::new)); 
-List<VariableLocation> locs = instruction.getList(string -> instruction.get(string, VariableLocation::new)); 
-List<VariableLocation> locs = instruction.getList(instruction.next(), VariableLocation::new); 
-List<VariableLocation> locs = instruction.getList(VariableLocation::new); 
-```
-
-Common implementations are also available within the `VariableArgument` interface:
-
-```JAVA title="Number above 0"
-VariableNumber number = instruction.getVariable(DefaultArgumentParsers.NUMBER_NOT_LESS_THAN_ONE);
-```
-
-## Custom Parsing
-
-If your instruction is more complex and the `Instruction` class does not provide the necessary methods, you can still 
-parse the instruction string manually. The already split parts are accessible through the `getParts()` method, 
-and the raw instruction can be retrieved using the `toString()` method. 
-
-Remember to throw a `QuestException` with an informative message if the instruction provided by the user is incorrect; 
-BetonQuest will handle these exceptions appropriately and display them in the console.
+Additional methods are available to set the minimum and maximum values of the number.
+While the methods `atLeast(int)` and `atMost(int)` are using inclusive bounds, `bounds(int,int)` is using an exclusive 
+upper bound as commonly used in other Java classes.
+```JAVA title="DecoratedNumberArgument example"
+DecoratedNumberArgument numberArgument = ArgumentParsers.number().atLeast(0);
+DecoratedNumberArgument numberArgument = ArgumentParsers.number().atLeast(1).atMost(10);
+DecoratedNumberArgument numberArgument2 = ArgumentParsers.number().bounds(0, 100);
+```  
