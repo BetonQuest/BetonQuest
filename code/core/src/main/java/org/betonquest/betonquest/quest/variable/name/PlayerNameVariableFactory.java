@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.name;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -24,7 +25,7 @@ public class PlayerNameVariableFactory implements PlayerVariableFactory {
         if (instruction.hasNext()) {
             type = instruction.get(instruction.getParsers().forEnum(PlayerNameType.class));
         } else {
-            type = new Variable<>(PlayerNameType.NAME);
+            type = new DefaultVariable<>(PlayerNameType.NAME);
         }
         return new PlayerNameVariable(type);
     }

@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -102,8 +103,8 @@ public abstract class NotifyIO {
     protected final Variable<Number> getNumberData(final String dataKey, final Number defaultData) throws QuestException {
         final String dataString = data.get(dataKey);
         if (dataString == null) {
-            return new Variable<>(defaultData);
+            return new DefaultVariable<>(defaultData);
         }
-        return new Variable<>(variables, pack, dataString, NumberParser.DEFAULT);
+        return new DefaultVariable<>(variables, pack, dataString, NumberParser.DEFAULT);
     }
 }

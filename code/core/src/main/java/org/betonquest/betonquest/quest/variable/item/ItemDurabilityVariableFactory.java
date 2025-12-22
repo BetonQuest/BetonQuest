@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -47,6 +48,6 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
                 }
             }
         }
-        return new Variable<>(DEFAULT_DIGITS);
+        return new DefaultVariable<>(DEFAULT_DIGITS);
     }
 }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.util.math.tokens;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,14 +18,14 @@ public class Variable implements Token {
     /**
      * Underlying variable.
      */
-    private final org.betonquest.betonquest.api.instruction.variable.Variable<Number> variableNumber;
+    private final DefaultVariable<Number> variableNumber;
 
     /**
      * Creates a new variable token from a variable number.
      *
      * @param variableNumber underlying variable
      */
-    public Variable(final org.betonquest.betonquest.api.instruction.variable.Variable<Number> variableNumber) {
+    public Variable(final DefaultVariable<Number> variableNumber) {
         this.variableNumber = variableNumber;
     }
 
