@@ -5003,7 +5003,7 @@ An example of such hologram definition:</p>
 <span class="w">    </span><span class="nt">lines</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;item:custom_item&#39;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;2Top</span><span class="nv"> </span><span class="s">questers</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">month&#39;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;top:completed_quests;desc;10;&amp;a;§6;2;&amp;6&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;top:completed_quests;desc;10;§a{place}.</span><span class="nv"> </span><span class="s">§6{name}§2</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">§6{score}&#39;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;2Your</span><span class="nv"> </span><span class="s">amount:</span><span class="nv"> </span><span class="s">&amp;6%point.completed_quests.amount%&#39;</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;&amp;Total</span><span class="nv"> </span><span class="s">amount:</span><span class="nv"> </span><span class="s">&amp;6%azerothquests&gt;globalpoint.total_completed_quests.amount%&#39;</span>
 <span class="w">    </span><span class="nt">conditions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_some_quest,!finished_some_quest</span><span class="w">    </span>
@@ -5018,17 +5018,29 @@ An example of such hologram definition:</p>
 <code>custom_item</code> defined in the <code>items</code> section. If the Item is defined for example as map, a floating map will be seen between two lines of text.</p>
 <h4 id="ranking-holograms">Ranking Holograms<a class="headerlink" href="#ranking-holograms" title="Permanent link">🔗</a></h4>
 <p>Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
-Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.
-Each scoreboard line comes in the format <code>#. name - score</code> The short syntax is 'top:<code>point</code>;<code>order</code>;<code>limit</code>'. The specified
-<code>point</code> must be located inside the package the hologram is declared in. To use a point from another package, put <code>package.point</code>
-instead. The <code>order</code> is either 'desc' for descending or 'asc' for ascending. If something other is specified, descending will
-be used by default. The limit should be a positive number. In the short declaration, the whole line will be white. To color
-each of the four elements of a line (place, name, dash and score), the definition syntax can be extended to
-'top:<code>point</code>;<code>order</code>;<code>limit</code>;<code>c1</code>;<code>c2</code>;<code>c3</code>;<code>c4</code>'. The color codes can be prefixed with either <code>§</code> or <code>&amp;</code>, but do not have
-to be. If for example <code>c2</code> is left blank (two following semicolons), it is treated as an 'f' (color code for white).</p>
-<p>Each BetonQuest variable can be displayed on a hologram in a text line. These variables use the same definition syntax as
-in conversations such that; '<code>%package.variable%</code>'. Where the <code>package</code> part is optional if the hologram is defined in the
-same package as the variable. If you wish to refer to a variable that is <em>not</em> in the same package as the hologram, then you
+Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.</p>
+<p>A top line is defined with 'top:<code>point</code>;<code>order</code>;<code>limit</code>;<code>&lt;formattingString&gt;</code>'.
+<code>point</code> is just a point from a package. The <code>order</code> is either 'desc' for descending or 'asc' for ascending.
+The <code>limit</code> is just the number of entries to show.
+You can freely define the formatting of the displayed hologram and even omit the placeholders for place, player or score.</p>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">honorRank</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lines</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Most honorable players!</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">top:honor;DESC;10;{place}. {name} - {score}</span>
+<span class="w">  </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;198;300;world</span>
+<span class="nt">colorfulHonorRank</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lines</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Most &lt;gold&gt;honorable&lt;/gold&gt; players!</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">top:honor;DESC;10;&lt;light_purple&gt;{name}&lt;/light_purple&gt; has &lt;dark_green&gt;{score}&lt;/dark_green&gt;</span><span class="w"> </span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">points on the &lt;yellow&gt;{place}.&lt;/yellow&gt; place!</span>
+<span class="w">  </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;202;300;world</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Gradients</p>
+<p>Placeholders remain unresolved if formatting such as <code>gradient</code> or <code>rainbow</code> is used.</p>
+</div>
+<p>Each BetonQuest variable can be displayed on a hologram in a text line.
+If you wish to refer to a variable that is <em>not</em> in the same package as the hologram, then you
 must specify a <a href="../../../Scripting/Packages-%26-Templates/">package</a> before the <code>variable</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Potential lags</p>
