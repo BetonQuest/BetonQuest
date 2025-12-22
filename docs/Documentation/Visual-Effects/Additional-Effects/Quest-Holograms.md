@@ -45,7 +45,7 @@ Minecraft vanilla scoreboard) are configured as one line and replaced by multipl
 A top line is defined with 'top:`point`;`order`;`limit`;`<formattingString>`'.
 `point` is just a point from a package. The `order` is either 'desc' for descending or 'asc' for ascending.
 The `limit` is just the number of entries to show.
-You can freely define the formatting of the displayed hologram, only the placeholders for the place, player and score are required.
+You can freely define the formatting of the displayed hologram and even omit the placeholders for place, player or score.
 
 ```yaml title="Example"
 honorRank:
@@ -60,6 +60,8 @@ colorfulHonorRank:
       points on the <yellow>{place}.</yellow> place!
   location: 100;202;300;world
 ```
+!!! warning "Gradients"
+    Placeholders remain unresolved if formatting such as `gradient` or `rainbow` is used.
 
 Each BetonQuest variable can be displayed on a hologram in a text line.
 If you wish to refer to a variable that is *not* in the same package as the hologram, then you
