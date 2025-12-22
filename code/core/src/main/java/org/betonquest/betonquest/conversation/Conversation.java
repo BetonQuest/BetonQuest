@@ -243,25 +243,20 @@ public class Conversation {
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final List<ResolvedOption> options) {
-        final List<Pair<ResolvedOption, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
+        final List<Pair<ResolvedOption, CompletableFuture<Boolean>>> futuresOptions = new ArrayList<>();
         for (final ResolvedOption option : options) {
-            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID conditionID : option.conversationData().getConditionIDs(option.name(), option.type())) {
-                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> plugin.getQuestTypeApi().condition(onlineProfile, conditionID));
-                conditions.add(future);
-            }
-            futuresOptions.add(Pair.of(option, conditions));
+            final List<ConditionID> conditionIDs = option.conversationData().getConditionIDs(option.name(), option.type());
+            final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
+                    () -> plugin.getQuestTypeApi().conditions(onlineProfile, conditionIDs));
+            futuresOptions.add(Pair.of(option, future));
         }
 
         int optionsCount = 0;
         option:
-        for (final Pair<ResolvedOption, List<CompletableFuture<Boolean>>> future : futuresOptions) {
+        for (final Pair<ResolvedOption, CompletableFuture<Boolean>> future : futuresOptions) {
             try {
-                for (final CompletableFuture<Boolean> completableFuture : future.getValue()) {
-                    if (!completableFuture.get(1, TimeUnit.SECONDS)) {
-                        continue option;
-                    }
+                if (!future.getValue().get(1, TimeUnit.SECONDS)) {
+                    continue option;
                 }
             } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
                 log.reportException(pack, e);
