@@ -224,7 +224,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
             this.section = section;
             this.stringParser = new StringParser();
             this.numberParser = new DecoratableArgument<>(NumberParser.DEFAULT)
-                    .validate(value -> value.doubleValue() < 0,
+                    .validate(value -> value.doubleValue() > 0,
                             "Expected a non-negative number for 'interceptor_delay', got '%s' instead.");
         }
 

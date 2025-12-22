@@ -46,7 +46,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     public SpawnMobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
         this.entityTypeParser = new DecoratableArgument<>(new EnumParser<>(EntityType.class))
-                .validate(type -> type.getEntityClass() == null || !Mob.class.isAssignableFrom(type.getEntityClass()),
+                .validate(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()),
                         "EntityType '%s' is not a mob");
     }
 
