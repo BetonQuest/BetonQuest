@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @param <T> the variable type
  */
-public class VariableList<T> extends Variable<List<T>> {
+public class VariableList<T> extends DefaultVariable<List<T>> {
 
     /**
      * Creates a new VariableList.
@@ -93,7 +93,7 @@ public class VariableList<T> extends Variable<List<T>> {
         super(variables, pack, input, resolver);
         if (!resolver.called) {
             for (final String unresolved : StringUtils.split(input, ',')) {
-                new Variable<>(variables, pack, unresolved, resolver);
+                new DefaultVariable<>(variables, pack, unresolved, resolver);
             }
         }
     }

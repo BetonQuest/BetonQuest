@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -87,13 +88,13 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Variable<Item> boundItem = section.isSet("bind")
-                ? new Variable<>(variables, pack, helper.getRequired("bind"),
+                ? new DefaultVariable<>(variables, pack, helper.getRequired("bind"),
                 value -> itemParser.apply(variables, packManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
-            final String string = new Variable<>(variables, pack, helper.getRequired("command"),
+            final String string = new DefaultVariable<>(variables, pack, helper.getRequired("command"),
                     new StringParser()).getValue(null).trim();
             createBoundCommand(menu, string);
         }
@@ -133,7 +134,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         }
 
         private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new Variable<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
+            final int height = new DefaultVariable<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
                     .getValue(null).intValue();
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");

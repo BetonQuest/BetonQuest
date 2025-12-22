@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -64,7 +65,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
     protected MenuItem loadSection(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
         final MenuItemCreationHelper helper = new MenuItemCreationHelper(pack, section);
         final String itemString = helper.getRequired("item") + ":" + section.getString("amount", "1");
-        final Variable<Item> item = new Variable<>(variables, pack, itemString,
+        final Variable<Item> item = new DefaultVariable<>(variables, pack, itemString,
                 value -> itemParser.apply(variables, packManager, pack, value));
         final Text descriptions;
         if (section.contains(CONFIG_TEXT)) {
@@ -75,7 +76,7 @@ public class MenuItemProcessor extends RPGMenuProcessor<MenuItemID, MenuItem> {
         final MenuItem.ClickEvents clickEvents = helper.getClickEvents();
         final Variable<List<ConditionID>> conditions = helper.getID("conditions", ConditionID::new);
         final String rawClose = section.getString("close", config.getString("menu.default_close", "false"));
-        final Variable<Boolean> close = new Variable<>(variables, pack, rawClose, new BooleanParser());
+        final Variable<Boolean> close = new DefaultVariable<>(variables, pack, rawClose, new BooleanParser());
         final BetonQuestLogger log = loggerFactory.create(MenuItem.class);
         return new MenuItem(log, questTypeApi, item, getIdentifier(pack, section.getName()), descriptions, clickEvents, conditions, close);
     }

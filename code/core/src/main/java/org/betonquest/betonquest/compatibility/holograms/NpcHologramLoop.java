@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -80,7 +80,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
      * @param hologramProvider the hologram provider to create new holograms
      * @param featureApi       the Feature API to get NPC instances
      * @param npcRegistry      the registry to create identifier strings from Npcs
-     * @param textParser        the text parser used to parse text and colors
+     * @param textParser       the text parser used to parse text and colors
      */
     public NpcHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                            final Variables variables, final QuestPackageManager packManager, final Plugin plugin,
@@ -119,7 +119,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         final String stringVector = section.getString("vector");
         final VectorParser vectorParser = new VectorParser();
         if (stringVector != null) {
-            vector.add(new Variable<>(variables, pack, "(" + stringVector + ")", vectorParser).getValue(null));
+            vector.add(new DefaultVariable<>(variables, pack, "(" + stringVector + ")", vectorParser).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);

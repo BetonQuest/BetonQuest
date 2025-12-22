@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -219,11 +220,11 @@ public class DefaultInstruction implements Instruction {
     public <T> Variable<T> get(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
-                return new Variable<>(defaultValue);
+                return new DefaultVariable<>(defaultValue);
             }
             return null;
         }
-        return new Variable<>(variables, pack, string, argument);
+        return new DefaultVariable<>(variables, pack, string, argument);
     }
 
     @Override
@@ -240,11 +241,11 @@ public class DefaultInstruction implements Instruction {
     public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
-                return new Variable<>(defaultValue);
+                return new DefaultVariable<>(defaultValue);
             }
             return null;
         }
-        return new Variable<>(variables, pack, string, value -> argument.apply(pack, value));
+        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(pack, value));
     }
 
     @Override
@@ -260,11 +261,11 @@ public class DefaultInstruction implements Instruction {
     public <T> Variable<T> get(@Nullable final String string, final IdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
-                return new Variable<>(defaultValue);
+                return new DefaultVariable<>(defaultValue);
             }
             return null;
         }
-        return new Variable<>(variables, pack, string, value -> argument.apply(packManager, pack, value));
+        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(packManager, pack, value));
     }
 
     @Override
@@ -280,11 +281,11 @@ public class DefaultInstruction implements Instruction {
     public <T> Variable<T> get(@Nullable final String string, final InstructionIdentifierArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
-                return new Variable<>(defaultValue);
+                return new DefaultVariable<>(defaultValue);
             }
             return null;
         }
-        return new Variable<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value));
+        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
