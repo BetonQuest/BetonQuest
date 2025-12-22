@@ -138,7 +138,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), rawInstruction.getParsers().string()).getValue(null);
         final Instruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(),
-                rawInstruction.getID(), new DefaultArgumentParsers(), instructionString);
+                rawInstruction.getID(), DefaultArgumentParsers.INSTANCE, instructionString);
         final String material = instruction.next();
         final List<String> arguments;
         if (instruction.hasNext()) {

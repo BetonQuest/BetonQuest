@@ -35,7 +35,7 @@ public class VariableID extends InstructionIdentifier {
             if (!identifier.startsWith(VARIABLE_IDENTIFIER) || !identifier.endsWith(VARIABLE_IDENTIFIER)) {
                 throw new QuestException("Variable instruction has to start and end with '%' characters");
             }
-            return new VariableInstruction(variables, packManager, id.getPackage(), id, new DefaultArgumentParsers(), id.get());
+            return new VariableInstruction(variables, packManager, id.getPackage(), id, DefaultArgumentParsers.INSTANCE, id.get());
         });
     }
 

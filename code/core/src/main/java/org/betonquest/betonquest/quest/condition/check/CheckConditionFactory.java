@@ -97,7 +97,7 @@ public class CheckConditionFactory implements PlayerConditionFactory, Playerless
         }
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(parts[0]);
         try {
-            final Instruction innerInstruction = new DefaultInstruction(variables, packManager, questPackage, null, new DefaultArgumentParsers(), instruction);
+            final Instruction innerInstruction = new DefaultInstruction(variables, packManager, questPackage, null, DefaultArgumentParsers.INSTANCE, instruction);
             return conditionFactory.parseInstruction(innerInstruction);
         } catch (final QuestException e) {
             throw new QuestException("Error in internal condition: " + e.getMessage(), e);

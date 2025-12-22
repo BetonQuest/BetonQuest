@@ -45,7 +45,8 @@ Argument<String> stringArgument = instruction.getParsers().string();
 Argument<Number> numberArgument = instruction.getParsers().number();
 ```
 
-To offer a better overview, the following examples show excerpts from factories in BetonQuest: \
+To offer a better overview, the following examples show excerpts from factories in BetonQuest:
+
 Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
 public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
@@ -85,7 +86,7 @@ DecoratedArgument<Number> evenArgument2 = instruction.getParsers().number().vali
 ```
 
 #### Prefilter
-You can use prefilters to modify the argument before parsing it.
+You can use prefilters to modify the argument's parsing result without actually parsing it.
 This can be useful to parse additional cases that are not covered by the default parsers.
 Use the `prefilter(String expected, T fixedValue)` method to decorate the argument with a prefilter.
 

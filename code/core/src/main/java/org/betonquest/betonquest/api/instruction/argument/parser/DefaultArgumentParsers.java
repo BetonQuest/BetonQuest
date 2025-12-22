@@ -22,6 +22,11 @@ import java.util.UUID;
 public class DefaultArgumentParsers implements ArgumentParsers {
 
     /**
+     * The default instance of {@link DefaultArgumentParsers}.
+     */
+    public static final DefaultArgumentParsers INSTANCE = new DefaultArgumentParsers();
+
+    /**
      * The default decoratable instance of {@link BlockSelectorParser}.
      */
     public static final DecoratableArgument<BlockSelector> BLOCK_SELECTOR = new DecoratableArgument<>(new BlockSelectorParser());

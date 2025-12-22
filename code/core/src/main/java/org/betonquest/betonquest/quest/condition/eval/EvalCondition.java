@@ -78,7 +78,7 @@ public class EvalCondition implements NullableCondition {
      * @throws QuestException if the condition could not be created
      */
     public static ConditionAdapter createCondition(final Variables variables, final QuestPackageManager packManager, final QuestTypeRegistry<PlayerCondition, PlayerlessCondition, ConditionAdapter> conditionTypeRegistry, final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction conditionInstruction = new DefaultInstruction(variables, packManager, pack, null, new DefaultArgumentParsers(), instruction);
+        final Instruction conditionInstruction = new DefaultInstruction(variables, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
         final TypeFactory<ConditionAdapter> conditionFactory = conditionTypeRegistry.getFactory(conditionInstruction.getPart(0));
         return conditionFactory.parseInstruction(conditionInstruction);
     }

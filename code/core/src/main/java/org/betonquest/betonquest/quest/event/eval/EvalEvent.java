@@ -77,7 +77,7 @@ public class EvalEvent implements NullableEvent {
     public static EventAdapter createEvent(final Variables variables, final QuestPackageManager packManager,
                                            final EventTypeRegistry eventTypeRegistry,
                                            final QuestPackage pack, final String instruction) throws QuestException {
-        final Instruction eventInstruction = new DefaultInstruction(variables, packManager, pack, null, new DefaultArgumentParsers(), instruction);
+        final Instruction eventInstruction = new DefaultInstruction(variables, packManager, pack, null, DefaultArgumentParsers.INSTANCE, instruction);
         final TypeFactory<EventAdapter> eventFactory = eventTypeRegistry.getFactory(eventInstruction.getPart(0));
         return eventFactory.parseInstruction(eventInstruction);
     }
