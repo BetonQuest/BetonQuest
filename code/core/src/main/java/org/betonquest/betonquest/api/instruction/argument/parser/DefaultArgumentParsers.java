@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableNumberArgument;
@@ -26,39 +27,39 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     public static final DecoratableArgument<BlockSelector> BLOCK_SELECTOR = new DecoratableArgument<>(new BlockSelectorParser());
 
     /**
+     * The default instance of {@link TextParserToComponentParser}.
+     */
+    private final Argument<Component> defaultComponentParser;
+
+    /**
      * The default decoratable instance of {@link NumberParser}.
      */
-    public final DecoratedNumberArgument defaultNumberParser;
+    private final DecoratedNumberArgument defaultNumberParser;
 
     /**
      * The default decoratable instance of {@link LocationParser}.
      */
-    public final DecoratableArgument<Location> defaultLocationParser;
+    private final DecoratableArgument<Location> defaultLocationParser;
 
     /**
      * The default decoratable instance of {@link BooleanParser}.
      */
-    public final DecoratableArgument<Boolean> defaultBooleanParser;
+    private final DecoratableArgument<Boolean> defaultBooleanParser;
 
     /**
      * The default decoratable instance of {@link UUIDParser}.
      */
-    public final DecoratableArgument<UUID> defaultUUIDParser;
-
-    /**
-     * The default decoratable instance of {@link TextParserToComponentParser}.
-     */
-    public final DecoratableArgument<Component> defaultComponentParser;
+    private final DecoratableArgument<UUID> defaultUUIDParser;
 
     /**
      * The default decoratable instance of {@link VectorParser}.
      */
-    public final DecoratableArgument<Vector> defaultVectorParser;
+    private final DecoratableArgument<Vector> defaultVectorParser;
 
     /**
      * The default decoratable instance of {@link WorldParser}.
      */
-    public final DecoratableArgument<World> defaultWorldParser;
+    private final DecoratableArgument<World> defaultWorldParser;
 
     /**
      * The default decoratable instance of {@link StringParser}.
@@ -70,11 +71,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
      * and all default instances of {@link DecoratedArgument}s.
      */
     public DefaultArgumentParsers() {
+        defaultComponentParser = new TextParserToComponentParser(BetonQuest.getInstance().getTextParser());
         defaultNumberParser = new DecoratableNumberArgument(new NumberParser());
         defaultLocationParser = new DecoratableArgument<>(new LocationParser(Bukkit.getServer()));
         defaultBooleanParser = new DecoratableArgument<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgument<>(new UUIDParser());
-        defaultComponentParser = new DecoratableArgument<>(new TextParserToComponentParser(BetonQuest.getInstance().getTextParser()));
         defaultVectorParser = new DecoratableArgument<>(new VectorParser());
         defaultWorldParser = new DecoratableArgument<>(new WorldParser(Bukkit.getServer()));
         defaultStringParser = new DecoratableArgument<>(new StringParser());
@@ -112,7 +113,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
 
     @Override
     public DecoratedArgument<Component> component() {
-        return defaultComponentParser;
+        return new DecoratableArgument<>(defaultComponentParser);
     }
 
     @Override

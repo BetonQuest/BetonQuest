@@ -31,8 +31,8 @@ public class DecoratableNumberArgument extends DecoratableArgument<Number> imple
     @Override
     public DecoratedNumberArgument bounds(final Number inclusiveMin, final Number exclusiveMax) {
         return new DecoratableNumberArgument(super.validate(
-                value -> value.doubleValue() >= inclusiveMin.doubleValue() &&
-                        value.doubleValue() < exclusiveMax.doubleValue(),
+                value -> value.doubleValue() >= inclusiveMin.doubleValue()
+                        && value.doubleValue() < exclusiveMax.doubleValue(),
                 "Value must be at least '" + inclusiveMin + "' and less than '" + exclusiveMax + "', but was %s"
         ));
     }

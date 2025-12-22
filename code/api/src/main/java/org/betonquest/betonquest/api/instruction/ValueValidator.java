@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
  * @param <T> the type of the value to be checked
  * @see DecoratedArgument
  */
+@FunctionalInterface
 public interface ValueValidator<T> {
 
     /**

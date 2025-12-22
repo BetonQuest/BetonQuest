@@ -33,13 +33,13 @@ public class DecoratableArgument<T> implements DecoratedArgument<T> {
     }
 
     @Override
-    public DecoratableArgument<T> validate(final ValueValidator<T> checker, final String errorMessage) {
-        return new DecoratableArgument<>(string -> validateLocal(checker, string, errorMessage));
+    public DecoratableArgument<T> validate(final ValueValidator<T> validator, final String errorMessage) {
+        return new DecoratableArgument<>(string -> validateLocal(validator, string, errorMessage));
     }
 
     @Override
-    public DecoratableArgument<T> validate(final ValueValidator<T> checker) {
-        return new DecoratableArgument<>(string -> validateLocal(checker, string, "Invalid value '%s'"));
+    public DecoratableArgument<T> validate(final ValueValidator<T> validator) {
+        return new DecoratableArgument<>(string -> validateLocal(validator, string, "Invalid value '%s'"));
     }
 
     @Override

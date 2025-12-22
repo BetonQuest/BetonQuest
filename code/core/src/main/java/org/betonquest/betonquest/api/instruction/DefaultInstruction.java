@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
@@ -62,7 +61,7 @@ public class DefaultInstruction implements Instruction {
     /**
      * The default {@link Argument} parsers.
      */
-    private final DefaultArgumentParsers argumentParsers;
+    private final ArgumentParsers argumentParsers;
 
     /**
      * Create an instruction using the quoting tokenizer.
@@ -71,12 +70,13 @@ public class DefaultInstruction implements Instruction {
      * @param packManager the quest package manager to get quest packages from
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
+     * @param parsers     The parsers to use for parsing the instruction's arguments.
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
     public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final QuestPackage pack,
-                              @Nullable final Identifier identifier, final String instruction) throws QuestException {
-        this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), instruction);
+                              @Nullable final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
+        this(variables, packManager, new QuotingTokenizer(), pack, useFallbackIdIfNecessary(packManager, pack, identifier), parsers, instruction);
     }
 
     /**
@@ -87,16 +87,18 @@ public class DefaultInstruction implements Instruction {
      * @param tokenizer   Tokenizer that can split on spaces but interpret quotes and escapes.
      * @param pack        quest package the instruction belongs to
      * @param identifier  identifier of the instruction
+     * @param parsers     The parsers to use for parsing the instruction's arguments.
      * @param instruction instruction string to parse
      * @throws QuestException if the instruction could not be tokenized
      */
-    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer, final QuestPackage pack, final Identifier identifier, final String instruction) throws QuestException {
+    public DefaultInstruction(final Variables variables, final QuestPackageManager packManager, final Tokenizer tokenizer,
+                              final QuestPackage pack, final Identifier identifier, final ArgumentParsers parsers, final String instruction) throws QuestException {
         this.variables = variables;
         this.packManager = packManager;
         this.pack = pack;
         this.identifier = identifier;
         this.instructionString = instruction;
-        this.argumentParsers = new DefaultArgumentParsers();
+        this.argumentParsers = parsers;
         try {
             this.instructionParts = new InstructionPartsArray(tokenizer, instruction);
         } catch (final TokenizerException e) {

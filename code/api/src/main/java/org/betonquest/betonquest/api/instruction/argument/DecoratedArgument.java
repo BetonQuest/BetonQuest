@@ -16,23 +16,23 @@ public interface DecoratedArgument<T> extends Argument<T> {
     /**
      * Apply a {@link ValueValidator} to the {@link DecoratedArgument} for early validation and improved error messages.
      *
-     * @param checker the checker to apply to the argument
+     * @param validator the validator to apply to the argument
      * @return the new {@link DecoratedArgument}
      */
     @Contract(value = "_ -> new", pure = true)
-    DecoratedArgument<T> validate(ValueValidator<T> checker);
+    DecoratedArgument<T> validate(ValueValidator<T> validator);
 
     /**
      * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
-     * The error message will be used if the checker fails and may contain a {@code %s} placeholder for the wrong argument value
-     * according to {@link String#format(String, Object...)}.
+     * The error message will be used if the validator fails and may contain a {@code %s} placeholder
+     * for the wrong argument value according to {@link String#format(String, Object...)}.
      *
-     * @param checker      the checker to apply to the argument
-     * @param errorMessage the error message to use if the checker fails
+     * @param validator    the validator to apply to the argument
+     * @param errorMessage the error message to use if the validator fails
      * @return the new {@link DecoratedArgument}
      */
     @Contract(value = "_, _ -> new", pure = true)
-    DecoratedArgument<T> validate(ValueValidator<T> checker, String errorMessage);
+    DecoratedArgument<T> validate(ValueValidator<T> validator, String errorMessage);
 
     /**
      * Returns a new {@link DecoratedArgument} that checks for the given expected string before
