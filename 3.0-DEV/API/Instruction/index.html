@@ -3631,13 +3631,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#parser">
+  <a class="md-nav__link" href="#argument-parsing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Parser
+          Argument Parsing
         </span>
 
       
@@ -3647,7 +3647,7 @@
 
   
   
-  <nav aria-label="Parser" class="md-nav">
+  <nav aria-label="Argument Parsing" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -3655,13 +3655,37 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#primitive-enum">
+  <a class="md-nav__link" href="#advanced-argument-parsing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Primitive &amp; Enum
+          Advanced Argument Parsing
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Advanced Argument Parsing" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#validations">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Validations
         </span>
 
       
@@ -3678,13 +3702,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#argument">
+  <a class="md-nav__link" href="#prefilter">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Argument
+          Prefilter
         </span>
 
       
@@ -3701,13 +3725,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#variableargument">
+  <a class="md-nav__link" href="#decoratednumberargument">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          VariableArgument
+          DecoratedNumberArgument
         </span>
 
       
@@ -3724,27 +3748,10 @@
   </nav>
   
 </li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#custom-parsing">
-    <span class="md-ellipsis">
-
       
       
-        <span class="md-typeset">
-          Custom Parsing
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
+    </ul>
+  </nav>
   
 </li>
     
@@ -4798,13 +4805,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#parser">
+  <a class="md-nav__link" href="#argument-parsing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Parser
+          Argument Parsing
         </span>
 
       
@@ -4814,7 +4821,7 @@
 
   
   
-  <nav aria-label="Parser" class="md-nav">
+  <nav aria-label="Argument Parsing" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -4822,13 +4829,37 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#primitive-enum">
+  <a class="md-nav__link" href="#advanced-argument-parsing">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Primitive &amp; Enum
+          Advanced Argument Parsing
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Advanced Argument Parsing" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#validations">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Validations
         </span>
 
       
@@ -4845,13 +4876,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#argument">
+  <a class="md-nav__link" href="#prefilter">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Argument
+          Prefilter
         </span>
 
       
@@ -4868,13 +4899,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#variableargument">
+  <a class="md-nav__link" href="#decoratednumberargument">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          VariableArgument
+          DecoratedNumberArgument
         </span>
 
       
@@ -4891,27 +4922,10 @@
   </nav>
   
 </li>
-    
-    
-    
-    
-
-<li class="md-nav__item">
-  <a class="md-nav__link" href="#custom-parsing">
-    <span class="md-ellipsis">
-
       
       
-        <span class="md-typeset">
-          Custom Parsing
-        </span>
-
-      
-      
-    </span>
-  </a>
-
-  
+    </ul>
+  </nav>
   
 </li>
     
@@ -5028,90 +5042,84 @@ Only bugs and major conceptual problems would lead to more changes.</p>
 <p>The <strong>Instruction</strong> refers to the user-defined string that specifies conditions, events, items, and similar elements.</p>
 <div class="admonition info package">
 <p class="admonition-title">Info</p>
-<p>The <code>org.betonquest.betonquest.instruction</code> package contains the <code>Instruction</code> class and related objects.</p>
+<p>The <code>org.betonquest.betonquest.api.instruction</code> package contains the <code>Instruction</code> interface and related objects.</p>
 </div>
 <h2 id="reading-the-instruction-object">Reading the <code>Instruction</code> Object<a class="headerlink" href="#reading-the-instruction-object" title="Permanent link">🔗</a></h2>
 <p>The <code>Instruction</code> object is responsible for parsing the instruction string provided by the user and splitting it into 
-arguments. You can retrieve required arguments one at a time using the <code>next()</code> method or through a parser method
-like <code>get(Argument&lt;T&gt;)</code>. Required arguments are those specified at the beginning of an instruction string, 
+arguments. You can retrieve required arguments one at a time through a parser method like <code>get(Argument&lt;T&gt;)</code> for 
+required arguments or <code>getValue(String, Argument&lt;T&gt;)</code> for optional or key-value arguments. 
+Required arguments are those specified at the beginning of an instruction string, 
 such as <code>add someTag</code> in the <code>tag</code> event.</p>
-<p>If an error occurs—such as when there are no more arguments in the user's instruction or if the argument cannot 
-be parsed into the requested type—the <code>Instruction</code> object will automatically throw a <code>QuestException</code>.</p>
-<p>You can also request optional arguments. If the instruction string contains an argument formatted as <code>arg:something</code>, 
-and you request the optional <code>arg</code>, it will return <code>something</code>. If there is no optional argument, it will return <code>null</code>. 
+<p>If the instruction string contains an argument formatted as <code>arg:something</code> and you request the optional <code>arg</code>, 
+it will return <code>something</code>. If there is no optional argument, it will return <code>null</code>. 
 You can safely pass this <code>null</code> to parser methods like <code>get(String, Argument&lt;T&gt;)</code>, which will not throw an error 
 but will simply return <code>null</code>.</p>
-<h2 id="parser">Parser<a class="headerlink" href="#parser" title="Permanent link">🔗</a></h2>
-<p>Instead of having separate methods like <code>getLocation()</code> or <code>getLocation(String)</code> that return a <code>VariableLocation</code> 
-object, as well as methods for fetching various <code>ID</code>s, you can provide these directly within the <code>get</code> method.</p>
-<p>All methods are overloaded to accept either a provided string as the first argument to parse, or, to fetch the next
-argument using <code>next()</code>, directly an argument.</p>
-<h3 id="primitive-enum">Primitive &amp; Enum<a class="headerlink" href="#primitive-enum" title="Permanent link">🔗</a></h3>
-<p>To retrieve a primitive number, you can use the <code>getInt()</code> and <code>getDouble()</code> methods.
-Parsing Enums is straightforward; simply pass the desired class into the <code>getEnum</code> method. 
-Ensure that the enum values adhere to the default Java naming conventions,
-meaning all letters used for the enum values must be uppercase.</p>
-<div class="highlight"><span class="filename">Own parsing vs. getEnum(Enum)</span><pre><span></span><code><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">EntityType</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EntityType</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">next</span><span class="p">().</span><span class="na">toUpperCase</span><span class="p">(</span><span class="n">Locale</span><span class="p">.</span><span class="na">ROOT</span><span class="p">));</span>
-<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">IllegalArgumentException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">QuestException</span><span class="p">(</span><span class="s">&quot;Unknown mob type: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mob</span><span class="p">);</span>
-<span class="p">}</span>
+<p>If an error occurs the <code>Instruction</code> object will automatically throw a <code>QuestException</code>.
+This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
+be parsed into the requested type.</p>
+<h2 id="argument-parsing">Argument Parsing<a class="headerlink" href="#argument-parsing" title="Permanent link">🔗</a></h2>
+<p>The <code>Argument</code> interface defines a method for parsing an argument into a specific type.
+Implementations for custom types can be created by implementing the <code>Argument</code> interface, 
+which also satisfies the single-method-requirement for a functional interface and can be used directly as a lambda.
+<div class="highlight"><span class="filename">simple example</span><pre><span></span><code><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="n">Argument</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integerArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">::</span><span class="n">parseInt</span><span class="p">;</span>
+</code></pre></div>
+Since there are frequently used types like <code>String</code>, <code>Number</code>, <code>Boolean</code> and so on, 
+there are predefined implementations for these types in the <code>ArgumentParsers</code> class.
+Those may be accessed through the <code>Instruction</code> instance that is present most of the time 
+when parsing using an Argument.
+<div class="highlight"><span class="filename">accessing predefined parsers</span><pre><span></span><code><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">string</span><span class="p">();</span>
+<span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">();</span>
+</code></pre></div></p>
+<p>To offer a better overview, the following examples show excerpts from factories in BetonQuest:</p>
+<p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Conditions-List/#experience-experience">experience</a> condition.
+<div class="highlight"><span class="filename">ExperienceConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">());</span>
 
-<span class="n">EntityType</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getEnum</span><span class="p">(</span><span class="n">EntityType</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
-</code></pre></div>
-<h3 id="argument">Argument<a class="headerlink" href="#argument" title="Permanent link">🔗</a></h3>
-<p>The <code>Argument&lt;T&gt;</code> interface provides a simple way to construct an object from a single string.
-Using <code>get(Argument&lt;T&gt;)</code> is equivalent to <code>Argument&lt;T&gt;.apply(next())</code>, but it allows for in-method construction 
-in <code>getList(Argument&lt;T&gt;)</code>, which splits the string by <code>,</code> and converts each part to the requested type <code>T</code>.</p>
-<div class="highlight"><span class="filename">Getting a List of Primitives</span><pre><span></span><code><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">strings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">string</span><span class="p">);</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ints</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getInt</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
-</code></pre></div>
-<div class="highlight"><span class="filename">Own parsing vs. getList(Argument)</span><pre><span></span><code><span class="n">List</span><span class="o">&lt;</span><span class="n">EntityType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">entities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">mob</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">next</span><span class="p">().</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">entities</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getEnum</span><span class="p">(</span><span class="n">mob</span><span class="p">,</span><span class="w"> </span><span class="n">EntityType</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
+<span class="w">        </span><span class="c1">//creating the condition object and returning it...</span>
 <span class="p">}</span>
+</code></pre></div></p>
+<p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Events-List/#item-durability-itemdurability">itemdurability</a> event.
+<div class="highlight"><span class="filename">ItemDurabilityEventFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerEvent</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">forEnum</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">forEnum</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">());</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">);</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">EntityType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">entities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">mob</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getEnum</span><span class="p">(</span><span class="n">mob</span><span class="p">,</span><span class="w"> </span><span class="n">EntityType</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
-</code></pre></div>
-<div class="admonition warning overloaded methods in lambdas">
-<p class="admonition-title">Warning</p>
-<p>Be cautious to use the method that accepts a string as the first argument within the lambda; otherwise, 
-the method will call <code>next()</code> for each split segment, (potentially) resulting in incorrect conversions.</p>
-</div>
-<h3 id="variableargument">VariableArgument<a class="headerlink" href="#variableargument" title="Permanent link">🔗</a></h3>
-<p>The <code>VariableArgument</code> interface provides an easy way to parse variables (from the <code>instruction.variable</code> package) 
-by utilizing the constructor as a method reference (as shown in line 2 of the example below).</p>
-<p>You can create a location parser manually, but it's unnecessary since you can simply use the 
-<code>get(VariableLocation::new)</code> or <code>get(String, VariableLocation::new)</code> methods to obtain a <code>VariableLocation</code> object. 
-The former method is effectively <code>get(next(), VariableLocation::new)</code>.</p>
-<div class="highlight"><span class="filename">Own parsing vs. get(VariableArgument)</span><pre><span></span><code><span class="n">VariableLocation</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">VariableLocation</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getPackage</span><span class="p">(),</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">next</span><span class="p">());</span>
-<span class="n">VariableLocation</span><span class="w"> </span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">VariableLocation</span><span class="p">::</span><span class="k">new</span><span class="p">);</span>
-</code></pre></div>
-<p>Additionally, there are common non-standard constructor implementations in the <code>VariableArgument</code> that can also be 
-passed as arguments. The following example demonstrates how a number can be validated to ensure it is positive or zero.</p>
-<div class="highlight"><span class="filename">Example for number validation</span><pre><span></span><code><span class="n">VariableNumber</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">Argument</span><span class="p">.</span><span class="na">NUMBER_NOT_LESS_THAN_ZERO</span><span class="p">);</span>
-<span class="n">VariableNumber</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">((</span><span class="n">variables</span><span class="p">,</span><span class="w"> </span><span class="n">pack</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span>
-<span class="w">  </span><span class="k">new</span><span class="w"> </span><span class="n">VariableNumber</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span><span class="w"> </span><span class="n">pack</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="na">doubleValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">QuestException</span><span class="p">(</span><span class="s">&quot;Value must be greater than or equal to 0: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}));</span>
-</code></pre></div>
-<p>Utilizing these various options simplifies the process of parsing, for instance, a list of <code>VariableLocation</code> objects:</p>
-<div class="highlight"><span class="filename">Equivalant calls</span><pre><span></span><code><span class="n">List</span><span class="o">&lt;</span><span class="n">VariableLocation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">next</span><span class="p">(),</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">VariableLocation</span><span class="p">::</span><span class="k">new</span><span class="p">));</span><span class="w"> </span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">VariableLocation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">VariableLocation</span><span class="p">::</span><span class="k">new</span><span class="p">));</span><span class="w"> </span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">VariableLocation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">next</span><span class="p">(),</span><span class="w"> </span><span class="n">VariableLocation</span><span class="p">::</span><span class="k">new</span><span class="p">);</span><span class="w"> </span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">VariableLocation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">locs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getList</span><span class="p">(</span><span class="n">VariableLocation</span><span class="p">::</span><span class="k">new</span><span class="p">);</span><span class="w"> </span>
-</code></pre></div>
-<p>Common implementations are also available within the <code>VariableArgument</code> interface:</p>
-<div class="highlight"><span class="filename">Number above 0</span><pre><span></span><code><span class="n">VariableNumber</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getVariable</span><span class="p">(</span><span class="n">Argument</span><span class="p">.</span><span class="na">NUMBER_NOT_LESS_THAN_ONE</span><span class="p">);</span>
-</code></pre></div>
-<h2 id="custom-parsing">Custom Parsing<a class="headerlink" href="#custom-parsing" title="Permanent link">🔗</a></h2>
-<p>If your instruction is more complex and the <code>Instruction</code> class does not provide the necessary methods, you can still 
-parse the instruction string manually. The already split parts are accessible through the <code>getParts()</code> method, 
-and the raw instruction can be retrieved using the <code>toString()</code> method. </p>
-<p>Remember to throw a <code>QuestException</code> with an informative message if the instruction provided by the user is incorrect; 
-BetonQuest will handle these exceptions appropriately and display them in the console.</p>
+<span class="w">    </span><span class="c1">//creating event object and returning it...</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="advanced-argument-parsing">Advanced Argument Parsing<a class="headerlink" href="#advanced-argument-parsing" title="Permanent link">🔗</a></h3>
+<p>Default implementations from ArgumentParsers offer more functionality than just parsing a string into a specific type.</p>
+<h4 id="validations">Validations<a class="headerlink" href="#validations" title="Permanent link">🔗</a></h4>
+<p>You can validate an argument using the <code>validate(ValueValidator&lt;T&gt;)</code> or <code>validate(ValueValidator&lt;T&gt;, String)</code> method.
+This method will throw a <code>QuestException</code> if the predicate does not match the argument.
+It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
+outside matching just the type.</p>
+<p>The example below checks if the parsed number is even and throws an error if it is not.
+<div class="highlight"><span class="filename">validate example</span><pre><span></span><code><span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">evenArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">evenArgument2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span>
+<span class="s">&quot;Number must be even, but was %s.&quot;</span><span class="p">);</span>
+</code></pre></div></p>
+<h4 id="prefilter">Prefilter<a class="headerlink" href="#prefilter" title="Permanent link">🔗</a></h4>
+<p>You can use prefilters to modify the argument's parsing result without actually parsing it.
+This can be useful to parse additional cases that are not covered by the default parsers.
+Use the <code>prefilter(String expected, T fixedValue)</code> method to decorate the argument with a prefilter.</p>
+<p>The example below parses the string "infinity" into the number <code>Double.POSITIVE_INFINITY</code> while still allowing other 
+number values.
+<div class="highlight"><span class="filename">prefilter example</span><pre><span></span><code><span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">prefilter</span><span class="p">(</span><span class="s">&quot;infinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">.</span><span class="na">POSITIVE_INFINITY</span><span class="p">);</span>
+</code></pre></div></p>
+<h4 id="decoratednumberargument">DecoratedNumberArgument<a class="headerlink" href="#decoratednumberargument" title="Permanent link">🔗</a></h4>
+<p>The <code>DecoratedNumberArgument</code> class offers a more convenient way to create a number argument with range limits.
+It is retrieved through the <code>ArgumentParsers</code> class as default number argument parser wrapping <code>DecoratedArgument&lt;Number&gt;</code>.</p>
+<p>Additional methods are available to set the minimum and maximum values of the number.
+While the methods <code>atLeast(int)</code> and <code>atMost(int)</code> are using inclusive bounds, <code>bounds(int,int)</code> is using an exclusive 
+upper bound as commonly used in other Java classes.
+<div class="highlight"><span class="filename">DecoratedNumberArgument example</span><pre><span></span><code><span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">atMost</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">bounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+</code></pre></div></p>
 
 
 
