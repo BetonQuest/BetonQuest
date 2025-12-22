@@ -3,6 +3,8 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import eu.decentsoftware.holograms.api.holograms.HologramPage;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -35,8 +37,8 @@ public class DecentHologramsHologram implements BetonHologram {
     }
 
     @Override
-    public void appendLine(final String text) {
-        DHAPI.addHologramLine(hologram, text);
+    public void appendLine(final Component text) {
+        DHAPI.addHologramLine(hologram, translate(text));
     }
 
     @Override
@@ -45,8 +47,12 @@ public class DecentHologramsHologram implements BetonHologram {
     }
 
     @Override
-    public void setLine(final int index, final String text) {
-        DHAPI.setHologramLine(hologram, index, text);
+    public void setLine(final int index, final Component text) {
+        DHAPI.setHologramLine(hologram, index, translate(text));
+    }
+
+    private String translate(final Component text) {
+        return LegacyComponentSerializer.legacySection().serialize(text);
     }
 
     @Override

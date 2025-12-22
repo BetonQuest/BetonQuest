@@ -57,6 +57,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-465 - PacketEvents instead of ProtocolLib](#300-dev-465-packetevents-instead-of-protocollib) :white_sun_cloud:
 - [3.0.0-DEV-488 - Remove Legacy Point Multiply](#300-dev-488-remove-legacy-point-multiply) :sun:
 - [3.0.0-DEV-494 - Add native `menu` conversation io](#300-dev-494-add-native-menu-conversation-io) :white_sun_cloud:
+- [3.0.0-DEV-511 - Dynamize `top:` Hologram Line](#300-dev-511-dynamize-top-hologram-line) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -969,6 +970,33 @@ conversations:
     ```YAML title="New config.yml"
     conversation:
       default_io: menu,packetevents,tellraw
+    ```
+    
+    </div>
+
+### 3.0.0-DEV-511 - Dynamize `top:` Hologram Line :sun:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+    
+    To properly support new formatting types in the hologram `top` line it is now also formatted individually:
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    holograms:
+      beton:
+        lines:
+        - 'top:completed_quests;desc;10;&a;§6;2;&6'
+    ```
+    
+    ```YAML title="New Syntax"
+    holograms:
+      beton:
+        lines:
+        - 'top:completed_quests;desc;10;§a{place}. §6{name}§2 - §6{score}'
     ```
     
     </div>

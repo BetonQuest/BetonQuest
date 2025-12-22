@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.kernel.processor.StartTask;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,11 +36,12 @@ public class LocationHologramLoop extends HologramLoop implements StartTask {
      * @param packManager      the quest package manager to get quest packages from
      * @param hologramProvider the hologram provider to create new holograms
      * @param plugin           the plugin to start tasks
+     * @param textParser        the text parser used to parse text and colors
      */
     public LocationHologramLoop(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger log,
                                 final Variables variables, final QuestPackageManager packManager,
-                                final HologramProvider hologramProvider, final Plugin plugin) {
-        super(loggerFactory, log, variables, packManager, hologramProvider, "Hologram", "holograms");
+                                final HologramProvider hologramProvider, final Plugin plugin, final TextParser textParser) {
+        super(loggerFactory, log, variables, packManager, hologramProvider, "Hologram", "holograms", textParser);
         this.plugin = plugin;
     }
 

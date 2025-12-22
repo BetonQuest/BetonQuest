@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public interface BetonHologram {
      *
      * @param text The text to append.
      */
-    void appendLine(String text);
+    void appendLine(Component text);
 
     /**
      * Replace a line at the index with a new item line. Will throw an exception if index is out of bounds.
@@ -39,7 +40,7 @@ public interface BetonHologram {
      * @param index The index at which the line is set.
      * @param text  The text to place at the line.
      */
-    void setLine(int index, String text);
+    void setLine(int index, Component text);
 
     /**
      * Creates multiple lines from the starting index and adding a specified amount of lines.

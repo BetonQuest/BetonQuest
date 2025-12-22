@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
@@ -9,14 +10,14 @@ public class TextLine extends AbstractLine {
     /**
      * Text to be displayed.
      */
-    private final String text;
+    private final Component text;
 
     /**
      * Creates a new instance of TextLine.
      *
      * @param text Text to be displayed
      */
-    public TextLine(final String text) {
+    public TextLine(final Component text) {
         super(true, 1);
         this.text = text;
     }
