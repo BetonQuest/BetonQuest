@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Wrapper for {@link PlayerlessCondition}s to be checked on the primary server thread.
  */
 public final class PrimaryServerThreadPlayerlessCondition extends PrimaryServerThreadType<PlayerlessCondition, Boolean> implements PlayerlessCondition {
+
     /**
      * Wrap the given {@link PlayerlessCondition} for action on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -28,5 +29,10 @@ public final class PrimaryServerThreadPlayerlessCondition extends PrimaryServerT
     @Override
     public boolean check() throws QuestException {
         return call(synced::check);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

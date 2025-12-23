@@ -31,7 +31,7 @@ public class PlayerHider {
      * The map's key is an array containing the source {@link Profile}'s conditions
      * and the map's value is an array containing the target {@link Profile}'s conditions.
      */
-    private final Map<ConditionID[], ConditionID[]> hiders;
+    private final Map<Collection<ConditionID>, Collection<ConditionID>> hiders;
 
     /**
      * The running hider.
@@ -94,15 +94,15 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final Variables variables, final QuestPackage pack, final String key,
-                                        @Nullable final String rawConditions) throws QuestException {
+    private Collection<ConditionID> getConditions(final Variables variables, final QuestPackage pack, final String key,
+                                                  @Nullable final String rawConditions) throws QuestException {
         if (rawConditions == null) {
-            return new ConditionID[0];
+            return new ArrayList<>();
         }
         try {
             return new VariableList<>(variables, pack, rawConditions,
                     string -> new ConditionID(variables, api.getQuestPackageManager(), pack, string))
-                    .getValue(null).toArray(ConditionID[]::new);
+                    .getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
         }
@@ -138,7 +138,7 @@ public class PlayerHider {
 
     private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> onlineProfiles) {
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
-        for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
+        for (final Map.Entry<Collection<ConditionID>, Collection<ConditionID>> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : onlineProfiles) {
                 if (api.getQuestTypeApi().conditions(target, hider.getValue())) {

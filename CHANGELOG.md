@@ -167,6 +167,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `simple` item `flags` crashed plugin when invalid
 - Disabling the plugin no longer causes hardly expected zip errors
 - `mspawnmob` exception when spawning the mob is cancelled/forbidden
+- conversations could cause deadlocks when too many conditions are checked
 ### Security
 
 ## [2.2.1] - 2025-01-12

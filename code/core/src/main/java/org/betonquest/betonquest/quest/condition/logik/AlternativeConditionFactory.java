@@ -3,8 +3,6 @@ package org.betonquest.betonquest.quest.condition.logik;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -21,11 +19,6 @@ import java.util.List;
 public class AlternativeConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Logger factory to create a logger for the conditions.
-     */
-    private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -33,11 +26,9 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     /**
      * Create the alternative condition factory.
      *
-     * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param questTypeApi  the Quest Type API to check conditions
+     * @param questTypeApi the Quest Type API to check conditions
      */
-    public AlternativeConditionFactory(final BetonQuestLoggerFactory loggerFactory, final QuestTypeApi questTypeApi) {
-        this.loggerFactory = loggerFactory;
+    public AlternativeConditionFactory(final QuestTypeApi questTypeApi) {
         this.questTypeApi = questTypeApi;
     }
 
@@ -52,8 +43,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     }
 
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
-        final BetonQuestLogger log = loggerFactory.create(AlternativeCondition.class);
         final Variable<List<ConditionID>> conditionIDs = instruction.getList(ConditionID::new);
-        return new AlternativeCondition(log, questTypeApi, conditionIDs, instruction.getPackage());
+        return new AlternativeCondition(questTypeApi, conditionIDs);
     }
 }

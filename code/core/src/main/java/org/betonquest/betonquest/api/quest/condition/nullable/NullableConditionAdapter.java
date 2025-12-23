@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
  * with one common implementation of the {@link NullableCondition}.
  */
 public final class NullableConditionAdapter implements PlayerCondition, PlayerlessCondition {
+
     /**
      * Common null-safe condition implementation.
      */

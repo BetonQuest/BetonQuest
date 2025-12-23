@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Wrapper for {@link PlayerCondition}s to be checked on the primary server thread.
  */
 public final class PrimaryServerThreadPlayerCondition extends PrimaryServerThreadType<PlayerCondition, Boolean> implements PlayerCondition {
+
     /**
      * Wrap the given {@link PlayerCondition} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -29,5 +30,10 @@ public final class PrimaryServerThreadPlayerCondition extends PrimaryServerThrea
     @Override
     public boolean check(final Profile profile) throws QuestException {
         return call(() -> synced.check(profile));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

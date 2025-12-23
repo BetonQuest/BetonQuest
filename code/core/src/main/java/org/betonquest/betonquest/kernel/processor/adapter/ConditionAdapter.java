@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.processor.adapter;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Adapter for {@link PlayerCondition} and {@link PlayerlessCondition}.
  */
-public class ConditionAdapter extends QuestAdapter<PlayerCondition, PlayerlessCondition> {
+public class ConditionAdapter extends QuestAdapter<PlayerCondition, PlayerlessCondition> implements PrimaryThreadEnforceable {
 
     /**
      * Create a new Adapter with instruction and at least one type.
@@ -39,5 +40,10 @@ public class ConditionAdapter extends QuestAdapter<PlayerCondition, PlayerlessCo
             return playerless.check();
         }
         return player.check(profile);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return player != null && player.isPrimaryThreadEnforced() || playerless != null && playerless.isPrimaryThreadEnforced();
     }
 }

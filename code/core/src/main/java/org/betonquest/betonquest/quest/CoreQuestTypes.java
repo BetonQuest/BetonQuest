@@ -274,7 +274,7 @@ public class CoreQuestTypes {
      * @param questTypeApi      the Quest Type API
      * @param featureApi        the Feature API
      * @param pluginMessage     the plugin message instance
-     * @param variables the variable processor to create and resolve variables
+     * @param variables         the variable processor to create and resolve variables
      * @param globalData        the storage providing global data
      * @param dataStorage       the storage providing player data
      * @param profileProvider   the profile provider instance
@@ -352,7 +352,7 @@ public class CoreQuestTypes {
         conditionTypes.registerCombined("npclocation", new NpcLocationConditionFactory(featureApi, data));
         conditionTypes.registerCombined("numbercompare", new NumberCompareConditionFactory());
         conditionTypes.register("objective", new ObjectiveConditionFactory(questTypeApi));
-        conditionTypes.registerCombined("or", new AlternativeConditionFactory(loggerFactory, questTypeApi));
+        conditionTypes.registerCombined("or", new AlternativeConditionFactory(questTypeApi));
         conditionTypes.register("partialdate", new PartialDateConditionFactory());
         conditionTypes.registerCombined("party", new PartyConditionFactory(questTypeApi, profileProvider));
         conditionTypes.register("permission", new PermissionConditionFactory(loggerFactory, data));

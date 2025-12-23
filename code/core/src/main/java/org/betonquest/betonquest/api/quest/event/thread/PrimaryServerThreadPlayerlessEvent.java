@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Wrapper for {@link PlayerlessEvent}s to be executed on the primary server thread.
  */
 public final class PrimaryServerThreadPlayerlessEvent extends PrimaryServerThreadType<PlayerlessEvent, Void> implements PlayerlessEvent {
+
     /**
      * Wrap the given {@link PlayerlessEvent} for execution on the primary server thread.
      * The {@link Server}, {@link BukkitScheduler} and {@link Plugin} are used to
@@ -32,5 +33,10 @@ public final class PrimaryServerThreadPlayerlessEvent extends PrimaryServerThrea
             synced.execute();
             return null;
         });
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

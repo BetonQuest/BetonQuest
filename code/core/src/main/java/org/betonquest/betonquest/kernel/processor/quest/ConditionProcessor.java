@@ -11,17 +11,33 @@ import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.ConditionAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.ConditionTypeRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Does the logic around Conditions.
  */
 public class ConditionProcessor extends TypedQuestProcessor<ConditionID, ConditionAdapter> {
+
+    /**
+     * The Bukkit scheduler to run sync tasks.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * Create a new Condition Processor to store Conditions and checks them.
@@ -30,10 +46,15 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @param variables      the variable processor to create and resolve variables
      * @param packManager    the quest package manager to get quest packages from
      * @param conditionTypes the available condition types
+     * @param scheduler      the bukkit scheduler to run sync tasks
+     * @param plugin         the plugin instance
      */
     public ConditionProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
-                              final ConditionTypeRegistry conditionTypes) {
+                              final ConditionTypeRegistry conditionTypes, final BukkitScheduler scheduler,
+                              final Plugin plugin) {
         super(log, variables, packManager, conditionTypes, "Condition", "conditions");
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     @Override
@@ -46,43 +67,36 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      *
      * @param profile      the {@link Profile} of the player which should be checked
      * @param conditionIDs IDs of the conditions to check
+     * @param matchAll     true if all conditions have to be met, false if only one condition has to be met
      * @return if all conditions are met
      */
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    public boolean checks(@Nullable final Profile profile, final ConditionID... conditionIDs) {
+    public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs, final boolean matchAll) {
+        final Function<Stream<ConditionID>, Boolean> allOrAnyMatch = matchAll
+                ? stream -> stream.allMatch(id -> check(profile, id))
+                : stream -> stream.anyMatch(id -> check(profile, id));
+
         if (Bukkit.isPrimaryThread()) {
-            for (final ConditionID id : conditionIDs) {
-                if (!check(profile, id)) {
-                    return false;
-                }
-            }
-        } else {
-            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for (final ConditionID id : conditionIDs) {
-                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> check(profile, id));
-                conditions.add(future);
-            }
-            for (final CompletableFuture<Boolean> condition : conditions) {
-                try {
-                    if (!condition.get()) {
-                        return false;
-                    }
-                } catch (final InterruptedException | ExecutionException e) {
-                    // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
-                    // to delay the check by one tick.
-                    // If this happens during a shutdown, the check will be delayed past the last tick.
-                    // This will throw a CancellationException and IllegalPluginAccessExceptions.
-                    if (Bukkit.getServer().isStopping()) {
-                        log.debug("Exception during shutdown while checking conditions (expected):", e);
-                        return false;
-                    }
-                    log.reportException(e);
-                    return false;
-                }
-            }
+            return allOrAnyMatch.apply(conditionIDs.stream());
         }
-        return true;
+
+        final List<ConditionID> syncList = new ArrayList<>();
+        final List<ConditionID> asyncList = new ArrayList<>();
+        conditionIDs.forEach(id -> {
+            final ConditionAdapter adapter = values.get(id);
+            final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
+            (syncAsync ? syncList : asyncList).add(id);
+        });
+
+        final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(matchAll)
+                : scheduler.callSyncMethod(plugin, () -> allOrAnyMatch.apply(syncList.stream()));
+        final boolean asyncResult = allOrAnyMatch.apply(asyncList.stream());
+
+        try {
+            return matchAll ? asyncResult && syncFuture.get() : asyncResult || syncFuture.get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return false;
+        }
     }
 
     /**

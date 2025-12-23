@@ -63,7 +63,7 @@ public class RunForAllEvent implements PlayerlessEvent {
         for (final Profile profile : profileCollectionSupplier.get()) {
             try {
                 final List<ConditionID> resolvedConditions = conditions.getValue(profile);
-                if (resolvedConditions.isEmpty() || questTypeApi.conditions(profile, resolvedConditions.toArray(new ConditionID[0]))) {
+                if (resolvedConditions.isEmpty() || questTypeApi.conditions(profile, resolvedConditions)) {
                     for (final EventID event : events.getValue(profile)) {
                         questTypeApi.event(profile, event);
                     }
