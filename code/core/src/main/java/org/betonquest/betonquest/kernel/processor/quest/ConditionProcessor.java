@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Does the logic around Conditions.
@@ -69,8 +71,12 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      * @return if all conditions are met
      */
     public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs, final boolean matchAll) {
+        final Function<Stream<ConditionID>, Boolean> allOrAnyMatch = matchAll
+                ? stream -> stream.allMatch(id -> check(profile, id))
+                : stream -> stream.anyMatch(id -> check(profile, id));
+
         if (Bukkit.isPrimaryThread()) {
-            return matchAll == conditionIDs.stream().allMatch(id -> matchAll == check(profile, id));
+            return allOrAnyMatch.apply(conditionIDs.stream());
         }
 
         final List<ConditionID> syncList = new ArrayList<>();
@@ -82,11 +88,11 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
         });
 
         final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(matchAll)
-                : scheduler.callSyncMethod(plugin, () -> matchAll == syncList.stream().allMatch(id -> matchAll == check(profile, id)));
-        final boolean asyncResult = matchAll == asyncList.stream().allMatch((id) -> matchAll == check(profile, id));
+                : scheduler.callSyncMethod(plugin, () -> allOrAnyMatch.apply(syncList.stream()));
+        final boolean asyncResult = allOrAnyMatch.apply(asyncList.stream());
 
         try {
-            return matchAll == (matchAll == asyncResult && matchAll == syncFuture.get());
+            return matchAll ? asyncResult && syncFuture.get() : asyncResult || syncFuture.get();
         } catch (final InterruptedException | ExecutionException e) {
             log.reportException(e);
             return false;
