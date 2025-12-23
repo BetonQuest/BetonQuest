@@ -13,13 +13,14 @@ import studio.magemonkey.fabled.api.event.SkillDamageEvent;
  * Listens to kills by Fabled skills.
  */
 public class FabledKillListener implements Listener {
+
     /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
 
     /**
-     * The default constructor.
+     * Creates a new Integrator.
      *
      * @param profileProvider the profile provider instance
      */

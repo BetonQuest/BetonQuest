@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Objects;
@@ -21,19 +22,26 @@ import java.util.Objects;
 public class MagicIntegrator implements Integrator, Listener {
 
     /**
-     * The default constructor.
+     * Plugin to register listener with.
      */
-    public MagicIntegrator() {
+    private final Plugin plugin;
+
+    /**
+     * Creates a new Integrator.
+     *
+     * @param plugin the plugin to register listener with
+     */
+    public MagicIntegrator(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final BetonQuest plugin = BetonQuest.getInstance();
         final PluginManager manager = plugin.getServer().getPluginManager();
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) manager.getPlugin("Magic"));
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         api.getQuestRegistries().condition().register("wand", new WandConditionFactory(api.getLoggerFactory(), magicApi, data));
-        manager.registerEvents(new InventoryListener(plugin.getPlayerDataStorage(), api.getProfileProvider()), plugin);
+        manager.registerEvents(new InventoryListener(BetonQuest.getInstance().getPlayerDataStorage(), api.getProfileProvider()), plugin);
     }
 
     @Override

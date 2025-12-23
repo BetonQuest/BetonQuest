@@ -1,35 +1,44 @@
 package org.betonquest.betonquest.compatibility.npc.fancynpcs;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 /**
  * Integrator implementation for the FancyNpcs plugin.
  */
 public class FancyNpcsIntegrator implements Integrator {
+
     /**
      * The prefix used before any registered name for distinguishing.
      */
     public static final String PREFIX = "FancyNpcs";
 
     /**
-     * The empty default Constructor.
+     * Plugin to register listener with.
      */
-    public FancyNpcsIntegrator() {
+    private final Plugin plugin;
+
+    /**
+     * The empty default Constructor.
+     *
+     * @param plugin the plugin to register listener with
+     */
+    public FancyNpcsIntegrator(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final BetonQuest betonQuest = BetonQuest.getInstance();
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = api.getProfileProvider();
-        Bukkit.getPluginManager().registerEvents(new FancyCatcher(profileProvider, npcRegistry), betonQuest);
+        final PluginManager manager = plugin.getServer().getPluginManager();
+        manager.registerEvents(new FancyCatcher(profileProvider, npcRegistry), plugin);
         final FancyHider hider = new FancyHider(api.getFeatureApi().getNpcHider());
-        Bukkit.getPluginManager().registerEvents(hider, betonQuest);
+        manager.registerEvents(hider, plugin);
         npcRegistry.register(PREFIX, new FancyFactory());
         npcRegistry.registerIdentifier(new FancyIdentifier(PREFIX));
     }

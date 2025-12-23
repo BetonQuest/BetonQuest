@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.heroes;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
@@ -14,21 +13,25 @@ import org.betonquest.betonquest.compatibility.heroes.condition.HeroesAttributeC
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesClassConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.condition.HeroesSkillConditionFactory;
 import org.betonquest.betonquest.compatibility.heroes.event.HeroesExperienceEventFactory;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for Heroes.
  */
 public class HeroesIntegrator implements Integrator {
-    /**
-     * The plugin instance.
-     */
-    private final BetonQuest plugin;
 
     /**
-     * The default constructor.
+     * Plugin to register listener with.
      */
-    public HeroesIntegrator() {
-        plugin = BetonQuest.getInstance();
+    private final Plugin plugin;
+
+    /**
+     * Creates a new Integrator.
+     *
+     * @param plugin the plugin to register listener with
+     */
+    public HeroesIntegrator(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override

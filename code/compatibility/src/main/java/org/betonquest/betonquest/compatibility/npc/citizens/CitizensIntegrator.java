@@ -23,7 +23,6 @@ import org.betonquest.betonquest.compatibility.npc.citizens.event.move.CitizensS
 import org.betonquest.betonquest.compatibility.npc.citizens.objective.NPCKillObjectiveFactory;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
-import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 
@@ -61,10 +60,10 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final Server server = plugin.getServer();
         final NPCRegistry citizensNpcRegistry = CitizensAPI.getNPCRegistry();
         final CitizensWalkingListener citizensWalkingListener = new CitizensWalkingListener(plugin, citizensNpcRegistry);
-        server.getPluginManager().registerEvents(citizensWalkingListener, plugin);
+        final PluginManager manager = plugin.getServer().getPluginManager();
+        manager.registerEvents(citizensWalkingListener, plugin);
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         citizensMoveController = new CitizensMoveController(loggerFactory.create(CitizensMoveController.class),
@@ -75,7 +74,6 @@ public class CitizensIntegrator implements Integrator {
 
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
-        final PluginManager manager = server.getPluginManager();
         manager.registerEvents(citizensMoveController, plugin);
 
         final EventRegistry eventRegistry = questRegistries.event();

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.packetevents.event;
 
 import com.github.retrooper.packetevents.PacketEventsAPI;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -52,6 +51,6 @@ public class FreezeEvent implements OnlineEvent {
         final FakeArmorStandPassenger armorStandPassenger = new FakeArmorStandPassenger(plugin, packetEventsAPI, player);
         armorStandPassenger.mount(player.getLocation());
 
-        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), armorStandPassenger::unmount, ticks);
+        Bukkit.getScheduler().runTaskLater(plugin, armorStandPassenger::unmount, ticks);
     }
 }
