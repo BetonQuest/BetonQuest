@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 import org.bukkit.Location;
@@ -30,15 +29,15 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Interaction> interaction = instruction.get(instruction.getParsers().forEnum(Interaction.class));
-        final Variable<EntityType> mobType = instruction.get(instruction.getParsers().forEnum(EntityType.class));
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
-        final Variable<Component> customName = instruction.getValue("name", instruction.getParsers().component());
-        final Variable<String> realName = instruction.getValue("realname", instruction.getParsers().string());
-        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
+        final Variable<Interaction> interaction = instruction.enumeration(Interaction.class).get();
+        final Variable<EntityType> mobType = instruction.enumeration(EntityType.class).get();
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Variable<Component> customName = instruction.component().get("name").orElse(null);
+        final Variable<String> realName = instruction.string().get("realname").orElse(null);
+        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
-        final Variable<Number> range = instruction.getValue("range", instruction.getParsers().number(), 1);
+        final Variable<Location> loc = instruction.location().get("loc").orElse(null);
+        final Variable<Number> range = instruction.number().get("range", 1);
         final EquipmentSlot slot = getEquipmentSlot(instruction);
         return new EntityInteractObjective(instruction, targetAmount, loc, range, customName, realName, slot, mobType, marked, interaction, cancel);
     }

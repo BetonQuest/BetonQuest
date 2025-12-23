@@ -56,6 +56,13 @@ public interface ArgumentParsers {
     DecoratedArgumentParser<QuestItemWrapper> item();
 
     /**
+     * Default parser for a package identifier.
+     *
+     * @return a parser for package identifiers.
+     */
+    DecoratedArgumentParser<String> packageIdentifier();
+
+    /**
      * Default parser for {@link Component}.
      *
      * @return a parser for components

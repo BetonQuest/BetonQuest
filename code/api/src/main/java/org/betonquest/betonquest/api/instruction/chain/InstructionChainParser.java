@@ -83,6 +83,13 @@ public interface InstructionChainParser {
     DecoratableChainRetriever<QuestItemWrapper> item();
 
     /**
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} ()} as parser.
+     *
+     * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     */
+    DecoratableChainRetriever<String> packageIdentifier();
+
+    /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#component()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings

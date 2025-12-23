@@ -10,6 +10,11 @@ import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 public class IdentifierParser implements PackageArgument<String> {
 
     /**
+     * The singleton instance of this parser.
+     */
+    public static final IdentifierParser INSTANCE = new IdentifierParser();
+
+    /**
      * Created a new parser for identifiers.
      */
     public IdentifierParser() {

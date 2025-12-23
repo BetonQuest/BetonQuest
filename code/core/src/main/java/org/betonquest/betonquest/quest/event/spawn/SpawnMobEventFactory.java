@@ -4,8 +4,6 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
-import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -21,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,15 +70,15 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
         final Variable<Location> loc = instruction.get(instruction.getParsers().location());
         final Variable<EntityType> type = instruction.get(entityTypeParser);
         final Variable<Number> amount = instruction.get(instruction.getParsers().number());
-        final Variable<Component> name = instruction.getValue("name", instruction.getParsers().component());
-        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        final Variable<QuestItemWrapper> helmet = instruction.getValue("h", InstructionIdentifierArgument.ITEM);
-        final Variable<QuestItemWrapper> chestplate = instruction.getValue("c", InstructionIdentifierArgument.ITEM);
-        final Variable<QuestItemWrapper> leggings = instruction.getValue("l", InstructionIdentifierArgument.ITEM);
-        final Variable<QuestItemWrapper> boots = instruction.getValue("b", InstructionIdentifierArgument.ITEM);
-        final Variable<QuestItemWrapper> mainHand = instruction.getValue("m", InstructionIdentifierArgument.ITEM);
-        final Variable<QuestItemWrapper> offHand = instruction.getValue("o", InstructionIdentifierArgument.ITEM);
-        final Variable<List<QuestItemWrapper>> drops = instruction.getValueList("drops", InstructionIdentifierArgument.ITEM);
+        final Variable<Component> name = instruction.component().get("name").orElse(null);
+        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
+        final Variable<QuestItemWrapper> helmet = instruction.item().get("h").orElse(null);
+        final Variable<QuestItemWrapper> chestplate = instruction.item().get("c").orElse(null);
+        final Variable<QuestItemWrapper> leggings = instruction.item().get("l").orElse(null);
+        final Variable<QuestItemWrapper> boots = instruction.item().get("b").orElse(null);
+        final Variable<QuestItemWrapper> mainHand = instruction.item().get("m").orElse(null);
+        final Variable<QuestItemWrapper> offHand = instruction.item().get("o").orElse(null);
+        final Variable<List<QuestItemWrapper>> drops = instruction.item().getList("drops", Collections.emptyList());
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

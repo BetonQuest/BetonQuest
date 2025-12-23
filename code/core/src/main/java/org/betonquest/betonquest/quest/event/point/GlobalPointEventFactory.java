@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -45,9 +44,9 @@ public class GlobalPointEventFactory implements PlayerEventFactory, PlayerlessEv
     }
 
     private GlobalPointEvent createGlobalPointEvent(final Instruction instruction) throws QuestException {
-        final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        final Variable<Number> number = instruction.get(instruction.getParsers().number());
-        final PointType type = instruction.getValue("action", instruction.getParsers().forEnum(PointType.class), PointType.ADD).getValue(null);
+        final Variable<String> category = instruction.packageIdentifier().get();
+        final Variable<Number> number = instruction.number().get();
+        final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
         return new GlobalPointEvent(globalData, category, number, type);
     }
 }

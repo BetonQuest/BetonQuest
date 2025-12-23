@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.instruction.argument;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.quest.Variables;
 
 /**
@@ -13,11 +12,6 @@ import org.betonquest.betonquest.api.quest.Variables;
  */
 @FunctionalInterface
 public interface PackageArgument<T> extends InstructionArgumentParser<T> {
-
-    /**
-     * The default instance of {@link IdentifierParser}.
-     */
-    IdentifierParser IDENTIFIER = new IdentifierParser();
 
     /**
      * Gets a {@link T} from string.

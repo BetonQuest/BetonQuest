@@ -54,6 +54,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     private final DecoratedArgumentParser<QuestItemWrapper> defaultItemParser;
 
     /**
+     * The default decoratable instance of {@link IdentifierParser}.
+     */
+    private final DecoratedArgumentParser<String> defaultPackageIdentifier;
+
+    /**
      * The default decoratable instance of {@link BooleanParser}.
      */
     private final DecoratedArgumentParser<Boolean> defaultBooleanParser;
@@ -87,6 +92,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
         defaultNumberParser = new DefaultNumberArgumentParser(new NumberParser());
         defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(Bukkit.getServer()));
         defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(BetonQuest.getInstance().getFeatureApi()));
+        defaultPackageIdentifier = new DecoratableArgumentParser<>(new IdentifierParser());
         defaultBooleanParser = new DecoratableArgumentParser<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgumentParser<>(new UUIDParser());
         defaultVectorParser = new DecoratableArgumentParser<>(new VectorParser());
@@ -127,6 +133,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     @Override
     public DecoratedArgumentParser<QuestItemWrapper> item() {
         return defaultItemParser;
+    }
+
+    @Override
+    public DecoratedArgumentParser<String> packageIdentifier() {
+        return defaultPackageIdentifier;
     }
 
     @Override

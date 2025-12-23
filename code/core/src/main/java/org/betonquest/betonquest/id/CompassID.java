@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.SectionIdentifier;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -31,6 +31,6 @@ public class CompassID extends SectionIdentifier {
      * @return the compass tag
      */
     public String getTag() {
-        return PackageArgument.IDENTIFIER.apply(getPackage(), "compass-" + get());
+        return IdentifierParser.INSTANCE.apply(getPackage(), "compass-" + get());
     }
 }

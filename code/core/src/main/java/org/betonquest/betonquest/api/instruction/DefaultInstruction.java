@@ -401,6 +401,11 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
+    public DecoratableChainRetriever<String> packageIdentifier() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.packageIdentifier());
+    }
+
+    @Override
     public DecoratableChainRetriever<Component> component() {
         return new DefaultDecoratableChainRetriever<>(this, argumentParsers.component());
     }

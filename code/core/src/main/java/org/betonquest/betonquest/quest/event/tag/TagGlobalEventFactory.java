@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.tag;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -35,7 +34,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final String action = instruction.get(instruction.getParsers().string()).getValue(null);
-        final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
+        final Variable<List<String>> tags = instruction.packageIdentifier().getList();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
             case "delete", "del" -> createDeleteTagEvent(tags);
@@ -46,7 +45,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         final String action = instruction.get(instruction.getParsers().string()).getValue(null);
-        final Variable<List<String>> tags = instruction.getList(PackageArgument.IDENTIFIER);
+        final Variable<List<String>> tags = instruction.packageIdentifier().getList();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createStaticAddTagEvent(tags);
             case "delete", "del" -> createStaticDeleteTagEvent(tags);

@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.variable.point;
 import org.apache.commons.lang3.tuple.Triple;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.util.Locale;
@@ -45,7 +44,7 @@ public abstract class AbstractPointVariableFactory<T> {
      * @throws QuestException if the instruction could not be parsed
      */
     protected Triple<String, Integer, PointCalculationType> parseInstruction(final Instruction instruction) throws QuestException {
-        final String category = instruction.get(PackageArgument.IDENTIFIER).getValue(null);
+        final String category = instruction.packageIdentifier().get().getValue(null);
         final PointCalculationType type = getType(instruction.nextElement());
         int amount = 0;
         if (type == PointCalculationType.LEFT) {
