@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -80,8 +81,8 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             (syncAsync ? syncList : asyncList).add(id);
         });
 
-        final Future<Boolean> syncFuture = scheduler.callSyncMethod(plugin,
-                () -> matchAll == syncList.stream().allMatch(id -> matchAll == check(profile, id)));
+        final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(matchAll)
+                : scheduler.callSyncMethod(plugin, () -> matchAll == syncList.stream().allMatch(id -> matchAll == check(profile, id)));
         final boolean asyncResult = matchAll == asyncList.stream().allMatch((id) -> matchAll == check(profile, id));
 
         try {
