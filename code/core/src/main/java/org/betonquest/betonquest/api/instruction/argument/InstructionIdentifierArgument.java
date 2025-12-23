@@ -13,22 +13,13 @@ import org.betonquest.betonquest.api.quest.Variables;
  * @param <T> what the argument returns
  */
 @FunctionalInterface
-public interface InstructionIdentifierArgument<T> {
+public interface InstructionIdentifierArgument<T> extends InstructionArgumentParser<T> {
 
     /**
      * The default instance of {@link ItemParser}.
      */
     ItemParser ITEM = new ItemParser(BetonQuest.getInstance().getFeatureApi());
 
-    /**
-     * Gets a {@link T} from string.
-     *
-     * @param variables   the variable processor to create and resolve variables
-     * @param packManager the quest package manager to get quest packages from
-     * @param pack        the source package
-     * @param string      the string to parse
-     * @return the {@link T}
-     * @throws QuestException when the string cannot be parsed as {@link T}
-     */
+    @Override
     T apply(Variables variables, QuestPackageManager packManager, QuestPackage pack, String string) throws QuestException;
 }
