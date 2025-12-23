@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -16,7 +16,7 @@ import org.betonquest.betonquest.id.ItemID;
 /**
  * Parses a string to an item.
  */
-public class ItemParser implements InstructionIdentifierArgument<QuestItemWrapper> {
+public class ItemParser implements InstructionArgumentParser<QuestItemWrapper> {
 
     /**
      * The singleton instance of the parser.

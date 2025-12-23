@@ -8,8 +8,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.Unmodifia
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
-import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -659,13 +658,9 @@ public class ConversationData {
         }
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
-                                    final Argument<T> resolver) throws QuestException {
-            return new VariableList<>(variables, getPack(), conv.getString(identifier, ""), resolver).getValue(null);
-        }
-
-        private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
-                                    final InstructionIdentifierArgument<T> resolver) throws QuestException {
-            return resolve(conv, identifier, (value) -> resolver.apply(variables, packManager, getPack(), value));
+                                    final InstructionArgumentParser<T> resolver) throws QuestException {
+            return new VariableList<>(variables, getPack(), conv.getString(identifier, ""),
+                    value -> resolver.apply(variables, packManager, getPack(), value)).getValue(null);
         }
 
         @Nullable
