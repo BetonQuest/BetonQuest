@@ -4,10 +4,8 @@ import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 
 /**
@@ -16,17 +14,9 @@ import org.betonquest.betonquest.compatibility.jobsreborn.JobParser;
 public class JobLevelConditionFactory implements PlayerConditionFactory {
 
     /**
-     * The data for the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new Factory to create Can Level Conditions.
-     *
-     * @param data the data for the primary server thread.
      */
-    public JobLevelConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public JobLevelConditionFactory() {
     }
 
     @Override
@@ -34,6 +24,6 @@ public class JobLevelConditionFactory implements PlayerConditionFactory {
         final Variable<Job> job = instruction.get(JobParser.JOB);
         final Variable<Number> minimum = instruction.get(instruction.getParsers().number());
         final Variable<Number> maximum = instruction.get(instruction.getParsers().number());
-        return new PrimaryServerThreadPlayerCondition(new JobLevelCondition(job, minimum, maximum), data);
+        return new JobLevelCondition(job, minimum, maximum);
     }
 }

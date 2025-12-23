@@ -15,6 +15,7 @@ import java.util.Map;
  * Groups all holograms with same update interval and updates them with a single {@link BukkitRunnable}.
  */
 public final class HologramRunner {
+
     /**
      * Static HashMap of all active runners. The key is the interval of the runner, the value is the runner itself.
      */
@@ -33,7 +34,6 @@ public final class HologramRunner {
 
     /**
      * The empty default constructor.
-     *
      */
     private HologramRunner() {
     }

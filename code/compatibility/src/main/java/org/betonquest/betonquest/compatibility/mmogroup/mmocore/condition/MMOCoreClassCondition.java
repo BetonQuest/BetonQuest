@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * Condition to check if the player has a level in a class.
  */
 public class MMOCoreClassCondition implements PlayerCondition {
+
     /**
      * If the current class should be checked instead a specific one.
      */
@@ -63,5 +64,10 @@ public class MMOCoreClassCondition implements PlayerCondition {
             return mustBeEqual ? actualClassLevel == level : actualClassLevel >= level;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -60,4 +60,9 @@ public class ItemDurabilityCondition implements OnlineCondition {
             return actualDurability >= requiredAmount;
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

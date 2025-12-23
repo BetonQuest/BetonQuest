@@ -3,14 +3,11 @@ package org.betonquest.betonquest.quest.condition.time.ingame;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.time.TimeFrame;
 import org.bukkit.World;
@@ -21,17 +18,9 @@ import org.bukkit.World;
 public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the test for time condition factory.
-     *
-     * @param data the data used for checking the condition on the main thread
      */
-    public TimeConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public TimeConditionFactory() {
     }
 
     @Override
@@ -39,8 +28,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
         final Variable<TimeFrame> timeFrame = instruction.get(TimeFrame::parse);
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"),
                 instruction.getParsers().world());
-        return new PrimaryServerThreadPlayerCondition(
-                new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
+        return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 
     @Override
@@ -51,7 +39,6 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
         }
         final Variable<TimeFrame> timeFrame = instruction.get(TimeFrame::parse);
         final Variable<World> world = instruction.get(worldString, instruction.getParsers().world());
-        return new PrimaryServerThreadPlayerlessCondition(
-                new NullableConditionAdapter(new TimeCondition(timeFrame, world)), data);
+        return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 }

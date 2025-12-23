@@ -39,4 +39,9 @@ public class WeatherCondition implements NullableCondition {
         final World world = variableWorld.getValue(profile);
         return weather.getValue(profile).isInWorld(world);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

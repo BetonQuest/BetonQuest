@@ -36,4 +36,9 @@ public class ArmorCondition implements OnlineCondition {
         }
         return false;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

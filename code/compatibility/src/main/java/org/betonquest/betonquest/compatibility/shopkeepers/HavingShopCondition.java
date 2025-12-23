@@ -40,4 +40,9 @@ public class HavingShopCondition implements PlayerCondition {
         }
         return false;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

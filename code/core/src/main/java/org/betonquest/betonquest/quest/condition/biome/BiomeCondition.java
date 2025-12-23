@@ -29,4 +29,9 @@ public class BiomeCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getLocation().getBlock().getBiome() == biome.getValue(profile);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

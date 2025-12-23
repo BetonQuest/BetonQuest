@@ -41,4 +41,9 @@ public class JobFullCondition implements PlayerCondition {
         }
         return false;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

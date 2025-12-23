@@ -28,7 +28,7 @@ public class TrainCartsIntegrator implements Integrator {
         objectiveRegistry.register("traincartsexit", new TrainCartsExitObjectiveFactory());
 
         api.getQuestRegistries().condition().register("traincartsride",
-                new TrainCartsRideConditionFactory(api.getLoggerFactory(), api.getPrimaryServerThreadData()));
+                new TrainCartsRideConditionFactory(api.getLoggerFactory()));
     }
 
     @Override

@@ -38,4 +38,9 @@ public class McMMOSkillLevelCondition implements OnlineCondition {
         return ExperienceAPI.getLevel(profile.getPlayer(),
                 skillType.getValue(profile)) >= level.getValue(profile).intValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -18,4 +18,9 @@ public class FlyingCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) {
         return profile.getPlayer().isGliding();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

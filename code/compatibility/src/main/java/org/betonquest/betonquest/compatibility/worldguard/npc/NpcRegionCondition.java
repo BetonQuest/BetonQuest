@@ -55,4 +55,9 @@ public class NpcRegionCondition implements NullableCondition {
         final Optional<Location> location = npc.getLocation();
         return location.isPresent() && WorldGuardIntegrator.isInsideRegion(location.get(), region.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

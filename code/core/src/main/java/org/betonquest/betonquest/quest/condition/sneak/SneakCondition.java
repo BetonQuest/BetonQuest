@@ -18,4 +18,9 @@ public class SneakCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) {
         return profile.getPlayer().isSneaking();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

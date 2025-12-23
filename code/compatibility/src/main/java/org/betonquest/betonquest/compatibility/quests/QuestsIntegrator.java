@@ -32,7 +32,7 @@ public class QuestsIntegrator implements Integrator {
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance, data));
+        questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance));
         questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
  * Checks if the player has access to specified Heroes skill.
  */
 public class HeroesSkillCondition implements OnlineCondition {
+
     /**
      * The {@link CharacterManager} of the Heroes plugin.
      */
@@ -36,5 +37,10 @@ public class HeroesSkillCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         final Hero hero = characterManager.getHero(profile.getPlayer());
         return hero != null && hero.canUseSkill(skillNameVar.getValue(profile));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

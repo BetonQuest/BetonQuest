@@ -3,10 +3,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory to create {@link MythicLibStatCondition}s from {@link Instruction}s.
@@ -14,17 +12,9 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 public class MythicLibStatConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new factory for the Mythic Lib Condition.
-     *
-     * @param data the data for primary server thread access
      */
-    public MythicLibStatConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public MythicLibStatConditionFactory() {
     }
 
     @Override
@@ -32,6 +22,6 @@ public class MythicLibStatConditionFactory implements PlayerConditionFactory {
         final Variable<String> statName = instruction.get(instruction.getParsers().string());
         final Variable<Number> targetLevel = instruction.get(instruction.getParsers().number());
         final boolean equal = instruction.hasArgument("equal");
-        return new PrimaryServerThreadPlayerCondition(new MythicLibStatCondition(statName, targetLevel, equal), data);
+        return new MythicLibStatCondition(statName, targetLevel, equal);
     }
 }

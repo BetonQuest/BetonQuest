@@ -32,4 +32,9 @@ public class CanLevelCondition implements PlayerCondition {
         final JobProgression progression = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job.getValue(profile));
         return progression != null && progression.canLevelUp();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

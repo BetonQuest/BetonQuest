@@ -46,4 +46,9 @@ public class TimeCondition implements NullableCondition {
         final int minutes = (int) (time % 1000) * 60 / 1000;
         return new Time(hours, minutes);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

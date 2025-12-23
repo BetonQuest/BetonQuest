@@ -56,7 +56,7 @@ public class BundledMC_1_21_4 {
                 .register("menu", new MenuConvIOFactory(inputFunction, betonQuest, betonQuest.getTextParser(), betonQuest.getFontRegistry(),
                         betonQuest.getPluginConfig(), betonQuest.getConversationColors()));
 
-        betonQuest.getQuestRegistries().condition().register("biome", new UpdatedBiomeConditionFactory(betonQuest.getLoggerFactory(), betonQuest.getPrimaryServerThreadData()));
+        betonQuest.getQuestRegistries().condition().register("biome", new UpdatedBiomeConditionFactory(betonQuest.getLoggerFactory()));
 
         betonQuest.getFeatureRegistries().notifyIO().register("totem", new UpdatedTotemNotifyIOFactory(betonQuest.getVariableProcessor()));
         log.info("Enabled Minecraft 1.21.4 module");

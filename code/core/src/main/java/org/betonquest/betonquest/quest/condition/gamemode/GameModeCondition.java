@@ -29,4 +29,9 @@ public class GameModeCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getGameMode() == gameMode.getValue(profile);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

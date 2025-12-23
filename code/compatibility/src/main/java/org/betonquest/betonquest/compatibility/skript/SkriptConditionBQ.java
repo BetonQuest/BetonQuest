@@ -54,7 +54,6 @@ public class SkriptConditionBQ extends Condition {
 
     /**
      * Constructs a new SkriptCondition for BetonQuest conditions.
-     *
      */
     public SkriptConditionBQ() {
         super();

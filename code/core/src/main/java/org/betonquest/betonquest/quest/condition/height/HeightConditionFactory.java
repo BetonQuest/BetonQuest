@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory for {@link HeightCondition}s.
@@ -22,19 +20,12 @@ public class HeightConditionFactory implements PlayerConditionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the height factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param data          the data used for checking the condition on the main thread
      */
-    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public HeightConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -50,8 +41,6 @@ public class HeightConditionFactory implements PlayerConditionFactory {
             }
         });
         final BetonQuestLogger log = loggerFactory.create(HeightCondition.class);
-        return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new HeightCondition(height), log, instruction.getPackage()), data
-        );
+        return new OnlineConditionAdapter(new HeightCondition(height), log, instruction.getPackage());
     }
 }

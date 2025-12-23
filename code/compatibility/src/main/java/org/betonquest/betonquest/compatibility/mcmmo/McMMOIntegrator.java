@@ -33,7 +33,7 @@ public class McMMOIntegrator implements Integrator {
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        questRegistries.condition().register("mcmmolevel", new McMMOSkillLevelConditionFactory(loggerFactory, data));
+        questRegistries.condition().register("mcmmolevel", new McMMOSkillLevelConditionFactory(loggerFactory));
         questRegistries.event().register("mcmmoexp", new McMMOAddExpEventFactory(loggerFactory, data));
         final BetonQuestLogger log = api.getLoggerFactory().create(McMMOIntegrator.class);
         try {

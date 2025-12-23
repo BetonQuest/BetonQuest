@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
  * Condition that checks if a player is within a certain distance of a specific MythicMob.
  */
 public class MythicMobDistanceCondition implements OnlineCondition {
+
     /**
      * The Mob Executor used to get MythicMobs.
      */
@@ -51,5 +52,10 @@ public class MythicMobDistanceCondition implements OnlineCondition {
                     final ActiveMob activeMob = mobExecutor.getMythicMobInstance(entity);
                     return activeMob != null && activeMob.getType().equals(mob);
                 });
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

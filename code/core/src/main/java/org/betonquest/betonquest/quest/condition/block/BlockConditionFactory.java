@@ -4,14 +4,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 
@@ -21,27 +18,19 @@ import org.bukkit.Location;
 public class BlockConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the test for block condition factory.
-     *
-     * @param data the data used for checking the condition on the main thread
      */
-    public BlockConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public BlockConditionFactory() {
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerCondition(parseBlockCondition(instruction), data);
+        return parseBlockCondition(instruction);
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerlessCondition(parseBlockCondition(instruction), data);
+        return parseBlockCondition(instruction);
     }
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {

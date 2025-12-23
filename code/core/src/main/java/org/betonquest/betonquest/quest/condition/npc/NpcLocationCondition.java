@@ -68,4 +68,9 @@ public class NpcLocationCondition implements NullableCondition {
         final double radius = this.radius.getValue(profile).doubleValue();
         return npcLocation.distanceSquared(location) <= radius * radius;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

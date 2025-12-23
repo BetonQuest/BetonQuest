@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.bukkit.inventory.EquipmentSlot;
 
 /**
@@ -23,19 +21,12 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the item durability factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param data          the data used for checking the condition on the main thread
      */
-    public ItemDurabilityConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public ItemDurabilityConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -44,8 +35,6 @@ public class ItemDurabilityConditionFactory implements PlayerConditionFactory {
         final Variable<Number> amount = instruction.get(instruction.getParsers().number());
         final boolean relative = instruction.hasArgument("relative");
         final BetonQuestLogger log = loggerFactory.create(ItemDurabilityCondition.class);
-        return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new ItemDurabilityCondition(slot, amount, relative), log, instruction.getPackage()), data
-        );
+        return new OnlineConditionAdapter(new ItemDurabilityCondition(slot, amount, relative), log, instruction.getPackage());
     }
 }

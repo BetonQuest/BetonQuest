@@ -29,4 +29,9 @@ public class HealthCondition implements OnlineCondition {
         final double expectedHealth = health.getValue(profile).doubleValue();
         return profile.getPlayer().getHealth() >= expectedHealth;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

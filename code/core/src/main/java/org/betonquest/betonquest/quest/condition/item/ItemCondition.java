@@ -58,4 +58,9 @@ public class ItemCondition implements OnlineCondition {
         }
         return true;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

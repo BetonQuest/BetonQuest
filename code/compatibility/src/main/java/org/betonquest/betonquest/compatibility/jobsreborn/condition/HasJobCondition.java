@@ -30,4 +30,9 @@ public class HasJobCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         return Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression(job.getValue(profile)) != null;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

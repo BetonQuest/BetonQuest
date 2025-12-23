@@ -36,4 +36,9 @@ public class ArmorRatingCondition implements OnlineCondition {
         final int rating = requiredRating.getValue(profile).intValue();
         return defensePoints >= rating;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

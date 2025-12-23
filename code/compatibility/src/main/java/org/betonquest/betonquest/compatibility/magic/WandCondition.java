@@ -143,4 +143,9 @@ public class WandCondition implements OnlineCondition {
         }
         return true;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

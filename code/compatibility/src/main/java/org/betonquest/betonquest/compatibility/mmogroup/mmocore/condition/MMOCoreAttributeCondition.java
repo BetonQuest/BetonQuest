@@ -47,4 +47,9 @@ public class MMOCoreAttributeCondition implements PlayerCondition {
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

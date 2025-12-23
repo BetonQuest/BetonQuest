@@ -4,15 +4,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
@@ -23,11 +20,6 @@ import org.bukkit.World;
 public class WeatherConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * The variable processor used to process variables.
      */
     private final Variables variables;
@@ -35,11 +27,9 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     /**
      * Create the weather condition factory.
      *
-     * @param data      the data used for checking the condition on the main thread
      * @param variables the variable processor to create and resolve variables
      */
-    public WeatherConditionFactory(final PrimaryServerThreadData data, final Variables variables) {
-        this.data = data;
+    public WeatherConditionFactory(final Variables variables) {
         this.variables = variables;
     }
 
@@ -47,8 +37,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Variable<World> world = instruction.get(instruction.getValue("world", "%location.world%"), instruction.getParsers().world());
-        return new PrimaryServerThreadPlayerCondition(
-                new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
+        return new NullableConditionAdapter(new WeatherCondition(weather, world));
     }
 
     @Override
@@ -59,7 +48,6 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
         }
         final Variable<Weather> weather = instruction.get(Weather::parseWeather);
         final Variable<World> world = new DefaultVariable<>(variables, instruction.getPackage(), worldString, instruction.getParsers().world());
-        return new PrimaryServerThreadPlayerlessCondition(
-                new NullableConditionAdapter(new WeatherCondition(weather, world)), data);
+        return new NullableConditionAdapter(new WeatherCondition(weather, world));
     }
 }

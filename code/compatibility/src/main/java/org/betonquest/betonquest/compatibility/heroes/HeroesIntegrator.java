@@ -43,9 +43,9 @@ public class HeroesIntegrator implements Integrator {
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
-        conditionRegistry.register("heroesattribute", new HeroesAttributeConditionFactory(loggerFactory, data, characterManager));
-        conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, data, characterManager, classManager));
-        conditionRegistry.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, data, characterManager));
+        conditionRegistry.register("heroesattribute", new HeroesAttributeConditionFactory(loggerFactory, characterManager));
+        conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, characterManager, classManager));
+        conditionRegistry.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, characterManager));
 
         questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, data, characterManager));
 

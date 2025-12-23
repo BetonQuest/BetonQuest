@@ -29,4 +29,9 @@ public class EffectCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().hasPotionEffect(type.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

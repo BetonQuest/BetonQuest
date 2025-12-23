@@ -14,6 +14,7 @@ import org.betonquest.betonquest.util.Utils;
  * Checks whether a player has the required skill level.
  */
 public class AuraSkillsLevelCondition implements PlayerCondition {
+
     /**
      * The {@link AuraSkillsApi}.
      */
@@ -63,5 +64,10 @@ public class AuraSkillsLevelCondition implements PlayerCondition {
         final int targetLevel = targetLevelVar.getValue(profile).intValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

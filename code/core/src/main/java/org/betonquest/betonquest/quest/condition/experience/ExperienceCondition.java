@@ -30,4 +30,9 @@ public class ExperienceCondition implements OnlineCondition {
         final double amount = this.amount.getValue(profile).doubleValue();
         return profile.getPlayer().getLevel() + profile.getPlayer().getExp() >= amount;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

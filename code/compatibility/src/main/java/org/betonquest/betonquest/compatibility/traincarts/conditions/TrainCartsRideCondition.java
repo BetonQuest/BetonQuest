@@ -11,6 +11,7 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsUtils;
  * It returns {@code true} if the player is riding the train with the specified name, otherwise {@code false}.
  */
 public class TrainCartsRideCondition implements OnlineCondition {
+
     /**
      * The name of the train.
      */
@@ -28,5 +29,10 @@ public class TrainCartsRideCondition implements OnlineCondition {
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
         return TrainCartsUtils.isRidingTrainCart(profile, trainName.getValue(profile));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

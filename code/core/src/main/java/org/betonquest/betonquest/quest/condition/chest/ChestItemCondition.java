@@ -70,4 +70,9 @@ public class ChestItemCondition implements NullableCondition {
         }
         return counter == resolvedItems.size();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

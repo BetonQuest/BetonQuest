@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
  * If a player has reached a certain level of drunkenness.
  */
 public class DrunkCondition implements OnlineCondition {
+
     /**
      * The drunkenness level.
      */
@@ -34,5 +35,10 @@ public class DrunkCondition implements OnlineCondition {
 
         final BPlayer bPlayer = BreweryApi.getBPlayer(profile.getPlayer());
         return bPlayer != null && bPlayer.getDrunkeness() >= drunkenness;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

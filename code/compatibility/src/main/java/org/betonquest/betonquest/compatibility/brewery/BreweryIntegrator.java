@@ -35,9 +35,9 @@ public class BreweryIntegrator implements Integrator {
         eventRegistry.register("takebrew", new TakeBrewEventFactory(loggerFactory, data));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
-        conditionRegistry.register("drunk", new DrunkConditionFactory(loggerFactory, data));
-        conditionRegistry.register("drunkquality", new DrunkQualityConditionFactory(loggerFactory, data));
-        conditionRegistry.register("hasbrew", new HasBrewConditionFactory(loggerFactory, data));
+        conditionRegistry.register("drunk", new DrunkConditionFactory(loggerFactory));
+        conditionRegistry.register("drunkquality", new DrunkQualityConditionFactory(loggerFactory));
+        conditionRegistry.register("hasbrew", new HasBrewConditionFactory(loggerFactory));
     }
 
     @Override

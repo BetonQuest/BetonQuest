@@ -18,4 +18,9 @@ public class BurningCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) {
         return profile.getPlayer().getFireTicks() > 0;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

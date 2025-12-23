@@ -3,10 +3,8 @@ package org.betonquest.betonquest.compatibility.shopkeepers;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory to create {@link HavingShopCondition}s from {@link Instruction}s.
@@ -14,22 +12,14 @@ import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadP
 public class HavingShopConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new condition factory.
-     *
-     * @param data the data for primary server thread access
      */
-    public HavingShopConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public HavingShopConditionFactory() {
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Number> amount = instruction.get(instruction.getParsers().number());
-        return new PrimaryServerThreadPlayerCondition(new HavingShopCondition(amount), data);
+        return new HavingShopCondition(amount);
     }
 }

@@ -43,4 +43,9 @@ public class LocationCondition implements OnlineCondition {
         final double pRange = range.getValue(profile).doubleValue();
         return player.getLocation().distanceSquared(location) <= pRange * pRange;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }
