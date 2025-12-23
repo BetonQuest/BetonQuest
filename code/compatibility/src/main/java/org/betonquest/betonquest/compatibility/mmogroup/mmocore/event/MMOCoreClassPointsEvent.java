@@ -31,4 +31,9 @@ public class MMOCoreClassPointsEvent implements PlayerEvent {
         final int amount = amountVar.getValue(profile).intValue();
         data.giveClassPoints(amount);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

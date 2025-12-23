@@ -6,14 +6,11 @@ import org.betonquest.betonquest.api.common.function.Selector;
 import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -33,24 +30,17 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private final Server server;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Creates the time event factory.
      *
      * @param server the server to use
-     * @param data   the data for primary server thread access
      */
-    public TimeEventFactory(final Server server, final PrimaryServerThreadData data) {
+    public TimeEventFactory(final Server server) {
         this.server = server;
-        this.data = data;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadEvent(createTimeEvent(instruction), data);
+        return createTimeEvent(instruction);
     }
 
     @Override
@@ -58,7 +48,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
         if (instruction.copy().string().get("world").isEmpty()) {
             return new DoNothingPlayerlessEvent();
         } else {
-            return new PrimaryServerThreadPlayerlessEvent(createTimeEvent(instruction), data);
+            return createTimeEvent(instruction);
         }
     }
 

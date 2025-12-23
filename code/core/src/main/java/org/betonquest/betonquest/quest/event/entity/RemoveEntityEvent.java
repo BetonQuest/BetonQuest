@@ -91,4 +91,9 @@ public class RemoveEntityEvent implements NullableEvent {
                     );
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

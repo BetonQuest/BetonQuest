@@ -8,6 +8,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -16,22 +18,23 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class SequentialPlayerlessEventTest {
+
     @Test
     void testCanExecuteWithZeroEvents() {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent();
+        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of());
         assertDoesNotThrow(event::execute, "SequentialStaticEvent should not fail with no events to execute.");
     }
 
     @Test
     void testExecutesOneEvent(@Mock final PlayerlessEvent internal) throws QuestException {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(internal);
+        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(internal));
         event.execute();
         verify(internal).execute();
     }
 
     @Test
     void testExecutesMultipleEvents(@Mock final PlayerlessEvent first, @Mock final PlayerlessEvent second) throws QuestException {
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(first, second);
+        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(first, second));
 
         event.execute();
 
@@ -44,7 +47,7 @@ class SequentialPlayerlessEventTest {
     void testFailuresArePassedOn(@Mock final PlayerlessEvent internal) throws QuestException {
         final QuestException exception = new QuestException("test exception");
         doThrow(exception).when(internal).execute();
-        final PlayerlessEvent event = new SequentialPlayerlessEvent(internal);
+        final PlayerlessEvent event = new SequentialPlayerlessEvent(List.of(internal));
 
         final QuestException thrown
                 = assertThrows(QuestException.class, event::execute, "The failure of an internal event should fail the sequential event immediately.");

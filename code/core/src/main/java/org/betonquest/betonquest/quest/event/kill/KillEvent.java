@@ -18,4 +18,9 @@ public class KillEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) {
         profile.getPlayer().setHealth(0);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

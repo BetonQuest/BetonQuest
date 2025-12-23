@@ -14,6 +14,7 @@ import java.util.Optional;
  * It supports a fallback if the player is not online.
  */
 public final class OnlineEventAdapter implements PlayerEvent {
+
     /**
      * Event to run with the online profile.
      */
@@ -59,5 +60,10 @@ public final class OnlineEventAdapter implements PlayerEvent {
         } else {
             fallbackPlayerEvent.execute(profile);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return onlineEvent.isPrimaryThreadEnforced() || fallbackPlayerEvent.isPrimaryThreadEnforced();
     }
 }

@@ -7,14 +7,11 @@ import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParse
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -29,22 +26,14 @@ import java.util.List;
 public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEventFactory {
 
     /**
-     * Data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * The parser for entity types.
      */
     private final DecoratedArgumentParser<EntityType> entityTypeParser;
 
     /**
      * Create a new factory for {@link SpawnMobEvent}s.
-     *
-     * @param data the primary server thread data required for main thread checking
      */
-    public SpawnMobEventFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public SpawnMobEventFactory() {
         this.entityTypeParser = new DecoratableArgumentParser<>(new EnumParser<>(EntityType.class))
                 .validate(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()),
                         "EntityType '%s' is not a mob");
@@ -52,12 +41,12 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadEvent(createSpawnMobEvent(instruction), data);
+        return createSpawnMobEvent(instruction);
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerlessEvent(createSpawnMobEvent(instruction), data);
+        return createSpawnMobEvent(instruction);
     }
 
     /**

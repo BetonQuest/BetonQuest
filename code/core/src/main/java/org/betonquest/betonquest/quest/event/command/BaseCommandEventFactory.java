@@ -4,8 +4,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
+import org.bukkit.Server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,9 +26,9 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
     private static final Pattern CONDITIONS_REGEX = Pattern.compile("conditions?:\\S*\\s*$");
 
     /**
-     * Data for primary server thread access.
+     * The server to execute commands on.
      */
-    protected final PrimaryServerThreadData data;
+    protected final Server server;
 
     /**
      * Logger factory to create a logger for the events.
@@ -39,11 +39,11 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
      * Create the sudo event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
+     * @param server        the server to execute commands on
      */
-    public BaseCommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public BaseCommandEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
+        this.server = server;
     }
 
     /**

@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 
 /**
@@ -23,19 +21,12 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new Factory to create Give Brew Events.
      *
      * @param loggerFactory the logger factory.
-     * @param data          the data used for primary server access.
      */
-    public GiveBrewEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public GiveBrewEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -45,7 +36,6 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
         final Variable<String> nameVar = instruction.string().get();
         final Variable<IdentifierType> mode = instruction.enumeration(IdentifierType.class).get("mode", IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
-        return new PrimaryServerThreadEvent(
-                new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar, mode), logger, instruction.getPackage()), data);
+        return new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar, mode), logger, instruction.getPackage());
     }
 }

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -43,8 +42,6 @@ public class JobsRebornIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("nujobs_canlevel", new CanLevelConditionFactory());
@@ -53,12 +50,12 @@ public class JobsRebornIntegrator implements Integrator {
         conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory());
 
         final EventRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("nujobs_addexp", new AddExpEventFactory(data));
-        eventRegistry.register("nujobs_addlevel", new AddLevelEventFactory(data));
-        eventRegistry.register("nujobs_dellevel", new DelLevelEventFactory(data));
-        eventRegistry.register("nujobs_joinjob", new JoinJobEventFactory(data));
-        eventRegistry.register("nujobs_leavejob", new LeaveJobEventFactory(data));
-        eventRegistry.register("nujobs_setlevel", new SetLevelEventFactory(data));
+        eventRegistry.register("nujobs_addexp", new AddExpEventFactory());
+        eventRegistry.register("nujobs_addlevel", new AddLevelEventFactory());
+        eventRegistry.register("nujobs_dellevel", new DelLevelEventFactory());
+        eventRegistry.register("nujobs_joinjob", new JoinJobEventFactory());
+        eventRegistry.register("nujobs_leavejob", new LeaveJobEventFactory());
+        eventRegistry.register("nujobs_setlevel", new SetLevelEventFactory());
 
         final FeatureTypeRegistry<Objective> objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("nujobs_joinjob", new JoinJobObjectiveFactory());

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.util.Utils;
  * Gives experience to a player in a skill.
  */
 public class AuraSkillsExperienceEvent implements PlayerEvent {
+
     /**
      * The {@link AuraSkillsApi}.
      */
@@ -70,5 +71,10 @@ public class AuraSkillsExperienceEvent implements PlayerEvent {
             final double requiredXP = auraSkillsApi.getXpRequirements().getXpRequired(skill, currentLevel + i);
             user.addSkillXpRaw(skill, requiredXP);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

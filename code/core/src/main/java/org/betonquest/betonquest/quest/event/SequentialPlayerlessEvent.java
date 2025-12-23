@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * A static event that is composed of other static events executed in sequence. If an error occurs execution is stopped
@@ -14,7 +15,7 @@ public class SequentialPlayerlessEvent implements PlayerlessEvent {
     /**
      * Events to be executed.
      */
-    private final PlayerlessEvent[] playerlessEvents;
+    private final List<PlayerlessEvent> playerlessEvents;
 
     /**
      * Create a static event sequence. The events at the front of the array will be executed first, at the end will be
@@ -22,8 +23,8 @@ public class SequentialPlayerlessEvent implements PlayerlessEvent {
      *
      * @param playerlessEvents events to be executed
      */
-    public SequentialPlayerlessEvent(final PlayerlessEvent... playerlessEvents) {
-        this.playerlessEvents = Arrays.copyOf(playerlessEvents, playerlessEvents.length);
+    public SequentialPlayerlessEvent(final List<PlayerlessEvent> playerlessEvents) {
+        this.playerlessEvents = playerlessEvents;
     }
 
     @Override
@@ -31,5 +32,10 @@ public class SequentialPlayerlessEvent implements PlayerlessEvent {
         for (final PlayerlessEvent playerlessEvent : playerlessEvents) {
             playerlessEvent.execute();
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return playerlessEvents.stream().anyMatch(PrimaryThreadEnforceable::isPrimaryThreadEnforced);
     }
 }

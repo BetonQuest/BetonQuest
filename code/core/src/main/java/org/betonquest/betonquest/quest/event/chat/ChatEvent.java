@@ -30,4 +30,9 @@ public class ChatEvent implements OnlineEvent {
             player.chat(message.replace("%player%", player.getName()));
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

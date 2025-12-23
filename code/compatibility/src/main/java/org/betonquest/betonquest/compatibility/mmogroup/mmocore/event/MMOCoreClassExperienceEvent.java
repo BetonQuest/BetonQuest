@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Event to add class experience to a player.
  */
 public class MMOCoreClassExperienceEvent implements PlayerEvent {
+
     /**
      * Amount to grant.
      */
@@ -42,5 +43,10 @@ public class MMOCoreClassExperienceEvent implements PlayerEvent {
         } else {
             mmoData.giveExperience(amount, EXPSource.QUEST);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

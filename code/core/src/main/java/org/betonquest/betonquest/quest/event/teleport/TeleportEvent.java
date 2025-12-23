@@ -12,6 +12,7 @@ import org.bukkit.Location;
  * Teleports the player to specified location.
  */
 public class TeleportEvent implements OnlineEvent {
+
     /**
      * Conversation API.
      */
@@ -41,5 +42,10 @@ public class TeleportEvent implements OnlineEvent {
         }
         final Location playerLocation = location.getValue(profile);
         profile.getPlayer().teleport(playerLocation);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -54,4 +54,9 @@ public class ScoreboardObjectiveEvent implements PlayerEvent {
         final Score score = obj.getScore(profile.getPlayer());
         score.setScore(modification.modify(score.getScore(), count.getValue(profile).doubleValue()));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

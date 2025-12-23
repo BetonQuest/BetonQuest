@@ -13,6 +13,7 @@ import java.util.function.Supplier;
  * function will be called every time the event is executed.
  */
 public class OnlineProfileGroupPlayerlessEventAdapter implements PlayerlessEvent {
+
     /**
      * The supplier for generating the group of online players to use.
      */
@@ -39,5 +40,10 @@ public class OnlineProfileGroupPlayerlessEventAdapter implements PlayerlessEvent
         for (final OnlineProfile onlineProfile : profileCollectionSupplier.get()) {
             playerEvent.execute(onlineProfile);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return playerEvent.isPrimaryThreadEnforced();
     }
 }

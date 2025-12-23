@@ -5,7 +5,6 @@ import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.classes.HeroClassManager;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -36,7 +35,6 @@ public class HeroesIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final CharacterManager characterManager = Heroes.getInstance().getCharacterManager();
         final HeroClassManager classManager = Heroes.getInstance().getClassManager();
@@ -47,7 +45,7 @@ public class HeroesIntegrator implements Integrator {
         conditionRegistry.register("heroesclass", new HeroesClassConditionFactory(loggerFactory, characterManager, classManager));
         conditionRegistry.register("heroesskill", new HeroesSkillConditionFactory(loggerFactory, characterManager));
 
-        questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, data, characterManager));
+        questRegistries.event().register("heroesexp", new HeroesExperienceEventFactory(loggerFactory, characterManager));
 
         plugin.getServer().getPluginManager().registerEvents(new HeroesMobKillListener(api.getProfileProvider()), plugin);
     }

@@ -55,4 +55,9 @@ public class DoorEvent implements NullableEvent {
             throw new QuestException(message);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

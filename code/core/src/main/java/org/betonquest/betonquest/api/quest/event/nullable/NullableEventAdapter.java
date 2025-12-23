@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
  * common implementation of the {@link NullableEvent}.
  */
 public final class NullableEventAdapter implements PlayerEvent, PlayerlessEvent {
+
     /**
      * Common null-safe event implementation.
      */
@@ -32,5 +33,10 @@ public final class NullableEventAdapter implements PlayerEvent, PlayerlessEvent 
     @Override
     public void execute() throws QuestException {
         event.execute(null);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return event.isPrimaryThreadEnforced();
     }
 }

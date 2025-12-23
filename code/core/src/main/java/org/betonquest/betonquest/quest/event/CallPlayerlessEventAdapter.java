@@ -28,4 +28,9 @@ public class CallPlayerlessEventAdapter implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         event.execute();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return event.isPrimaryThreadEnforced();
+    }
 }

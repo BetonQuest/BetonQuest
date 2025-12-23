@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.shopkeepers;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -33,9 +32,8 @@ public class ShopkeepersIntegrator implements Integrator {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         questRegistries.condition().register("shopamount", new HavingShopConditionFactory());
-        questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory(), data));
+        questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory()));
     }
 
     @Override

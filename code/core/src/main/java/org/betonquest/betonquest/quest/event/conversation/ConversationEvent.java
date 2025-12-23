@@ -39,4 +39,9 @@ public class ConversationEvent implements OnlineEvent {
         final Pair<ConversationID, String> conversation = this.conversation.getValue(profile);
         conversationApi.start(profile, conversation.getKey(), profile.getPlayer().getLocation(), conversation.getValue());
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

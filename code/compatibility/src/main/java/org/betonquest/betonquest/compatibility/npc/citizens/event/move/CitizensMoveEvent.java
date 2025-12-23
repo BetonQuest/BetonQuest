@@ -62,4 +62,9 @@ public class CitizensMoveEvent implements PlayerEvent {
         }
         citizensMoveController.startNew(npc, profile, moveData);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

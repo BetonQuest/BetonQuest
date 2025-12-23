@@ -35,4 +35,9 @@ public class ScoreboardTagEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         action.getValue(profile).execute(profile, tag.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

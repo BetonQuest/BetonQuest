@@ -10,6 +10,7 @@ import java.util.function.Function;
  * Gives journal to the player.
  */
 public class GiveJournalEvent implements OnlineEvent {
+
     /**
      * Function to get the player data for a given online profile.
      */
@@ -27,5 +28,10 @@ public class GiveJournalEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) {
         playerDataSource.apply(profile).getJournal().addToInv();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

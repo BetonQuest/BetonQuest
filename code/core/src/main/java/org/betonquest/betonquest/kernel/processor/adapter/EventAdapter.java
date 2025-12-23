@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Wrapper for player and playerless events.
  */
-public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
+public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> implements PrimaryThreadEnforceable {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -93,5 +94,10 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         }
         playerless.execute();
         return true;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return player != null && player.isPrimaryThreadEnforced() || playerless != null && playerless.isPrimaryThreadEnforced();
     }
 }

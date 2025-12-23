@@ -6,10 +6,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.List;
@@ -31,28 +29,20 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Creates the FakeBlock event factory.
      *
      * @param groupService       the {@link GroupService} service.
      * @param playerGroupService the {@link PlayerGroupService}.
-     * @param data               the data for primary server thread access
      */
     public FakeBlockEventFactory(final RegisteredServiceProvider<GroupService> groupService,
-                                 final RegisteredServiceProvider<PlayerGroupService> playerGroupService,
-                                 final PrimaryServerThreadData data) {
-        this.data = data;
+                                 final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
         this.groupService = groupService;
         this.playerGroupService = playerGroupService;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadEvent(getFakeBlockEvent(instruction), data);
+        return getFakeBlockEvent(instruction);
     }
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {

@@ -35,4 +35,9 @@ public class ExperienceEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         experienceModification.apply(profile.getPlayer(), amount.getValue(profile).floatValue());
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

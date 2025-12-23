@@ -47,4 +47,9 @@ public class TimeEvent implements NullableEvent {
         final TimeChange change = timeChange.getValue(profile);
         change.applyTo(world, hourFormat);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

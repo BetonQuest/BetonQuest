@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Event to add job experience.
  */
 public class AddExpEvent implements PlayerEvent {
+
     /**
      * Job to add experience to.
      */
@@ -39,5 +40,10 @@ public class AddExpEvent implements PlayerEvent {
         if (progression != null) {
             progression.addExperience(nAddExperience.getValue(profile).doubleValue());
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

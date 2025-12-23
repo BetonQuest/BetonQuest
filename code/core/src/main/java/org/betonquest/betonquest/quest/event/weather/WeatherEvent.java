@@ -46,4 +46,9 @@ public class WeatherEvent implements NullableEvent {
         final World world = worldSelector.selectFor(profile);
         weather.getValue(profile).applyTo(world, duration.getValue(profile).intValue());
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

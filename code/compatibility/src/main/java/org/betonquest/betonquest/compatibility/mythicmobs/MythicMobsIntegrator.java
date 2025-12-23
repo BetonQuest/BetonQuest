@@ -7,7 +7,6 @@ import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
 import org.betonquest.betonquest.compatibility.HookException;
@@ -70,12 +69,11 @@ public class MythicMobsIntegrator implements Integrator {
         manager.registerEvents(mythicHider, plugin);
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor)));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
         questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory,
-                new MythicMobDoubleParser(mobExecutor), data, mythicHider));
+                new MythicMobDoubleParser(mobExecutor), plugin, mythicHider));
         questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
 
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();

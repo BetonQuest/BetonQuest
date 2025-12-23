@@ -37,4 +37,9 @@ public class NotifyEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         notifyIO.sendNotify(text.asComponent(profile), profile);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

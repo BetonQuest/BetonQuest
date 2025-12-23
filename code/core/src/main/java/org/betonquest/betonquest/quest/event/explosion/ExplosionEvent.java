@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * Spawns an explosion in a given location and with given stats.
  */
 public class ExplosionEvent implements NullableEvent {
+
     /**
      * The location of the explosion.
      */
@@ -51,5 +52,10 @@ public class ExplosionEvent implements NullableEvent {
         final Location resolvedLocation = location.getValue(profile);
         resolvedLocation.getWorld().createExplosion(resolvedLocation,
                 power.getValue(profile).floatValue(), setsFire.getValue(profile), breaksBlocks.getValue(profile));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

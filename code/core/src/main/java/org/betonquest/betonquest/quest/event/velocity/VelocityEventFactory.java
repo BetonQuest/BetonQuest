@@ -4,11 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.bukkit.util.Vector;
 
 /**
@@ -22,19 +20,12 @@ public class VelocityEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the velocity event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
      */
-    public VelocityEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public VelocityEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -47,10 +38,7 @@ public class VelocityEventFactory implements PlayerEventFactory {
                 .get("direction", VectorDirection.ABSOLUTE);
         final Variable<VectorModification> modification = instruction.enumeration(VectorModification.class)
                 .get("modification", VectorModification.SET);
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new VelocityEvent(vector, direction, modification),
-                loggerFactory.create(VelocityEvent.class),
-                instruction.getPackage()
-        ), data);
+        return new OnlineEventAdapter(new VelocityEvent(vector, direction, modification),
+                loggerFactory.create(VelocityEvent.class), instruction.getPackage());
     }
 }

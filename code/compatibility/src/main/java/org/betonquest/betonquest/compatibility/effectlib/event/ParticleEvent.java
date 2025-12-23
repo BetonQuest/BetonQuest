@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * Displays an effect.
  */
 public class ParticleEvent implements OnlineEvent {
+
     /**
      * Effect manager which will create and control the particles.
      */
@@ -70,5 +71,10 @@ public class ParticleEvent implements OnlineEvent {
                 new DynamicLocation(null, null),
                 (ConfigurationSection) null,
                 targetPlayer);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

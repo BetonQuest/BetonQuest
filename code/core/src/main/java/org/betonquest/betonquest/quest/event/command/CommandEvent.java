@@ -57,4 +57,9 @@ public class CommandEvent implements NullableEvent {
             throw new QuestException("Unhandled exception executing command: " + exception.getMessage(), exception);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

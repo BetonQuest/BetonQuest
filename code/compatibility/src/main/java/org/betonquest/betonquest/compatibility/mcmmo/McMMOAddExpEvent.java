@@ -37,4 +37,9 @@ public class McMMOAddExpEvent implements OnlineEvent {
         final String skillType = this.skillType.getValue(profile);
         ExperienceAPI.addRawXP(profile.getPlayer(), skillType, exp.getValue(profile).intValue(), "UNKNOWN");
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

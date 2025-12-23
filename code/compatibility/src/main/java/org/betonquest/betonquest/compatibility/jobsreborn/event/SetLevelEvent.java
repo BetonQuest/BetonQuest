@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Event to set a job level.
  */
 public class SetLevelEvent implements PlayerEvent {
+
     /**
      * Job to add experience to.
      */
@@ -40,5 +41,10 @@ public class SetLevelEvent implements PlayerEvent {
         if (progression != null) {
             progression.setLevel(Math.min(progression.getJob().getMaxLevel(), nLevel.getValue(profile).intValue()));
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

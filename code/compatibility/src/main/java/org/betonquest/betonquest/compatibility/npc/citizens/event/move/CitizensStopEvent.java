@@ -52,4 +52,9 @@ public class CitizensStopEvent implements NullableEvent {
         citizensMoveController.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

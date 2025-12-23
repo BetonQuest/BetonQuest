@@ -30,4 +30,9 @@ public class LeaveJobEvent implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).leaveJob(job.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

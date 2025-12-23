@@ -97,4 +97,9 @@ public class PasteSchematicEvent implements NullableEvent {
             return reader.read();
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

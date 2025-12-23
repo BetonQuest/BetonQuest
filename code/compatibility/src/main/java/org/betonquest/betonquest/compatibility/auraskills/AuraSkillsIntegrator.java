@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.auraskills;
 
 import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -23,12 +22,10 @@ public class AuraSkillsIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-
         final AuraSkillsApi auraSkillsApi = AuraSkillsApi.get();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
 
-        questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi, data));
+        questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi));
