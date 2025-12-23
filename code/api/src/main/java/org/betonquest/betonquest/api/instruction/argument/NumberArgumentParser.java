@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.instruction.argument;
 import org.jetbrains.annotations.Contract;
 
 /**
- * A decorated {@link Number} argument offering more options on top of the {@link DecoratedArgument} itself.
+ * A decorated {@link Number} argument offering more options on top of the {@link DecoratedArgumentParser} itself.
  */
 public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
 

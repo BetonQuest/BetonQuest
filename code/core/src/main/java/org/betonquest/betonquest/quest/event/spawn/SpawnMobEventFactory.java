@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
+import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
@@ -35,7 +36,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     /**
      * The parser for entity types.
      */
-    private final DecoratableArgument<EntityType> entityTypeParser;
+    private final DecoratedArgumentParser<EntityType> entityTypeParser;
 
     /**
      * Create a new factory for {@link SpawnMobEvent}s.
@@ -44,7 +45,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      */
     public SpawnMobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.entityTypeParser = new DecoratableArgument<>(new EnumParser<>(EntityType.class))
+        this.entityTypeParser = new DecoratableArgumentParser<>(new EnumParser<>(EntityType.class))
                 .validate(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()),
                         "EntityType '%s' is not a mob");
     }

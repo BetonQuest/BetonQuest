@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.ConversationApi;
-import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
@@ -27,6 +27,7 @@ import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
+import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;
@@ -218,13 +219,13 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
         /**
          * The number parser to use for parsing numbers.
          */
-        private final DecoratableArgument<Number> numberParser;
+        private final DecoratedArgumentParser<Number> numberParser;
 
         private CreationHelper(final QuestPackage pack, final ConfigurationSection section) {
             this.pack = pack;
             this.section = section;
             this.stringParser = new StringParser();
-            this.numberParser = new DecoratableArgument<>(NumberParser.DEFAULT)
+            this.numberParser = new DecoratableArgumentParser<>(NumberParser.DEFAULT)
                     .validate(value -> value.doubleValue() > 0,
                             "Expected a non-negative number for 'interceptor_delay', got '%s' instead.");
         }
@@ -259,7 +260,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationID, Conv
 
         private Variable<Number> parseInterceptorDelay() throws QuestException {
             final String rawInterceptorDelay = defaulting("interceptor_delay", "conversation.interceptor.delay", "50");
-            return new DefaultVariable<>(variables, pack, rawInterceptorDelay, numberParser);
+            return new DefaultVariable<>(variables, pack, rawInterceptorDelay, value -> numberParser.apply(variables, packManager, pack, value));
         }
     }
 }

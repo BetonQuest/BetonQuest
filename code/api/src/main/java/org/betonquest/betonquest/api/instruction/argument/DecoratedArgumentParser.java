@@ -1,13 +1,16 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
+import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 /**
- * A decorated {@link Argument}.
+ * A decorated {@link InstructionArgumentParser}.
  *
  * @param <T> the type of the argument
  */
@@ -37,9 +40,10 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
     /**
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
      * applying the {@link DecoratedArgumentParser} this method is called on.
-     * If the expected string matches the {@link String} argument of {@link Argument#apply(String)}
+     * If the expected string matches the {@link String} argument of
+     * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgumentParser} instance is called.
+     * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the non-null value to return if the expected string matches
@@ -51,10 +55,11 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
     /**
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
      * applying the {@link DecoratedArgumentParser} this method is called on.
-     * If the expected string matches the {@link String} argument of {@link Argument#apply(String)}
+     * If the expected string matches the {@link String} argument of
+     * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgumentParser} instance is called.
-     * Since {@link Argument#apply(String)} must not return null, this method returns an {@link Optional} of the result.
+     * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
+     * Since apply must not return null, this method returns an {@link Optional} of the result.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the nullable value to return if the expected string matches

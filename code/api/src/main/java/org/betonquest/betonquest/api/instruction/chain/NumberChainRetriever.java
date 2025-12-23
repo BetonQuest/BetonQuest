@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.chain;
 
 import org.betonquest.betonquest.api.instruction.ValueValidator;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedNumberArgument;
+import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,33 +29,33 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
     NumberChainRetriever validate(ValueValidator<Number> validator, String errorMessage);
 
     /**
-     * Adds a lower bound to the {@link DecoratedNumberArgument}.
+     * Adds a lower bound to the {@link NumberArgumentParser}.
      * This method should use validation to ensure the value to be above the given inclusive minimum.
      *
      * @param inclusiveMin the inclusive minimum to check against
-     * @return a new {@link DecoratedNumberArgument}
+     * @return a new {@link NumberArgumentParser}
      */
     @Contract(value = "_ -> new", pure = true)
     NumberChainRetriever atLeast(Number inclusiveMin);
 
     /**
-     * Adds an upper bound to the {@link DecoratedNumberArgument}.
+     * Adds an upper bound to the {@link NumberArgumentParser}.
      * This method should use validation to ensure the value to be below the given inclusive maximum.
      *
      * @param inclusiveMax the inclusive maximum to check against
-     * @return a new {@link DecoratedNumberArgument}
+     * @return a new {@link NumberArgumentParser}
      */
     @Contract(value = "_ -> new", pure = true)
     NumberChainRetriever atMost(Number inclusiveMax);
 
     /**
-     * Adds both a lower and upper bound to the {@link DecoratedNumberArgument}.
+     * Adds both a lower and upper bound to the {@link NumberArgumentParser}.
      * This method should use validation to ensure the value is between
      * the given inclusive minimum and exclusive maximum.
      *
      * @param inclusiveMin the inclusive minimum to check against
      * @param exclusiveMax the exclusive maximum to check against
-     * @return a new {@link DecoratedNumberArgument}
+     * @return a new {@link NumberArgumentParser}
      */
     @Contract(value = "_, _ -> new", pure = true)
     NumberChainRetriever inRange(Number inclusiveMin, Number exclusiveMax);

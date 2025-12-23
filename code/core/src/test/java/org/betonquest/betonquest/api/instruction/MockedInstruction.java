@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
-import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 
 import static org.mockito.Mockito.*;
 
@@ -21,7 +21,7 @@ public class MockedInstruction extends DefaultInstruction {
     private static final ArgumentParsers ARGUMENT_PARSERS = mock(ArgumentParsers.class);
 
     static {
-        when(ARGUMENT_PARSERS.string()).thenReturn(new DecoratableArgument<>(new StringParser()));
+        when(ARGUMENT_PARSERS.string()).thenReturn(new DecoratableArgumentParser<>(new StringParser()));
     }
 
     /**
