@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.NamespacedKey;

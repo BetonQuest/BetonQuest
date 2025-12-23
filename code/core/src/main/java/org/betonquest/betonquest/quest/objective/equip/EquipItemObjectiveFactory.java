@@ -4,8 +4,8 @@ import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 

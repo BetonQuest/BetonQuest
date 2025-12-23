@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.instruction.variable.resolver.PackageArgume
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends InstructionParts, ArgumentResolver, PackageArgumentResolver, IdentifierArgumentResolver, InstructionIdentifierArgumentResolver {
+public interface Instruction extends ChainableInstruction, InstructionParts, ArgumentResolver, PackageArgumentResolver, IdentifierArgumentResolver, InstructionIdentifierArgumentResolver {
 
     /**
      * Get the source QuestPackage.

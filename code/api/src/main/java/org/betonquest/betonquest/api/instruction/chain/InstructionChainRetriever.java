@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.instruction.chain;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 
 import java.util.List;
@@ -18,15 +19,17 @@ public interface InstructionChainRetriever<T> {
      * Retrieves the variable for the given type and the given settings in the chain.
      *
      * @return the variable
+     * @throws QuestException if the variable could not be resolved
      */
-    Variable<T> get();
+    Variable<T> get() throws QuestException;
 
     /**
      * Retrieves the variable for a list of the given type and the given settings in the chain.
      *
      * @return the variable
+     * @throws QuestException if the list could not be resolved
      */
-    Variable<List<T>> getList();
+    Variable<List<T>> getList() throws QuestException;
 
     /**
      * Retrieves the {@link Variable} for the given type and the given settings in the chain.
@@ -34,22 +37,37 @@ public interface InstructionChainRetriever<T> {
      *
      * @param argumentKey the argument key
      * @return the variable
+     * @throws QuestException if the variable could not be resolved
      */
-    Variable<Optional<T>> get(String argumentKey);
+    Optional<Variable<T>> get(String argumentKey) throws QuestException;
+
+    /**
+     * Retrieves the {@link Variable} for the given type and the given settings in the chain.
+     * Looking for a key-value argument and returning a {@link Variable} wrapping its value in an {@link Optional}
+     *
+     * @param argumentKey  the argument key
+     * @param defaultValue the default value to return if the argument is not present
+     * @return the variable
+     * @throws QuestException if the variable could not be resolved
+     */
+    Variable<T> get(String argumentKey, T defaultValue) throws QuestException;
 
     /**
      * Retrieves the {@link Variable} for a {@link List} of the given type {@link T} and the given settings in the chain.
      *
      * @param argumentKey the argument key
      * @return the variable
+     * @throws QuestException if the variable could not be resolved
      */
-    Variable<Optional<List<T>>> getList(String argumentKey);
+    Optional<Variable<List<T>>> getList(String argumentKey) throws QuestException;
 
     /**
-     * Sets a default value for the variable.
+     * Retrieves the {@link Variable} for a {@link List} of the given type {@link T} and the given settings in the chain.
      *
-     * @param defaultValue the default value
-     * @return a new {@link InstructionChainRetriever} with the default value set and carrying all previous settings
+     * @param argumentKey  the argument key
+     * @param defaultValue the default value to return if the argument is not present
+     * @return the variable
+     * @throws QuestException if the variable could not be resolved
      */
-    InstructionChainRetriever<T> def(T defaultValue);
+    Variable<List<T>> getList(String argumentKey, List<T> defaultValue) throws QuestException;
 }

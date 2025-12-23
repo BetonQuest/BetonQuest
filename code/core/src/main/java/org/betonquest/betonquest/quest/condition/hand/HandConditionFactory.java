@@ -2,8 +2,8 @@ package org.betonquest.betonquest.quest.condition.hand;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;

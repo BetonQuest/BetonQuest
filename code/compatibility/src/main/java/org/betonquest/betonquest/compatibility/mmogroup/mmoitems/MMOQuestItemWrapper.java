@@ -5,8 +5,8 @@ import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * Creates {@link MMOQuestItem}s from type and id.
  */
 public class MMOQuestItemWrapper implements QuestItemWrapper {
+
     /**
      * Plugin instance to get resolved Items.
      */

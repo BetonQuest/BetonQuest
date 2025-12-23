@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.quest.condition.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

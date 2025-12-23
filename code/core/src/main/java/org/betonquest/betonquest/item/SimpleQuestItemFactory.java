@@ -90,7 +90,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @return the parsed QuestItem
      * @throws QuestException when an error occurs while parsing
      */
-    public QuestItem parseInstruction(final String string) throws QuestException {
+    public org.betonquest.betonquest.api.item.QuestItem parseInstruction(final String string) throws QuestException {
         final String[] split = string.split(" ");
         final String material = split[0];
         final List<String> arguments = split.length > 1 ? List.of(split).subList(1, split.length) : List.of();
@@ -105,7 +105,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @return the parsed Quest Item
      * @throws QuestException when variables could not be resolved or handlers not be filled
      */
-    protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
+    protected org.betonquest.betonquest.api.item.QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
         final BlockSelector selector = new BlockSelector(material);
 
         final NameHandler name = new NameHandler(textParser);
@@ -207,10 +207,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      *
      * @param questItem the quest item to wrap.
      */
-    public record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
+    public record ShallowWrapper(org.betonquest.betonquest.api.item.QuestItem questItem) implements QuestItemWrapper {
 
         @Override
-        public QuestItem getItem(@Nullable final Profile profile) {
+        public org.betonquest.betonquest.api.item.QuestItem getItem(@Nullable final Profile profile) {
             return questItem;
         }
     }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -8,7 +9,7 @@ import org.bukkit.util.Vector;
 import java.util.UUID;
 
 /**
- * This offers implementations for {@link DecoratedArgument} to parse common types.
+ * This offers implementations for {@link DecoratedArgumentParser} to parse common types.
  */
 public interface ArgumentParsers {
 
@@ -17,56 +18,63 @@ public interface ArgumentParsers {
      *
      * @return a parser for strings
      */
-    DecoratedArgument<String> string();
+    DecoratedArgumentParser<String> string();
 
     /**
      * Default parser for {@link Boolean}.
      *
      * @return a parser for booleans
      */
-    DecoratedArgument<Boolean> bool();
+    DecoratedArgumentParser<Boolean> bool();
 
     /**
      * Default parser for {@link Vector}.
      *
      * @return a parser for vectors
      */
-    DecoratedArgument<Vector> vector();
+    DecoratedArgumentParser<Vector> vector();
 
     /**
      * Default parser for {@link World}.
      *
      * @return a parser for worlds
      */
-    DecoratedArgument<World> world();
+    DecoratedArgumentParser<World> world();
 
     /**
      * Default parser for {@link Location}.
      *
      * @return a parser for locations
      */
-    DecoratedArgument<Location> location();
+    DecoratedArgumentParser<Location> location();
+
+    /**
+     * Default parser for {@link QuestItemWrapper}.
+     *
+     * @return a parser for quest items
+     */
+    DecoratedArgumentParser<QuestItemWrapper> item();
 
     /**
      * Default parser for {@link Component}.
      *
      * @return a parser for components
      */
-    DecoratedArgument<Component> component();
+    DecoratedArgumentParser<Component> component();
 
     /**
      * Default parser for {@link UUID}.
      *
      * @return a parser for UUIDs
      */
-    DecoratedArgument<UUID> uuid();
+    DecoratedArgumentParser<UUID> uuid();
 
     /**
-     * Default parser for {@link Number} using {@link DecoratedNumberArgument}.
+     * Default parser for {@link Number} using {@link NumberArgumentParser}.
      *
      * @return a parser for numbers
      */
-    DecoratedNumberArgument number();
+    NumberArgumentParser number();
 
     /**
      * Default parser for an {@link Enum} type.
@@ -75,5 +83,5 @@ public interface ArgumentParsers {
      * @param <E>      the enum type
      * @return a parser for enums of the given type
      */
-    <E extends Enum<E>> DecoratedArgument<E> forEnum(Class<E> enumType);
+    <E extends Enum<E>> DecoratedArgumentParser<E> forEnum(Class<E> enumType);
 }

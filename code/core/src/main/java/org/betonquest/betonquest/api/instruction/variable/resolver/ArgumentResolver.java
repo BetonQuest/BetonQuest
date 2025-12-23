@@ -2,7 +2,8 @@ package org.betonquest.betonquest.api.instruction.variable.resolver;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Interface to parse values with {@link Argument}s.
+ * Interface to parse values with {@link InstructionArgumentParser}s.
  */
 public interface ArgumentResolver extends Resolver {
 
@@ -22,7 +23,19 @@ public interface ArgumentResolver extends Resolver {
      * @return the created value
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<T> get(final Argument<T> argument) throws QuestException {
+    default <T> Variable<T> get(final InstructionArgumentParser<T> argument) throws QuestException {
+        return get(nextElement(), argument);
+    }
+
+    /**
+     * Parses the {@link #nextElement()} string with a converter.
+     *
+     * @param argument the converter creating the value
+     * @param <T>      the value to create
+     * @return the created value
+     * @throws QuestException when there is no part left or the value can't be created
+     */
+    default <T> Variable<T> get(final SimpleArgumentParser<T> argument) throws QuestException {
         return get(nextElement(), argument);
     }
 
@@ -37,7 +50,22 @@ public interface ArgumentResolver extends Resolver {
      */
     @Contract("!null, _ -> !null")
     @Nullable
-    default <T> Variable<T> get(@Nullable final String string, final Argument<T> argument) throws QuestException {
+    default <T> Variable<T> get(@Nullable final String string, final InstructionArgumentParser<T> argument) throws QuestException {
+        return get(string, argument, null);
+    }
+
+    /**
+     * Parses the string with a converter.
+     *
+     * @param string   the string to convert
+     * @param argument the converter creating the value
+     * @param <T>      the value to create
+     * @return the created value or null if no string was provided
+     * @throws QuestException when the value can't be created
+     */
+    @Contract("!null, _ -> !null")
+    @Nullable
+    default <T> Variable<T> get(@Nullable final String string, final SimpleArgumentParser<T> argument) throws QuestException {
         return get(string, argument, null);
     }
 
@@ -53,7 +81,7 @@ public interface ArgumentResolver extends Resolver {
      */
     @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Nullable
-    <T> Variable<T> get(@Nullable String string, Argument<T> argument, @Nullable T defaultValue) throws QuestException;
+    <T> Variable<T> get(@Nullable String string, InstructionArgumentParser<T> argument, @Nullable T defaultValue) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter.
@@ -65,7 +93,7 @@ public interface ArgumentResolver extends Resolver {
      * @throws QuestException when the value can't be created
      */
     @Nullable
-    default <T> Variable<T> getValue(final String key, final Argument<T> argument) throws QuestException {
+    default <T> Variable<T> getValue(final String key, final InstructionArgumentParser<T> argument) throws QuestException {
         return getValue(key, argument, null);
     }
 
@@ -81,7 +109,7 @@ public interface ArgumentResolver extends Resolver {
      */
     @Contract("_, _, !null -> !null")
     @Nullable
-    default <T> Variable<T> getValue(final String key, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
+    default <T> Variable<T> getValue(final String key, final InstructionArgumentParser<T> argument, @Nullable final T defaultValue) throws QuestException {
         return get(getValue(key), argument, defaultValue);
     }
 
@@ -93,7 +121,19 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<List<T>> getList(final Argument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getList(final InstructionArgumentParser<T> argument) throws QuestException {
+        return getList(nextElement(), argument);
+    }
+
+    /**
+     * Parses the {@link #nextElement()} string with a converter to a list.
+     *
+     * @param argument the converter creating the value
+     * @param <T>      the value to create
+     * @return the list of values created or an empty list if the string was null or empty
+     * @throws QuestException when there is no part left or the value can't be created
+     */
+    default <T> Variable<List<T>> getList(final SimpleArgumentParser<T> argument) throws QuestException {
         return getList(nextElement(), argument);
     }
 
@@ -106,7 +146,20 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the value for the key was null or empty
      * @throws QuestException when there is no part left or the value can't be created
      */
-    default <T> Variable<List<T>> getList(final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    default <T> Variable<List<T>> getList(final InstructionArgumentParser<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+        return getList(nextElement(), argument, valueChecker);
+    }
+
+    /**
+     * Parses the {@link #nextElement()} string with a converter to a list.
+     *
+     * @param argument     the converter creating the value
+     * @param valueChecker the checker to verify valid lists
+     * @param <T>          the value to create
+     * @return the list of values created or an empty list if the value for the key was null or empty
+     * @throws QuestException when there is no part left or the value can't be created
+     */
+    default <T> Variable<List<T>> getList(final SimpleArgumentParser<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         return getList(nextElement(), argument, valueChecker);
     }
 
@@ -119,7 +172,7 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getList(@Nullable final String string, final Argument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getList(@Nullable final String string, final InstructionArgumentParser<T> argument) throws QuestException {
         return getList(string, argument, (value) -> {
         });
     }
@@ -134,7 +187,7 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    <T> Variable<List<T>> getList(@Nullable String string, Argument<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
+    <T> Variable<List<T>> getList(@Nullable String string, InstructionArgumentParser<T> argument, ValueChecker<List<T>> valueChecker) throws QuestException;
 
     /**
      * Parses the string provided by a key with a converter to a list.
@@ -145,7 +198,7 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getValueList(final String key, final Argument<T> argument) throws QuestException {
+    default <T> Variable<List<T>> getValueList(final String key, final InstructionArgumentParser<T> argument) throws QuestException {
         return getList(getValue(key), argument);
     }
 
@@ -159,7 +212,7 @@ public interface ArgumentResolver extends Resolver {
      * @return the list of values created or an empty list if the string was null or empty
      * @throws QuestException when the value can't be created
      */
-    default <T> Variable<List<T>> getValueList(final String key, final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    default <T> Variable<List<T>> getValueList(final String key, final InstructionArgumentParser<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         return getList(getValue(key), argument, valueChecker);
     }
 }

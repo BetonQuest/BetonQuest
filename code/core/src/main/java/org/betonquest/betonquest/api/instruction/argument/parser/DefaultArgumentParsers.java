@@ -2,12 +2,14 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
-import org.betonquest.betonquest.api.instruction.argument.DecoratableNumberArgument;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedNumberArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +19,7 @@ import org.bukkit.util.Vector;
 import java.util.UUID;
 
 /**
- * This offers default implementations for {@link DecoratedArgument} to parse common types.
+ * This offers default implementations for {@link DecoratedArgumentParser} to parse common types.
  */
 public class DefaultArgumentParsers implements ArgumentParsers {
 
@@ -34,100 +36,111 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * The default instance of {@link TextParserToComponentParser}.
      */
-    private final Argument<Component> defaultComponentParser;
+    private final InstructionArgumentParser<Component> defaultComponentParser;
 
     /**
      * The default decoratable instance of {@link NumberParser}.
      */
-    private final DecoratedNumberArgument defaultNumberParser;
+    private final NumberArgumentParser defaultNumberParser;
 
     /**
      * The default decoratable instance of {@link LocationParser}.
      */
-    private final DecoratableArgument<Location> defaultLocationParser;
+    private final DecoratedArgumentParser<Location> defaultLocationParser;
+
+    /**
+     * The default decoratable instance of {@link ItemParser}.
+     */
+    private final DecoratedArgumentParser<QuestItemWrapper> defaultItemParser;
 
     /**
      * The default decoratable instance of {@link BooleanParser}.
      */
-    private final DecoratableArgument<Boolean> defaultBooleanParser;
+    private final DecoratedArgumentParser<Boolean> defaultBooleanParser;
 
     /**
      * The default decoratable instance of {@link UUIDParser}.
      */
-    private final DecoratableArgument<UUID> defaultUUIDParser;
+    private final DecoratedArgumentParser<UUID> defaultUUIDParser;
 
     /**
      * The default decoratable instance of {@link VectorParser}.
      */
-    private final DecoratableArgument<Vector> defaultVectorParser;
+    private final DecoratedArgumentParser<Vector> defaultVectorParser;
 
     /**
      * The default decoratable instance of {@link WorldParser}.
      */
-    private final DecoratableArgument<World> defaultWorldParser;
+    private final DecoratedArgumentParser<World> defaultWorldParser;
 
     /**
      * The default decoratable instance of {@link StringParser}.
      */
-    private final DecoratableArgument<String> defaultStringParser;
+    private final DecoratedArgumentParser<String> defaultStringParser;
 
     /**
      * Creates a new instance of {@link DefaultArgumentParsers}
-     * and all default instances of {@link DecoratedArgument}s.
+     * and all default instances of {@link DecoratedArgumentParser}s.
      */
     public DefaultArgumentParsers() {
         defaultComponentParser = new TextParserToComponentParser(BetonQuest.getInstance().getTextParser());
-        defaultNumberParser = new DecoratableNumberArgument(new NumberParser());
-        defaultLocationParser = new DecoratableArgument<>(new LocationParser(Bukkit.getServer()));
-        defaultBooleanParser = new DecoratableArgument<>(new BooleanParser());
-        defaultUUIDParser = new DecoratableArgument<>(new UUIDParser());
-        defaultVectorParser = new DecoratableArgument<>(new VectorParser());
-        defaultWorldParser = new DecoratableArgument<>(new WorldParser(Bukkit.getServer()));
-        defaultStringParser = new DecoratableArgument<>(new StringParser());
+        defaultNumberParser = new DefaultNumberArgumentParser(new NumberParser());
+        defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(Bukkit.getServer()));
+        defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(BetonQuest.getInstance().getFeatureApi()));
+        defaultBooleanParser = new DecoratableArgumentParser<>(new BooleanParser());
+        defaultUUIDParser = new DecoratableArgumentParser<>(new UUIDParser());
+        defaultVectorParser = new DecoratableArgumentParser<>(new VectorParser());
+        defaultWorldParser = new DecoratableArgumentParser<>(new WorldParser(Bukkit.getServer()));
+        defaultStringParser = new DecoratableArgumentParser<>(new StringParser());
     }
 
     @Override
-    public <E extends Enum<E>> DecoratedArgument<E> forEnum(final Class<E> enumType) {
-        return new DecoratableArgument<>(new EnumParser<>(enumType));
+    public <E extends Enum<E>> DecoratedArgumentParser<E> forEnum(final Class<E> enumType) {
+        return new DecoratableArgumentParser<>(new EnumParser<>(enumType));
     }
 
     @Override
-    public DecoratedArgument<String> string() {
+    public DecoratedArgumentParser<String> string() {
         return defaultStringParser;
     }
 
     @Override
-    public DecoratedArgument<Boolean> bool() {
+    public DecoratedArgumentParser<Boolean> bool() {
         return defaultBooleanParser;
     }
 
     @Override
-    public DecoratedArgument<Vector> vector() {
+    public DecoratedArgumentParser<Vector> vector() {
         return defaultVectorParser;
     }
 
     @Override
-    public DecoratedArgument<World> world() {
+    public DecoratedArgumentParser<World> world() {
         return defaultWorldParser;
     }
 
     @Override
-    public DecoratedArgument<Location> location() {
+    public DecoratedArgumentParser<Location> location() {
         return defaultLocationParser;
     }
 
     @Override
-    public DecoratedArgument<Component> component() {
-        return new DecoratableArgument<>(defaultComponentParser);
+    public DecoratedArgumentParser<QuestItemWrapper> item() {
+        return defaultItemParser;
     }
 
     @Override
-    public DecoratedArgument<UUID> uuid() {
+    public DecoratedArgumentParser<Component> component() {
+        return new DecoratableArgumentParser<>(defaultComponentParser);
+    }
+
+    @Override
+    public DecoratedArgumentParser<UUID> uuid() {
         return defaultUUIDParser;
     }
 
     @Override
-    public DecoratedNumberArgument number() {
+    public NumberArgumentParser number() {
         return defaultNumberParser;
     }
 }

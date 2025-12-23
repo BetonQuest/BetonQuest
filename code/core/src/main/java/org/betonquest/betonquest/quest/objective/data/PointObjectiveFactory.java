@@ -31,9 +31,9 @@ public class PointObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number());
-        final Variable<CountingMode> mode = instruction.getValue("mode", instruction.getParsers().forEnum(CountingMode.class), CountingMode.TOTAL);
-        final Variable<Operation> operation = instruction.getValue("operation", Operation::fromSymbol, Operation.GREATER_EQUAL);
+        final Variable<Number> targetAmount = instruction.number().get();
+        final Variable<CountingMode> mode = instruction.enumeration(CountingMode.class).get("mode", CountingMode.TOTAL);
+        final Variable<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
         return new PointObjective(instruction, playerDataStorage, category, targetAmount, mode, operation);
     }
 }

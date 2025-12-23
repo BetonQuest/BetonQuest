@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.weather;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -13,6 +12,8 @@ import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionA
 import org.betonquest.betonquest.quest.condition.ThrowExceptionPlayerlessCondition;
 import org.betonquest.betonquest.quest.event.weather.Weather;
 import org.bukkit.World;
+
+import java.util.Optional;
 
 /**
  * Factory to create weather conditions from {@link Instruction}s.
@@ -42,12 +43,9 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String worldString = instruction.getValue("world");
-        if (worldString == null) {
-            return new ThrowExceptionPlayerlessCondition();
-        }
-        final Variable<Weather> weather = instruction.get(Weather::parseWeather);
-        final Variable<World> world = new DefaultVariable<>(variables, instruction.getPackage(), worldString, instruction.getParsers().world());
-        return new NullableConditionAdapter(new WeatherCondition(weather, world));
+        final Variable<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Optional<Variable<World>> world = instruction.world().get("world");
+        return world.map(worldVariable -> (PlayerlessCondition) new NullableConditionAdapter(new WeatherCondition(weather, world.orElse(null))))
+                .orElse(new ThrowExceptionPlayerlessCondition());
     }
 }

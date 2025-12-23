@@ -15,7 +15,9 @@ import java.util.List;
  *
  * @param original the quest item to add the tag to
  */
-public record QuestItemTagAdapter(QuestItem original) implements QuestItem {
+public record QuestItemTagAdapter(
+        org.betonquest.betonquest.api.item.QuestItem original) implements org.betonquest.betonquest.api.item.QuestItem {
+
     @Override
     public Component getName() {
         return original.getName();

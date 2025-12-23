@@ -3,9 +3,7 @@ package org.betonquest.betonquest.quest.objective.brew;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
-import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
@@ -31,9 +29,8 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<QuestItemWrapper> potion = instruction.get(InstructionIdentifierArgument.ITEM);
-        final DecoratedArgument<Number> amountParser = instruction.getParsers().number().atLeast(0);
-        final Variable<Number> targetAmount = instruction.get(amountParser);
+        final Variable<QuestItemWrapper> potion = instruction.item().get();
+        final Variable<Number> targetAmount = instruction.number().atLeast(0).get();
         return new BrewObjective(instruction, targetAmount, profileProvider, potion);
     }
 }

@@ -10,8 +10,9 @@ import org.jetbrains.annotations.Nullable;
  * @param original the quest item wrapper to add the tag to the created item
  */
 public record QuestItemTagAdapterWrapper(QuestItemWrapper original) implements QuestItemWrapper {
+
     @Override
-    public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
+    public org.betonquest.betonquest.api.item.QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return new QuestItemTagAdapter(original.getItem(profile));
     }
 }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.instruction;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -8,20 +9,32 @@ import org.betonquest.betonquest.api.identifier.NoID;
 import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
+import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
+import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
+import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * The Instruction. Primary object for input parsing.
@@ -217,22 +230,22 @@ public class DefaultInstruction implements Instruction {
     @Override
     @Contract("!null, _, _ -> !null; _, _, !null -> !null")
     @Nullable
-    public <T> Variable<T> get(@Nullable final String string, final Argument<T> argument, @Nullable final T defaultValue) throws QuestException {
+    public <T> Variable<T> get(@Nullable final String string, final InstructionArgumentParser<T> argument, @Nullable final T defaultValue) throws QuestException {
         if (string == null) {
             if (defaultValue != null) {
                 return new DefaultVariable<>(defaultValue);
             }
             return null;
         }
-        return new DefaultVariable<>(variables, pack, string, argument);
+        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value));
     }
 
     @Override
-    public <T> Variable<List<T>> getList(@Nullable final String string, final Argument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
+    public <T> Variable<List<T>> getList(@Nullable final String string, final InstructionArgumentParser<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
         if (string == null) {
             return new VariableList<>();
         }
-        return new VariableList<>(variables, pack, string, argument, valueChecker);
+        return new VariableList<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value), valueChecker);
     }
 
     @Override
@@ -294,5 +307,116 @@ public class DefaultInstruction implements Instruction {
             return new VariableList<>();
         }
         return new VariableList<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value), valueChecker);
+    }
+
+    @Override
+    public <T> Variable<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
+        return new DefaultVariable<>(variables, pack, nextElement(),
+                value -> argument.apply(variables, packManager, pack, value));
+    }
+
+    @Override
+    public <T> Variable<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
+        return new VariableList<>(variables, pack, nextElement(),
+                value -> argument.apply(variables, packManager, pack, value));
+    }
+
+    @Override
+    public <T> Optional<Variable<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+        final String argumentValue = getValue(argumentKey);
+        if (argumentValue == null) {
+            return Optional.empty();
+        } else {
+            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+            return Optional.of(new DefaultVariable<>(variables, pack, argumentValue, valueParser));
+        }
+    }
+
+    @Override
+    public <T> Variable<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+        final String argumentValue = getValue(argumentKey);
+        if (argumentValue == null) {
+            return new DefaultVariable<>(defaultValue);
+        } else {
+            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+            return new DefaultVariable<>(variables, pack, argumentValue, valueParser);
+        }
+    }
+
+    @Override
+    public <T> Optional<Variable<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
+        final String argumentValue = getValue(argumentKey);
+        if (argumentValue == null) {
+            return Optional.empty();
+        } else {
+            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+            return Optional.of(new VariableList<>(variables, pack, argumentValue, valueParser));
+        }
+    }
+
+    @Override
+    public <T> Variable<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
+        final String argumentValue = getValue(argumentKey);
+        if (argumentValue == null) {
+            return new VariableList<>(defaultList);
+        } else {
+            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+            return new VariableList<>(variables, pack, argumentValue, valueParser);
+        }
+    }
+
+    @Override
+    public <T> DecoratableChainRetriever<T> parse(final InstructionArgumentParser<T> argument) {
+        return new DefaultDecoratableChainRetriever<>(this, argument);
+    }
+
+    @Override
+    public DecoratableChainRetriever<String> string() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.string());
+    }
+
+    @Override
+    public DecoratableChainRetriever<Boolean> bool() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.bool());
+    }
+
+    @Override
+    public DecoratableChainRetriever<Vector> vector() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.vector());
+    }
+
+    @Override
+    public DecoratableChainRetriever<World> world() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.world());
+    }
+
+    @Override
+    public DecoratableChainRetriever<Location> location() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.location());
+    }
+
+    @Override
+    public DecoratableChainRetriever<QuestItemWrapper> item() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.item());
+    }
+
+    @Override
+    public DecoratableChainRetriever<Component> component() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.component());
+    }
+
+    @Override
+    public DecoratableChainRetriever<UUID> uuid() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.uuid());
+    }
+
+    @Override
+    public NumberChainRetriever number() {
+        return new DefaultNumberChainRetriever(this, argumentParsers.number());
+    }
+
+    @Override
+    public <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(final Class<E> enumType) {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forEnum(enumType));
     }
 }

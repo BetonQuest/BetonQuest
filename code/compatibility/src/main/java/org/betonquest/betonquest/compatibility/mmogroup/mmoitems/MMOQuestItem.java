@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.api.Type;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +14,7 @@ import java.util.List;
  * Quest Item implementation for MMOItems.
  */
 public class MMOQuestItem implements QuestItem {
+
     /**
      * resolved Item Stack.
      */

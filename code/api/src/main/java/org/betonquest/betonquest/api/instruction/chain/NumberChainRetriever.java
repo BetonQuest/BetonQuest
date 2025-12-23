@@ -28,9 +28,6 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
     @Override
     NumberChainRetriever validate(ValueValidator<Number> validator, String errorMessage);
 
-    @Override
-    NumberChainRetriever def(Number defaultValue);
-
     /**
      * Adds a lower bound to the {@link DecoratedNumberArgument}.
      * This method should use validation to ensure the value to be above the given inclusive minimum.

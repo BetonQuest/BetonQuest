@@ -21,12 +21,11 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction  the instruction used to retrieve the variable
-     * @param argument     the argument parser
-     * @param defaultValue the nullable default value to use if the instruction fails
+     * @param instruction the instruction used to retrieve the variable
+     * @param argument    the argument parser
      */
-    public DefaultDecoratableChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument, @Nullable final T defaultValue) {
-        super(instruction, argument, defaultValue);
+    public DefaultDecoratableChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {
+        super(instruction, argument);
     }
 
     private DecoratedArgumentParser<T> decoratable() {
@@ -34,27 +33,22 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     }
 
     @Override
-    public DecoratableChainRetriever<T> def(final T defaultValue) {
-        return new DefaultDecoratableChainRetriever<>(instruction, argument, defaultValue);
-    }
-
-    @Override
     public DecoratableChainRetriever<T> validate(final ValueValidator<T> validator) {
-        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().validate(validator), defaultValue);
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().validate(validator));
     }
 
     @Override
     public DecoratableChainRetriever<T> validate(final ValueValidator<T> validator, final String errorMessage) {
-        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().validate(validator, errorMessage), defaultValue);
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().validate(validator, errorMessage));
     }
 
     @Override
     public DecoratableChainRetriever<T> prefilter(final String expected, final T fixedValue) {
-        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().prefilter(expected, fixedValue), defaultValue);
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().prefilter(expected, fixedValue));
     }
 
     @Override
     public DecoratableChainRetriever<Optional<T>> prefilterOptional(final String expected, @Nullable final T fixedValue) {
-        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().prefilterOptional(expected, fixedValue), Optional.ofNullable(defaultValue));
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().prefilterOptional(expected, fixedValue));
     }
 }

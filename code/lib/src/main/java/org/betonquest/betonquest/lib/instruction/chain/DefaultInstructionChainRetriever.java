@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.lib.instruction.chain;
 
+import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,47 +27,43 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
     protected final InstructionArgumentParser<T> argument;
 
     /**
-     * The default value to use if the instruction fails.
-     */
-    @Nullable
-    protected final T defaultValue;
-
-    /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction  the instruction used to retrieve the variable
-     * @param argument     the argument parser
-     * @param defaultValue the nullable default value to use if the instruction fails
+     * @param instruction the instruction used to retrieve the variable
+     * @param argument    the argument parser
      */
-    public DefaultInstructionChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument,
-                                            @Nullable final T defaultValue) {
+    public DefaultInstructionChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {
         this.instruction = instruction;
         this.argument = argument;
-        this.defaultValue = defaultValue;
     }
 
     @Override
-    public Variable<T> get() {
-        return instruction.getNext(argument, defaultValue);
+    public Variable<T> get() throws QuestException {
+        return instruction.getNext(argument);
     }
 
     @Override
-    public Variable<List<T>> getList() {
-        return instruction.getNextList(argument, defaultValue);
+    public Variable<List<T>> getList() throws QuestException {
+        return instruction.getNextList(argument);
     }
 
     @Override
-    public Variable<Optional<T>> get(final String argumentKey) {
+    public Optional<Variable<T>> get(final String argumentKey) throws QuestException {
+        return instruction.getOptional(argumentKey, argument);
+    }
+
+    @Override
+    public Variable<T> get(final String argumentKey, final T defaultValue) throws QuestException {
         return instruction.getOptional(argumentKey, argument, defaultValue);
     }
 
     @Override
-    public Variable<Optional<List<T>>> getList(final String argumentKey) {
-        return instruction.getOptionalList(argumentKey, argument, defaultValue);
+    public Optional<Variable<List<T>>> getList(final String argumentKey) throws QuestException {
+        return instruction.getOptionalList(argumentKey, argument);
     }
 
     @Override
-    public InstructionChainRetriever<T> def(final T defaultValue) {
-        return new DefaultInstructionChainRetriever<>(instruction, argument, defaultValue);
+    public Variable<List<T>> getList(final String argumentKey, final List<T> defaultValue) throws QuestException {
+        return instruction.getOptionalList(argumentKey, argument, defaultValue);
     }
 }

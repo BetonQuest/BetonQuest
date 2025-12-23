@@ -19,7 +19,8 @@ import java.util.Objects;
 /**
  * Represents a Quest item handled by the standard BetonQuest configuration.
  */
-public class SimpleQuestItem implements QuestItem {
+public class SimpleQuestItem implements org.betonquest.betonquest.api.item.QuestItem {
+
     /**
      * The base Material Selector for the ItemStack generation.
      */

@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentPar
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Default implementation of the {@link NumberChainRetriever} interface
@@ -17,12 +16,11 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
     /**
      * Creates a new instruction chain retriever.
      *
-     * @param instruction  the instruction used to retrieve the variable
-     * @param argument     the argument parser
-     * @param defaultValue the nullable default value to use if the instruction fails
+     * @param instruction the instruction used to retrieve the variable
+     * @param argument    the argument parser
      */
-    public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument, @Nullable final Number defaultValue) {
-        super(instruction, argument, defaultValue);
+    public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument) {
+        super(instruction, argument);
     }
 
     private NumberArgumentParser decoratable() {
@@ -30,37 +28,32 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
     }
 
     @Override
-    public NumberChainRetriever def(final Number defaultValue) {
-        return new DefaultNumberChainRetriever(instruction, argument, defaultValue);
-    }
-
-    @Override
     public NumberChainRetriever validate(final ValueValidator<Number> validator) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator));
     }
 
     @Override
     public NumberChainRetriever validate(final ValueValidator<Number> validator, final String errorMessage) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator, errorMessage), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator, errorMessage));
     }
 
     @Override
     public NumberChainRetriever prefilter(final String expected, final Number fixedValue) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().prefilter(expected, fixedValue), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().prefilter(expected, fixedValue));
     }
 
     @Override
     public NumberChainRetriever atLeast(final Number inclusiveMin) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().atLeast(inclusiveMin), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().atLeast(inclusiveMin));
     }
 
     @Override
     public NumberChainRetriever atMost(final Number inclusiveMax) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().atMost(inclusiveMax), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().atMost(inclusiveMax));
     }
 
     @Override
     public NumberChainRetriever inRange(final Number inclusiveMin, final Number exclusiveMax) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().inRange(inclusiveMin, exclusiveMax), defaultValue);
+        return new DefaultNumberChainRetriever(instruction, decoratable().inRange(inclusiveMin, exclusiveMax));
     }
 }

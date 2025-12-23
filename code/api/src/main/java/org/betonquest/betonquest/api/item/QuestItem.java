@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.item;
+package org.betonquest.betonquest.api.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
@@ -12,6 +12,7 @@ import java.util.List;
  * A Quest Item to use in BetonQuest.
  */
 public interface QuestItem {
+
     /**
      * Gets the effective name to show.
      *

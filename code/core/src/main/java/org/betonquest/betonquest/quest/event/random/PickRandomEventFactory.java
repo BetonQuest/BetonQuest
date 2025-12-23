@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.random;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
@@ -59,7 +60,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
             final EventID eventID = instruction.get(eventString, EventID::new).getValue(null);
-            final double weight = instruction.getParsers().number().apply(weightString).doubleValue();
+            final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         });
         final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());

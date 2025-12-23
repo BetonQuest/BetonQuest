@@ -20,9 +20,6 @@ import java.util.Optional;
  */
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
 
-    @Override
-    DecoratableChainRetriever<T> def(T defaultValue);
-
     /**
      * Apply a {@link ValueValidator} to the {@link DecoratedArgumentParser} for early validation and improved error messages.
      *
