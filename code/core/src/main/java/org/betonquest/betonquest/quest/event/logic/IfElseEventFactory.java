@@ -49,7 +49,7 @@ public class IfElseEventFactory implements PlayerEventFactory, PlayerlessEventFa
     private NullableEventAdapter createIfElseEvent(final Instruction instruction) throws QuestException {
         final Variable<ConditionID> condition = instruction.get(ConditionID::new);
         final Variable<EventID> event = instruction.get(EventID::new);
-        if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.next())) {
+        if (!ELSE_KEYWORD.equalsIgnoreCase(instruction.nextElement())) {
             throw new QuestException("Missing 'else' keyword");
         }
         final Variable<EventID> elseEvent = instruction.get(EventID::new);

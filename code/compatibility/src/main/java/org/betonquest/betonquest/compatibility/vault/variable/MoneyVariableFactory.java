@@ -42,7 +42,7 @@ public class MoneyVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final String instructionString = instruction.next();
+        final String instructionString = instruction.nextElement();
         final QuestFunction<Profile, String> function;
         if (MONEY_AMOUNT.equalsIgnoreCase(instructionString)) {
             function = profile -> String.valueOf(economy.getBalance(profile.getPlayer()));

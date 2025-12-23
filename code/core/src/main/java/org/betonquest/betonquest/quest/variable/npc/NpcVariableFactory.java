@@ -70,12 +70,12 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
         int decimalPlaces = 0;
         if (key == Argument.LOCATION) {
             if (instruction.hasNext()) {
-                locationFormationMode = LocationFormationMode.getMode(instruction.next());
+                locationFormationMode = LocationFormationMode.getMode(instruction.nextElement());
             } else {
                 locationFormationMode = LocationFormationMode.ULF_LONG;
             }
             if (instruction.hasNext()) {
-                decimalPlaces = Integer.parseInt(instruction.next());
+                decimalPlaces = Integer.parseInt(instruction.nextElement());
             }
         }
         return new NpcVariable(featureApi, npcID, key, locationFormationMode, decimalPlaces);

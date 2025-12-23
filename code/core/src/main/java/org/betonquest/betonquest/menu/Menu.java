@@ -2,7 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -45,7 +45,7 @@ public class Menu {
      * Item this menu is bound to or is empty if none is bound.
      */
     @Nullable
-    private final Variable<Item> boundItem;
+    private final Variable<QuestItemWrapper> boundItem;
 
     /**
      * Creates a new Menu.
@@ -57,7 +57,7 @@ public class Menu {
      * @param boundItem    the optional bound Item
      */
     public Menu(final BetonQuestLogger log, final MenuID menuID, final QuestTypeApi questTypeApi,
-                final MenuData menuData, @Nullable final Variable<Item> boundItem) {
+                final MenuData menuData, @Nullable final Variable<QuestItemWrapper> boundItem) {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.menuID = menuID;
@@ -169,7 +169,7 @@ public class Menu {
      * @return the bound item, if any
      */
     @Nullable
-    public Variable<Item> getBoundItem() {
+    public Variable<QuestItemWrapper> getBoundItem() {
         return boundItem;
     }
 

@@ -8,10 +8,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * An extended {@link ChainRetriever} offering additional methods
+ * An extended {@link InstructionChainRetriever} offering additional methods
  * to modify the parsing process before retrieving the variable explicitly for the {@link Number} type.
  *
- * @see ChainRetriever
+ * @see InstructionChainRetriever
  * @see DecoratableChainRetriever
  */
 public interface NumberChainRetriever extends DecoratableChainRetriever<Number> {
@@ -61,5 +61,5 @@ public interface NumberChainRetriever extends DecoratableChainRetriever<Number> 
      * @return a new {@link DecoratedNumberArgument}
      */
     @Contract(value = "_, _ -> new", pure = true)
-    NumberChainRetriever bounds(Number inclusiveMin, Number exclusiveMax);
+    NumberChainRetriever inRange(Number inclusiveMin, Number exclusiveMax);
 }

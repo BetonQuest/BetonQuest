@@ -23,7 +23,7 @@ public class LocationVariableFactory implements PlayerVariableFactory {
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final LocationFormationMode mode;
         if (instruction.hasNext()) {
-            mode = LocationFormationMode.getMode(instruction.next());
+            mode = LocationFormationMode.getMode(instruction.nextElement());
         } else {
             mode = LocationFormationMode.ULF_LONG;
         }

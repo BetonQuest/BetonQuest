@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Contract;
  * @param <T> the type of the parsed result
  */
 @FunctionalInterface
+@Deprecated
 public interface Argument<T> extends ValueParser<T>, InstructionArgumentParser<T> {
 
     /**

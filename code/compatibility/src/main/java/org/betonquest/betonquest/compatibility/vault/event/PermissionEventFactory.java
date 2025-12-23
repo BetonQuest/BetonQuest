@@ -41,7 +41,7 @@ public class PermissionEventFactory implements PlayerEventFactory {
         final Variable<Boolean> perm = instruction.get("perm"::equalsIgnoreCase);
         final Variable<String> permission = instruction.get(instruction.getParsers().string());
         final Variable<String> world;
-        if (instruction.size() >= 5 && !instruction.next().startsWith("conditions:")) {
+        if (instruction.size() >= 5 && !instruction.nextElement().startsWith("conditions:")) {
             world = instruction.get(instruction.current(), instruction.getParsers().string());
         } else {
             world = null;

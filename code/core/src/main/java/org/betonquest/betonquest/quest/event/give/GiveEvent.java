@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.give;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
@@ -25,7 +25,7 @@ public class GiveEvent implements OnlineEvent {
     /**
      * The items to give.
      */
-    private final Variable<List<Item>> questItems;
+    private final Variable<List<QuestItemWrapper>> questItems;
 
     /**
      * The notification sender to use when putting items into the player's inventory.
@@ -62,7 +62,7 @@ public class GiveEvent implements OnlineEvent {
      * @param backpack              whether to put the items to the player's backpack
      * @param dataStorage           the storage providing player backpack
      */
-    public GiveEvent(final Variable<List<Item>> questItems, final NotificationSender itemsGivenSender,
+    public GiveEvent(final Variable<List<QuestItemWrapper>> questItems, final NotificationSender itemsGivenSender,
                      final NotificationSender itemsInBackpackSender, final NotificationSender itemsDroppedSender,
                      final boolean backpack, final PlayerDataStorage dataStorage) {
         this.questItems = questItems;
@@ -76,7 +76,7 @@ public class GiveEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
-        for (final Item item : questItems.getValue(profile)) {
+        for (final QuestItemWrapper item : questItems.getValue(profile)) {
             final QuestItem questItem = item.getItem(profile);
             final int amount = item.getAmount().getValue(profile).intValue();
             giveItems(profile, player, questItem, amount);

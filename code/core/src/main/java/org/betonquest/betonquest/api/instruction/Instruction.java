@@ -3,7 +3,6 @@ package org.betonquest.betonquest.api.instruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
-import org.betonquest.betonquest.api.instruction.chain.ChainStarter;
 import org.betonquest.betonquest.api.instruction.variable.resolver.ArgumentResolver;
 import org.betonquest.betonquest.api.instruction.variable.resolver.IdentifierArgumentResolver;
 import org.betonquest.betonquest.api.instruction.variable.resolver.InstructionIdentifierArgumentResolver;
@@ -12,7 +11,7 @@ import org.betonquest.betonquest.api.instruction.variable.resolver.PackageArgume
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends InstructionParts, ArgumentResolver, PackageArgumentResolver, IdentifierArgumentResolver, InstructionIdentifierArgumentResolver, ChainStarter {
+public interface Instruction extends InstructionParts, ArgumentResolver, PackageArgumentResolver, IdentifierArgumentResolver, InstructionIdentifierArgumentResolver {
 
     /**
      * Get the source QuestPackage.

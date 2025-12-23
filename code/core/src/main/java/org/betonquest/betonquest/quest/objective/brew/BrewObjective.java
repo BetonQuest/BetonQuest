@@ -4,7 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -37,7 +37,7 @@ public class BrewObjective extends CountingObjective implements Listener {
     /**
      * The potion item to brew.
      */
-    private final Variable<Item> potion;
+    private final Variable<QuestItemWrapper> potion;
 
     /**
      * A cache of brewing stands and their owners.
@@ -54,7 +54,7 @@ public class BrewObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public BrewObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                         final ProfileProvider profileProvider, final Variable<Item> potion) throws QuestException {
+                         final ProfileProvider profileProvider, final Variable<QuestItemWrapper> potion) throws QuestException {
         super(instruction, targetAmount, "potions_to_brew");
         this.potion = potion;
         this.locations = new ProfileValueMap<>(profileProvider);

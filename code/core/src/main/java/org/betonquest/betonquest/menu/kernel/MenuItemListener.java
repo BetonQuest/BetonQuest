@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.kernel;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -77,7 +77,7 @@ public class MenuItemListener implements Listener {
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         for (final Menu menu : menuProcessor.getValues().values()) {
             try {
-                final Variable<Item> boundItem = menu.getBoundItem();
+                final Variable<QuestItemWrapper> boundItem = menu.getBoundItem();
                 if (boundItem == null || !boundItem.getValue(profile).matches(event.getItem(), profile)) {
                     continue;
                 }

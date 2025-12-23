@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.ComponentLineWrapper;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -39,7 +39,7 @@ public class MenuItem {
     /**
      * The betonquest quest item this item is based on.
      */
-    private final Variable<Item> item;
+    private final Variable<QuestItemWrapper> item;
 
     /**
      * The ID of this item.
@@ -79,7 +79,7 @@ public class MenuItem {
      * @param conditions   the conditions required to show the item
      * @param close        if the item click closes
      */
-    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Variable<Item> item, final MenuItemID itemId,
+    public MenuItem(final BetonQuestLogger log, final QuestTypeApi questTypeApi, final Variable<QuestItemWrapper> item, final MenuItemID itemId,
                     @Nullable final Text descriptions, final ClickEvents clickEvents,
                     final Variable<List<ConditionID>> conditions, final Variable<Boolean> close) {
         this.log = log;

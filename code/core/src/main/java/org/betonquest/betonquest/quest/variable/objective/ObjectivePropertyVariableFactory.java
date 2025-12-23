@@ -32,6 +32,6 @@ public class ObjectivePropertyVariableFactory implements PlayerVariableFactory {
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
         final ObjectiveID objectiveID = instruction.get(ObjectiveID::new).getValue(null);
-        return new ObjectivePropertyVariable(questTypeApi, objectiveID, instruction.next());
+        return new ObjectivePropertyVariable(questTypeApi, objectiveID, instruction.nextElement());
     }
 }

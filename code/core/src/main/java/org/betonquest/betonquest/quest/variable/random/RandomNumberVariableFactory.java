@@ -47,7 +47,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
     }
 
     private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {
-        final String type = instruction.next();
+        final String type = instruction.nextElement();
         final boolean fractional;
         final DecimalFormat format;
         if (WHOLE_NUMBER.equalsIgnoreCase(type)) {
@@ -80,14 +80,14 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
     }
 
     private Variable<Number> parseFirst(final Instruction instruction) throws QuestException {
-        final String start = instruction.next();
+        final String start = instruction.nextElement();
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
             if (start.contains("~")) {
                 return instruction.get(start.substring(0, start.indexOf('~')), instruction.getParsers().number());
             } else {
-                final String next = instruction.next();
+                final String next = instruction.nextElement();
                 return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), instruction.getParsers().number());
             }
         }
@@ -98,7 +98,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return instruction.get(instruction.hasNext() ? start + '.' + instruction.next() : start, instruction.getParsers().number());
+            return instruction.get(instruction.hasNext() ? start + '.' + instruction.nextElement() : start, instruction.getParsers().number());
         }
     }
 
@@ -114,7 +114,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         final StringBuilder builder = new StringBuilder("%");
         builder.append(start.substring(1)).append('.');
         while (true) {
-            final String current = instruction.next();
+            final String current = instruction.nextElement();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
                 return instruction.get(builder.toString(), instruction.getParsers().number());

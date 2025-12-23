@@ -46,7 +46,7 @@ public abstract class AbstractPointVariableFactory<T> {
      */
     protected Triple<String, Integer, PointCalculationType> parseInstruction(final Instruction instruction) throws QuestException {
         final String category = instruction.get(PackageArgument.IDENTIFIER).getValue(null);
-        final PointCalculationType type = getType(instruction.next());
+        final PointCalculationType type = getType(instruction.nextElement());
         int amount = 0;
         if (type == PointCalculationType.LEFT) {
             amount = getAmount(instruction);

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
-import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -53,7 +52,7 @@ public class DefaultVariable<T> implements Variable<T> {
      */
     public DefaultVariable(final Variables variables, @Nullable final QuestPackage pack, final String input,
                            final ValueParser<T> valueParser) throws QuestException {
-        final Map<String, VariableAdapter> foundVariables = getVariables(variables, pack, input);
+        final Map<String, Variable<String>> foundVariables = getVariables(variables, pack, input);
         if (foundVariables.isEmpty()) {
             final T resolved = valueParser.apply(replaceEscapedPercent(input));
             value = profile -> valueParser.cloneValue(resolved);
@@ -62,14 +61,14 @@ public class DefaultVariable<T> implements Variable<T> {
         }
     }
 
-    private Map<String, VariableAdapter> getVariables(final Variables variables,
-                                                      @Nullable final QuestPackage pack,
-                                                      final String input)
+    private Map<String, Variable<String>> getVariables(final Variables variables,
+                                                       @Nullable final QuestPackage pack,
+                                                       final String input)
             throws QuestException {
-        final Map<String, VariableAdapter> foundVariables = new HashMap<>();
+        final Map<String, Variable<String>> foundVariables = new HashMap<>();
         for (final String variable : resolveVariables(input)) {
             try {
-                final VariableAdapter variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
+                final Variable<String> variableAdapter = variables.create(pack, replaceEscapedPercent(variable));
                 foundVariables.put(variable, variableAdapter);
             } catch (final QuestException exception) {
                 throw new QuestException("Could not create variable '" + variable + "': "
@@ -85,13 +84,13 @@ public class DefaultVariable<T> implements Variable<T> {
                 .collect(Collectors.toSet());
     }
 
-    private String getString(final String input, final Map<String, VariableAdapter> variables,
+    private String getString(final String input, final Map<String, Variable<String>> variables,
                              @Nullable final Profile profile) throws QuestException {
         final Matcher matcher = VARIABLE_PATTERN.matcher(input);
         final StringBuilder resolvedString = new StringBuilder();
         while (matcher.find()) {
             final String variable = matcher.group();
-            final VariableAdapter resolvedVariable = variables.get(variable);
+            final Variable<String> resolvedVariable = variables.get(variable);
             if (resolvedVariable == null) {
                 throw new QuestException("Could not resolve variable '" + variable + "'");
             }

@@ -139,7 +139,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), rawInstruction.getParsers().string()).getValue(null);
         final Instruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(),
                 rawInstruction.getID(), DefaultArgumentParsers.INSTANCE, instructionString);
-        final String material = instruction.next();
+        final String material = instruction.nextElement();
         final List<String> arguments;
         if (instruction.hasNext()) {
             final List<String> valueParts = instruction.getValueParts();

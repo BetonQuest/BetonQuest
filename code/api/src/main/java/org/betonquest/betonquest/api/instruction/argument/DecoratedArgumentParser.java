@@ -11,17 +11,16 @@ import java.util.Optional;
  *
  * @param <T> the type of the argument
  */
-@Deprecated
-public interface DecoratedArgument<T> extends Argument<T> {
+public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
 
     /**
-     * Apply a {@link ValueValidator} to the {@link DecoratedArgument} for early validation and improved error messages.
+     * Apply a {@link ValueValidator} to the {@link DecoratedArgumentParser} for early validation and improved error messages.
      *
      * @param validator the validator to apply to the argument
-     * @return the new {@link DecoratedArgument}
+     * @return the new {@link DecoratedArgumentParser}
      */
     @Contract(value = "_ -> new", pure = true)
-    DecoratedArgument<T> validate(ValueValidator<T> validator);
+    DecoratedArgumentParser<T> validate(ValueValidator<T> validator);
 
     /**
      * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
@@ -30,37 +29,37 @@ public interface DecoratedArgument<T> extends Argument<T> {
      *
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
-     * @return the new {@link DecoratedArgument}
+     * @return the new {@link DecoratedArgumentParser}
      */
     @Contract(value = "_, _ -> new", pure = true)
-    DecoratedArgument<T> validate(ValueValidator<T> validator, String errorMessage);
+    DecoratedArgumentParser<T> validate(ValueValidator<T> validator, String errorMessage);
 
     /**
-     * Returns a new {@link DecoratedArgument} that checks for the given expected string before
-     * applying the {@link DecoratedArgument} this method is called on.
+     * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
+     * applying the {@link DecoratedArgumentParser} this method is called on.
      * If the expected string matches the {@link String} argument of {@link Argument#apply(String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgument} instance is called.
+     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgumentParser} instance is called.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the non-null value to return if the expected string matches
-     * @return the new {@link DecoratedArgument}
+     * @return the new {@link DecoratedArgumentParser}
      */
     @Contract(value = "_, _ -> new", pure = true)
-    DecoratedArgument<T> prefilter(String expected, T fixedValue);
+    DecoratedArgumentParser<T> prefilter(String expected, T fixedValue);
 
     /**
-     * Returns a new {@link DecoratedArgument} that checks for the given expected string before
-     * applying the {@link DecoratedArgument} this method is called on.
+     * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
+     * applying the {@link DecoratedArgumentParser} this method is called on.
      * If the expected string matches the {@link String} argument of {@link Argument#apply(String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgument} instance is called.
+     * Otherwise, the {@link Argument#apply(String)} method of the current {@link DecoratedArgumentParser} instance is called.
      * Since {@link Argument#apply(String)} must not return null, this method returns an {@link Optional} of the result.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the nullable value to return if the expected string matches
-     * @return the new {@link DecoratedArgument}
+     * @return the new {@link DecoratedArgumentParser}
      */
     @Contract(value = "_, _ -> new", pure = true)
-    DecoratedArgument<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
+    DecoratedArgumentParser<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
 }

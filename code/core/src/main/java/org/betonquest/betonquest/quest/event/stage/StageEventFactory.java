@@ -62,7 +62,7 @@ public class StageEventFactory implements PlayerEventFactory {
     @Nullable
     private Variable<Number> getVariableNumber(final Instruction instruction) throws QuestException {
         if (instruction.hasNext()) {
-            final String stringAmount = instruction.next();
+            final String stringAmount = instruction.nextElement();
             if (!stringAmount.startsWith("conditions:")) {
                 return instruction.get(stringAmount, instruction.getParsers().number());
             }

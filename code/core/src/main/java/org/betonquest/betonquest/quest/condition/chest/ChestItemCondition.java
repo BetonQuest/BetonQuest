@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.QuestItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
@@ -21,7 +21,7 @@ public class ChestItemCondition implements NullableCondition {
     /**
      * Items that should be in the chest.
      */
-    private final Variable<List<Item>> items;
+    private final Variable<List<QuestItemWrapper>> items;
 
     /**
      * Location of the chest.
@@ -34,7 +34,7 @@ public class ChestItemCondition implements NullableCondition {
      * @param items items that should be in the chest
      * @param loc   location of the chest
      */
-    public ChestItemCondition(final Variable<Location> loc, final Variable<List<Item>> items) {
+    public ChestItemCondition(final Variable<Location> loc, final Variable<List<QuestItemWrapper>> items) {
         this.items = items;
         this.loc = loc;
     }
@@ -50,8 +50,8 @@ public class ChestItemCondition implements NullableCondition {
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
-        final List<Item> resolvedItems = items.getValue(profile);
-        for (final Item item : resolvedItems) {
+        final List<QuestItemWrapper> resolvedItems = items.getValue(profile);
+        for (final QuestItemWrapper item : resolvedItems) {
             int amount = item.getAmount().getValue(profile).intValue();
             final ItemStack[] inventoryItems = chest.getInventory().getContents();
             for (final ItemStack stack : inventoryItems) {
