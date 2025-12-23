@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
  * Condition to check if a player has a certain amount of a specific brew.
  */
 public class HasBrewCondition implements OnlineCondition {
+
     /**
      * The amount of brews to check.
      */
@@ -62,5 +63,10 @@ public class HasBrewCondition implements OnlineCondition {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * Checks block at specified location against specified {@link BlockSelector}.
  */
 public class BlockCondition implements NullableCondition {
+
     /**
      * Location to test for the block.
      */
@@ -46,5 +47,10 @@ public class BlockCondition implements NullableCondition {
         final Block block = loc.getValue(profile).getBlock();
         final BlockSelector blockSelector = selector.getValue(profile);
         return blockSelector.match(block, exactMatch);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

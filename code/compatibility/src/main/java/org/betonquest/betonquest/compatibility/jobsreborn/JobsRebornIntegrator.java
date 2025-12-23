@@ -47,10 +47,10 @@ public class JobsRebornIntegrator implements Integrator {
 
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
-        conditionRegistry.register("nujobs_canlevel", new CanLevelConditionFactory(data));
-        conditionRegistry.register("nujobs_hasjob", new HasJobConditionFactory(data));
-        conditionRegistry.register("nujobs_jobfull", new JobFullConditionFactory(data));
-        conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory(data));
+        conditionRegistry.register("nujobs_canlevel", new CanLevelConditionFactory());
+        conditionRegistry.register("nujobs_hasjob", new HasJobConditionFactory());
+        conditionRegistry.register("nujobs_jobfull", new JobFullConditionFactory());
+        conditionRegistry.register("nujobs_joblevel", new JobLevelConditionFactory());
 
         final EventRegistry eventRegistry = questRegistries.event();
         eventRegistry.register("nujobs_addexp", new AddExpEventFactory(data));

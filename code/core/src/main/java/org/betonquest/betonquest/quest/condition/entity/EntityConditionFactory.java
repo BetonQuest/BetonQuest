@@ -9,14 +9,11 @@ import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
@@ -29,27 +26,19 @@ import java.util.Map;
 public class EntityConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the entity condition factory.
-     *
-     * @param data the data used for checking the condition on the main thread
      */
-    public EntityConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public EntityConditionFactory() {
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
+        return new NullableConditionAdapter(parseEntityCondition(instruction));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerlessCondition(new NullableConditionAdapter(parseEntityCondition(instruction)), data);
+        return new NullableConditionAdapter(parseEntityCondition(instruction));
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {

@@ -2,13 +2,15 @@ package org.betonquest.betonquest.api.quest.condition.nullable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Quest condition that can work both with and without a profile.
  */
 @FunctionalInterface
-public interface NullableCondition {
+public interface NullableCondition extends PrimaryThreadEnforceable {
+
     /**
      * Check the condition with a nullable profile.
      *

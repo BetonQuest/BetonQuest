@@ -19,6 +19,7 @@ import java.util.List;
  * Checks the class of the player and the level.
  */
 public class HeroesClassCondition implements OnlineCondition {
+
     /**
      * The string to match any class.
      */
@@ -118,5 +119,10 @@ public class HeroesClassCondition implements OnlineCondition {
             return heroClasses.contains(heroClass) && hero.getHeroLevel(heroClass) >= playerLevel;
         }
         return heroClasses.contains(heroClass);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

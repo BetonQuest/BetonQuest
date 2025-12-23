@@ -37,9 +37,9 @@ public class MMOCoreIntegrator implements Integrator {
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final ConditionRegistry conditionRegistry = questRegistries.condition();
-        conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory(data));
-        conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory(data));
-        conditionRegistry.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory(data));
+        conditionRegistry.register("mmoclass", new MMOCoreClassConditionFactory());
+        conditionRegistry.register("mmoattribute", new MMOCoreAttributeConditionFactory());
+        conditionRegistry.register("mmoprofession", new MMOCoreProfessionLevelConditionFactory());
 
         final FeatureTypeRegistry<Objective> objectiveRegistry = questRegistries.objective();
         objectiveRegistry.register("mmoprofessionlevelup", new MMOCoreProfessionObjectiveFactory());

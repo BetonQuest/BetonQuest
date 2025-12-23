@@ -48,7 +48,7 @@ public class VaultIntegrator implements Integrator {
 
             registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(), data,
                     plugin.getPluginMessage()));
-            registries.condition().register("money", new MoneyConditionFactory(economy, data));
+            registries.condition().register("money", new MoneyConditionFactory(economy));
             registries.variable().register("money", new MoneyVariableFactory(economy));
         }
 

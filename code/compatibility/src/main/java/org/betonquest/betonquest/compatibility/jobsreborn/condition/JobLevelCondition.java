@@ -48,4 +48,9 @@ public class JobLevelCondition implements PlayerCondition {
                 && progression.getLevel() >= nMinLevel.getValue(profile).intValue()
                 && progression.getLevel() <= nMaxLevel.getValue(profile).intValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -6,7 +6,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.bukkit.event.EventHandler;
@@ -39,8 +38,7 @@ public class MagicIntegrator implements Integrator, Listener {
     public void hook(final BetonQuestApi api) {
         final PluginManager manager = plugin.getServer().getPluginManager();
         final MagicAPI magicApi = Objects.requireNonNull((MagicAPI) manager.getPlugin("Magic"));
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-        api.getQuestRegistries().condition().register("wand", new WandConditionFactory(api.getLoggerFactory(), magicApi, data));
+        api.getQuestRegistries().condition().register("wand", new WandConditionFactory(api.getLoggerFactory(), magicApi));
         manager.registerEvents(new InventoryListener(BetonQuest.getInstance().getPlayerDataStorage(), api.getProfileProvider()), plugin);
     }
 

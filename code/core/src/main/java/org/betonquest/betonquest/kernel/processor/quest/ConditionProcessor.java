@@ -117,6 +117,19 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
                     "Cannot check non-static condition '" + conditionID + "' without a player, returning false");
             return false;
         }
+        if (condition.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
+            final Future<Boolean> future = scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition));
+            try {
+                return future.get();
+            } catch (final InterruptedException | ExecutionException e) {
+                log.reportException(e);
+                return false;
+            }
+        }
+        return checkOutcome(profile, conditionID, condition);
+    }
+
+    private boolean checkOutcome(@Nullable final Profile profile, final ConditionID conditionID, final ConditionAdapter condition) {
         final boolean outcome;
         try {
             outcome = condition.check(profile);

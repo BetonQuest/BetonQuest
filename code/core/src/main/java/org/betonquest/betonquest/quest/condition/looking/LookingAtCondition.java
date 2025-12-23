@@ -70,4 +70,9 @@ public class LookingAtCondition implements OnlineCondition {
         }
         return selector == null || selector.getValue(profile).match(lookingAt, exactMatch);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

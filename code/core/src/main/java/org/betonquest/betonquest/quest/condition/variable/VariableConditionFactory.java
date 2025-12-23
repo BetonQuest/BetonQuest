@@ -5,14 +5,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerlessCondition;
 
 /**
  * Factory for {@link VariableCondition}s.
@@ -25,44 +22,30 @@ public class VariableConditionFactory implements PlayerConditionFactory, Playerl
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Creates a new factory for {@link VariableCondition}s.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param data          the data used for primary server access
      */
-    public VariableConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public VariableConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
-        if (instruction.hasArgument("forceSync")) {
-            return new PrimaryServerThreadPlayerCondition(condition, data);
-        }
-        return condition;
+        return new NullableConditionAdapter(parse(instruction));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final NullableConditionAdapter condition = new NullableConditionAdapter(parse(instruction));
-        if (instruction.hasArgument("forceSync")) {
-            return new PrimaryServerThreadPlayerlessCondition(condition, data);
-        }
-        return condition;
+        return new NullableConditionAdapter(parse(instruction));
     }
 
     private VariableCondition parse(final Instruction instruction) throws QuestException {
         final Variable<String> variable = instruction.get(instruction.getParsers().string());
         final Variable<String> regex = instruction.get(instruction.getParsers().string());
         final String variableAddress = instruction.getID().toString();
+        final boolean forceSync = instruction.hasArgument("forceSync");
         final BetonQuestLogger log = loggerFactory.create(VariableCondition.class);
-        return new VariableCondition(log, variable, regex, variableAddress);
+        return new VariableCondition(log, variable, regex, variableAddress, forceSync);
     }
 }

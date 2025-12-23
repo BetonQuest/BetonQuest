@@ -6,11 +6,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
 
 /**
@@ -22,11 +20,6 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
      * The logger factory.
      */
     private final BetonQuestLoggerFactory loggerFactory;
-
-    /**
-     * Data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
 
     /**
      * The {@link CharacterManager} of the Heroes plugin.
@@ -42,14 +35,12 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
      * Create a new Factory to create Give Brew Events.
      *
      * @param loggerFactory    the logger factory.
-     * @param data             the data used for primary server access.
      * @param characterManager the {@link CharacterManager} of the Heroes plugin.
      * @param classManager     the {@link HeroClassManager} of the Heroes plugin.
      */
-    public HeroesClassConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                                       final CharacterManager characterManager, final HeroClassManager classManager) {
+    public HeroesClassConditionFactory(final BetonQuestLoggerFactory loggerFactory, final CharacterManager characterManager,
+                                       final HeroClassManager classManager) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
         this.characterManager = characterManager;
         this.classManager = classManager;
     }
@@ -60,8 +51,7 @@ public class HeroesClassConditionFactory implements PlayerConditionFactory {
         final Variable<String> heroClass = instruction.get(instruction.getParsers().string());
         final Variable<Number> level = instruction.getValue("level", instruction.getParsers().number());
 
-        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new HeroesClassCondition(characterManager, classManager, classType, heroClass, level),
-                loggerFactory.create(HeroesClassCondition.class), instruction.getPackage()), data);
+        return new OnlineConditionAdapter(new HeroesClassCondition(characterManager, classManager, classType, heroClass, level),
+                loggerFactory.create(HeroesClassCondition.class), instruction.getPackage());
     }
 }

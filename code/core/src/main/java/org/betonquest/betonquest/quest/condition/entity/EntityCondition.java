@@ -79,4 +79,9 @@ public class EntityCondition implements NullableCondition {
         }
         return true;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

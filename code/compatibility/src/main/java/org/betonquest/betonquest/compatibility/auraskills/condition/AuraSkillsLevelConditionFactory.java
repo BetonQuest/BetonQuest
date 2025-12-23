@@ -4,10 +4,8 @@ import dev.aurelium.auraskills.api.AuraSkillsApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory to create {@link AuraSkillsLevelCondition}s from {@link Instruction}s.
@@ -20,19 +18,12 @@ public class AuraSkillsLevelConditionFactory implements PlayerConditionFactory {
     private final AuraSkillsApi auraSkillsApi;
 
     /**
-     * The data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new Factory to create AuraSkills Stats Conditions.
      *
      * @param auraSkillsApi the {@link AuraSkillsApi}.
-     * @param data          the data used for primary server access.
      */
-    public AuraSkillsLevelConditionFactory(final AuraSkillsApi auraSkillsApi, final PrimaryServerThreadData data) {
+    public AuraSkillsLevelConditionFactory(final AuraSkillsApi auraSkillsApi) {
         this.auraSkillsApi = auraSkillsApi;
-        this.data = data;
     }
 
     @Override
@@ -41,7 +32,6 @@ public class AuraSkillsLevelConditionFactory implements PlayerConditionFactory {
         final Variable<Number> targetLevelVar = instruction.get(instruction.getParsers().number());
         final boolean mustBeEqual = instruction.hasArgument("equal");
 
-        final AuraSkillsLevelCondition level = new AuraSkillsLevelCondition(auraSkillsApi, targetLevelVar, nameVar, mustBeEqual);
-        return new PrimaryServerThreadPlayerCondition(level, data);
+        return new AuraSkillsLevelCondition(auraSkillsApi, targetLevelVar, nameVar, mustBeEqual);
     }
 }

@@ -11,6 +11,7 @@ import studio.magemonkey.fabled.api.player.PlayerData;
  * Checks if the player has a specific class.
  */
 public class FabledClassCondition implements PlayerCondition {
+
     /**
      * The class name.
      */
@@ -45,5 +46,10 @@ public class FabledClassCondition implements PlayerCondition {
         } else {
             return data.isClass(Fabled.getClass(className));
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

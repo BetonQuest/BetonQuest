@@ -45,4 +45,9 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
         final int score = obj.getScore(profile.getPlayer()).getScore();
         return score >= count.getValue(profile).intValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

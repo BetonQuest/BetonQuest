@@ -31,8 +31,8 @@ public class AuraSkillsIntegrator implements Integrator {
         questRegistries.event().register("auraskillsxp", new AuraSkillsExperienceEventFactory(auraSkillsApi, data));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
-        conditionRegistry.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi, data));
-        conditionRegistry.register("auraskillsstatslevel", new AuraSkillsStatsConditionFactory(auraSkillsApi, data));
+        conditionRegistry.register("auraskillslevel", new AuraSkillsLevelConditionFactory(auraSkillsApi));
+        conditionRegistry.register("auraskillsstatslevel", new AuraSkillsStatsConditionFactory(auraSkillsApi));
     }
 
     @Override

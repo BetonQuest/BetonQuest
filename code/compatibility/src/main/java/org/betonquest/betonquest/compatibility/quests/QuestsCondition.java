@@ -46,4 +46,9 @@ public class QuestsCondition implements PlayerCondition {
         }
         return false;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

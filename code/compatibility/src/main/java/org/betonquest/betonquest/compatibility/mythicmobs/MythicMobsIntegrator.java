@@ -50,7 +50,6 @@ public class MythicMobsIntegrator implements Integrator {
 
     /**
      * The default constructor.
-     *
      */
     public MythicMobsIntegrator() {
         plugin = BetonQuest.getInstance();
@@ -73,7 +72,7 @@ public class MythicMobsIntegrator implements Integrator {
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
-        questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor), data));
+        questRegistries.condition().register("mythicmobdistance", new MythicMobDistanceConditionFactory(loggerFactory, mobExecutor, new MythicMobParser(mobExecutor)));
         questRegistries.objective().register("mmobkill", new MythicMobKillObjectiveFactory());
         questRegistries.event().registerCombined("mspawnmob", new MythicSpawnMobEventFactory(loggerFactory,
                 new MythicMobDoubleParser(mobExecutor), data, mythicHider));

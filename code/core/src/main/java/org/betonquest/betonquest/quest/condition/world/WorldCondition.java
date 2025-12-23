@@ -30,4 +30,9 @@ public class WorldCondition implements OnlineCondition {
         final World world = variableWorld.getValue(profile);
         return profile.getPlayer().getWorld().equals(world);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

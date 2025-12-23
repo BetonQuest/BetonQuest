@@ -34,4 +34,9 @@ public final class NullableConditionAdapter implements PlayerCondition, Playerle
     public boolean check() throws QuestException {
         return condition.check(null);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return condition.isPrimaryThreadEnforced();
+    }
 }

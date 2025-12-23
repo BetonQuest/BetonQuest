@@ -14,6 +14,7 @@ import java.util.Optional;
  * Checks the level of the player in Fabled.
  */
 public class FabledLevelCondition implements PlayerCondition {
+
     /**
      * The class name.
      */
@@ -50,5 +51,10 @@ public class FabledLevelCondition implements PlayerCondition {
                 .filter(c -> c.getData().getName().equalsIgnoreCase(className))
                 .findAny();
         return playerClass.filter(aClass -> level <= aClass.getLevel()).isPresent();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

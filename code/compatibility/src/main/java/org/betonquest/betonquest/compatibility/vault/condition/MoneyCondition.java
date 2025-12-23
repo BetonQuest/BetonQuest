@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
  * Checks if the player has specified amount of Vault money
  */
 public class MoneyCondition implements PlayerCondition {
+
     /**
      * Economy where the balance will be checked.
      */
@@ -34,5 +35,10 @@ public class MoneyCondition implements PlayerCondition {
     @Override
     public boolean check(final Profile profile) throws QuestException {
         return economy.has(profile.getPlayer(), amount.getValue(profile).doubleValue());
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

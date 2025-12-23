@@ -9,11 +9,9 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -29,11 +27,6 @@ public class WandConditionFactory implements PlayerConditionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Magic API to use.
      */
     private final MagicAPI api;
@@ -43,12 +36,10 @@ public class WandConditionFactory implements PlayerConditionFactory {
      *
      * @param loggerFactory the logger factory to create class specific logger
      * @param api           the magic api
-     * @param data          the data for primary server thread access
      */
-    public WandConditionFactory(final BetonQuestLoggerFactory loggerFactory, final MagicAPI api, final PrimaryServerThreadData data) {
+    public WandConditionFactory(final BetonQuestLoggerFactory loggerFactory, final MagicAPI api) {
         this.loggerFactory = loggerFactory;
         this.api = api;
-        this.data = data;
     }
 
     @Override
@@ -60,9 +51,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
         final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);
-        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new WandCondition(api, type, name, spells, amount),
-                log, instruction.getPackage()), data);
+        return new OnlineConditionAdapter(new WandCondition(api, type, name, spells, amount), log, instruction.getPackage());
     }
 
     /**

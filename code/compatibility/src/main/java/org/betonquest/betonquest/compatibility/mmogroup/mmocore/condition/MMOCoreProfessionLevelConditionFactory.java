@@ -4,10 +4,8 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
 
 /**
@@ -16,17 +14,9 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionPar
 public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new MMO Core Condition Factory.
-     *
-     * @param data the data for primary server thread access
      */
-    public MMOCoreProfessionLevelConditionFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public MMOCoreProfessionLevelConditionFactory() {
     }
 
     @Override
@@ -34,6 +24,6 @@ public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFa
         final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
         final Variable<Number> targetLevelVar = instruction.get(instruction.getParsers().number());
         final boolean mustBeEqual = instruction.hasArgument("equal");
-        return new PrimaryServerThreadPlayerCondition(new MMOCoreProfessionLevelCondition(profession, targetLevelVar, mustBeEqual), data);
+        return new MMOCoreProfessionLevelCondition(profession, targetLevelVar, mustBeEqual);
     }
 }

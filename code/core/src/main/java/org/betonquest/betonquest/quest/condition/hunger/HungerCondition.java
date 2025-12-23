@@ -28,4 +28,9 @@ public class HungerCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getFoodLevel() >= hunger.getValue(profile).doubleValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

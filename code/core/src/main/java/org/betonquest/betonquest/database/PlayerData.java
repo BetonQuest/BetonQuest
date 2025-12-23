@@ -560,7 +560,6 @@ public class PlayerData implements TagData, PointData {
 
     /**
      * Purges all profile's data from the database and from this object.
-     *
      */
     public void purgePlayer() {
         for (final Objective obj : questTypeApi.getPlayerObjectives(profile)) {

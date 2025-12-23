@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A condition that checks the moon phase in the given world.
  */
-public class MoonPhasesCondition implements NullableCondition {
+public class MoonPhaseCondition implements NullableCondition {
 
     /**
      * The world to check the moon phase in.
@@ -31,7 +31,7 @@ public class MoonPhasesCondition implements NullableCondition {
      * @param variableWorld the world to check the moon phase in
      * @param moonPhases    the moon phases to check for
      */
-    public MoonPhasesCondition(final Variable<World> variableWorld, final Variable<List<MoonPhase>> moonPhases) {
+    public MoonPhaseCondition(final Variable<World> variableWorld, final Variable<List<MoonPhase>> moonPhases) {
         this.variableWorld = variableWorld;
         this.moonPhases = moonPhases;
     }
@@ -40,5 +40,10 @@ public class MoonPhasesCondition implements NullableCondition {
     public boolean check(@Nullable final Profile profile) throws QuestException {
         final List<MoonPhase> moonPhases = this.moonPhases.getValue(profile);
         return moonPhases.contains(variableWorld.getValue(profile).getMoonPhase());
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

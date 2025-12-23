@@ -43,4 +43,9 @@ public class EmptySlotsCondition implements OnlineCondition {
         }
         return equal ? empty == required.getValue(profile).intValue() : empty >= required.getValue(profile).intValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

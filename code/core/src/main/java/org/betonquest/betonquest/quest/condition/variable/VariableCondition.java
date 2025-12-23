@@ -35,18 +35,26 @@ public class VariableCondition implements NullableCondition {
     private final String variableAddress;
 
     /**
+     * Whether to force synchronization with the main server thread.
+     */
+    private final boolean forceSync;
+
+    /**
      * Creates a new VariableCondition based on the given instruction.
      *
      * @param log             the logger
      * @param variable        the variable to compare with the regex
      * @param regex           the regex the variable must match
      * @param variableAddress the address of the variable for logging
+     * @param forceSync       whether to force synchronization with the main server thread
      */
-    public VariableCondition(final BetonQuestLogger log, final Variable<String> variable, final Variable<String> regex, final String variableAddress) {
+    public VariableCondition(final BetonQuestLogger log, final Variable<String> variable, final Variable<String> regex,
+                             final String variableAddress, final boolean forceSync) {
         this.log = log;
         this.variable = variable;
         this.regex = regex;
         this.variableAddress = variableAddress;
+        this.forceSync = forceSync;
     }
 
     @Override
@@ -60,5 +68,10 @@ public class VariableCondition implements NullableCondition {
                     .formatted(e.getPattern(), variableAddress, e.getMessage()), e);
             return false;
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return forceSync;
     }
 }

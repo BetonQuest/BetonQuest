@@ -37,4 +37,9 @@ public class RideCondition implements OnlineCondition {
         final Optional<EntityType> entityType = vehicle.getValue(profile);
         return entityType.map(type -> type == entity.getType()).orElse(true);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -6,11 +6,9 @@ import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgument
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
@@ -26,19 +24,12 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the looking at factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param data          the data used for checking the condition on the main thread
      */
-    public LookingAtConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public LookingAtConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -47,10 +38,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
         final Variable<BlockSelector> selector = instruction.getValue("type", DefaultArgumentParsers.BLOCK_SELECTOR);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);
-        return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(createCondition(loc, selector, exactMatch),
-                        log, instruction.getPackage()), data
-        );
+        return new OnlineConditionAdapter(createCondition(loc, selector, exactMatch), log, instruction.getPackage());
     }
 
     private LookingAtCondition createCondition(@Nullable final Variable<Location> loc, @Nullable final Variable<BlockSelector> selector, final boolean exactMatch) {

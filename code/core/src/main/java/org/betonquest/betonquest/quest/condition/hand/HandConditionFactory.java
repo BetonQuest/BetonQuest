@@ -7,11 +7,9 @@ import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierA
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 
 /**
  * Factory for {@link HandCondition}s.
@@ -24,19 +22,12 @@ public class HandConditionFactory implements PlayerConditionFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the hand factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
-     * @param data          the data used for checking the condition on the main thread
      */
-    public HandConditionFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public HandConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -44,8 +35,6 @@ public class HandConditionFactory implements PlayerConditionFactory {
         final Variable<Item> item = instruction.get(InstructionIdentifierArgument.ITEM);
         final boolean offhand = instruction.hasArgument("offhand");
         final BetonQuestLogger log = loggerFactory.create(HandCondition.class);
-        return new PrimaryServerThreadPlayerCondition(
-                new OnlineConditionAdapter(new HandCondition(item, offhand), log, instruction.getPackage()), data
-        );
+        return new OnlineConditionAdapter(new HandCondition(item, offhand), log, instruction.getPackage());
     }
 }

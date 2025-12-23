@@ -31,4 +31,9 @@ public class FacingCondition implements OnlineCondition {
         final Direction playerDirection = Direction.parseDirection(playerLocation.getYaw(), playerLocation.getPitch());
         return direction.getValue(profile) == playerDirection;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

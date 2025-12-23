@@ -10,7 +10,6 @@ public class MythicMobsIntegratorFactory implements IntegratorFactory {
 
     /**
      * Creates a new instance of the factory.
-     *
      */
     public MythicMobsIntegratorFactory() {
     }

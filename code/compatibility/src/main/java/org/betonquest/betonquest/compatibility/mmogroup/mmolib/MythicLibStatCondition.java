@@ -46,4 +46,9 @@ public class MythicLibStatCondition implements PlayerCondition {
         final double actualLevel = data.getStatMap().getStat(statName.getValue(profile));
         return mustBeEqual ? actualLevel == requiredLevel : actualLevel >= requiredLevel;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

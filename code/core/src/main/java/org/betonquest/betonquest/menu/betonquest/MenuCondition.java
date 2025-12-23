@@ -32,4 +32,9 @@ public class MenuCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return RPGMenu.hasOpenedMenu(profile, menuID == null ? null : menuID.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -9,6 +9,7 @@ import org.bukkit.advancement.AdvancementProgress;
  * Checks if the player has specified advancement.
  */
 public class AdvancementCondition implements OnlineCondition {
+
     /**
      * Advancement which is required.
      */
@@ -27,5 +28,10 @@ public class AdvancementCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) {
         final AdvancementProgress progress = profile.getPlayer().getAdvancementProgress(advancement);
         return progress.isDone();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

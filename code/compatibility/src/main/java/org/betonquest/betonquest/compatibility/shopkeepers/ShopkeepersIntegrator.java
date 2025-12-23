@@ -34,7 +34,7 @@ public class ShopkeepersIntegrator implements Integrator {
         }
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-        questRegistries.condition().register("shopamount", new HavingShopConditionFactory(data));
+        questRegistries.condition().register("shopamount", new HavingShopConditionFactory());
         questRegistries.event().register("shopkeeper", new OpenShopEventFactory(api.getLoggerFactory(), data));
     }
 

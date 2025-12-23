@@ -28,4 +28,9 @@ public class HeightCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return profile.getPlayer().getLocation().getY() < height.getValue(profile).doubleValue();
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

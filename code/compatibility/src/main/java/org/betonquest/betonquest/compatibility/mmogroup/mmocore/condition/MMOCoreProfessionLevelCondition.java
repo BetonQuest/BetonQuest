@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
  * Condition to check if the player has a level in a profession.
  */
 public class MMOCoreProfessionLevelCondition implements PlayerCondition {
+
     /**
      * Profession name.
      */
@@ -46,5 +47,10 @@ public class MMOCoreProfessionLevelCondition implements PlayerCondition {
         final int targetLevel = targetLevelVar.getValue(profile).intValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

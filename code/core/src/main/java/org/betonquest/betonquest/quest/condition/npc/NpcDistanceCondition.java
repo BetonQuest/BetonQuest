@@ -63,4 +63,9 @@ public class NpcDistanceCondition implements OnlineCondition {
         final double distance = this.distance.getValue(profile).doubleValue();
         return npcLocation.distanceSquared(player.getLocation()) <= distance * distance;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

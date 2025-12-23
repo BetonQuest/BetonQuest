@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
  * Checks an attribute of a player and if greater than or equal to a level.
  */
 public class HeroesAttributeCondition implements OnlineCondition {
+
     /**
      * The {@link CharacterManager} of the Heroes plugin.
      */
@@ -53,5 +54,10 @@ public class HeroesAttributeCondition implements OnlineCondition {
         final String name = attributeVar.getValue(profile);
         final Hero hero = characterManager.getHero(profile.getPlayer());
         return hero.getAttributeValue(findAttribute(name)) >= levelVar.getValue(profile).intValue();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

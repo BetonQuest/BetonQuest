@@ -93,7 +93,7 @@ public class RPGMenu {
         final QuestTypeRegistries questRegistries = betonQuest.getQuestRegistries();
         final Server server = betonQuest.getServer();
         final PrimaryServerThreadData data = new PrimaryServerThreadData(server, server.getScheduler(), betonQuest);
-        questRegistries.condition().register(menu, new MenuConditionFactory(loggerFactory, data));
+        questRegistries.condition().register(menu, new MenuConditionFactory(loggerFactory));
         questRegistries.objective().register(menu, new MenuObjectiveFactory(loggerFactory, this));
         questRegistries.event().register(menu, new MenuEventFactory(loggerFactory, data, this));
         questRegistries.variable().register(menu, new MenuVariableFactory());

@@ -14,6 +14,7 @@ import org.betonquest.betonquest.util.Utils;
  * Checks if the player has a certain stat level in AuraSkills.
  */
 public class AuraSkillsStatsCondition implements PlayerCondition {
+
     /**
      * The {@link AuraSkillsApi}.
      */
@@ -63,5 +64,10 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
         final double targetLevel = targetLevelVar.getValue(profile).doubleValue();
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

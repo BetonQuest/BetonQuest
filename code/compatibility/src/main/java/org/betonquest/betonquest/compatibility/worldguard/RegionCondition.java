@@ -28,4 +28,9 @@ public class RegionCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         return WorldGuardIntegrator.isInsideRegion(profile.getPlayer().getLocation(), name.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

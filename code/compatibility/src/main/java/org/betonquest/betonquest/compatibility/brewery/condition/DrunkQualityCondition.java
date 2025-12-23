@@ -12,6 +12,7 @@ import org.betonquest.betonquest.compatibility.brewery.BreweryUtils;
  * If a player has reached a certain level of drunkenness.
  */
 public class DrunkQualityCondition implements OnlineCondition {
+
     /**
      * The drunkenness level.
      */
@@ -33,5 +34,10 @@ public class DrunkQualityCondition implements OnlineCondition {
 
         final BPlayer bPlayer = BreweryApi.getBPlayer(profile.getPlayer());
         return bPlayer != null && bPlayer.getQuality() >= quality;
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

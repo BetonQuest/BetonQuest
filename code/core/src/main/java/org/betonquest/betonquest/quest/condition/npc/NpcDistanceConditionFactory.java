@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.api.quest.condition.thread.PrimaryServerThreadPlayerCondition;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 
 /**
@@ -23,11 +21,6 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     private final FeatureApi featureApi;
 
     /**
-     * Data used for condition check on the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
@@ -36,13 +29,10 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
      * Create a new factory for NPC Distance Conditions.
      *
      * @param featureApi    the Feature API
-     * @param data          the data used for checking the condition on the main thread
      * @param loggerFactory the logger factory to create a logger for the conditions
      */
-    public NpcDistanceConditionFactory(final FeatureApi featureApi, final PrimaryServerThreadData data,
-                                       final BetonQuestLoggerFactory loggerFactory) {
+    public NpcDistanceConditionFactory(final FeatureApi featureApi, final BetonQuestLoggerFactory loggerFactory) {
         this.featureApi = featureApi;
-        this.data = data;
         this.loggerFactory = loggerFactory;
     }
 
@@ -50,10 +40,7 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<NpcID> npcId = instruction.get(NpcID::new);
         final Variable<Number> distance = instruction.get(instruction.getParsers().number());
-        return new PrimaryServerThreadPlayerCondition(new OnlineConditionAdapter(
-                new NpcDistanceCondition(featureApi, npcId, distance),
-                loggerFactory.create(NpcDistanceCondition.class),
-                instruction.getPackage()
-        ), data);
+        return new OnlineConditionAdapter(new NpcDistanceCondition(featureApi, npcId, distance),
+                loggerFactory.create(NpcDistanceCondition.class), instruction.getPackage());
     }
 }

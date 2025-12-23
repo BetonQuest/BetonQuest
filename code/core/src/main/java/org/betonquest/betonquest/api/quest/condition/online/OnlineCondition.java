@@ -2,12 +2,14 @@ package org.betonquest.betonquest.api.quest.condition.online;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Quest condition that needs an online profile to function correctly.
  */
 @FunctionalInterface
-public interface OnlineCondition {
+public interface OnlineCondition extends PrimaryThreadEnforceable {
+
     /**
      * Checks the condition with an online profile.
      *

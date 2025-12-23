@@ -14,6 +14,7 @@ import java.util.Optional;
  * It supports a fallback if the player is not online.
  */
 public final class OnlineConditionAdapter implements PlayerCondition {
+
     /**
      * Condition to check with the online profile.
      */
@@ -63,5 +64,10 @@ public final class OnlineConditionAdapter implements PlayerCondition {
         } else {
             return fallbackCondition.check(profile);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return onlineCondition.isPrimaryThreadEnforced() || fallbackCondition.isPrimaryThreadEnforced();
     }
 }

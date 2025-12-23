@@ -38,4 +38,9 @@ public class HandCondition implements OnlineCondition {
         final PlayerInventory inv = profile.getPlayer().getInventory();
         return item.getValue(profile).matches(offhand ? inv.getItemInOffHand() : inv.getItemInMainHand(), profile);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }
