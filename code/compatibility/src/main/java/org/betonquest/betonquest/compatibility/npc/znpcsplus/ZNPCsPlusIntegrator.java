@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.npc.znpcsplus;
 
 import lol.pyr.znpcsplus.api.NpcApiProvider;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.npc.NpcRegistry;
@@ -13,6 +12,7 @@ import org.betonquest.betonquest.versioning.Version;
 import org.betonquest.betonquest.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 /**
  * Integrator implementation for the
@@ -26,20 +26,28 @@ public class ZNPCsPlusIntegrator implements Integrator {
     public static final String PREFIX = "ZNPCsPlus";
 
     /**
-     * The default Constructor.
+     * Plugin to register listener with.
      */
-    public ZNPCsPlusIntegrator() {
+    private final Plugin plugin;
+
+    /**
+     * The default Constructor.
+     *
+     * @param plugin the plugin to register listener with
+     */
+    public ZNPCsPlusIntegrator(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void hook(final BetonQuestApi api) throws HookException {
         validateVersion();
-        final BetonQuest betonQuest = BetonQuest.getInstance();
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
         final ProfileProvider profileProvider = api.getProfileProvider();
-        Bukkit.getPluginManager().registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry), betonQuest);
+        final PluginManager manager = plugin.getServer().getPluginManager();
+        manager.registerEvents(new ZNPCsPlusCatcher(profileProvider, npcRegistry), plugin);
         final ZNPCsPlusHider hider = new ZNPCsPlusHider(api.getFeatureApi().getNpcHider());
-        Bukkit.getPluginManager().registerEvents(hider, betonQuest);
+        manager.registerEvents(hider, plugin);
         npcRegistry.register(PREFIX, new ZNPCsPlusFactory(NpcApiProvider.get().getNpcRegistry()));
         npcRegistry.registerIdentifier(new ZNPCsPlusIdentifier(PREFIX));
     }

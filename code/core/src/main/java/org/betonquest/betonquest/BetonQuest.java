@@ -97,7 +97,6 @@ import org.betonquest.betonquest.web.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.web.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.web.updater.source.implementations.ReposiliteReleaseAndDevelopmentSource;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.PluginManager;
@@ -401,13 +400,13 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
         }
 
         compatibility = new Compatibility(loggerFactory.create(Compatibility.class), this, config, version);
-        Bukkit.getPluginManager().registerEvents(compatibility, this);
+        getServer().getPluginManager().registerEvents(compatibility, this);
 
         registerCommands(receiverSelector, debugHistoryHandler, playerDataFactory);
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             compatibility.postHook();
             loadData();
             playerDataStorage.initProfiles(profileProvider.getOnlineProfiles(), getFeatureApi().conversationApi());
@@ -483,7 +482,7 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     }
 
     private void registerListener(final CoreQuestRegistry coreQuestRegistry) {
-        final PluginManager pluginManager = Bukkit.getPluginManager();
+        final PluginManager pluginManager = getServer().getPluginManager();
         List.of(
                 new CombatTagger(profileProvider, config.getInt("conversation.damage.combat_delay")),
                 new MobKillListener(profileProvider),

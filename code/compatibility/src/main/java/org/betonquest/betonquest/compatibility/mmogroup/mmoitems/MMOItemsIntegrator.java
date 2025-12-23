@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import net.Indyuce.mmoitems.MMOItems;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
@@ -9,6 +8,7 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsApplyGemObjectiveFactory;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.objective.MMOItemsUpgradeObjectiveFactory;
 import org.betonquest.betonquest.item.ItemRegistry;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for MMO Items.
@@ -16,15 +16,22 @@ import org.betonquest.betonquest.item.ItemRegistry;
 public class MMOItemsIntegrator implements Integrator {
 
     /**
-     * The default constructor.
+     * Plugin to register listener with.
      */
-    public MMOItemsIntegrator() {
+    private final Plugin plugin;
 
+    /**
+     * Creates a new Integrator.
+     *
+     * @param plugin the plugin to register listener with
+     */
+    public MMOItemsIntegrator(final Plugin plugin) {
+
+        this.plugin = plugin;
     }
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final BetonQuest plugin = BetonQuest.getInstance();
         final FeatureTypeRegistry<Objective> objectiveRegistry = api.getQuestRegistries().objective();
         objectiveRegistry.register("mmoitemupgrade", new MMOItemsUpgradeObjectiveFactory());
         objectiveRegistry.register("mmoitemapplygem", new MMOItemsApplyGemObjectiveFactory());

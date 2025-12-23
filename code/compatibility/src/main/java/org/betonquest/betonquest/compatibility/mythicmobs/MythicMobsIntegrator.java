@@ -65,10 +65,10 @@ public class MythicMobsIntegrator implements Integrator {
         final BukkitAPIHelper apiHelper = mythicBukkit.getAPIHelper();
         final MobExecutor mobExecutor = mythicBukkit.getMobManager();
 
-        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+        final PluginManager manager = plugin.getServer().getPluginManager();
         mythicHider = new MythicHider(api.getProfileProvider(), plugin);
         mythicHider.reload(plugin.getPluginConfig().getInt("hider.npc_update_interval", 5 * 20));
-        pluginManager.registerEvents(mythicHider, plugin);
+        manager.registerEvents(mythicHider, plugin);
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
@@ -80,7 +80,7 @@ public class MythicMobsIntegrator implements Integrator {
         questRegistries.event().register("mcast", new MythicCastSkillEventFactory(loggerFactory, apiHelper));
 
         final NpcRegistry npcRegistry = api.getFeatureRegistries().npc();
-        pluginManager.registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor, mythicHider), plugin);
+        manager.registerEvents(new MythicMobsInteractCatcher(api.getProfileProvider(), npcRegistry, mobExecutor, mythicHider), plugin);
         npcRegistry.register("mythicmobs", new MythicMobsNpcFactory(mobExecutor, mythicHider));
         npcRegistry.registerIdentifier(new MythicMobsReverseIdentifier());
 

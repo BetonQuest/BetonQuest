@@ -34,6 +34,7 @@ import org.betonquest.betonquest.compatibility.traincarts.TrainCartsIntegratorFa
 import org.betonquest.betonquest.compatibility.vault.VaultIntegratorFactory;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegratorFactory;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegratorFactory;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Allows to register the 3rd party compatibility.
@@ -51,14 +52,21 @@ public class BundledCompatibility {
     private final BetonQuestApi betonQuestApi;
 
     /**
+     * Plugin to start tasks and register listener.
+     */
+    private final Plugin plugin;
+
+    /**
      * Creates a new Object to register plugin compatibilities.
      *
      * @param compatibility the compatibility to register at
      * @param betonQuestApi the API used for registering
+     * @param plugin        the plugin to start tasks and register listener
      */
-    public BundledCompatibility(final Compatibility compatibility, final BetonQuestApi betonQuestApi) {
+    public BundledCompatibility(final Compatibility compatibility, final BetonQuestApi betonQuestApi, final Plugin plugin) {
         this.compatibility = compatibility;
         this.betonQuestApi = betonQuestApi;
+        this.plugin = plugin;
     }
 
     /**
@@ -73,18 +81,18 @@ public class BundledCompatibility {
         compatibility.register("WorldGuard", new WorldGuardIntegratorFactory());
         compatibility.register("WorldEdit", new WorldEditIntegratorFactory());
         compatibility.register("FastAsyncWorldEdit", new WorldEditIntegratorFactory());
-        compatibility.register("mcMMO", new McMMOIntegratorFactory());
+        compatibility.register("mcMMO", new McMMOIntegratorFactory(plugin));
         compatibility.register("MythicLib", new MythicLibIntegratorFactory());
         compatibility.register("MMOCore", new MMOCoreIntegratorFactory());
-        compatibility.register("MMOItems", new MMOItemsIntegratorFactory());
+        compatibility.register("MMOItems", new MMOItemsIntegratorFactory(plugin));
         compatibility.register("EffectLib", new EffectLibIntegratorFactory());
-        compatibility.register("Heroes", new HeroesIntegratorFactory());
-        compatibility.register("Magic", new MagicIntegratorFactory());
+        compatibility.register("Heroes", new HeroesIntegratorFactory(plugin));
+        compatibility.register("Magic", new MagicIntegratorFactory(plugin));
         compatibility.register("Denizen", new DenizenIntegratorFactory());
-        compatibility.register("Fabled", new FabledIntegratorFactory());
+        compatibility.register("Fabled", new FabledIntegratorFactory(plugin));
         compatibility.register("Quests", new QuestsIntegratorFactory());
         compatibility.register("Shopkeepers", new ShopkeepersIntegratorFactory());
-        compatibility.register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory());
+        compatibility.register("PlaceholderAPI", new PlaceholderAPIIntegratorFactory(plugin.getDescription()));
         compatibility.register("packetevents", new PacketEventsIntegratorFactory());
         compatibility.register("Brewery", new BreweryIntegratorFactory());
         compatibility.register("BreweryX", new BreweryIntegratorFactory());
@@ -95,10 +103,10 @@ public class BundledCompatibility {
                 betonQuestApi.getQuestTypeApi().variables(), betonQuestApi.getQuestPackageManager()));
         compatibility.register("HolographicDisplays", new HolographicDisplaysIntegratorFactory(loggerFactory,
                 betonQuestApi.getQuestPackageManager()));
-        compatibility.register("fake-block", new FakeBlockIntegratorFactory());
+        compatibility.register("fake-block", new FakeBlockIntegratorFactory(plugin));
         compatibility.register("RedisChat", new RedisChatIntegratorFactory());
         compatibility.register("Train_Carts", new TrainCartsIntegratorFactory());
-        compatibility.register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory());
-        compatibility.register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory());
+        compatibility.register(FancyNpcsIntegrator.PREFIX, new FancyNpcsIntegratorFactory(plugin));
+        compatibility.register(ZNPCsPlusIntegrator.PREFIX, new ZNPCsPlusIntegratorFactory(plugin));
     }
 }

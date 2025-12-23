@@ -34,7 +34,7 @@ public class BetonQuestPlugin extends BetonQuest {
         if (version.isCompatibleWith("1.21.4")) {
             new BundledMC_1_21_4(getLoggerFactory().create(BundledMC_1_21_4.class)).register(this);
         }
-        new BundledCompatibility(getCompatibility(), this).registerCompatiblePlugins();
+        new BundledCompatibility(getCompatibility(), this, this).registerCompatiblePlugins();
         getCompatibility().init();
     }
 }

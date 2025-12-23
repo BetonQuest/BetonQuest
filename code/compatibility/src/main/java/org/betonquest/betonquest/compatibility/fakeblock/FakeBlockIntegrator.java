@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.fakeblock;
 
 import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -26,15 +25,17 @@ public class FakeBlockIntegrator implements Integrator {
     public static final String REQUIRED_VERSION = "2.0.1";
 
     /**
-     * The instance of {@link BetonQuest}.
+     * Plugin.
      */
-    private final BetonQuest plugin;
+    private final Plugin plugin;
 
     /**
      * Create the FakeBlock integration.
+     *
+     * @param plugin the plugin
      */
-    public FakeBlockIntegrator() {
-        this.plugin = BetonQuest.getInstance();
+    public FakeBlockIntegrator(final Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
