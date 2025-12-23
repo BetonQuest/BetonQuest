@@ -17,9 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -66,7 +64,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
      *
      * @param profile      the {@link Profile} of the player which should be checked
      * @param conditionIDs IDs of the conditions to check
-     * @param matchAll     True if all conditions have to be met, false if only one condition has to be met
+     * @param matchAll     true if all conditions have to be met, false if only one condition has to be met
      * @return if all conditions are met
      */
     public boolean checks(@Nullable final Profile profile, final Collection<ConditionID> conditionIDs, final boolean matchAll) {
@@ -74,18 +72,17 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             return matchAll == conditionIDs.stream().allMatch(id -> matchAll == check(profile, id));
         }
 
-        final Map<Boolean, List<ConditionID>> syncAsyncList = new HashMap<>();
-        syncAsyncList.put(true, new ArrayList<>());
-        syncAsyncList.put(false, new ArrayList<>());
-
+        final List<ConditionID> syncList = new ArrayList<>();
+        final List<ConditionID> asyncList = new ArrayList<>();
         conditionIDs.forEach(id -> {
             final ConditionAdapter adapter = values.get(id);
-            syncAsyncList.get(adapter != null && adapter.isPrimaryThreadEnforced()).add(id);
+            final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
+            (syncAsync ? syncList : asyncList).add(id);
         });
 
         final Future<Boolean> syncFuture = scheduler.callSyncMethod(plugin,
-                () -> matchAll == syncAsyncList.get(true).stream().allMatch(id -> matchAll == check(profile, id)));
-        final boolean asyncResult = matchAll == syncAsyncList.get(false).stream().allMatch((id) -> matchAll == check(profile, id));
+                () -> matchAll == syncList.stream().allMatch(id -> matchAll == check(profile, id)));
+        final boolean asyncResult = matchAll == asyncList.stream().allMatch((id) -> matchAll == check(profile, id));
 
         try {
             return matchAll == (matchAll == asyncResult && matchAll == syncFuture.get());

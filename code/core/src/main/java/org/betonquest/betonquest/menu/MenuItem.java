@@ -138,7 +138,9 @@ public class MenuItem {
      */
     public boolean display(final Profile profile) {
         try {
-            return questTypeApi.conditions(profile, this.conditions.getValue(profile));
+            final boolean result = questTypeApi.conditions(profile, this.conditions.getValue(profile));
+            log.debug(itemId.getPackage(), "Item '" + itemId + "' display check for profile '" + profile + "': " + result);
+            return result;
         } catch (final QuestException exception) {
             log.warn(itemId.getPackage(), "Error while resolving condition in menu item '" + itemId + "': " + exception.getMessage(), exception);
             return false;
