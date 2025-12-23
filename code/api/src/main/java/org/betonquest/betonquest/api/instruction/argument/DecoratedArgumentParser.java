@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
@@ -15,6 +16,16 @@ import java.util.Optional;
  * @param <T> the type of the argument
  */
 public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
+
+    /**
+     * Map the value of the variable after parsing to another type.
+     * Throwing an exception inside the mapper function indicates a parsing failure overall.
+     *
+     * @param mapper the mapper function to apply to the value after parsing
+     * @param <U>    the new type of the mapped value
+     * @return the new {@link DecoratedArgumentParser} with the new type
+     */
+    <U> DecoratedArgumentParser<U> map(QuestFunction<T, U> mapper);
 
     /**
      * Apply a {@link ValueValidator} to the {@link DecoratedArgumentParser} for early validation and improved error messages.

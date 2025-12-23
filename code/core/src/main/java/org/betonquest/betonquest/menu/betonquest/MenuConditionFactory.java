@@ -30,7 +30,9 @@ public class MenuConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<MenuID> menuId = instruction.getValue("id", MenuID::new);
+        final Variable<MenuID> menuId = instruction.parse(
+                (variables, packManager, pack, string)
+                        -> new MenuID(packManager, pack, string)).get("id").orElse(null);
         return new OnlineConditionAdapter(new MenuCondition(menuId),
                 loggerFactory.create(MenuCondition.class), instruction.getPackage());
     }

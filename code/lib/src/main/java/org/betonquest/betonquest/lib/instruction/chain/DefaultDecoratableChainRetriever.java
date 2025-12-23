@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.lib.instruction.chain;
 
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.instruction.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
@@ -30,6 +31,11 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
 
     private DecoratedArgumentParser<T> decoratable() {
         return new DecoratableArgumentParser<T>(argument);
+    }
+
+    @Override
+    public <U> DecoratableChainRetriever<U> map(final QuestFunction<T, U> mapper) {
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().map(mapper));
     }
 
     @Override

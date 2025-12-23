@@ -4,12 +4,11 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.variable.resolver.ArgumentResolver;
-import org.betonquest.betonquest.api.instruction.variable.resolver.IdentifierArgumentResolver;
 
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends ChainableInstruction, InstructionParts, ArgumentResolver, IdentifierArgumentResolver {
+public interface Instruction extends ChainableInstruction, InstructionParts, ArgumentResolver {
 
     /**
      * Get the source QuestPackage.

@@ -53,7 +53,9 @@ public class MenuEventFactory implements PlayerEventFactory {
         final Operation operation = instruction.get(instruction.getParsers().forEnum(Operation.class)).getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
-                final Variable<MenuID> menuID = instruction.get(MenuID::new);
+                final Variable<MenuID> menuID = instruction.parse(
+                        (variables, packManager, pack, string)
+                                -> new MenuID(packManager, pack, string)).get();
                 yield profile -> rpgMenu.openMenu(profile, menuID.getValue(profile));
             }
             case CLOSE -> RPGMenu::closeMenu;

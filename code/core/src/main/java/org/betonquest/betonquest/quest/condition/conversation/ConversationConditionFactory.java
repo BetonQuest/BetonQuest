@@ -29,7 +29,9 @@ public class ConversationConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ConversationID> conversationID = instruction.get(ConversationID::new);
+        final Variable<ConversationID> conversationID = instruction.parse(
+                (variables, packManager, pack, string)
+                        -> new ConversationID(packManager, pack, string)).get();
         return new ConversationCondition(conversationApi, conversationID);
     }
 }

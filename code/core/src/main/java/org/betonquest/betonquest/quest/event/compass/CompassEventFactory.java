@@ -48,7 +48,8 @@ public class CompassEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<CompassTargetAction> action = instruction.get(instruction.getParsers().forEnum(CompassTargetAction.class));
-        final Variable<CompassID> compassId = instruction.get(CompassID::new);
+        final Variable<CompassID> compassId = instruction.get(
+                (variables, packManager, pack, string) -> new CompassID(packManager, pack, string));
         return new PrimaryServerThreadEvent(
                 new CompassEvent(featureApi, dataStorage, action, compassId),
                 data);
