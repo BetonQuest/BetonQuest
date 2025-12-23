@@ -63,7 +63,7 @@ public abstract class RPGMenuProcessor<I extends Identifier, T> extends SectionP
         this.loggerFactory = loggerFactory;
         this.textCreator = textCreator;
         this.questTypeApi = questTypeApi;
-        this.itemParser = new ItemParser(featureApi);
+        this.itemParser = ItemParser.INSTANCE;
     }
 
     /**

@@ -97,7 +97,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.textParser = textParser;
-        this.itemParser = new ItemParser(BetonQuest.getInstance().getFeatureApi());
+        this.itemParser = ItemParser.INSTANCE;
     }
 
     @Override

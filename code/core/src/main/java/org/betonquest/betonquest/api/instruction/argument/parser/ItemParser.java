@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
@@ -16,6 +17,11 @@ import org.betonquest.betonquest.id.ItemID;
  * Parses a string to an item.
  */
 public class ItemParser implements InstructionIdentifierArgument<QuestItemWrapper> {
+
+    /**
+     * The singleton instance of the parser.
+     */
+    public static final ItemParser INSTANCE = new ItemParser(BetonQuest.getInstance().getFeatureApi());
 
     /**
      * The feature API to use for parsing.
