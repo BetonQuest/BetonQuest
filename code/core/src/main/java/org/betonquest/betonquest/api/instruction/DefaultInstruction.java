@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.IdentifierArgument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
@@ -246,27 +245,6 @@ public class DefaultInstruction implements Instruction {
             return new VariableList<>();
         }
         return new VariableList<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value), valueChecker);
-    }
-
-    @Override
-    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
-    @Nullable
-    public <T> Variable<T> get(@Nullable final String string, final PackageArgument<T> argument, @Nullable final T defaultValue) throws QuestException {
-        if (string == null) {
-            if (defaultValue != null) {
-                return new DefaultVariable<>(defaultValue);
-            }
-            return null;
-        }
-        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(pack, value));
-    }
-
-    @Override
-    public <T> Variable<List<T>> getList(@Nullable final String string, final PackageArgument<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        if (string == null) {
-            return new VariableList<>();
-        }
-        return new VariableList<>(variables, pack, string, value -> argument.apply(pack, value), valueChecker);
     }
 
     @Override
