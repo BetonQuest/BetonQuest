@@ -38,7 +38,9 @@ public class MenuObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<MenuID> menuID = instruction.get(MenuID::new);
+        final Variable<MenuID> menuID = instruction.parse(
+                (variables, packManager, pack, string)
+                        -> new MenuID(packManager, pack, string)).get();
         final BetonQuestLogger log = loggerFactory.create(MenuObjective.class);
         return new MenuObjective(instruction, log, rpgMenu, menuID);
     }

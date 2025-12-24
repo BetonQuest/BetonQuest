@@ -20,9 +20,9 @@ public class ShearObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
-        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string());
-        final Variable<DyeColor> color = instruction.getValue("color", instruction.getParsers().forEnum(DyeColor.class));
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Variable<String> name = instruction.string().get("name").orElse(null);
+        final Variable<DyeColor> color = instruction.enumeration(DyeColor.class).get("color").orElse(null);
         return new ShearObjective(instruction, targetAmount, name, color);
     }
 }

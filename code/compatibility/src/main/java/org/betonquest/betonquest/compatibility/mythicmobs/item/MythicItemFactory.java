@@ -28,7 +28,7 @@ public class MythicItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final MythicItemWrapper mythicItemWrapper = new MythicItemWrapper(itemManager, instruction.get(instruction.getParsers().string()));
+        final MythicItemWrapper mythicItemWrapper = new MythicItemWrapper(itemManager, instruction.string().get());
         if (instruction.hasArgument("quest-item")) {
             return new QuestItemTagAdapterWrapper(mythicItemWrapper);
         }

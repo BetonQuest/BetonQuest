@@ -10,6 +10,7 @@ import java.util.List;
  * Represents the parts of an instruction.
  */
 public class InstructionPartsArray implements InstructionParts {
+
     /**
      * The parts of the instruction.
      */
@@ -43,7 +44,7 @@ public class InstructionPartsArray implements InstructionParts {
     }
 
     @Override
-    public String next() throws QuestException {
+    public String nextElement() throws QuestException {
         if (this.index >= this.parts.length - 1) {
             throw new QuestException("No part left");
         }

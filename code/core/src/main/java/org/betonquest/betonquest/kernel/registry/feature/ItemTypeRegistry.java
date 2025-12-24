@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.kernel.registry.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.item.ItemRegistry;
-import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.item.QuestItemSerializer;
 import org.betonquest.betonquest.item.QuestItemWrapper;
 import org.betonquest.betonquest.kernel.registry.FactoryTypeRegistry;
@@ -16,6 +16,7 @@ import java.util.Set;
  * Registry for {@link QuestItem} types.
  */
 public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> implements ItemRegistry {
+
     /**
      * Identifies registered serializer by string.
      */

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 import java.util.Locale;
 
@@ -10,7 +10,7 @@ import java.util.Locale;
  *
  * @param <T> the type of the enum
  */
-public class EnumParser<T extends Enum<T>> implements Argument<T> {
+public class EnumParser<T extends Enum<T>> implements SimpleArgumentParser<T> {
 
     /**
      * The type of the enum.

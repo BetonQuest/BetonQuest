@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.feature;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.npc.Npc;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
@@ -14,7 +15,6 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.JournalEntryID;
 import org.betonquest.betonquest.id.JournalMainPageID;
 import org.betonquest.betonquest.id.QuestCancelerID;
-import org.betonquest.betonquest.item.QuestItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -23,6 +23,7 @@ import java.util.Map;
  * The FeatureApi provides access to more complex features, often based on basic features.
  */
 public interface FeatureApi {
+
     /**
      * Get the Api for Conversation interaction.
      *

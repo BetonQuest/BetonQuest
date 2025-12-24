@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.hand;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -15,7 +15,7 @@ public class HandCondition implements OnlineCondition {
     /**
      * The item to check for.
      */
-    private final Variable<Item> item;
+    private final Variable<ItemWrapper> item;
 
     /**
      * Whether the item is in the offhand.
@@ -28,7 +28,7 @@ public class HandCondition implements OnlineCondition {
      * @param item    the item to check for
      * @param offhand whether the item is in the offhand
      */
-    public HandCondition(final Variable<Item> item, final boolean offhand) {
+    public HandCondition(final Variable<ItemWrapper> item, final boolean offhand) {
         this.item = item;
         this.offhand = offhand;
     }

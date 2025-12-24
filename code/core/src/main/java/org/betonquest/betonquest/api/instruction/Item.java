@@ -2,10 +2,11 @@ package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Wrapper for {@link QuestItem} to also store target stack amount.
  */
 @SuppressWarnings("PMD.ShortClassName")
-public class Item {
+public class Item implements ItemWrapper {
 
     /**
      * Feature API.
@@ -43,54 +44,27 @@ public class Item {
         this.amount = amount;
     }
 
-    /**
-     * Generates the item stack.
-     *
-     * @param profile the profile for variable resolving
-     * @return the generated bukkit item
-     * @throws QuestException when the generation fails
-     */
+    @Override
     public ItemStack generate(@Nullable final Profile profile) throws QuestException {
         return getItem(profile).generate(amount.getValue(profile).intValue(), profile);
     }
 
-    /**
-     * Checks if the Item matches.
-     *
-     * @param item    the item to compare
-     * @param profile the profile to resolve the item
-     * @return true if the given item matches the quest item
-     * @throws QuestException when there is no QuestItem for the ID
-     */
+    @Override
     public boolean matches(@Nullable final ItemStack item, @Nullable final Profile profile) throws QuestException {
         return getItem(profile).matches(item);
     }
 
-    /**
-     * Gets the stored ID used to generate the Quest Item.
-     *
-     * @return item id of the item
-     */
+    @Override
     public ItemID getID() {
         return itemID;
     }
 
-    /**
-     * Gets the Quest Item.
-     *
-     * @param profile the profile to resolve the item
-     * @return the stored quest item
-     * @throws QuestException when there is no QuestItem for the ID
-     */
+    @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         return featureApi.getItem(itemID, profile);
     }
 
-    /**
-     * Gets the amount to set.
-     *
-     * @return the stores amount
-     */
+    @Override
     public Variable<Number> getAmount() {
         return amount;
     }

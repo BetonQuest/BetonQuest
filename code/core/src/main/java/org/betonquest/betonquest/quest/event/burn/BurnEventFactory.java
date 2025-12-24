@@ -38,7 +38,7 @@ public class BurnEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> duration = instruction.getValue("duration", instruction.getParsers().number());
+        final Variable<Number> duration = instruction.number().get("duration").orElse(null);
         if (duration == null) {
             throw new QuestException("Missing duration!");
         }

@@ -3,11 +3,9 @@ package org.betonquest.betonquest.quest.event.spawn;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.Item;
-import org.betonquest.betonquest.api.instruction.argument.DecoratableArgument;
-import org.betonquest.betonquest.api.instruction.argument.InstructionIdentifierArgument;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -17,10 +15,12 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
+import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
     /**
      * The parser for entity types.
      */
-    private final DecoratableArgument<EntityType> entityTypeParser;
+    private final DecoratedArgumentParser<EntityType> entityTypeParser;
 
     /**
      * Create a new factory for {@link SpawnMobEvent}s.
@@ -45,7 +45,7 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      */
     public SpawnMobEventFactory(final PrimaryServerThreadData data) {
         this.data = data;
-        this.entityTypeParser = new DecoratableArgument<>(new EnumParser<>(EntityType.class))
+        this.entityTypeParser = new DecoratableArgumentParser<>(new EnumParser<>(EntityType.class))
                 .validate(type -> type.getEntityClass() != null && Mob.class.isAssignableFrom(type.getEntityClass()),
                         "EntityType '%s' is not a mob");
     }
@@ -68,18 +68,18 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @throws QuestException if the instruction could not be parsed
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<EntityType> type = instruction.get(entityTypeParser);
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
-        final Variable<Component> name = instruction.getValue("name", instruction.getParsers().component());
-        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
-        final Variable<Item> helmet = instruction.getValue("h", InstructionIdentifierArgument.ITEM);
-        final Variable<Item> chestplate = instruction.getValue("c", InstructionIdentifierArgument.ITEM);
-        final Variable<Item> leggings = instruction.getValue("l", InstructionIdentifierArgument.ITEM);
-        final Variable<Item> boots = instruction.getValue("b", InstructionIdentifierArgument.ITEM);
-        final Variable<Item> mainHand = instruction.getValue("m", InstructionIdentifierArgument.ITEM);
-        final Variable<Item> offHand = instruction.getValue("o", InstructionIdentifierArgument.ITEM);
-        final Variable<List<Item>> drops = instruction.getValueList("drops", InstructionIdentifierArgument.ITEM);
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<EntityType> type = instruction.parse(entityTypeParser).get();
+        final Variable<Number> amount = instruction.number().get();
+        final Variable<Component> name = instruction.component().get("name").orElse(null);
+        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
+        final Variable<ItemWrapper> helmet = instruction.item().get("h").orElse(null);
+        final Variable<ItemWrapper> chestplate = instruction.item().get("c").orElse(null);
+        final Variable<ItemWrapper> leggings = instruction.item().get("l").orElse(null);
+        final Variable<ItemWrapper> boots = instruction.item().get("b").orElse(null);
+        final Variable<ItemWrapper> mainHand = instruction.item().get("m").orElse(null);
+        final Variable<ItemWrapper> offHand = instruction.item().get("o").orElse(null);
+        final Variable<List<ItemWrapper>> drops = instruction.item().getList("drops", Collections.emptyList());
         final Equipment equipment = new Equipment(helmet, chestplate, leggings, boots, mainHand, offHand, drops);
         final SpawnMobEvent event = new SpawnMobEvent(loc, type, equipment, amount, name, marked);
         return new NullableEventAdapter(event);

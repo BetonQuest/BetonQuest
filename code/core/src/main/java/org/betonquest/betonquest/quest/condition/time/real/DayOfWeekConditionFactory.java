@@ -32,7 +32,7 @@ public class DayOfWeekConditionFactory implements PlayerlessConditionFactory {
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String dayString = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String dayString = instruction.string().get().getValue(null);
         DayOfWeek dayOfWeek;
         try {
             dayOfWeek = DayOfWeek.of(Integer.parseInt(dayString));

@@ -64,18 +64,18 @@ public class NpcVariableFactory implements PlayerVariableFactory, PlayerlessVari
                 return questerVariable.getValue(profile);
             };
         }
-        final Variable<NpcID> npcID = instruction.get(NpcID::new);
-        final Argument key = instruction.get(instruction.getParsers().forEnum(Argument.class)).getValue(null);
+        final Variable<NpcID> npcID = instruction.parse(NpcID::new).get();
+        final Argument key = instruction.enumeration(Argument.class).get().getValue(null);
         LocationFormationMode locationFormationMode = null;
         int decimalPlaces = 0;
         if (key == Argument.LOCATION) {
             if (instruction.hasNext()) {
-                locationFormationMode = LocationFormationMode.getMode(instruction.next());
+                locationFormationMode = LocationFormationMode.getMode(instruction.nextElement());
             } else {
                 locationFormationMode = LocationFormationMode.ULF_LONG;
             }
             if (instruction.hasNext()) {
-                decimalPlaces = Integer.parseInt(instruction.next());
+                decimalPlaces = Integer.parseInt(instruction.nextElement());
             }
         }
         return new NpcVariable(featureApi, npcID, key, locationFormationMode, decimalPlaces);

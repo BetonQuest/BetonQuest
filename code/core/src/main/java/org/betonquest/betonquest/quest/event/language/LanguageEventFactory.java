@@ -28,7 +28,7 @@ public class LanguageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> language = instruction.get(instruction.getParsers().string());
+        final Variable<String> language = instruction.string().get();
         return new LanguageEvent(language, dataStorage);
     }
 }

@@ -2,12 +2,12 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
  * Parses a string to a number.
  */
-public class NumberParser implements Argument<Number> {
+public class NumberParser implements SimpleArgumentParser<Number> {
 
     /**
      * The default instance of {@link NumberParser}.

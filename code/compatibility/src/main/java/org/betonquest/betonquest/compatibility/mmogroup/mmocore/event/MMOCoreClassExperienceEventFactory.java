@@ -30,7 +30,7 @@ public class MMOCoreClassExperienceEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
 
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         final boolean isLevel = instruction.hasArgument("level");
         return new PrimaryServerThreadEvent(new MMOCoreClassExperienceEvent(amount, isLevel), data);
     }

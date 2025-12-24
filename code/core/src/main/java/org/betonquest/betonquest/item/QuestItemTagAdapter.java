@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +17,7 @@ import java.util.List;
  * @param original the quest item to add the tag to
  */
 public record QuestItemTagAdapter(QuestItem original) implements QuestItem {
+
     @Override
     public Component getName() {
         return original.getName();

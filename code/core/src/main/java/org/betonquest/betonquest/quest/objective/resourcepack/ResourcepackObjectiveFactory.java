@@ -21,7 +21,7 @@ public class ResourcepackObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<PlayerResourcePackStatusEvent.Status> targetStatus =
-                instruction.get(instruction.getParsers().forEnum(PlayerResourcePackStatusEvent.Status.class));
+                instruction.enumeration(PlayerResourcePackStatusEvent.Status.class).get();
         return new ResourcepackObjective(instruction, targetStatus);
     }
 }

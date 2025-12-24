@@ -30,23 +30,18 @@ public class ActionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Click> action = instruction.get(instruction.getParsers().forEnum(Click.class));
-        final Variable<Optional<BlockSelector>> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR.prefilterOptional(ANY, null));
+        final Variable<Click> action = instruction.enumeration(Click.class).get();
+        final Variable<Optional<BlockSelector>> selector = instruction.parse(DefaultArgumentParsers.BLOCK_SELECTOR)
+                .prefilterOptional(ANY, null).get();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
-        final Variable<Location> loc = instruction.getValue("loc", instruction.getParsers().location());
-        final Variable<Number> range = instruction.getValue("range", instruction.getParsers().number(), 0);
+        final Variable<Location> loc = instruction.location().get("loc").orElse(null);
+        final Variable<Number> range = instruction.number().get("range", 0);
         final boolean cancel = instruction.hasArgument("cancel");
-        final String handString = instruction.getValue("hand");
-        final EquipmentSlot slot;
-        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
-            slot = EquipmentSlot.HAND;
-        } else if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
-            slot = EquipmentSlot.OFF_HAND;
-        } else if (ANY.equalsIgnoreCase(handString)) {
-            slot = null;
-        } else {
-            throw new QuestException("Invalid hand value: " + handString);
-        }
+        final Variable<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
+                .validate(slot -> slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND, "Invalid hand value: '%s'")
+                .prefilterOptional(ANY, null)
+                .get("hand").orElse(null);
+        final EquipmentSlot slot = hand == null ? null : hand.getValue(null).orElse(null);
         return new ActionObjective(instruction, action, selector, exactMatch, loc, range, cancel, slot);
     }
 }

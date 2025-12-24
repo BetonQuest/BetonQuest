@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.common.component.VariableComponent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
@@ -97,7 +97,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
         this.loggerFactory = loggerFactory;
         this.hologramProvider = hologramProvider;
         this.textParser = textParser;
-        this.itemParser = new ItemParser(BetonQuest.getInstance().getFeatureApi());
+        this.itemParser = ItemParser.INSTANCE;
     }
 
     @Override
@@ -173,7 +173,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
             throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.");
         }
 
-        final String pointName = PackageArgument.IDENTIFIER.apply(pack, validator.group(1));
+        final String pointName = IdentifierParser.INSTANCE.apply(pack, validator.group(1));
         final TopXObject.OrderType orderType = orderType(validator.group(2));
 
         final int limit;

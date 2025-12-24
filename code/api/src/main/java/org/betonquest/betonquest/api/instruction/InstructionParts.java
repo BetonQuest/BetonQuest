@@ -8,13 +8,14 @@ import java.util.List;
  * Represents the parts of an instruction.
  */
 public interface InstructionParts {
+
     /**
      * Gets the next part of the instruction.
      *
      * @return The next part of the instruction.
      * @throws QuestException If there are no parts left.
      */
-    String next() throws QuestException;
+    String nextElement() throws QuestException;
 
     /**
      * Gets the current part of the instruction.

@@ -59,7 +59,7 @@ public class CitizensStopEventFactory implements PlayerlessEventFactory, PlayerE
     }
 
     private NullableEventAdapter createCitizensStopEvent(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.get(CitizensArgument.CITIZENS_ID);
+        final Variable<NpcID> npcId = instruction.parse(CitizensArgument.CITIZENS_ID).get();
         return new NullableEventAdapter(new CitizensStopEvent(featureApi, npcId, citizensMoveController));
     }
 }

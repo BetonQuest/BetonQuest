@@ -27,13 +27,13 @@ public enum Type {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
-            final Variable<MythicMob> mythicMobVariable = instruction.get(string -> {
+            final Variable<MythicMob> mythicMobVariable = instruction.parse(string -> {
                 final Optional<MythicMob> mythicMob = mobExecutor.getMythicMob(string);
                 if (mythicMob.isPresent()) {
                     return mythicMob.get();
                 }
                 throw new QuestException("There exists no MythicMob type '" + string + "'");
-            });
+            }).get();
             return new TypeWrapper(mythicMobVariable, mythicHider, mobExecutor);
         }
 
@@ -50,7 +50,7 @@ public enum Type {
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
             try {
-                return new UUIDWrapper(instruction.get(instruction.getParsers().uuid()), mythicHider, mobExecutor);
+                return new UUIDWrapper(instruction.uuid().get(), mythicHider, mobExecutor);
             } catch (final IllegalArgumentException exception) {
                 throw new QuestException(exception);
             }
@@ -68,7 +68,7 @@ public enum Type {
         @Override
         protected NpcWrapper<ActiveMob> parse(final Instruction instruction, final MythicHider mythicHider,
                                               final MobExecutor mobExecutor) throws QuestException {
-            return new FactionWrapper(instruction.get(instruction.getParsers().string()), mythicHider, mobExecutor);
+            return new FactionWrapper(instruction.string().get(), mythicHider, mobExecutor);
         }
 
         @Override

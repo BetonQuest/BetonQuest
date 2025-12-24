@@ -34,8 +34,8 @@ public class BlockConditionFactory implements PlayerConditionFactory, Playerless
     }
 
     private NullableConditionAdapter parseBlockCondition(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<BlockSelector> selector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR);
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<BlockSelector> selector = instruction.parse(DefaultArgumentParsers.BLOCK_SELECTOR).get();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         return new NullableConditionAdapter(new BlockCondition(loc, selector, exactMatch));
     }

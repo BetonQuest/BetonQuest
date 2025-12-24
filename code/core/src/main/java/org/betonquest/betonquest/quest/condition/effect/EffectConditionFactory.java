@@ -31,7 +31,7 @@ public class EffectConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<PotionEffectType> typeVariable = instruction.get(PotionEffectTypeParser.POTION_EFFECT_TYPE);
+        final Variable<PotionEffectType> typeVariable = instruction.parse(PotionEffectTypeParser.POTION_EFFECT_TYPE).get();
         final BetonQuestLogger log = loggerFactory.create(EffectCondition.class);
         return new OnlineConditionAdapter(new EffectCondition(typeVariable), log, instruction.getPackage());
     }

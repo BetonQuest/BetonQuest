@@ -40,10 +40,10 @@ public class GiveBrewEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amountVar = instruction.get(instruction.getParsers().number().atLeast(1));
-        final Variable<Number> qualityVar = instruction.get(instruction.getParsers().number());
-        final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
-        final Variable<IdentifierType> mode = instruction.getValue("mode", instruction.getParsers().forEnum(IdentifierType.class), IdentifierType.NAME);
+        final Variable<Number> amountVar = instruction.number().atLeast(1).get();
+        final Variable<Number> qualityVar = instruction.number().get();
+        final Variable<String> nameVar = instruction.string().get();
+        final Variable<IdentifierType> mode = instruction.enumeration(IdentifierType.class).get("mode", IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(GiveBrewEvent.class);
         return new PrimaryServerThreadEvent(
                 new OnlineEventAdapter(new GiveBrewEvent(amountVar, qualityVar, nameVar, mode), logger, instruction.getPackage()), data);

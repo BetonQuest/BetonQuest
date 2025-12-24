@@ -43,7 +43,7 @@ public class ChestClearEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     private NullableEventAdapter createChestClearEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> variableLocation = instruction.get(instruction.getParsers().location());
+        final Variable<Location> variableLocation = instruction.location().get();
         return new NullableEventAdapter(new ChestClearEvent(variableLocation));
     }
 }

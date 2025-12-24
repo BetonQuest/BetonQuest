@@ -30,9 +30,9 @@ public class StageConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
-        final Variable<Operation> operation = instruction.get(Operation::fromSymbol);
-        final Variable<String> targetStage = instruction.get(instruction.getParsers().string());
+        final Variable<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
+        final Variable<Operation> operation = instruction.parse(Operation::fromSymbol).get();
+        final Variable<String> targetStage = instruction.string().get();
         return new StageCondition(questTypeApi, objectiveID, targetStage, operation);
     }
 }

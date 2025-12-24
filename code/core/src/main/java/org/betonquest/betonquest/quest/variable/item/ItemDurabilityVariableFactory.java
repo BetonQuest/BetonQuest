@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.variable.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
@@ -20,7 +19,7 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
     private static final String DIGITS_KEY = "digits";
 
     /**
-     * The default amount of digits after comma.
+     * The default number of digits after comma.
      */
     private static final int DEFAULT_DIGITS = 2;
 
@@ -32,22 +31,10 @@ public class ItemDurabilityVariableFactory implements PlayerVariableFactory {
 
     @Override
     public PlayerVariable parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<EquipmentSlot> slot = instruction.get(instruction.getParsers().forEnum(EquipmentSlot.class));
+        final Variable<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
         final boolean relative = instruction.hasArgument("relative");
-        final Variable<Number> digitsAfter = digits(instruction);
+        final Variable<Number> digitsAfter = instruction.number().get(DIGITS_KEY, DEFAULT_DIGITS);
         final boolean inPercent = instruction.hasArgument("percent");
         return new OnlineVariableAdapter(new ItemDurabilityVariable(slot, relative, digitsAfter, inPercent));
-    }
-
-    private Variable<Number> digits(final Instruction instruction) throws QuestException {
-        if (instruction.hasArgument(DIGITS_KEY)) {
-            for (int i = instruction.size() - 2; i >= 0; i--) {
-                final String part = instruction.getPart(i);
-                if (DIGITS_KEY.equalsIgnoreCase(part)) {
-                    return instruction.get(instruction.getPart(i + 1), instruction.getParsers().number(), DEFAULT_DIGITS);
-                }
-            }
-        }
-        return new DefaultVariable<>(DEFAULT_DIGITS);
     }
 }

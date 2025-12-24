@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -47,12 +46,12 @@ public class DeletePointEventFactory implements PlayerEventFactory, PlayerlessEv
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new DeletePointEvent(dataStorage::getOffline, instruction.get(PackageArgument.IDENTIFIER));
+        return new DeletePointEvent(dataStorage::getOffline, instruction.packageIdentifier().get());
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<String> category = instruction.get(PackageArgument.IDENTIFIER);
+        final Variable<String> category = instruction.packageIdentifier().get();
         return new DeletePointPlayerlessEvent(dataStorage, saver, profileProvider, category);
     }
 }

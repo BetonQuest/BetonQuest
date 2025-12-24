@@ -1,13 +1,11 @@
 package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.DecoratedArgument;
 
 /**
  * Checks if a given value is valid.
  *
  * @param <T> the type of the value to be checked
- * @see DecoratedArgument
  */
 @FunctionalInterface
 public interface ValueValidator<T> {

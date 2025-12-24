@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
+import org.betonquest.betonquest.api.instruction.argument.parser.IdentifierParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -167,7 +167,7 @@ public class QuestCanceler {
         try {
             for (final String entry : toRemove.getValue(profile)) {
                 log.debug(pack, "  Removing " + logIdentifier + " " + entry);
-                action.accept(PackageArgument.IDENTIFIER.apply(pack, entry));
+                action.accept(IdentifierParser.INSTANCE.apply(pack, entry));
             }
         } catch (final QuestException e) {
             log.warn(pack, "Cannot remove " + logIdentifier + " in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);

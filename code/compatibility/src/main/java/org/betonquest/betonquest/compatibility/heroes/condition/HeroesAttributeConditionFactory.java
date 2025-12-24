@@ -37,8 +37,8 @@ public class HeroesAttributeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> attributeVar = instruction.get(instruction.getParsers().string());
-        final Variable<Number> levelVar = instruction.get(instruction.getParsers().number());
+        final Variable<String> attributeVar = instruction.string().get();
+        final Variable<Number> levelVar = instruction.number().get();
         return new OnlineConditionAdapter(new HeroesAttributeCondition(characterManager, attributeVar, levelVar),
                 loggerFactory.create(HeroesAttributeCondition.class), instruction.getPackage());
     }

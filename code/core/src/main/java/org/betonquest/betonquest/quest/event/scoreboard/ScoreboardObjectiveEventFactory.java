@@ -30,9 +30,9 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> objective = instruction.get(instruction.getParsers().string());
-        final Variable<Number> number = instruction.get(instruction.getParsers().number());
-        final PointType action = instruction.getValue("action", instruction.getParsers().forEnum(PointType.class), PointType.ADD).getValue(null);
+        final Variable<String> objective = instruction.string().get();
+        final Variable<Number> number = instruction.number().get();
+        final PointType action = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
         return new PrimaryServerThreadEvent(
                 new ScoreboardObjectiveEvent(objective, number, action),
                 data);

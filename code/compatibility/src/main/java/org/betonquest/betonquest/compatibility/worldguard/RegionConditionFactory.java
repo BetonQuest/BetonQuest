@@ -30,7 +30,7 @@ public class RegionConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final BetonQuestLogger log = loggerFactory.create(RegionCondition.class);
-        return new OnlineConditionAdapter(new RegionCondition(instruction.get(instruction.getParsers().string())),
+        return new OnlineConditionAdapter(new RegionCondition(instruction.string().get()),
                 log, instruction.getPackage());
     }
 }

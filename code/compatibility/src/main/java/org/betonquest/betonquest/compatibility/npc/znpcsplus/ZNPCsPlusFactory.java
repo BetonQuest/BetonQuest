@@ -28,6 +28,6 @@ public class ZNPCsPlusFactory implements NpcFactory {
 
     @Override
     public NpcWrapper<NpcEntry> parseInstruction(final Instruction instruction) throws QuestException {
-        return new ZNPCsPlusWrapper(npcRegistry, instruction.get(instruction.getParsers().string()));
+        return new ZNPCsPlusWrapper(npcRegistry, instruction.string().get());
     }
 }

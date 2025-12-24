@@ -20,8 +20,8 @@ public class ArrowShootObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(instruction.getParsers().location());
-        final Variable<Number> range = instruction.get(instruction.getParsers().number());
+        final Variable<Location> location = instruction.location().get();
+        final Variable<Number> range = instruction.number().get();
         return new ArrowShootObjective(instruction, location, range);
     }
 }

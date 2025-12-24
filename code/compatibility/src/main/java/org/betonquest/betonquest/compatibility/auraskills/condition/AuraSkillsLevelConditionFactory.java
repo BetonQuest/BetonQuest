@@ -28,8 +28,8 @@ public class AuraSkillsLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
-        final Variable<Number> targetLevelVar = instruction.get(instruction.getParsers().number());
+        final Variable<String> nameVar = instruction.string().get();
+        final Variable<Number> targetLevelVar = instruction.number().get();
         final boolean mustBeEqual = instruction.hasArgument("equal");
 
         return new AuraSkillsLevelCondition(auraSkillsApi, targetLevelVar, nameVar, mustBeEqual);

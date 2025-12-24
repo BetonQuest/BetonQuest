@@ -39,13 +39,13 @@ public class EffectEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final PotionEffectType effect = PotionEffectType.getByName(instruction.get(instruction.getParsers().string()).getValue(null));
+        final PotionEffectType effect = PotionEffectType.getByName(instruction.string().get().getValue(null));
         if (effect == null) {
             throw new QuestException("Unknown effect type: " + instruction.current());
         }
         try {
-            final Variable<Number> duration = instruction.get(instruction.getParsers().number());
-            final Variable<Number> level = instruction.get(instruction.getParsers().number());
+            final Variable<Number> duration = instruction.number().get();
+            final Variable<Number> level = instruction.number().get();
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");

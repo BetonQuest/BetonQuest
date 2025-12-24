@@ -4,13 +4,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.variable.nullable.NullableVariable;
 import org.betonquest.betonquest.data.PlayerDataStorage;
-import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +31,7 @@ public class ItemVariable implements NullableVariable {
     /**
      * The Item.
      */
-    private final Variable<Item> item;
+    private final Variable<ItemWrapper> item;
 
     /**
      * The type how the item should be displayed.
@@ -57,7 +57,7 @@ public class ItemVariable implements NullableVariable {
      * @param raw               if the output should be raw
      * @param amount            the amount of the item
      */
-    public ItemVariable(final PlayerDataStorage playerDataStorage, final Variable<Item> item, final ItemDisplayType type,
+    public ItemVariable(final PlayerDataStorage playerDataStorage, final Variable<ItemWrapper> item, final ItemDisplayType type,
                         final boolean raw, final int amount) {
         this.playerDataStorage = playerDataStorage;
         this.item = item;

@@ -4,9 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -87,7 +87,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final MenuCreationHelper helper = new MenuCreationHelper(pack, section);
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
-        final Variable<Item> boundItem = section.isSet("bind")
+        final Variable<ItemWrapper> boundItem = section.isSet("bind")
                 ? new DefaultVariable<>(variables, pack, helper.getRequired("bind"),
                 value -> itemParser.apply(variables, packManager, pack, value))
                 : null;

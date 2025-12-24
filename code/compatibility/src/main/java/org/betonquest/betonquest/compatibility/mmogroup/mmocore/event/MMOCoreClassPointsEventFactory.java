@@ -29,7 +29,7 @@ public class MMOCoreClassPointsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         return new PrimaryServerThreadEvent(new MMOCoreClassPointsEvent(amount), data);
     }
 }

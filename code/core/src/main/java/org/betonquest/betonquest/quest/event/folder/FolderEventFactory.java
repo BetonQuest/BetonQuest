@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -71,13 +72,14 @@ public class FolderEventFactory implements PlayerEventFactory, PlayerlessEventFa
     }
 
     private NullableEventAdapter createFolderEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> events = instruction.getList(EventID::new);
-        final Variable<Number> delay = instruction.getValue("delay", instruction.getParsers().number());
-        final Variable<Number> period = instruction.getValue("period", instruction.getParsers().number());
-        final Variable<Number> random = instruction.getValue("random", instruction.getParsers().number());
-        final Variable<TimeUnit> timeUnit = instruction.getValue("unit", this::getTimeUnit, TimeUnit.SECONDS);
+        final Variable<List<EventID>> events = instruction.parse(EventID::new).getList();
+        final Variable<Number> delay = instruction.number().get("delay").orElse(null);
+        final Variable<Number> period = instruction.number().get("period").orElse(null);
+        final Variable<Number> random = instruction.number().get("random").orElse(null);
+        final Variable<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
         final boolean cancelOnLogout = instruction.hasArgument("cancelOnLogout");
-        final Variable<List<ConditionID>> cancelConditions = instruction.getValueList("cancelConditions", ConditionID::new);
+        final Variable<List<ConditionID>> cancelConditions = instruction.parse(ConditionID::new)
+                .getList("cancelConditions", Collections.emptyList());
         return new NullableEventAdapter(new FolderEvent(betonQuest, loggerFactory.create(FolderEvent.class), pluginManager,
                 events,
                 questTypeApi, new Random(), delay, period, random, timeUnit, cancelOnLogout, cancelConditions));

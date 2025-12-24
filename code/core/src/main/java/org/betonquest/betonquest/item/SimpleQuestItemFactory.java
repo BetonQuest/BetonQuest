@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.kernel.TypeFactory;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -139,7 +140,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final String instructionString = rawInstruction.get(rawInstruction.toString(), rawInstruction.getParsers().string()).getValue(null);
         final Instruction instruction = new DefaultInstruction(variables, packManager, rawInstruction.getPackage(),
                 rawInstruction.getID(), DefaultArgumentParsers.INSTANCE, instructionString);
-        final String material = instruction.next();
+        final String material = instruction.nextElement();
         final List<String> arguments;
         if (instruction.hasNext()) {
             final List<String> valueParts = instruction.getValueParts();

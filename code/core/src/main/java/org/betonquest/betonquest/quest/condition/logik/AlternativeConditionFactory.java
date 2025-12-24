@@ -43,7 +43,7 @@ public class AlternativeConditionFactory implements PlayerConditionFactory, Play
     }
 
     private AlternativeCondition parseAlternative(final Instruction instruction) throws QuestException {
-        final Variable<List<ConditionID>> conditionIDs = instruction.getList(ConditionID::new);
+        final Variable<List<ConditionID>> conditionIDs = instruction.parse(ConditionID::new).getList();
         return new AlternativeCondition(questTypeApi, conditionIDs);
     }
 }

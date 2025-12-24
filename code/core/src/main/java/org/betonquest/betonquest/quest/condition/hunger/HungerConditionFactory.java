@@ -30,7 +30,7 @@ public class HungerConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> hunger = instruction.get(instruction.getParsers().number());
+        final Variable<Number> hunger = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(HungerCondition.class);
         return new OnlineConditionAdapter(new HungerCondition(hunger), log, instruction.getPackage());
     }

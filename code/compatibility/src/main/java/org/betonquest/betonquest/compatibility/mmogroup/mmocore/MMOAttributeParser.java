@@ -4,12 +4,13 @@ import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.manager.AttributeManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
  * Parses a string to an attribute.
  */
-public class MMOAttributeParser implements Argument<PlayerAttribute> {
+public class MMOAttributeParser implements SimpleArgumentParser<PlayerAttribute> {
+
     /**
      * The default instance of {@link MMOAttributeParser}.
      */

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineCondition;
@@ -15,20 +15,20 @@ public class ArmorCondition implements OnlineCondition {
     /**
      * Armor to check.
      */
-    private final Variable<Item> armorItem;
+    private final Variable<ItemWrapper> armorItem;
 
     /**
      * Creates a new ArmorCondition.
      *
      * @param armorItem the armor item
      */
-    public ArmorCondition(final Variable<Item> armorItem) {
+    public ArmorCondition(final Variable<ItemWrapper> armorItem) {
         this.armorItem = armorItem;
     }
 
     @Override
     public boolean check(final OnlineProfile profile) throws QuestException {
-        final Item item = armorItem.getValue(profile);
+        final ItemWrapper item = armorItem.getValue(profile);
         for (final ItemStack armor : profile.getPlayer().getEquipment().getArmorContents()) {
             if (item.matches(armor, profile)) {
                 return true;

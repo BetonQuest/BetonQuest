@@ -43,7 +43,7 @@ public class FirstEventFactory implements PlayerEventFactory, PlayerlessEventFac
     }
 
     private NullableEventAdapter createFirstEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> list = instruction.getList(EventID::new);
+        final Variable<List<EventID>> list = instruction.parse(EventID::new).getList();
         return new NullableEventAdapter(new FirstEvent(list, questTypeApi));
     }
 }

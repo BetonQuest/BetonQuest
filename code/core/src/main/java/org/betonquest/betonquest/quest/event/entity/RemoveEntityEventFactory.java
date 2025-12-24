@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.entity;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -48,12 +47,12 @@ public class RemoveEntityEventFactory implements PlayerEventFactory, PlayerlessE
     }
 
     private NullableEventAdapter createRemoveEntityEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<EntityType>> types = instruction.getList(instruction.getParsers().forEnum(EntityType.class));
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<Number> range = instruction.get(instruction.getParsers().number());
+        final Variable<List<EntityType>> types = instruction.enumeration(EntityType.class).getList();
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<Number> range = instruction.number().get();
         final boolean kill = instruction.hasArgument("kill");
-        final Variable<Component> name = instruction.getValue("name", instruction.getParsers().component());
-        final Variable<String> marked = instruction.getValue("marked", PackageArgument.IDENTIFIER);
+        final Variable<Component> name = instruction.component().get("name").orElse(null);
+        final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new NullableEventAdapter(new RemoveEntityEvent(types, loc, range, name, marked, kill));
     }
 }

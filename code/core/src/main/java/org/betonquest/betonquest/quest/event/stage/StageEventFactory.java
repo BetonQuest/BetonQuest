@@ -34,8 +34,8 @@ public class StageEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<ObjectiveID> objectiveID = instruction.get(ObjectiveID::new);
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final Variable<ObjectiveID> objectiveID = instruction.parse(ObjectiveID::new).get();
+        final String action = instruction.string().get().getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "set" -> createSetEvent(instruction, objectiveID);
             case "increase" -> createIncreaseEvent(instruction, objectiveID);
@@ -45,7 +45,7 @@ public class StageEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent createSetEvent(final Instruction instruction, final Variable<ObjectiveID> objectiveID) throws QuestException {
-        final Variable<String> variableString = instruction.get(instruction.getParsers().string());
+        final Variable<String> variableString = instruction.string().get();
         return new StageEvent(profile -> getStageObjective(objectiveID.getValue(profile)).setStage(profile, variableString.getValue(profile)));
     }
 
@@ -62,7 +62,7 @@ public class StageEventFactory implements PlayerEventFactory {
     @Nullable
     private Variable<Number> getVariableNumber(final Instruction instruction) throws QuestException {
         if (instruction.hasNext()) {
-            final String stringAmount = instruction.next();
+            final String stringAmount = instruction.nextElement();
             if (!stringAmount.startsWith("conditions:")) {
                 return instruction.get(stringAmount, instruction.getParsers().number());
             }

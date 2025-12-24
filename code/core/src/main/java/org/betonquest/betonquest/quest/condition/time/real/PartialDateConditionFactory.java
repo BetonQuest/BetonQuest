@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.condition.time.real;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 
@@ -20,27 +21,20 @@ public class PartialDateConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final String dayOfMonthString = instruction.getValue("day");
-        final List<TimeInterval> dayOfMonth;
-        if (dayOfMonthString == null) {
-            dayOfMonth = null;
-        } else {
-            dayOfMonth = TimeInterval.parseFromString(dayOfMonthString, PartialDate.DAY);
-        }
-        final String monthString = instruction.getValue("month");
-        final List<TimeInterval> month;
-        if (monthString == null) {
-            month = null;
-        } else {
-            month = TimeInterval.parseFromString(monthString, PartialDate.MONTH);
-        }
-        final String yearString = instruction.getValue("year");
-        final List<TimeInterval> year;
-        if (yearString == null) {
-            year = null;
-        } else {
-            year = TimeInterval.parseFromString(yearString, PartialDate.YEAR);
-        }
+        final Variable<List<TimeInterval>> dayVar = instruction.string()
+                .map(val -> TimeInterval.parseFromString(val, PartialDate.DAY))
+                .get("day").orElse(null);
+        final List<TimeInterval> dayOfMonth = dayVar == null ? null : dayVar.getValue(null);
+
+        final Variable<List<TimeInterval>> monthVar = instruction.string()
+                .map(val -> TimeInterval.parseFromString(val, PartialDate.MONTH))
+                .get("month").orElse(null);
+        final List<TimeInterval> month = monthVar == null ? null : monthVar.getValue(null);
+
+        final Variable<List<TimeInterval>> yearVar = instruction.string()
+                .map(val -> TimeInterval.parseFromString(val, PartialDate.YEAR))
+                .get("year").orElse(null);
+        final List<TimeInterval> year = yearVar == null ? null : yearVar.getValue(null);
         return new PartialDateCondition(dayOfMonth, month, year);
     }
 }

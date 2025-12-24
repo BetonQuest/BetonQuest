@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Parses a string to a vector.
  */
-public class VectorParser implements Argument<Vector> {
+public class VectorParser implements SimpleArgumentParser<Vector> {
 
     /**
      * This regex matches everything except ';'.

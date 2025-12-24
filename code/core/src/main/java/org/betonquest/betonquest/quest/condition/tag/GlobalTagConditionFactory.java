@@ -2,8 +2,6 @@ package org.betonquest.betonquest.quest.condition.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.PackageArgument;
-import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessConditionFactory;
 import org.betonquest.betonquest.database.GlobalData;
@@ -29,7 +27,6 @@ public class GlobalTagConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<String> tag = instruction.get(PackageArgument.IDENTIFIER);
-        return new GlobalTagCondition(globalData, tag);
+        return new GlobalTagCondition(globalData, instruction.packageIdentifier().get());
     }
 }

@@ -30,8 +30,8 @@ public class MMOQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Type> itemType = instruction.get(MMOItemsUtils::getMMOItemType);
-        final Variable<String> itemId = instruction.get(instruction.getParsers().string());
+        final Variable<Type> itemType = instruction.parse(MMOItemsUtils::getMMOItemType).get();
+        final Variable<String> itemId = instruction.string().get();
         final MMOQuestItemWrapper mmoQuestItemWrapper = new MMOQuestItemWrapper(mmoPlugin, itemType, itemId);
         if (instruction.hasArgument("quest-item")) {
             return new QuestItemTagAdapterWrapper(mmoQuestItemWrapper);

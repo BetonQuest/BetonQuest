@@ -78,7 +78,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String action = instruction.string().get().getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update" -> createJournalUpdateEvent();
             case "add" -> createJournalAddEvent(instruction);
@@ -89,7 +89,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String action = instruction.string().get().getValue(null);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "update", "add" -> new DoNothingPlayerlessEvent();
             case "delete" -> createStaticJournalDeleteEvent(instruction);

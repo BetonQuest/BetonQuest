@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface QuestItemWrapper {
+
     /**
      * Gets the QuestItem represented by this Wrapper.
      *

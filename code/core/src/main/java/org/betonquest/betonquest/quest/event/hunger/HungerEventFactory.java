@@ -38,8 +38,8 @@ public class HungerEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Hunger> hunger = instruction.get(instruction.getParsers().forEnum(Hunger.class));
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Hunger> hunger = instruction.enumeration(Hunger.class).get();
+        final Variable<Number> amount = instruction.number().get();
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new HungerEvent(hunger, amount),
                 loggerFactory.create(HungerEvent.class),

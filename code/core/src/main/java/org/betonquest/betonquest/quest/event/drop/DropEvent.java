@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.drop;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
@@ -15,10 +15,11 @@ import java.util.List;
  * Event that drops items at a location.
  */
 public class DropEvent implements NullableEvent {
+
     /**
      * Items to be dropped.
      */
-    private final Variable<List<Item>> items;
+    private final Variable<List<ItemWrapper>> items;
 
     /**
      * Location to drop the items at.
@@ -31,7 +32,7 @@ public class DropEvent implements NullableEvent {
      * @param items    items to be dropped
      * @param location the location to drop the items at
      */
-    public DropEvent(final Variable<List<Item>> items, final Variable<Location> location) {
+    public DropEvent(final Variable<List<ItemWrapper>> items, final Variable<Location> location) {
         this.items = items;
         this.location = location;
     }
@@ -39,7 +40,7 @@ public class DropEvent implements NullableEvent {
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Location location = this.location.getValue(profile);
-        for (final Item itemDefinition : items.getValue(profile)) {
+        for (final ItemWrapper itemDefinition : items.getValue(profile)) {
             final ItemStack item = itemDefinition.generate(profile);
             final int amount = itemDefinition.getAmount().getValue(profile).intValue();
 

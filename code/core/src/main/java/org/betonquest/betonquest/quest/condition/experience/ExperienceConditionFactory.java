@@ -30,7 +30,7 @@ public class ExperienceConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(ExperienceCondition.class);
         return new OnlineConditionAdapter(new ExperienceCondition(amount), log, instruction.getPackage());
     }

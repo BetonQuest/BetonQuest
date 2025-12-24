@@ -4,12 +4,13 @@ import net.Indyuce.mmocore.MMOCore;
 import net.Indyuce.mmocore.experience.Profession;
 import net.Indyuce.mmocore.manager.profession.ProfessionManager;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
  * Parses a string to a profession.
  */
-public class MMOProfessionParser implements Argument<Profession> {
+public class MMOProfessionParser implements SimpleArgumentParser<Profession> {
+
     /**
      * The default instance of {@link MMOProfessionParser}.
      */

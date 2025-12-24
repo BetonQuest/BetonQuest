@@ -4,7 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.Item;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -19,7 +19,7 @@ public class EquipItemObjective extends Objective implements Listener {
     /**
      * The item that needs to be equipped.
      */
-    private final Variable<Item> item;
+    private final Variable<ItemWrapper> item;
 
     /**
      * The slot type where the item needs to be equipped.
@@ -34,7 +34,7 @@ public class EquipItemObjective extends Objective implements Listener {
      * @param slotType    the slot type where the item needs to be equipped
      * @throws QuestException if there is an error in the instruction
      */
-    public EquipItemObjective(final Instruction instruction, final Variable<Item> item,
+    public EquipItemObjective(final Instruction instruction, final Variable<ItemWrapper> item,
                               final Variable<PlayerArmorChangeEvent.SlotType> slotType) throws QuestException {
         super(instruction);
         this.item = item;

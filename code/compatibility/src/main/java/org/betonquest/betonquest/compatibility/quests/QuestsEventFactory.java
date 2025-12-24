@@ -37,7 +37,7 @@ public class QuestsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> name = instruction.get(instruction.getParsers().string());
+        final Variable<String> name = instruction.string().get();
         final boolean override = instruction.hasArgument("check-requirements");
         return new PrimaryServerThreadEvent(new QuestsEvent(quests, name, override), data);
     }
