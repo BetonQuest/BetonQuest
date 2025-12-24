@@ -16,7 +16,7 @@ public class SudoEventFactory extends BaseCommandEventFactory {
      * Create the sudo event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param server        the data for primary server thread access
+     * @param server        the server to execute commands on
      */
     public SudoEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
         super(loggerFactory, server);

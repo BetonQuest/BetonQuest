@@ -53,9 +53,4 @@ public class FreezeEvent implements OnlineEvent {
 
         Bukkit.getScheduler().runTaskLater(plugin, armorStandPassenger::unmount, ticks);
     }
-
-    @Override
-    public boolean isPrimaryThreadEnforced() {
-        return true;
-    }
 }

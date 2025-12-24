@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 public class BQEventSkriptFactory implements PlayerEventFactory {
 
     /**
-     * Create the door event factory.
+     * Create a new betonquest skript event factory.
      */
     public BQEventSkriptFactory() {
     }

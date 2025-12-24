@@ -436,7 +436,7 @@ public class CoreQuestTypes {
         eventTypes.register("updatevisibility", new UpdateVisibilityNowEventFactory(featureApi.getNpcHider(), loggerFactory));
         eventTypes.register("variable", new VariableEventFactory(questTypeApi));
         eventTypes.register("velocity", new VelocityEventFactory(loggerFactory));
-        eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, data));
+        eventTypes.registerCombined("weather", new WeatherEventFactory(loggerFactory, server));
     }
 
     private void registerObjectives(final FeatureTypeRegistry<Objective> objectiveTypes) {
