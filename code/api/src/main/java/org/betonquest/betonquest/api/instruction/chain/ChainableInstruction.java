@@ -1,8 +1,7 @@
-package org.betonquest.betonquest.api.instruction;
+package org.betonquest.betonquest.api.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 
 import java.util.List;

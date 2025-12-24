@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.lib.instruction.chain;
 
 import org.betonquest.betonquest.api.common.function.QuestFunction;
-import org.betonquest.betonquest.api.instruction.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.jetbrains.annotations.Nullable;

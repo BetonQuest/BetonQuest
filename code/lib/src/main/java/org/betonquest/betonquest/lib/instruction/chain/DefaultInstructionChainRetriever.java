@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.lib.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainRetriever;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 
