@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.VariableReplacement;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -26,7 +26,7 @@ public class TakeEvent extends AbstractTakeEvent {
     /**
      * The items to be removed.
      */
-    private final Variable<List<QuestItemWrapper>> questItems;
+    private final Variable<List<ItemWrapper>> questItems;
 
     /**
      * A map to keep track of the needed deletions for each player.
@@ -40,14 +40,14 @@ public class TakeEvent extends AbstractTakeEvent {
      * @param checkOrder         the order in which the checks should be performed
      * @param notificationSender the notification sender to use
      */
-    public TakeEvent(final Variable<List<QuestItemWrapper>> questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
+    public TakeEvent(final Variable<List<ItemWrapper>> questItems, final List<CheckType> checkOrder, final NotificationSender notificationSender) {
         super(checkOrder, notificationSender);
         this.questItems = questItems;
     }
 
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
-        for (final QuestItemWrapper item : questItems.getValue(profile)) {
+        for (final ItemWrapper item : questItems.getValue(profile)) {
             final QuestItem questItem = item.getItem(profile);
             final int deleteAmount = item.getAmount().getValue(profile).intValue();
             neededDeletions.put(profile.getProfileUUID(), Pair.of(questItem, deleteAmount));

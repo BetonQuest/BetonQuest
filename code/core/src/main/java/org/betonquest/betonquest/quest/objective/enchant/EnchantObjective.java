@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.enchant;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -24,7 +24,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
     /**
      * The item to enchant.
      */
-    private final Variable<QuestItemWrapper> item;
+    private final Variable<ItemWrapper> item;
 
     /**
      * The desired enchantments.
@@ -46,7 +46,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
      * @param requireOne          true if at least one enchantment is required, false if all enchantments are required
      * @throws QuestException if there is an error in the instruction
      */
-    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<QuestItemWrapper> item,
+    public EnchantObjective(final Instruction instruction, final Variable<Number> targetAmount, final Variable<ItemWrapper> item,
                             final Variable<List<EnchantmentData>> desiredEnchantments, final boolean requireOne) throws QuestException {
         super(instruction, targetAmount, "items_to_enchant");
         this.item = item;

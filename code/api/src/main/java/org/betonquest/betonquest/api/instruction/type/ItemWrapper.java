@@ -9,11 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author Juyas
- * @version 23.12.2025
- * @since 23.12.2025
+ * A wrapper for a {@link QuestItem}.
  */
-public interface QuestItemWrapper {
+public interface ItemWrapper {
 
     /**
      * Generates the item stack.

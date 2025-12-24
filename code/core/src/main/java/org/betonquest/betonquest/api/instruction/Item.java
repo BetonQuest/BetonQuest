@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.instruction;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Wrapper for {@link QuestItem} to also store target stack amount.
  */
 @SuppressWarnings("PMD.ShortClassName")
-public class Item implements QuestItemWrapper {
+public class Item implements ItemWrapper {
 
     /**
      * Feature API.

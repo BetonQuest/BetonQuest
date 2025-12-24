@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -49,11 +49,11 @@ public interface ArgumentParsers {
     DecoratedArgumentParser<Location> location();
 
     /**
-     * Default parser for {@link QuestItemWrapper}.
+     * Default parser for {@link ItemWrapper}.
      *
      * @return a parser for quest items
      */
-    DecoratedArgumentParser<QuestItemWrapper> item();
+    DecoratedArgumentParser<ItemWrapper> item();
 
     /**
      * Default parser for a package identifier.

@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Creates and Resolves {@link org.betonquest.betonquest.api.quest.variable Variables}.
+ * Creates and Resolves {@link Variables}.
  */
 public interface Variables {
 

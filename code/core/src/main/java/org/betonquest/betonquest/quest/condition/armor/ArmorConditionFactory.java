@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.condition.armor;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -31,7 +31,7 @@ public class ArmorConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<QuestItemWrapper> armorItem = instruction.item().get();
+        final Variable<ItemWrapper> armorItem = instruction.item().get();
         final BetonQuestLogger log = loggerFactory.create(ArmorCondition.class);
         return new OnlineConditionAdapter(new ArmorCondition(armorItem), log, instruction.getPackage());
     }

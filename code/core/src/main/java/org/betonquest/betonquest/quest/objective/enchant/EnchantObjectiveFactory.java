@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.enchant;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
@@ -28,7 +28,7 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
-        final Variable<QuestItemWrapper> item = instruction.item().get();
+        final Variable<ItemWrapper> item = instruction.item().get();
         final Variable<List<EnchantObjective.EnchantmentData>> desiredEnchantments =
                 instruction.parse(EnchantObjective.EnchantmentData::convert).getList();
         final boolean requireOne = instruction.parse(JUST_ONE_ENCHANT::equalsIgnoreCase)

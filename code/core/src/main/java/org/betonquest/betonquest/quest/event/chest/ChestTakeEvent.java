@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -20,7 +20,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
     /**
      * The items to take from the chest.
      */
-    private final Variable<List<QuestItemWrapper>> items;
+    private final Variable<List<ItemWrapper>> items;
 
     /**
      * Creates a new ChestTakeEvent.
@@ -28,7 +28,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
      * @param variableLocation The location of the chest.
      * @param items            The items to take from the chest.
      */
-    public ChestTakeEvent(final Variable<Location> variableLocation, final Variable<List<QuestItemWrapper>> items) {
+    public ChestTakeEvent(final Variable<Location> variableLocation, final Variable<List<ItemWrapper>> items) {
         super(variableLocation);
         this.items = items;
     }
@@ -37,7 +37,7 @@ public class ChestTakeEvent extends AbstractChestEvent {
     public void execute(@Nullable final Profile profile) throws QuestException {
         try {
             final Inventory inventory = getChest(profile).getInventory();
-            for (final QuestItemWrapper item : items.getValue(profile)) {
+            for (final ItemWrapper item : items.getValue(profile)) {
                 final QuestItem questItem = item.getItem(profile);
                 final int amount = item.getAmount().getValue(profile).intValue();
                 final ItemStack[] newItems = removeItems(inventory.getContents(), questItem, amount);

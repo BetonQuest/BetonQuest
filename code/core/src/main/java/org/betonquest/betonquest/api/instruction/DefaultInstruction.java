@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
@@ -313,7 +313,7 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    public DecoratableChainRetriever<QuestItemWrapper> item() {
+    public DecoratableChainRetriever<ItemWrapper> item() {
         return new DefaultDecoratableChainRetriever<>(this, argumentParsers.item());
     }
 

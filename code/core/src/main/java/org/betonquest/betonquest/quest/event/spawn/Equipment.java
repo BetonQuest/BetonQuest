@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.spawn;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.NamespacedKey;
@@ -25,10 +25,10 @@ import java.util.List;
  * @param offHand    the off-hand item to equip the mob with
  * @param drops      the items to drop when the mob dies
  */
-public record Equipment(@Nullable Variable<QuestItemWrapper> helmet, @Nullable Variable<QuestItemWrapper> chestplate,
-                        @Nullable Variable<QuestItemWrapper> leggings, @Nullable Variable<QuestItemWrapper> boots,
-                        @Nullable Variable<QuestItemWrapper> mainHand, @Nullable Variable<QuestItemWrapper> offHand,
-                        Variable<List<QuestItemWrapper>> drops) {
+public record Equipment(@Nullable Variable<ItemWrapper> helmet, @Nullable Variable<ItemWrapper> chestplate,
+                        @Nullable Variable<ItemWrapper> leggings, @Nullable Variable<ItemWrapper> boots,
+                        @Nullable Variable<ItemWrapper> mainHand, @Nullable Variable<ItemWrapper> offHand,
+                        Variable<List<ItemWrapper>> drops) {
 
     /**
      * Adds the drops to the mob.
@@ -39,7 +39,7 @@ public record Equipment(@Nullable Variable<QuestItemWrapper> helmet, @Nullable V
      */
     public void addDrops(final Mob mob, @Nullable final Profile profile) throws QuestException {
         int dropIndex = 0;
-        for (final QuestItemWrapper item : drops.getValue(profile)) {
+        for (final ItemWrapper item : drops.getValue(profile)) {
             final String value = item.getID().getFull() + ":" + item.getAmount().getValue(profile).intValue();
             final NamespacedKey key = new NamespacedKey(BetonQuest.getInstance(), "betonquest-drops-" + dropIndex);
             mob.getPersistentDataContainer().set(key, PersistentDataType.STRING, value);
@@ -71,7 +71,7 @@ public record Equipment(@Nullable Variable<QuestItemWrapper> helmet, @Nullable V
     }
 
     @Nullable
-    private ItemStack generate(@Nullable final Profile profile, @Nullable final Variable<QuestItemWrapper> item) throws QuestException {
+    private ItemStack generate(@Nullable final Profile profile, @Nullable final Variable<ItemWrapper> item) throws QuestException {
         return item == null ? null : item.getValue(profile).getItem(profile).generate(1);
     }
 }

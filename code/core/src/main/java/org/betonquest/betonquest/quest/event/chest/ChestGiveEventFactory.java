@@ -2,7 +2,7 @@ package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -47,7 +47,7 @@ public class ChestGiveEventFactory implements PlayerEventFactory, PlayerlessEven
 
     private NullableEventAdapter createChestGiveEvent(final Instruction instruction) throws QuestException {
         final Variable<Location> location = instruction.location().get();
-        final Variable<List<QuestItemWrapper>> items = instruction.item().getList();
+        final Variable<List<ItemWrapper>> items = instruction.item().getList();
         return new NullableEventAdapter(new ChestGiveEvent(location, items)
         );
     }

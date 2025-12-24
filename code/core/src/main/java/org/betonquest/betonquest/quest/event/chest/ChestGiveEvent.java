@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.chest;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -24,7 +24,7 @@ public class ChestGiveEvent implements NullableEvent {
     /**
      * The items to put in the blocks inventory.
      */
-    private final Variable<List<QuestItemWrapper>> questItems;
+    private final Variable<List<ItemWrapper>> questItems;
 
     /**
      * The location of the block.
@@ -37,7 +37,7 @@ public class ChestGiveEvent implements NullableEvent {
      * @param questItems the items to put in the blocks inventory
      * @param location   the location of the block
      */
-    public ChestGiveEvent(final Variable<Location> location, final Variable<List<QuestItemWrapper>> questItems) {
+    public ChestGiveEvent(final Variable<Location> location, final Variable<List<ItemWrapper>> questItems) {
         this.questItems = questItems;
         this.location = location;
     }
@@ -66,7 +66,7 @@ public class ChestGiveEvent implements NullableEvent {
      */
     private ItemStack[] getItemStacks(@Nullable final Profile profile) throws QuestException {
         final List<ItemStack> itemStacks = new ArrayList<>();
-        for (final QuestItemWrapper item : questItems.getValue(profile)) {
+        for (final ItemWrapper item : questItems.getValue(profile)) {
             final QuestItem questItem = item.getItem(profile);
             int amount = item.getAmount().getValue(profile).intValue();
             while (amount > 0) {

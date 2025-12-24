@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.pickup;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     /**
      * The target amount of items to be picked up.
      */
-    private final Variable<List<QuestItemWrapper>> pickupItems;
+    private final Variable<List<ItemWrapper>> pickupItems;
 
     /**
      * Constructor for the PickupObjective.
@@ -33,7 +33,7 @@ public class PickupObjective extends CountingObjective implements Listener {
      * @throws QuestException if there is an error in the instruction
      */
     public PickupObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                           final Variable<List<QuestItemWrapper>> pickupItems) throws QuestException {
+                           final Variable<List<ItemWrapper>> pickupItems) throws QuestException {
         super(instruction, targetAmount, "items_to_pickup");
         this.pickupItems = pickupItems;
     }
@@ -60,7 +60,7 @@ public class PickupObjective extends CountingObjective implements Listener {
     }
 
     private boolean isValidItem(final OnlineProfile onlineProfile, final ItemStack itemStack) throws QuestException {
-        for (final QuestItemWrapper item : pickupItems.getValue(onlineProfile)) {
+        for (final ItemWrapper item : pickupItems.getValue(onlineProfile)) {
             if (item.matches(itemStack, onlineProfile)) {
                 return true;
             }

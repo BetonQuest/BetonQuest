@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.objective.consume;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     /**
      * The item to consume.
      */
-    private final Variable<QuestItemWrapper> item;
+    private final Variable<ItemWrapper> item;
 
     /**
      * Constructs a new {@code ConsumeObjective} for the given {@code Instruction}.
@@ -29,7 +29,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      * @throws QuestException if the instruction is invalid
      */
     public ConsumeObjective(final Instruction instruction, final Variable<Number> targetAmount,
-                            final Variable<QuestItemWrapper> item) throws QuestException {
+                            final Variable<ItemWrapper> item) throws QuestException {
         super(instruction, targetAmount, null);
         this.item = item;
     }

@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
-import org.betonquest.betonquest.api.instruction.type.QuestItemWrapper;
+import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
 import org.betonquest.betonquest.util.BlockSelector;
@@ -49,7 +49,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * The default decoratable instance of {@link ItemParser}.
      */
-    private final DecoratedArgumentParser<QuestItemWrapper> defaultItemParser;
+    private final DecoratedArgumentParser<ItemWrapper> defaultItemParser;
 
     /**
      * The default decoratable instance of {@link IdentifierParser}.
@@ -129,7 +129,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     }
 
     @Override
-    public DecoratedArgumentParser<QuestItemWrapper> item() {
+    public DecoratedArgumentParser<ItemWrapper> item() {
         return defaultItemParser;
     }
 
