@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
 
 /**

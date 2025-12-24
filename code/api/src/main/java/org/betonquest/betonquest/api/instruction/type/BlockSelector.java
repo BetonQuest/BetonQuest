@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.util;
+package org.betonquest.betonquest.api.instruction.type;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.bukkit.Material;

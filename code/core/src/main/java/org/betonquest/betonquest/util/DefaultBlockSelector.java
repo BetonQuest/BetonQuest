@@ -33,7 +33,7 @@ import java.util.regex.PatternSyntaxException;
  * brackets. Regex allowed
  */
 @SuppressWarnings("PMD.GodClass")
-public class DefaultBlockSelector implements BlockSelector {
+public class DefaultBlockSelector implements org.betonquest.betonquest.api.instruction.type.BlockSelector {
 
     /**
      * List of {@link Material}s that are used to match the {@link BlockData} of a {@link Block}.
