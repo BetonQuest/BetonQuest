@@ -3,10 +3,8 @@ package org.betonquest.betonquest.quest.event.scoreboard;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.point.PointType;
 
 /**
@@ -15,17 +13,9 @@ import org.betonquest.betonquest.quest.event.point.PointType;
 public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the scoreboard event factory.
-     *
-     * @param data the data for primary server thread access
      */
-    public ScoreboardObjectiveEventFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public ScoreboardObjectiveEventFactory() {
     }
 
     @Override
@@ -33,8 +23,6 @@ public class ScoreboardObjectiveEventFactory implements PlayerEventFactory {
         final Variable<String> objective = instruction.string().get();
         final Variable<Number> number = instruction.number().get();
         final PointType action = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
-        return new PrimaryServerThreadEvent(
-                new ScoreboardObjectiveEvent(objective, number, action),
-                data);
+        return new ScoreboardObjectiveEvent(objective, number, action);
     }
 }

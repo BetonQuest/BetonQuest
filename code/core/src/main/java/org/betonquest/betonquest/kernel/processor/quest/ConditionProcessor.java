@@ -118,15 +118,18 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionID, Conditi
             return false;
         }
         if (condition.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
-            final Future<Boolean> future = scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition));
-            try {
-                return future.get();
-            } catch (final InterruptedException | ExecutionException e) {
-                log.reportException(e);
-                return false;
-            }
+            return checkOutcomeSync(profile, conditionID, condition);
         }
         return checkOutcome(profile, conditionID, condition);
+    }
+
+    private boolean checkOutcomeSync(@Nullable final Profile profile, final ConditionID conditionID, final ConditionAdapter condition) {
+        try {
+            return scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition)).get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return false;
+        }
     }
 
     private boolean checkOutcome(@Nullable final Profile profile, final ConditionID conditionID, final ConditionAdapter condition) {

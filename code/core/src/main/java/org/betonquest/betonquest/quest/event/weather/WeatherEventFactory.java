@@ -7,16 +7,14 @@ import org.betonquest.betonquest.api.common.function.Selectors;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.DoNothingPlayerlessEvent;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -32,19 +30,19 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
+     * The server to access worlds.
      */
-    private final PrimaryServerThreadData data;
+    private final Server server;
 
     /**
      * Creates the weather event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
+     * @param server        the server to access worlds
      */
-    public WeatherEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public WeatherEventFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
+        this.server = server;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         } else {
             playerEvent = weatherPlayerEvent;
         }
-        return new PrimaryServerThreadEvent(playerEvent, data);
+        return playerEvent;
     }
 
     @Override
@@ -68,7 +66,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         if (requiresPlayer(instruction)) {
             return new DoNothingPlayerlessEvent();
         } else {
-            return new PrimaryServerThreadPlayerlessEvent(parseWeatherEvent(instruction), data);
+            return parseWeatherEvent(instruction);
         }
     }
 
@@ -88,7 +86,7 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
         } else {
-            final World world = data.server().getWorld(worldName);
+            final World world = server.getWorld(worldName);
             return new ConstantSelector<>(world);
         }
     }

@@ -60,4 +60,9 @@ public class NpcTeleportEvent implements NullableEvent {
             npc.spawn(loc);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -45,11 +43,6 @@ public class NotifyEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * The {@link TextParser} to use for parsing text.
      */
     private final TextParser textParser;
@@ -68,16 +61,13 @@ public class NotifyEventFactory implements PlayerEventFactory {
      * Creates a new factory for {@link NotifyEvent}.
      *
      * @param loggerFactory     the logger factory to create a logger for the events
-     * @param data              the data for primary server thread access
      * @param textParser        the text parser to use for parsing text
      * @param playerDataStorage the storage providing player data
      * @param languageProvider  the language provider to get the default language
      */
-    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data,
-                              final TextParser textParser, final PlayerDataStorage playerDataStorage,
-                              final LanguageProvider languageProvider) {
+    public NotifyEventFactory(final BetonQuestLoggerFactory loggerFactory, final TextParser textParser,
+                              final PlayerDataStorage playerDataStorage, final LanguageProvider languageProvider) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
         this.textParser = textParser;
         this.playerDataStorage = playerDataStorage;
         this.languageProvider = languageProvider;
@@ -91,11 +81,9 @@ public class NotifyEventFactory implements PlayerEventFactory {
         final Text text = getText(instruction, keyValueMatcher, rawInstruction);
         final NotifyIO notifyIO = processInstruction(instruction, keyValueMatcher);
 
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new NotifyEvent(notifyIO, text),
+        return new OnlineEventAdapter(new NotifyEvent(notifyIO, text),
                 loggerFactory.create(NotifyEvent.class),
-                instruction.getPackage()
-        ), data);
+                instruction.getPackage());
     }
 
     private Text getText(final Instruction instruction, final Matcher keyValueMatcher, final String rawInstruction) throws QuestException {

@@ -3,15 +3,12 @@ package org.betonquest.betonquest.compatibility.worldedit;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEvent;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.bukkit.Location;
 
 import java.io.File;
@@ -27,29 +24,22 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     private final File folder;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the door event factory.
      *
      * @param folder the schematics folder
-     * @param data   the data for primary server thread access
      */
-    public PasteSchematicEventFactory(final File folder, final PrimaryServerThreadData data) {
+    public PasteSchematicEventFactory(final File folder) {
         this.folder = folder;
-        this.data = data;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadEvent(new NullableEventAdapter(parseInstruction(instruction)), data);
+        return new NullableEventAdapter(parseInstruction(instruction));
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerlessEvent(new NullableEventAdapter(parseInstruction(instruction)), data);
+        return new NullableEventAdapter(parseInstruction(instruction));
     }
 
     private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {

@@ -41,4 +41,9 @@ public class AddLevelEvent implements PlayerEvent {
             progression.setLevel(progression.getLevel() + nAddLevel.getValue(profile).intValue());
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

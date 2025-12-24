@@ -31,6 +31,11 @@ public class BQEventSkript implements PlayerEvent {
         new CustomEventForSkript(profile, identifier.getValue(profile)).callEvent();
     }
 
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
+
     /**
      * Custom event, which runs for Skript to listen.
      */

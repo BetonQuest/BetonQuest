@@ -94,4 +94,9 @@ public class MoneyEvent implements PlayerEvent {
             }
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

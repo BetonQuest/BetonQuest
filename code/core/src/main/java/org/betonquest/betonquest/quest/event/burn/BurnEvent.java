@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
  * The burn event. Sets the player on fire.
  */
 public class BurnEvent implements OnlineEvent {
+
     /**
      * Duration of the burn effect.
      */
@@ -26,5 +27,10 @@ public class BurnEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         profile.getPlayer().setFireTicks(duration.getValue(profile).intValue() * 20);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -5,7 +5,6 @@ import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.vault.condition.MoneyConditionFactory;
@@ -36,7 +35,6 @@ public class VaultIntegrator implements Integrator {
     @Override
     public void hook(final BetonQuestApi api) {
         final BetonQuestLogger log = api.getLoggerFactory().create(VaultIntegrator.class);
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
 
         final ServicesManager servicesManager = Bukkit.getServer().getServicesManager();
         final RegisteredServiceProvider<Economy> economyProvider = servicesManager.getRegistration(Economy.class);
@@ -46,7 +44,7 @@ public class VaultIntegrator implements Integrator {
             final Economy economy = economyProvider.getProvider();
             final QuestTypeRegistries registries = api.getQuestRegistries();
 
-            registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(), data,
+            registries.event().register("money", new MoneyEventFactory(economy, api.getLoggerFactory(),
                     plugin.getPluginMessage()));
             registries.condition().register("money", new MoneyConditionFactory(economy));
             registries.variable().register("money", new MoneyVariableFactory(economy));
@@ -57,7 +55,7 @@ public class VaultIntegrator implements Integrator {
             log.warn("Could not get permission provider!");
         } else {
             final Permission permission = permissionProvider.getProvider();
-            api.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission, data));
+            api.getQuestRegistries().event().register("permission", new PermissionEventFactory(permission));
         }
     }
 

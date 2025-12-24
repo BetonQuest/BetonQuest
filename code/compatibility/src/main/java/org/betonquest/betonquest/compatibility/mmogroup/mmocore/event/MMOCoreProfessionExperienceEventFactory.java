@@ -4,10 +4,8 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionParser;
 
 /**
@@ -16,17 +14,9 @@ import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOProfessionPar
 public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFactory {
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new MMO Core Event Factory.
-     *
-     * @param data the data for primary server thread access
      */
-    public MMOCoreProfessionExperienceEventFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public MMOCoreProfessionExperienceEventFactory() {
     }
 
     @Override
@@ -34,6 +24,6 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
         final Variable<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
         final Variable<Number> amount = instruction.number().get();
         final boolean isLevel = instruction.hasArgument("level");
-        return new PrimaryServerThreadEvent(new MMOCoreProfessionExperienceEvent(profession, amount, isLevel), data);
+        return new MMOCoreProfessionExperienceEvent(profession, amount, isLevel);
     }
 }

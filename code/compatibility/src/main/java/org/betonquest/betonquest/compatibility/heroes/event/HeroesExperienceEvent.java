@@ -13,6 +13,7 @@ import org.betonquest.betonquest.compatibility.heroes.HeroesClassType;
  * Adds the experience to a class.
  */
 public class HeroesExperienceEvent implements OnlineEvent {
+
     /**
      * The {@link CharacterManager} of the Heroes plugin.
      */
@@ -61,5 +62,10 @@ public class HeroesExperienceEvent implements OnlineEvent {
             throw new QuestException("The specified player does not have a class of the type: " + (isPrimary ? "primary" : "secondary"));
         }
         hero.addExp(amountVar.getValue(profile).intValue(), heroClass, hero.getPlayer().getLocation());
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

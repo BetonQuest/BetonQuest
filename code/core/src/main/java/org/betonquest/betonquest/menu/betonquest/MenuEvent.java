@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
  * Event to open, close or update menus.
  */
 public class MenuEvent implements OnlineEvent {
+
     /**
      * The action to do with the profile.
      */
@@ -26,5 +27,10 @@ public class MenuEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         action.accept(profile);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

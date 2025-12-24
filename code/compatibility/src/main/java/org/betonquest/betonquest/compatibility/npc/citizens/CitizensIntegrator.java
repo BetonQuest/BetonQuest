@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.feature.FeatureRegistries;
 import org.betonquest.betonquest.api.kernel.FeatureRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -72,14 +71,12 @@ public class CitizensIntegrator implements Integrator {
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.objective().register("npckill", new NPCKillObjectiveFactory(citizensNpcRegistry));
 
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-
         manager.registerEvents(citizensMoveController, plugin);
 
         final EventRegistry eventRegistry = questRegistries.event();
         final FeatureApi featureApi = api.getFeatureApi();
-        eventRegistry.register("npcmove", new CitizensMoveEventFactory(featureApi, data, citizensMoveController));
-        eventRegistry.registerCombined("npcstop", new CitizensStopEventFactory(featureApi, data, citizensMoveController));
+        eventRegistry.register("npcmove", new CitizensMoveEventFactory(featureApi, citizensMoveController));
+        eventRegistry.registerCombined("npcstop", new CitizensStopEventFactory(featureApi, citizensMoveController));
 
         final FeatureRegistries featureRegistries = api.getFeatureRegistries();
         final FeatureRegistry<ConversationIOFactory> conversationIORegistry = featureRegistries.conversationIO();

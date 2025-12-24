@@ -4,11 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
  * Factory to create burn events from {@link Instruction}s.
@@ -21,19 +19,12 @@ public class BurnEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the burn event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
      */
-    public BurnEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public BurnEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -42,11 +33,6 @@ public class BurnEventFactory implements PlayerEventFactory {
         if (duration == null) {
             throw new QuestException("Missing duration!");
         }
-        final OnlineEventAdapter burnEvent = new OnlineEventAdapter(
-                new BurnEvent(duration),
-                loggerFactory.create(BurnEvent.class),
-                instruction.getPackage()
-        );
-        return new PrimaryServerThreadEvent(burnEvent, data);
+        return new OnlineEventAdapter(new BurnEvent(duration), loggerFactory.create(BurnEvent.class), instruction.getPackage());
     }
 }

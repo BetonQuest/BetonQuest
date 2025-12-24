@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.npc.feature.NpcHider;
  * Event to update the visibility of all Npcs to one player now.
  */
 public class UpdateVisibilityNowEvent implements OnlineEvent {
+
     /**
      * Npc Hider to update the visibility.
      */
@@ -25,5 +26,10 @@ public class UpdateVisibilityNowEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) {
         npcHider.applyVisibility(profile);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -37,4 +37,9 @@ public class OpPlayerEventAdapter implements OnlineEvent {
             player.setOp(previousOp);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return event.isPrimaryThreadEnforced();
+    }
 }

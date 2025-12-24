@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * Sets a block at specified location.
  */
 public class SetBlockEvent implements NullableEvent {
+
     /**
      * The block selector.
      */
@@ -45,5 +46,10 @@ public class SetBlockEvent implements NullableEvent {
         final Location location = variableLocation.getValue(profile);
         final BlockSelector blockSelector = selector.getValue(profile);
         blockSelector.setToBlock(location.getBlock(), applyPhysics);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

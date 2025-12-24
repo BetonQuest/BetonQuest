@@ -5,14 +5,11 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.nullable.NullableEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.quest.event.OnlineProfileGroupPlayerlessEventAdapter;
 import org.bukkit.Location;
 
@@ -30,29 +27,22 @@ public class DropEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private final ProfileProvider profileProvider;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Creates the drop event factory.
      *
      * @param profileProvider the profile provider instance
-     * @param data            the data for primary server thread access
      */
-    public DropEventFactory(final ProfileProvider profileProvider, final PrimaryServerThreadData data) {
+    public DropEventFactory(final ProfileProvider profileProvider) {
         this.profileProvider = profileProvider;
-        this.data = data;
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadEvent(createDropEvent(instruction), data);
+        return createDropEvent(instruction);
     }
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        return new PrimaryServerThreadPlayerlessEvent(createStaticDropEvent(instruction), data);
+        return createStaticDropEvent(instruction);
     }
 
     private PlayerlessEvent createStaticDropEvent(final Instruction instruction) throws QuestException {

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.brewery;
 
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.condition.ConditionRegistry;
 import org.betonquest.betonquest.api.quest.event.EventRegistry;
@@ -26,13 +25,11 @@ public class BreweryIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         final EventRegistry eventRegistry = questRegistries.event();
-        eventRegistry.register("givebrew", new GiveBrewEventFactory(loggerFactory, data));
-        eventRegistry.register("takebrew", new TakeBrewEventFactory(loggerFactory, data));
+        eventRegistry.register("givebrew", new GiveBrewEventFactory(loggerFactory));
+        eventRegistry.register("takebrew", new TakeBrewEventFactory(loggerFactory));
 
         final ConditionRegistry conditionRegistry = questRegistries.condition();
         conditionRegistry.register("drunk", new DrunkConditionFactory(loggerFactory));

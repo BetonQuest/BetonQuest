@@ -30,4 +30,9 @@ public class JoinJobEvent implements PlayerEvent {
     public void execute(final Profile profile) throws QuestException {
         Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).joinJob(job.getValue(profile));
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffectType;
  * Gives the player specified potion effect.
  */
 public class EffectEvent implements OnlineEvent {
+
     /**
      * The effect to apply.
      */
@@ -71,5 +72,10 @@ public class EffectEvent implements OnlineEvent {
                 !hidden,
                 icon
         ));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

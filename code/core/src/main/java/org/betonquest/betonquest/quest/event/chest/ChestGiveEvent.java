@@ -79,4 +79,9 @@ public class ChestGiveEvent implements NullableEvent {
         }
         return itemStacks.toArray(ItemStack[]::new);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

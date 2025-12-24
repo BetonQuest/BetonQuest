@@ -5,11 +5,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,11 +23,6 @@ public class ParticleEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Effect manager which will create and control the particles.
      */
     private final EffectManager manager;
@@ -38,12 +31,10 @@ public class ParticleEventFactory implements PlayerEventFactory {
      * Create a factory for particle events.
      *
      * @param loggerFactory the logger factory to create new class specific logger
-     * @param data          the data for primary server thread access
      * @param manager       the effect manager which will create and control the particles
      */
-    public ParticleEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data, final EffectManager manager) {
+    public ParticleEventFactory(final BetonQuestLoggerFactory loggerFactory, final EffectManager manager) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
         this.manager = manager;
     }
 
@@ -57,7 +48,6 @@ public class ParticleEventFactory implements PlayerEventFactory {
         final Variable<Location> loc = instruction.location().get("loc").orElse(null);
         final boolean privateParticle = instruction.hasArgument("private");
         final ParticleEvent particleEvent = new ParticleEvent(manager, effectClass, parameters, loc, privateParticle);
-        final PlayerEvent playerEvent = new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
-        return new PrimaryServerThreadEvent(playerEvent, data);
+        return new OnlineEventAdapter(particleEvent, loggerFactory.create(ParticleEvent.class), instruction.getPackage());
     }
 }

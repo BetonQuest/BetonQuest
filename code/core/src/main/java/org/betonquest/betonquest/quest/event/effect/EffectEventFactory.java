@@ -4,11 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.bukkit.potion.PotionEffectType;
 
 /**
@@ -22,19 +20,12 @@ public class EffectEventFactory implements PlayerEventFactory {
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create the effect event factory.
      *
      * @param loggerFactory the logger factory to create a logger for the events
-     * @param data          the data for primary server thread access
      */
-    public EffectEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public EffectEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -49,11 +40,8 @@ public class EffectEventFactory implements PlayerEventFactory {
             final boolean ambient = instruction.hasArgument("ambient");
             final boolean hidden = instruction.hasArgument("hidden");
             final boolean icon = !instruction.hasArgument("noicon");
-            return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                    new EffectEvent(effect, duration, level, ambient, hidden, icon),
-                    loggerFactory.create(EffectEvent.class),
-                    instruction.getPackage()
-            ), data);
+            return new OnlineEventAdapter(new EffectEvent(effect, duration, level, ambient, hidden, icon),
+                    loggerFactory.create(EffectEvent.class), instruction.getPackage());
         } catch (final QuestException e) {
             throw new QuestException("Could not parse effect duration and amplifier", e);
         }

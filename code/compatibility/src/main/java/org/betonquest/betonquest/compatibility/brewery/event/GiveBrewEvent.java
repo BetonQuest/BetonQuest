@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
  * Event to give a player a certain amount of brews with a specific quality.
  */
 public class GiveBrewEvent implements OnlineEvent {
+
     /**
      * The amount of brews to give.
      */
@@ -67,5 +68,10 @@ public class GiveBrewEvent implements OnlineEvent {
 
         final Collection<ItemStack> remaining = player.getInventory().addItem(brews).values();
         remaining.forEach(item -> player.getWorld().dropItem(player.getLocation(), item));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

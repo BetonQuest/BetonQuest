@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  * Manages player's permissions.
  */
 public class PermissionEvent implements PlayerEvent {
+
     /**
      * Service where the permission will be modified.
      */
@@ -74,5 +75,10 @@ public class PermissionEvent implements PlayerEvent {
                 vault.playerRemoveGroup(world, profile.getPlayer(), permission);
             }
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

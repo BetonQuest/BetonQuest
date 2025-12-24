@@ -154,4 +154,9 @@ public class GiveEvent implements OnlineEvent {
     private void dropItems(final Player player, final ItemStack itemStack) {
         player.getWorld().dropItem(player.getLocation(), itemStack);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

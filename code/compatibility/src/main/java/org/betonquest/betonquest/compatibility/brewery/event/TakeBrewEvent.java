@@ -15,6 +15,7 @@ import org.bukkit.inventory.PlayerInventory;
  * Event to take a certain amount of brews from a player.
  */
 public class TakeBrewEvent implements OnlineEvent {
+
     /**
      * The amount of brews to take.
      */
@@ -70,5 +71,10 @@ public class TakeBrewEvent implements OnlineEvent {
             }
         }
         player.updateInventory();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

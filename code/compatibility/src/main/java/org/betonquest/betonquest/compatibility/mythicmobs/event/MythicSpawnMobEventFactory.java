@@ -5,17 +5,15 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadPlayerlessEvent;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicHider;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobDoubleParser;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 
@@ -30,9 +28,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
-     * Data required for primary server thread access.
+     * The plugin instance.
      */
-    private final PrimaryServerThreadData data;
+    private final Plugin plugin;
 
     /**
      * Mythic Hider instance.
@@ -50,14 +48,14 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
      *
      * @param loggerFactory   the logger factory to create class specific logger
      * @param mythicMobParser the parser for the mob type
-     * @param data            the primary server thread data required for main thread checking
+     * @param plugin          the plugin instance
      * @param mythicHider     the mythic hider instance for the spawned mobs
      */
     public MythicSpawnMobEventFactory(final BetonQuestLoggerFactory loggerFactory, final MythicMobDoubleParser mythicMobParser,
-                                      final PrimaryServerThreadData data, final MythicHider mythicHider) {
+                                      final Plugin plugin, final MythicHider mythicHider) {
         this.loggerFactory = loggerFactory;
         this.mythicMobParser = mythicMobParser;
-        this.data = data;
+        this.plugin = plugin;
         this.mythicHider = mythicHider;
     }
 
@@ -69,11 +67,8 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
         final boolean targetPlayer = instruction.hasArgument("target");
         final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new PrimaryServerThreadEvent(new OnlineEventAdapter(
-                new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, privateMob, targetPlayer, marked),
-                loggerFactory.create(MythicSpawnMobEvent.class),
-                instruction.getPackage()
-        ), data);
+        return new OnlineEventAdapter(new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, privateMob, targetPlayer, marked),
+                loggerFactory.create(MythicSpawnMobEvent.class), instruction.getPackage());
     }
 
     @Override
@@ -82,6 +77,6 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
         final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Variable<Number> amount = instruction.number().get();
         final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
-        return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, null, false, marked), data);
+        return new MythicSpawnMobEvent(plugin, loc, mobLevel, amount, null, false, marked);
     }
 }

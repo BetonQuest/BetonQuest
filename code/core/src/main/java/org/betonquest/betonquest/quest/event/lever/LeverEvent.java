@@ -69,4 +69,9 @@ public class LeverEvent implements NullableEvent {
         relative.setType(Material.AIR, false);
         relativeState.update(true);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

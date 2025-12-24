@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.online.OnlineEvent;
  * The damage event. It damages the player.
  */
 public class DamageEvent implements OnlineEvent {
+
     /**
      * Amount of damage to inflict.
      */
@@ -27,5 +28,10 @@ public class DamageEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final double calculatedDamage = Math.abs(damage.getValue(profile).doubleValue());
         profile.getPlayer().damage(calculatedDamage);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

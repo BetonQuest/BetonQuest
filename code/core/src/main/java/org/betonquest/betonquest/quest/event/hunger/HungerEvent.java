@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
  * The hunger event, changing the hunger of a player.
  */
 public class HungerEvent implements OnlineEvent {
+
     /**
      * The hunger type, how the amount will be applied to the players hunger.
      */
@@ -35,5 +36,10 @@ public class HungerEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
         player.setFoodLevel(hunger.getValue(profile).calculate(player, amount.getValue(profile).intValue()));
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

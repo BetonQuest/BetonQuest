@@ -31,4 +31,9 @@ public class MMOCoreAttributePointsEvent implements PlayerEvent {
         final int amount = amountVar.getValue(profile).intValue();
         data.giveAttributePoints(amount);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

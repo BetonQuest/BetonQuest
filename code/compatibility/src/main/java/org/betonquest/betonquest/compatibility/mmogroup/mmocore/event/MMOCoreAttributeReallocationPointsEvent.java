@@ -31,4 +31,9 @@ public class MMOCoreAttributeReallocationPointsEvent implements PlayerEvent {
         final int amount = amountVar.getValue(profile).intValue();
         data.giveAttributeReallocationPoints(amount);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

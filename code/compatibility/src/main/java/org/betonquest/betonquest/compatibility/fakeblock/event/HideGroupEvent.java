@@ -13,6 +13,7 @@ import java.util.List;
  * Hides the FakeBlock groups from the player.
  */
 public class HideGroupEvent implements PlayerEvent {
+
     /**
      * The names of the groups that should be hidden for the player.
      */
@@ -39,5 +40,10 @@ public class HideGroupEvent implements PlayerEvent {
         for (final String groupName : groupNames.getValue(profile)) {
             playerGroupService.getProvider().hideGroup(groupName, profile.getPlayer());
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

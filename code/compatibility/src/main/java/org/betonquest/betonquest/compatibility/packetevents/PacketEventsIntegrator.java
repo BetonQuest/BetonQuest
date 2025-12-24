@@ -13,7 +13,6 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.compatibility.HookException;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.UnsupportedVersionException;
@@ -83,8 +82,7 @@ public class PacketEventsIntegrator implements Integrator {
         final ChatHistory chatHistory = displayHistory ? getPacketChatHistory(packetEventsAPI, pluginManager, plugin) : new NoneChatHistory();
         api.getFeatureRegistries().interceptor().register("packetevents", new PacketEventsInterceptorFactory(packetEventsAPI, chatHistory));
 
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin, packetEventsAPI, api.getLoggerFactory(), data));
+        api.getQuestRegistries().event().register("freeze", new FreezeEventFactory(plugin, packetEventsAPI, api.getLoggerFactory()));
     }
 
     private PacketChatHistory getPacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final PluginManager pluginManager, final BetonQuest plugin) {

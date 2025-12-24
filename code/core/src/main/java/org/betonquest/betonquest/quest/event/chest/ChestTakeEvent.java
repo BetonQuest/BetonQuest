@@ -67,4 +67,9 @@ public class ChestTakeEvent extends AbstractChestEvent {
         }
         return items;
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

@@ -87,4 +87,9 @@ public class SpawnMobEvent implements NullableEvent {
             }
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

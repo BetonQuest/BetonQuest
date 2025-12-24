@@ -30,4 +30,9 @@ public class ChestClearEvent extends AbstractChestEvent {
             throw new QuestException("Trying to clear chest. " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

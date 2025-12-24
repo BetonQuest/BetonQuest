@@ -138,4 +138,9 @@ public class MythicSpawnMobEvent implements OnlineEvent, PlayerlessEvent {
             }
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

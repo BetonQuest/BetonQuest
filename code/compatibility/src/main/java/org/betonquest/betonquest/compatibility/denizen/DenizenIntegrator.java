@@ -17,7 +17,7 @@ public class DenizenIntegrator implements Integrator {
 
     @Override
     public void hook(final BetonQuestApi api) {
-        api.getQuestRegistries().event().register("script", new DenizenTaskScriptEventFactory(api.getPrimaryServerThreadData()));
+        api.getQuestRegistries().event().register("script", new DenizenTaskScriptEventFactory());
     }
 
     @Override

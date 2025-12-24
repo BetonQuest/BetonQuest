@@ -55,4 +55,9 @@ public class QuestsEvent implements PlayerEvent {
         }
         quests.getQuester(profile.getProfileUUID()).takeQuest(quest, override);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

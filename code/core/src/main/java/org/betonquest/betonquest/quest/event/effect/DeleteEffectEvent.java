@@ -38,4 +38,9 @@ public class DeleteEffectEvent implements OnlineEvent {
             resolvedEffects.forEach(player::removePotionEffect);
         }
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

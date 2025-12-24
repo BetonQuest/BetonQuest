@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Event to reduce job level.
  */
 public class DelLevelEvent implements PlayerEvent {
+
     /**
      * Job to add experience to.
      */
@@ -41,5 +42,10 @@ public class DelLevelEvent implements PlayerEvent {
             final int newLevel = progression.getLevel() - nAddLevel.getValue(profile).intValue();
             progression.setLevel(Math.max(1, newLevel));
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

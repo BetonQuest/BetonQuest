@@ -31,4 +31,9 @@ public class MMOCoreSkillPointsEvent implements PlayerEvent {
         final int amount = amountVar.getValue(profile).intValue();
         data.giveSkillPoints(amount);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

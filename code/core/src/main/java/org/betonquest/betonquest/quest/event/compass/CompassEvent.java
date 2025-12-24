@@ -20,6 +20,7 @@ import org.bukkit.Location;
  * Event to set a compass target and manage compass points.
  */
 public class CompassEvent implements PlayerEvent {
+
     /**
      * Feature API.
      */
@@ -77,5 +78,10 @@ public class CompassEvent implements PlayerEvent {
 
     private void changeTag(final TagChanger tagChanger, final Profile profile) throws QuestException {
         new TagEvent(dataStorage::getOffline, tagChanger).execute(profile);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

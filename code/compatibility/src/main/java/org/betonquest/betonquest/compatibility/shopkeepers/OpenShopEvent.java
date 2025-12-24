@@ -27,4 +27,9 @@ public class OpenShopEvent implements OnlineEvent {
     public void execute(final OnlineProfile profile) {
         shopkeeper.openTradingWindow(profile.getPlayer());
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

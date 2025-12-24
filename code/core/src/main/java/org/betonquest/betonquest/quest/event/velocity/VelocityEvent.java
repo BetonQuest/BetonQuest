@@ -11,6 +11,7 @@ import org.bukkit.util.Vector;
  * The velocity event. Throws the player around.
  */
 public class VelocityEvent implements OnlineEvent {
+
     /**
      * The vector of the direction and speed.
      */
@@ -47,5 +48,10 @@ public class VelocityEvent implements OnlineEvent {
         final Vector directionVector = direction.getValue(profile).calculate(player, pVector);
         final Vector modificationVector = modification.getValue(profile).calculate(player, directionVector);
         player.setVelocity(modificationVector);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

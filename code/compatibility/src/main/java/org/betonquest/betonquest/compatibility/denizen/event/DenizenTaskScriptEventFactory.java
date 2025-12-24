@@ -3,10 +3,8 @@ package org.betonquest.betonquest.compatibility.denizen.event;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 
 /**
  * Factory to create Denizen Task Script Events.
@@ -14,22 +12,14 @@ import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent
 public class DenizenTaskScriptEventFactory implements PlayerEventFactory {
 
     /**
-     * The data for the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Create a new Factory to create Denizen Task Script Events.
-     *
-     * @param data the data for the primary server thread.
      */
-    public DenizenTaskScriptEventFactory(final PrimaryServerThreadData data) {
-        this.data = data;
+    public DenizenTaskScriptEventFactory() {
     }
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> nameVar = instruction.string().get();
-        return new PrimaryServerThreadEvent(new DenizenTaskScriptEvent(nameVar), data);
+        return new DenizenTaskScriptEvent(nameVar);
     }
 }

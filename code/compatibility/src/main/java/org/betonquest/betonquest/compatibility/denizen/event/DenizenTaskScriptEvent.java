@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Runs specified Denizen task script.
  */
 public class DenizenTaskScriptEvent implements PlayerEvent {
+
     /**
      * The name of the script to run.
      */
@@ -36,5 +37,10 @@ public class DenizenTaskScriptEvent implements PlayerEvent {
         }
         final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getPlayer()), null);
         script.run(data, null);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

@@ -62,4 +62,9 @@ public class DropEvent implements NullableEvent {
         drop.setAmount(stackSize);
         location.getWorld().dropItem(location, drop);
     }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
+    }
 }

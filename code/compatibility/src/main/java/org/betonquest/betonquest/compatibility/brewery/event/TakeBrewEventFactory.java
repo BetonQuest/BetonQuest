@@ -5,22 +5,15 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.compatibility.brewery.IdentifierType;
 
 /**
  * Factory to create {@link GiveBrewEvent}s from {@link Instruction}s.
  */
 public class TakeBrewEventFactory implements PlayerEventFactory {
-
-    /**
-     * Data used for primary server access.
-     */
-    private final PrimaryServerThreadData data;
 
     /**
      * The logger factory.
@@ -31,11 +24,9 @@ public class TakeBrewEventFactory implements PlayerEventFactory {
      * Create a new Factory to create Give Brew Events.
      *
      * @param loggerFactory the logger factory.
-     * @param data          the data used for primary server access.
      */
-    public TakeBrewEventFactory(final BetonQuestLoggerFactory loggerFactory, final PrimaryServerThreadData data) {
+    public TakeBrewEventFactory(final BetonQuestLoggerFactory loggerFactory) {
         this.loggerFactory = loggerFactory;
-        this.data = data;
     }
 
     @Override
@@ -44,7 +35,6 @@ public class TakeBrewEventFactory implements PlayerEventFactory {
         final Variable<String> brewVar = instruction.string().get();
         final Variable<IdentifierType> mode = instruction.enumeration(IdentifierType.class).get("mode", IdentifierType.NAME);
         final BetonQuestLogger logger = loggerFactory.create(TakeBrewEvent.class);
-        return new PrimaryServerThreadEvent(
-                new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar, mode), logger, instruction.getPackage()), data);
+        return new OnlineEventAdapter(new TakeBrewEvent(countVar, brewVar, mode), logger, instruction.getPackage());
     }
 }

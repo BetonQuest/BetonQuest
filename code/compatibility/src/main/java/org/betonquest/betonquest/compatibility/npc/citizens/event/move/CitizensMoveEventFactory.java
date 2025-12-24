@@ -4,11 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
-import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.api.quest.npc.NpcID;
 import org.betonquest.betonquest.compatibility.npc.citizens.CitizensArgument;
 import org.bukkit.Location;
@@ -27,11 +25,6 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
     private final FeatureApi featureApi;
 
     /**
-     * Data to use for syncing to the primary server thread.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Move instance to handle movement of Citizens NPCs.
      */
     private final CitizensMoveController citizensMoveController;
@@ -40,12 +33,10 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
      * Create a new NPCTeleportEventFactory.
      *
      * @param featureApi             the Feature API
-     * @param data                   the data to use for syncing to the primary server thread
      * @param citizensMoveController the move instance to handle movement of Citizens NPCs
      */
-    public CitizensMoveEventFactory(final FeatureApi featureApi, final PrimaryServerThreadData data, final CitizensMoveController citizensMoveController) {
+    public CitizensMoveEventFactory(final FeatureApi featureApi, final CitizensMoveController citizensMoveController) {
         this.featureApi = featureApi;
-        this.data = data;
         this.citizensMoveController = citizensMoveController;
     }
 
@@ -59,6 +50,6 @@ public class CitizensMoveEventFactory implements PlayerEventFactory {
         final boolean blockConversations = instruction.hasArgument("block");
         final CitizensMoveController.MoveData moveAction = new CitizensMoveController.MoveData(locations, waitTicks,
                 doneEvents, failEvents, blockConversations);
-        return new PrimaryServerThreadEvent(new CitizensMoveEvent(featureApi, npcId, citizensMoveController, moveAction), data);
+        return new CitizensMoveEvent(featureApi, npcId, citizensMoveController, moveAction);
     }
 }

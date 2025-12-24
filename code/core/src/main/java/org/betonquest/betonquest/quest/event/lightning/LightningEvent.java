@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * Strikes a lightning at specified location.
  */
 public class LightningEvent implements NullableEvent {
+
     /**
      * The location to strike the lightning at.
      */
@@ -42,5 +43,10 @@ public class LightningEvent implements NullableEvent {
         } else {
             world.strikeLightning(loc);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

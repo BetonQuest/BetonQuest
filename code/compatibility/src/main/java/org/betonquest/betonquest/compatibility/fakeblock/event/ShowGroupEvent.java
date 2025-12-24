@@ -13,6 +13,7 @@ import java.util.List;
  * Shows FakeBlock groups to the player.
  */
 public class ShowGroupEvent implements PlayerEvent {
+
     /**
      * The groupNames that should be shown to the player.
      */
@@ -39,5 +40,10 @@ public class ShowGroupEvent implements PlayerEvent {
         for (final String groupName : groupNames.getValue(profile)) {
             playerGroupService.getProvider().showGroup(groupName, profile.getPlayer());
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

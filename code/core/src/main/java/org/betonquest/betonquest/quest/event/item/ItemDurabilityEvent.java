@@ -22,6 +22,7 @@ import java.util.Random;
  * The item durability event, to modify the durability of an item.
  */
 public class ItemDurabilityEvent implements OnlineEvent {
+
     /**
      * The slot to target.
      */
@@ -161,5 +162,10 @@ public class ItemDurabilityEvent implements OnlineEvent {
                 || typeNameString.endsWith("_CHESTPLATE")
                 || typeNameString.endsWith("_LEGGINGS")
                 || typeNameString.endsWith("_BOOTS");
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

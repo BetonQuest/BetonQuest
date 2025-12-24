@@ -4,7 +4,6 @@ import me.pikamug.quests.Quests;
 import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -29,11 +28,9 @@ public class QuestsIntegrator implements Integrator {
         final Quests questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         Objects.requireNonNull(questsInstance);
 
-        final PrimaryServerThreadData data = api.getPrimaryServerThreadData();
-
         final QuestTypeRegistries questRegistries = api.getQuestRegistries();
         questRegistries.condition().register("quest", new QuestsConditionFactory(questsInstance));
-        questRegistries.event().register("quest", new QuestsEventFactory(questsInstance, data));
+        questRegistries.event().register("quest", new QuestsEventFactory(questsInstance));
 
         final BetonQuestLoggerFactory loggerFactory = api.getLoggerFactory();
         final QuestTypeApi questTypeApi = api.getQuestTypeApi();

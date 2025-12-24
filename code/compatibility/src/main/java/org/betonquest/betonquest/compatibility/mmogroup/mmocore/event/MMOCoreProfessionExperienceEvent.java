@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * Event to add profession experience to a player.
  */
 public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
+
     /**
      * Profession to add experience to.
      */
@@ -51,5 +52,10 @@ public class MMOCoreProfessionExperienceEvent implements PlayerEvent {
         } else {
             mmoData.getCollectionSkills().giveExperience(profession, amount, EXPSource.QUEST);
         }
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return true;
     }
 }

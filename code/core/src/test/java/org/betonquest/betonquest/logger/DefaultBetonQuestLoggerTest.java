@@ -34,7 +34,7 @@ class DefaultBetonQuestLoggerTest {
     public static final String STACKTRACE_MESSAGE = "Additional stacktrace:";
 
     /**
-     *
+     * The report message.
      */
     public static final String REPORT_MESSAGE = "This is an exception that should never occur. "
             + "If you don't know why this occurs please report it to the author.";

@@ -10,12 +10,27 @@ import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.EventAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.EventTypeRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Stores Events and execute them.
  */
 public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
+
+    /**
+     * The Bukkit scheduler to run sync tasks.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * Create a new Event Processor to store events and execute them.
@@ -24,10 +39,14 @@ public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
      * @param log         the custom logger for this class
      * @param packManager the quest package manager to get quest packages from
      * @param eventTypes  the available event types
+     * @param scheduler   the bukkit scheduler to run sync tasks
+     * @param plugin      the plugin instance
      */
     public EventProcessor(final BetonQuestLogger log, final Variables variables, final QuestPackageManager packManager,
-                          final EventTypeRegistry eventTypes) {
+                          final EventTypeRegistry eventTypes, final BukkitScheduler scheduler, final Plugin plugin) {
         super(log, variables, packManager, eventTypes, "Event", "events");
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     @Override
@@ -52,9 +71,24 @@ public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
         if (profile == null) {
             log.debug(eventID.getPackage(), "Firing event " + eventID + " player independent");
         } else {
-            log.debug(eventID.getPackage(),
-                    "Firing event " + eventID + " for " + profile);
+            log.debug(eventID.getPackage(), "Firing event " + eventID + " for " + profile);
         }
+        if (event.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
+            return callEventSync(profile, eventID, event);
+        }
+        return callEvent(profile, eventID, event);
+    }
+
+    private boolean callEventSync(@Nullable final Profile profile, final EventID eventID, final EventAdapter event) {
+        try {
+            return scheduler.callSyncMethod(plugin, () -> callEvent(profile, eventID, event)).get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return true;
+        }
+    }
+
+    private boolean callEvent(@Nullable final Profile profile, final EventID eventID, final EventAdapter event) {
         try {
             return event.fire(profile);
         } catch (final QuestException e) {
