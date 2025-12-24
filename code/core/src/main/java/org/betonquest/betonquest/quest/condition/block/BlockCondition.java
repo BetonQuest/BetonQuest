@@ -5,12 +5,13 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.condition.nullable.NullableCondition;
 import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.util.DefaultBlockSelector;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Checks block at specified location against specified {@link BlockSelector}.
+ * Checks block at specified location against specified {@link DefaultBlockSelector}.
  */
 public class BlockCondition implements NullableCondition {
 

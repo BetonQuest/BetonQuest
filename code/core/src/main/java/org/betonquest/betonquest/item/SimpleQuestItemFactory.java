@@ -27,6 +27,7 @@ import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.util.DefaultBlockSelector;
 import org.betonquest.betonquest.util.Utils;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,7 +88,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
      * Parses the instruction string as Simple Quest Item.
      *
-     * @param string the instruction string, starting with {@link BlockSelector}
+     * @param string the instruction string, starting with {@link DefaultBlockSelector}
      * @return the parsed QuestItem
      * @throws QuestException when an error occurs while parsing
      */
@@ -101,13 +102,13 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
      * Parses the Quest Item from material and handler arguments.
      *
-     * @param material  the {@link BlockSelector} string
+     * @param material  the {@link DefaultBlockSelector} string
      * @param arguments the arguments for the Handlers
      * @return the parsed Quest Item
      * @throws QuestException when variables could not be resolved or handlers not be filled
      */
     protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
-        final BlockSelector selector = new BlockSelector(material);
+        final BlockSelector selector = new DefaultBlockSelector(material);
 
         final NameHandler name = new NameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);
