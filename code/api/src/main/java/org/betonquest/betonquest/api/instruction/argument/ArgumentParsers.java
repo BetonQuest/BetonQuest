@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument;
 
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -55,6 +56,13 @@ public interface ArgumentParsers {
      * @return a parser for items
      */
     DecoratedArgumentParser<ItemWrapper> item();
+
+    /**
+     * Default {@link DecoratedArgumentParser} for {@link BlockSelector}.
+     *
+     * @return a parser for block selectors
+     */
+    DecoratedArgumentParser<BlockSelector> blockSelector();
 
     /**
      * Default {@link DecoratedArgumentParser} for a package identifier.

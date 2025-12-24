@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.objective.block;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -42,7 +41,7 @@ public class BlockObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<BlockSelector> selector = instruction.parse(DefaultArgumentParsers.BLOCK_SELECTOR).get();
+        final Variable<BlockSelector> selector = instruction.blockSelector().get();
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final Variable<Number> targetAmount = instruction.number().get();
         final boolean noSafety = instruction.hasArgument("noSafety");

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.condition.looking;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -35,7 +34,7 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.location().get("loc").orElse(null);
-        final Variable<BlockSelector> selector = instruction.parse(DefaultArgumentParsers.BLOCK_SELECTOR)
+        final Variable<BlockSelector> selector = instruction.blockSelector()
                 .get("type").orElse(null);
         final boolean exactMatch = instruction.hasArgument("exactMatch");
         final BetonQuestLogger log = loggerFactory.create(LookingAtCondition.class);
