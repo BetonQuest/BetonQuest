@@ -24,17 +24,17 @@ public class PartialDateConditionFactory implements PlayerlessConditionFactory {
         final Variable<List<TimeInterval>> dayVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.DAY))
                 .get("day").orElse(null);
-        final List<TimeInterval> dayOfMonth = dayVar != null ? dayVar.getValue(null) : null;
+        final List<TimeInterval> dayOfMonth = dayVar == null ? null : dayVar.getValue(null);
 
         final Variable<List<TimeInterval>> monthVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.MONTH))
                 .get("month").orElse(null);
-        final List<TimeInterval> month = monthVar != null ? monthVar.getValue(null) : null;
+        final List<TimeInterval> month = monthVar == null ? null : monthVar.getValue(null);
 
         final Variable<List<TimeInterval>> yearVar = instruction.string()
                 .map(val -> TimeInterval.parseFromString(val, PartialDate.YEAR))
                 .get("year").orElse(null);
-        final List<TimeInterval> year = yearVar != null ? yearVar.getValue(null) : null;
+        final List<TimeInterval> year = yearVar == null ? null : yearVar.getValue(null);
         return new PartialDateCondition(dayOfMonth, month, year);
     }
 }

@@ -11,70 +11,74 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * A decorated {@link InstructionArgumentParser}.
+ * A decorated {@link InstructionArgumentParser} offering more methods to modify the result.
  *
- * @param <T> the type of the argument
+ * @param <T> the type of the value
  */
 public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
 
     /**
-     * Map the value of the variable after parsing to another type.
+     * Map the value of the argument <strong>after</strong> parsing the type.
      * Throwing an exception inside the mapper function indicates a parsing failure overall.
      *
      * @param mapper the mapper function to apply to the value after parsing
      * @param <U>    the new type of the mapped value
-     * @return the new {@link DecoratedArgumentParser} with the new type
+     * @return the new mapped {@link DecoratedArgumentParser} with potentially changed type
      */
+    @Contract(value = "_ -> new", pure = true)
     <U> DecoratedArgumentParser<U> map(QuestFunction<T, U> mapper);
 
     /**
-     * Apply a {@link ValueValidator} to the {@link DecoratedArgumentParser} for early validation and improved error messages.
+     * Apply a {@link ValueValidator} to the parser for early validation and improved error messages.
+     * An error will be thrown if the validator fails (returns false).
      *
      * @param validator the validator to apply to the argument
-     * @return the new {@link DecoratedArgumentParser}
+     * @return the new validated {@link DecoratedArgumentParser}
      */
     @Contract(value = "_ -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator);
 
     /**
      * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
-     * The error message will be used if the validator fails and may contain a {@code %s} placeholder
-     * for the wrong argument value according to {@link String#format(String, Object...)}.
+     * The error message will be used if the validator fails (returns false) and may contain a {@code %s} placeholder
+     * for the wrong value to be included using {@link String#format(String, Object...)}.
      *
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
-     * @return the new {@link DecoratedArgumentParser}
+     * @return the new validated {@link DecoratedArgumentParser}
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator, String errorMessage);
 
     /**
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
-     * applying the {@link DecoratedArgumentParser} this method is called on.
-     * If the expected string matches the {@link String} argument of
+     * applying the parser this method is called on.
+     * If the expected string matches the string parameter of
      * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
      * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the non-null value to return if the expected string matches
-     * @return the new {@link DecoratedArgumentParser}
+     * @return the new prefiltered {@link DecoratedArgumentParser}
+     * @see #prefilterOptional(String, Object)
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<T> prefilter(String expected, T fixedValue);
 
     /**
      * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
-     * applying the {@link DecoratedArgumentParser} this method is called on.
-     * If the expected string matches the {@link String} argument of
+     * applying the parser this method is called on.
+     * If the expected string matches the string parameter of
      * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
-     * Since apply must not return null, this method returns an {@link Optional} of the result.
+     * Otherwise, the apply method of the current parser instance is called.
+     * Since apply must not return null, this method returns an {@link Optional} wrapping the result.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the nullable value to return if the expected string matches
-     * @return the new {@link DecoratedArgumentParser}
+     * @return the new prefiltered {@link DecoratedArgumentParser}
+     * @see #prefilter(String, Object)
      */
     @Contract(value = "_, _ -> new", pure = true)
     DecoratedArgumentParser<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);

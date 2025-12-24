@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.instruction.chain;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public interface InstructionChainRetriever<T> {
      * @return the variable
      * @throws QuestException if the variable could not be resolved
      */
+    @Contract("-> new")
     Variable<T> get() throws QuestException;
 
     /**
@@ -29,6 +31,7 @@ public interface InstructionChainRetriever<T> {
      * @return the variable
      * @throws QuestException if the list could not be resolved
      */
+    @Contract("-> new")
     Variable<List<T>> getList() throws QuestException;
 
     /**
@@ -36,9 +39,10 @@ public interface InstructionChainRetriever<T> {
      * Looking for a key-value argument and returning a {@link Variable} wrapping its value in an {@link Optional}
      *
      * @param argumentKey the argument key
-     * @return the variable
+     * @return an optional of the variable
      * @throws QuestException if the variable could not be resolved
      */
+    @Contract("!null -> new")
     Optional<Variable<T>> get(String argumentKey) throws QuestException;
 
     /**
@@ -50,15 +54,17 @@ public interface InstructionChainRetriever<T> {
      * @return the variable
      * @throws QuestException if the variable could not be resolved
      */
+    @Contract("!null, !null -> new")
     Variable<T> get(String argumentKey, T defaultValue) throws QuestException;
 
     /**
      * Retrieves the {@link Variable} for a {@link List} of the given type {@link T} and the given settings in the chain.
      *
      * @param argumentKey the argument key
-     * @return the variable
+     * @return an optional of the variable
      * @throws QuestException if the variable could not be resolved
      */
+    @Contract("!null -> new")
     Optional<Variable<List<T>>> getList(String argumentKey) throws QuestException;
 
     /**
@@ -69,5 +75,6 @@ public interface InstructionChainRetriever<T> {
      * @return the variable
      * @throws QuestException if the variable could not be resolved
      */
+    @Contract("!null, !null -> new")
     Variable<List<T>> getList(String argumentKey, List<T> defaultValue) throws QuestException;
 }

@@ -65,23 +65,23 @@ public Objective parseInstruction(final Instruction instruction) throws QuestExc
 ```
 
 ### Argument Parsing
-The argument parsing step represents the method of converting a string into a java type is decided.
+In the argument parsing step the method of converting a string into a java type is decided.
 The instruction chain may be accessed conveniently, starting directly from any `Instruction` instance.
 
 | Call | Description |
 | :--- | :---------- |
- | `instruction.number()` | Default parser for `java.lang.Number` covering both integer and floating point values |
- | `instruction.string()` | Default parser for `java.lang.String` |
- | `instruction.bool()` | Default parser for `java.lang.Boolean` |
- | `instruction.uuid()` | Default parser for `java.util.UUID` |
- | `instruction.world()` | Default parser for `org.bukkit.World` |
- | `instruction.location()` | Default parser for `org.bukkit.Location` |
- | `instruction.vector()` | Default parser for `org.bukkit.util.Vector` |
- | `instruction.component()` | Default parser for `net.kyori.adventure.text.Component` |
- | `instruction.item()` | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest |
- | `instruction.packageIdentifier()` | Default parser for package identifiers producing a `java.lang.String` |
- | <nobr>`instruction.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type |
- | `instruction.parse(Parser<P>)` | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser` |  
+ | `.number()` | Default parser for `java.lang.Number` covering both integer and floating point values |
+ | `.string()` | Default parser for `java.lang.String` |
+ | `.bool()` | Default parser for `java.lang.Boolean` |
+ | `.location()` | Default parser for `org.bukkit.Location` |
+ | `.world()` | Default parser for `org.bukkit.World` |
+ | `.item()` | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest |
+ | `.vector()` | Default parser for `org.bukkit.util.Vector` |
+ | `.uuid()` | Default parser for `java.util.UUID` |
+ | `.component()` | Default parser for `net.kyori.adventure.text.Component` |
+ | `.packageIdentifier()` | Default parser for package identifiers producing a `java.lang.String`. This parser simply expands the existing string value to a full package identifier using the instruction's package if necessary. |
+ | <nobr>`.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type |
+ | `.parse(Parser<P>)` | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser` |  
 
 ### Variable Retrieval
 The variable retrieval step is required after the argument parsing and represents the wrapping into a `Variable<T>` 

@@ -23,8 +23,8 @@ public class TameObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<EntityType> typeVariable = instruction.enumeration(EntityType.class)
-                .validate(type -> type.getEntityClass() == null
-                                || !Tameable.class.isAssignableFrom(type.getEntityClass()),
+                .validate(type -> type.getEntityClass() != null
+                                && Tameable.class.isAssignableFrom(type.getEntityClass()),
                         "Entity cannot be tamed: '%s'")
                 .get();
         final Variable<Number> targetAmount = instruction.number().atLeast(1).get();

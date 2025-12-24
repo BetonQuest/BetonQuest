@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Contract;
 
 /**
- * This interface offers a simplified version of {@link InstructionArgumentParser} to used in lambdas.
+ * This interface offers a simplified version of {@link InstructionArgumentParser} usable in lambdas.
  *
  * @param <T> the type of the parsed value
  */

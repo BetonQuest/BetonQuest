@@ -16,70 +16,81 @@ import java.util.Optional;
  * An extended {@link InstructionChainRetriever} offering additional methods
  * to modify the parsing process before retrieving the variable.
  *
- * @param <T> the type of the variable
+ * @param <T> the type of the argument
  * @see InstructionChainRetriever
  */
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
 
     /**
-     * Map the value of the variable after parsing to another type.
+     * Map the value of the argument after parsing to another type.
      * Throwing an exception inside the mapper function indicates a parsing failure overall.
      *
      * @param mapper the mapper function to apply to the value after parsing
      * @param <U>    the new type of the mapped value
      * @return the new {@link DecoratableChainRetriever} with the new type
+     * @see DecoratedArgumentParser#map(QuestFunction)
      */
+    @Contract(value = "!null -> new", pure = true)
     <U> DecoratableChainRetriever<U> map(QuestFunction<T, U> mapper);
 
     /**
-     * Apply a {@link ValueValidator} to the {@link DecoratedArgumentParser} for early validation and improved error messages.
+     * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
+     * An error will be thrown if the validator fails (returns false).
      *
      * @param validator the validator to apply to the argument
-     * @return the new {@link DecoratableChainRetriever}
+     * @return the new validated {@link DecoratableChainRetriever}
+     * @see DecoratedArgumentParser#validate(ValueValidator)
+     * @see #validate(ValueValidator, String)
      */
-    @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "!null -> new", pure = true)
     DecoratableChainRetriever<T> validate(ValueValidator<T> validator);
 
     /**
      * Apply a {@link ValueValidator} to the argument for early validation and improved error messages.
-     * The error message will be used if the validator fails and may contain a {@code %s} placeholder
-     * for the wrong argument value according to {@link String#format(String, Object...)}.
+     * The error message will be used if the validator fails (returns false) and may contain a {@code %s} placeholder
+     * for the wrong value to be included using {@link String#format(String, Object...)}.
      *
      * @param validator    the validator to apply to the argument
      * @param errorMessage the error message to use if the validator fails
-     * @return the new {@link DecoratableChainRetriever}
+     * @return the new validated {@link DecoratableChainRetriever}
+     * @see DecoratedArgumentParser#validate(ValueValidator, String)
+     * @see #validate(ValueValidator)
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, !null -> new", pure = true)
     DecoratableChainRetriever<T> validate(ValueValidator<T> validator, String errorMessage);
 
     /**
      * Returns a new {@link DecoratableChainRetriever} that checks for the given expected string before
-     * applying the {@link DecoratedArgumentParser} this method is called on.
+     * applying the parser this method is called on.
      * If the expected string matches the {@link String} argument of
      * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
+     * Otherwise, the apply method of the parser instance is called.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the non-null value to return if the expected string matches
-     * @return the new {@link DecoratableChainRetriever}
+     * @return the new prefiltered {@link DecoratableChainRetriever}
+     * @see #prefilterOptional(String, Object)
+     * @see DecoratedArgumentParser#prefilter(String, Object)
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, !null -> new", pure = true)
     DecoratableChainRetriever<T> prefilter(String expected, T fixedValue);
 
     /**
-     * Returns a new {@link DecoratedArgumentParser} that checks for the given expected string before
-     * applying the {@link DecoratedArgumentParser} this method is called on.
+     * Returns a new {@link DecoratableChainRetriever} that checks for the given expected string before
+     * applying the parser this method is called on.
      * If the expected string matches the {@link String} argument of
      * {@link InstructionArgumentParser#apply(Variables, QuestPackageManager, QuestPackage, String)}
      * by {@link String#equalsIgnoreCase(String)}, the fixedValue is returned.
-     * Otherwise, the apply method of the current {@link DecoratedArgumentParser} instance is called.
+     * Otherwise, the apply method of the parser instance is called.
      * Since it must not return null, this method returns an {@link Optional} of the result.
      *
      * @param expected   the expected string to be matched
      * @param fixedValue the nullable value to return if the expected string matches
-     * @return the new {@link DecoratableChainRetriever}
+     * @return the new prefiltered {@link DecoratableChainRetriever}
+     * @see #prefilter(String, Object)
+     * @see DecoratedArgumentParser#prefilterOptional(String, Object)
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, _ -> new", pure = true)
     DecoratableChainRetriever<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
 }

@@ -34,7 +34,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
         final Variable<String> worldVar = instruction.string().get("world").orElse(null);
-        final String worldString = worldVar != null ? worldVar.getValue(null) : null;
+        final String worldString = worldVar == null ? null : worldVar.getValue(null);
         if (worldString == null) {
             return new ThrowExceptionPlayerlessCondition();
         }
