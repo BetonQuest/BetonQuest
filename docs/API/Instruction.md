@@ -76,6 +76,7 @@ The instruction chain may be accessed conveniently, starting directly from any `
  | `.location()` | Default parser for `org.bukkit.Location` |
  | `.world()` | Default parser for `org.bukkit.World` |
  | `.item()` | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest |
+ | `.blockSelector()` | Default parser for `org.betonquest.betonquest.api.instruction.type.BlockSelector` representing a matcher for a group of bukkit materials |
  | `.vector()` | Default parser for `org.bukkit.util.Vector` |
  | `.uuid()` | Default parser for `java.util.UUID` |
  | `.component()` | Default parser for `net.kyori.adventure.text.Component` |

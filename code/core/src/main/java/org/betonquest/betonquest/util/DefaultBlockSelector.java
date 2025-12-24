@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.util;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -33,7 +34,7 @@ import java.util.regex.PatternSyntaxException;
  * brackets. Regex allowed
  */
 @SuppressWarnings("PMD.GodClass")
-public class DefaultBlockSelector implements org.betonquest.betonquest.api.instruction.type.BlockSelector {
+public class DefaultBlockSelector implements BlockSelector {
 
     /**
      * List of {@link Material}s that are used to match the {@link BlockData} of a {@link Block}.
