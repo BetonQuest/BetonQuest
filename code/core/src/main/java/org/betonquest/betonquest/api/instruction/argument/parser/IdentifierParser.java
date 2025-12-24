@@ -23,7 +23,7 @@ public class IdentifierParser implements InstructionArgumentParser<String> {
     }
 
     /**
-     * Overloaded by {@link this#apply(Variables, QuestPackageManager, QuestPackage, String)}.
+     * Overloaded by {@link #apply(Variables, QuestPackageManager, QuestPackage, String)}.
      *
      * @param pack   the package the instruction belongs to
      * @param string the string to parse

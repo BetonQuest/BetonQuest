@@ -17,6 +17,7 @@ import java.util.UUID;
  *
  * @see InstructionChainRetriever
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface InstructionChainParser {
 
     /**

@@ -19,6 +19,7 @@ import java.util.UUID;
 /**
  * This offers default implementations for {@link DecoratedArgumentParser} to parse common types.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class DefaultArgumentParsers implements ArgumentParsers {
 
     /**

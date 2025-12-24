@@ -22,6 +22,7 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
      * @param <T>    the type of the variable
      * @return the parsed variable
      * @throws QuestException if the input could not be parsed
+     * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
      */
     @Deprecated
     <T> Variable<T> get(String raw, InstructionArgumentParser<T> parser) throws QuestException;
@@ -35,6 +36,7 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
      * @param <T>    the type of the variable
      * @return the parsed variable
      * @throws QuestException if the input could not be parsed
+     * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
      */
     @Deprecated
     default <T> Variable<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {

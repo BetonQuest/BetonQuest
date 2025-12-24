@@ -11,6 +11,7 @@ import java.util.UUID;
 /**
  * This offers implementations for {@link DecoratedArgumentParser} to parse common types.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface ArgumentParsers {
 
     /**

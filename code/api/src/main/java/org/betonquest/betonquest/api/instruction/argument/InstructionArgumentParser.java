@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.Variables;
  *
  * @param <T> the type of the parsed value
  */
+@FunctionalInterface
 public interface InstructionArgumentParser<T> {
 
     /**

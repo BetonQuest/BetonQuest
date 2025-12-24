@@ -30,7 +30,7 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     }
 
     private DecoratedArgumentParser<T> decoratable() {
-        return new DecoratableArgumentParser<T>(argument);
+        return new DecoratableArgumentParser<>(argument);
     }
 
     @Override

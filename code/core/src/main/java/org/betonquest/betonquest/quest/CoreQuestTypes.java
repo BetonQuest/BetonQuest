@@ -369,7 +369,7 @@ public class CoreQuestTypes {
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory());
         conditionTypes.registerCombined("time", new TimeConditionFactory());
         conditionTypes.registerCombined("variable", new VariableConditionFactory(loggerFactory));
-        conditionTypes.registerCombined("weather", new WeatherConditionFactory(variables));
+        conditionTypes.registerCombined("weather", new WeatherConditionFactory());
         conditionTypes.register("world", new WorldConditionFactory(loggerFactory));
     }
 

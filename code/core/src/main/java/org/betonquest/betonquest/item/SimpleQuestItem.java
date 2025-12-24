@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
@@ -19,7 +20,7 @@ import java.util.Objects;
 /**
  * Represents a Quest item handled by the standard BetonQuest configuration.
  */
-public class SimpleQuestItem implements org.betonquest.betonquest.api.item.QuestItem {
+public class SimpleQuestItem implements QuestItem {
 
     /**
      * The base Material Selector for the ItemStack generation.

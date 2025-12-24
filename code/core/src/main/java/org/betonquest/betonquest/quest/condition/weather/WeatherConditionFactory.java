@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.condition.weather;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -21,17 +20,9 @@ import java.util.Optional;
 public class WeatherConditionFactory implements PlayerConditionFactory, PlayerlessConditionFactory {
 
     /**
-     * The variable processor used to process variables.
-     */
-    private final Variables variables;
-
-    /**
      * Create the weather condition factory.
-     *
-     * @param variables the variable processor to create and resolve variables
      */
-    public WeatherConditionFactory(final Variables variables) {
-        this.variables = variables;
+    public WeatherConditionFactory() {
     }
 
     @Override
