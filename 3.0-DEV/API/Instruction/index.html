@@ -3631,6 +3631,30 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#instruction-chain">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Instruction Chain
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Instruction Chain" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#argument-parsing">
     <span class="md-ellipsis">
 
@@ -3647,8 +3671,30 @@
 
   
   
-  <nav aria-label="Argument Parsing" class="md-nav">
-    <ul class="md-nav__list">
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#variable-retrieval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Variable Retrieval
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
       
       
       
@@ -3725,13 +3771,36 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#decoratednumberargument">
+  <a class="md-nav__link" href="#map">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          DecoratedNumberArgument
+          Map
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#special-case-number">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Special Case: Number
         </span>
 
       
@@ -4805,6 +4874,30 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#instruction-chain">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Instruction Chain
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Instruction Chain" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#argument-parsing">
     <span class="md-ellipsis">
 
@@ -4821,8 +4914,30 @@
 
   
   
-  <nav aria-label="Argument Parsing" class="md-nav">
-    <ul class="md-nav__list">
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#variable-retrieval">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Variable Retrieval
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
       
       
       
@@ -4899,13 +5014,36 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#decoratednumberargument">
+  <a class="md-nav__link" href="#map">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          DecoratedNumberArgument
+          Map
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#special-case-number">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Special Case: Number
         </span>
 
       
@@ -5046,79 +5184,224 @@ Only bugs and major conceptual problems would lead to more changes.</p>
 </div>
 <h2 id="reading-the-instruction-object">Reading the <code>Instruction</code> Object<a class="headerlink" href="#reading-the-instruction-object" title="Permanent link">🔗</a></h2>
 <p>The <code>Instruction</code> object is responsible for parsing the instruction string provided by the user and splitting it into 
-arguments. You can retrieve required arguments one at a time through a parser method like <code>get(Argument&lt;T&gt;)</code> for 
-required arguments or <code>getValue(String, Argument&lt;T&gt;)</code> for optional or key-value arguments. 
+arguments. You can retrieve required arguments or optional key-value arguments one at a time through a parser chain. 
 Required arguments are those specified at the beginning of an instruction string, 
 such as <code>add someTag</code> in the <code>tag</code> event.</p>
 <p>If the instruction string contains an argument formatted as <code>arg:something</code> and you request the optional <code>arg</code>, 
-it will return <code>something</code>. If there is no optional argument, it will return <code>null</code>. 
-You can safely pass this <code>null</code> to parser methods like <code>get(String, Argument&lt;T&gt;)</code>, which will not throw an error 
-but will simply return <code>null</code>.</p>
+it will return <code>something</code>. If there is no optional argument by that name, 
+it will return an empty Optional for that variable. </p>
 <p>If an error occurs the <code>Instruction</code> object will automatically throw a <code>QuestException</code>.
 This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
 be parsed into the requested type.</p>
-<h2 id="argument-parsing">Argument Parsing<a class="headerlink" href="#argument-parsing" title="Permanent link">🔗</a></h2>
-<p>The <code>Argument</code> interface defines a method for parsing an argument into a specific type.
-Implementations for custom types can be created by implementing the <code>Argument</code> interface, 
-which also satisfies the single-method-requirement for a functional interface and can be used directly as a lambda.
-<div class="highlight"><span class="filename">simple example</span><pre><span></span><code><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
-<span class="n">Argument</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integerArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">::</span><span class="n">parseInt</span><span class="p">;</span>
-</code></pre></div>
-Since there are frequently used types like <code>String</code>, <code>Number</code>, <code>Boolean</code> and so on, 
-there are predefined implementations for these types in the <code>ArgumentParsers</code> class.
-Those may be accessed through the <code>Instruction</code> instance that is present most of the time 
-when parsing using an Argument.
-<div class="highlight"><span class="filename">accessing predefined parsers</span><pre><span></span><code><span class="n">Argument</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">string</span><span class="p">();</span>
-<span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">();</span>
-</code></pre></div></p>
-<p>To offer a better overview, the following examples show excerpts from factories in BetonQuest:</p>
+<h2 id="instruction-chain">Instruction Chain<a class="headerlink" href="#instruction-chain" title="Permanent link">🔗</a></h2>
+<p>The instruction chain offers java stream-like methods to read, parse, convert and 
+ultimately retrieve a variable from an instruction. 
+It minimally consists of two steps: the argument parsing step and the variable retrieval step.</p>
+<p>To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:</p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Conditions-List/#experience-experience">experience</a> condition.
 <div class="highlight"><span class="filename">ExperienceConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">());</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
 
 <span class="w">        </span><span class="c1">//creating the condition object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Events-List/#item-durability-itemdurability">itemdurability</a> event.
 <div class="highlight"><span class="filename">ItemDurabilityEventFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerEvent</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">forEnum</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">forEnum</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">());</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">);</span>
 
 <span class="w">    </span><span class="c1">//creating event object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
+<p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Objectives-List/#wait-delay">delay</a> objective.
+<div class="highlight"><span class="filename">DelayObjectiveFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">Objective</span><span class="w"> </span><span class="nf">parseInstruction</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;interval&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">//creating objective object and returning it...</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="argument-parsing">Argument Parsing<a class="headerlink" href="#argument-parsing" title="Permanent link">🔗</a></h3>
+<p>In the argument parsing step the method of converting a string into a java type is decided.
+The instruction chain may be accessed conveniently, starting directly from any <code>Instruction</code> instance.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Call</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>.number()</code></td>
+<td style="text-align: left;">Default parser for <code>java.lang.Number</code> covering both integer and floating point values</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.string()</code></td>
+<td style="text-align: left;">Default parser for <code>java.lang.String</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.bool()</code></td>
+<td style="text-align: left;">Default parser for <code>java.lang.Boolean</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.location()</code></td>
+<td style="text-align: left;">Default parser for <code>org.bukkit.Location</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.world()</code></td>
+<td style="text-align: left;">Default parser for <code>org.bukkit.World</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.item()</code></td>
+<td style="text-align: left;">Default parser for <code>org.betonquest.betonquest.api.instruction.type.ItemWrapper</code> representing items defined in BetonQuest</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.vector()</code></td>
+<td style="text-align: left;">Default parser for <code>org.bukkit.util.Vector</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.uuid()</code></td>
+<td style="text-align: left;">Default parser for <code>java.util.UUID</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.component()</code></td>
+<td style="text-align: left;">Default parser for <code>net.kyori.adventure.text.Component</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.packageIdentifier()</code></td>
+<td style="text-align: left;">Default parser for package identifiers producing a <code>java.lang.String</code>. This parser simply expands the existing string value to a full package identifier using the instruction's package if necessary.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><nobr><code>.enumeration(Enum&lt;E&gt;)</code></nobr></td>
+<td style="text-align: left;">Default parser for an enum of the given type</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.parse(Parser&lt;P&gt;)</code></td>
+<td style="text-align: left;">Using a custom parser matching the functional interfaces <code>InstructionArgumentParser</code> or <code>SimpleArgumentParser</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="variable-retrieval">Variable Retrieval<a class="headerlink" href="#variable-retrieval" title="Permanent link">🔗</a></h3>
+<p>The variable retrieval step is required after the argument parsing and represents the wrapping into a <code>Variable&lt;T&gt;</code> 
+instance to be carried on into events, conditions and objectives.
+To have valid calls the <code>Number</code> parser is used as an example, but naturally any parser will do.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Call</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>.get()</code></td>
+<td style="text-align: center;"><code>Variable&lt;Number&gt;</code></td>
+<td style="text-align: left;">Retrieves a variable of the next value in order from the instruction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.get("amount")</code></td>
+<td style="text-align: center;"><code>Optional&lt;Variable&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amount</code> from the instruction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.get("amount", 10)</code></td>
+<td style="text-align: center;"><code>Variable&lt;Number&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amount</code> from the instruction or gets a variable with default value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.getList()</code></td>
+<td style="text-align: center;"><code>Variable&lt;List&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves a variable of the next value in order from the instruction parsed as list</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>.getList("amounts")</code></td>
+<td style="text-align: center;"><code>Optional&lt;Variable&lt;List&lt;Number&gt;&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amounts</code> from the instruction parsed as list</td>
+</tr>
+<tr>
+<td style="text-align: left;"><nobr><code>.getList("amounts",</code></nobr><br><nobr><code>List.of(1,5,10))</code></nobr></td>
+<td style="text-align: center;"><code>Variable&lt;List&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amounts</code> from the instruction parsed as list or gets a variable with default list as value</td>
+</tr>
+</tbody>
+</table>
 <h3 id="advanced-argument-parsing">Advanced Argument Parsing<a class="headerlink" href="#advanced-argument-parsing" title="Permanent link">🔗</a></h3>
-<p>Default implementations from ArgumentParsers offer more functionality than just parsing a string into a specific type.</p>
+<p>Parsers via the chain offer more functionality than just parsing a string into a specific type.
+By chaining different kinds of operations, the outcome can be modified in certain ways.</p>
 <h4 id="validations">Validations<a class="headerlink" href="#validations" title="Permanent link">🔗</a></h4>
 <p>You can validate an argument using the <code>validate(ValueValidator&lt;T&gt;)</code> or <code>validate(ValueValidator&lt;T&gt;, String)</code> method.
-This method will throw a <code>QuestException</code> if the predicate does not match the argument.
+This method will throw a <code>QuestException</code> if the predicate does not match the argument (aka returns <code>false</code>).
 It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
-outside matching just the type.</p>
+outside matching just the type.
+In the error message a single <code>%s</code> maybe used to inline the wrong value.<br />
+Examples:</p>
+<details class="example">
+<summary>Even Number</summary>
 <p>The example below checks if the parsed number is even and throws an error if it is not.
-<div class="highlight"><span class="filename">validate example</span><pre><span></span><code><span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">evenArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
-<span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">evenArgument2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span>
-<span class="s">&quot;Number must be even, but was %s.&quot;</span><span class="p">);</span>
+<div class="highlight"><span class="filename">even number validate example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="na">intValue</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number must be even, but was %s.&quot;</span><span class="p">)</span>
 </code></pre></div></p>
+</details>
+<details class="example">
+<summary>Non-Empty-String</summary>
+<p>The example below checks if the parsed string is not empty and throws an error if it is empty.
+<div class="highlight"><span class="filename">non-empty string validate example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">string</span><span class="p">().</span><span class="na">validate</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;Empty strings are not permitted.&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+</details>
 <h4 id="prefilter">Prefilter<a class="headerlink" href="#prefilter" title="Permanent link">🔗</a></h4>
 <p>You can use prefilters to modify the argument's parsing result without actually parsing it.
 This can be useful to parse additional cases that are not covered by the default parsers.
-Use the <code>prefilter(String expected, T fixedValue)</code> method to decorate the argument with a prefilter.</p>
+Use the <code>prefilter(String expected, T fixedValue)</code> method to decorate the parser with a prefilter.
+The matcher to find the expected value uses <code>String#equalsIgnoreCase(String)</code>.<br />
+Examples:</p>
+<details class="example">
+<summary><code>infinity</code> Number Value</summary>
 <p>The example below parses the string "infinity" into the number <code>Double.POSITIVE_INFINITY</code> while still allowing other 
 number values.
-<div class="highlight"><span class="filename">prefilter example</span><pre><span></span><code><span class="n">DecoratedArgument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">getParsers</span><span class="p">().</span><span class="na">number</span><span class="p">().</span><span class="na">prefilter</span><span class="p">(</span><span class="s">&quot;infinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">.</span><span class="na">POSITIVE_INFINITY</span><span class="p">);</span>
+<div class="highlight"><span class="filename">infinity prefilter example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">prefilter</span><span class="p">(</span><span class="s">&quot;infinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">.</span><span class="na">POSITIVE_INFINITY</span><span class="p">)</span>
 </code></pre></div></p>
-<h4 id="decoratednumberargument">DecoratedNumberArgument<a class="headerlink" href="#decoratednumberargument" title="Permanent link">🔗</a></h4>
-<p>The <code>DecoratedNumberArgument</code> class offers a more convenient way to create a number argument with range limits.
-It is retrieved through the <code>ArgumentParsers</code> class as default number argument parser wrapping <code>DecoratedArgument&lt;Number&gt;</code>.</p>
+</details>
+<details class="example">
+<summary><code>any</code> Value</summary>
+<p>The example below parses the string "any" into the enum EntityType without EntityType allowing <code>any</code> as value.
+<div class="highlight"><span class="filename">any prefilter example</span><pre><span></span><code><span class="w">    </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EntityType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">prefilterOptional</span><span class="p">(</span><span class="s">&quot;any&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The usage of <code>prefilter(String expected, @Nullable T fixedValue)</code> is required here, 
+since the chain has a strict non-null policy to prevent exceptions. 
+This method will capsule the result in an Optional. To retrieve the <code>any</code> value you are safe to assume
+that an Optional#isEmpty() corresponds to <code>any</code> while a present value represents a parsed known enum constant.
+Another unknown value will cause it to throw an exception. </p>
+</div>
+</details>
+<h4 id="map">Map<a class="headerlink" href="#map" title="Permanent link">🔗</a></h4>
+<p>You can also modify the value or map it to a different type after parsing without reading it from the variable.
+Use the <code>map(QuestionFunction&lt;T,U&gt;)</code> method to decorate the parser with such a mapping function.<br />
+Example:</p>
+<details class="example">
+<summary>Explicit Integer Value</summary>
+<p>The examples below show two ways of parsing an explicit integer value. Both come with advantages and disadvantages.
+While the first one parses all kinds of numbers and fits them into an integer, 
+the second one fails when trying to parse anything other than a valid integer value. 
+<div class="highlight"><span class="filename">infinity prefilter example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">map</span><span class="p">(</span><span class="n">Number</span><span class="p">::</span><span class="n">intValue</span><span class="p">)</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="n">Integer</span><span class="p">::</span><span class="n">parseInt</span><span class="p">)</span>
+</code></pre></div></p>
+</details>
+<h4 id="special-case-number">Special Case: Number<a class="headerlink" href="#special-case-number" title="Permanent link">🔗</a></h4>
+<p>The <code>instruction.number()</code> parser offers a more convenient way to create a number argument with range limits.</p>
 <p>Additional methods are available to set the minimum and maximum values of the number.
-While the methods <code>atLeast(int)</code> and <code>atMost(int)</code> are using inclusive bounds, <code>bounds(int,int)</code> is using an exclusive 
+While the methods <code>atLeast(int)</code> and <code>atMost(int)</code> are using inclusive bounds, <code>inRange(int,int)</code> is using an exclusive 
 upper bound as commonly used in other Java classes.
-<div class="highlight"><span class="filename">DecoratedNumberArgument example</span><pre><span></span><code><span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">atMost</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">DecoratedNumberArgument</span><span class="w"> </span><span class="n">numberArgument2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ArgumentParsers</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">bounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<div class="highlight"><span class="filename">DecoratedNumberArgument example</span><pre><span></span><code><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// value has to be 0 or greater</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atMost</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c1">// value has to be 10 or less</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">atMost</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c1">// value has to be in the interval [1,10]</span>
+<span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">inRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"> </span><span class="c1">// value has to be in the interval [0,99]</span>
 </code></pre></div></p>
 
 
