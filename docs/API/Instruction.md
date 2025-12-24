@@ -13,39 +13,25 @@ The **Instruction** refers to the user-defined string that specifies conditions,
 ## Reading the `Instruction` Object
 
 The `Instruction` object is responsible for parsing the instruction string provided by the user and splitting it into 
-arguments. You can retrieve required arguments one at a time through a parser method like `get(Argument<T>)` for 
-required arguments or `getValue(String, Argument<T>)` for optional or key-value arguments. 
+arguments. You can retrieve required arguments or optional key-value arguments one at a time through a parser chain. 
 Required arguments are those specified at the beginning of an instruction string, 
 such as `add someTag` in the `tag` event.
 
 If the instruction string contains an argument formatted as `arg:something` and you request the optional `arg`, 
-it will return `something`. If there is no optional argument, it will return `null`. 
-You can safely pass this `null` to parser methods like `get(String, Argument<T>)`, which will not throw an error 
-but will simply return `null`.
+it will return `something`. If there is no optional argument by that name, 
+it will return an empty Optional for that variable. 
 
 If an error occurs the `Instruction` object will automatically throw a `QuestException`.
 This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
 be parsed into the requested type.
 
-## Argument Parsing
+## Instruction Chain
 
-The `Argument` interface defines a method for parsing an argument into a specific type.
-Implementations for custom types can be created by implementing the `Argument` interface, 
-which also satisfies the single-method-requirement for a functional interface and can be used directly as a lambda.
-```JAVA title="simple example"
-Argument<String> stringArgument = s -> s;
-Argument<Integer> integerArgument = Integer::parseInt;
-```
-Since there are frequently used types like `String`, `Number`, `Boolean` and so on, 
-there are predefined implementations for these types in the `ArgumentParsers` class.
-Those may be accessed through the `Instruction` instance that is present most of the time 
-when parsing using an Argument.
-```JAVA title="accessing predefined parsers"
-Argument<String> stringArgument = instruction.getParsers().string();
-Argument<Number> numberArgument = instruction.getParsers().number();
-```
+The instruction chain offers java stream-like methods to read, parse, convert and 
+ultimately retrieve a variable from an instruction. 
+It minimally consists of two steps: the argument parsing step and the variable retrieval step.
 
-To offer a better overview, the following examples show excerpts from factories in BetonQuest:
+To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:
 
 Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
@@ -59,8 +45,8 @@ public PlayerCondition parsePlayer(final Instruction instruction) throws QuestEx
 Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Events-List.md#item-durability-itemdurability) event.
 ```JAVA title="ItemDurabilityEventFactory.java"
 public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-    final Variable<EquipmentSlot> slot = instruction.get(instruction.getParsers().forEnum(EquipmentSlot.class));
-    final Variable<PointType> operation = instruction.get(instruction.getParsers().forEnum(PointType.class));
+    final Variable<EquipmentSlot> slot = instruction.enumeration(EquipmentSlot.class).get();
+    final Variable<PointType> operation = instruction.enumeration(PointType.class).get();
     final Variable<Number> amount = instruction.number().get();
     final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
     final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
@@ -69,42 +55,118 @@ public PlayerEvent parsePlayer(final Instruction instruction) throws QuestExcept
 }
 ```
 
+Compare [delay](../Documentation/Scripting/Building-Blocks/Objectives-List.md#wait-delay) objective.
+```java title="DelayObjectiveFactory.java"
+public Objective parseInstruction(final Instruction instruction) throws QuestException {
+    final Variable<Number> delay = instruction.number().atLeast(0).get();
+    final Variable<Number> interval = instruction.number().atLeast(1).get("interval", 20 * 10);
+    //creating objective object and returning it...
+}
+```
+
+### Argument Parsing
+The argument parsing step represents the method of converting a string into a java type is decided.
+The instruction chain may be accessed conveniently, starting directly from any `Instruction` instance.
+
+| Call | Description |
+| :--- | :---------- |
+ | `instruction.number()` | Default parser for `java.lang.Number` covering both integer and floating point values |
+ | `instruction.string()` | Default parser for `java.lang.String` |
+ | `instruction.bool()` | Default parser for `java.lang.Boolean` |
+ | `instruction.uuid()` | Default parser for `java.util.UUID` |
+ | `instruction.world()` | Default parser for `org.bukkit.World` |
+ | `instruction.location()` | Default parser for `org.bukkit.Location` |
+ | `instruction.vector()` | Default parser for `org.bukkit.util.Vector` |
+ | `instruction.component()` | Default parser for `net.kyori.adventure.text.Component` |
+ | `instruction.item()` | Default parser for `org.betonquest.betonquest.api.instruction.type.ItemWrapper` representing items defined in BetonQuest |
+ | `instruction.packageIdentifier()` | Default parser for package identifiers producing a `java.lang.String` |
+ | <nobr>`instruction.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type |
+ | `instruction.parse(Parser<P>)` | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser` |  
+
+### Variable Retrieval
+The variable retrieval step is required after the argument parsing and represents the wrapping into a `Variable<T>` 
+instance to be carried on into events, conditions and objectives.
+To have valid calls the `Number` parser is used as an example, but naturally any parser will do.
+
+| Call | Type | Description |
+| :--- | :--: | :---------- |
+| `.get()` | `Variable<Number>` | Retrieves a variable of the next value in order from the instruction |
+| `.get("amount")` | `Optional<Variable<Number>>` | Retrieves an optional variable of the value with the key `amount` from the instruction |
+| `.get("amount", 10)` | `Variable<Number>` | Retrieves an optional variable of the value with the key `amount` from the instruction or gets a variable with default value |
+| `.getList()` | `Variable<List<Number>>` | Retrieves a variable of the next value in order from the instruction parsed as list |
+| `.getList("amounts")` | `Optional<Variable<List<Number>>>` | Retrieves an optional variable of the value with the key `amounts` from the instruction parsed as list |
+| <nobr>`.getList("amounts",`</nobr><br><nobr>`List.of(1,5,10))`</nobr> | `Variable<List<Number>>` | Retrieves an optional variable of the value with the key `amounts` from the instruction parsed as list or gets a variable with default list as value |
+
 ### Advanced Argument Parsing
-Default implementations from ArgumentParsers offer more functionality than just parsing a string into a specific type.
+Parsers via the chain offer more functionality than just parsing a string into a specific type.
+By chaining different kinds of operations, the outcome can be modified in certain ways.
 
 #### Validations
 You can validate an argument using the `validate(ValueValidator<T>)` or `validate(ValueValidator<T>, String)` method.
-This method will throw a `QuestException` if the predicate does not match the argument.
+This method will throw a `QuestException` if the predicate does not match the argument (aka returns `false`).
 It may be used to check if a value is within a certain range or if a value satisfies a certain condition 
 outside matching just the type.
-
-The example below checks if the parsed number is even and throws an error if it is not.
-```JAVA title="validate example"
-DecoratedArgument<Number> evenArgument = instruction.getParsers().number().validate(i -> i.intValue() % 2);
-DecoratedArgument<Number> evenArgument2 = instruction.getParsers().number().validate(i -> i.intValue() % 2, 
-"Number must be even, but was %s.");
-```
+In the error message a single `%s` maybe used to inline the wrong value.  
+Examples:
+??? example "Even Number"
+    The example below checks if the parsed number is even and throws an error if it is not.
+    ```JAVA title="even number validate example"
+    instruction.number().validate(i -> i.intValue() % 2)
+    instruction.number().validate(i -> i.intValue() % 2, "Number must be even, but was %s.")
+    ```
+??? example "Non-Empty-String"
+    The example below checks if the parsed string is not empty and throws an error if it is empty.
+    ```JAVA title="non-empty string validate example"
+    instruction.string().validate(s -> !s.isEmpty())
+    instruction.string().validate(s -> !s.isEmpty(), "Empty strings are not permitted.")
+    ```
 
 #### Prefilter
 You can use prefilters to modify the argument's parsing result without actually parsing it.
 This can be useful to parse additional cases that are not covered by the default parsers.
-Use the `prefilter(String expected, T fixedValue)` method to decorate the argument with a prefilter.
+Use the `prefilter(String expected, T fixedValue)` method to decorate the parser with a prefilter.
+The matcher to find the expected value uses `String#equalsIgnoreCase(String)`.  
+Examples:
+??? example "`infinity` Number Value"
+    The example below parses the string "infinity" into the number `Double.POSITIVE_INFINITY` while still allowing other 
+    number values.
+    ```JAVA title="infinity prefilter example"
+    instruction.number().prefilter("infinity", Double.POSITIVE_INFINITY)
+    ```
+??? example "`any` Value"
+    The example below parses the string "any" into the enum EntityType without EntityType allowing `any` as value.
+    ```JAVA title="any prefilter example"
+        instruction.enumeration(EntityType.class).prefilterOptional("any", null)
+    ```
+    !!! warning
+        The usage of `prefilter(String expected, @Nullable T fixedValue)` is required here, 
+        since the chain has a strict non-null policy to prevent exceptions. 
+        This method will capsule the result in an Optional. To retrieve the `any` value you are safe to assume
+        that an Optional#isEmpty() corresponds to `any` while a present value represents a parsed known enum constant.
+        Another unknown value will cause it to throw an exception. 
 
-The example below parses the string "infinity" into the number `Double.POSITIVE_INFINITY` while still allowing other 
-number values.
-```JAVA title="prefilter example"
-DecoratedArgument<Number> numberArgument = instruction.getParsers().number().prefilter("infinity", Double.POSITIVE_INFINITY);
-```
+#### Map
+You can also modify the value or map it to a different type after parsing without reading it from the variable.
+Use the `map(QuestionFunction<T,U>)` method to decorate the parser with such a mapping function.  
+Example:
+??? example "Explicit Integer Value"
+    The examples below show two ways of parsing an explicit integer value. Both come with advantages and disadvantages.
+    While the first one parses all kinds of numbers and fits them into an integer, 
+    the second one fails when trying to parse anything other than a valid integer value. 
+    ```JAVA title="infinity prefilter example"
+    instruction.number().map(Number::intValue)
+    instruction.parse(Integer::parseInt)
+    ```
 
-#### DecoratedNumberArgument
-The `DecoratedNumberArgument` class offers a more convenient way to create a number argument with range limits.
-It is retrieved through the `ArgumentParsers` class as default number argument parser wrapping `DecoratedArgument<Number>`.
+#### Special Case: Number
+The `instruction.number()` parser offers a more convenient way to create a number argument with range limits.
 
 Additional methods are available to set the minimum and maximum values of the number.
-While the methods `atLeast(int)` and `atMost(int)` are using inclusive bounds, `bounds(int,int)` is using an exclusive 
+While the methods `atLeast(int)` and `atMost(int)` are using inclusive bounds, `inRange(int,int)` is using an exclusive 
 upper bound as commonly used in other Java classes.
 ```JAVA title="DecoratedNumberArgument example"
-DecoratedNumberArgument numberArgument = ArgumentParsers.number().atLeast(0);
-DecoratedNumberArgument numberArgument = ArgumentParsers.number().atLeast(1).atMost(10);
-DecoratedNumberArgument numberArgument2 = ArgumentParsers.number().bounds(0, 100);
+instruction.number().atLeast(0); // value has to be 0 or greater
+instruction.number().atMost(10); // value has to be 10 or less
+instruction.number().atLeast(1).atMost(10); // value has to be in the interval [1,10]
+instruction.number().inRange(0, 100); // value has to be in the interval [0,99]
 ```  
