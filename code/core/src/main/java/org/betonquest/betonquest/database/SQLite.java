@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.kernel.processor.quest.VariableProcessor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -316,8 +318,7 @@ public class SQLite extends Database {
                 final Key defaultkey = Key.key("default");
                 final FontRegistry fontRegistry = new FontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(
-                        BetonQuest.getInstance().getVariableProcessor(), BetonQuest.getInstance().getQuestPackageManager(),
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(VariableProcessor.EMPTY_VARIABLES, Map::of,
                         (message) -> LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " ")),
                         bookPageWrapper, () -> null);
 
