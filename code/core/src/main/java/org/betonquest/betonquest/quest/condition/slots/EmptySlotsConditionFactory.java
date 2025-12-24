@@ -30,7 +30,7 @@ public class EmptySlotsConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> required = instruction.get(instruction.getParsers().number());
+        final Variable<Number> required = instruction.number().get();
         final boolean equal = instruction.hasArgument("equal");
         final BetonQuestLogger log = loggerFactory.create(EmptySlotsCondition.class);
         return new OnlineConditionAdapter(new EmptySlotsCondition(required, equal), log, instruction.getPackage());

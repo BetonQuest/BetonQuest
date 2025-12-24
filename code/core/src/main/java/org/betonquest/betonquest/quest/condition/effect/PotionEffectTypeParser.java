@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.condition.effect;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.bukkit.potion.PotionEffectType;
 
 /**
  * Parses a string to a {@link PotionEffectType}.
  */
-public class PotionEffectTypeParser implements Argument<PotionEffectType> {
+public class PotionEffectTypeParser implements SimpleArgumentParser<PotionEffectType> {
 
     /**
      * Parser for {@link PotionEffectType}s.

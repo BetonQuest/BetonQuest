@@ -43,7 +43,7 @@ public class LightningEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     private NullableEventAdapter createLightningEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(instruction.getParsers().location());
+        final Variable<Location> location = instruction.location().get();
         final boolean noDamage = instruction.hasArgument("noDamage");
         return new NullableEventAdapter(new LightningEvent(location, noDamage));
     }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.mc_1_21_4.api.instruction.argument.type;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 
@@ -15,7 +15,7 @@ import java.util.Locale;
  *
  * @param <T> the type of the registry key
  */
-public class RegistryKeyParser<T extends Keyed> implements Argument<T> {
+public class RegistryKeyParser<T extends Keyed> implements SimpleArgumentParser<T> {
 
     /**
      * The registry key.

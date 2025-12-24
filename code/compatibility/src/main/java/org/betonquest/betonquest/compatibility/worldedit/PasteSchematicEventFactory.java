@@ -53,13 +53,13 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
     }
 
     private NullableEvent parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<Number> rotation = instruction.getValue("rotation", instruction.getParsers().number(), 0);
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<Number> rotation = instruction.number().get("rotation", 0);
 
         if (!folder.exists() || !folder.isDirectory()) {
             throw new QuestException("Schematic folder does not exist");
         }
-        final Variable<File> file = instruction.get((value) -> {
+        final Variable<File> file = instruction.parse((value) -> {
             final File schematic = new File(folder, value);
 
             if (schematic.exists()) {
@@ -70,7 +70,7 @@ public class PasteSchematicEventFactory implements PlayerEventFactory, Playerles
                 return alternativeSchematic;
             }
             throw new QuestException("Schematic " + value + " does not exist (" + folder.toPath().resolve(value + ".schematic") + ")");
-        });
+        }).get();
 
         final boolean noAir = instruction.hasArgument("noair");
         return new PasteSchematicEvent(loc, rotation, noAir, file);

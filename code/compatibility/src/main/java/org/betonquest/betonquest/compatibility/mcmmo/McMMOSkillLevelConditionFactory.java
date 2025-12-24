@@ -31,8 +31,8 @@ public class McMMOSkillLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<PrimarySkillType> skillType = instruction.get(instruction.getParsers().forEnum(PrimarySkillType.class));
-        final Variable<Number> level = instruction.get(instruction.getParsers().number());
+        final Variable<PrimarySkillType> skillType = instruction.enumeration(PrimarySkillType.class).get();
+        final Variable<Number> level = instruction.number().get();
         final BetonQuestLogger log = loggerFactory.create(McMMOSkillLevelCondition.class);
         return new OnlineConditionAdapter(new McMMOSkillLevelCondition(skillType, level), log, instruction.getPackage());
     }

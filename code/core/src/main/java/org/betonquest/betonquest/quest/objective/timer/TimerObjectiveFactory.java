@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ public class TimerObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.getValue("amount", instruction.getParsers().number(), Integer.MAX_VALUE);
-        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string(), "");
-        final Variable<Number> interval = instruction.getValue("interval", instruction.getParsers().number(), 1);
-        final Variable<List<EventID>> doneEvents = instruction.getValueList("done", EventID::new);
+        final Variable<Number> targetAmount = instruction.number().get("amount", Integer.MAX_VALUE);
+        final Variable<String> name = instruction.string().get("name", "");
+        final Variable<Number> interval = instruction.number().get("interval", 1);
+        final Variable<List<EventID>> doneEvents = instruction.parse(EventID::new).getList("done", Collections.emptyList());
         return new TimerObjective(instruction, targetAmount, questTypeApi, name, interval, doneEvents);
     }
 }

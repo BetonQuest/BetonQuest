@@ -19,8 +19,8 @@ public class MMOCoreProfessionObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> professionName = instruction.get(instruction.getParsers().string());
-        final Variable<Number> targetLevel = instruction.get(instruction.getParsers().number());
+        final Variable<String> professionName = instruction.string().get();
+        final Variable<Number> targetLevel = instruction.number().get();
         return new MMOCoreProfessionObjective(instruction, professionName, targetLevel);
     }
 }

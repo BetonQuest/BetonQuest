@@ -68,9 +68,9 @@ public class SpawnMobEventFactory implements PlayerEventFactory, PlayerlessEvent
      * @throws QuestException if the instruction could not be parsed
      */
     public NullableEventAdapter createSpawnMobEvent(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<EntityType> type = instruction.get(entityTypeParser);
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<EntityType> type = instruction.parse(entityTypeParser).get();
+        final Variable<Number> amount = instruction.number().get();
         final Variable<Component> name = instruction.component().get("name").orElse(null);
         final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         final Variable<QuestItemWrapper> helmet = instruction.item().get("h").orElse(null);

@@ -30,7 +30,7 @@ public class ScoreboardTagConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> tag = instruction.get(instruction.getParsers().string());
+        final Variable<String> tag = instruction.string().get();
         final BetonQuestLogger logger = loggerFactory.create(ScoreboardTagCondition.class);
         return new OnlineConditionAdapter(new ScoreboardTagCondition(tag), logger, instruction.getPackage());
     }

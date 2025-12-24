@@ -4,7 +4,7 @@ import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
@@ -29,7 +29,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
     /**
      * The parser for the mythic mob type.
      */
-    private final Argument<MythicMob> mobArgument;
+    private final SimpleArgumentParser<MythicMob> mobArgument;
 
     /**
      * Create a new factory for {@link MythicMobDistanceCondition}s.
@@ -39,7 +39,7 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
      * @param mobArgument   the parser for the mythic mob type
      */
     public MythicMobDistanceConditionFactory(final BetonQuestLoggerFactory loggerFactory, final MobExecutor mobExecutor,
-                                             final Argument<MythicMob> mobArgument) {
+                                             final SimpleArgumentParser<MythicMob> mobArgument) {
         this.loggerFactory = loggerFactory;
         this.mobExecutor = mobExecutor;
         this.mobArgument = mobArgument;
@@ -47,8 +47,8 @@ public class MythicMobDistanceConditionFactory implements PlayerConditionFactory
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<MythicMob> mobType = instruction.get(mobArgument);
-        final Variable<Number> distance = instruction.get(instruction.getParsers().number());
+        final Variable<MythicMob> mobType = instruction.parse(mobArgument).get();
+        final Variable<Number> distance = instruction.number().get();
         return new OnlineConditionAdapter(new MythicMobDistanceCondition(mobExecutor, mobType, distance),
                 loggerFactory.create(MythicMobDistanceCondition.class),
                 instruction.getPackage());

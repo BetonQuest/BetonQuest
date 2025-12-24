@@ -59,7 +59,7 @@ public class MoneyEventFactory implements PlayerEventFactory {
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final boolean multi = instruction.hasArgument("multi");
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         final boolean notify = instruction.hasArgument("notify");
         final IngameNotificationSender givenSender;
         final IngameNotificationSender takenSender;

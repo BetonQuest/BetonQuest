@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,11 +23,12 @@ public class CommandObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> command = instruction.get(instruction.getParsers().string());
+        final Variable<String> command = instruction.string().get();
         final boolean ignoreCase = instruction.hasArgument("ignoreCase");
         final boolean exact = instruction.hasArgument("exact");
         final boolean cancel = instruction.hasArgument("cancel");
-        final Variable<List<EventID>> failEvents = instruction.getValueList("failEvents", EventID::new);
+        final Variable<List<EventID>> failEvents = instruction.parse(EventID::new)
+                .getList("failEvents", Collections.emptyList());
         return new CommandObjective(instruction, command, ignoreCase, exact, cancel, failEvents);
     }
 }

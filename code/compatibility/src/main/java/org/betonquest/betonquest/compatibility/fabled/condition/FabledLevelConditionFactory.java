@@ -20,8 +20,8 @@ public class FabledLevelConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> classNameVar = instruction.get(instruction.getParsers().string());
-        final Variable<Number> levelVar = instruction.get(instruction.getParsers().number());
+        final Variable<String> classNameVar = instruction.string().get();
+        final Variable<Number> levelVar = instruction.number().get();
         return new FabledLevelCondition(classNameVar, levelVar);
     }
 }

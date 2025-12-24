@@ -31,9 +31,9 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
     }
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
-        final Variable<Number> first = instruction.get(instruction.getParsers().number());
-        final Operation operation = instruction.get(Operation::fromSymbol).getValue(null);
-        final Variable<Number> second = instruction.get(instruction.getParsers().number());
+        final Variable<Number> first = instruction.number().get();
+        final Operation operation = instruction.parse(Operation::fromSymbol).get().getValue(null);
+        final Variable<Number> second = instruction.number().get();
         return new NumberCompareCondition(first, second, operation);
     }
 }

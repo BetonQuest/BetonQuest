@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 
 /**
  * Parses a time change from a string.
  */
-public class TimeParser implements Argument<TimeChange> {
+public class TimeParser implements SimpleArgumentParser<TimeChange> {
 
     /**
      * Parser for {@link TimeChange}.

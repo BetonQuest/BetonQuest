@@ -19,9 +19,9 @@ public class MMOItemsApplyGemObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> itemType = instruction.get(instruction.getParsers().string());
-        final Variable<String> itemID = instruction.get(instruction.getParsers().string());
-        final Variable<String> gemID = instruction.get(instruction.getParsers().string());
+        final Variable<String> itemType = instruction.string().get();
+        final Variable<String> itemID = instruction.string().get();
+        final Variable<String> gemID = instruction.string().get();
         return new MMOItemsApplyGemObjective(instruction, itemType, itemID, gemID);
     }
 }

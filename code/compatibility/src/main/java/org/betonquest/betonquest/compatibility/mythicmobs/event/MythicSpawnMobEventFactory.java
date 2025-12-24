@@ -64,7 +64,7 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<Location> loc = instruction.location().get();
-        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
+        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
         final Variable<Number> amount = instruction.number().get();
         final MythicHider privateMob = instruction.hasArgument("private") ? mythicHider : null;
         final boolean targetPlayer = instruction.hasArgument("target");
@@ -78,9 +78,9 @@ public class MythicSpawnMobEventFactory implements PlayerEventFactory, Playerles
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
-        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.get(mythicMobParser);
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Location> loc = instruction.location().get();
+        final Variable<Map.Entry<MythicMob, Double>> mobLevel = instruction.parse(mythicMobParser).get();
+        final Variable<Number> amount = instruction.number().get();
         final Variable<String> marked = instruction.packageIdentifier().get("marked").orElse(null);
         return new PrimaryServerThreadPlayerlessEvent(new MythicSpawnMobEvent(data.plugin(), loc, mobLevel, amount, null, false, marked), data);
     }

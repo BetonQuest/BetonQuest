@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEventFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class RunIndependentEventFactory implements PlayerlessEventFactory {
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final Variable<List<EventID>> events = instruction.getValueList("events", EventID::new);
+        final Variable<List<EventID>> events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
         return new RunIndependentEvent(questTypeApi, events);
     }
 }

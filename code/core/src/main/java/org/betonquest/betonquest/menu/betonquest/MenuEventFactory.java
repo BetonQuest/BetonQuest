@@ -50,7 +50,7 @@ public class MenuEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Operation operation = instruction.get(instruction.getParsers().forEnum(Operation.class)).getValue(null);
+        final Operation operation = instruction.enumeration(Operation.class).get().getValue(null);
         final QuestConsumer<OnlineProfile> action = switch (operation) {
             case OPEN -> {
                 final Variable<MenuID> menuID = instruction.parse(

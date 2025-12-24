@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerlessEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public class EventAdapter extends QuestAdapter<PlayerEvent, PlayerlessEvent> {
         this.log = log;
         this.questTypeApi = questTypeApi;
         this.instruction = instruction;
-        conditions = instruction.getValueList("conditions", ConditionID::new);
+        conditions = instruction.parse(ConditionID::new).getList("conditions", Collections.emptyList());
     }
 
     /**

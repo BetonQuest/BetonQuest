@@ -20,8 +20,8 @@ public class BreedObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<EntityType> type = instruction.get(instruction.getParsers().forEnum(EntityType.class));
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
+        final Variable<EntityType> type = instruction.enumeration(EntityType.class).get();
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
         return new BreedObjective(instruction, targetAmount, type);
     }
 }

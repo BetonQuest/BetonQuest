@@ -39,7 +39,7 @@ public class JournalConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<JournalEntryID> entryID = instruction.get(JournalEntryID::new);
+        final Variable<JournalEntryID> entryID = instruction.parse(JournalEntryID::new).get();
         final BetonQuestLogger log = loggerFactory.create(JournalCondition.class);
         return new OnlineConditionAdapter(new JournalCondition(dataStorage, entryID), log, instruction.getPackage());
     }

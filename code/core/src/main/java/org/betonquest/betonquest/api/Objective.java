@@ -19,6 +19,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -118,9 +119,9 @@ public abstract class Objective {
         this.profileProvider = BetonQuest.getInstance().getProfileProvider();
         this.dataMap = new ProfileKeyMap<>(profileProvider);
         persistent = instruction.hasArgument("persistent");
-        events = instruction.getValueList("events", EventID::new);
-        conditions = instruction.getValueList("conditions", ConditionID::new);
-        final int customNotifyInterval = instruction.getValue("notify", instruction.getParsers().number(), 0).getValue(null).intValue();
+        events = instruction.parse(EventID::new).getList("events", Collections.emptyList());
+        conditions = instruction.parse(ConditionID::new).getList("conditions", Collections.emptyList());
+        final int customNotifyInterval = instruction.number().get("notify", 0).getValue(null).intValue();
         notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
         notifyInterval = Math.max(1, customNotifyInterval);
     }

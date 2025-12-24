@@ -31,7 +31,7 @@ public class WorldConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<World> world = instruction.get(instruction.getParsers().world());
+        final Variable<World> world = instruction.world().get();
         final BetonQuestLogger logger = loggerFactory.create(WorldCondition.class);
         return new OnlineConditionAdapter(new WorldCondition(world), logger, instruction.getPackage());
     }

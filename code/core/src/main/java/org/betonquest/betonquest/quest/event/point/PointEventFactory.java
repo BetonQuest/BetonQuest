@@ -51,7 +51,7 @@ public class PointEventFactory implements PlayerEventFactory {
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.packageIdentifier().get();
         final Variable<Number> amount = instruction.number().get();
-        final PointType type = instruction.getValue("action", instruction.getParsers().forEnum(PointType.class), PointType.ADD).getValue(null);
+        final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
 
         final NotificationSender pointSender;
         if (instruction.hasArgument("notify")) {

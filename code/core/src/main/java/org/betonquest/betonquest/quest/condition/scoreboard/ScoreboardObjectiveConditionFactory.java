@@ -19,8 +19,8 @@ public class ScoreboardObjectiveConditionFactory implements PlayerConditionFacto
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> objective = instruction.get(instruction.getParsers().string());
-        final Variable<Number> count = instruction.get(instruction.getParsers().number());
+        final Variable<String> objective = instruction.string().get();
+        final Variable<Number> count = instruction.number().get();
         return new ScoreboardObjectiveCondition(objective, count);
     }
 }

@@ -69,8 +69,8 @@ public class ObjectiveEventFactory implements PlayerEventFactory, PlayerlessEven
     }
 
     private NullableEventAdapter createObjectiveEvent(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null).toLowerCase(Locale.ROOT);
-        final Variable<List<ObjectiveID>> objectives = instruction.getList(ObjectiveID::new);
+        final String action = instruction.string().map(s -> s.toLowerCase(Locale.ROOT)).get().getValue(null);
+        final Variable<List<ObjectiveID>> objectives = instruction.parse(ObjectiveID::new).getList();
         return new NullableEventAdapter(new ObjectiveEvent(betonQuest, loggerFactory.create(ObjectiveEvent.class),
                 questTypeApi, instruction.getPackage(), objectives, playerDataFactory, action));
     }

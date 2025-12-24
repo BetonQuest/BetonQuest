@@ -6,10 +6,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,26 +23,10 @@ public class MythicLibSkillObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<String> skillId = instruction.get(instruction.getParsers().string());
-        final List<TriggerType> triggerTypes = parseTriggerTypes(instruction.getValue("trigger"));
+        final Variable<String> skillId = instruction.string().get();
+        final List<TriggerType> triggerTypes = instruction
+                .parse(id -> TriggerType.valueOf(id.toUpperCase(Locale.ROOT)))
+                .getList().getValue(null);
         return new MythicLibSkillObjective(instruction, skillId, triggerTypes);
-    }
-
-    private List<TriggerType> parseTriggerTypes(@Nullable final String triggerTypeString) throws QuestException {
-        final List<TriggerType> types = new ArrayList<>();
-        if (triggerTypeString == null) {
-            types.addAll(TriggerType.values());
-            return types;
-        }
-        final Collection<String> possibleTypes = TriggerType.values().stream().map(TriggerType::name).toList();
-        final String[] parts = triggerTypeString.toUpperCase(Locale.ROOT).split(",");
-        for (final String part : parts) {
-            if (!possibleTypes.contains(part)) {
-                throw new QuestException("Unknown trigger type: " + part);
-            }
-            final TriggerType triggerType = TriggerType.valueOf(part);
-            types.add(triggerType);
-        }
-        return types;
     }
 }

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
  * Parses a string to a boolean.
  */
-public class BooleanParser implements Argument<Boolean> {
+public class BooleanParser implements SimpleArgumentParser<Boolean> {
 
     /**
      * The string representation of a boolean true.

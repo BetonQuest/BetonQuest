@@ -37,7 +37,7 @@ public class AdvancementConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String advancementString = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String advancementString = instruction.string().get().getValue(null);
         final String[] split = advancementString.split(":");
         if (split.length != ADVANCEMENT_LENGTH) {
             throw new QuestException("The advancement '" + advancementString + "' is missing a namespace!");

@@ -3,16 +3,16 @@ package org.betonquest.betonquest.compatibility.magic;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -44,11 +44,11 @@ public class WandConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<CheckType> type = instruction.get(instruction.getParsers().forEnum(CheckType.class));
+        final Variable<CheckType> type = instruction.enumeration(CheckType.class).get();
         final Variable<List<Map.Entry<String, Integer>>> spells =
-                instruction.getValueList("spells", SpellParser.SPELL, VariableList.notDuplicateKeyChecker());
-        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string());
-        final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());
+                instruction.parse(SpellParser.SPELL).getList("spells", Collections.emptyList());
+        final Variable<String> name = instruction.string().get("name").orElse(null);
+        final Variable<Number> amount = instruction.number().get("amount").orElse(null);
 
         final BetonQuestLogger log = loggerFactory.create(WandCondition.class);
         return new OnlineConditionAdapter(new WandCondition(api, type, name, spells, amount), log, instruction.getPackage());
@@ -57,7 +57,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
     /**
      * Parses a string to a Spell with level.
      */
-    private static final class SpellParser implements Argument<Map.Entry<String, Integer>> {
+    private static final class SpellParser implements SimpleArgumentParser<Map.Entry<String, Integer>> {
 
         /**
          * The default instance of {@link SpellParser}.

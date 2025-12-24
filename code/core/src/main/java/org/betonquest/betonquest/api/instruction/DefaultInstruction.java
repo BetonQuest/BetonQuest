@@ -6,9 +6,9 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.identifier.NoID;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
@@ -25,7 +25,6 @@ import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriev
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -70,7 +69,7 @@ public class DefaultInstruction implements Instruction {
     private final InstructionParts instructionParts;
 
     /**
-     * The default {@link Argument} parsers.
+     * The default {@link SimpleArgumentParser} parsers.
      */
     private final ArgumentParsers argumentParsers;
 
@@ -199,6 +198,14 @@ public class DefaultInstruction implements Instruction {
         return instructionParts.getParts();
     }
 
+    @Nullable
+    private String getValue(final String prefix) {
+        return instructionParts.getParts().stream()
+                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":"))
+                .findFirst()
+                .map(part -> part.substring(prefix.length() + 1)).orElse(null);
+    }
+
     @Override
     public DefaultInstruction copy() {
         return copy(identifier);
@@ -210,39 +217,13 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
-    @Contract("_, !null -> !null")
-    @Nullable
-    public String getValue(final String prefix, @Nullable final String defaultValue) {
-        return getParts().stream()
-                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":"))
-                .findFirst()
-                .map(part -> part.substring(prefix.length() + 1)).orElse(defaultValue);
-    }
-
-    @Override
     public boolean hasArgument(final String argument) {
-        return getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
+        return instructionParts.getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
     }
 
     @Override
-    @Contract("!null, _, _ -> !null; _, _, !null -> !null")
-    @Nullable
-    public <T> Variable<T> get(@Nullable final String string, final InstructionArgumentParser<T> argument, @Nullable final T defaultValue) throws QuestException {
-        if (string == null) {
-            if (defaultValue != null) {
-                return new DefaultVariable<>(defaultValue);
-            }
-            return null;
-        }
-        return new DefaultVariable<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value));
-    }
-
-    @Override
-    public <T> Variable<List<T>> getList(@Nullable final String string, final InstructionArgumentParser<T> argument, final ValueChecker<List<T>> valueChecker) throws QuestException {
-        if (string == null) {
-            return new VariableList<>();
-        }
-        return new VariableList<>(variables, pack, string, value -> argument.apply(variables, packManager, pack, value), valueChecker);
+    public <T> Variable<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
+        return new DefaultVariable<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
     }
 
     @Override

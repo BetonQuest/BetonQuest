@@ -39,7 +39,7 @@ public class PaymentObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
         final BetonQuestLogger log = loggerFactory.create(PaymentObjective.class);
         final IngameNotificationSender paymentSender = new IngameNotificationSender(log,
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(),

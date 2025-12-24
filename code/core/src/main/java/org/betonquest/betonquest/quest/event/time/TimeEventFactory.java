@@ -20,6 +20,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Factory to create time events from {@link Instruction}s.
  */
@@ -53,7 +55,7 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        if (instruction.copy().getValue("world") == null) {
+        if (instruction.copy().string().get("world").isEmpty()) {
             return new DoNothingPlayerlessEvent();
         } else {
             return new PrimaryServerThreadPlayerlessEvent(createTimeEvent(instruction), data);
@@ -61,8 +63,9 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     }
 
     private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
-        final Variable<TimeChange> timeVariable = instruction.get(TimeParser.TIME);
-        final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
+        final Variable<TimeChange> timeVariable = instruction.parse(TimeParser.TIME).get();
+        final Optional<Variable<String>> worldVar = instruction.string().get("world");
+        final Selector<World> worldSelector = parseWorld(worldVar.isEmpty() ? null : worldVar.get().getValue(null));
         final boolean hourFormat = !instruction.hasArgument("ticks");
         return new NullableEventAdapter(new TimeEvent(timeVariable, worldSelector, hourFormat));
     }

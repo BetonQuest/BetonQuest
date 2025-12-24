@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -14,7 +14,7 @@ import static org.betonquest.betonquest.api.instruction.argument.parser.VectorPa
 /**
  * Parses a string to a location.
  */
-public class LocationParser implements Argument<Location> {
+public class LocationParser implements SimpleArgumentParser<Location> {
 
     /**
      * This regex matches the format of a location.

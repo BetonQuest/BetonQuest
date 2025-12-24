@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.mythicmobs;
 import io.lumine.mythic.api.mobs.MobManager;
 import io.lumine.mythic.api.mobs.MythicMob;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 
 import java.util.Map;
@@ -15,7 +15,8 @@ import java.util.Optional;
  *
  * @param mobManager the Mob Manager to get the mob from
  */
-public record MythicMobDoubleParser(MobManager mobManager) implements Argument<Map.Entry<MythicMob, Double>> {
+public record MythicMobDoubleParser(
+        MobManager mobManager) implements SimpleArgumentParser<Map.Entry<MythicMob, Double>> {
 
     /**
      * Expected format: {@code identifier:amount}.

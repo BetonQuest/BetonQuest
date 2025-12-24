@@ -19,8 +19,8 @@ public class MythicLibStatConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> statName = instruction.get(instruction.getParsers().string());
-        final Variable<Number> targetLevel = instruction.get(instruction.getParsers().number());
+        final Variable<String> statName = instruction.string().get();
+        final Variable<Number> targetLevel = instruction.number().get();
         final boolean equal = instruction.hasArgument("equal");
         return new MythicLibStatCondition(statName, targetLevel, equal);
     }

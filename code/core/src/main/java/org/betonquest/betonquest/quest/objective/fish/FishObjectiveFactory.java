@@ -22,13 +22,9 @@ public class FishObjectiveFactory implements ObjectiveFactory {
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
         final Variable<QuestItemWrapper> item = instruction.item().get();
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
-
-        final String loc = instruction.getValue("hookLocation");
-        final String range = instruction.getValue("range");
-        final boolean hookIsNotNull = loc != null && range != null;
-        final Variable<Location> hookTargetLocation = hookIsNotNull ? instruction.get(loc, instruction.getParsers().location()) : null;
-        final Variable<Number> rangeVar = hookIsNotNull ? instruction.get(range, instruction.getParsers().number()) : null;
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Variable<Location> hookTargetLocation = instruction.location().get("hookLocation").orElse(null);
+        final Variable<Number> rangeVar = instruction.number().get("range").orElse(null);
         return new FishObjective(instruction, targetAmount, item, hookTargetLocation, rangeVar);
     }
 }

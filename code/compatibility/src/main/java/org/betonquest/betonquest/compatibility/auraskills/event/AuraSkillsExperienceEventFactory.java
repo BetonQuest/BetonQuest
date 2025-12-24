@@ -37,8 +37,8 @@ public class AuraSkillsExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> nameVar = instruction.get(instruction.getParsers().string());
-        final Variable<Number> amountVar = instruction.get(instruction.getParsers().number());
+        final Variable<String> nameVar = instruction.string().get();
+        final Variable<Number> amountVar = instruction.number().get();
         final boolean isLevel = instruction.hasArgument("level");
 
         final PlayerEvent experience = new AuraSkillsExperienceEvent(auraSkillsApi, amountVar, nameVar, isLevel);

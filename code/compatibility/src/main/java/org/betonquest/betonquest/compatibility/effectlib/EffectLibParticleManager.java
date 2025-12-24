@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.DefaultIdentifier;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.instruction.variable.VariableList;
@@ -131,7 +131,7 @@ public class EffectLibParticleManager extends SectionProcessor<EffectLibParticle
     }
 
     private <T> Variable<List<T>> load(final QuestPackage pack, final ConfigurationSection settings,
-                                       final String entryName, final Argument<T> argument) throws QuestException {
+                                       final String entryName, final SimpleArgumentParser<T> argument) throws QuestException {
         return new VariableList<>(variables, pack, settings.getString(entryName, ""), argument);
     }
 

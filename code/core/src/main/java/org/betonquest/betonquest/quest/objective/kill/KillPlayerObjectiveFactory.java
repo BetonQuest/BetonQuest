@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,9 +23,10 @@ public class KillPlayerObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Number> targetAmount = instruction.get(instruction.getParsers().number().atLeast(1));
-        final Variable<String> name = instruction.getValue("name", instruction.getParsers().string());
-        final Variable<List<ConditionID>> required = instruction.getValueList("required", ConditionID::new);
+        final Variable<Number> targetAmount = instruction.number().atLeast(1).get();
+        final Variable<String> name = instruction.string().get("name").orElse(null);
+        final Variable<List<ConditionID>> required = instruction.parse(ConditionID::new)
+                .getList("required", Collections.emptyList());
         return new KillPlayerObjective(instruction, targetAmount, name, required);
     }
 }

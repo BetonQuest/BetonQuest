@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.bukkit.Server;
 import org.bukkit.World;
 
 /**
  * Parses a string to a world.
  */
-public class WorldParser implements Argument<World> {
+public class WorldParser implements SimpleArgumentParser<World> {
 
     /**
      * The server to use.

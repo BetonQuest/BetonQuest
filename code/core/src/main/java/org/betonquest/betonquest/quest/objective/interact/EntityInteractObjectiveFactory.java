@@ -11,6 +11,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * Factory for creating {@link EntityInteractObjective} instances from {@link Instruction}s.
  */
@@ -44,16 +46,10 @@ public class EntityInteractObjectiveFactory implements ObjectiveFactory {
 
     @Nullable
     private EquipmentSlot getEquipmentSlot(final Instruction instruction) throws QuestException {
-        final String handString = instruction.getValue("hand");
-        if (handString == null || handString.equalsIgnoreCase(EquipmentSlot.HAND.toString())) {
-            return EquipmentSlot.HAND;
-        }
-        if (handString.equalsIgnoreCase(EquipmentSlot.OFF_HAND.toString())) {
-            return EquipmentSlot.OFF_HAND;
-        }
-        if (ANY.equalsIgnoreCase(handString)) {
-            return null;
-        }
-        throw new QuestException("Invalid hand value: " + handString);
+        final Variable<Optional<EquipmentSlot>> hand = instruction.enumeration(EquipmentSlot.class)
+                .validate(slot -> slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND, "Invalid hand value: '%s'")
+                .prefilterOptional(ANY, null)
+                .get("hand").orElse(null);
+        return hand == null ? null : hand.getValue(null).orElse(null);
     }
 }

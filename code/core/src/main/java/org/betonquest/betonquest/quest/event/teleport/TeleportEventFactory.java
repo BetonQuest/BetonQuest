@@ -47,7 +47,7 @@ public class TeleportEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Location> location = instruction.get(instruction.getParsers().location());
+        final Variable<Location> location = instruction.location().get();
         return new PrimaryServerThreadEvent(new OnlineEventAdapter(
                 new TeleportEvent(conversationApi, location),
                 loggerFactory.create(TeleportEvent.class),

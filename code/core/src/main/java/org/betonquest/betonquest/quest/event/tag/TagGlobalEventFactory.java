@@ -33,7 +33,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String action = instruction.string().get().getValue(null);
         final Variable<List<String>> tags = instruction.packageIdentifier().getList();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
@@ -44,7 +44,7 @@ public class TagGlobalEventFactory implements PlayerEventFactory, PlayerlessEven
 
     @Override
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String action = instruction.string().get().getValue(null);
         final Variable<List<String>> tags = instruction.packageIdentifier().getList();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createStaticAddTagEvent(tags);

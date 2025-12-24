@@ -72,14 +72,15 @@ public class WeatherEventFactory implements PlayerEventFactory, PlayerlessEventF
         }
     }
 
-    private boolean requiresPlayer(final Instruction instruction) {
-        return instruction.copy().getValue("world") == null;
+    private boolean requiresPlayer(final Instruction instruction) throws QuestException {
+        return instruction.copy().string().get("world").isEmpty();
     }
 
     private NullableEventAdapter parseWeatherEvent(final Instruction instruction) throws QuestException {
-        final Variable<Weather> weather = instruction.get(Weather::parseWeather);
-        final Selector<World> worldSelector = parseWorld(instruction.getValue("world"));
-        final Variable<Number> duration = instruction.getValue("duration", instruction.getParsers().number(), 0);
+        final Variable<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Variable<String> worldVar = instruction.string().get("world").orElse(null);
+        final Selector<World> worldSelector = parseWorld(worldVar == null ? null : worldVar.getValue(null));
+        final Variable<Number> duration = instruction.number().get("duration", 0);
         return new NullableEventAdapter(new WeatherEvent(weather, worldSelector, duration));
     }
 

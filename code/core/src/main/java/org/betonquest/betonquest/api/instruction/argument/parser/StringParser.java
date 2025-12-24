@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
  * Parses a string to a string.
  */
-public class StringParser implements Argument<String> {
+public class StringParser implements SimpleArgumentParser<String> {
 
     /**
      * Creates a new parser for strings.

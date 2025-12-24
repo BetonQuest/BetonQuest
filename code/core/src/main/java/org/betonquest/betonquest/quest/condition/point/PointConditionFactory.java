@@ -29,7 +29,7 @@ public class PointConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<String> category = instruction.packageIdentifier().get();
-        final Variable<Number> count = instruction.get(instruction.getParsers().number());
+        final Variable<Number> count = instruction.number().get();
         final boolean equal = instruction.hasArgument("equal");
         return new PointCondition(dataStorage, category, count, equal);
     }

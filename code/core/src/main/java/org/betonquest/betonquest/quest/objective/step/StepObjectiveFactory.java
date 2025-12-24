@@ -21,7 +21,7 @@ public class StepObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<Location> loc = instruction.get(instruction.getParsers().location());
+        final Variable<Location> loc = instruction.location().get();
         final BlockSelector selector = new BlockSelector(".*_PRESSURE_PLATE");
         return new StepObjective(instruction, loc, selector);
     }

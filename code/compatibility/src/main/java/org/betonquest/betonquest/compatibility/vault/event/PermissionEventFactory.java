@@ -37,9 +37,9 @@ public class PermissionEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Boolean> add = instruction.get("add"::equalsIgnoreCase);
-        final Variable<Boolean> perm = instruction.get("perm"::equalsIgnoreCase);
-        final Variable<String> permission = instruction.get(instruction.getParsers().string());
+        final Variable<Boolean> add = instruction.parse("add"::equalsIgnoreCase).get();
+        final Variable<Boolean> perm = instruction.parse("perm"::equalsIgnoreCase).get();
+        final Variable<String> permission = instruction.string().get();
         final Variable<String> world;
         if (instruction.size() >= 5 && !instruction.nextElement().startsWith("conditions:")) {
             world = instruction.get(instruction.current(), instruction.getParsers().string());

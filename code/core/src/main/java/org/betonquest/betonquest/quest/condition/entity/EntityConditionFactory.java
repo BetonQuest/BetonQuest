@@ -3,11 +3,10 @@ package org.betonquest.betonquest.quest.condition.entity;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.EnumParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
@@ -41,7 +40,8 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private EntityCondition parseEntityCondition(final Instruction instruction) throws QuestException {
-        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts = instruction.getList(EntityAmount.ENTITY_AMOUNT, VariableList.notDuplicateKeyChecker());
+        final Variable<List<Map.Entry<EntityType, Integer>>> entityAmounts =
+                instruction.parse(EntityAmount.ENTITY_AMOUNT).getList();
         final Variable<Location> location = instruction.location().get();
         final Variable<Number> range = instruction.number().get();
         final Variable<Component> name = instruction.component().get("name").orElse(null);
@@ -52,7 +52,7 @@ public class EntityConditionFactory implements PlayerConditionFactory, Playerles
     /**
      * Parses a string to a Spell with level.
      */
-    private static final class EntityAmount implements Argument<Map.Entry<EntityType, Integer>> {
+    private static final class EntityAmount implements SimpleArgumentParser<Map.Entry<EntityType, Integer>> {
 
         /**
          * The default instance of {@link EntityAmount}.

@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.api.quest.objective.ObjectiveFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -23,12 +24,13 @@ public class PasswordObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final String pattern = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String pattern = instruction.string().get().getValue(null);
         final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
         final Pattern regex = Pattern.compile(pattern, regexFlags);
-        final String prefix = instruction.getValue("prefix");
+        final Variable<String> prefixVar = instruction.string().get("prefix").orElse(null);
+        final String prefix = prefixVar != null ? prefixVar.getValue(null) : null;
         final String passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
-        final Variable<List<EventID>> failEvents = instruction.getValueList("fail", EventID::new);
+        final Variable<List<EventID>> failEvents = instruction.parse(EventID::new).getList("fail", Collections.emptyList());
         return new PasswordObjective(instruction, regex, passwordPrefix, failEvents);
     }
 }

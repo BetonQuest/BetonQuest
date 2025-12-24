@@ -4,7 +4,7 @@ import com.briarcraft.fakeblock.api.service.GroupService;
 import com.briarcraft.fakeblock.api.service.PlayerGroupService;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.thread.PrimaryServerThreadEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,8 +56,10 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
     }
 
     private PlayerEvent getFakeBlockEvent(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
-        final Variable<List<String>> groupNames = instruction.getList(instruction.getParsers().string(), checkForNotExistingGroups());
+        final String action = instruction.string().get().getValue(null);
+        final Variable<List<String>> groupNames = instruction.string()
+                .validate(checkForNotExistingGroups())
+                .getList();
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupEvent(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupEvent(groupNames, playerGroupService);
@@ -66,18 +67,12 @@ public class FakeBlockEventFactory implements PlayerEventFactory {
         };
     }
 
-    private ValueChecker<List<String>> checkForNotExistingGroups() {
+    private ValueValidator<String> checkForNotExistingGroups() {
         return value -> {
-            final List<String> notExistingGroups = new ArrayList<>();
-            for (final String groupName : value) {
-                if (!groupService.getProvider().hasGroup(groupName)) {
-                    notExistingGroups.add(groupName);
-                }
+            if (!groupService.getProvider().hasGroup(value)) {
+                throw new QuestException("This group do not exist: " + value);
             }
-            if (notExistingGroups.isEmpty()) {
-                return;
-            }
-            throw new QuestException("The following groups do not exist: " + notExistingGroups);
+            return true;
         };
     }
 }

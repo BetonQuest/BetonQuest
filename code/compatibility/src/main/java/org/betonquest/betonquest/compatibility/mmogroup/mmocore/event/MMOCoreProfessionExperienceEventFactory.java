@@ -31,8 +31,8 @@ public class MMOCoreProfessionExperienceEventFactory implements PlayerEventFacto
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
+        final Variable<Number> amount = instruction.number().get();
         final boolean isLevel = instruction.hasArgument("level");
         return new PrimaryServerThreadEvent(new MMOCoreProfessionExperienceEvent(profession, amount, isLevel), data);
     }

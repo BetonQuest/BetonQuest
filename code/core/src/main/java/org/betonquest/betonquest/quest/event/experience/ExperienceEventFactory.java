@@ -41,9 +41,10 @@ public class ExperienceEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
-        String action = instruction.getValue("action");
+        final Optional<Variable<String>> actionVariable = instruction.string().get("action");
+        String action = actionVariable.isPresent() ? actionVariable.get().getValue(null) : null;
         if (instruction.hasArgument("level")) {
             experienceType = ExperienceModification.ADD_LEVEL;
         } else if (action != null) {

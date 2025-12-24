@@ -21,8 +21,8 @@ public class MMOCoreProfessionLevelConditionFactory implements PlayerConditionFa
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Profession> profession = instruction.get(MMOProfessionParser.PROFESSION);
-        final Variable<Number> targetLevelVar = instruction.get(instruction.getParsers().number());
+        final Variable<Profession> profession = instruction.parse(MMOProfessionParser.PROFESSION).get();
+        final Variable<Number> targetLevelVar = instruction.number().get();
         final boolean mustBeEqual = instruction.hasArgument("equal");
         return new MMOCoreProfessionLevelCondition(profession, targetLevelVar, mustBeEqual);
     }

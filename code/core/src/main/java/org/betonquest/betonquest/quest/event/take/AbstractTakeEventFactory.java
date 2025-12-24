@@ -11,10 +11,7 @@ import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationLevel;
 import org.betonquest.betonquest.quest.event.NotificationSender;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Abstract factory for take events, to take items from the players inventory or backpack.
@@ -50,22 +47,8 @@ public abstract class AbstractTakeEventFactory implements PlayerEventFactory {
      * @throws QuestException if the check order is invalid
      */
     protected List<CheckType> getCheckOrder(final Instruction instruction) throws QuestException {
-        final String order = instruction.getValue("invOrder");
-        if (order == null) {
-            return Arrays.asList(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK);
-        } else {
-            final String[] enumNames = order.split(",");
-            final List<CheckType> checkOrder = new ArrayList<>();
-            for (final String s : enumNames) {
-                try {
-                    final CheckType checkType = CheckType.valueOf(s.toUpperCase(Locale.ROOT));
-                    checkOrder.add(checkType);
-                } catch (final IllegalArgumentException e) {
-                    throw new QuestException("There is no such check type: " + s, e);
-                }
-            }
-            return checkOrder;
-        }
+        return instruction.enumeration(CheckType.class).getList("invOrder",
+                List.of(CheckType.INVENTORY, CheckType.OFFHAND, CheckType.ARMOR, CheckType.BACKPACK)).getValue(null);
     }
 
     /**

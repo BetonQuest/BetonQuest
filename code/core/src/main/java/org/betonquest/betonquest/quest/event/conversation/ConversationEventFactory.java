@@ -74,7 +74,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
      */
     private Variable<Pair<ConversationID, String>> getConversation(final Instruction instruction) throws QuestException {
         final String conversation = instruction.nextElement();
-        final String option = instruction.getValue("option", "");
+        final String option = instruction.string().get("option", "").getValue(null);
         return instruction.get(conversation + " " + option, combined -> {
             final String[] split = combined.split(" ");
             final ConversationID conversationID = new ConversationID(packManager, instruction.getPackage(), split[0]);

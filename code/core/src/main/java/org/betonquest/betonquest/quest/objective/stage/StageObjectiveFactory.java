@@ -21,7 +21,7 @@ public class StageObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final List<String> stages = instruction.getList(entry -> entry).getValue(null);
+        final List<String> stages = instruction.string().getList().getValue(null);
         final StageObjective.StageMap stageMap = new StageObjective.StageMap(stages, (ObjectiveID) instruction.getID());
         final boolean preventCompletion = instruction.hasArgument("preventCompletion");
         return new StageObjective(instruction, stageMap, preventCompletion);

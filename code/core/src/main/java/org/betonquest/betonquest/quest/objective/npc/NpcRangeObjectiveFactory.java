@@ -22,9 +22,9 @@ public class NpcRangeObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction) throws QuestException {
-        final Variable<List<NpcID>> npcIds = instruction.getList(NpcID::new);
-        final Variable<Trigger> trigger = instruction.get(instruction.getParsers().forEnum(Trigger.class));
-        final Variable<Number> radius = instruction.get(instruction.getParsers().number());
+        final Variable<List<NpcID>> npcIds = instruction.parse(NpcID::new).getList();
+        final Variable<Trigger> trigger = instruction.enumeration(Trigger.class).get();
+        final Variable<Number> radius = instruction.number().get();
         return new NpcRangeObjective(instruction, npcIds, radius, trigger);
     }
 }

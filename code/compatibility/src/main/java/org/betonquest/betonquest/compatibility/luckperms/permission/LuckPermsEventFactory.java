@@ -5,10 +5,10 @@ import net.luckperms.api.model.data.NodeMap;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +34,7 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String action = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String action = instruction.string().get().getValue(null);
 
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "addpermission" ->
@@ -47,11 +47,11 @@ public class LuckPermsEventFactory implements PlayerEventFactory {
     }
 
     private LuckPermsNodeBuilder getNodeBuilder(final Instruction instruction) throws QuestException {
-        final Variable<List<String>> permissions = instruction.getValueList("permission", instruction.getParsers().string(), VariableList.notEmptyChecker());
-        final Variable<List<String>> contexts = instruction.getValueList("context", instruction.getParsers().string());
-        final Variable<String> value = instruction.getValue("value", instruction.getParsers().string(), "");
-        final Variable<Number> expiry = instruction.getValue("expiry", instruction.getParsers().number().atLeast(0), 0);
-        final Variable<TimeUnit> timeUnit = instruction.getValue("unit", instruction.getParsers().forEnum(TimeUnit.class), TimeUnit.DAYS);
+        final Variable<List<String>> permissions = instruction.string().getList("permission", Collections.emptyList());
+        final Variable<List<String>> contexts = instruction.string().getList("context", Collections.emptyList());
+        final Variable<String> value = instruction.string().get("value", "");
+        final Variable<Number> expiry = instruction.number().atLeast(0).get("expiry", 0);
+        final Variable<TimeUnit> timeUnit = instruction.enumeration(TimeUnit.class).get("unit", TimeUnit.DAYS);
         return new LuckPermsNodeBuilder(permissions, value, contexts, expiry, timeUnit);
     }
 }

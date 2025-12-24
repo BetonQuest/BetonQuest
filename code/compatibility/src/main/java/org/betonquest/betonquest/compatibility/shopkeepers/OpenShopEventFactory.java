@@ -42,7 +42,7 @@ public class OpenShopEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final String string = instruction.get(instruction.getParsers().string()).getValue(null);
+        final String string = instruction.string().get().getValue(null);
         final Shopkeeper shopkeeper;
         try {
             shopkeeper = Utils.getNN(ShopkeepersAPI.getShopkeeperRegistry().getShopkeeperByUniqueId(UUID.fromString(string)),

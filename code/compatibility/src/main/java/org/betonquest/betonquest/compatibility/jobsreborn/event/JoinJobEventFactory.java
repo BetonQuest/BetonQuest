@@ -31,7 +31,7 @@ public class JoinJobEventFactory implements PlayerEventFactory {
 
     @Override
     public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Job> job = instruction.get(JobParser.JOB);
+        final Variable<Job> job = instruction.parse(JobParser.JOB).get();
         return new PrimaryServerThreadEvent(new JoinJobEvent(job), data);
     }
 }

@@ -45,8 +45,8 @@ public class SetBlockEventFactory implements PlayerEventFactory, PlayerlessEvent
     }
 
     private NullableEventAdapter createSetBlockEvent(final Instruction instruction) throws QuestException {
-        final Variable<BlockSelector> blockSelector = instruction.get(DefaultArgumentParsers.BLOCK_SELECTOR);
-        final Variable<Location> variableLocation = instruction.get(instruction.getParsers().location());
+        final Variable<BlockSelector> blockSelector = instruction.parse(DefaultArgumentParsers.BLOCK_SELECTOR).get();
+        final Variable<Location> variableLocation = instruction.location().get();
         final boolean applyPhysics = !instruction.hasArgument("ignorePhysics");
         return new NullableEventAdapter(new SetBlockEvent(blockSelector, variableLocation, applyPhysics));
     }

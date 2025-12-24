@@ -38,8 +38,8 @@ public class NpcDistanceConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<NpcID> npcId = instruction.get(NpcID::new);
-        final Variable<Number> distance = instruction.get(instruction.getParsers().number());
+        final Variable<NpcID> npcId = instruction.parse(NpcID::new).get();
+        final Variable<Number> distance = instruction.number().get();
         return new OnlineConditionAdapter(new NpcDistanceCondition(featureApi, npcId, distance),
                 loggerFactory.create(NpcDistanceCondition.class), instruction.getPackage());
     }

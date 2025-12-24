@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.argument.Argument;
+import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.util.BlockSelector;
 
 /**
  * Parses a string to a block selector.
  */
-public class BlockSelectorParser implements Argument<BlockSelector> {
+public class BlockSelectorParser implements SimpleArgumentParser<BlockSelector> {
 
     /**
      * Creates a new parser for block selectors.

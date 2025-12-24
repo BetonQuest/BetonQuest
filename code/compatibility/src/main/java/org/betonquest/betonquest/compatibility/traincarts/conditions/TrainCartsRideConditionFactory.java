@@ -30,7 +30,7 @@ public class TrainCartsRideConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<String> trainName = instruction.get(instruction.getParsers().string());
+        final Variable<String> trainName = instruction.string().get();
         final BetonQuestLogger logger = loggerFactory.create(TrainCartsRideCondition.class);
         return new OnlineConditionAdapter(new TrainCartsRideCondition(trainName), logger, instruction.getPackage());
     }

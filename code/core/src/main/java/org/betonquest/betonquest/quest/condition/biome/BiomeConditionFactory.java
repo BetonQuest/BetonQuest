@@ -31,7 +31,7 @@ public class BiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Biome> biomeVariable = instruction.get(instruction.getParsers().forEnum(Biome.class));
+        final Variable<Biome> biomeVariable = instruction.enumeration(Biome.class).get();
         final BetonQuestLogger log = loggerFactory.create(BiomeCondition.class);
         return new OnlineConditionAdapter(new BiomeCondition(biomeVariable), log, instruction.getPackage());
     }

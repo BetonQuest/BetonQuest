@@ -51,7 +51,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
     }
 
     private NullableEventAdapter createPickRandomEvent(final Instruction instruction) throws QuestException {
-        final Variable<List<RandomEvent>> events = instruction.getList(string -> {
+        final Variable<List<RandomEvent>> events = instruction.parse(string -> {
             final Matcher matcher = EVENT_WEIGHT.matcher(string);
             if (!matcher.matches()) {
                 throw new QuestException("Weight must be specified correctly: " + string);
@@ -62,8 +62,8 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
             final EventID eventID = instruction.get(eventString, EventID::new).getValue(null);
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
-        });
-        final Variable<Number> amount = instruction.getValue("amount", instruction.getParsers().number());
+        }).getList();
+        final Variable<Number> amount = instruction.number().get("amount").orElse(null);
         return new NullableEventAdapter(new PickRandomEvent(events, amount, questTypeApi));
     }
 }

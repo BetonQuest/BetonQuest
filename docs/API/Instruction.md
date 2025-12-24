@@ -50,7 +50,7 @@ To offer a better overview, the following examples show excerpts from factories 
 Compare [experience](../Documentation/Scripting/Building-Blocks/Conditions-List.md#experience-experience) condition.
 ```JAVA title="ExperienceConditionFactory.java"
 public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+        final Variable<Number> amount = instruction.number().get();
         
         //creating the condition object and returning it...
 }
@@ -61,7 +61,7 @@ Compare [itemdurability](../Documentation/Scripting/Building-Blocks/Events-List.
 public PlayerEvent parsePlayer(final Instruction instruction) throws QuestException {
     final Variable<EquipmentSlot> slot = instruction.get(instruction.getParsers().forEnum(EquipmentSlot.class));
     final Variable<PointType> operation = instruction.get(instruction.getParsers().forEnum(PointType.class));
-    final Variable<Number> amount = instruction.get(instruction.getParsers().number());
+    final Variable<Number> amount = instruction.number().get();
     final boolean ignoreUnbreakable = instruction.hasArgument("ignoreUnbreakable");
     final boolean ignoreEvents = instruction.hasArgument("ignoreEvents");
     
