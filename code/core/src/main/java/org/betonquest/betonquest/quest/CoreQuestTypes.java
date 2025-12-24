@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.kernel.FeatureTypeRegistry;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.config.PluginMessage;
@@ -215,11 +214,6 @@ public class CoreQuestTypes {
     private final BetonQuest betonQuest;
 
     /**
-     * Server, Scheduler and Plugin used for primary server thread access.
-     */
-    private final PrimaryServerThreadData data;
-
-    /**
      * Quest Type API.
      */
     private final QuestTypeApi questTypeApi;
@@ -300,7 +294,6 @@ public class CoreQuestTypes {
         this.profileProvider = profileProvider;
         this.languageProvider = languageProvider;
         this.playerDataFactory = playerDataFactory;
-        this.data = new PrimaryServerThreadData(server, scheduler, betonQuest);
     }
 
     /**
@@ -495,7 +488,7 @@ public class CoreQuestTypes {
         variables.register("player", new PlayerNameVariableFactory());
         variables.register("quester", new QuesterVariableFactory(featureApi.conversationApi()));
         variables.registerCombined("randomnumber", new RandomNumberVariableFactory());
-        variables.registerCombined("sync", new SyncVariableFactory(data));
+        variables.registerCombined("sync", new SyncVariableFactory());
         variables.register("tag", new TagVariableFactory(dataStorage, pluginMessage));
         variables.register("version", new VersionVariableFactory(betonQuest));
     }

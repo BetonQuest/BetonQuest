@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
  * with one common implementation of the {@link NullableVariable}.
  */
 public final class NullableVariableAdapter implements PlayerVariable, PlayerlessVariable {
+
     /**
      * Common null-safe variable implementation.
      */
@@ -32,5 +33,10 @@ public final class NullableVariableAdapter implements PlayerVariable, Playerless
     @Override
     public String getValue() throws QuestException {
         return variable.getValue(null);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return variable.isPrimaryThreadEnforced();
     }
 }

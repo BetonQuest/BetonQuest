@@ -2,13 +2,15 @@ package org.betonquest.betonquest.api.quest.variable.nullable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Quest variable that can work both with and without a profile.
  */
 @FunctionalInterface
-public interface NullableVariable {
+public interface NullableVariable extends PrimaryThreadEnforceable {
+
     /**
      * Resolve the variable with a nullable profile.
      *

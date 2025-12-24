@@ -21,7 +21,6 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
-import org.betonquest.betonquest.api.quest.PrimaryServerThreadData;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.api.quest.QuestTypeRegistries;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -798,11 +797,6 @@ public class BetonQuest extends JavaPlugin implements BetonQuestApi, LanguagePro
     @Override
     public FeatureRegistries getFeatureRegistries() {
         return featureRegistries;
-    }
-
-    @Override
-    public PrimaryServerThreadData getPrimaryServerThreadData() {
-        return new PrimaryServerThreadData(getServer(), getServer().getScheduler(), this);
     }
 
     private boolean isPaper() {

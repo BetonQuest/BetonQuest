@@ -2,12 +2,14 @@ package org.betonquest.betonquest.api.quest.variable.online;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Player Variable that needs an online profile to function correctly.
  */
 @FunctionalInterface
-public interface OnlineVariable {
+public interface OnlineVariable extends PrimaryThreadEnforceable {
+
     /**
      * Gets the resolved value for given profile.
      *

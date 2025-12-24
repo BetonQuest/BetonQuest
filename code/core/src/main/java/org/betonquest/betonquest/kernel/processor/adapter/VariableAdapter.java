@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerlessVariable;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Wrapper for player and playerless variables.
  */
-public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVariable> implements Variable<String> {
+public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVariable> implements Variable<String>, PrimaryThreadEnforceable {
 
     /**
      * Instruction used to create the types.
@@ -67,5 +68,10 @@ public class VariableAdapter extends QuestAdapter<PlayerVariable, PlayerlessVari
     @Override
     public String toString() {
         return instruction.toString();
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return player != null && player.isPrimaryThreadEnforced() || playerless != null && playerless.isPrimaryThreadEnforced();
     }
 }

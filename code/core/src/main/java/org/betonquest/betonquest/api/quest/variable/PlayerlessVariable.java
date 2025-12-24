@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.quest.variable;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Interface for playerless quest-variables.
@@ -8,7 +9,8 @@ import org.betonquest.betonquest.api.QuestException;
  * For the normal variable variant see {@link PlayerVariable}.
  */
 @FunctionalInterface
-public interface PlayerlessVariable {
+public interface PlayerlessVariable extends PrimaryThreadEnforceable {
+
     /**
      * Gets the resolved value.
      *
