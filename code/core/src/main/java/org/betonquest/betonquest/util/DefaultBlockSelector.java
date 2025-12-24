@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.util;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -33,7 +34,7 @@ import java.util.regex.PatternSyntaxException;
  * brackets. Regex allowed
  */
 @SuppressWarnings("PMD.GodClass")
-public class BlockSelector {
+public class DefaultBlockSelector implements BlockSelector {
 
     /**
      * List of {@link Material}s that are used to match the {@link BlockData} of a {@link Block}.
@@ -46,17 +47,17 @@ public class BlockSelector {
     private final Map<String, String> states;
 
     /**
-     * Random instance used to select a random {@link Material} from the {@link BlockSelector}.
+     * Random instance used to select a random {@link Material} from the {@link DefaultBlockSelector}.
      */
     private final Random random = new Random();
 
     /**
-     * Create a {@link BlockSelector} from a {@link String}.
+     * Create a {@link DefaultBlockSelector} from a {@link String}.
      *
-     * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#getAsString()}
+     * @param block The {@link String} of the {@link DefaultBlockSelector} in the format of {@link BlockData#getAsString()}
      * @throws QuestException Is thrown, if no material match that selector string
      */
-    public BlockSelector(final String block) throws QuestException {
+    public DefaultBlockSelector(final String block) throws QuestException {
         final String[] selectorParts = getSelectorParts(block);
         materials = getMaterials(selectorParts[0], selectorParts[1]);
         states = getStates(selectorParts[2]);
@@ -67,39 +68,31 @@ public class BlockSelector {
     }
 
     /**
-     * Create a {@link BlockSelector} from a {@link Block}.
+     * Create a {@link DefaultBlockSelector} from a {@link Block}.
      *
-     * @param block The {@link Block} of the {@link BlockSelector}
+     * @param block The {@link Block} of the {@link DefaultBlockSelector}
      * @throws QuestException Is thrown, if no material match that selector string
      */
-    public BlockSelector(final Block block) throws QuestException {
+    public DefaultBlockSelector(final Block block) throws QuestException {
         this(block.getBlockData().getAsString());
     }
 
     /**
-     * Return the {@link BlockSelector} as a string in a readable format. All matched blocks will be listed.
+     * Return the {@link DefaultBlockSelector} as a string in a readable format. All matched blocks will be listed.
      *
-     * @return The readable {@link BlockSelector}
+     * @return The readable {@link DefaultBlockSelector}
      */
     @Override
     public String toString() {
         return materials + (states.isEmpty() ? "" : "[" + states + "]");
     }
 
-    /**
-     * Get a random {@link Material}. If only one Material is represented by this {@link BlockSelector} this will be returned.
-     *
-     * @return A {@link Material}
-     */
+    @Override
     public Material getRandomMaterial() {
         return materials.get(random.nextInt(materials.size()));
     }
 
-    /**
-     * Get a list of all {@link Material}s that match this {@link BlockSelector}.
-     *
-     * @return A copy of the list of matching {@link Material}s
-     */
+    @Override
     public List<Material> getMaterials() {
         return new ArrayList<>(materials);
     }
@@ -118,14 +111,7 @@ public class BlockSelector {
         return builder.toString();
     }
 
-    /**
-     * Get a BlockData.
-     * The Material is randomly selected from {@link BlockSelector#getRandomMaterial()}.
-     * If the states contain regex {@link IllegalArgumentException} is thrown, if you apply this with
-     * {@link BlockState#setBlockData(BlockData)}.
-     *
-     * @return A {@link BlockData}
-     */
+    @Override
     public BlockData getBlockData() {
         if (states.isEmpty()) {
             return Bukkit.createBlockData(getRandomMaterial());
@@ -134,13 +120,7 @@ public class BlockSelector {
         }
     }
 
-    /**
-     * Set the {@link BlockData} returned from {@link BlockSelector#getBlockData()} to a block.
-     *
-     * @param block        The block that is changed by the {@link BlockData}
-     * @param applyPhysics If physics should be active for that block
-     * @throws QuestException when the block data could not be set
-     */
+    @Override
     public void setToBlock(final Block block, final boolean applyPhysics) throws QuestException {
         final BlockState state = block.getState();
 
@@ -153,25 +133,12 @@ public class BlockSelector {
         state.update(true, applyPhysics);
     }
 
-    /**
-     * Checks if a {@link Material} matched this {@link BlockSelector}. The {@link BlockState} is ignored.
-     *
-     * @param material The {@link Material} that should be compared
-     * @return True if the {@link Material} is represented by this {@link BlockSelector}
-     */
+    @Override
     public boolean match(final Material material) {
         return materials.contains(material);
     }
 
-    /**
-     * Checks if a {@link Block} matched this {@link BlockSelector}.
-     *
-     * @param block      The {@link Block} that should be compared
-     * @param exactMatch If false, the target block may have more {@link BlockState}s than this {@link BlockSelector}.
-     *                   If true, the target block is not allowed to have more {@link BlockState}s than this
-     *                   {@link BlockSelector}.
-     * @return True if the {@link Material} is represented by this {@link BlockSelector} and the {@link BlockState} matches.
-     */
+    @Override
     public boolean match(final Block block, final boolean exactMatch) {
         if (!match(block.getBlockData().getMaterial())) {
             return false;

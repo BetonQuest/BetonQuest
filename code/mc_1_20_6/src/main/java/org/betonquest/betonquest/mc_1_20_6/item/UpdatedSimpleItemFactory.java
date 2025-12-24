@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
@@ -23,7 +24,7 @@ import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
-import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.util.DefaultBlockSelector;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -49,7 +50,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
 
     @Override
     protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
-        final BlockSelector selector = new BlockSelector(material);
+        final BlockSelector selector = new DefaultBlockSelector(material);
 
         final NameHandler name = new UpdatedNameHandler(textParser);
         final LoreHandler lore = new LoreHandler(textParser);

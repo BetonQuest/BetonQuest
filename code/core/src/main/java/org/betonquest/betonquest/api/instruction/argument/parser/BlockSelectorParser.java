@@ -2,7 +2,8 @@ package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
-import org.betonquest.betonquest.util.BlockSelector;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
+import org.betonquest.betonquest.util.DefaultBlockSelector;
 
 /**
  * Parses a string to a block selector.
@@ -17,6 +18,6 @@ public class BlockSelectorParser implements SimpleArgumentParser<BlockSelector> 
 
     @Override
     public BlockSelector apply(final String string) throws QuestException {
-        return new BlockSelector(string);
+        return new DefaultBlockSelector(string);
     }
 }

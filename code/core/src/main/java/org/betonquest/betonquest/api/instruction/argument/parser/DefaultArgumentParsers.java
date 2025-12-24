@@ -5,10 +5,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
-import org.betonquest.betonquest.util.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,7 +30,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     /**
      * The default decoratable instance of {@link BlockSelectorParser}.
      */
-    public static final DecoratedArgumentParser<BlockSelector> BLOCK_SELECTOR = new DecoratableArgumentParser<>(new BlockSelectorParser());
+    private final DecoratedArgumentParser<BlockSelector> defaultBlockSelectorParser;
 
     /**
      * The default instance of {@link TextParserToComponentParser}.
@@ -87,6 +87,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
      * and all default instances of {@link DecoratedArgumentParser}s.
      */
     public DefaultArgumentParsers() {
+        defaultBlockSelectorParser = new DecoratableArgumentParser<>(new BlockSelectorParser());
         defaultComponentParser = new DecoratableArgumentParser<>(new TextParserToComponentParser(BetonQuest.getInstance().getTextParser()));
         defaultNumberParser = new DefaultNumberArgumentParser(new NumberParser());
         defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(Bukkit.getServer()));
@@ -132,6 +133,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     @Override
     public DecoratedArgumentParser<ItemWrapper> item() {
         return defaultItemParser;
+    }
+
+    @Override
+    public DecoratedArgumentParser<BlockSelector> blockSelector() {
+        return defaultBlockSelectorParser;
     }
 
     @Override

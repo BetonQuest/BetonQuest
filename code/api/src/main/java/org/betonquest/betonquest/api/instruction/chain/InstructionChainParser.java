@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
+import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -82,6 +83,13 @@ public interface InstructionChainParser {
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      */
     DecoratableChainRetriever<ItemWrapper> item();
+
+    /**
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#blockSelector()} as parser.
+     *
+     * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     */
+    DecoratableChainRetriever<BlockSelector> blockSelector();
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} ()} as parser.
