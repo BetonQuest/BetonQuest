@@ -106,9 +106,7 @@ public class TimerObjective extends CountingObjective implements Listener, Runna
         qeHandler.handle(() -> {
             if (event.getObjective().equals(this) && containsPlayer(event.getProfile())
                     && event.getPreviousState() == ObjectiveState.ACTIVE && event.getState() == ObjectiveState.COMPLETED) {
-                for (final EventID doneEvent : doneEvents.getValue(event.getProfile())) {
-                    questTypeApi.event(event.getProfile(), doneEvent);
-                }
+                questTypeApi.events(event.getProfile(), doneEvents.getValue(event.getProfile()));
             }
         });
     }

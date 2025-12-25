@@ -30,6 +30,7 @@ import java.util.function.Predicate;
  * Controls a Citizens-NPC movement.
  */
 public class CitizensMoveController implements Listener, Predicate<NPC> {
+
     /**
      * Citizens NPC ID and their active move instance.
      */
@@ -121,9 +122,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
         }
         final MoveInstance oldMoveInstance = movingNpcs.get(npc.getId());
         if (oldMoveInstance != null) {
-            for (final EventID event : oldMoveInstance.moveData.failEvents()) {
-                questTypeApi.event(profile, event);
-            }
+            questTypeApi.events(profile, oldMoveInstance.moveData.failEvents());
             return;
         }
         final MoveInstance moveInstance = new MoveInstance(plugin, moveData, profile, npc);
@@ -193,6 +192,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     public record MoveData(Variable<List<Location>> locations, Variable<Number> waitTicks,
                            Variable<List<EventID>> doneEvents, Variable<List<EventID>> failEvents,
                            boolean blockConversations) {
+
         /**
          * Creates a new MoveData instance.
          *
@@ -218,6 +218,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
     public record ResolvedMoveData(List<Location> locations, long waitTicks,
                                    List<EventID> doneEvents, List<EventID> failEvents,
                                    boolean blockConversations) {
+
     }
 
     /**
@@ -318,9 +319,7 @@ public class CitizensMoveController implements Listener, Predicate<NPC> {
                 public void run() {
                     npc.getNavigator().setPaused(false);
                     movingNpcs.remove(npcId);
-                    for (final EventID event : moveData.doneEvents()) {
-                        questTypeApi.event(profile, event);
-                    }
+                    questTypeApi.events(profile, moveData.doneEvents());
                 }
             }.runTaskLater(plugin, moveData.waitTicks());
         }

@@ -76,9 +76,7 @@ public class PartyEvent implements OnlineEvent {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         for (final OnlineProfile member : getMemberList(profile)) {
-            for (final EventID event : events.getValue(profile)) {
-                questTypeApi.event(member, event);
-            }
+            questTypeApi.events(member, events.getValue(profile));
         }
     }
 

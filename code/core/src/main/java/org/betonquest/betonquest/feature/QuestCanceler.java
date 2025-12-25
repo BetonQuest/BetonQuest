@@ -202,9 +202,7 @@ public class QuestCanceler {
 
     private void executeEvents(final OnlineProfile onlineProfile) {
         try {
-            for (final EventID event : data.events.getValue(onlineProfile)) {
-                questTypeApi.event(onlineProfile, event);
-            }
+            questTypeApi.events(onlineProfile, data.events.getValue(onlineProfile));
         } catch (final QuestException e) {
             log.warn(pack, "Cannot execute events in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
         }

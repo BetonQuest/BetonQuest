@@ -86,9 +86,7 @@ public class CommandObjective extends Objective implements Listener {
                     }
                     completeObjective(onlineProfile);
                 } else {
-                    for (final EventID failEvent : failEvents.getValue(onlineProfile)) {
-                        BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, failEvent);
-                    }
+                    BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
                 }
             });
         }

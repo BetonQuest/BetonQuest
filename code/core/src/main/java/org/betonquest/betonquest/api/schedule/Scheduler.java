@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.schedule;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
-import org.betonquest.betonquest.api.quest.event.EventID;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +26,7 @@ import java.util.Map;
  * @param <T> Type of time used by the scheduler
  */
 public abstract class Scheduler<S extends Schedule, T> {
+
     /**
      * Map containing all schedules that belong to this scheduler.
      */
@@ -126,9 +126,7 @@ public abstract class Scheduler<S extends Schedule, T> {
      */
     protected void executeEvents(final S schedule) {
         log.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
-        for (final EventID eventID : schedule.getEvents()) {
-            questTypeApi.event(null, eventID);
-        }
+        questTypeApi.events(null, schedule.getEvents());
     }
 
     /**
