@@ -9,6 +9,7 @@ import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
  * Factory to create a new {@link RedisChatInterceptor}.
  */
 public class RedisChatInterceptorFactory implements InterceptorFactory {
+
     /**
      * API used for stopping the chat.
      */

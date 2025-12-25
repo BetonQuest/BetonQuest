@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * The entity counting data for the objective.
  */
 public class EntityInteractData extends CountingObjective.CountingData {
+
     /**
      * The set of entities that have been interacted with.
      */

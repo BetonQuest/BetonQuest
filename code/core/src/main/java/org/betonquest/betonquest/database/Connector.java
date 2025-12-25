@@ -14,6 +14,7 @@ import java.util.Objects;
  * Connects to the database and queries it.
  */
 public class Connector {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -138,6 +139,7 @@ public class Connector {
      */
     @FunctionalInterface
     public interface VariableResolver {
+
         /**
          * Resolves the variables in the prepared statement.
          *

@@ -18,6 +18,7 @@ import java.util.UUID;
  * addKill method each time the player kills a mob like that.
  */
 public final class MobKillNotifier {
+
     /**
      * A list of all handlers for this event.
      */

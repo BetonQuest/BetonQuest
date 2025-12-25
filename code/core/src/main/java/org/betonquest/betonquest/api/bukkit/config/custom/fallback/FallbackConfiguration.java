@@ -14,6 +14,7 @@ import java.util.Map;
  * except for missing keys, then the fallback is used.
  */
 public class FallbackConfiguration extends FallbackConfigurationSection implements Configuration {
+
     /**
      * Holds the defaults of this {@link FallbackConfiguration}.
      */

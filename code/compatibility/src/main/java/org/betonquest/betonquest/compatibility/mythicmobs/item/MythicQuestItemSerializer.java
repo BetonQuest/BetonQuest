@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * Serializes MythicItems to its id.
  */
 public class MythicQuestItemSerializer implements QuestItemSerializer {
+
     /**
      * Manager to get mythic type from stacks.
      */

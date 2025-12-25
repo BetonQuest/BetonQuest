@@ -8,6 +8,7 @@ import org.betonquest.betonquest.config.quest.Quest;
  * Migrates the folder time unit to the new format "unit:TimeUnit".
  */
 public class FolderTimeUnit implements QuestMigration {
+
     /**
      * Creates a new folder time unit migrator.
      */

@@ -7,6 +7,7 @@ import java.io.IOException;
  * Represents a configuration file that can be accessed, saved, deleted and reloaded.
  */
 public interface FileConfigAccessor extends ConfigAccessor {
+
     /**
      * Saves the file that is represented by this {@link FileConfigAccessor}.
      * This method does nothing if no configurationFile was provided in the constructor.

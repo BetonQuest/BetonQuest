@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
 class ExecutorServiceSchedulerTest {
+
     /**
      * Mocked logger.
      */

@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * Handles the pick random percentage migration.
  */
 public class PickRandomPercentage implements QuestMigration {
+
     /**
      * Creates a new pick random percentage migration.
      */

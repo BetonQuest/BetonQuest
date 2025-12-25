@@ -106,9 +106,8 @@ public class CommandObjective extends Objective implements Listener {
         if (exact) {
             return ignoreCase ? Strings.CI.equals(commandExecuted, commandRequired)
                     : Strings.CS.equals(commandExecuted, commandRequired);
-        } else {
-            return ignoreCase ? Strings.CI.startsWith(commandExecuted, commandRequired)
-                    : Strings.CS.startsWith(commandExecuted, commandRequired);
         }
+        return ignoreCase ? Strings.CI.startsWith(commandExecuted, commandRequired)
+                : Strings.CS.startsWith(commandExecuted, commandRequired);
     }
 }

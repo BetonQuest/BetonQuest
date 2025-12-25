@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Event to call if a Npc is externally modified and its BetonQuest features needs recalibration.
  */
 public class NpcVisibilityUpdateEvent extends Event {
+
     /**
      * Static HandlerList to register listeners on the event.
      */

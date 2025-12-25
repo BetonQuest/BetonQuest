@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class VariableObjectiveTest {
+
     public static Stream<Arguments> serializedVariableObjectiveData() {
         return Stream.of(
                 Arguments.of("", "any", null),

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
  * Handles the menu conversation settings migration with a log warning.
  */
 public class MenuConversationSettings implements Migration {
+
     /**
      * The BetonQuest folder.
      */

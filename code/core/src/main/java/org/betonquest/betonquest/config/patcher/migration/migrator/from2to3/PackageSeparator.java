@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * Replaces the package separator from '.' to '>' in certain places.
  */
 public class PackageSeparator implements QuestMigration {
+
     /**
      * Empty default constructor.
      */

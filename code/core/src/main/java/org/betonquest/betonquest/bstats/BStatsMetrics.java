@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  * bStats metrics sending class. It implements BetonQuest's custom charts.
  */
 public class BStatsMetrics {
+
     /**
      * The metrics instance to send metrics.
      */

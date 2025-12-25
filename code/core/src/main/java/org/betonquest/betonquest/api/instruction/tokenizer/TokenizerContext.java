@@ -4,6 +4,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * State machine context for the {@link TokenizerState}.
  */
 public interface TokenizerContext {
+
     /**
      * Append a code point to the word that is currently being collected.
      *

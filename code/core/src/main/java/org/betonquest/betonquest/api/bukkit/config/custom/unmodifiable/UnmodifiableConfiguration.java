@@ -15,6 +15,7 @@ import java.util.Map;
  * This is an extension of {@link ConfigurationSectionDecorator}, that makes the {@link Configuration} unmodifiable.
  */
 public class UnmodifiableConfiguration extends HandleModificationConfiguration {
+
     /**
      * Exception message for unmodifiable behaviours.
      */

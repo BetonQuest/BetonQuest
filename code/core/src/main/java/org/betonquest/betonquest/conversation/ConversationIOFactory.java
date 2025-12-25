@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profile.OnlineProfile;
  */
 @FunctionalInterface
 public interface ConversationIOFactory {
+
     /**
      * Create the Conversation IO.
      *

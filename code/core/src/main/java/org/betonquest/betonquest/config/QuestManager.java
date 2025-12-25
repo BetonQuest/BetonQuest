@@ -26,6 +26,7 @@ import java.util.Map;
  * Class to load all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
 public class QuestManager implements QuestPackageManager {
+
     /**
      * The character to separate {@link Quest} address parts.
      */
@@ -228,6 +229,7 @@ public class QuestManager implements QuestPackageManager {
      */
     @FunctionalInterface
     private interface QuestCreator {
+
         /**
          * Creates and registers a {@link Quest}.
          *

@@ -18,6 +18,7 @@ import java.util.function.Function;
  * @param <T> the relevant original Npc class
  */
 public abstract class GenericReverseIdentifier<T> implements NpcReverseIdentifier {
+
     /**
      * The {@link NpcID} prefix.
      */

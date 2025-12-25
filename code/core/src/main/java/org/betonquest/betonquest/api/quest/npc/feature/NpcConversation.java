@@ -15,6 +15,7 @@ import org.bukkit.Location;
  * @param <T> the original npc type
  */
 public class NpcConversation<T> extends Conversation {
+
     /**
      * Npc used in this Conversation.
      */

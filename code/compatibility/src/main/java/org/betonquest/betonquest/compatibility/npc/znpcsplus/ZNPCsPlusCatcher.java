@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
  * Catches interaction with ZNPCsPlus Npcs.
  */
 public class ZNPCsPlusCatcher extends NpcInteractCatcher<NpcEntry> {
+
     /**
      * Initializes the ZNpsPlus catcher.
      *

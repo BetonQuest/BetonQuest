@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Tag;
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class FallbackConfigurationSectionNonFallbackTest extends ConfigurationSectionBaseTest {
+
     @Override
     public ConfigurationSection getConfig() throws InvalidConfigurationException {
         return new FallbackConfiguration(getDefaultConfig(), null);

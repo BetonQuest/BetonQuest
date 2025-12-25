@@ -6,6 +6,7 @@ import java.io.Serial;
  * This exception is thrown when something goes wrong with a quest context.
  */
 public class QuestException extends Exception {
+
     /**
      * Serial version UID.
      */

@@ -4,6 +4,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * The state of an unquoted word. Escaping with backslashes is possible, quotes need to be escaped.
  */
 public class PureWordState implements TokenizerState {
+
     /**
      * Create the pure word collection state.
      */

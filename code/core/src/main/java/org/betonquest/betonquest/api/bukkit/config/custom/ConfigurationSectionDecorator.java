@@ -25,6 +25,7 @@ import java.util.Set;
  */
 @SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.CouplingBetweenObjects"})
 public class ConfigurationSectionDecorator implements ConfigurationSection {
+
     /**
      * The original {@link ConfigurationSection}.
      */

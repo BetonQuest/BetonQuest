@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
  * Factory for {@link ConfigAccessor} instances.
  */
 public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
+
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */

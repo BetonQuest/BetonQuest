@@ -4,6 +4,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * The state of a just finished quoted word. A whitespace character is expected.
  */
 public class QuoteEndState implements TokenizerState {
+
     /**
      * Create the quoted word end state.
      */

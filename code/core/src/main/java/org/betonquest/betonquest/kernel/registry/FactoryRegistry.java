@@ -15,6 +15,7 @@ import java.util.TreeMap;
  * @param <F> the factory type to be stored
  */
 public class FactoryRegistry<F> implements FeatureRegistry<F> {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

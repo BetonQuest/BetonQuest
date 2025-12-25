@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  * Factory for creating {@link SkriptIntegrator} instances.
  */
 public class SkriptIntegratorFactory implements IntegratorFactory {
+
     /**
      * Creates a new instance of the factory.
      */

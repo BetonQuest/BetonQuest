@@ -19,6 +19,7 @@ import java.util.List;
  * This allows for a more natural conversation flow, simulating a slower response time.
  */
 public class SlowTellrawConvIO extends TellrawConvIO {
+
     /**
      * The delay in ticks between messages sent in the conversation.
      */

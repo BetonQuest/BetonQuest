@@ -12,6 +12,7 @@ import java.util.UUID;
  * A wrapper for a {@link ConsoleCommandSender} that does not send any messages.
  */
 public class SilentConsoleCommandSender extends SilentCommandSender implements ConsoleCommandSender {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

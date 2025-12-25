@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test renaming of variables to constants.
  */
 class VariablesRenameTest extends QuestFixture {
+
     private static Stream<Arguments> entriesToMigrate() {
         return Stream.of(
                 Arguments.of("$foo$",

@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
  * A scheduled repeating task for the {@link BukkitSchedulerMock}.
  */
 public class RepeatingTask extends ScheduledTask {
+
     /**
      * Period to execute the {@link ScheduledTask}.
      */

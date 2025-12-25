@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * Handles the remove string list migration.
  */
 public class RemoveStringList implements QuestMigration {
+
     /**
      * Creates a new remove string list migration.
      */

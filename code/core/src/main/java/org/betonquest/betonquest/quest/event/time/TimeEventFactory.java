@@ -47,9 +47,8 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     public PlayerlessEvent parsePlayerless(final Instruction instruction) throws QuestException {
         if (instruction.copy().string().get("world").isEmpty()) {
             return new DoNothingPlayerlessEvent();
-        } else {
-            return createTimeEvent(instruction);
         }
+        return createTimeEvent(instruction);
     }
 
     private NullableEventAdapter createTimeEvent(final Instruction instruction) throws QuestException {
@@ -63,9 +62,8 @@ public class TimeEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private Selector<World> parseWorld(@Nullable final String worldName) {
         if (worldName == null) {
             return Selectors.fromPlayer(Player::getWorld);
-        } else {
-            final World world = server.getWorld(worldName);
-            return new ConstantSelector<>(world);
         }
+        final World world = server.getWorld(worldName);
+        return new ConstantSelector<>(world);
     }
 }

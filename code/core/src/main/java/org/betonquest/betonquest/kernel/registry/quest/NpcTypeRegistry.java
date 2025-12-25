@@ -19,6 +19,7 @@ import java.util.Set;
  * Stores the npc types that can be used in BetonQuest.
  */
 public class NpcTypeRegistry extends FactoryTypeRegistry<NpcWrapper<?>> implements NpcRegistry {
+
     /**
      * Identifier to get {@link NpcID}s from a specific Npc.
      */

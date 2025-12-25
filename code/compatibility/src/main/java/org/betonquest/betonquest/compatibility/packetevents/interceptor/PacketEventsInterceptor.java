@@ -27,6 +27,7 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
  * based on PacketEvents.
  */
 public class PacketEventsInterceptor implements Interceptor, PacketListener {
+
     /**
      * The PacketEvents API instance.
      */

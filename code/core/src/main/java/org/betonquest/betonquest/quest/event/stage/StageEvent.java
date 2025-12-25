@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.quest.event.PlayerEvent;
  * The StageEvent class to make changes to a player's stage.
  */
 public class StageEvent implements PlayerEvent {
+
     /**
      * The action to perform.
      */

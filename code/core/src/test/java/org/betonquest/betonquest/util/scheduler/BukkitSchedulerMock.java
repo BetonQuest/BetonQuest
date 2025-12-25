@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity",
         "PMD.ExcessivePublicCount"})
 public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Closeable {
+
     /**
      * Exception message for deprecated methods.
      */
@@ -424,6 +425,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * A list of tasks to execute.
      */
     private static final class TaskList {
+
         /**
          * The list of all tasks.
          */

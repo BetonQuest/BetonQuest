@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Useful if you like to have an addon which is reloading whenever BetonQuest is reloading.
  */
 public class LoadDataEvent extends Event {
+
     /**
      * A list of all handlers for this event.
      */

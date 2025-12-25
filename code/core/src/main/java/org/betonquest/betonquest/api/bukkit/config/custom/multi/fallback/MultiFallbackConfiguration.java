@@ -16,6 +16,7 @@ import java.util.Set;
  * will be forwarded to the original instance, passed in the constructor.
  */
 public class MultiFallbackConfiguration extends FallbackConfiguration implements MultiConfiguration {
+
     /**
      * The original instance held as {@link MultiConfiguration}.
      */

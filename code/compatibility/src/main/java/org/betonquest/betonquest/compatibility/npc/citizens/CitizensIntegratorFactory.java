@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  * Factory for creating {@link CitizensIntegrator} instances.
  */
 public class CitizensIntegratorFactory implements IntegratorFactory {
+
     /**
      * Creates a new Citizens integrator factory.
      */

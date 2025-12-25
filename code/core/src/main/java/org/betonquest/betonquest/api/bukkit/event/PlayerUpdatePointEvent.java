@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
  * Fired when a profile's points are updated.
  */
 public class PlayerUpdatePointEvent extends ProfileEvent {
+
     /**
      * HandlerList of this event.
      */

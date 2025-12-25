@@ -14,6 +14,7 @@ import java.util.concurrent.CancellationException;
  * <a href="https://github.com/MockBukkit/MockBukkit">https://github.com/MockBukkit/MockBukkit</a>.
  */
 public class ScheduledTask implements BukkitTask {
+
     /**
      * The task id of this task.
      */

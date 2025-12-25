@@ -6,6 +6,7 @@ import java.io.Serial;
  * Instruction string tokenizer exception.
  */
 public class TokenizerException extends Exception {
+
     /**
      * Serial version uid for {@link java.io.Serializable} interface.
      */

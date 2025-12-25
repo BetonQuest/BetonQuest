@@ -17,6 +17,7 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class DecentHologramsHologram implements BetonHologram {
+
     /**
      * The hologram object from DecentHolograms.
      */

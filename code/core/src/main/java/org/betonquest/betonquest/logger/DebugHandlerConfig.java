@@ -12,6 +12,7 @@ import java.util.logging.LogRecord;
  * Configuration facade for the debug {@link Handler} backed by a {@link ConfigAccessor}.
  */
 public class DebugHandlerConfig {
+
     /**
      * Default value for the expiration after minutes value.
      */

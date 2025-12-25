@@ -10,6 +10,7 @@ import org.betonquest.betonquest.database.UpdateType;
  * Stores the profile's data for the objective.
  */
 public class ObjectiveData {
+
     /**
      * Profile the data is for.
      */

@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * A test for the {@link LogRecordTypeFilterTest}.
  */
 class LogRecordTypeFilterTest {
+
     @Test
     void testInstanceOf() {
         final Filter filter = new LogRecordTypeFilter(BetonQuestLogRecord.class);

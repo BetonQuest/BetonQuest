@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
  */
 @FunctionalInterface
 public interface ChatHistory {
+
     /**
      * Sends the chat history to the specified player.
      * It tries the best to mimic the original sending as closely as possible.

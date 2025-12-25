@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class DatabaseSaverPlayerlessEventTest {
+
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAddRecord(@Mock final Saver saver) throws QuestException {

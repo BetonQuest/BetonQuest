@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  * A logger with an optional topic.
  */
 public class TopicLogger extends Logger {
+
     /**
      * The topic of this logger.
      */

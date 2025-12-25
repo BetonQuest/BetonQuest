@@ -77,6 +77,7 @@ public class LuckPermsPermissionEvent implements PlayerEvent {
      */
     @FunctionalInterface
     public interface NodeApply {
+
         /**
          * Applies the {@link PermissionNode} to the {@link NodeMap}.
          *

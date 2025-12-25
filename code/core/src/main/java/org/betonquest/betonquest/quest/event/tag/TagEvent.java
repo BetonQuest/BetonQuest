@@ -11,6 +11,7 @@ import java.util.function.Function;
  * The tag event, doing what was defined in its instruction.
  */
 public class TagEvent implements PlayerEvent {
+
     /**
      * Function providing the tagData for the given player.
      */

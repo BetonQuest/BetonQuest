@@ -41,19 +41,20 @@ public enum Direction {
     public static Direction parseDirection(final float yawn, final float pitch) {
         if (pitch > 60) {
             return DOWN;
-        } else if (pitch < -60) {
-            return UP;
-        } else {
-            final float rotation = (yawn + 360) % 360;
-            if (rotation < 45 || rotation >= 315) {
-                return SOUTH;
-            } else if (rotation < 135) {
-                return WEST;
-            } else if (rotation < 225) {
-                return NORTH;
-            } else {
-                return EAST;
-            }
         }
+        if (pitch < -60) {
+            return UP;
+        }
+        final float rotation = (yawn + 360) % 360;
+        if (rotation < 45 || rotation >= 315) {
+            return SOUTH;
+        }
+        if (rotation < 135) {
+            return WEST;
+        }
+        if (rotation < 225) {
+            return NORTH;
+        }
+        return EAST;
     }
 }

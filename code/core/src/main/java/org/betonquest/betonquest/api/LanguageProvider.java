@@ -6,6 +6,7 @@ package org.betonquest.betonquest.api;
  */
 @FunctionalInterface
 public interface LanguageProvider {
+
     /**
      * Get the default language from the config.
      *

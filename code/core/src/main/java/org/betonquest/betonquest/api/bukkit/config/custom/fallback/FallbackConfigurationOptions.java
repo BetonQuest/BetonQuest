@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link HandleModificationConfiguration} instance.
  */
 public class FallbackConfigurationOptions extends ConfigurationOptions {
+
     /**
      * The original {@link ConfigurationOptions} hidden behind this decorator.
      */

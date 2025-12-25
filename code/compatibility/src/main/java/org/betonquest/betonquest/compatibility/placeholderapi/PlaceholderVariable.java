@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * A BetonQuest variable which delegates to PAPI.
  */
 public class PlaceholderVariable implements NullableVariable {
+
     /**
      * Placeholder to resolve without surrounding '%'.
      */

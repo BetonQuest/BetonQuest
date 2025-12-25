@@ -202,13 +202,11 @@ public class Tokenizer {
 
             //next operation has lower priority, tokenize this first
             return tokenize(new Operation(val1, operator, nextInLine), nextOperator, newVal);
-        } else {
-            if (operator == null) {
-                return nextInLine;
-            } else {
-                return new Operation(val1, operator, nextInLine);
-            }
         }
+        if (operator == null) {
+            return nextInLine;
+        }
+        return new Operation(val1, operator, nextInLine);
     }
 
     private int findAbsoluteEnd(final String val, final int startIndex) throws QuestException {

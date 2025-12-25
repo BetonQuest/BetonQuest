@@ -9,6 +9,7 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  * Factory for creating {@link HolographicDisplaysIntegrator} instances.
  */
 public class HolographicDisplaysIntegratorFactory implements IntegratorFactory {
+
     /**
      * Logger factory to create class specific logger.
      */

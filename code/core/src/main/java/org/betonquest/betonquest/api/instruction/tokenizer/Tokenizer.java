@@ -5,6 +5,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  */
 @FunctionalInterface
 public interface Tokenizer {
+
     /**
      * Get the tokens for a given instruction string.
      *

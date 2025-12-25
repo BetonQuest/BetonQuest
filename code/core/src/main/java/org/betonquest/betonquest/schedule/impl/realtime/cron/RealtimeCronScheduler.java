@@ -25,6 +25,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule, Instant> {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -206,5 +207,6 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
      * @param runTime  the time when the missed run should have taken place.
      */
     /* default */ record MissedRun(CronSchedule schedule, ZonedDateTime runTime) {
+
     }
 }

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(MockitoExtension.class)
 class BukkitSchedulerCleaningLogQueueTest {
+
     /**
      * The current time used in the tests.
      */

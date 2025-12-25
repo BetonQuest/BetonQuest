@@ -38,6 +38,7 @@ import java.util.logging.Handler;
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public final class HandlerFactory {
+
     private HandlerFactory() {
         // Empty
     }
@@ -85,11 +86,10 @@ public final class HandlerFactory {
     private static LogRecordQueue createLogRecordQueue(final Plugin plugin, final BukkitScheduler scheduler, final InstantSource instantSource, final int keepMinutes) {
         if (keepMinutes == 0) {
             return new DiscardingLogQueue();
-        } else {
-            final BukkitSchedulerCleaningLogQueue bukkitQueue = new BukkitSchedulerCleaningLogQueue(instantSource, Duration.of(keepMinutes, ChronoUnit.MINUTES));
-            bukkitQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
-            return bukkitQueue;
         }
+        final BukkitSchedulerCleaningLogQueue bukkitQueue = new BukkitSchedulerCleaningLogQueue(instantSource, Duration.of(keepMinutes, ChronoUnit.MINUTES));
+        bukkitQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
+        return bukkitQueue;
     }
 
     private static Handler setupFileHandler(final File logFile, final InstantSource instantSource) throws IOException {

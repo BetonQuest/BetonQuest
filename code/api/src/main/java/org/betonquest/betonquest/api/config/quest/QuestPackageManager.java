@@ -9,6 +9,7 @@ import java.util.Map;
  */
 @FunctionalInterface
 public interface QuestPackageManager {
+
     /**
      * Get all QuestPackages.
      *

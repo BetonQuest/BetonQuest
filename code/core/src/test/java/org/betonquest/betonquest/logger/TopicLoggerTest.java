@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
  * This class test the {@link TopicLogger}.
  */
 class TopicLoggerTest {
+
     /**
      * The logger topic.
      */

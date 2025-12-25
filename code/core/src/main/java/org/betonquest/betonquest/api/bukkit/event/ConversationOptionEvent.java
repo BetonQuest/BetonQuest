@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Signals that a profile has selected an option in a conversation.
  */
 public class ConversationOptionEvent extends ProfileEvent {
+
     /**
      * A list of all handlers for this event.
      */

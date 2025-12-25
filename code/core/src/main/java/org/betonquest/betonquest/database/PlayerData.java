@@ -483,11 +483,10 @@ public class PlayerData implements TagData, PointData {
                     itemStack.setAmount(itemStack.getAmount() + inputAmount);
                     inputAmount = 0; // this will allow for passing the while loop
                     break;
-                } else {
-                    // if the stack will be overflown, set max size and continue
-                    inputAmount -= itemStack.getMaxStackSize() - itemStack.getAmount();
-                    itemStack.setAmount(itemStack.getMaxStackSize());
                 }
+                // if the stack will be overflown, set max size and continue
+                inputAmount -= itemStack.getMaxStackSize() - itemStack.getAmount();
+                itemStack.setAmount(itemStack.getMaxStackSize());
             }
         }
         // every item checked, time to add a new itemstack

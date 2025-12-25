@@ -41,6 +41,7 @@ public enum VectorModification {
      */
     @FunctionalInterface
     private interface Calculator {
+
         /**
          * Applies a modification to the given vector.
          *

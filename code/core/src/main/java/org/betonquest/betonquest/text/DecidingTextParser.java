@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.text.TextParserRegistry;
  * A text parser that decides which parser to use based on a text parser decider.
  */
 public class DecidingTextParser implements TextParser {
+
     /**
      * The text parser registry to use for getting parsers.
      */

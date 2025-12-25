@@ -10,6 +10,7 @@ import static org.mockito.Mockito.*;
  * Test {@link NoNotificationSender}.
  */
 class NoNotificationSenderTest {
+
     @Test
     void testSendNotificationDoesNothing() {
         final NoNotificationSender sender = new NoNotificationSender();

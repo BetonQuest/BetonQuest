@@ -80,6 +80,7 @@ public enum ExperienceModification {
      */
     @FunctionalInterface
     private interface Calculator {
+
         /**
          * Calculates the amount to apply to the player.
          *

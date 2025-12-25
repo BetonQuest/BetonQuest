@@ -35,6 +35,7 @@ import static org.betonquest.betonquest.api.bukkit.config.custom.handle.Configur
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class MultiSectionConfiguration extends HandleModificationConfiguration implements MultiConfiguration {
+
     /**
      * All keys and a list of files that contains them.
      */
@@ -345,6 +346,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * {@link MultiConfigurationHandler#setComments(ConfigurationSection, String, List)} is called.
      */
     private interface SetConsumer {
+
         /**
          * Consumer for a call of the set method.
          *
@@ -374,6 +376,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * A {@link ConfigurationModificationHandler} for a {@link MultiSectionConfiguration}.
      */
     private static class MultiConfigurationHandler implements ConfigurationModificationHandler {
+
         /**
          * The consumer to call if the set method was called.
          */

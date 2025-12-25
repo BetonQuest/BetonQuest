@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
  * @param <F> the type to be produced from the stored type factory
  */
 public class FactoryTypeRegistry<F> extends FactoryRegistry<TypeFactory<F>> implements FeatureTypeRegistry<F> {
+
     /**
      * Create a new type registry.
      *

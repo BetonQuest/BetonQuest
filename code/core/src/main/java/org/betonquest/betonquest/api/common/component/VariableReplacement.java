@@ -9,4 +9,5 @@ import net.kyori.adventure.text.Component;
  * @param replacement the replacement component
  */
 public record VariableReplacement(String variable, Component replacement) {
+
 }

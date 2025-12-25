@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationNestedTest extends FallbackConfigurationTest {
+
     @Override
     public Configuration getConfig() throws InvalidConfigurationException {
         final Configuration original = setupOriginal();

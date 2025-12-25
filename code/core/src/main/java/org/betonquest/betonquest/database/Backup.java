@@ -24,6 +24,7 @@ import java.util.Map;
  * This class is responsible for backing up and restoring the database.
  */
 public final class Backup {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

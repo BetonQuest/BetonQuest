@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
  * Displays a simple text line with optional color codes.
  */
 public class TextLine extends AbstractLine {
+
     /**
      * Text to be displayed.
      */

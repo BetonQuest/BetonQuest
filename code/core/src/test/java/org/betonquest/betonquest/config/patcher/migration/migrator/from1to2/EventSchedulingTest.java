@@ -11,6 +11,7 @@ import java.io.IOException;
  * Test for 'static' section migration.
  */
 class EventSchedulingTest extends QuestFixture {
+
     @Test
     void migrate() throws IOException, InvalidConfigurationException {
         original.loadFromString("""

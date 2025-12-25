@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * Defines HolographicDisplays global placeholder <code>{bqg:package:variable}</code>.
  */
 public class HologramGlobalPlaceholder implements GlobalPlaceholder {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -24,7 +25,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
      * Creates new instance of HologramGlobalPlaceholder.
      *
      * @param log       the logger that will be used for logging
-     * @param variables     the variable processor to create and resolve variables
+     * @param variables the variable processor to create and resolve variables
      */
     public HologramGlobalPlaceholder(final BetonQuestLogger log, final Variables variables) {
         this.log = log;

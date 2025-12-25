@@ -19,6 +19,7 @@ import java.util.Optional;
  * @param mythicHider the hider for mobs
  */
 public record MythicMobsNpcAdapter(ActiveMob activeMob, MythicHider mythicHider) implements Npc<ActiveMob> {
+
     @Override
     public ActiveMob getOriginal() {
         return activeMob;

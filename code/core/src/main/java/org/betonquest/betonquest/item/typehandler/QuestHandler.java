@@ -20,6 +20,7 @@ import java.util.Set;
  * Handles Quest Item state.
  */
 public class QuestHandler implements ItemMetaHandler<ItemMeta> {
+
     /**
      * Key indicating an ItemStack should be treated as "Quest Item".
      */
@@ -121,6 +122,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      */
     @FunctionalInterface
     public interface LoreConsumer extends QuestBiConsumer<ItemMeta, Profile> {
+
         /**
          * Consumer that does nothing.
          */

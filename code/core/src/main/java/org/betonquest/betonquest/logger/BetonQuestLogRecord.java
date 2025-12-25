@@ -81,9 +81,8 @@ public class BetonQuestLogRecord extends LogRecord {
     public static Optional<BetonQuestLogRecord> safeCast(final LogRecord record) {
         if (record instanceof BetonQuestLogRecord) {
             return Optional.of((BetonQuestLogRecord) record);
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     /**

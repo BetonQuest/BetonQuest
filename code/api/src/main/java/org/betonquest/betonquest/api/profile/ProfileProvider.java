@@ -12,6 +12,7 @@ import java.util.UUID;
  * {@link OnlineProfile}s for players.
  */
 public interface ProfileProvider {
+
     /**
      * Get a {@link Profile} for an offline player.
      *

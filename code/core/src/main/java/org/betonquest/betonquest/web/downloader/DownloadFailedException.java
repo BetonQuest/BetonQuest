@@ -7,6 +7,7 @@ import java.io.Serial;
  * Causes could be GitHub API not responding, invalid repository names or already existing packages.
  */
 public class DownloadFailedException extends Exception {
+
     @Serial
     private static final long serialVersionUID = 149829848798498784L;
 

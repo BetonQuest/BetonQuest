@@ -11,6 +11,7 @@ import java.util.Map;
  * This handler is called for all modification operations in a {@link ConfigurationSection}.
  */
 public interface ConfigurationSectionModificationHandler {
+
     /**
      * Get the absolut string path.
      * It concatenates the current section with the path.

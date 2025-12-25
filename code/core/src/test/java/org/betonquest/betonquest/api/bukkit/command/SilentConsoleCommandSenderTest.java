@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
  * This class tests the {@link SilentConsoleCommandSender} class.
  */
 class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
+
     /**
      * The console command sender to use.
      */

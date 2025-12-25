@@ -110,12 +110,11 @@ public class PasswordObjective extends Objective implements Listener {
             if (regex.matcher(password).matches()) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
                 return !fromCommand || !prefix.isEmpty();
-            } else {
-                try {
-                    BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
-                } catch (final QuestException e) {
-                    throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
-                }
+            }
+            try {
+                BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
+            } catch (final QuestException e) {
+                throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
             }
         }
         return !prefix.isEmpty();

@@ -12,6 +12,7 @@ import java.util.Set;
  * This is an interface to manage a {@link ConfigurationSection} that can be saved to multiple files.
  */
 public interface MultiConfiguration extends Configuration {
+
     /**
      * Returns if a save is needed on a {@link ConfigurationSection} or an unassociated entry.
      *

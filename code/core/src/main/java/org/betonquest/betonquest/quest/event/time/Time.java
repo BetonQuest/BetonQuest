@@ -30,17 +30,6 @@ public enum Time {
     }
 
     /**
-     * Applies the time to the world.
-     *
-     * @param world the world to apply the time to
-     * @param time  the time to apply to the world
-     * @return the calculated time
-     */
-    public long applyTo(final World world, final long time) {
-        return timeCalculator.calculate(world, time);
-    }
-
-    /**
      * Gets the time for the given prefix.
      * <ul>
      *     <li>{@code +} - {@link #ADD}</li>
@@ -56,6 +45,17 @@ public enum Time {
             case '-' -> SUBTRACT;
             default -> SET;
         };
+    }
+
+    /**
+     * Applies the time to the world.
+     *
+     * @param world the world to apply the time to
+     * @param time  the time to apply to the world
+     * @return the calculated time
+     */
+    public long applyTo(final World world, final long time) {
+        return timeCalculator.calculate(world, time);
     }
 
     /**

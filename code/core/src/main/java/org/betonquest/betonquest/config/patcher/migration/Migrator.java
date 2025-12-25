@@ -15,6 +15,7 @@ import java.util.List;
  * Handles the migration process of general structure changes.
  */
 public class Migrator {
+
     /**
      * The migrations to use.
      */

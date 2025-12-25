@@ -9,6 +9,7 @@ import java.time.LocalDate;
  * A condition that is true at a specific day in the week.
  */
 public class DayOfWeekCondition implements PlayerlessCondition {
+
     /**
      * Day of the week this condition is true.
      */

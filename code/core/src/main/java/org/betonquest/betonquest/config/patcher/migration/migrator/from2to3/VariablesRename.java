@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * Handles the variables rename migration.
  */
 public class VariablesRename implements QuestMigration {
+
     /**
      * Creates a new variables rename migrator.
      */

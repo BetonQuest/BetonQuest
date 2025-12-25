@@ -11,6 +11,7 @@ import java.io.IOException;
  * Test for Menu Items Move.
  */
 class MoveMenuItemsTest extends QuestFixture {
+
     @Test
     void migrate() throws InvalidConfigurationException, IOException {
         original.loadFromString("""

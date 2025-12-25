@@ -86,7 +86,6 @@ public class GiveEvent implements OnlineEvent {
         }
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
     private void giveItems(final OnlineProfile profile, final Player player, final QuestItem questItem, final int totalAmount)
             throws QuestException {
         int amount = totalAmount;
@@ -104,10 +103,9 @@ public class GiveEvent implements OnlineEvent {
                 if (leftItems == null) {
                     amount -= stackSize;
                     continue;
-                } else {
-                    itemStack = leftItems;
-                    fullInventory = true;
                 }
+                itemStack = leftItems;
+                fullInventory = true;
             }
             if (QuestHandler.isQuestItem(itemStack)) {
                 giveToBackpack(profile, itemStack);

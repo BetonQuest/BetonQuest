@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  * Catches interactions with MythicMobs and redirect them to BetonQuest Npc-Events.
  */
 public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
+
     /**
      * Executor for getting MythicMobs.
      */
@@ -54,7 +55,7 @@ public class MythicMobsInteractCatcher extends NpcInteractCatcher<ActiveMob> {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLeft(final EntityDamageByEntityEvent event) {
         final ActiveMob activeMob = mobExecutor.getMythicMobInstance(event.getEntity());
-        if (activeMob != null && event.getDamager() instanceof Player player
+        if (activeMob != null && event.getDamager() instanceof final Player player
                 && interactLogic(player, new MythicMobsNpcAdapter(activeMob, mythicHider), Interaction.LEFT,
                 event.isCancelled(), event.isAsynchronous())) {
             event.setCancelled(true);

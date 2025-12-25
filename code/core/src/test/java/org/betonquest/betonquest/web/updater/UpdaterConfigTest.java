@@ -17,6 +17,7 @@ import static org.mockito.Mockito.*;
  * This class tests the {@link UpdaterConfig}.
  */
 final class UpdaterConfigTest {
+
     /**
      * Invalid {@link UpdateStrategy}
      */
@@ -207,6 +208,7 @@ final class UpdaterConfigTest {
      */
     /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
                                boolean automatic) {
+
     }
 
     /**
@@ -221,5 +223,6 @@ final class UpdaterConfigTest {
      */
     private record Expected(boolean enabled, UpdateStrategy strategy, boolean devDownloadEnabled, boolean automatic,
                             boolean ingameNotification, boolean forcedStrategy) {
+
     }
 }

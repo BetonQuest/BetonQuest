@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  * Factory for {@link BetonQuestLogger} instances.
  */
 public interface BetonQuestLoggerFactory {
+
     /**
      * Creates a logger for a given class.
      * <p>

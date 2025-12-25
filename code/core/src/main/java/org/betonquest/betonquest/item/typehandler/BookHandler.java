@@ -16,6 +16,7 @@ import java.util.Set;
  * Handles de-/serialization of Books.
  */
 public class BookHandler implements ItemMetaHandler<BookMeta> {
+
     /**
      * The text parser used to parse text.
      */

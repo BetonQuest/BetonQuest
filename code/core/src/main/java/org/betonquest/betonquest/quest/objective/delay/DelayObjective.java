@@ -85,11 +85,11 @@ public class DelayObjective extends Objective {
     private double timeToMilliSeconds(final double time) {
         if (instruction.hasArgument("ticks")) {
             return time * 50;
-        } else if (instruction.hasArgument("seconds")) {
-            return time * 1000;
-        } else {
-            return time * 1000 * 60;
         }
+        if (instruction.hasArgument("seconds")) {
+            return time * 1000;
+        }
+        return time * 1000 * 60;
     }
 
     @Override

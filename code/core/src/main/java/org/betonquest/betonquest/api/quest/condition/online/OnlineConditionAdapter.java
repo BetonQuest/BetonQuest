@@ -61,9 +61,8 @@ public final class OnlineConditionAdapter implements PlayerCondition {
         final Optional<OnlineProfile> onlineProfile = profile.getOnlineProfile();
         if (onlineProfile.isPresent()) {
             return onlineCondition.check(onlineProfile.get());
-        } else {
-            return fallbackCondition.check(profile);
         }
+        return fallbackCondition.check(profile);
     }
 
     @Override

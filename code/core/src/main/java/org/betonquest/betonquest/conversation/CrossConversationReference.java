@@ -16,4 +16,5 @@ import org.jetbrains.annotations.Nullable;
 public record CrossConversationReference(QuestPackage sourcePack, ConversationID sourceConv,
                                          @Nullable String sourceOption, ConversationData.OptionType optionType,
                                          ConversationOptionID resolver) {
+
 }

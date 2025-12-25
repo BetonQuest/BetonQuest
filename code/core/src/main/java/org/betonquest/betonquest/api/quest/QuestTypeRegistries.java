@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.quest.variable.VariableRegistry;
  * They are used to add new implementations and access them.
  */
 public interface QuestTypeRegistries {
+
     /**
      * Gets the registry for conditions.
      *

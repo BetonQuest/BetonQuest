@@ -5,6 +5,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * Any single character will be accepted as data before returning to the follow-up state.
  */
 public class EscapeState implements TokenizerState {
+
     /**
      * State to transition to after collecting the escaped character.
      */

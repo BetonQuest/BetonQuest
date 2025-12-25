@@ -15,6 +15,7 @@ import java.util.Optional;
  * ZNPCsPlus Compatibility Adapter for general BetonQuest NPC behaviour.
  */
 public class ZNPCsPlusAdapter implements Npc<NpcEntry> {
+
     /**
      * The ZNPCsPlus NPC instance.
      */

@@ -25,6 +25,7 @@ import java.util.Optional;
  * A {@link BukkitRunnable} that shows an EffectLib effect to all players that meet the required conditions.
  */
 public class EffectLibRunnable extends BukkitRunnable {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
@@ -164,6 +165,7 @@ public class EffectLibRunnable extends BukkitRunnable {
      * A dynamic location that has a Npc instead a Bukkit Entity.
      */
     private static class NpcDynamicLocation extends DynamicLocation {
+
         /**
          * The Npc reference.
          */

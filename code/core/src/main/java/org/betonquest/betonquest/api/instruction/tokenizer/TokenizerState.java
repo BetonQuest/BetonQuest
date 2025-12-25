@@ -4,6 +4,7 @@ package org.betonquest.betonquest.api.instruction.tokenizer;
  * State of the instruction string tokenizer.
  */
 public interface TokenizerState {
+
     /**
      * Parse the next code point according to the current state.
      *

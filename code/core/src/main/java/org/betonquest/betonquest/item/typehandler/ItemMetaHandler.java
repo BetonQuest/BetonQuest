@@ -13,6 +13,7 @@ import java.util.Set;
  * @param <M> handled meta
  */
 public interface ItemMetaHandler<M extends ItemMeta> {
+
     /**
      * Gets the class of meta this Handler works on.
      *

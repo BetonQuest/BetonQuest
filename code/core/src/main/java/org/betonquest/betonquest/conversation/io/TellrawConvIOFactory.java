@@ -10,6 +10,7 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
  * Tellraw conversation output.
  */
 public class TellrawConvIOFactory implements ConversationIOFactory {
+
     /**
      * The colors used for the conversation.
      */

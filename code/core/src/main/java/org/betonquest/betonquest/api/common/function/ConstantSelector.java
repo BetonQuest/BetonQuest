@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> target to select
  */
 public class ConstantSelector<T> implements Selector<T> {
+
     /**
      * The target that should always be used.
      */

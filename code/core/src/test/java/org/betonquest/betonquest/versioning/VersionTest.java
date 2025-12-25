@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 class VersionTest {
+
     /**
      * A version that represent a MAJOR Version
      */

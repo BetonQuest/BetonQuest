@@ -16,6 +16,7 @@ import java.util.Optional;
  * Only one instance may exist.
  */
 public class LastExecutionCache {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSy
  * A PacketWrapperFunction implementation for handling WrapperPlayServerSystemChatMessage packets.
  */
 public class FunctionWrapperPlayServerSystemChatMessage implements PacketWrapperFunction<WrapperPlayServerSystemChatMessage> {
+
     /**
      * Constructs a FunctionWrapperPlayServerSystemChatMessage instance.
      */

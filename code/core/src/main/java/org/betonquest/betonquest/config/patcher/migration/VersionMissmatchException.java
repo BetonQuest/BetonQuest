@@ -6,6 +6,7 @@ import java.io.Serial;
  * This exception is thrown when there is a problem with versions.
  */
 public class VersionMissmatchException extends Exception {
+
     @Serial
     private static final long serialVersionUID = 1113625566182978578L;
 

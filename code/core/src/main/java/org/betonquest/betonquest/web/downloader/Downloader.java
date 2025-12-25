@@ -39,6 +39,7 @@ import static java.nio.file.FileVisitResult.CONTINUE;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class Downloader implements Callable<Boolean> {
+
     /**
      * Values that are allowed as {@link #offsetPath}.
      * Currently, only {@code QuestPackages} and {@code QuestTemplates}
@@ -280,9 +281,8 @@ public class Downloader implements Callable<Boolean> {
             final String fileIdentifier = namespace.substring(namespace.lastIndexOf('/') + 1) + "-" + getShortRef();
             return Optional.ofNullable(file.getFileName()).map(Path::toString).stream()
                     .anyMatch(s -> s.startsWith(fileIdentifier));
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -415,9 +415,8 @@ public class Downloader implements Callable<Boolean> {
                     Files.delete(file);
                     log.debug("Deleted " + file);
                     return CONTINUE;
-                } else {
-                    return super.visitFile(file, attrs);
                 }
+                return super.visitFile(file, attrs);
             }
         });
     }
@@ -432,13 +431,12 @@ public class Downloader implements Callable<Boolean> {
     private List<String> filterIgnoredPackagesInZip(final Collection<String> packagesAll) {
         if (recurse) {
             return List.of();
-        } else {
-            return packagesAll.stream().filter(pack ->
-                    packagesAll.stream()
-                            .filter(other -> !other.equals(pack))
-                            .anyMatch(pack::startsWith)
-            ).toList();
         }
+        return packagesAll.stream().filter(pack ->
+                packagesAll.stream()
+                        .filter(other -> !other.equals(pack))
+                        .anyMatch(pack::startsWith)
+        ).toList();
     }
 
     /**

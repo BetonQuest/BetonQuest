@@ -7,6 +7,7 @@ import java.util.Set;
  * Provides the ability to have points.
  */
 public interface PointData {
+
     /**
      * Provide list of all defined points.
      *

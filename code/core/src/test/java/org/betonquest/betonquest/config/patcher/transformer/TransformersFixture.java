@@ -18,6 +18,7 @@ import java.nio.file.Path;
  * Fixture containing the config that is used for testing.
  */
 public class TransformersFixture {
+
     /**
      * The demo config that is used for this test.
      */

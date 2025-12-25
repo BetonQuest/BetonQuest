@@ -243,10 +243,9 @@ public class DefaultInstruction implements Instruction {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new DefaultArgument<>(variables, pack, argumentValue, valueParser));
         }
+        final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+        return Optional.of(new DefaultArgument<>(variables, pack, argumentValue, valueParser));
     }
 
     @Override
@@ -254,10 +253,9 @@ public class DefaultInstruction implements Instruction {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return new DefaultArgument<>(defaultValue);
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new DefaultArgument<>(variables, pack, argumentValue, valueParser);
         }
+        final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+        return new DefaultArgument<>(variables, pack, argumentValue, valueParser);
     }
 
     @Override
@@ -265,10 +263,9 @@ public class DefaultInstruction implements Instruction {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new DefaultListArgument<>(variables, pack, argumentValue, valueParser));
         }
+        final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+        return Optional.of(new DefaultListArgument<>(variables, pack, argumentValue, valueParser));
     }
 
     @Override
@@ -276,10 +273,9 @@ public class DefaultInstruction implements Instruction {
         final String argumentValue = getValue(argumentKey);
         if (argumentValue == null) {
             return new DefaultListArgument<>(defaultList);
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new DefaultListArgument<>(variables, pack, argumentValue, valueParser);
         }
+        final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
+        return new DefaultListArgument<>(variables, pack, argumentValue, valueParser);
     }
 
     @Override

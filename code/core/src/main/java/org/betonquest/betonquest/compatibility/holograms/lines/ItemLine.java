@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
  * Displays an item instead of text.
  */
 public class ItemLine extends AbstractLine {
+
     /**
      * The item to be displayed with all its metadata.
      */

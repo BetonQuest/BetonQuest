@@ -195,11 +195,11 @@ public abstract class HologramLoop extends SectionProcessor<HologramLoop.Hologra
     private TopXObject.OrderType orderType(final String type) throws QuestException {
         if (ORDER_DESC.equalsIgnoreCase(type)) {
             return TopXObject.OrderType.DESCENDING;
-        } else if (ORDER_ASC.equalsIgnoreCase(type)) {
-            return TopXObject.OrderType.ASCENDING;
-        } else {
-            throw new QuestException("Top list order type '" + type + "' unknown! Expected 'asc' or 'desc'.");
         }
+        if (ORDER_ASC.equalsIgnoreCase(type)) {
+            return TopXObject.OrderType.ASCENDING;
+        }
+        throw new QuestException("Top list order type '" + type + "' unknown! Expected 'asc' or 'desc'.");
     }
 
     private TextLine parseTextLine(final QuestPackage pack, final String line) throws QuestException {

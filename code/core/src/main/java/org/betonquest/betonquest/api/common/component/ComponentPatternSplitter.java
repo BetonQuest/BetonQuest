@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.LooseCoupling")
 public final class ComponentPatternSplitter {
+
     private ComponentPatternSplitter() {
     }
 

@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
  * Catches interaction with FancyNpcs.
  */
 public class FancyCatcher extends NpcInteractCatcher<Npc> {
+
     /**
      * Initializes the Fancy catcher.
      *

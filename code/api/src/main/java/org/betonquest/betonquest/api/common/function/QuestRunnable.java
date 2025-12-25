@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.QuestException;
  */
 @FunctionalInterface
 public interface QuestRunnable {
+
     /**
      * Executes the runnable.
      *

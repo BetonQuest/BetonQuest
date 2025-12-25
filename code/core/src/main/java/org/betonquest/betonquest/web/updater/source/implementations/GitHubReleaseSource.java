@@ -18,6 +18,7 @@ import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
  * This is a {@link ReleaseUpdateSource} for GitHub's releases API.
  */
 public class GitHubReleaseSource implements ReleaseUpdateSource {
+
     /**
      * The sub path of the release API of GitHub to append on the {@link GitHubReleaseSource#apiUrl}.
      */

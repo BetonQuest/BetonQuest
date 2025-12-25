@@ -44,10 +44,10 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
     private LookingAtCondition createCondition(@Nullable final Argument<Location> loc, @Nullable final Argument<BlockSelector> selector, final boolean exactMatch) {
         if (loc != null) {
             return new LookingAtCondition(loc);
-        } else if (selector != null) {
-            return new LookingAtCondition(selector, exactMatch);
-        } else {
-            throw new IllegalArgumentException("You must define either 'loc:' or 'type:' optional");
         }
+        if (selector != null) {
+            return new LookingAtCondition(selector, exactMatch);
+        }
+        throw new IllegalArgumentException("You must define either 'loc:' or 'type:' optional");
     }
 }

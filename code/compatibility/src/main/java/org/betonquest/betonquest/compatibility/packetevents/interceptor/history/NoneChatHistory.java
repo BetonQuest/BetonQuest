@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
  * A ChatHistory implementation that does not store any chat history.
  */
 public class NoneChatHistory implements ChatHistory {
+
     /**
      * Constructs a NoneChatHistory instance.
      */

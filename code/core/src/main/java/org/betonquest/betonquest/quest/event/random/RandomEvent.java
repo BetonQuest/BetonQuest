@@ -9,4 +9,5 @@ import org.betonquest.betonquest.api.quest.event.EventID;
  * @param weight  the weight of the event
  */
 public record RandomEvent(EventID eventID, double weight) {
+
 }

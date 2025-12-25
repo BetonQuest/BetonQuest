@@ -83,23 +83,20 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         final String start = instruction.nextElement();
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
-        } else {
-            if (start.contains("~")) {
-                return instruction.get(start.substring(0, start.indexOf('~')), instruction.getParsers().number());
-            } else {
-                final String next = instruction.nextElement();
-                return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), instruction.getParsers().number());
-            }
         }
+        if (start.contains("~")) {
+            return instruction.get(start.substring(0, start.indexOf('~')), instruction.getParsers().number());
+        }
+        final String next = instruction.nextElement();
+        return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), instruction.getParsers().number());
     }
 
     private Argument<Number> parseSecond(final Instruction instruction) throws QuestException {
         final String start = instruction.current().substring(instruction.current().indexOf('~') + 1);
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
-        } else {
-            return instruction.get(instruction.hasNext() ? start + '.' + instruction.nextElement() : start, instruction.getParsers().number());
         }
+        return instruction.get(instruction.hasNext() ? start + '.' + instruction.nextElement() : start, instruction.getParsers().number());
     }
 
     /**
@@ -118,9 +115,8 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
                 return instruction.get(builder.toString(), instruction.getParsers().number());
-            } else {
-                builder.append(current).append('.');
             }
+            builder.append(current).append('.');
         }
     }
 }

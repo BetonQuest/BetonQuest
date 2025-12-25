@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.IntegratorFactory;
  * Factory for creating {@link JobsRebornIntegrator} instances.
  */
 public class JobsRebornIntegratorFactory implements IntegratorFactory {
+
     /**
      * Creates a new instance of the factory.
      */

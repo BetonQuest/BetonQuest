@@ -163,9 +163,8 @@ public class PluginMessage {
             try (FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
                 return loadMessageFiles(fileSystem.getPath("lang"), Path::toString);
             }
-        } else {
-            return loadMessageFiles(Paths.get(uri), Path::toString);
         }
+        return loadMessageFiles(Paths.get(uri), Path::toString);
     }
 
     private Map<String, String> loadMessageFiles(final File root) throws IOException {

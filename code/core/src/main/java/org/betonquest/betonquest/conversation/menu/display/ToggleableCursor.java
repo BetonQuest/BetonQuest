@@ -5,6 +5,7 @@ package org.betonquest.betonquest.conversation.menu.display;
  * When disabled, it throws an exception when trying to get or set the current value.
  */
 public class ToggleableCursor extends Cursor {
+
     /**
      * Whether the cursor is enabled or not.
      */

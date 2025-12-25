@@ -11,6 +11,7 @@ import org.betonquest.betonquest.database.GlobalData;
  * Originally implemented for use with the PAPI integration.
  */
 public class GlobalTagVariable extends AbstractTagVariable<GlobalData> implements PlayerlessVariable {
+
     /**
      * Constructs a new GlobalTagVariable.
      *

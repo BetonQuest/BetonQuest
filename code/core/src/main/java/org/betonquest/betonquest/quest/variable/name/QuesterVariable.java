@@ -11,6 +11,7 @@ import org.betonquest.betonquest.conversation.Conversation;
  * This variable resolves into the name of the Npc in the conversation.
  */
 public class QuesterVariable implements PlayerVariable {
+
     /**
      * Conversation API.
      */

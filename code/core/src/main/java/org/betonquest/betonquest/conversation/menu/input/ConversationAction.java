@@ -4,6 +4,7 @@ package org.betonquest.betonquest.conversation.menu.input;
  * Interface for processing control inputs.
  */
 public interface ConversationAction {
+
     /**
      * Processes the unmount input.
      */

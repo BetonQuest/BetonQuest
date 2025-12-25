@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface NpcWrapper<T> {
+
     /**
      * Gets the Npc represented by this Wrapper.
      *

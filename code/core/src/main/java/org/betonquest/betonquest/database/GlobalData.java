@@ -15,6 +15,7 @@ import java.util.Set;
  * Represents an object storing all player-related data, which can load and save it.
  */
 public class GlobalData implements TagData, PointData {
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

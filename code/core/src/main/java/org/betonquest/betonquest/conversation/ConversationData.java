@@ -444,9 +444,8 @@ public class ConversationData {
         }
         if (options.containsKey(option.name())) {
             return options.get(option.name()).getEvents(profile);
-        } else {
-            return Collections.emptyList();
         }
+        return Collections.emptyList();
     }
 
     @SuppressWarnings("NullAway")

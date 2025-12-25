@@ -9,6 +9,7 @@ import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
  * so the content can be updated without dealing with parsing errors again.
  */
 public abstract class AbstractLine {
+
     /**
      * False if this line needs to be updated.
      */

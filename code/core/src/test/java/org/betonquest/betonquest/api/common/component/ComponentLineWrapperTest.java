@@ -26,6 +26,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
 
         @Nested
         class new_line {
+
             private static Stream<Arguments> stringsToWrap() {
                 return Stream.of(
                         Arguments.of("",
@@ -101,6 +102,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
 
         @Nested
         class string {
+
             private static Stream<Arguments> stringsToWrap() {
                 return Stream.of(
                         Arguments.of("",
@@ -191,6 +193,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
 
         @Nested
         class component {
+
             private static Stream<Arguments> stringsToWrap() {
                 return Stream.of(
                         Arguments.of("",

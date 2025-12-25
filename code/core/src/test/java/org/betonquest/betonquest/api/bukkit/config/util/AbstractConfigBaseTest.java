@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
  * @param <T> a {@link ConfigurationSection} or a class implementing {@link ConfigurationSection}
  */
 public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
+
     /**
      * The mocked {@link World} instance for testing
      */
@@ -200,6 +201,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      * @param sum    The pseudo sum
      */
     public record TestObject(String name, int amount, long sum) implements ConfigurationSerializable {
+
         /**
          * Method to deserialize a {@link TestObject}.
          *

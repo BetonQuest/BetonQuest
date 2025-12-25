@@ -21,6 +21,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class Display {
+
     /**
      * The screen that displays the conversation.
      */
@@ -137,9 +138,8 @@ public class Display {
             if (first.get()) {
                 first.set(false);
                 return Component.empty();
-            } else {
-                return component;
             }
+            return component;
         };
     }
 
@@ -165,12 +165,12 @@ public class Display {
         if (scroll != Scroll.NONE) {
             checkNewScroll(scroll);
         }
-        final List<Line> lines = screen.getLines();
+        final List<Line> lines = screen.lines();
         setupFirstScreen(scroll, lines);
         if (scroll != Scroll.NONE) {
             checkNewSelect(scroll, lines);
         }
-        final List<Component> displayLines = lines.stream().map(Line::getLine).toList();
+        final List<Component> displayLines = lines.stream().map(Line::line).toList();
         return Component.join(JoinConfiguration.newlines(), displayLines);
     }
 
@@ -265,6 +265,7 @@ public class Display {
      * A toggleable index line that can change based on a condition.
      */
     private static class ToggleableIndexLine extends Line.ToggleableIdentified<Integer> {
+
         /**
          * Creates a new toggleable index line.
          *

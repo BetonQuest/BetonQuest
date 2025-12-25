@@ -10,6 +10,7 @@ import org.betonquest.betonquest.conversation.ConversationIOFactory;
  * Simple chat-based conversation output.
  */
 public class SimpleConvIOFactory implements ConversationIOFactory {
+
     /**
      * The colors used for the conversation.
      */

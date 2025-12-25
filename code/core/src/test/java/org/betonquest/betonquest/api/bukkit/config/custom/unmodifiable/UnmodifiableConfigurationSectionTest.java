@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBaseTest {
+
     /**
      * The values in the configuration before the test was run.
      */
@@ -142,4 +143,3 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
         assertThrowsUnmodifiableException(super::testSetInlineCommentsOnInvalid);
     }
 }
-

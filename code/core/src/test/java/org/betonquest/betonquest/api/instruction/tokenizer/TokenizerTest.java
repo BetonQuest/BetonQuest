@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerTest {
+
     public static Stream<Arguments> validInstructions() {
         return Stream.of(
                 Arguments.of("", new String[]{}),

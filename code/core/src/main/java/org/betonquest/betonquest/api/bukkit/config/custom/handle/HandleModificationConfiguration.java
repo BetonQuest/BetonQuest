@@ -12,6 +12,7 @@ import java.util.Map;
  * that handles the {@link Configuration} methods that modify something.
  */
 public class HandleModificationConfiguration extends HandleModificationConfigurationSection implements Configuration {
+
     /**
      * The {@link ConfigurationSectionDecorator#original} but as {@link Configuration} instance
      */

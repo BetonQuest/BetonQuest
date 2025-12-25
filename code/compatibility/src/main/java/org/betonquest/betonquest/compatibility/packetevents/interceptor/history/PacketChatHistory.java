@@ -26,6 +26,7 @@ import static org.betonquest.betonquest.compatibility.packetevents.interceptor.p
  * Monitors chat packets and keeps a history of them for each player to be resent on demand.
  */
 public class PacketChatHistory implements PacketListener, Listener, ChatHistory {
+
     /**
      * The PacketEvents API instance.
      */

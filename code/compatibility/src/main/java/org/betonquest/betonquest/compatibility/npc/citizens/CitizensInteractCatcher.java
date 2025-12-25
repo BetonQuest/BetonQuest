@@ -24,6 +24,7 @@ import java.util.function.Predicate;
  * Catches Citizens NPC interactions and adapts them into the BetonQuest event.
  */
 public class CitizensInteractCatcher extends NpcInteractCatcher<NPC> {
+
     /**
      * The plugin instance.
      */

@@ -7,6 +7,7 @@ import java.io.IOException;
  */
 @FunctionalInterface
 public interface Migration {
+
     /**
      * Migrates the configs.
      *
