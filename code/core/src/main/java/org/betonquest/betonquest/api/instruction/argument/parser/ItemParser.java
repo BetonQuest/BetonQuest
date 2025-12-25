@@ -8,10 +8,10 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 
 /**
  * Parses a string to an item.

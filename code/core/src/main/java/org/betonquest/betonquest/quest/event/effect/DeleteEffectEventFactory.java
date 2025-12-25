@@ -3,11 +3,11 @@ package org.betonquest.betonquest.quest.event.effect;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
 import org.betonquest.betonquest.api.quest.event.online.OnlineEventAdapter;
+import org.betonquest.betonquest.lib.instruction.variable.VariableList;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collections;

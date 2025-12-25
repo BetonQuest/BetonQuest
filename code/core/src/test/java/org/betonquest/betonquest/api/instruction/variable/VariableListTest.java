@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for constructing {@link VariableList}s and validating constant values.
+ * Test for constructing {@link org.betonquest.betonquest.lib.instruction.variable.VariableList}s and validating constant values.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
@@ -53,7 +53,7 @@ class VariableListTest {
     }
 
     private Variable<List<EventID>> getVariableList(final String input) throws QuestException {
-        return new VariableList<>(variables, questPackage, input, value -> new EventID(mock(Variables.class), mock(QuestPackageManager.class), questPackage, value));
+        return new org.betonquest.betonquest.lib.instruction.variable.VariableList<>(variables, questPackage, input, value -> new EventID(mock(Variables.class), mock(QuestPackageManager.class), questPackage, value));
     }
 
     @Test

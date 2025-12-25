@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * An instruction that can be parsed in parts using chained calls.
  */
-public interface ChainableInstruction extends InstructionChainParser {
+public interface ChainableInstruction {
 
     /**
      * Find the next argument in the instruction without a key.

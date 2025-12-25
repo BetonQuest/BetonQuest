@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.util.math.tokens;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.Number;

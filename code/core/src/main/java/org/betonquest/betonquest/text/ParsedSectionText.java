@@ -4,11 +4,11 @@ import org.betonquest.betonquest.api.LanguageProvider;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;

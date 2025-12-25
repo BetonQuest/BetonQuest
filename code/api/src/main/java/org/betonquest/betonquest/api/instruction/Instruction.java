@@ -7,12 +7,13 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
+import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends ChainableInstruction, InstructionParts {
+public interface Instruction extends ChainableInstruction, InstructionChainParser, InstructionParts {
 
     /**
      * Legacy implementation.
@@ -43,6 +44,15 @@ public interface Instruction extends ChainableInstruction, InstructionParts {
     default <T> Variable<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {
         return get(raw, (InstructionArgumentParser<T>) parser);
     }
+
+    /**
+     * Starts a new chain instruction to parse a variable from.
+     * This may not be an instruction but just a part of it that represents the entire parsable content of a variable.
+     *
+     * @param rawInstructionValue the raw variable value to be parsed
+     * @return a new {@link InstructionChainParser} starting an instruction chain
+     */
+    InstructionChainParser chainVariable(String rawInstructionValue);
 
     /**
      * Get the source QuestPackage.

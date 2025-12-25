@@ -2,11 +2,11 @@ package org.betonquest.betonquest.quest.variable.location;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariable;
 import org.betonquest.betonquest.api.quest.variable.PlayerVariableFactory;
 import org.betonquest.betonquest.api.quest.variable.online.OnlineVariableAdapter;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 
 /**
  * Factory to create location variables from {@link Instruction}s.

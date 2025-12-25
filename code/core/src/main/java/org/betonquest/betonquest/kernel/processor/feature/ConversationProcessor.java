@@ -8,9 +8,7 @@ import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParse
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
@@ -28,6 +26,8 @@ import org.betonquest.betonquest.kernel.processor.SectionProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.InterceptorRegistry;
 import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentParser;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.lib.instruction.variable.VariableList;
 import org.betonquest.betonquest.lib.profile.ProfileKeyMap;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.Location;

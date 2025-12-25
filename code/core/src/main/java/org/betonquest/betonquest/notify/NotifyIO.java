@@ -4,10 +4,10 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

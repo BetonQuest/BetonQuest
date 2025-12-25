@@ -10,19 +10,20 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.DecoratableChainRetriever;
+import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.chain.NumberChainRetriever;
 import org.betonquest.betonquest.api.instruction.tokenizer.QuotingTokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.Tokenizer;
 import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 import org.betonquest.betonquest.api.instruction.variable.Variable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
 import org.betonquest.betonquest.api.quest.Variables;
+import org.betonquest.betonquest.lib.instruction.chain.DefaultChainableInstruction;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
+import org.betonquest.betonquest.lib.instruction.chain.DefaultInstructionChainParser;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
+import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -75,6 +76,11 @@ public class DefaultInstruction implements Instruction {
     private final ArgumentParsers argumentParsers;
 
     /**
+     * The chain instruction starter.
+     */
+    private final DefaultChainableInstruction simpleChainableInstruction;
+
+    /**
      * Create an instruction using the quoting tokenizer.
      *
      * @param variables   the variable processor to create and resolve variables
@@ -115,6 +121,7 @@ public class DefaultInstruction implements Instruction {
         } catch (final TokenizerException e) {
             throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
         }
+        this.simpleChainableInstruction = new DefaultChainableInstruction(variables, packManager, pack, this.instructionParts::nextElement, this::getValue);
     }
 
     /**
@@ -131,6 +138,7 @@ public class DefaultInstruction implements Instruction {
         this.instructionString = instruction.instructionString;
         this.instructionParts = new InstructionPartsArray(instruction.instructionParts);
         this.argumentParsers = instruction.argumentParsers;
+        this.simpleChainableInstruction = new DefaultChainableInstruction(variables, packManager, pack, instructionParts::nextElement, this::getValue);
     }
 
     private static Identifier useFallbackIdIfNecessary(final QuestPackageManager packManager, final QuestPackage pack, @Nullable final Identifier identifier) {
@@ -228,59 +236,40 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
+    public InstructionChainParser chainVariable(final String rawInstructionValue) {
+        final DefaultChainableInstruction dummyInstruction = new DefaultChainableInstruction(variables, packManager, pack,
+                () -> rawInstructionValue, v -> rawInstructionValue);
+        return new DefaultInstructionChainParser(dummyInstruction, argumentParsers);
+    }
+
+    @Override
     public <T> Variable<T> getNext(final InstructionArgumentParser<T> argument) throws QuestException {
-        return new DefaultVariable<>(variables, pack, nextElement(),
-                value -> argument.apply(variables, packManager, pack, value));
+        return simpleChainableInstruction.getNext(argument);
     }
 
     @Override
     public <T> Variable<List<T>> getNextList(final InstructionArgumentParser<T> argument) throws QuestException {
-        return new VariableList<>(variables, pack, nextElement(),
-                value -> argument.apply(variables, packManager, pack, value));
+        return simpleChainableInstruction.getNextList(argument);
     }
 
     @Override
     public <T> Optional<Variable<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
-        final String argumentValue = getValue(argumentKey);
-        if (argumentValue == null) {
-            return Optional.empty();
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new DefaultVariable<>(variables, pack, argumentValue, valueParser));
-        }
+        return simpleChainableInstruction.getOptional(argumentKey, argument);
     }
 
     @Override
     public <T> Variable<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
-        final String argumentValue = getValue(argumentKey);
-        if (argumentValue == null) {
-            return new DefaultVariable<>(defaultValue);
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new DefaultVariable<>(variables, pack, argumentValue, valueParser);
-        }
+        return simpleChainableInstruction.getOptional(argumentKey, argument, defaultValue);
     }
 
     @Override
     public <T> Optional<Variable<List<T>>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument) throws QuestException {
-        final String argumentValue = getValue(argumentKey);
-        if (argumentValue == null) {
-            return Optional.empty();
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return Optional.of(new VariableList<>(variables, pack, argumentValue, valueParser));
-        }
+        return simpleChainableInstruction.getOptionalList(argumentKey, argument);
     }
 
     @Override
     public <T> Variable<List<T>> getOptionalList(final String argumentKey, final InstructionArgumentParser<T> argument, final List<T> defaultList) throws QuestException {
-        final String argumentValue = getValue(argumentKey);
-        if (argumentValue == null) {
-            return new VariableList<>(defaultList);
-        } else {
-            final ValueParser<T> valueParser = value -> argument.apply(variables, packManager, pack, value);
-            return new VariableList<>(variables, pack, argumentValue, valueParser);
-        }
+        return simpleChainableInstruction.getOptionalList(argumentKey, argument, defaultList);
     }
 
     @Override

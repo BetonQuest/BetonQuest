@@ -1,9 +1,10 @@
-package org.betonquest.betonquest.api.instruction.variable;
+package org.betonquest.betonquest.lib.instruction.variable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.variable.ValueParser;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.jetbrains.annotations.Nullable;
 
