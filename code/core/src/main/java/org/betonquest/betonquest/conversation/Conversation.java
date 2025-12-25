@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.quest.condition.ConditionID;
-import org.betonquest.betonquest.api.quest.event.EventID;
 import org.betonquest.betonquest.config.PluginMessage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.conversation.interceptor.Interceptor;
@@ -308,9 +307,7 @@ public class Conversation {
             log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
             inOut.end(() -> {
                 try {
-                    for (final EventID event : data.getPublicData().finalEvents().getValue(onlineProfile)) {
-                        plugin.getQuestTypeApi().event(onlineProfile, event);
-                    }
+                    plugin.getQuestTypeApi().events(onlineProfile, data.getPublicData().finalEvents().getValue(onlineProfile));
                 } catch (final QuestException e) {
                     log.warn(pack, "Error while firing final events: " + e.getMessage(), e);
                 }
@@ -592,9 +589,7 @@ public class Conversation {
 
         @Override
         public void run() {
-            for (final EventID event : data.getEventIDs(onlineProfile, npcOption, NPC)) {
-                plugin.getQuestTypeApi().event(onlineProfile, event);
-            }
+            plugin.getQuestTypeApi().events(onlineProfile, data.getEventIDs(onlineProfile, npcOption, NPC));
             new OptionPrinter(npcOption).runTaskAsynchronously(plugin);
         }
     }
@@ -621,9 +616,7 @@ public class Conversation {
 
         @Override
         public void run() {
-            for (final EventID event : data.getEventIDs(onlineProfile, playerOption, PLAYER)) {
-                plugin.getQuestTypeApi().event(onlineProfile, event);
-            }
+            plugin.getQuestTypeApi().events(onlineProfile, data.getEventIDs(onlineProfile, playerOption, PLAYER));
             new ResponsePrinter(playerOption).runTaskAsynchronously(plugin);
         }
     }

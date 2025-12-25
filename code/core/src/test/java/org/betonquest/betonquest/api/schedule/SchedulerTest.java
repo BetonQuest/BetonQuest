@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class SchedulerTest {
+
     /**
      * Mocked Logger.
      */
@@ -71,16 +72,17 @@ class SchedulerTest {
         when(schedule.getId()).thenReturn(mock(ScheduleID.class));
         final EventID eventA = mock(EventID.class);
         final EventID eventB = mock(EventID.class);
-        when(schedule.getEvents()).thenReturn(List.of(eventA, eventB));
+        final List<EventID> eventList = List.of(eventA, eventB);
+        when(schedule.getEvents()).thenReturn(eventList);
         scheduler.executeEvents(schedule);
-        verify(questTypeApi).event(null, eventA);
-        verify(questTypeApi).event(null, eventB);
+        verify(questTypeApi).events(null, eventList);
     }
 
     /**
      * Class extending a scheduler without any changes.
      */
     private static final class MockedScheduler extends Scheduler<Schedule, FictiveTime> {
+
         /**
          * Default constructor.
          *

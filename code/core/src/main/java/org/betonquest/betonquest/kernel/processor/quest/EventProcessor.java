@@ -15,7 +15,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Stores Events and execute them.
@@ -52,6 +57,39 @@ public class EventProcessor extends TypedQuestProcessor<EventID, EventAdapter> {
     @Override
     protected EventID getIdentifier(final QuestPackage pack, final String identifier) throws QuestException {
         return new EventID(variables, packManager, pack, identifier);
+    }
+
+    /**
+     * Fires multiple events for the {@link Profile} if they meet the events' conditions.
+     * If the profile is null, the events will be fired as static events.
+     *
+     * @param profile  the {@link Profile} for which the events must be executed or null
+     * @param eventIDs IDs of the events to fire
+     * @return true if all events were run even if there was an exception during execution
+     */
+    public boolean executes(@Nullable final Profile profile, final Collection<EventID> eventIDs) {
+        if (Bukkit.isPrimaryThread()) {
+            return eventIDs.stream().allMatch(eventID -> execute(profile, eventID));
+        }
+
+        final List<EventID> syncList = new ArrayList<>();
+        final List<EventID> asyncList = new ArrayList<>();
+        eventIDs.forEach(id -> {
+            final EventAdapter adapter = values.get(id);
+            final boolean syncAsync = adapter != null && adapter.isPrimaryThreadEnforced();
+            (syncAsync ? syncList : asyncList).add(id);
+        });
+
+        final Future<Boolean> syncFuture = syncList.isEmpty() ? CompletableFuture.completedFuture(true)
+                : scheduler.callSyncMethod(plugin, () -> syncList.stream().allMatch(eventID -> execute(profile, eventID)));
+        final boolean asyncResult = asyncList.stream().allMatch(eventID -> execute(profile, eventID));
+
+        try {
+            return asyncResult && syncFuture.get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            return true;
+        }
     }
 
     /**

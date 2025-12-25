@@ -128,6 +128,11 @@ public record CoreQuestRegistry(
     }
 
     @Override
+    public boolean events(@Nullable final Profile profile, final Collection<EventID> eventIDs) {
+        return events().executes(profile, eventIDs);
+    }
+
+    @Override
     public boolean event(@Nullable final Profile profile, final EventID eventID) {
         return events().execute(profile, eventID);
     }

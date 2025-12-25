@@ -114,10 +114,8 @@ public class Menu {
                     + exception.getMessage(), exception);
             return;
         }
-        for (final EventID event : resolved) {
-            log.debug(menuID.getPackage(), "Menu " + menuID + ": Run event " + event);
-            questTypeApi.event(profile, event);
-        }
+        log.debug(menuID.getPackage(), "Menu " + menuID + ": Run events");
+        questTypeApi.events(profile, resolved);
     }
 
     /**

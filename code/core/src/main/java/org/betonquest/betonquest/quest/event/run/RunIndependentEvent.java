@@ -41,8 +41,6 @@ public class RunIndependentEvent implements PlayerlessEvent {
 
     @Override
     public void execute() throws QuestException {
-        for (final EventID event : events.getValue(null)) {
-            questTypeApi.event(null, event);
-        }
+        questTypeApi.events(null, events.getValue(null));
     }
 }

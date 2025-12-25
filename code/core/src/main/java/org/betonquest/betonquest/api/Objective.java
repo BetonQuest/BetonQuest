@@ -198,9 +198,7 @@ public abstract class Objective {
         log.debug(instruction.getPackage(),
                 "Objective '" + instruction.getID() + "' has been completed for " + profile + ", firing events.");
         try {
-            for (final EventID event : events.getValue(profile)) {
-                BetonQuest.getInstance().getQuestTypeApi().event(profile, event);
-            }
+            BetonQuest.getInstance().getQuestTypeApi().events(profile, events.getValue(profile));
         } catch (final QuestException e) {
             log.warn(instruction.getPackage(), "Error while firing events in objective '" + instruction.getID()
                     + "' for " + profile + ": " + e.getMessage(), e);

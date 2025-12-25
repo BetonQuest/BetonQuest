@@ -118,10 +118,8 @@ public class MenuItem {
             log.warn(itemId.getPackage(), "Error while resolving events in menu item '" + itemId + "': " + exception.getMessage(), exception);
             return false;
         }
-        for (final EventID eventID : resolved) {
-            log.debug(itemId.getPackage(), "Item " + itemId + ": Run event " + eventID);
-            questTypeApi.event(profile, eventID);
-        }
+        log.debug(itemId.getPackage(), "Item " + itemId + ": Run events");
+        questTypeApi.events(profile, resolved);
         try {
             return this.close.getValue(profile);
         } catch (final QuestException e) {

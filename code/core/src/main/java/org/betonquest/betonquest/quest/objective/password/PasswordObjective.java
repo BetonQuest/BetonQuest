@@ -88,7 +88,7 @@ public class PasswordObjective extends Objective implements Listener {
         });
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) throws QuestException {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (!containsPlayer(onlineProfile)) {
@@ -112,9 +112,7 @@ public class PasswordObjective extends Objective implements Listener {
                 return !fromCommand || !prefix.isEmpty();
             } else {
                 try {
-                    for (final EventID event : failEvents.getValue(onlineProfile)) {
-                        BetonQuest.getInstance().getQuestTypeApi().event(onlineProfile, event);
-                    }
+                    BetonQuest.getInstance().getQuestTypeApi().events(onlineProfile, failEvents.getValue(onlineProfile));
                 } catch (final QuestException e) {
                     throw new QuestException("Failed to resolve events: " + e.getMessage(), e);
                 }

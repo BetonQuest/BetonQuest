@@ -44,6 +44,16 @@ public interface QuestTypeApi {
     boolean condition(@Nullable Profile profile, ConditionID conditionID);
 
     /**
+     * Fires events for the {@link Profile} if it meets the events' conditions.
+     * If the profile is null, the events will be fired as static events.
+     *
+     * @param profile  the {@link Profile} for which the events must be executed or null
+     * @param eventIDs IDs of the events to fire
+     * @return true if all events were run even if there were exceptions during execution
+     */
+    boolean events(@Nullable Profile profile, Collection<EventID> eventIDs);
+
+    /**
      * Fires an event for the {@link Profile} if it meets the event's conditions.
      * If the profile is null, the event will be fired as a static event.
      *
