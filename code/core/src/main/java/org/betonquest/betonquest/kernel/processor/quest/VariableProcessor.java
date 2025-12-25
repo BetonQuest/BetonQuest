@@ -12,7 +12,12 @@ import org.betonquest.betonquest.api.quest.variable.VariableID;
 import org.betonquest.betonquest.kernel.processor.TypedQuestProcessor;
 import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
 import org.betonquest.betonquest.kernel.registry.quest.VariableTypeRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Stores Variables and resolve them.
@@ -40,15 +45,30 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
     };
 
     /**
+     * The Bukkit scheduler to run sync tasks.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
      * Create a new Variable Processor to store variables, resolves them and create new.
      *
      * @param log           the custom logger for this class
      * @param packManager   the quest package manager to get quest packages from
      * @param variableTypes the available variable types
+     * @param scheduler     the bukkit scheduler to run sync tasks
+     * @param plugin        the plugin instance
      */
     public VariableProcessor(final BetonQuestLogger log, final QuestPackageManager packManager,
-                             final VariableTypeRegistry variableTypes) {
+                             final VariableTypeRegistry variableTypes, final BukkitScheduler scheduler,
+                             final Plugin plugin) {
         super(log, EMPTY_VARIABLES, packManager, variableTypes, "Variable", "variables");
+        this.scheduler = scheduler;
+        this.plugin = plugin;
     }
 
     @Override
@@ -84,13 +104,16 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
 
     @Override
     public String getValue(final QuestPackage pack, final String name, @Nullable final Profile profile) throws QuestException {
-        final VariableAdapter var;
+        final VariableAdapter variable;
         try {
-            var = create(pack, name);
+            variable = create(pack, name);
         } catch (final QuestException e) {
             throw new QuestException("Could not create variable '" + name + "': " + e.getMessage(), e);
         }
-        return var.getValue(profile);
+        if (variable.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
+            return valueSync(profile, name, variable);
+        }
+        return value(profile, name, variable);
     }
 
     @Override
@@ -106,5 +129,22 @@ public class VariableProcessor extends TypedQuestProcessor<VariableID, VariableA
         }
         final String value = variable.substring(index + 1);
         return getValue(pack, '%' + value + '%', profile);
+    }
+
+    private String valueSync(@Nullable final Profile profile, final String variableString, final VariableAdapter variable) throws QuestException {
+        try {
+            return scheduler.callSyncMethod(plugin, () -> value(profile, variableString, variable)).get();
+        } catch (final InterruptedException | ExecutionException e) {
+            log.reportException(e);
+            throw new QuestException(e);
+        }
+    }
+
+    private String value(@Nullable final Profile profile, final String variableString, final VariableAdapter variable) throws QuestException {
+        try {
+            return variable.getValue(profile);
+        } catch (final QuestException e) {
+            throw new QuestException("Error while resolving '" + variableString + "' variable: " + e.getMessage(), e);
+        }
     }
 }

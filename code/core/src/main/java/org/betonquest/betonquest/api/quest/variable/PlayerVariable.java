@@ -2,13 +2,15 @@ package org.betonquest.betonquest.api.quest.variable;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.api.quest.PrimaryThreadEnforceable;
 
 /**
  * Interface for quest-variables that are checked for a profile. It represents the normal variable as described in the
  * BetonQuest user documentation. It does not represent the playerless variant though, see {@link PlayerlessVariable}.
  */
 @FunctionalInterface
-public interface PlayerVariable {
+public interface PlayerVariable extends PrimaryThreadEnforceable {
+
     /**
      * Gets the resolved value for given profile.
      *

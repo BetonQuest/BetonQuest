@@ -56,7 +56,7 @@ public record CoreQuestRegistry(
                                            final BaseQuestTypeRegistries questTypeRegistries, final PluginManager pluginManager,
                                            final BukkitScheduler scheduler, final Plugin plugin) {
         final VariableProcessor variableProcessor = new VariableProcessor(loggerFactory.create(VariableProcessor.class),
-                packManager, questTypeRegistries.variable());
+                packManager, questTypeRegistries.variable(), scheduler, plugin);
         return new CoreQuestRegistry(
                 new ConditionProcessor(loggerFactory.create(ConditionProcessor.class), variableProcessor, packManager,
                         questTypeRegistries.condition(), scheduler, plugin),

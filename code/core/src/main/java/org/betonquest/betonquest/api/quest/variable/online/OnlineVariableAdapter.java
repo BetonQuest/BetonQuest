@@ -12,6 +12,7 @@ import java.util.Optional;
  * It supports a fallback if the player is not online.
  */
 public final class OnlineVariableAdapter implements PlayerVariable {
+
     /**
      * Variable to resolve with the online profile.
      */
@@ -53,5 +54,10 @@ public final class OnlineVariableAdapter implements PlayerVariable {
             return onlineVariable.getValue(onlineProfile.get());
         }
         return fallbackVariable.getValue(profile);
+    }
+
+    @Override
+    public boolean isPrimaryThreadEnforced() {
+        return onlineVariable.isPrimaryThreadEnforced() || fallbackVariable.isPrimaryThreadEnforced();
     }
 }
