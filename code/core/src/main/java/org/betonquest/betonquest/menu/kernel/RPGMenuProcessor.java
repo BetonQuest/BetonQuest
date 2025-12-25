@@ -7,11 +7,11 @@ import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.ItemParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
 import org.betonquest.betonquest.kernel.processor.SectionProcessor;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
 import org.bukkit.configuration.ConfigurationSection;
 

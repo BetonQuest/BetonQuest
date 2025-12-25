@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

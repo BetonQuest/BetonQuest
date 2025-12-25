@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.variable;
+package org.betonquest.betonquest.lib.instruction.argument;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;

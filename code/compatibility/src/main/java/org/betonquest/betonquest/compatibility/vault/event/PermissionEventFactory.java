@@ -33,7 +33,7 @@ public class PermissionEventFactory implements PlayerEventFactory {
         final Argument<String> permission = instruction.string().get();
         final Argument<String> world;
         if (instruction.size() >= 5 && !instruction.nextElement().startsWith("conditions:")) {
-            world = instruction.get(instruction.current(), instruction.getParsers().string());
+            world = instruction.chainForArgument(instruction.current()).string().get();
         } else {
             world = null;
         }

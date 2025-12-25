@@ -59,12 +59,12 @@ public class NPCKillObjective extends CountingObjective implements Listener {
             final Instruction npcInstruction = npcID.getValue(profile).getInstruction();
             final String argument = npcInstruction.getPart(1);
             if (npcInstruction.hasArgument("byName")) {
-                final String resolvedName = npcInstruction.get(argument, npcInstruction.getParsers().string()).getValue(profile);
+                final String resolvedName = npcInstruction.chainForArgument(argument).string().get().getValue(profile);
                 if (!resolvedName.equals(npc.getName())) {
                     return;
                 }
             } else {
-                final int resolvedId = npcInstruction.get(argument, npcInstruction.getParsers().number().atLeast(1)).getValue(profile).intValue();
+                final int resolvedId = npcInstruction.chainForArgument(argument).number().atLeast(1).get().getValue(profile).intValue();
                 if (resolvedId != npc.getId()) {
                     return;
                 }

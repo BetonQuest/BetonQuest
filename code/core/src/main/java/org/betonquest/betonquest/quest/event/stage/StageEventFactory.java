@@ -64,7 +64,7 @@ public class StageEventFactory implements PlayerEventFactory {
         if (instruction.hasNext()) {
             final String stringAmount = instruction.nextElement();
             if (!stringAmount.startsWith("conditions:")) {
-                return instruction.get(stringAmount, instruction.getParsers().number());
+                return instruction.chainForArgument(stringAmount).number().get();
             }
         }
         return null;

@@ -57,6 +57,6 @@ public class EvalEventFactory implements PlayerEventFactory, PlayerlessEventFact
     private NullableEventAdapter parseEvalEvent(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         return new NullableEventAdapter(new EvalEvent(variables, packManager, eventTypeRegistry, instruction.getPackage(),
-                instruction.get(rawInstruction, instruction.getParsers().string())));
+                instruction.chainForArgument(rawInstruction).string().get()));
     }
 }

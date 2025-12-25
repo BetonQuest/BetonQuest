@@ -29,7 +29,7 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
         final Argument<String> locationWorld = instruction.string().get("world", "%location.world%");
-        final Argument<World> world = instruction.get(locationWorld.getValue(null), instruction.getParsers().world());
+        final Argument<World> world = instruction.chainForArgument(locationWorld.getValue(null)).world().get();
         return new NullableConditionAdapter(new WeatherCondition(weather, world));
     }
 

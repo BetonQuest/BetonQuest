@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.instruction.variable;
+package org.betonquest.betonquest.api.instruction.argument;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.quest.event.EventID;
-import org.betonquest.betonquest.kernel.processor.adapter.VariableAdapter;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultListArgument;
 import org.betonquest.betonquest.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
-class VariableListTest {
+class DefaultListArgumentTest {
 
     /**
      * The QuestPackage used for generating instructions.
@@ -91,8 +91,7 @@ class VariableListTest {
 
     @Test
     void getListWithBackedVariable() throws QuestException {
-        final VariableAdapter variable = mock(VariableAdapter.class);
-        when(variable.getValue(any())).thenReturn("b");
+        final Argument<String> variable = profile -> "b";
         when(variables.create(questPackage, "%bVar%")).thenReturn(variable);
         final Argument<List<EventID>> list = assertDoesNotThrow(() -> getVariableList("a,%bVar%,c"),
                 "Validating existing variables should not fail");

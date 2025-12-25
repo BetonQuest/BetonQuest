@@ -35,6 +35,6 @@ public class EvalVariable implements NullableVariable {
 
     @Override
     public String getValue(@Nullable final Profile profile) throws QuestException {
-        return instruction.get("%" + evaluation.getValue(profile) + "%", instruction.getParsers().string()).getValue(profile);
+        return instruction.chainForArgument("%" + evaluation.getValue(profile) + "%").string().get().getValue(profile);
     }
 }
