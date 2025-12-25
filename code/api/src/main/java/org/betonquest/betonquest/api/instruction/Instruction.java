@@ -14,7 +14,7 @@ import org.betonquest.betonquest.api.profile.Profile;
 /**
  * The Instruction. Primary object for input parsing.
  */
-public interface Instruction extends ChainableInstruction, InstructionParts {
+public interface Instruction extends ChainableInstruction, InstructionChainParser, InstructionParts {
 
     /**
      * Legacy implementation.
