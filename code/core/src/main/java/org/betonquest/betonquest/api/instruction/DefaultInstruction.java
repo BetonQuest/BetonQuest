@@ -20,7 +20,6 @@ import org.betonquest.betonquest.api.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.betonquest.betonquest.api.quest.Variables;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultChainableInstruction;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultInstructionChainParser;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
@@ -232,11 +231,6 @@ public class DefaultInstruction implements Instruction {
     @Override
     public boolean hasArgument(final String argument) {
         return instructionParts.getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
-    }
-
-    @Override
-    public <T> Argument<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
-        return new DefaultArgument<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
     }
 
     @Override

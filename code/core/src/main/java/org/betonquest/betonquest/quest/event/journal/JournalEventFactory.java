@@ -98,14 +98,14 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryID);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(dataStorage, journalChanger, notificationSender);
     }
 
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryID);
         final NotificationSender notificationSender = new IngameNotificationSender(loggerFactory.create(JournalEvent.class),
                 pluginMessage, instruction.getPackage(), instruction.getID().getFull(), NotificationLevel.INFO, "new_journal_entry");
@@ -119,7 +119,7 @@ public class JournalEventFactory implements PlayerEventFactory, PlayerlessEventF
     }
 
     private PlayerlessEvent createStaticJournalDeleteEvent(final Instruction instruction) throws QuestException {
-        final Argument<JournalEntryID> entryID = instruction.get(instruction.getPart(2), JournalEntryID::new);
+        final Argument<JournalEntryID> entryID = instruction.chainForArgument(instruction.getPart(2)).parse(JournalEntryID::new).get();
         return new DeleteJournalPlayerlessEvent(dataStorage, saver, profileProvider, entryID);
     }
 }

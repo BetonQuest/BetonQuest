@@ -1,12 +1,9 @@
 package org.betonquest.betonquest.api.instruction;
 
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.function.QuestSupplier;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.identifier.Identifier;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
-import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
-import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -15,36 +12,6 @@ import org.betonquest.betonquest.api.profile.Profile;
  * The Instruction. Primary object for input parsing.
  */
 public interface Instruction extends ChainableInstruction, InstructionChainParser, InstructionParts {
-
-    /**
-     * Legacy implementation.
-     * Takes an input and parses it against a given parser.
-     *
-     * @param raw    the raw input to parse
-     * @param parser the parser to use
-     * @param <T>    the type of the variable
-     * @return the parsed variable
-     * @throws QuestException if the input could not be parsed
-     * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
-     */
-    @Deprecated
-    <T> Argument<T> get(String raw, InstructionArgumentParser<T> parser) throws QuestException;
-
-    /**
-     * Legacy implementation.
-     * Takes an input and parses it against a given parser.
-     *
-     * @param raw    the raw input to parse
-     * @param parser the parser to use
-     * @param <T>    the type of the variable
-     * @return the parsed variable
-     * @throws QuestException if the input could not be parsed
-     * @deprecated legacy implementation that shall only exist until the last remaining classes using it are reworked.
-     */
-    @Deprecated
-    default <T> Argument<T> get(final String raw, final SimpleArgumentParser<T> parser) throws QuestException {
-        return get(raw, (InstructionArgumentParser<T>) parser);
-    }
 
     /**
      * Starts a new chain for the given argument to parse its value into an {@link Argument}.

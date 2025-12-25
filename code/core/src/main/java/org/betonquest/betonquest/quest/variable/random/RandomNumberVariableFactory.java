@@ -85,10 +85,10 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             return parseToVariable(start, instruction);
         }
         if (start.contains("~")) {
-            return instruction.get(start.substring(0, start.indexOf('~')), instruction.getParsers().number());
+            return instruction.chainForArgument(start.substring(0, start.indexOf('~'))).number().get();
         }
         final String next = instruction.nextElement();
-        return instruction.get(start + '.' + next.substring(0, next.indexOf('~')), instruction.getParsers().number());
+        return instruction.chainForArgument(start + '.' + next.substring(0, next.indexOf('~'))).number().get();
     }
 
     private Argument<Number> parseSecond(final Instruction instruction) throws QuestException {
@@ -96,7 +96,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         }
-        return instruction.get(instruction.hasNext() ? start + '.' + instruction.nextElement() : start, instruction.getParsers().number());
+        return instruction.chainForArgument(instruction.hasNext() ? start + '.' + instruction.nextElement() : start).number().get();
     }
 
     /**
@@ -114,7 +114,7 @@ public class RandomNumberVariableFactory implements PlayerVariableFactory, Playe
             final String current = instruction.nextElement();
             if (current.contains("}")) {
                 builder.append(current, 0, current.indexOf('}')).append('%');
-                return instruction.get(builder.toString(), instruction.getParsers().number());
+                return instruction.chainForArgument(builder.toString()).number().get();
             }
             builder.append(current).append('.');
         }

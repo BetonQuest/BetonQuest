@@ -40,6 +40,6 @@ public class ConstantVariableFactory implements PlayerVariableFactory, Playerles
         if (constant == null) {
             throw new QuestException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
         }
-        return new NullableVariableAdapter(new ConstantVariable(instruction.get(constant, instruction.getParsers().string())));
+        return new NullableVariableAdapter(new ConstantVariable(instruction.chainForArgument(constant).string().get()));
     }
 }

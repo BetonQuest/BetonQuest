@@ -63,7 +63,7 @@ public class ConversationEventFactory implements PlayerEventFactory {
     private Argument<Pair<ConversationID, String>> getConversation(final Instruction instruction) throws QuestException {
         final String conversation = instruction.nextElement();
         final String option = instruction.string().get("option", "").getValue(null);
-        return instruction.get(conversation + " " + option, combined -> {
+        return instruction.chainForArgument(conversation + " " + option).parse(combined -> {
             final String[] split = combined.split(" ");
             final ConversationID conversationID = new ConversationID(packManager, instruction.getPackage(), split[0]);
             final String optionName = split.length == 2 ? split[1] : null;
@@ -74,6 +74,6 @@ public class ConversationEventFactory implements PlayerEventFactory {
                 }
             }
             return Pair.of(conversationID, optionName);
-        });
+        }).get();
     }
 }
