@@ -18,6 +18,7 @@ import java.util.UUID;
 /**
  * Default implementation for {@link InstructionChainParser}.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class DefaultInstructionChainParser implements InstructionChainParser {
 
     /**

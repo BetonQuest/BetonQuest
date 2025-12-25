@@ -19,6 +19,7 @@ import java.util.Optional;
 /**
  * A default implementation for {@link ChainableInstruction}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class DefaultChainableInstruction implements ChainableInstruction {
 
     /**

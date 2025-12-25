@@ -59,7 +59,7 @@ public class PickRandomEventFactory implements PlayerEventFactory, PlayerlessEve
 
             final String weightString = matcher.group("weight");
             final String eventString = matcher.group("event");
-            final EventID eventID = instruction.get(eventString, EventID::new).getValue(null);
+            final EventID eventID = instruction.chainForArgument(eventString).parse(EventID::new).get().getValue(null);
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomEvent(eventID, weight);
         }).getList();

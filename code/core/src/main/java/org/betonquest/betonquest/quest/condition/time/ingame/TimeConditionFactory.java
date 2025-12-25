@@ -27,7 +27,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Variable<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
         final String worldRaw = instruction.string().get("world", "%location.world%").getValue(null);
-        final Variable<World> world = instruction.get(worldRaw, instruction.getParsers().world());
+        final Variable<World> world = instruction.chainForArgument(worldRaw).world().get();
         return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 
@@ -39,7 +39,7 @@ public class TimeConditionFactory implements PlayerConditionFactory, PlayerlessC
             return new ThrowExceptionPlayerlessCondition();
         }
         final Variable<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
-        final Variable<World> world = instruction.get(worldString, instruction.getParsers().world());
+        final Variable<World> world = instruction.chainForArgument(worldString).world().get();
         return new NullableConditionAdapter(new TimeCondition(timeFrame, world));
     }
 }

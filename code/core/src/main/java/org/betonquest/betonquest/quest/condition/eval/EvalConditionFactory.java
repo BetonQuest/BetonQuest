@@ -58,6 +58,6 @@ public class EvalConditionFactory implements PlayerConditionFactory, PlayerlessC
     private NullableConditionAdapter parseEvalCondition(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(" ", instruction.getValueParts());
         return new NullableConditionAdapter(new EvalCondition(variables, packManager, conditionTypeRegistry,
-                instruction.getPackage(), instruction.get(rawInstruction, instruction.getParsers().string())));
+                instruction.getPackage(), instruction.chainForArgument(rawInstruction).string().get()));
     }
 }

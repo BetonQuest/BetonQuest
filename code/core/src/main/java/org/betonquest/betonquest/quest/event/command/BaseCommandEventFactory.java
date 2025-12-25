@@ -68,7 +68,7 @@ public abstract class BaseCommandEventFactory implements PlayerEventFactory {
                 .map(String::trim)
                 .toList();
         for (final String rawCommand : rawCommands) {
-            commands.add(instruction.get(rawCommand, instruction.getParsers().string()));
+            commands.add(instruction.chainForArgument(rawCommand).string().get());
         }
         return commands;
     }

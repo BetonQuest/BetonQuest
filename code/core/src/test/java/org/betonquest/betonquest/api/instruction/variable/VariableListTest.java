@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for constructing {@link org.betonquest.betonquest.lib.instruction.variable.VariableList}s and validating constant values.
+ * Test for constructing VariableLists and validating constant values.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)

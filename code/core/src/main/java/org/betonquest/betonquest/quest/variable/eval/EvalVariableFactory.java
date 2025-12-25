@@ -39,7 +39,7 @@ public class EvalVariableFactory implements PlayerVariableFactory, PlayerlessVar
      */
     protected NullableVariable parseNullableVariable(final Instruction instruction) throws QuestException {
         final String rawInstruction = String.join(".", instruction.getValueParts());
-        return new EvalVariable(instruction, instruction.get(rawInstruction, instruction.getParsers().string()));
+        return new EvalVariable(instruction, instruction.chainForArgument(rawInstruction).string().get());
     }
 
     private NullableVariableAdapter parseInstruction(final Instruction instruction) throws QuestException {

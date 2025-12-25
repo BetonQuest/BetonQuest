@@ -24,7 +24,6 @@ import org.betonquest.betonquest.lib.instruction.chain.DefaultChainableInstructi
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultInstructionChainParser;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
-import org.betonquest.betonquest.lib.instruction.variable.DefaultVariable;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -229,11 +228,6 @@ public class DefaultInstruction implements Instruction {
     @Override
     public boolean hasArgument(final String argument) {
         return instructionParts.getParts().stream().anyMatch(part -> part.equalsIgnoreCase(argument));
-    }
-
-    @Override
-    public <T> Variable<T> get(final String raw, final InstructionArgumentParser<T> parser) throws QuestException {
-        return new DefaultVariable<>(variables, pack, raw, value -> parser.apply(variables, packManager, pack, value));
     }
 
     @Override

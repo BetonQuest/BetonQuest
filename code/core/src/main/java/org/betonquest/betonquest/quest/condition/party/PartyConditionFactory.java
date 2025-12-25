@@ -46,7 +46,7 @@ public class PartyConditionFactory implements PlayerConditionFactory, Playerless
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final String locationRaw = instruction.string().get("location", "%location%").getValue(null);
-        final Variable<Location> location = instruction.get(locationRaw, instruction.getParsers().location());
+        final Variable<Location> location = instruction.chainForArgument(locationRaw).location().get();
         return new NullableConditionAdapter(parse(instruction, location));
     }
 

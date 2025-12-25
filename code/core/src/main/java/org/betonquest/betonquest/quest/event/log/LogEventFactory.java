@@ -59,7 +59,7 @@ public class LogEventFactory implements PlayerEventFactory, PlayerlessEventFacto
         final Matcher levelMatcher = LEVEL_REGEX.matcher(raw);
         final int msgStart = levelMatcher.find() ? levelMatcher.end() : 0;
         final int msgEnd = conditionsMatcher.find() ? conditionsMatcher.start() : raw.length();
-        final Variable<String> message = instruction.get(raw.substring(msgStart, msgEnd), instruction.getParsers().string());
+        final Variable<String> message = instruction.chainForArgument(raw.substring(msgStart, msgEnd)).string().get();
         return new NullableEventAdapter(new LogEvent(loggerFactory.create(LogEvent.class), level, message));
     }
 }
