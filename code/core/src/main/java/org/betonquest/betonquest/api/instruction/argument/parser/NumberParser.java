@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.instruction.argument.parser;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.ValueChecker;
+import org.betonquest.betonquest.api.instruction.ValueValidator;
 import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 
 /**
@@ -15,24 +15,23 @@ public class NumberParser implements SimpleArgumentParser<Number> {
     public static final NumberParser DEFAULT = new NumberParser();
 
     /**
-     * The used {@link ValueChecker} for the number.
+     * The used {@link ValueValidator} for the number.
      */
-    private final ValueChecker<Number> valueChecker;
+    private final ValueValidator<Number> valueChecker;
 
     /**
      * Creates a new parser for numbers.
      */
     public NumberParser() {
-        this(value -> {
-        });
+        this(value -> true);
     }
 
     /**
-     * Creates a new parser for numbers with a custom {@link ValueChecker}.
+     * Creates a new parser for numbers with a custom {@link ValueValidator}.
      *
-     * @param valueChecker the {@link ValueChecker} to use for the number
+     * @param valueChecker the {@link ValueValidator} to use for the number
      */
-    public NumberParser(final ValueChecker<Number> valueChecker) {
+    public NumberParser(final ValueValidator<Number> valueChecker) {
         this.valueChecker = valueChecker;
     }
 
@@ -54,7 +53,9 @@ public class NumberParser implements SimpleArgumentParser<Number> {
     @Override
     public Number apply(final String string) throws QuestException {
         final Number parse = parse(string);
-        valueChecker.check(parse);
+        if (!valueChecker.validate(parse)) {
+            throw new QuestException("Could not validate number: " + string);
+        }
         return parse;
     }
 }
