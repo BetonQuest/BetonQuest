@@ -310,7 +310,7 @@ public class CoreQuestTypes {
     }
 
     private void registerConditions(final ConditionTypeRegistry conditionTypes) {
-        conditionTypes.register("advancement", new AdvancementConditionFactory(loggerFactory));
+        conditionTypes.register("advancement", new AdvancementConditionFactory(loggerFactory, server));
         conditionTypes.registerCombined("and", new ConjunctionConditionFactory(questTypeApi));
         conditionTypes.register("armor", new ArmorConditionFactory(loggerFactory));
         conditionTypes.register("biome", new BiomeConditionFactory(loggerFactory));

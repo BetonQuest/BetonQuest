@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.instruction.argument.SimpleArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
@@ -92,11 +93,18 @@ public interface InstructionChainParser {
     DecoratableChainRetriever<BlockSelector> blockSelector();
 
     /**
-     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} ()} as parser.
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} as parser.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      */
     DecoratableChainRetriever<String> packageIdentifier();
+
+    /**
+     * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#namespacedKey()} as parser.
+     *
+     * @return a new {@link DecoratableChainRetriever} carrying all previous settings
+     */
+    DecoratableChainRetriever<NamespacedKey> namespacedKey();
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#component()} as parser.

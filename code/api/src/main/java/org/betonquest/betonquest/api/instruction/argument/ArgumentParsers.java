@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
@@ -72,6 +73,14 @@ public interface ArgumentParsers {
      * @return a parser for package identifiers.
      */
     DecoratedArgumentParser<String> packageIdentifier();
+
+    /**
+     * Default {@link DecoratedArgumentParser} for {@link NamespacedKey}.
+     * If no namespace is given, the default minecraft namespace is used.
+     *
+     * @return a parser for namespaced keys
+     */
+    DecoratedArgumentParser<NamespacedKey> namespacedKey();
 
     /**
      * Default {@link DecoratedArgumentParser} for {@link Component}.

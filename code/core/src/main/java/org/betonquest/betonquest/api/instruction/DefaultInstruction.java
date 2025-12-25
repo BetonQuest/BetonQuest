@@ -22,6 +22,7 @@ import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultDecoratableChainRetriever;
 import org.betonquest.betonquest.lib.instruction.chain.DefaultNumberChainRetriever;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
@@ -324,6 +325,11 @@ public class DefaultInstruction implements Instruction {
     @Override
     public DecoratableChainRetriever<String> packageIdentifier() {
         return new DefaultDecoratableChainRetriever<>(this, argumentParsers.packageIdentifier());
+    }
+
+    @Override
+    public DecoratableChainRetriever<NamespacedKey> namespacedKey() {
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.namespacedKey());
     }
 
     @Override

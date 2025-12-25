@@ -1,14 +1,13 @@
 package org.betonquest.betonquest.quest.condition.advancement;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.api.quest.condition.online.OnlineConditionAdapter;
-import org.betonquest.betonquest.util.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.advancement.Advancement;
 
 /**
@@ -17,33 +16,29 @@ import org.bukkit.advancement.Advancement;
 public class AdvancementConditionFactory implements PlayerConditionFactory {
 
     /**
-     * Amount of parts the advancement string is expected to have.
-     */
-    private static final int ADVANCEMENT_LENGTH = 2;
-
-    /**
      * Logger factory to create a logger for the conditions.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
     /**
+     * The server instance to get advancements from.
+     */
+    private final Server server;
+
+    /**
      * Create the Advancement Condition Factory.
      *
      * @param loggerFactory the logger factory to create a logger for the conditions
+     * @param server        the server instance to get advancements from
      */
-    public AdvancementConditionFactory(final BetonQuestLoggerFactory loggerFactory) {
+    public AdvancementConditionFactory(final BetonQuestLoggerFactory loggerFactory, final Server server) {
         this.loggerFactory = loggerFactory;
+        this.server = server;
     }
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final String advancementString = instruction.string().get().getValue(null);
-        final String[] split = advancementString.split(":");
-        if (split.length != ADVANCEMENT_LENGTH) {
-            throw new QuestException("The advancement '" + advancementString + "' is missing a namespace!");
-        }
-        final Advancement advancement = Utils.getNN(Bukkit.getServer().getAdvancement(new NamespacedKey(split[0], split[1])),
-                "No such advancement: " + advancementString);
+        final Argument<Advancement> advancement = instruction.namespacedKey().map(server::getAdvancement).get();
         return new OnlineConditionAdapter(new AdvancementCondition(advancement),
                 loggerFactory.create(AdvancementCondition.class), instruction.getPackage());
     }

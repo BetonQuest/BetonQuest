@@ -81,6 +81,7 @@ The instruction chain may be accessed conveniently, starting directly from any `
  | `.uuid()`                            | Default parser for `java.util.UUID`                                                                                                                                                                    |
  | `.component()`                       | Default parser for `net.kyori.adventure.text.Component`                                                                                                                                                |
  | `.packageIdentifier()`               | Default parser for package identifiers producing a `java.lang.String`. This parser simply expands the existing string value to a full package identifier using the instruction's package if necessary. |
+ | `.namespacedKey()`                   | Default parser for `org.bukkit.NamespacedKey`                                                                                                                                                          |
  | <nobr>`.enumeration(Enum<E>)`</nobr> | Default parser for an enum of the given type                                                                                                                                                           |
  | `.parse(Parser<P>)`                  | Using a custom parser matching the functional interfaces `InstructionArgumentParser` or `SimpleArgumentParser`                                                                                         |  
 

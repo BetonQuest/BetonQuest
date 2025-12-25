@@ -5,12 +5,14 @@ icon: octicons/question-16
 
 ## Advancement: `advancement`
 
-This condition checks if the player has specified advancement. The only argument is the full name of the advancement.
-This includes the namespace, the tab and the name of the advancement as configured on your server. 
+This condition checks if the player has a specified advancement. The only argument is the name of the advancement.
+The namespace can be omitted for the `minecraft` default namespace.
+The name must be in the format as configured on your server.   
 [List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements).
 
 !!! example
     ```YAML
+    advancement adventure/kill_all_mobs
     advancement minecraft:adventure/kill_a_mob
     ```
 

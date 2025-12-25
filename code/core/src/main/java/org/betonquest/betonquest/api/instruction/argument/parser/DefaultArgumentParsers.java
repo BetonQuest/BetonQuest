@@ -11,6 +11,7 @@ import org.betonquest.betonquest.lib.instruction.argument.DecoratableArgumentPar
 import org.betonquest.betonquest.lib.instruction.argument.DefaultNumberArgumentParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
@@ -58,6 +59,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     private final DecoratedArgumentParser<String> defaultPackageIdentifier;
 
     /**
+     * The default decoratable instance of {@link NamespacedKeyParser}.
+     */
+    private final DecoratedArgumentParser<NamespacedKey> defaultNamespacedKeyParser;
+
+    /**
      * The default decoratable instance of {@link BooleanParser}.
      */
     private final DecoratedArgumentParser<Boolean> defaultBooleanParser;
@@ -93,6 +99,7 @@ public class DefaultArgumentParsers implements ArgumentParsers {
         defaultLocationParser = new DecoratableArgumentParser<>(new LocationParser(Bukkit.getServer()));
         defaultItemParser = new DecoratableArgumentParser<>(new ItemParser(BetonQuest.getInstance().getFeatureApi()));
         defaultPackageIdentifier = new DecoratableArgumentParser<>(new IdentifierParser());
+        defaultNamespacedKeyParser = new DecoratableArgumentParser<>(new NamespacedKeyParser());
         defaultBooleanParser = new DecoratableArgumentParser<>(new BooleanParser());
         defaultUUIDParser = new DecoratableArgumentParser<>(new UUIDParser());
         defaultVectorParser = new DecoratableArgumentParser<>(new VectorParser());
@@ -143,6 +150,11 @@ public class DefaultArgumentParsers implements ArgumentParsers {
     @Override
     public DecoratedArgumentParser<String> packageIdentifier() {
         return defaultPackageIdentifier;
+    }
+
+    @Override
+    public DecoratedArgumentParser<NamespacedKey> namespacedKey() {
+        return defaultNamespacedKeyParser;
     }
 
     @Override
