@@ -3678,13 +3678,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#variable-retrieval">
+  <a class="md-nav__link" href="#argument-retrieval">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Variable Retrieval
+          Argument Retrieval
         </span>
 
       
@@ -4921,13 +4921,13 @@
       
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#variable-retrieval">
+  <a class="md-nav__link" href="#argument-retrieval">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          Variable Retrieval
+          Argument Retrieval
         </span>
 
       
@@ -5189,27 +5189,27 @@ Required arguments are those specified at the beginning of an instruction string
 such as <code>add someTag</code> in the <code>tag</code> event.</p>
 <p>If the instruction string contains an argument formatted as <code>arg:something</code> and you request the optional <code>arg</code>, 
 it will return <code>something</code>. If there is no optional argument by that name, 
-it will return an empty Optional for that variable. </p>
+it will return an empty Optional for that argument. </p>
 <p>If an error occurs the <code>Instruction</code> object will automatically throw a <code>QuestException</code>.
 This may happen whenever there are no more arguments in the user's instruction or if the argument cannot 
 be parsed into the requested type.</p>
 <h2 id="instruction-chain">Instruction Chain<a class="headerlink" href="#instruction-chain" title="Permanent link">🔗</a></h2>
 <p>The instruction chain offers java stream-like methods to read, parse, convert and 
-ultimately retrieve a variable from an instruction. 
-It minimally consists of two steps: the argument parsing step and the variable retrieval step.</p>
+ultimately retrieve a argument from an instruction. 
+It minimally consists of two steps: the argument parsing step and the argument retrieval step.</p>
 <p>To offer an overview before explaing all details, the following examples show excerpts from factories in BetonQuest:</p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Conditions-List/#experience-experience">experience</a> condition.
 <div class="highlight"><span class="filename">ExperienceConditionFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerCondition</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
 
 <span class="w">        </span><span class="c1">//creating the condition object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Events-List/#item-durability-itemdurability">itemdurability</a> event.
 <div class="highlight"><span class="filename">ItemDurabilityEventFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">PlayerEvent</span><span class="w"> </span><span class="nf">parsePlayer</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">EquipmentSlot</span><span class="o">&gt;</span><span class="w"> </span><span class="n">slot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">EquipmentSlot</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">enumeration</span><span class="p">(</span><span class="n">PointType</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">get</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreUnbreakable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreUnbreakable&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">ignoreEvents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">hasArgument</span><span class="p">(</span><span class="s">&quot;ignoreEvents&quot;</span><span class="p">);</span>
 
@@ -5218,8 +5218,8 @@ It minimally consists of two steps: the argument parsing step and the variable r
 </code></pre></div></p>
 <p>Compare <a href="../../Documentation/Scripting/Building-Blocks/Objectives-List/#wait-delay">delay</a> objective.
 <div class="highlight"><span class="filename">DelayObjectiveFactory.java</span><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">Objective</span><span class="w"> </span><span class="nf">parseInstruction</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">instruction</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">QuestException</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
-<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Variable</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;interval&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Argument</span><span class="o">&lt;</span><span class="n">Number</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">instruction</span><span class="p">.</span><span class="na">number</span><span class="p">().</span><span class="na">atLeast</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;interval&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
 <span class="w">    </span><span class="c1">//creating objective object and returning it...</span>
 <span class="p">}</span>
 </code></pre></div></p>
@@ -5288,8 +5288,8 @@ The instruction chain may be accessed conveniently, starting directly from any <
 </tr>
 </tbody>
 </table>
-<h3 id="variable-retrieval">Variable Retrieval<a class="headerlink" href="#variable-retrieval" title="Permanent link">🔗</a></h3>
-<p>The variable retrieval step is required after the argument parsing and represents the wrapping into a <code>Variable&lt;T&gt;</code> 
+<h3 id="argument-retrieval">Argument Retrieval<a class="headerlink" href="#argument-retrieval" title="Permanent link">🔗</a></h3>
+<p>The argument retrieval step is required after the argument parsing and represents the wrapping into a <code>Argument&lt;T&gt;</code> 
 instance to be carried on into events, conditions and objectives.
 To have valid calls the <code>Number</code> parser is used as an example, but naturally any parser will do.</p>
 <table>
@@ -5303,33 +5303,33 @@ To have valid calls the <code>Number</code> parser is used as an example, but na
 <tbody>
 <tr>
 <td style="text-align: left;"><code>.get()</code></td>
-<td style="text-align: center;"><code>Variable&lt;Number&gt;</code></td>
-<td style="text-align: left;">Retrieves a variable of the next value in order from the instruction</td>
+<td style="text-align: center;"><code>Argument&lt;Number&gt;</code></td>
+<td style="text-align: left;">Retrieves an argument of the next value in order from the instruction</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>.get("amount")</code></td>
-<td style="text-align: center;"><code>Optional&lt;Variable&lt;Number&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amount</code> from the instruction</td>
+<td style="text-align: center;"><code>Optional&lt;Argument&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amount</code> from the instruction</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>.get("amount", 10)</code></td>
-<td style="text-align: center;"><code>Variable&lt;Number&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amount</code> from the instruction or gets a variable with default value</td>
+<td style="text-align: center;"><code>Argument&lt;Number&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amount</code> from the instruction or gets an argument with default value</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>.getList()</code></td>
-<td style="text-align: center;"><code>Variable&lt;List&lt;Number&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves a variable of the next value in order from the instruction parsed as list</td>
+<td style="text-align: center;"><code>Argument&lt;List&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an argument of the next value in order from the instruction parsed as list</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>.getList("amounts")</code></td>
-<td style="text-align: center;"><code>Optional&lt;Variable&lt;List&lt;Number&gt;&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amounts</code> from the instruction parsed as list</td>
+<td style="text-align: center;"><code>Optional&lt;Argument&lt;List&lt;Number&gt;&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amounts</code> from the instruction parsed as list</td>
 </tr>
 <tr>
 <td style="text-align: left;"><nobr><code>.getList("amounts",</code></nobr><br><nobr><code>List.of(1,5,10))</code></nobr></td>
-<td style="text-align: center;"><code>Variable&lt;List&lt;Number&gt;&gt;</code></td>
-<td style="text-align: left;">Retrieves an optional variable of the value with the key <code>amounts</code> from the instruction parsed as list or gets a variable with default list as value</td>
+<td style="text-align: center;"><code>Argument&lt;List&lt;Number&gt;&gt;</code></td>
+<td style="text-align: left;">Retrieves an optional argument of the value with the key <code>amounts</code> from the instruction parsed as list or gets an argument with default list as value</td>
 </tr>
 </tbody>
 </table>
@@ -5385,7 +5385,7 @@ Another unknown value will cause it to throw an exception. </p>
 </div>
 </details>
 <h4 id="map">Map<a class="headerlink" href="#map" title="Permanent link">🔗</a></h4>
-<p>You can also modify the value or map it to a different type after parsing without reading it from the variable.
+<p>You can also modify the value or map it to a different type after parsing without reading it from the argument.
 Use the <code>map(QuestionFunction&lt;T,U&gt;)</code> method to decorate the parser with such a mapping function.<br />
 Example:</p>
 <details class="example">
