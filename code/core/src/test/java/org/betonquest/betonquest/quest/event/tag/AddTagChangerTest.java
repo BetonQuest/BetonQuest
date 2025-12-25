@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.database.TagData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ class AddTagChangerTest {
 
     @Test
     void testAddTagChangerAddNoTags(@Mock final TagData tagData) throws QuestException {
-        final AddTagChanger changer = new AddTagChanger(new VariableList<>());
+        final AddTagChanger changer = new AddTagChanger(new DefaultListArgument<>());
         changer.changeTags(tagData, null);
         verifyNoInteractions(tagData);
     }
@@ -26,7 +26,7 @@ class AddTagChangerTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
     void testAddTagChangerAddMultipleTags(@Mock final TagData tagData) throws QuestException {
-        final AddTagChanger changer = new AddTagChanger(new VariableList<>("tag-1", "tag-2", "tag-3"));
+        final AddTagChanger changer = new AddTagChanger(new DefaultListArgument<>("tag-1", "tag-2", "tag-3"));
 
         changer.changeTags(tagData, null);
         verify(tagData).addTag("tag-1");

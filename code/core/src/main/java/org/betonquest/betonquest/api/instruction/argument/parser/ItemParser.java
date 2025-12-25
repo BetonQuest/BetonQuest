@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Item;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.id.ItemID;
 
@@ -44,10 +44,10 @@ public class ItemParser implements InstructionArgumentParser<ItemWrapper> {
         if (string.contains(":")) {
             final String[] parts = string.split(":", 2);
             item = new ItemID(variables, packManager, pack, parts[0]);
-            number = new DefaultVariable<>(NumberParser.DEFAULT.apply(parts[1]));
+            number = new DefaultArgument<>(NumberParser.DEFAULT.apply(parts[1]));
         } else {
             item = new ItemID(variables, packManager, pack, string);
-            number = new DefaultVariable<>(1);
+            number = new DefaultArgument<>(1);
         }
         return new Item(featureApi, item, number);
     }

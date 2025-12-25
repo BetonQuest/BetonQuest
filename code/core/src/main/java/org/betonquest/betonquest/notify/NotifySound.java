@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.LocationParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -183,7 +183,7 @@ class NotifySound {
     @Nullable
     private Argument<Location> getVariableLocation(final Map<String, String> data) throws QuestException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new DefaultVariable<>(variables, pack, locationString, new LocationParser(Bukkit.getServer()));
+        return locationString == null ? null : new DefaultArgument<>(variables, pack, locationString, new LocationParser(Bukkit.getServer()));
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws QuestException {
@@ -199,7 +199,7 @@ class NotifySound {
     private Argument<Vector> getPlayerOffset(@Nullable final String playerOffsetString) throws QuestException {
         if (playerOffsetString != null) {
             try {
-                return new DefaultVariable<>(variables, pack, playerOffsetString, new VectorParser());
+                return new DefaultArgument<>(variables, pack, playerOffsetString, new VectorParser());
             } catch (final QuestException e) {
                 throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
             }

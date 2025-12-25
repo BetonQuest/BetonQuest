@@ -12,7 +12,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -220,7 +220,7 @@ public class PluginMessage {
             final String key = entry.getKey();
             final Map<String, Argument<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
-                values.put(value.getKey(), new DefaultVariable<>(variables, null, value.getValue(), stringParser));
+                values.put(value.getKey(), new DefaultArgument<>(variables, null, value.getValue(), stringParser));
             }
             loadedMessages.put(key, new ParsedText(textParser, values, playerDataStorage, languageProvider));
         }

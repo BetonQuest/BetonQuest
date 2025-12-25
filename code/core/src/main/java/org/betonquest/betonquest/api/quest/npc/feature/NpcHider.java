@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.quest.npc.feature;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -125,7 +125,7 @@ public class NpcHider {
         if (conditionsString == null) {
             throw new QuestException("No conditions defined");
         }
-        final List<ConditionID> conditions = new VariableList<>(variables, pack, conditionsString,
+        final List<ConditionID> conditions = new DefaultListArgument<>(variables, pack, conditionsString,
                 string -> new ConditionID(variables, packManager, pack, string)).getValue(null);
 
         if (npcs.containsKey(npcId)) {

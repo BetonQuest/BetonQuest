@@ -8,8 +8,8 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.NumberParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
 import org.betonquest.betonquest.api.instruction.type.ItemWrapper;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -88,13 +88,13 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         final Menu.MenuData menuData = helper.getMenuData();
         final MenuID menuID = getIdentifier(pack, section.getName());
         final Argument<ItemWrapper> boundItem = section.isSet("bind")
-                ? new DefaultVariable<>(variables, pack, helper.getRequired("bind"),
+                ? new DefaultArgument<>(variables, pack, helper.getRequired("bind"),
                 value -> itemParser.apply(variables, packManager, pack, value))
                 : null;
         final BetonQuestLogger log = loggerFactory.create(Menu.class);
         final Menu menu = new Menu(log, menuID, questTypeApi, menuData, boundItem);
         if (section.isSet("command")) {
-            final String string = new DefaultVariable<>(variables, pack, helper.getRequired("command"),
+            final String string = new DefaultArgument<>(variables, pack, helper.getRequired("command"),
                     new StringParser()).getValue(null).trim();
             createBoundCommand(menu, string);
         }
@@ -134,7 +134,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
         }
 
         private Menu.MenuData getMenuData() throws QuestException {
-            final int height = new DefaultVariable<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
+            final int height = new DefaultArgument<>(variables, pack, getRequired("height"), NumberParser.DEFAULT)
                     .getValue(null).intValue();
             if (height < 1 || height > 6) {
                 throw new QuestException("height is invalid!");
@@ -155,7 +155,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuID, Menu> {
             }
             final List<Slots> slots = new ArrayList<>();
             for (final String key : slotsSection.getKeys(false)) {
-                final Argument<List<MenuItemID>> itemsList = new VariableList<>(variables, pack,
+                final Argument<List<MenuItemID>> itemsList = new DefaultListArgument<>(variables, pack,
                         slotsSection.getString(key, ""), value -> new MenuItemID(packManager, pack, value));
                 try {
                     slots.add(new Slots(rpgMenu, key, itemsList));

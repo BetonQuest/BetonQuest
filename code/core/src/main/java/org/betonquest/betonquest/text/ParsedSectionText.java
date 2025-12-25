@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.quest.Variables;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
@@ -46,14 +46,14 @@ public class ParsedSectionText extends ParsedText {
         if (section.isConfigurationSection(path)) {
             return parseSection(variables, pack, section, path, stringParser);
         } else if (section.isList(path)) {
-            return Map.of(languageProvider.getDefaultLanguage(), new DefaultVariable<>(variables, pack,
+            return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(variables, pack,
                     String.join("\n", section.getStringList(path)), stringParser));
         } else if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(languageProvider.getDefaultLanguage(), new DefaultVariable<>(variables, pack, raw, stringParser));
+            return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(variables, pack, raw, stringParser));
         } else {
             throw new QuestException("The '" + path + "' is missing!");
         }
@@ -69,7 +69,7 @@ public class ParsedSectionText extends ParsedText {
         final Map<String, Argument<String>> texts = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
-                texts.put(key, new DefaultVariable<>(variables, pack,
+                texts.put(key, new DefaultArgument<>(variables, pack,
                         String.join("\n", subSection.getStringList(key)), stringParser));
                 continue;
             }
@@ -77,7 +77,7 @@ public class ParsedSectionText extends ParsedText {
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }
-            texts.put(key, new DefaultVariable<>(variables, pack, raw, stringParser));
+            texts.put(key, new DefaultArgument<>(variables, pack, raw, stringParser));
         }
         if (texts.isEmpty()) {
             throw new QuestException("No values defined!");

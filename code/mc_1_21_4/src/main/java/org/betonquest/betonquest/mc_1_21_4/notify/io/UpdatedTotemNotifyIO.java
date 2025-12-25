@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -50,7 +50,7 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
      */
     public UpdatedTotemNotifyIO(final Variables variables, @Nullable final QuestPackage pack, final Map<String, String> data) throws QuestException {
         super(variables, pack, data);
-        variableItemModel = data.containsKey("itemmodel") ? new DefaultVariable<>(variables, pack, data.getOrDefault("itemmodel", ""),
+        variableItemModel = data.containsKey("itemmodel") ? new DefaultArgument<>(variables, pack, data.getOrDefault("itemmodel", ""),
                 input -> Utils.getNN(NamespacedKey.fromString(input), "The item-model '" + input + "' could not be parsed!")) : null;
         variableCustomModelData = getNumberData("custommodeldata", 0);
     }

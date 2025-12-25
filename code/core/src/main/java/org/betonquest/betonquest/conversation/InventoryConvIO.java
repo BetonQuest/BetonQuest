@@ -9,7 +9,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.FixedComponentLineWrapper;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -166,7 +166,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final String item = properties.getString("item");
         try {
             final Argument<ItemID> variableItem = item == null ? null
-                    : new DefaultVariable<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), item,
+                    : new DefaultArgument<>(betonQuest.getQuestTypeApi().variables(), conv.getPackage(), item,
                     (value) -> new ItemID(variables, packManager, conv.getPackage(), value));
             options.put(playerOptionsCount, Pair.of(colors.getOption().append(option), variableItem));
         } catch (final QuestException e) {

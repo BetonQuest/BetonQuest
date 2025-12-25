@@ -6,8 +6,8 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.feature.FeatureApi;
 import org.betonquest.betonquest.api.instruction.argument.parser.VectorParser;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.Variables;
@@ -119,7 +119,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
         final String stringVector = section.getString("vector");
         final VectorParser vectorParser = new VectorParser();
         if (stringVector != null) {
-            vector.add(new DefaultVariable<>(variables, pack, "(" + stringVector + ")", vectorParser).getValue(null));
+            vector.add(new DefaultArgument<>(variables, pack, "(" + stringVector + ")", vectorParser).getValue(null));
         }
         final List<NpcID> npcIDs = getNpcs(pack, section);
         final boolean follow = section.getBoolean("follow", false);
@@ -168,7 +168,7 @@ public class NpcHologramLoop extends HologramLoop implements Listener, StartTask
     }
 
     private List<NpcID> getNpcs(final QuestPackage pack, final ConfigurationSection section) throws QuestException {
-        return new VariableList<>(variables, pack, section.getString("npcs", ""),
+        return new DefaultListArgument<>(variables, pack, section.getString("npcs", ""),
                 value -> new NpcID(variables, packManager, pack, value)).getValue(null);
     }
 

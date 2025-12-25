@@ -11,7 +11,7 @@ import org.betonquest.betonquest.api.feature.ConversationApi;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.parser.StringParser;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.QuestTypeApi;
@@ -271,8 +271,8 @@ public class ConversationData {
     private List<String> loadStartingOptions(final ConfigurationSection convSection) throws QuestException {
         final List<String> startingOptions;
         try {
-            startingOptions = new VariableList<>(variables, getPack(), convSection.getString("first", ""),
-                    new StringParser(), VariableList.notEmptyChecker()).getValue(null);
+            startingOptions = new DefaultListArgument<>(variables, getPack(), convSection.getString("first", ""),
+                    new StringParser(), DefaultListArgument.notEmptyChecker()).getValue(null);
         } catch (final QuestException e) {
             throw new QuestException("Could not load starting options: " + e.getMessage(), e);
         }
@@ -659,7 +659,7 @@ public class ConversationData {
 
         private <T> List<T> resolve(final ConfigurationSection conv, final String identifier,
                                     final InstructionArgumentParser<T> resolver) throws QuestException {
-            return new VariableList<>(variables, getPack(), conv.getString(identifier, ""),
+            return new DefaultListArgument<>(variables, getPack(), conv.getString(identifier, ""),
                     value -> resolver.apply(variables, packManager, getPack(), value)).getValue(null);
         }
 

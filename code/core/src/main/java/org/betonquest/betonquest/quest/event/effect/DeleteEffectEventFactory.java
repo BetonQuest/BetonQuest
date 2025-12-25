@@ -3,7 +3,7 @@ package org.betonquest.betonquest.quest.event.effect;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.quest.event.PlayerEvent;
 import org.betonquest.betonquest.api.quest.event.PlayerEventFactory;
@@ -45,7 +45,7 @@ public class DeleteEffectEventFactory implements PlayerEventFactory {
                 }
             }).getList();
         } else {
-            effects = new VariableList<>(Collections.emptyList());
+            effects = new DefaultListArgument<>(Collections.emptyList());
         }
         return new OnlineEventAdapter(new DeleteEffectEvent(effects),
                 loggerFactory.create(DeleteEffectEvent.class), instruction.getPackage());

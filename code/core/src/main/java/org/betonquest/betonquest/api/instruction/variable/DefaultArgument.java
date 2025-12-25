@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> the type of the variable
  */
-public class DefaultVariable<T> implements Argument<T> {
+public class DefaultArgument<T> implements Argument<T> {
 
     /**
      * The pattern to match variables in a string marked with percent signs.<br>
@@ -39,7 +39,7 @@ public class DefaultVariable<T> implements Argument<T> {
      *
      * @param value the value of the variable
      */
-    public DefaultVariable(final T value) {
+    public DefaultArgument(final T value) {
         this.value = profile -> value;
     }
 
@@ -52,7 +52,7 @@ public class DefaultVariable<T> implements Argument<T> {
      * @param valueParser the valueParser to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public DefaultVariable(final Variables variables, @Nullable final QuestPackage pack, final String input,
+    public DefaultArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
                            final ValueParser<T> valueParser) throws QuestException {
         final Map<String, Argument<String>> foundVariables = getVariables(variables, pack, input);
         if (foundVariables.isEmpty()) {

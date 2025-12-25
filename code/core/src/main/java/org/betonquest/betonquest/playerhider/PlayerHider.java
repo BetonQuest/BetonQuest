@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.instruction.variable.VariableList;
+import org.betonquest.betonquest.api.instruction.variable.DefaultListArgument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -100,7 +100,7 @@ public class PlayerHider {
             return new ArrayList<>();
         }
         try {
-            return new VariableList<>(variables, pack, rawConditions,
+            return new DefaultListArgument<>(variables, pack, rawConditions,
                     string -> new ConditionID(variables, api.getQuestPackageManager(), pack, string))
                     .getValue(null);
         } catch (final QuestException e) {

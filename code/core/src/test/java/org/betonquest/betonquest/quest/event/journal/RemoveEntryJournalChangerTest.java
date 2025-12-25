@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.instruction.variable.DefaultVariable;
+import org.betonquest.betonquest.api.instruction.variable.DefaultArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.feature.journal.Journal;
 import org.betonquest.betonquest.id.JournalEntryID;
@@ -22,7 +22,7 @@ class RemoveEntryJournalChangerTest {
     @Test
     void testChangeJournalRemovesPointer(@Mock final Journal journal) throws QuestException {
         final JournalEntryID entryID = mock(JournalEntryID.class);
-        final RemoveEntryJournalChanger changer = new RemoveEntryJournalChanger(new DefaultVariable<>(entryID));
+        final RemoveEntryJournalChanger changer = new RemoveEntryJournalChanger(new DefaultArgument<>(entryID));
 
         changer.changeJournal(journal, mock(Profile.class));
 

@@ -16,14 +16,14 @@ import java.util.List;
  *
  * @param <T> the variable type
  */
-public class VariableList<T> extends DefaultVariable<List<T>> {
+public class DefaultListArgument<T> extends DefaultArgument<List<T>> {
 
     /**
      * Creates a new VariableList.
      *
      * @param value the list of values
      */
-    public VariableList(final List<T> value) {
+    public DefaultListArgument(final List<T> value) {
         super(value);
     }
 
@@ -33,7 +33,7 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param values the list of values
      */
     @SafeVarargs
-    public VariableList(final T... values) {
+    public DefaultListArgument(final T... values) {
         super(List.of(values));
     }
 
@@ -47,8 +47,8 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param resolver  the resolver to convert the resolved variable to the given type
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final ValueParser<T> resolver) throws QuestException {
+    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                               final ValueParser<T> resolver) throws QuestException {
         this(variables, pack, input, resolver, value -> true);
     }
 
@@ -63,8 +63,8 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
      * @param valueChecker the checker to verify valid lists
      * @throws QuestException if the variables could not be created or resolved to the given type
      */
-    public VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                        final ValueParser<T> resolver, final ValueValidator<List<T>> valueChecker) throws QuestException {
+    public DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                               final ValueParser<T> resolver, final ValueValidator<List<T>> valueChecker) throws QuestException {
         this(variables, pack, input, new MarkedResolver<>(new ValueParser<>() {
             @Override
             public List<T> apply(final String value) throws QuestException {
@@ -89,12 +89,12 @@ public class VariableList<T> extends DefaultVariable<List<T>> {
         }));
     }
 
-    private VariableList(final Variables variables, @Nullable final QuestPackage pack, final String input,
-                         final MarkedResolver<T> resolver) throws QuestException {
+    private DefaultListArgument(final Variables variables, @Nullable final QuestPackage pack, final String input,
+                                final MarkedResolver<T> resolver) throws QuestException {
         super(variables, pack, input, resolver);
         if (!resolver.called) {
             for (final String unresolved : StringUtils.split(input, ',')) {
-                new DefaultVariable<>(variables, pack, unresolved, resolver);
+                new DefaultArgument<>(variables, pack, unresolved, resolver);
             }
         }
     }
